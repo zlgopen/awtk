@@ -272,12 +272,12 @@ static ret_t self_layouter_menu_set_param(self_layouter_t* layouter, const char*
       } else if (y[0] == 'b') {
         layout->y_attr = Y_ATTR_BOTTOM;
       } else if (y[0] == 't') {
-        layout->y_attr = X_ATTR_DEFAULT;
+        layout->y_attr = Y_ATTR_DEFAULT;
       } else {
         if (tk_isdigit(*y)) {
           layout->y_attr = tk_atoi(y);
         } else {
-          layout->y_attr = X_ATTR_UNDEF;
+          layout->y_attr = Y_ATTR_UNDEF;
         }
       }
       break;
@@ -320,7 +320,7 @@ static ret_t self_layouter_menu_set_param(self_layouter_t* layouter, const char*
         if (strchr(h, '%') != NULL) {
           layout->h_attr = H_ATTR_PERCENT;
         } else if (strchr(h, 'n') != NULL) {
-          layout->w_attr = W_ATTR_UNDEF;
+          layout->h_attr = H_ATTR_UNDEF;
         }
       }
       break;
