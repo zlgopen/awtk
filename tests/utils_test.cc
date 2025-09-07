@@ -809,16 +809,32 @@ TEST(Utils, str_eq) {
   ASSERT_EQ(tk_str_eq(NULL, NULL), TRUE);
   ASSERT_EQ(tk_str_eq("a", NULL), FALSE);
   ASSERT_EQ(tk_str_eq("a", "a"), TRUE);
+  ASSERT_EQ(tk_str_eq("a", "A"), FALSE);
+  ASSERT_EQ(tk_str_eq("aaa", "aAa"), FALSE);
+}
 
+TEST(Utils, str_ieq) {
   ASSERT_EQ(tk_str_ieq(NULL, NULL), TRUE);
   ASSERT_EQ(tk_str_ieq("a", NULL), FALSE);
   ASSERT_EQ(tk_str_ieq("a", "a"), TRUE);
   ASSERT_EQ(tk_str_ieq("a", "A"), TRUE);
+  ASSERT_EQ(tk_str_ieq("aaa", "Aaa"), TRUE);
+}
 
+TEST(Utils, wstr_eq) {
   ASSERT_EQ(tk_wstr_eq(NULL, NULL), TRUE);
   ASSERT_EQ(tk_wstr_eq(L"a", NULL), FALSE);
   ASSERT_EQ(tk_wstr_eq(L"a", L"a"), TRUE);
   ASSERT_EQ(tk_wstr_eq(L"a", L"A"), FALSE);
+  ASSERT_EQ(tk_wstr_eq(L"aaa", L"aAa"), FALSE);
+}
+
+TEST(Utils, wstr_ieq) {
+  ASSERT_EQ(tk_wstr_ieq(NULL, NULL), TRUE);
+  ASSERT_EQ(tk_wstr_ieq(L"a", NULL), FALSE);
+  ASSERT_EQ(tk_wstr_ieq(L"a", L"a"), TRUE);
+  ASSERT_EQ(tk_wstr_ieq(L"a", L"A"), TRUE);
+  ASSERT_EQ(tk_wstr_ieq(L"aaa", L"AaA"), TRUE);
 }
 
 TEST(Utils, replace_char) {
