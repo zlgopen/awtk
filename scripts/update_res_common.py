@@ -676,9 +676,10 @@ def gen_res_bitmap_font(input_dir, font_options, theme):
     if not os.path.exists(join_path(storage_dir, 'fonts/config')):
         return
 
+    # 获取指定要打包的字体资源名称
     font_names = None
     if STORAGE_DIR:
-        sources_file = join_path(STORAGE_DIR, THEME + '/fonts.json')
+        sources_file = join_path(storage_dir, 'fonts.json')
         font_names = get_res_names_from_sources_file(sources_file)
         if font_names:
             font_names = list(map(lambda s: os.path.splitext(s)[0], font_names))
@@ -691,20 +692,35 @@ def gen_res_bitmap_font(input_dir, font_options, theme):
             size = fontname[index + 1 : len(fontname)]
             fontname = fontname[0: index]
 
-            if font_names and fontname not in font_names: #有指定资源,但当前字体不在指定资源内，则跳过
+            # 如果指定了要打包的字体资源，但当前字体不在其中，则跳过
+            if font_names and fontname not in font_names:
                 continue
 
             bpp = font_options
             if bpp != 'mono' and FONT_BPPS != None and fontname in FONT_BPPS:
                 bpp = FONT_BPPS[fontname]
 
-            raw = join_path(storage_dir, 'fonts') + '/origin/' + fontname + '.ttf'
-            if not os.path.exists(raw):
-                raw = join_path(input_dir, 'fonts') + '/' + fontname + '.ttf'
-
-            if os.path.exists(raw) and size.isdigit():
+            raw = get_origin_font(os.path.dirname(input_dir), fontname, theme)
+            if raw and size.isdigit():
                 inc = join_path(OUTPUT_DIR, 'inc/fonts/' + fontname + '_' + str(size) + '.data')
                 fontgen(raw, f, inc, size, bpp, theme)
+
+
+def get_origin_font(design_dir, fontname, theme):
+    fonts_dir = join_path(design_dir, theme + '/fonts')
+    storage_fonts_dir = join_path(fonts_dir, 'origin')
+    default_fonts_dir = join_path(design_dir, 'default/fonts')
+    default_storage_fonts_dir = join_path(default_fonts_dir, 'origin')
+    if STORAGE_DIR:
+        storage_dir = join_path(STORAGE_DIR, theme + '/fonts/origin')
+        default_storage_dir = join_path(STORAGE_DIR, 'default/fonts/origin')
+
+    dirs = [storage_fonts_dir, fonts_dir, default_storage_fonts_dir, default_fonts_dir]
+    for dir in dirs:
+        origin_font = join_path(dir, fontname + '.ttf')
+        if os.path.exists(origin_font):
+            return origin_font
+    return None
 
 
 def gen_res_all_font():
