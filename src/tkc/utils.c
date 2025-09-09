@@ -2736,3 +2736,47 @@ ret_t tk_str_trim_right(char* str, const char* chars) {
 
   return RET_OK;
 }
+
+inline static bool_t tk_str_is_number_impl(const char* str, bool_t support_sign,
+                                           const char** dot_pos) {
+  bool_t ret = TK_STR_IS_NOT_EMPTY(str);
+  if (ret) {
+    const char* p = str;
+    for (; *p != '\0'; p++) {
+      ret = tk_isdigit(*p);
+      if (!ret) {
+        if (support_sign && ((*p == '+' || *p == '-') && p == str)) {
+          continue;
+        } else if ((dot_pos != NULL) &&
+                   (*p == '.' && p != str && tk_isdigit(*(p - 1)) && tk_isdigit(*(p + 1)))) {
+          *dot_pos = p;
+          continue;
+        }
+        break;
+      }
+    }
+  }
+  return ret;
+}
+
+bool_t tk_str_is_digit(const char* str) {
+  return tk_str_is_number_impl(str, FALSE, NULL);
+}
+
+bool_t tk_str_is_number(const char* str) {
+  const char* dot_pos = NULL;
+  return tk_str_is_number_impl(str, TRUE, &dot_pos);
+}
+
+bool_t tk_str_is_int(const char* str) {
+  return tk_str_is_number_impl(str, TRUE, NULL);
+}
+
+bool_t tk_str_is_float(const char* str) {
+  const char* dot_pos = NULL;
+  bool_t ret = tk_str_is_number_impl(str, TRUE, &dot_pos);
+  if (ret) {
+    ret = (dot_pos != NULL);
+  }
+  return ret;
+}
