@@ -913,6 +913,19 @@ int32_t file_read_part(const char* name, void* buff, uint32_t size, uint32_t off
  */
 ret_t file_write(const char* name, const void* buff, uint32_t size);
 
+/**
+ * @method file_write_sync
+ *
+ * 写入文件，立马同步文件系统。
+ *
+ * @param {const char*} name 文件名。
+ * @param {const void*} buff 数据缓冲区。
+ * @param {uint32_t} size 数据长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_write_sync(const char* name, const void* buff, uint32_t size);
+
 /*basic function test*/
 ret_t fs_test(fs_t* fs);
 ret_t fs_test_file(fs_t* fs);

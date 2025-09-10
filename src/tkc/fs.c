@@ -321,6 +321,27 @@ ret_t file_write(const char* name, const void* buff, uint32_t size) {
   return ret;
 }
 
+ret_t file_write_sync(const char* name, const void* buff, uint32_t size) {
+  ret_t ret = RET_OK;
+  fs_file_t* fp = NULL;
+  return_value_if_fail(name != NULL && buff != NULL, RET_BAD_PARAMS);
+
+  fp = fs_open_file(os_fs(), name, "wb+");
+  return_value_if_fail(fp != NULL, RET_FAIL);
+
+  if (fs_file_write(fp, buff, size) != size) {
+    ret = RET_FAIL;
+  } else {
+    if (fs_file_sync(fp) != RET_OK) {
+      ret = RET_FAIL;
+    }
+  }
+
+  fs_file_close(fp);
+
+  return ret;
+}
+
 ret_t file_remove(const char* name) {
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
 
