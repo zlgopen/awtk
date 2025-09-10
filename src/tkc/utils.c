@@ -2742,12 +2742,15 @@ inline static bool_t tk_str_is_number_impl(const char* str, bool_t support_sign,
   bool_t ret = TK_STR_IS_NOT_EMPTY(str);
   if (ret) {
     const char* p = str;
+    if (dot_pos != NULL) {
+      *dot_pos = NULL;
+    }
     for (; *p != '\0'; p++) {
       ret = tk_isdigit(*p);
       if (!ret) {
         if (support_sign && ((*p == '+' || *p == '-') && p == str)) {
           continue;
-        } else if ((dot_pos != NULL) &&
+        } else if ((dot_pos != NULL) && (*dot_pos == NULL) &&
                    (*p == '.' && p != str && tk_isdigit(*(p - 1)) && tk_isdigit(*(p + 1)))) {
           *dot_pos = p;
           continue;

@@ -2204,6 +2204,7 @@ TEST(Utils, tk_str_trim_right) {
 }
 
 TEST(Utils, str_is_digit) {
+  ASSERT_EQ(tk_str_is_digit(NULL), FALSE);
   ASSERT_EQ(tk_str_is_digit(""), FALSE);
   ASSERT_EQ(tk_str_is_digit("+"), FALSE);
   ASSERT_EQ(tk_str_is_digit("-"), FALSE);
@@ -2215,6 +2216,7 @@ TEST(Utils, str_is_digit) {
   ASSERT_EQ(tk_str_is_digit(".0"), FALSE);
   ASSERT_EQ(tk_str_is_digit("-.0"), FALSE);
   ASSERT_EQ(tk_str_is_digit("-.+"), FALSE);
+  ASSERT_EQ(tk_str_is_digit("0.0.1"), FALSE);
 
   ASSERT_EQ(tk_str_is_digit("123"), TRUE);
   ASSERT_EQ(tk_str_is_digit("+123"), FALSE);
@@ -2225,6 +2227,7 @@ TEST(Utils, str_is_digit) {
 }
 
 TEST(Utils, str_is_number) {
+  ASSERT_EQ(tk_str_is_number(NULL), FALSE);
   ASSERT_EQ(tk_str_is_number(""), FALSE);
   ASSERT_EQ(tk_str_is_number("+"), FALSE);
   ASSERT_EQ(tk_str_is_number("-"), FALSE);
@@ -2236,6 +2239,7 @@ TEST(Utils, str_is_number) {
   ASSERT_EQ(tk_str_is_number(".0"), FALSE);
   ASSERT_EQ(tk_str_is_number("-.0"), FALSE);
   ASSERT_EQ(tk_str_is_number("-.+"), FALSE);
+  ASSERT_EQ(tk_str_is_number("0.0.1"), FALSE);
 
   ASSERT_EQ(tk_str_is_number("123"), TRUE);
   ASSERT_EQ(tk_str_is_number("+123"), TRUE);
@@ -2246,6 +2250,7 @@ TEST(Utils, str_is_number) {
 }
 
 TEST(Utils, str_is_int) {
+  ASSERT_EQ(tk_str_is_int(NULL), FALSE);
   ASSERT_EQ(tk_str_is_int(""), FALSE);
   ASSERT_EQ(tk_str_is_int("+"), FALSE);
   ASSERT_EQ(tk_str_is_int("-"), FALSE);
@@ -2257,6 +2262,7 @@ TEST(Utils, str_is_int) {
   ASSERT_EQ(tk_str_is_int(".0"), FALSE);
   ASSERT_EQ(tk_str_is_int("-.0"), FALSE);
   ASSERT_EQ(tk_str_is_int("-.+"), FALSE);
+  ASSERT_EQ(tk_str_is_int("0.0.1"), FALSE);
 
   ASSERT_EQ(tk_str_is_int("123"), TRUE);
   ASSERT_EQ(tk_str_is_int("+123"), TRUE);
@@ -2267,6 +2273,7 @@ TEST(Utils, str_is_int) {
 }
 
 TEST(Utils, str_is_float) {
+  ASSERT_EQ(tk_str_is_float(NULL), FALSE);
   ASSERT_EQ(tk_str_is_float(""), FALSE);
   ASSERT_EQ(tk_str_is_float("+"), FALSE);
   ASSERT_EQ(tk_str_is_float("-"), FALSE);
@@ -2278,6 +2285,7 @@ TEST(Utils, str_is_float) {
   ASSERT_EQ(tk_str_is_float(".0"), FALSE);
   ASSERT_EQ(tk_str_is_float("-.0"), FALSE);
   ASSERT_EQ(tk_str_is_float("-.+"), FALSE);
+  ASSERT_EQ(tk_str_is_float("0.0.1"), FALSE);
 
   ASSERT_EQ(tk_str_is_float("123"), FALSE);
   ASSERT_EQ(tk_str_is_float("+123"), FALSE);
