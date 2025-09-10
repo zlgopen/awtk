@@ -442,15 +442,24 @@ ret_t dlist_set_shared_node_allocator(dlist_t* dlist, mem_allocator_t* allocator
 }
 
 void* dlist_get(dlist_t* dlist, uint32_t index) {
-  uint32_t i = 0;
   dlist_node_t* iter = NULL;
   return_value_if_fail(dlist != NULL, NULL);
   return_value_if_fail(index < dlist->size, NULL);
 
-  iter = dlist->first;
-  while (iter != NULL && i < index) {
-    iter = iter->next;
-    i++;
+  if (index < dlist->size / 2) {
+    int32_t i = 0;
+    iter = dlist->first;
+    while (iter != NULL && i < index) {
+      iter = iter->next;
+      i++;
+    }
+  } else {
+    int32_t i = dlist->size - 1;
+    iter = dlist->last;
+    while (iter != NULL && i > index) {
+      iter = iter->prev;
+      i--;
+    }
   }
 
   assert(iter != NULL);

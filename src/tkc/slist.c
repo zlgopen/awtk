@@ -367,6 +367,7 @@ ret_t slist_reverse(slist_t* slist) {
   slist_node_t* prev = NULL;
   return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
 
+  slist->last = slist->first;
   iter = slist->first;
   while (iter != NULL) {
     slist_node_t* next = iter->next;
@@ -405,15 +406,19 @@ ret_t slist_set_shared_node_allocator(slist_t* slist, mem_allocator_t* allocator
 }
 
 void* slist_get(slist_t* slist, uint32_t index) {
-  uint32_t i = 0;
   slist_node_t* iter = NULL;
   return_value_if_fail(slist != NULL, NULL);
   return_value_if_fail(index < slist->size, NULL);
 
-  iter = slist->first;
-  while (iter != NULL && i < index) {
-    iter = iter->next;
-    i++;
+  if (index == slist->size - 1) {
+    iter = slist->last;
+  } else {
+    uint32_t i = 0;
+    iter = slist->first;
+    while (iter != NULL && i < index) {
+      iter = iter->next;
+      i++;
+    }
   }
 
   assert(iter != NULL);

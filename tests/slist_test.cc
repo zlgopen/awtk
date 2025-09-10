@@ -346,12 +346,16 @@ TEST(SList, reverse) {
   log = "";
   slist_foreach(&slist, visit_dump, &log);
   ASSERT_EQ(log, "1:2:3:4:5:");
+  ASSERT_EQ(slist.first->data, TO_POINTER(1));
+  ASSERT_EQ(slist.last->data, TO_POINTER(5));
 
   ASSERT_EQ(slist_reverse(&slist), RET_OK);
 
   log = "";
   slist_foreach(&slist, visit_dump, &log);
   ASSERT_EQ(log, "5:4:3:2:1:");
+  ASSERT_EQ(slist.first->data, TO_POINTER(5));
+  ASSERT_EQ(slist.last->data, TO_POINTER(1));
 
   slist_deinit(&slist);
 }
