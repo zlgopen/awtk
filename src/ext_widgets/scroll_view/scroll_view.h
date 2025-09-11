@@ -75,6 +75,19 @@ typedef struct _scroll_view_t {
   widget_t widget;
 
   /**
+   * @property {bool_t} use_virtual_w
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否使用虚拟宽度，默认否。
+   */
+  bool_t use_virtual_w;
+
+  /**
+   * @property {bool_t} use_widget_w
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否使用滚动视图宽度，默认否。
+   */
+  bool_t use_widget_w;
+  /**
    * @property {wh_t} virtual_w
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 虚拟宽度。
@@ -390,6 +403,8 @@ ret_t scroll_view_scroll_delta_to(widget_t* widget, int32_t xoffset_delta, int32
 #define SCROLL_VIEW_X_SPEED_SCALE "xspeed_scale"
 #define SCROLL_VIEW_Y_SPEED_SCALE "yspeed_scale"
 #define SCROLL_VIEW_SLIDE_LIMIT_RATIO "slide_limit_ratio"
+#define SCROLL_VIEW_USE_VIRTUAL_W "use_virtual_w"
+#define SCROLL_VIEW_USE_WIDGET_W "use_widget_w"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(scroll_view);

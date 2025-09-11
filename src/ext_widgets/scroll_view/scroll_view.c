@@ -629,7 +629,13 @@ static ret_t scroll_view_get_prop(widget_t* widget, const char* name, value_t* v
   return_value_if_fail(scroll_view != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_W) || tk_str_eq(name, WIDGET_PROP_LAYOUT_W)) {
-    value_set_int(v, tk_max(widget->w, scroll_view->virtual_w));
+    if (scroll_view->use_virtual_w) {
+      value_set_int(v, scroll_view->virtual_w);
+    } else if (scroll_view->use_widget_w) {
+      value_set_int(v, widget->w);
+    } else {
+      value_set_int(v, tk_max(widget->w, scroll_view->virtual_w));
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_H) || tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {
     value_set_int(v, tk_max(widget->h, scroll_view->virtual_h));
@@ -642,6 +648,12 @@ static ret_t scroll_view_get_prop(widget_t* widget, const char* name, value_t* v
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_XSLIDABLE)) {
     value_set_bool(v, scroll_view->xslidable);
+    return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_VIEW_USE_WIDGET_W)) {
+    value_set_bool(v, scroll_view->use_widget_w);
+    return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_VIEW_USE_VIRTUAL_W)) {
+    value_set_bool(v, scroll_view->use_virtual_w);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YSLIDABLE)) {
     value_set_bool(v, scroll_view->yslidable);
@@ -722,6 +734,12 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
     return scroll_view_set_curr_page(widget, value_int(v));
   } else if (tk_str_eq(name, SCROLL_VIEW_SLIDE_LIMIT_RATIO)) {
     return scroll_view_set_slide_limit_ratio(widget, value_float(v));
+  } else if (tk_str_eq(name, SCROLL_VIEW_USE_VIRTUAL_W)) {
+    scroll_view->use_virtual_w = value_bool(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_VIEW_USE_WIDGET_W)) {
+    scroll_view->use_widget_w = value_bool(v);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -768,6 +786,8 @@ static ret_t scroll_view_init(widget_t* widget) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
 
+  scroll_view->use_virtual_w = FALSE;
+  scroll_view->use_widget_w = FALSE;
   scroll_view->snap_to_page = FALSE;
   scroll_view->xspeed_scale = SCROLL_VIEW_DEFAULT_XSPEED_SCALE;
   scroll_view->yspeed_scale = SCROLL_VIEW_DEFAULT_YSPEED_SCALE;
@@ -777,10 +797,13 @@ static ret_t scroll_view_init(widget_t* widget) {
 }
 
 static const char* s_scroll_view_clone_properties[] = {
-    WIDGET_PROP_VIRTUAL_W,     WIDGET_PROP_VIRTUAL_H,     WIDGET_PROP_XSLIDABLE,
-    WIDGET_PROP_YSLIDABLE,     WIDGET_PROP_XOFFSET,       WIDGET_PROP_YOFFSET,
-    SCROLL_VIEW_X_SPEED_SCALE, SCROLL_VIEW_Y_SPEED_SCALE, SCROLL_VIEW_RECURSIVE,
-    SCROLL_VIEW_MOVE_TO_PAGE,  SCROLL_VIEW_SNAP_TO_PAGE,  NULL};
+    WIDGET_PROP_VIRTUAL_W,     WIDGET_PROP_VIRTUAL_H,
+    WIDGET_PROP_XSLIDABLE,     WIDGET_PROP_YSLIDABLE,
+    WIDGET_PROP_XOFFSET,       WIDGET_PROP_YOFFSET,
+    SCROLL_VIEW_X_SPEED_SCALE, SCROLL_VIEW_Y_SPEED_SCALE,
+    SCROLL_VIEW_RECURSIVE,     SCROLL_VIEW_MOVE_TO_PAGE,
+    SCROLL_VIEW_SNAP_TO_PAGE,  SCROLL_VIEW_USE_VIRTUAL_W,
+    SCROLL_VIEW_USE_WIDGET_W,  NULL};
 TK_DECL_VTABLE(scroll_view) = {.size = sizeof(scroll_view_t),
                                .type = WIDGET_TYPE_SCROLL_VIEW,
                                .scrollable = TRUE,
