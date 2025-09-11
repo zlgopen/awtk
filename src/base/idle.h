@@ -160,6 +160,8 @@ bool_t idle_exist(idle_func_t on_idle, void* ctx);
 /*internal use*/
 ret_t idle_remove_all_by_ctx_and_type(uint32_t type, void* ctx);
 uint32_t idle_add_with_type(idle_func_t on_idle, void* ctx, uint32_t type);
+ret_t idle_queue_impl(idle_func_t on_idle, void* ctx, tk_destroy_t on_destroy, void* on_destroy_ctx,
+                      bool_t alarm);
 
 END_C_DECLS
 

@@ -580,14 +580,14 @@ typedef struct _idle_func_queue_ret_t {
   ret_t queue_ret;
 } idle_func_queue_ret_t;
 
-static idle_func_queue_ret_t idle_func_queue(tk_callback_t func, void* ctx,
-                                             bool_t wait_until_done) {
+static idle_func_queue_ret_t idle_func_queue(tk_callback_t func, void* ctx, bool_t wait_until_done,
+                                             bool_t alarm) {
   idle_func_queue_ret_t ret = {RET_FAIL, RET_FAIL};
   idle_callback_info_t* info = idle_callback_info_create(func, ctx);
   return_value_if_fail(info != NULL, ret);
 
   info->sync = wait_until_done;
-  if (idle_queue(idle_func_of_callback, info) == RET_OK) {
+  if (idle_queue_impl(idle_func_of_callback, info, NULL, NULL, alarm) == RET_OK) {
     ret.func_ret = RET_OK;
     ret.queue_ret = RET_OK;
 
@@ -612,7 +612,7 @@ ret_t tk_run_in_ui_thread(tk_callback_t func, void* ctx, bool_t wait_until_done)
   if (tk_is_ui_thread()) {
     return func(ctx);
   } else {
-    idle_func_queue_ret_t ret = idle_func_queue(func, ctx, wait_until_done);
+    idle_func_queue_ret_t ret = idle_func_queue(func, ctx, wait_until_done, TRUE);
     return ret.queue_ret == RET_OK ? ret.func_ret : RET_FAIL;
   }
 }
@@ -626,7 +626,7 @@ ret_t tk_run_in_ui_thread_ensure_queue(tk_callback_t func, void* ctx, bool_t wai
   } else {
     uint32_t retry_count = 0;
     uint32_t retry_sleep_ms = 20;
-    idle_func_queue_ret_t ret = idle_func_queue(func, ctx, wait_until_done);
+    idle_func_queue_ret_t ret = idle_func_queue(func, ctx, wait_until_done, FALSE);
     if (ret.queue_ret == RET_OK) {
       return ret.func_ret;
     } else {
@@ -634,7 +634,7 @@ ret_t tk_run_in_ui_thread_ensure_queue(tk_callback_t func, void* ctx, bool_t wai
         sleep_ms(retry_sleep_ms);
         retry_count++;
 
-        ret = idle_func_queue(func, ctx, wait_until_done);
+        ret = idle_func_queue(func, ctx, wait_until_done, FALSE);
         if (ret.queue_ret == RET_OK) {
           return ret.func_ret;
         }
