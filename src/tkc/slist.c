@@ -56,6 +56,25 @@ static ret_t slist_destroy_node(slist_t* slist, slist_node_t* node) {
   return RET_OK;
 }
 
+inline static slist_node_t* slist_get_node(slist_t* slist, uint32_t index) {
+  slist_node_t* iter = NULL;
+  return_value_if_fail(slist != NULL, NULL);
+  return_value_if_fail(index < slist->size, NULL);
+
+  if (index == slist->size - 1) {
+    iter = slist->last;
+  } else {
+    uint32_t i = 0;
+    iter = slist->first;
+    while (iter != NULL && i < index) {
+      iter = iter->next;
+      i++;
+    }
+  }
+
+  return iter;
+}
+
 slist_t* slist_create(tk_destroy_t destroy, tk_compare_t compare) {
   slist_t* slist = TKMEM_ZALLOC(slist_t);
   return_value_if_fail(slist != NULL, NULL);
@@ -223,9 +242,12 @@ void* slist_tail_pop(slist_t* slist) {
     return NULL;
   }
 
-  while (iter->next != NULL) {
-    prev = iter;
-    iter = iter->next;
+  if (slist->size >= 2) {
+    prev = slist_get_node(slist, slist->size - 2);
+    ENSURE(prev != NULL);
+    if (prev != NULL) {
+      iter = prev->next;
+    }
   }
   slist_remove_node(slist, iter, prev);
 
@@ -345,19 +367,17 @@ ret_t slist_destroy(slist_t* slist) {
 
 ret_t slist_insert(slist_t* slist, uint32_t index, void* data) {
   slist_node_t* node = NULL;
-  slist_node_t* iter = NULL;
   slist_node_t* prev = NULL;
   return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
 
-  iter = slist->first;
-  while (iter != NULL && index > 0) {
-    index--;
-    prev = iter;
-    iter = iter->next;
-  }
-
   node = slist_create_node(slist, data);
   return_value_if_fail(node != NULL, RET_OOM);
+
+  if (index > 0) {
+    uint32_t i = tk_min(index, slist->size);
+    prev = slist_get_node(slist, i - 1);
+    ENSURE(prev != NULL);
+  }
 
   return slist_insert_node(slist, node, prev);
 }
@@ -406,21 +426,12 @@ ret_t slist_set_shared_node_allocator(slist_t* slist, mem_allocator_t* allocator
 }
 
 void* slist_get(slist_t* slist, uint32_t index) {
-  slist_node_t* iter = NULL;
+  slist_node_t* node = NULL;
   return_value_if_fail(slist != NULL, NULL);
   return_value_if_fail(index < slist->size, NULL);
 
-  if (index == slist->size - 1) {
-    iter = slist->last;
-  } else {
-    uint32_t i = 0;
-    iter = slist->first;
-    while (iter != NULL && i < index) {
-      iter = iter->next;
-      i++;
-    }
-  }
+  node = slist_get_node(slist, index);
+  ENSURE(node != NULL);
 
-  assert(iter != NULL);
-  return iter->data;
+  return node->data;
 }

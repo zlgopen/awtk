@@ -56,6 +56,30 @@ static ret_t dlist_destroy_node(dlist_t* dlist, dlist_node_t* node) {
   return RET_OK;
 }
 
+inline static dlist_node_t* dlist_get_node(dlist_t* dlist, uint32_t index) {
+  dlist_node_t* iter = NULL;
+  return_value_if_fail(dlist != NULL, NULL);
+  return_value_if_fail(index < dlist->size, NULL);
+
+  if (index < dlist->size / 2) {
+    int32_t i = 0;
+    iter = dlist->first;
+    while (iter != NULL && i < index) {
+      iter = iter->next;
+      i++;
+    }
+  } else {
+    int32_t i = dlist->size - 1;
+    iter = dlist->last;
+    while (iter != NULL && i > index) {
+      iter = iter->prev;
+      i--;
+    }
+  }
+
+  return iter;
+}
+
 dlist_t* dlist_create(tk_destroy_t destroy, tk_compare_t compare) {
   dlist_t* dlist = TKMEM_ZALLOC(dlist_t);
   return_value_if_fail(dlist != NULL, NULL);
@@ -387,19 +411,18 @@ ret_t dlist_destroy(dlist_t* dlist) {
 
 ret_t dlist_insert(dlist_t* dlist, uint32_t index, void* data) {
   dlist_node_t* node = NULL;
-  dlist_node_t* iter = NULL;
+  dlist_node_t* target = NULL;
   return_value_if_fail(dlist != NULL, RET_BAD_PARAMS);
-
-  iter = dlist->first;
-  while (iter != NULL && index > 0) {
-    index--;
-    iter = iter->next;
-  }
 
   node = dlist_create_node(dlist, data);
   return_value_if_fail(node != NULL, RET_OOM);
 
-  return dlist_insert_node(dlist, node, iter);
+  if (index < dlist->size) {
+    target = dlist_get_node(dlist, index);
+    ENSURE(target != NULL);
+  }
+
+  return dlist_insert_node(dlist, node, target);
 }
 
 ret_t dlist_reverse(dlist_t* dlist) {
@@ -442,26 +465,12 @@ ret_t dlist_set_shared_node_allocator(dlist_t* dlist, mem_allocator_t* allocator
 }
 
 void* dlist_get(dlist_t* dlist, uint32_t index) {
-  dlist_node_t* iter = NULL;
+  dlist_node_t* node = NULL;
   return_value_if_fail(dlist != NULL, NULL);
   return_value_if_fail(index < dlist->size, NULL);
 
-  if (index < dlist->size / 2) {
-    int32_t i = 0;
-    iter = dlist->first;
-    while (iter != NULL && i < index) {
-      iter = iter->next;
-      i++;
-    }
-  } else {
-    int32_t i = dlist->size - 1;
-    iter = dlist->last;
-    while (iter != NULL && i > index) {
-      iter = iter->prev;
-      i--;
-    }
-  }
+  node = dlist_get_node(dlist, index);
+  ENSURE(node != NULL);
 
-  assert(iter != NULL);
-  return iter->data;
+  return node->data;
 }
