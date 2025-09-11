@@ -80,7 +80,7 @@ struct _process_info_t {
   pid_t pid;
   int read_pfd[2];
   int write_pfd[2];
-
+  int exit_code;
   str_t str_tmp;
   tk_thread_t* thread;
 };
@@ -175,6 +175,17 @@ bool_t process_is_broken(process_handle_t handle);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t process_kill(process_handle_t handle);
+
+/**
+ * @method process_get_exit_code
+ * 获取子进程退出 code
+ * @annotation ["static"]
+ * @param {process_handle_t} handle 子进程句柄。
+ * @param {uint64_t*} exit_code 返回子进程的退出 code。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t process_get_exit_code(process_handle_t handle, uint64_t* exit_code);
 
 END_C_DECLS
 

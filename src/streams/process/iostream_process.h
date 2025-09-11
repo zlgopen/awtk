@@ -109,6 +109,18 @@ ret_t tk_iostream_process_start(tk_iostream_t* iostream);
 ret_t tk_iostream_process_kill(tk_iostream_t* iostream);
 
 /**
+ * @method tk_iostream_get_exit_code
+ *
+ * 获取子进程退出 code
+ *
+ * @param {tk_iostream_t*} iostream 子程序对象。
+ * @param {uint64_t*} exit_code 返回子进程的退出 code。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_iostream_get_exit_code(tk_iostream_t* iostream, uint64_t* exit_code);
+
+/**
  * @method tk_iostream_process_set_work_dir
  *
  * 设置子进程流工作目录。

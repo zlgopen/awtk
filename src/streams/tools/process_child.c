@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
 
   ret = getchar();
   if (!(ret == 'y' || ret == 'Y')) {
-    printf("exit:%c \r\n", ret);
+    printf("exit_code:%d \r\n", ret);
   } else {
     for (i = 0; i < 100; i++) {
       printf("random[%d]:%d \r\n", i, rand() % 100);
@@ -41,9 +41,9 @@ int main(int argc, char* argv[]) {
   }
   fflush(stdout);
 #ifdef WIN32
-  Sleep(1000 * 100);
+  Sleep(1000 * 1);
 #else
-  usleep(1000 * 1000 * 100);
+  usleep(1000 * 1000 * 1);
 #endif
-  return 0;
+  return ret;
 }
