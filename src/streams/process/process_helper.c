@@ -142,7 +142,7 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
   handle->start_info.StartupInfo.hStdError = h_std_out_wr;
   handle->start_info.StartupInfo.hStdOutput = h_std_out_wr;
   handle->start_info.StartupInfo.hStdInput = h_std_in_rd;
-  handle->start_info.StartupInfo.wShowWindow = SW_HIDE;
+  handle->start_info.StartupInfo.wShowWindow = start_info->show_window ? SW_SHOWNORMAL : SW_HIDE;
   handle->start_info.StartupInfo.dwFlags |= (STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW);
 
   handle_pipe[0] = h_std_in_rd;
@@ -399,6 +399,10 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
   pid = fork();
   goto_error_if_fail(pid >= 0);
   if (pid == 0) { /* child */
+    if (start_info->show_window) {
+      // 设置X Window显示环境
+      setenv("DISPLAY", ":0", 1);
+    }
     if (handle->read_pfd[1] != STDOUT_FILENO) {
       goto_error_if_fail(dup2(handle->read_pfd[1], STDOUT_FILENO) >= 0);
       close(handle->read_pfd[1]);

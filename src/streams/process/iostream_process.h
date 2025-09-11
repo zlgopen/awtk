@@ -132,6 +132,19 @@ ret_t tk_iostream_get_exit_code(tk_iostream_t* iostream, uint64_t* exit_code);
  */
 ret_t tk_iostream_process_set_work_dir(tk_iostream_t* iostream, const char* work_dir);
 
+/**
+ * @method tk_iostream_process_set_show_window
+ *
+ * 设置子进程流是否显示窗口。
+ * 备注：子进程如果是命令行进程的话，是无法显示窗口的，使用该功能的子进程必须是窗口进程。
+ *
+ * @param {tk_iostream_t*} iostream 子程序对象。
+ * @param {bool_t} show_window 是否显示窗口。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_iostream_process_set_show_window(tk_iostream_t* iostream, bool_t show_window);
+
 #define TK_IOSTREAM_PROCESS(obj) ((tk_iostream_process_t*)(obj))
 
 #define TK_IOSTREAM_PROCESS_FILE_PATH "file_path"

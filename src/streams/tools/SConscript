@@ -25,3 +25,4 @@ env.Program(os.path.join(BIN_DIR, 'tcp_recv'), ['tcp_recv.c'], LIBS=LIBS);
 
 env.Program(os.path.join(BIN_DIR, 'process_child'), ['process_child.c'], LIBS=LIBS);
 env.Program(os.path.join(BIN_DIR, 'process_parent'), ['process_parent.c'], LIBS=LIBS);
+env.Program(os.path.join(BIN_DIR, 'process_demoui'), ['process_demoui.c'], LIBS=LIBS);

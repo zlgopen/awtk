@@ -189,3 +189,11 @@ ret_t tk_iostream_process_set_work_dir(tk_iostream_t* iostream, const char* work
   }
   return RET_OK;
 }
+
+ret_t tk_iostream_process_set_show_window(tk_iostream_t* iostream, bool_t show_window) {
+  tk_iostream_process_t* iostream_process = TK_IOSTREAM_PROCESS(iostream);
+  return_value_if_fail(iostream_process != NULL, RET_BAD_PARAMS);
+  iostream_process->start_info.show_window = show_window;
+  return RET_OK;
+}
+

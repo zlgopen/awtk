@@ -43,6 +43,12 @@ typedef struct _process_start_info_t {
    * 子进程当前工作目录。（如果 NULL 的话，就为父进程的工作目录）
    */
   char* work_dir;
+  /**
+   * @property {bool_t} show_window
+   * @annotation ["readable"]
+   * 是否显示子进程的窗口。
+   */
+  bool_t show_window;
 } process_start_info_t;
 
 #ifdef WIN32
