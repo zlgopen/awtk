@@ -1395,7 +1395,7 @@ ret_t tk_str_trim_right(char* str, const char* chars);
 /**
  * @method tk_str_is_digit
  * 字符串是否全为数字。
- * @param {char*} str 字符串。
+ * @param {const char*} str 字符串。
  * @return {bool_t} 返回TRUE表示全为数字，否则表示不是全为数字。
  */
 bool_t tk_str_is_digit(const char* str);
@@ -1403,7 +1403,7 @@ bool_t tk_str_is_digit(const char* str);
 /**
  * @method tk_str_is_number
  * 字符串是否为数字。
- * @param {char*} str 字符串。
+ * @param {const char*} str 字符串。
  * @return {bool_t} 返回TRUE表示为数字，否则表示不为数字。
  */
 bool_t tk_str_is_number(const char* str);
@@ -1411,7 +1411,7 @@ bool_t tk_str_is_number(const char* str);
 /**
  * @method tk_str_is_int
  * 字符串是否为整数。
- * @param {char*} str 字符串。
+ * @param {const char*} str 字符串。
  * @return {bool_t} 返回TRUE表示为整数，否则表示不为整数。
  */
 bool_t tk_str_is_int(const char* str);
@@ -1419,7 +1419,7 @@ bool_t tk_str_is_int(const char* str);
 /**
  * @method tk_str_is_float
  * 字符串是否为浮点数。
- * @param {char*} str 字符串。
+ * @param {const char*} str 字符串。
  * @return {bool_t} 返回TRUE表示为浮点数，否则表示不为浮点数。
  */
 bool_t tk_str_is_float(const char* str);
