@@ -79,7 +79,7 @@ ret_t idle_queue_impl(idle_func_t on_idle, void* ctx, tk_destroy_t on_destroy, v
   ret = main_loop_queue_event(main_loop(), &r);
   if (alarm) {
     ENSURE(ret == RET_OK);
-    return_value_if_fail(ret != RET_OK, ret);
+    return_value_if_fail(ret == RET_OK, ret);
   }
   return ret;
 #endif /*AWTK_WEB*/
