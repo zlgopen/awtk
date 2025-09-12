@@ -588,27 +588,39 @@ typedef struct _idle_func_queue_on_destroy_ctx_t {
 } idle_func_queue_on_destroy_ctx_t;
 
 static ret_t idle_func_queue_on_destroy_ctx(const idle_info_t* info) {
+  ret_t ret = RET_OK;
   idle_func_queue_on_destroy_ctx_t* ctx = (idle_func_queue_on_destroy_ctx_t*)(info->on_destroy_ctx);
-  if (ctx->on_destroy != NULL) {
-    return ctx->on_destroy(ctx->on_destroy_ctx);
-  }
-  return RET_OK;
+  return_value_if_fail(ctx != NULL, RET_BAD_PARAMS);
+  goto_error_if_fail_ex(ctx->on_destroy != NULL, ret = RET_BAD_PARAMS);
+
+  ret = ctx->on_destroy(ctx->on_destroy_ctx);
+error:
+  TKMEM_FREE(ctx);
+  return ret;
 }
 
 static idle_func_queue_ret_t idle_func_queue(tk_callback_t func, void* ctx, tk_destroy_t on_destroy,
                                              void* on_destroy_ctx, bool_t wait_until_done,
                                              bool_t alarm) {
   idle_func_queue_ret_t ret = {RET_FAIL, RET_FAIL};
-  idle_func_queue_on_destroy_ctx_t destroy_ctx = {
-      .on_destroy = on_destroy,
-      .on_destroy_ctx = on_destroy_ctx,
-  };
+  idle_func_t destroy_func = NULL;
+  idle_func_queue_on_destroy_ctx_t* destroy_ctx = NULL;
   idle_callback_info_t* info = idle_callback_info_create(func, ctx);
   return_value_if_fail(info != NULL, ret);
 
   info->sync = wait_until_done;
-  if (idle_queue_impl(idle_func_of_callback, info, (tk_destroy_t)idle_func_queue_on_destroy_ctx,
-                      &destroy_ctx, alarm) == RET_OK) {
+
+  if (on_destroy != NULL) {
+    destroy_func = idle_func_queue_on_destroy_ctx;
+    destroy_ctx = TKMEM_ZALLOC(idle_func_queue_on_destroy_ctx_t);
+    return_value_if_fail(destroy_ctx != NULL, ret);
+
+    destroy_ctx->on_destroy = on_destroy;
+    destroy_ctx->on_destroy_ctx = on_destroy_ctx;
+  }
+
+  if (idle_queue_impl(idle_func_of_callback, info, (tk_destroy_t)destroy_func, destroy_ctx,
+                      alarm) == RET_OK) {
     ret.func_ret = RET_OK;
     ret.queue_ret = RET_OK;
 
@@ -622,6 +634,9 @@ static idle_func_queue_ret_t idle_func_queue(tk_callback_t func, void* ctx, tk_d
 
     return ret;
   } else {
+    if (destroy_ctx != NULL) {
+      TKMEM_FREE(destroy_ctx);
+    }
     idle_callback_info_destroy(info);
     return ret;
   }
