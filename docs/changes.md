@@ -2,6 +2,7 @@
 
 2025/09/12
   * 增加tk_run_in_ui_thread_ensure_queue_ex(感谢兆坤提供补丁)
+  * 完善idle/timer注释和测试(感谢兆坤提供补丁)
 
 2025/09/11
   * 完善slist/dlist(感谢兆坤提供补丁)

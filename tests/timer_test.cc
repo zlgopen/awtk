@@ -1,6 +1,8 @@
 ﻿#include <string>
+#include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "base/timer.h"
+#include "base/main_loop.h"
 #include "gtest/gtest.h"
 
 using std::string;
@@ -245,4 +247,32 @@ TEST(Timer, id) {
   ASSERT_NE(id1, id2);
 
   timer_manager_destroy(tm);
+}
+
+static ret_t timer_repeat_times(const timer_info_t* info) {
+  int32_t* repeat_times = (int32_t*)(info->ctx);
+  if (*repeat_times > 0) {
+    (*repeat_times)--;
+    return RET_REPEAT;
+  } else {
+    return RET_OK;
+  }
+}
+
+static ret_t timer_on_destroy(const timer_info_t* info) {
+  int32_t** repeat_times = (int32_t**)(info->on_destroy_ctx);
+  ENSURE(**repeat_times == 0);
+  TKMEM_FREE(*repeat_times);
+  return RET_OK;
+}
+
+TEST(Timer, queue) {
+  int32_t* repeat_times = TKMEM_ZALLOC(int32_t);
+  *repeat_times = 3;
+  timer_queue_ex(timer_repeat_times, repeat_times, 100, (tk_destroy_t)timer_on_destroy,
+                 &repeat_times);
+  while (repeat_times != NULL) {
+    main_loop_step(main_loop());
+    sleep_ms(20);
+  }
 }

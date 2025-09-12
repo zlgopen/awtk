@@ -82,7 +82,7 @@ ret_t idle_queue(idle_func_t on_idle, void* ctx);
  * @annotation ["static"]
  * @param {idle_func_t} on_idle idle回调函数。
  * @param {void*} ctx idle回调函数的上下文。
- * @param {tk_destroy_t} on_destroy 回调函数。
+ * @param {tk_destroy_t} on_destroy 回调函数（参数类型是idle_info_t，可通过info->on_destroy_ctx拿到上下文）。
  * @param {void*} on_destroy_ctx 回调函数上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -122,7 +122,7 @@ const idle_info_t* idle_find(uint32_t idle_id);
  * @method idle_set_on_destroy
  * 设置一个回调函数，在idle被销毁时调用(方便脚本语言去释放回调函数)。
  * @param {uint32_t} idle_id idleID。
- * @param {tk_destroy_t} on_destroy 回调函数。
+ * @param {tk_destroy_t} on_destroy 回调函数（参数类型是idle_info_t，可通过info->on_destroy_ctx拿到上下文）。
  * @param {void*} on_destroy_ctx 回调函数上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

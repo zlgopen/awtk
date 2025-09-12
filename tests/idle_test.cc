@@ -1,5 +1,7 @@
-﻿#include "tkc/utils.h"
+﻿#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/idle.h"
+#include "base/main_loop.h"
 #include "gtest/gtest.h"
 
 #include <string>
@@ -103,4 +105,31 @@ TEST(Idle, id) {
   ASSERT_NE(id1, id2);
 
   idle_manager_remove_all(idle_manager());
+}
+
+static ret_t idle_repeat_times(const idle_info_t* info) {
+  int32_t* repeat_times = (int32_t*)(info->ctx);
+  if (*repeat_times > 0) {
+    (*repeat_times)--;
+    return RET_REPEAT;
+  } else {
+    return RET_OK;
+  }
+}
+
+static ret_t idle_on_destroy(const idle_info_t* info) {
+  int32_t** repeat_times = (int32_t**)(info->on_destroy_ctx);
+  ENSURE(**repeat_times == 0);
+  TKMEM_FREE(*repeat_times);
+  return RET_OK;
+}
+
+TEST(Idle, queue) {
+  int32_t* repeat_times = TKMEM_ZALLOC(int32_t);
+  *repeat_times = 3;
+  idle_queue_ex(idle_repeat_times, repeat_times, (tk_destroy_t)idle_on_destroy, &repeat_times);
+  while (repeat_times != NULL) {
+    main_loop_step(main_loop());
+    sleep_ms(20);
+  }
 }

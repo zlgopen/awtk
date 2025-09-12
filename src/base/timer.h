@@ -91,7 +91,7 @@ ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration);
  * @param {timer_func_t} on_timer timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
  * @param {void*} ctx timer回调函数的上下文。
  * @param {uint32_t} duration 时间(毫秒)。
- * @param {tk_destroy_t} on_destroy 回调函数。
+ * @param {tk_destroy_t} on_destroy 回调函数（参数类型是idle_info_t，可通过info->on_destroy_ctx拿到上下文）。
  * @param {void*} on_destroy_ctx 回调函数上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -164,7 +164,7 @@ ret_t timer_modify(uint32_t timer_id, uint32_t duration);
  * @method timer_set_on_destroy
  * 设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。
  * @param {uint32_t} timer_id timerID。
- * @param {tk_destroy_t} on_destroy 回调函数。
+ * @param {tk_destroy_t} on_destroy 回调函数（参数类型是idle_info_t，可通过info->on_destroy_ctx拿到上下文）。
  * @param {void*} on_destroy_ctx 回调函数上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
