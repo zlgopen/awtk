@@ -225,6 +225,11 @@ ret_t locale_info_xml_set_assets_manager(locale_info_t* locale_info, assets_mana
   if (TK_STR_IS_NOT_EMPTY(res_root)) {
     char path[MAX_PATH + 1] = {0};
     tk_snprintf(path, sizeof(path), "%s/%s/strings/strings.xml", res_root, theme);
+    if (!fs_file_exist(os_fs(), path)) {  // 找不到指定主题的strings.xml文件，则使用默认主题的strings.xml文件
+      memset(path, 0, sizeof(path));
+      tk_snprintf(path, sizeof(path), "%s/default/strings/strings.xml", res_root);
+    }
+
     locale_info_xml_reload(locale_info, path);
   } else {
     locale_info_xml_reload(locale_info, NULL);

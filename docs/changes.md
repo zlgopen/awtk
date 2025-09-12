@@ -5,6 +5,7 @@
   * 完善idle/timer注释和测试(感谢兆坤提供补丁)
   * 完善idle_func_queue(感谢兆坤提供补丁)
   * 完善 idle_queue失败时触发断言并打印警告(感谢雨欣提供补丁)
+  * 完善locale_info_xml找不到当前主题的strings.xml文件则找default主题(感谢培煌提供补丁)
 
 2025/09/11
   * 完善slist/dlist(感谢兆坤提供补丁)
