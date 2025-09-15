@@ -879,41 +879,66 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_KEY_DOWN: {
-      key_event_t* evt = (key_event_t*)e;
-      int32_t key = evt->key;
+      ENSURE(key_event_cast(e));
+      key_event_t evt = *key_event_cast(e);
 #ifdef MACOS
-      bool_t is_control = evt->cmd;
+      bool_t is_control = evt.cmd;
 #else
-      bool_t is_control = evt->ctrl;
+      bool_t is_control = evt.ctrl;
 #endif
-      if ((!edit->is_activated || key_code_is_enter(key)) &&
-          (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
-        break;
+
+      if (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS) {
+        if (!edit->is_activated) {
+          break;
+        } else if (key_code_is_enter(evt.key)) {
+          break;
+        } else if (key_code_is_up(evt.key)) {
+          evt.key = TK_KEY_UP;
+        } else if (key_code_is_down(evt.key)) {
+          evt.key = TK_KEY_DOWN;
+        } else if (keyboard_type == KEYBOARD_5KEYS && key_code_is_left(evt.key)) {
+          evt.key = TK_KEY_LEFT;
+        } else if (keyboard_type == KEYBOARD_5KEYS && key_code_is_right(evt.key)) {
+          evt.key = TK_KEY_RIGHT;
+        }
       }
+
       if (edit->readonly) {
-        if (is_control && (key == TK_KEY_C || key == TK_KEY_c)) {
+        if (is_control && (evt.key == TK_KEY_C || evt.key == TK_KEY_c)) {
           text_edit_copy(edit->model);
-        } else if (key_code_is_down(key) || key_code_is_up(key)) {
+        } else if (key_code_is_down(evt.key) || key_code_is_up(evt.key)) {
           log_debug("key down or key up\n");
         }
         break;
       }
 
       edit->is_key_inputing = TRUE;
-      ret = edit_on_key_down(widget, evt);
+      ret = edit_on_key_down(widget, &evt);
       edit_update_status(widget);
       widget_invalidate(widget, NULL);
       edit_start_update_caret(edit);
       break;
     }
     case EVT_KEY_UP: {
-      key_event_t* evt = (key_event_t*)e;
-      if (!edit->is_activated &&
-          (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
-        break;
+      ENSURE(key_event_cast(e));
+      key_event_t evt = *key_event_cast(e);
+
+      if (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS) {
+        if (!edit->is_activated) {
+          break;
+        } else if (key_code_is_up(evt.key)) {
+          evt.key = TK_KEY_UP;
+        } else if (key_code_is_down(evt.key)) {
+          evt.key = TK_KEY_DOWN;
+        } else if (keyboard_type == KEYBOARD_5KEYS && key_code_is_left(evt.key)) {
+          evt.key = TK_KEY_LEFT;
+        } else if (keyboard_type == KEYBOARD_5KEYS && key_code_is_right(evt.key)) {
+          evt.key = TK_KEY_RIGHT;
+        }
       }
+
       edit->is_key_inputing = TRUE;
-      ret = edit_on_key_up(widget, evt);
+      ret = edit_on_key_up(widget, &evt);
       widget_invalidate(widget, NULL);
       break;
     }

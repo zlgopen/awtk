@@ -726,41 +726,54 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_KEY_DOWN: {
-      key_event_t* evt = (key_event_t*)e;
-      int32_t key = evt->key;
+      ENSURE(key_event_cast(e));
+      key_event_t evt = *key_event_cast(e);
 #ifdef MACOS
-      bool_t is_control = evt->cmd;
+      bool_t is_control = evt.cmd;
 #else
-      bool_t is_control = evt->ctrl;
+      bool_t is_control = evt.ctrl;
 #endif
-      if ((!mledit->is_activated || key_code_is_enter(key)) &&
-          (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
-        break;
+
+      if (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS) {
+        if (!mledit->is_activated) {
+          break;
+        } else if (key_code_is_enter(evt.key)) {
+          break;
+        } else if (key_code_is_up(evt.key)) {
+          evt.key = TK_KEY_UP;
+        } else if (key_code_is_down(evt.key)) {
+          evt.key = TK_KEY_DOWN;
+        } else if (keyboard_type == KEYBOARD_5KEYS && key_code_is_left(evt.key)) {
+          evt.key = TK_KEY_LEFT;
+        } else if (keyboard_type == KEYBOARD_5KEYS && key_code_is_right(evt.key)) {
+          evt.key = TK_KEY_RIGHT;
+        }
       }
-      if (key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F12)) {
+
+      if (evt.key == TK_KEY_ESCAPE || (evt.key >= TK_KEY_F1 && evt.key <= TK_KEY_F12)) {
         break;
       }
 
       if (mledit->readonly) {
-        if (is_control &&
-            (key == TK_KEY_C || key == TK_KEY_c || key == TK_KEY_A || key == TK_KEY_a)) {
+        if (is_control && (evt.key == TK_KEY_C || evt.key == TK_KEY_c || evt.key == TK_KEY_A ||
+                           evt.key == TK_KEY_a)) {
           log_debug("copy\n");
         } else {
           break;
         }
       }
-      if ((!mledit->accept_tab && !is_control && key == TK_KEY_TAB) ||
-          (!mledit->accept_return && !is_control && key_code_is_enter(key))) {
+      if ((!mledit->accept_tab && !is_control && evt.key == TK_KEY_TAB) ||
+          (!mledit->accept_return && !is_control && key_code_is_enter(evt.key))) {
         ret = RET_OK;
         break;
       }
-      if ((key < 128 && tk_isprint(key)) || key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE ||
-          key == TK_KEY_TAB || key_code_is_enter(key)) {
+      if ((evt.key < 128 && tk_isprint(evt.key)) || evt.key == TK_KEY_BACKSPACE ||
+          evt.key == TK_KEY_DELETE || evt.key == TK_KEY_TAB || key_code_is_enter(evt.key)) {
         wstr_set(&(mledit->last_changing_text), widget->text.str);
-        text_edit_key_down(mledit->model, (key_event_t*)e);
+        text_edit_key_down(mledit->model, &evt);
         mledit_dispatch_event(widget, EVT_VALUE_CHANGING);
       } else {
-        text_edit_key_down(mledit->model, (key_event_t*)e);
+        text_edit_key_down(mledit->model, &evt);
       }
 
       mledit_update_status(widget);
@@ -816,21 +829,31 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_KEY_UP: {
-      key_event_t* evt = key_event_cast(e);
-      ENSURE(evt);
-      int32_t key = evt->key;
-      if (!mledit->is_activated &&
-          (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
-        break;
+      ENSURE(key_event_cast(e));
+      key_event_t evt = *key_event_cast(e);
+
+      if (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS) {
+        if (!mledit->is_activated) {
+          break;
+        } else if (key_code_is_up(evt.key)) {
+          evt.key = TK_KEY_UP;
+        } else if (key_code_is_down(evt.key)) {
+          evt.key = TK_KEY_DOWN;
+        } else if (keyboard_type == KEYBOARD_5KEYS && key_code_is_left(evt.key)) {
+          evt.key = TK_KEY_LEFT;
+        } else if (keyboard_type == KEYBOARD_5KEYS && key_code_is_right(evt.key)) {
+          evt.key = TK_KEY_RIGHT;
+        }
       }
-      if (key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F12)) {
+
+      if (evt.key == TK_KEY_ESCAPE || (evt.key >= TK_KEY_F1 && evt.key <= TK_KEY_F12)) {
         break;
       }
 
-      if (key_code_is_enter(key)) {
+      if (key_code_is_enter(evt.key)) {
         ret = RET_STOP;
       } else {
-        ret = text_edit_key_up(mledit->model, evt);
+        ret = text_edit_key_up(mledit->model, &evt);
       }
       mledit->is_key_inputing = TRUE;
       widget_invalidate(widget, NULL);
