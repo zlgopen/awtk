@@ -4,6 +4,7 @@
   * 完善自定义键值适配5_keys 3_keys(感谢兆坤提供补丁)
   * 完善 how_to_set_custom_keys.md (感谢兆坤提供补丁)
   * 修复自定义上下左右键值与字符输入同键值时，键盘关闭后不能在edit进行光标移动，而是输入字符的问题(感谢兆坤提供补丁)
+  * 修复在控件中设置了渐变背景色，然后调用widget_clone该控件的时候，提示“not supported type”的问题(感谢俊杰提供补丁)
 
 2025/09/12
   * 增加tk_run_in_ui_thread_ensure_queue_ex(感谢兆坤提供补丁)

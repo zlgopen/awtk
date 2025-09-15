@@ -42,6 +42,8 @@ static ret_t style_item_set_value(style_item_t* item, const value_t* value) {
   value_reset(v);
   if (value->type == VALUE_TYPE_STRING) {
     return style_normalize_value(name, value_str(value), v);
+  } else if (value->type == VALUE_TYPE_GRADIENT) {
+    return value_deep_copy(v, value);
   } else {
     value_set_int(v, value_int(value));
     return RET_OK;
