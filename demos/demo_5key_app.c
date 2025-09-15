@@ -21,6 +21,9 @@
 
 #include "awtk.h"
 
+#define ENABLE_CUSTOM_KEYS TRUE
+#define CUSTOM_KEYS_FILEPATH "asset://custom_keys_for_demo_5key_app.json"
+
 static ret_t on_open_window(void* ctx, event_t* e) {
   const char* name = (const char*)ctx;
 
@@ -65,11 +68,7 @@ static widget_t* open_window(const char* name) {
 }
 
 ret_t application_init() {
-#ifdef WITH_STATE_ACTIVATED
-  system_info_set_keyboard_type(system_info(), KEYBOARD_5KEYS);
-#else
-  log_error("not found WITH_STATE_ACTIVATED macro definiton !!!\r\n");
-#endif
+  ENSURE(RET_OK == system_info_set_keyboard_type(system_info(), KEYBOARD_5KEYS));
 
   open_window("5key_main");
   return RET_OK;

@@ -288,6 +288,7 @@
 #include "default/inc/data/custom_keys_json.data"
 #include "default/inc/data/suggest_words_zh_cn_dat.data"
 #include "default/inc/data/test_json.data"
+#include "default/inc/data/custom_keys_for_demo_5key_app_json.data"
 #include "default/inc/data/a_b_c_any.data"
 #ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
@@ -1234,6 +1235,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, data_custom_keys_json_default);
   assets_manager_add(am, data_suggest_words_zh_cn_dat_default);
   assets_manager_add(am, data_test_json_default);
+  assets_manager_add(am, data_custom_keys_for_demo_5key_app_json_default);
   assets_manager_add(am, data_a_b_c_any_default);
 #ifndef AWTK_WEB
   assets_manager_add(am, image_ani6_default);

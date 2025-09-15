@@ -435,12 +435,12 @@ static ret_t combo_box_on_key_event(widget_t* widget, key_event_t* evt) {
   edit_t* edit = EDIT(WIDGET(widget));
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
-  if (evt->key == TK_KEY_UP) {
+  if (key_code_is_up(evt->key)) {
     ret = RET_STOP;
     if (evt->e.type == EVT_KEY_DOWN) {
       combo_box_add_selected_index(widget, -1);
     }
-  } else if (evt->key == TK_KEY_DOWN) {
+  } else if (key_code_is_down(evt->key)) {
     ret = RET_STOP;
     if (evt->e.type == EVT_KEY_DOWN) {
       combo_box_add_selected_index(widget, 1);

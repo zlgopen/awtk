@@ -358,18 +358,18 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
     case EVT_KEY_UP: {
       key_event_t* evt = (key_event_t*)e;
       if (slide_view->vertical) {
-        if (evt->key == TK_KEY_UP || evt->key == TK_KEY_PAGEUP) {
+        if (key_code_is_up(evt->key) || evt->key == TK_KEY_PAGEUP) {
           ret = RET_STOP;
           slide_view_activate_prev(slide_view);
-        } else if (evt->key == TK_KEY_DOWN || evt->key == TK_KEY_PAGEDOWN) {
+        } else if (key_code_is_down(evt->key) || evt->key == TK_KEY_PAGEDOWN) {
           ret = RET_STOP;
           slide_view_activate_next(slide_view);
         }
       } else {
-        if (evt->key == TK_KEY_LEFT) {
+        if (key_code_is_left(evt->key)) {
           ret = RET_STOP;
           slide_view_activate_prev(slide_view);
-        } else if (evt->key == TK_KEY_RIGHT) {
+        } else if (key_code_is_right(evt->key)) {
           ret = RET_STOP;
           slide_view_activate_next(slide_view);
         }

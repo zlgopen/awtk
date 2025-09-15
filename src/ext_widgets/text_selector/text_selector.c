@@ -755,9 +755,9 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_KEY_DOWN: {
       key_event_t* evt = (key_event_t*)e;
-      if (evt->key == TK_KEY_UP) {
+      if (key_code_is_up(evt->key)) {
         text_selector_up(widget);
-      } else if (evt->key == TK_KEY_DOWN) {
+      } else if (key_code_is_down(evt->key)) {
         text_selector_down(widget);
       }
       break;

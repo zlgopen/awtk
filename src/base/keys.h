@@ -22,6 +22,7 @@
 #ifndef TK_KEYS_H
 #define TK_KEYS_H
 #include "base/types_def.h"
+#include "base/enums.h"
 
 #ifdef WITH_SDL
 #include <SDL_keycode.h>
@@ -1036,7 +1037,58 @@ typedef enum _key_code_t {
 #endif /*TK_KEY_TOGGLE_INPUT_METHOD*/
 
 static inline bool_t key_code_is_enter(int key) {
-  return (key == TK_KEY_RETURN || key == TK_KEY_KP_ENTER);
+  if (keys_type_have_custom_keys()) {
+    const key_type_value_t* key_value = keys_type_find_by_value((uint32_t)key);
+    return_value_if_fail(key_value != NULL, FALSE);
+
+    return tk_str_eq("RETURN", key_value->name) || tk_str_eq("ENTER", key_value->name);
+  } else {
+    return (TK_KEY_RETURN == key || TK_KEY_KP_ENTER == key);
+  }
+}
+
+static inline bool_t key_code_is_up(int key) {
+  if (keys_type_have_custom_keys()) {
+    const key_type_value_t* key_value = keys_type_find_by_value((uint32_t)key);
+    return_value_if_fail(key_value != NULL, FALSE);
+
+    return tk_str_eq("UP", key_value->name);
+  } else {
+    return TK_KEY_UP == key;
+  }
+}
+
+static inline bool_t key_code_is_left(int key) {
+  if (keys_type_have_custom_keys()) {
+    const key_type_value_t* key_value = keys_type_find_by_value((uint32_t)key);
+    return_value_if_fail(key_value != NULL, FALSE);
+
+    return tk_str_eq("LEFT", key_value->name);
+  } else {
+    return TK_KEY_LEFT == key;
+  }
+}
+
+static inline bool_t key_code_is_down(int key) {
+  if (keys_type_have_custom_keys()) {
+    const key_type_value_t* key_value = keys_type_find_by_value((uint32_t)key);
+    return_value_if_fail(key_value != NULL, FALSE);
+
+    return tk_str_eq("DOWN", key_value->name);
+  } else {
+    return TK_KEY_DOWN == key;
+  }
+}
+
+static inline bool_t key_code_is_right(int key) {
+  if (keys_type_have_custom_keys()) {
+    const key_type_value_t* key_value = keys_type_find_by_value((uint32_t)key);
+    return_value_if_fail(key_value != NULL, FALSE);
+
+    return tk_str_eq("RIGHT", key_value->name);
+  } else {
+    return TK_KEY_RIGHT == key;
+  }
 }
 
 END_C_DECLS

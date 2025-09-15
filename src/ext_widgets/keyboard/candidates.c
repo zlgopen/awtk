@@ -425,10 +425,10 @@ static ret_t candidates_on_keyup(widget_t* widget, key_event_t* e) {
           ret = RET_STOP;
         }
       }
-    } else if (e->key == TK_KEY_LEFT || e->key == TK_KEY_RIGHT) {
+    } else if (key_code_is_left(e->key) || key_code_is_right(e->key)) {
       keyboard_type_t keyboard_type = system_info()->keyboard_type;
       if (nr > 2 && keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS) {
-        candidates_move_focus(widget, e->key == TK_KEY_RIGHT);
+        candidates_move_focus(widget, key_code_is_right(e->key));
         ret = RET_STOP;
       }
     } else if (e->key == TK_KEY_BACKSPACE || e->key == TK_KEY_DELETE) {

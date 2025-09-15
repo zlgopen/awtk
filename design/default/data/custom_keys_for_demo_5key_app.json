@@ -1,0 +1,17 @@
+{
+    "UP" : {
+        "value" : "w"
+    },
+    "LEFT" : {
+        "value" : "a"
+    },
+    "DOWN" : {
+        "value" : "s"
+    },
+    "RIGHT" : {
+        "value" : "d"
+    },
+    "ENTER" : {
+        "value" : "j"
+    }
+}

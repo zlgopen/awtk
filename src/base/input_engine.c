@@ -138,8 +138,8 @@ ret_t input_engine_search(input_engine_t* engine, const char* keys) {
 }
 
 static ret_t input_engine_append_char(input_engine_t* engine, int key) {
-  if (key == TK_KEY_TAB || key == TK_KEY_LEFT || key == TK_KEY_RIGHT || key == TK_KEY_UP ||
-      key == TK_KEY_DOWN || key == TK_KEY_PAGEUP || key == TK_KEY_PAGEDOWN ||
+  if (key == TK_KEY_TAB || key_code_is_left(key) || key_code_is_right(key) || key_code_is_up(key) ||
+      key_code_is_down(key) || key == TK_KEY_PAGEUP || key == TK_KEY_PAGEDOWN ||
       key_code_is_enter(key) || key == TK_KEY_CANCEL) {
     return RET_OK;
   }

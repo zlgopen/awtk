@@ -425,10 +425,10 @@ static ret_t rich_text_on_key_down(widget_t* widget, key_event_t* evt) {
   } else if (evt->key == TK_KEY_PAGEUP) {
     rich_text_pageup(widget);
     ret = RET_STOP;
-  } else if (evt->key == TK_KEY_UP) {
+  } else if (key_code_is_up(evt->key)) {
     rich_text_up(widget);
     ret = RET_STOP;
-  } else if (evt->key == TK_KEY_DOWN) {
+  } else if (key_code_is_down(evt->key)) {
     rich_text_down(widget);
     ret = RET_STOP;
   }

@@ -217,18 +217,18 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
           scroll_view_scroll_delta_to(list_view->scroll_view, 0, -widget->h, TK_ANIMATING_TIME);
           ret = RET_STOP;
         } else if (keyboard_type == KEYBOARD_NORMAL) {
-          if (evt->key == TK_KEY_UP) {
+          if (key_code_is_up(evt->key)) {
             uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
             scroll_view_scroll_delta_to(list_view->scroll_view, 0, -item_height, TK_ANIMATING_TIME);
             ret = RET_STOP;
-          } else if (evt->key == TK_KEY_DOWN) {
+          } else if (key_code_is_down(evt->key)) {
             uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
             scroll_view_scroll_delta_to(list_view->scroll_view, 0, item_height, TK_ANIMATING_TIME);
             ret = RET_STOP;
-          } else if (evt->key == TK_KEY_LEFT) {
+          } else if (key_code_is_left(evt->key)) {
             scroll_view_scroll_delta_to(list_view->scroll_view, -30, 0, TK_ANIMATING_TIME);
             ret = RET_STOP;
-          } else if (evt->key == TK_KEY_RIGHT) {
+          } else if (key_code_is_right(evt->key)) {
             scroll_view_scroll_delta_to(list_view->scroll_view, 30, 0, TK_ANIMATING_TIME);
             ret = RET_STOP;
           }

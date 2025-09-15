@@ -326,7 +326,7 @@ static ret_t edit_ex_suggest_words_focus_by_key(widget_t* widget, uint32_t key) 
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
   if (edit_ex->suggest_words_popup != NULL) {
-    if (key == TK_KEY_DOWN) {
+    if (key_code_is_down(key)) {
       ret = widget_focus_first(edit_ex->suggest_words_popup);
       if (RET_OK == ret) {
         widget_set_sensitive(edit_ex->suggest_words_popup, TRUE);

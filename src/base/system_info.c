@@ -339,6 +339,11 @@ ret_t system_info_set_lcd_orientation(system_info_t* info, lcd_orientation_t lcd
 ret_t system_info_set_keyboard_type(system_info_t* info, keyboard_type_t keyboard_type) {
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
 
+#ifndef WITH_STATE_ACTIVATED
+  return_value_if_fail(keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS,
+                       RET_FAIL);
+#endif
+
   info->keyboard_type = keyboard_type;
 
   return RET_OK;

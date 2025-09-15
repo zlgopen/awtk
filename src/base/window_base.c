@@ -717,7 +717,7 @@ static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
       base->moving_focus_mode = TRUE;
     } else {
       /*其它控件，回车键用于切换模式*/
-      if (evt->key == TK_KEY_RETURN) {
+      if (key_code_is_enter(evt->key)) {
         ret_t ret = RET_OK;
         base->moving_focus_mode = !base->moving_focus_mode;
         log_debug("change moving_focus_mode:%d\n", base->moving_focus_mode);
@@ -740,40 +740,26 @@ static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
 
     if (base->moving_focus_mode) {
       if (keyboard_type == KEYBOARD_3KEYS) {
-        switch (evt->key) {
-          case TK_KEY_LEFT:
-          case TK_KEY_UP: {
-            widget_focus_prev(focus);
-            return RET_STOP;
-          }
-          case TK_KEY_RIGHT:
-          case TK_KEY_DOWN: {
-            widget_focus_next(focus);
-            return RET_STOP;
-          }
-          default:
-            break;
+        if (key_code_is_left(evt->key) || key_code_is_up(evt->key)) {
+          widget_focus_prev(focus);
+          return RET_STOP;
+        } else if (key_code_is_right(evt->key) || key_code_is_down(evt->key)) {
+          widget_focus_next(focus);
+          return RET_STOP;
         }
       } else {
-        switch (evt->key) {
-          case TK_KEY_LEFT: {
-            widget_focus_left(focus);
-            return RET_STOP;
-          }
-          case TK_KEY_RIGHT: {
-            widget_focus_right(focus);
-            return RET_STOP;
-          }
-          case TK_KEY_UP: {
-            widget_focus_up(focus);
-            return RET_STOP;
-          }
-          case TK_KEY_DOWN: {
-            widget_focus_down(focus);
-            return RET_STOP;
-          }
-          default:
-            break;
+        if (key_code_is_left(evt->key)) {
+          widget_focus_left(focus);
+          return RET_STOP;
+        } else if (key_code_is_right(evt->key)) {
+          widget_focus_right(focus);
+          return RET_STOP;
+        } else if (key_code_is_up(evt->key)) {
+          widget_focus_up(focus);
+          return RET_STOP;
+        } else if (key_code_is_down(evt->key)) {
+          widget_focus_down(focus);
+          return RET_STOP;
         }
       }
     }

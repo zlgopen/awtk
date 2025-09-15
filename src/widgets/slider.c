@@ -552,17 +552,17 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
       bool_t dec = FALSE;
       key_event_t* evt = (key_event_t*)e;
       if (slider->vertical) {
-        if (evt->key == TK_KEY_UP) {
+        if (key_code_is_up(evt->key)) {
           inc = TRUE;
-        } else if (evt->key == TK_KEY_DOWN) {
+        } else if (key_code_is_down(evt->key)) {
           dec = TRUE;
         }
       }
 
       if (!slider->vertical) {
-        if (evt->key == TK_KEY_RIGHT) {
+        if (key_code_is_right(evt->key)) {
           inc = TRUE;
-        } else if (evt->key == TK_KEY_LEFT) {
+        } else if (key_code_is_left(evt->key)) {
           dec = TRUE;
         }
       }
@@ -579,15 +579,15 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
     case EVT_KEY_UP: {
       key_event_t* evt = (key_event_t*)e;
       if (slider->vertical) {
-        if (evt->key == TK_KEY_UP) {
+        if (key_code_is_up(evt->key)) {
           ret = RET_STOP;
-        } else if (evt->key == TK_KEY_DOWN) {
+        } else if (key_code_is_down(evt->key)) {
           ret = RET_STOP;
         }
       } else {
-        if (evt->key == TK_KEY_LEFT) {
+        if (key_code_is_left(evt->key)) {
           ret = RET_STOP;
-        } else if (evt->key == TK_KEY_RIGHT) {
+        } else if (key_code_is_right(evt->key)) {
           ret = RET_STOP;
         }
       }

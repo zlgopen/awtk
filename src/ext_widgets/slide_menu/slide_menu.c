@@ -752,15 +752,15 @@ static ret_t slide_menu_on_event(widget_t* widget, event_t* e) {
       if (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS) {
         if (!slide_menu->is_activated) {
           break;
-        } else if (evt->key == TK_KEY_RETURN) {
+        } else if (key_code_is_enter(evt->key)) {
           slide_menu_focus_active_child(slide_menu);
           ret = RET_STOP;
         }
       }
-      if (evt->key == TK_KEY_LEFT) {
+      if (key_code_is_left(evt->key)) {
         slide_menu_scroll_to_prev(widget);
         ret = RET_STOP;
-      } else if (evt->key == TK_KEY_RIGHT) {
+      } else if (key_code_is_right(evt->key)) {
         ret = RET_STOP;
         slide_menu_scroll_to_next(widget);
       }

@@ -733,7 +733,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
 #else
       bool_t is_control = evt->ctrl;
 #endif
-      if ((!mledit->is_activated || key == TK_KEY_RETURN) &&
+      if ((!mledit->is_activated || key_code_is_enter(key)) &&
           (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
         break;
       }

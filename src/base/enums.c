@@ -466,3 +466,7 @@ ret_t keys_type_set_custom_keys(const key_type_value_t* table, uint32_t nr) {
   log_debug("Set custom keys : %p, nr = %d\n", table, nr);
   return RET_OK;
 }
+
+bool_t keys_type_have_custom_keys(void) {
+  return s_custom_keys_type_name_value != NULL && s_custom_keys_type_name_value_nr > 0;
+}

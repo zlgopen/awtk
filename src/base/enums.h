@@ -125,6 +125,15 @@ const key_type_value_t* keys_type_find_by_value(uint32_t value);
  */
 ret_t keys_type_set_custom_keys(const key_type_value_t* table, uint32_t nr);
 
+/**
+ * @method keys_type_have_custom_keys
+ *
+ * 是否有自定义键值。
+ *
+ * @return {bool_t} 返回TRUE表示有自定义键值，否则表示无自定义键值。
+ */
+bool_t keys_type_have_custom_keys(void);
+
 END_C_DECLS
 
 #endif /*TK_ENUMS_H*/
