@@ -114,5 +114,5 @@ extern ret_t application_exit(void);
 
 ```python
 COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_CUSTOM_KEYS=1 ' # 启动自定义键值配置功能
-COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DCUSTOM_KEYS_FILEPATH=\"file://D:/custom_keys.json\" ' # 与项目中 main.c 定义的一致，若 main.c 没定义，这里也不要定义。
+COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DCUSTOM_KEYS_FILEPATH=\\\"file://D:/custom_keys.json\\\" ' # 与项目中 main.c 定义的一致，若 main.c 没定义，这里也不要定义。
 ```

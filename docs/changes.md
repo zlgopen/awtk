@@ -2,6 +2,7 @@
 
 2025/09/15
   * 完善自定义键值适配5_keys 3_keys(感谢兆坤提供补丁)
+  * 完善 how_to_set_custom_keys.md (感谢兆坤提供补丁)
 
 2025/09/12
   * 增加tk_run_in_ui_thread_ensure_queue_ex(感谢兆坤提供补丁)
