@@ -330,6 +330,8 @@ static const key_type_value_t keys_type_name_value[] = {
     {"F11", 0, TK_KEY_F11},
     {"F12", 0, TK_KEY_F12}};
 
+static const key_type_value_t* s_last_key_type_name_value = NULL;
+
 static const key_type_value_t* s_custom_keys_type_name_value = NULL;
 static uint32_t s_custom_keys_type_name_value_nr = 0;
 
@@ -339,7 +341,7 @@ const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr, co
 
   for (i = 0; i < nr; i++) {
     const key_type_value_t* iter = items + i;
-    if (strcmp(iter->name, name) == 0) {
+    if (tk_str_eq(iter->name, name)) {
       return iter;
     }
   }
@@ -434,6 +436,11 @@ const key_type_value_t* keys_type_find(const char* name) {
   memset(fixed_name, 0x00, sizeof(fixed_name));
   tk_normalize_key_name(name, fixed_name);
 
+  if (s_last_key_type_name_value != NULL &&
+      tk_str_eq(fixed_name, s_last_key_type_name_value->name)) {
+    return s_last_key_type_name_value;
+  }
+
   if (s_custom_keys_type_name_value != NULL) {
     ret = find_item(s_custom_keys_type_name_value, s_custom_keys_type_name_value_nr, fixed_name);
   }
@@ -442,11 +449,19 @@ const key_type_value_t* keys_type_find(const char* name) {
     ret = find_item(keys_type_name_value, ARRAY_SIZE(keys_type_name_value), fixed_name);
   }
 
+  if (ret != NULL) {
+    s_last_key_type_name_value = ret;
+  }
+
   return ret;
 }
 
 const key_type_value_t* keys_type_find_by_value(uint32_t value) {
   const key_type_value_t* ret = NULL;
+
+  if (s_last_key_type_name_value != NULL && value == s_last_key_type_name_value->value) {
+    return s_last_key_type_name_value;
+  }
 
   if (s_custom_keys_type_name_value != NULL) {
     ret =
@@ -457,6 +472,10 @@ const key_type_value_t* keys_type_find_by_value(uint32_t value) {
     ret = find_item_by_value(keys_type_name_value, ARRAY_SIZE(keys_type_name_value), value);
   }
 
+  if (ret != NULL) {
+    s_last_key_type_name_value = ret;
+  }
+
   return ret;
 }
 
@@ -464,6 +483,9 @@ ret_t keys_type_set_custom_keys(const key_type_value_t* table, uint32_t nr) {
   s_custom_keys_type_name_value = table;
   s_custom_keys_type_name_value_nr = nr;
   log_debug("Set custom keys : %p, nr = %d\n", table, nr);
+
+  s_last_key_type_name_value = NULL;
+
   return RET_OK;
 }
 
