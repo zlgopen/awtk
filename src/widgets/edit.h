@@ -308,6 +308,16 @@ widget_t* edit_cast(widget_t* widget);
 int32_t edit_get_int(widget_t* widget);
 
 /**
+ * @method edit_get_int64
+ * 获取int64类型的值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {int64_t} 返回int的值。
+ */
+int64_t edit_get_int64(widget_t* widget);
+
+/**
  * @method edit_get_double
  * 获取double类型的值。
  * @annotation ["scriptable"]

@@ -1464,7 +1464,7 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
         break;
       }
       case INPUT_UINT: {
-        uint32_t n = (uint32_t)edit_get_int(widget);
+        uint32_t n = (uint32_t)edit_get_int64(widget);
         value_set_uint32(v, n);
         break;
       }
@@ -1796,6 +1796,15 @@ int32_t edit_get_int(widget_t* widget) {
   return_value_if_fail(widget != NULL, 0);
 
   wstr_to_int(&(widget->text), &v);
+
+  return v;
+}
+
+int64_t edit_get_int64(widget_t* widget) {
+  int64_t v = 0;
+  return_value_if_fail(widget != NULL, 0);
+
+  wstr_to_int64(&(widget->text), &v);
 
   return v;
 }
