@@ -734,6 +734,56 @@ struct _widget_t {
  */
 
 /**
+ * @event {pointer_event_t} EVT_CONTEXT_MENU
+ * 右键/长按弹出上下文菜单的事件名。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_DOUBLE_CLICK
+ * 双击事件名。
+ */
+
+/**
+ * @event {event_t} EVT_ANIM_START
+ * 控件动画开始事件。
+ */
+
+/**
+ * @event {event_t} EVT_ANIM_STOP
+ * 控件动画被主动停止的事件。
+ */
+
+/**
+ * @event {event_t} EVT_ANIM_PAUSE
+ * 控件动画被暂停的事件。
+ */
+
+/**
+ * @event {event_t} EVT_ANIM_ONCE
+ * 控件动画yoyo/repeat时，完成一次的事件。
+ */
+
+/**
+ * @event {event_t} EVT_ANIM_END
+ * 控件动画完成事件。
+ */
+
+/**
+ * @event {event_t} EVT_WIDGET_LOAD
+ * 控件加载完成事件。
+ */
+
+/**
+ * @event {event_t} EVT_WIDGET_WILL_UPDATE_STYLE
+ * 控件根据自己当前状态即将更新style。
+ */
+
+/**
+ * @event {event_t} EVT_WIDGET_UPDATE_STYLE
+ * 控件根据自己当前状态更新style。
+ */
+
+/**
  * @event {event_t} EVT_DESTROY
  * 控件销毁时触发。
  */
