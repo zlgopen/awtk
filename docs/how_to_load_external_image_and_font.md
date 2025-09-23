@@ -157,27 +157,14 @@ assets_manager_add_data(assets_manager(), "awtk",
 
 步骤二：调用函数 assets_manager_add_data() 函数向资源管理中添加字体资源。
 
-步骤三：调用 font_manager_add_font() 函数向字体管理器中添加字体。
-
-步骤四：使用字体。调用 system_info_set_default_font() 函数设置默认字体为 default_full，应用程序将使用该字体。
+步骤三：使用字体。调用 system_info_set_default_font() 函数设置默认字体为 default_full，应用程序将使用该字体。
 
 ```c
-#include "font_loader/font_loader_truetype.h"
-
 uint32_t size = 0;
 uint8_t* data = (uint8_t*)file_read("E:/default_full.ttf", &size);
 assets_manager_add_data(assets_manager(), "default_full", ASSET_TYPE_FONT, 
                         ASSET_TYPE_FONT_TTF,data, size);
-uint32_t i = 0;
-uint32_t nr = assets_manager()->assets.size;
-const asset_info_t** all = (const asset_info_t**)(assets_manager()->assets.elms);
+TKMEM_FREE(data);
 
-for (i = 0; i < nr; i++) {
-  const asset_info_t* res = all[i];
-  if (res->subtype == ASSET_TYPE_FONT_TTF && tk_str_eq(res->name, "default_full")) {
-    font_manager_add_font(font_manager(),
-                          font_truetype_create(res->name, res->data, res->size));
-    system_info_set_default_font(system_info(), "default_full");
-  }
-}
+system_info_set_default_font(system_info(), "default_full");
 ```
