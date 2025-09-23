@@ -175,7 +175,7 @@ static ret_t line_parser_next_impl(line_parser_t* parser) {
         if ((w + char_w) > parser->width) {
           return_value_if_fail(p > parser->line, RET_FAIL);
 
-          if (((p + 1) - parser->str) < parser->size) {
+          if ((p - parser->str) < parser->size) {
             if (parser->word_wrap) {
               const wchar_t* tmp_p = p;
               while (line_break_check(*(p - 1), *p) == LINE_BREAK_NO) {
