@@ -113,6 +113,13 @@ typedef struct _rich_text_t {
    * 标识控件是否需要重新绘图。
    */
   bool_t need_reset;
+  
+  /**
+   * @property {bool_t} word_wrap
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否只允许在单词之间自动换行(默认TRUE)。
+   */
+  bool_t word_wrap;
 
   /*private*/
   bool_t pressed;
@@ -168,6 +175,17 @@ ret_t rich_text_set_text(widget_t* widget, const char* text);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t rich_text_set_yslidable(widget_t* widget, bool_t yslidable);
+
+/**
+ * @method rich_text_set_word_wrap
+ * 设置是否只允许在单词之间自动换行。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t}  word_wrap 是否只允许在单词之间自动换行。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rich_text_set_word_wrap(widget_t* widget, bool_t word_wrap);
 
 /**
  * @method rich_text_cast

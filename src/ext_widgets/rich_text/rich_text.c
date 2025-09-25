@@ -541,6 +541,9 @@ static ret_t rich_text_set_prop(widget_t* widget, const char* name, const value_
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     rich_text->yoffset = value_int(v);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_WORD_WRAP)) {
+    rich_text->word_wrap = value_bool(v);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YSLIDABLE)) {
     rich_text->yslidable = value_bool(v);
     return RET_OK;
@@ -564,6 +567,9 @@ static ret_t rich_text_get_prop(widget_t* widget, const char* name, value_t* v) 
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     value_set_int(v, rich_text->yoffset);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_WORD_WRAP)) {
+    value_set_bool(v, rich_text->word_wrap);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     value_set_int(v, 0);
@@ -592,15 +598,26 @@ ret_t rich_text_set_yslidable(widget_t* widget, bool_t yslidable) {
   return RET_OK;
 }
 
+ret_t rich_text_set_word_wrap(widget_t* widget, bool_t word_wrap) {
+  rich_text_t* rich_text = RICH_TEXT(widget);
+  return_value_if_fail(rich_text != NULL, RET_FAIL);
+
+  rich_text->word_wrap = word_wrap;
+
+  return RET_OK;
+}
+
 static ret_t rich_text_init(widget_t* widget) {
   rich_text_t* rich_text = RICH_TEXT(widget);
   return_value_if_fail(rich_text != NULL, RET_BAD_PARAMS);
 
   rich_text->yslidable = TRUE;
+  rich_text->word_wrap = TRUE;
+
   return RET_OK;
 }
 
-static const char* s_rich_text_clone_properties[] = {WIDGET_PROP_MARGIN, WIDGET_PROP_LINE_GAP,
+static const char* s_rich_text_clone_properties[] = {WIDGET_PROP_MARGIN, WIDGET_PROP_LINE_GAP, WIDGET_PROP_WORD_WRAP,
                                                      NULL};
 TK_DECL_VTABLE(rich_text) = {.size = sizeof(rich_text_t),
                              .type = "rich_text",

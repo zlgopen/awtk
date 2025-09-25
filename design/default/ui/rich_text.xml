@@ -4,9 +4,20 @@
       <![CDATA[<image name="bricks"/><font align_v="middle">hello awtk!</font><font color="red" size="32">ZLG</font>]]>
     </property>
   </rich_text>
+  
+  <rich_text x="0" y="70" w="100%" h="60">
+    <property name="text">
+      <![CDATA[<font color="green">123455</font><font>11111111111111111112333333</font><font color="green">333333333333333</font>]]>
+    </property>
+  </rich_text>
+  
+  <rich_text x="0" y="128" w="100%" h="60" word_wrap="false">
+    <property name="text">
+      <![CDATA[<font color="green">123455</font><font>11111111111111111112333333</font><font color="green">333333333333333</font>]]>
+    </property>
+  </rich_text>
 
-  <rich_text x="0" y="70" w="100%" h="60" tr_text="hello world" />
-  <rich_text x="0" y="150" w="100%" h="40" tr_text="hello world" yslidable="true"/>
+  <rich_text x="0" y="180" w="100%" h="40" tr_text="hello world" yslidable="true"/>
 
   <rich_text line_gap="5" x="0" y="230" w="100%" h="300">
     <property name="text">

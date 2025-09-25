@@ -213,7 +213,11 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
         for (i = 0; str[i]; i++) {
           cw = canvas_measure_text(c, str + i, 1);
           if (i > 0) {
-            break_type = rich_text_line_break_check(str[i - 1], str[i]);
+            if (rich_text->word_wrap) {
+              break_type = rich_text_line_break_check(str[i - 1], str[i]);
+            } else {
+              break_type = LINE_BREAK_ALLOW;
+            }
           }
           if (str[i] == '\r' || str[i] == '\n') {
             break_type = LINE_BREAK_MUST;
@@ -279,10 +283,12 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
             last_breakable = i;
             tw = canvas_measure_text(c, str + i, 1);
           } else {
-            if (i > 0) {
+            if (i > 0 && rich_text->word_wrap) {
               if (rich_text_line_break_check(str[i - 1], str[i]) == LINE_BREAK_ALLOW) {
                 last_breakable = i;
               }
+            } else {
+              last_breakable = i;
             }
 
             tw += cw;
