@@ -63,14 +63,12 @@ static bool_t window_is_opened(widget_t* widget) {
 static ret_t wm_on_screen_saver_timer(const timer_info_t* info) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(info->ctx);
   event_t e = event_init(EVT_SCREEN_SAVER, wm);
+  wm->screen_saver_timer_id = TK_INVALID_ID;
 
-  wm->is_screen_saver_active = TRUE;
   emitter_dispatch(WINDOW_MANAGER(wm)->global_emitter, &e);
   widget_dispatch(WIDGET(wm), &e);
   log_debug("emit: EVT_SCREEN_SAVER\n");
 
-  wm->is_screen_saver_active = FALSE;
-  wm->screen_saver_timer_id = TK_INVALID_ID;
   return RET_REMOVE;
 }
 
@@ -81,7 +79,7 @@ static ret_t window_manager_start_or_reset_screen_saver_timer(window_manager_def
     } else {
       timer_modify(wm->screen_saver_timer_id, wm->screen_saver_time);
     }
-  } else if (!wm->is_screen_saver_active) {
+  } else {
     if (wm->screen_saver_timer_id != TK_INVALID_ID) {
       timer_remove(wm->screen_saver_timer_id);
       wm->screen_saver_timer_id = TK_INVALID_ID;
