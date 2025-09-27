@@ -9,6 +9,7 @@ using std::string;
 
 static string s_log;
 static uint64_t s_now = 0;
+static uint64_t s_run_num = 0;
 static uint64_t timer_get_time() {
   return s_now;
 }
@@ -47,6 +48,17 @@ static ret_t timer_add_in_timer(const timer_info_t* timer) {
   timer_manager_add(timer->timer_manager, timer_repeat, NULL, 100);
 
   return RET_REPEAT;
+}
+
+static ret_t timer_add_in_timer2(const timer_info_t* timer) {
+  s_run_num++;
+  if (s_run_num >= 100) {
+    // 防止无限循环导致测试用例退不了出
+    return RET_REMOVE;
+  }
+  timer_set_time(s_now + 100);
+  timer_manager_add(timer->timer_manager, timer_add_in_timer2, NULL, 1000);
+  return RET_REMOVE;
 }
 
 static string repeat_str(const string& substr, uint32_t nr) {
@@ -231,6 +243,22 @@ TEST(Timer, addInTimer) {
   ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
   ASSERT_EQ(timer_manager_count(tm), 3u);
   ASSERT_EQ(s_log, "a:r:");
+
+  timer_manager_destroy(tm);
+}
+
+TEST(Timer, addInTimer2) {
+  timer_set_time(0);
+  timer_manager_t* tm = timer_manager_create(timer_get_time);
+
+  timer_manager_add(tm, timer_add_in_timer2, NULL, 100);
+  ASSERT_EQ(timer_manager_next_time(tm), 100u);
+
+  s_run_num = 0;
+  timer_set_time(100);
+  ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
+  ASSERT_EQ(timer_manager_count(tm), 1);
+  ASSERT_EQ(s_run_num, 1);
 
   timer_manager_destroy(tm);
 }

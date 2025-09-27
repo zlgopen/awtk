@@ -46,12 +46,13 @@ static const object_vtable_t s_timer_info_vtable = {
     .on_destroy = (tk_object_on_destroy_t)timer_info_on_destroy};
 
 timer_info_t* timer_info_create(timer_manager_t* tm, uint32_t id, timer_func_t on_timer, void* ctx,
-                                uint32_t duration, uint16_t timer_info_type) {
+                                uint32_t duration, uint16_t timer_info_type, uint64_t now) {
   tk_object_t* obj = tk_object_create(&s_timer_info_vtable);
   timer_info_t* timer = TIMER_INFO(obj);
   return_value_if_fail(timer != NULL, NULL);
 
   timer->ctx = ctx;
+  timer->now = now;
   timer->suspend = FALSE;
   timer->on_timer = on_timer;
   timer->duration = duration;
@@ -134,5 +135,5 @@ ret_t timer_info_on_timer(timer_info_t* timer, uint64_t now) {
 }
 
 bool_t timer_info_is_available(timer_info_t* timer, uint64_t now) {
-  return timer != NULL && !(timer->busy) && timer->now != now;
+  return timer != NULL && !(timer->busy) && timer->now < now;
 }

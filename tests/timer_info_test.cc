@@ -11,7 +11,7 @@ static ret_t on_timer(const timer_info_t* timer) {
 
 TEST(TimerInfo, basic) {
   timer_info_t dummy;
-  timer_info_t* timer = timer_info_create(NULL, 1, on_timer, NULL, 1000, TIMER_INFO_NORMAL);
+  timer_info_t* timer = timer_info_create(NULL, 1, on_timer, NULL, 1000, TIMER_INFO_NORMAL, 0);
 
   ASSERT_EQ(timer->duration, 1000u);
   ASSERT_EQ(timer_info_compare_by_id(timer, timer), 0);
