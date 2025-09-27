@@ -714,6 +714,12 @@ static ret_t wm_on_destroy_child(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
+static ret_t window_manager_pending_open_window_on_destroy_func(void* ctx, event_t* e) {
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(ctx);
+  wm->pending_open_window = NULL;
+  return RET_OK;
+}
+
 static ret_t window_manager_default_open_window(widget_t* widget, widget_t* window) {
   ret_t ret = RET_OK;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
@@ -723,6 +729,7 @@ static ret_t window_manager_default_open_window(widget_t* widget, widget_t* wind
 
   if (wm->animator != NULL) {
     wm->pending_open_window = window;
+    widget_on(window, EVT_DESTROY, window_manager_pending_open_window_on_destroy_func, wm);
   } else {
     wm->ready_animator = TRUE;
     window_manager_default_do_open_window(widget, window);
