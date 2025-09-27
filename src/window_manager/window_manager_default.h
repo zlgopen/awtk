@@ -70,6 +70,7 @@ typedef struct _window_manager_default_t {
   int32_t lcd_h;
 
   bool_t keep_all_pressed_keys;
+  bool_t is_screen_saver_active;
 } window_manager_default_t;
 
 /**
