@@ -258,6 +258,37 @@ TEST(Str, remove) {
   str_reset(s);
 }
 
+TEST(Str, remove_str_right) {
+  str_t str;
+  str_t* s = str_init(&str, 0);
+
+  ASSERT_EQ(str_set(s, "abc,abc,abc"), RET_OK);
+  ASSERT_EQ(str_remove_str_right(s, "abc"), RET_OK);
+  ASSERT_EQ(string(s->str), "abc,abc,");
+
+  ASSERT_EQ(str_set(s, "abc,abc,abc"), RET_OK);
+  ASSERT_EQ(str_remove_str_right(s, ",abc"), RET_OK);
+  ASSERT_EQ(string(s->str), "abc,abc");
+
+  ASSERT_EQ(str_set(s, "abc,abc,abc"), RET_OK);
+  ASSERT_EQ(str_remove_str_right(s, "abc,abc,abc"), RET_OK);
+  ASSERT_EQ(string(s->str), "");
+
+  ASSERT_EQ(str_set(s, "abc,abc,abc"), RET_OK);
+  ASSERT_EQ(str_remove_str_right(s, "acc"), RET_OK);
+  ASSERT_EQ(string(s->str), "abc,abc,abc");
+
+  ASSERT_EQ(str_set(s, "abc,abc,abc"), RET_OK);
+  ASSERT_EQ(str_remove_str_right(s, "ac"), RET_OK);
+  ASSERT_EQ(string(s->str), "abc,abc,abc");
+
+  ASSERT_EQ(str_set(s, "abc,abc,abc"), RET_OK);
+  ASSERT_EQ(str_remove_str_right(s, ""), RET_OK);
+  ASSERT_EQ(string(s->str), "abc,abc,abc");
+
+  str_reset(s);
+}
+
 TEST(Str, escape) {
   str_t str;
   str_t* s = str_init(&str, 0);

@@ -831,6 +831,19 @@ ret_t str_remove(str_t* s, uint32_t offset, uint32_t size) {
   return RET_OK;
 }
 
+ret_t str_remove_str_right(str_t* str, const char* remove_str) {
+  return_value_if_fail(remove_str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
+
+  if (!str->size) {
+    return RET_OK;
+  }
+
+  tk_str_remove_str_right(str->str, remove_str);
+  str->size = tk_strlen(str->str);
+  return RET_OK;
+}
+
 static const char* expand_var(str_t* str, const char* p, const tk_object_t* obj) {
   value_t v;
   uint32_t len = 0;

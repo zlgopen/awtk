@@ -2737,6 +2737,21 @@ ret_t tk_str_trim_right(char* str, const char* chars) {
   return RET_OK;
 }
 
+ret_t tk_str_remove_str_right(char* str, const char* remove_str) {
+  char* p = NULL;
+  uint32_t len = 0;
+  return_value_if_fail(str != NULL && remove_str != NULL, RET_BAD_PARAMS);
+
+  len = tk_strlen(remove_str);
+  p = str + tk_strlen(str) - len;
+  return_value_if_fail(p >= str, RET_BAD_PARAMS);
+
+  if (strcmp(p, remove_str) == 0) {
+    *p = '\0';
+  }
+  return RET_OK;
+}
+
 inline static bool_t tk_str_is_number_impl(const char* str, bool_t support_sign,
                                            const char** dot_pos) {
   bool_t ret = TK_STR_IS_NOT_EMPTY(str);

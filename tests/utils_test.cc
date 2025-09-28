@@ -2203,6 +2203,34 @@ TEST(Utils, tk_str_trim_right) {
   ASSERT_STREQ(str, "");
 }
 
+TEST(Utils, tk_str_remove_str_right) {
+  char str[1024] = {0};
+
+  strncpy(str, "abc,abc,abc", sizeof(str));
+  ASSERT_EQ(tk_str_remove_str_right(str, "abc"), RET_OK);
+  ASSERT_STREQ(str, "abc,abc,");
+
+  strncpy(str, "abc,abc,abc", sizeof(str));
+  ASSERT_EQ(tk_str_remove_str_right(str, ",abc"), RET_OK);
+  ASSERT_STREQ(str, "abc,abc");
+
+  strncpy(str, "abc,abc,abc", sizeof(str));
+  ASSERT_EQ(tk_str_remove_str_right(str, "abc,abc,abc"), RET_OK);
+  ASSERT_STREQ(str, "");
+
+  strncpy(str, "abc,abc,abc", sizeof(str));
+  ASSERT_EQ(tk_str_remove_str_right(str, "acc"), RET_OK);
+  ASSERT_STREQ(str, "abc,abc,abc");
+
+  strncpy(str, "abc,abc,abc", sizeof(str));
+  ASSERT_EQ(tk_str_remove_str_right(str, "ac"), RET_OK);
+  ASSERT_STREQ(str, "abc,abc,abc");
+
+  strncpy(str, "abc,abc,abc", sizeof(str));
+  ASSERT_EQ(tk_str_remove_str_right(str, ""), RET_OK);
+  ASSERT_STREQ(str, "abc,abc,abc");
+}
+
 TEST(Utils, str_is_digit) {
   ASSERT_EQ(tk_str_is_digit(NULL), FALSE);
   ASSERT_EQ(tk_str_is_digit(""), FALSE);

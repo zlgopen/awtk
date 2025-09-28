@@ -1393,6 +1393,16 @@ ret_t tk_str_trim_left(char* str, const char* chars);
 ret_t tk_str_trim_right(char* str, const char* chars);
 
 /**
+ * @method tk_str_remove_str_right
+ * 去除字符串右边的指定字符串。
+ * 备注：如果在尾部找不到的话，就不删除。
+ * @param {char*} str 字符串。
+ * @param {const char*} remove_str 要去除的字符串。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_str_remove_str_right(char* str, const char* remove_str);
+
+/**
  * @method tk_str_is_digit
  * 字符串是否全为数字。
  * @param {const char*} str 字符串。

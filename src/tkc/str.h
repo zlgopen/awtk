@@ -333,6 +333,17 @@ ret_t str_insert_with_len(str_t* str, uint32_t offset, const char* text, uint32_
 ret_t str_remove(str_t* str, uint32_t offset, uint32_t len);
 
 /**
+ * @method str_remove_str_right
+ * 去除字符串右边的指定字符串。
+ * 备注：如果在尾部找不到的话，就不删除。
+ * @param {str_t*} str str对象。
+ * @param {const char*} remove_str 要删除的字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_remove_str_right(str_t* str, const char* remove_str);
+
+/**
  * @method str_append_char
  * 追加一个字符。
  * @param {str_t*} str str对象。
