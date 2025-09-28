@@ -89,8 +89,6 @@ ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas) {
     mutable_image->is_need_redraw = FALSE;
   }
 
-  mutable_image->has_bitmap = bitmap != NULL ? TRUE : FALSE;
-
   if (bitmap == NULL) {
     return RET_FAIL;
   }
@@ -200,9 +198,7 @@ static ret_t mutable_image_invalidate(const timer_info_t* info) {
 
   if (mutable_image->need_redraw == NULL ||
       mutable_image->need_redraw(mutable_image->need_redraw_ctx)) {
-    if (mutable_image->has_bitmap) {
-      mutable_image_invalidate_force(widget);
-    }
+    mutable_image_invalidate_force(widget);
   }
 
   return RET_REPEAT;

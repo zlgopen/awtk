@@ -78,7 +78,6 @@ typedef struct _mutable_image_t {
 
   /*private*/
   bool_t is_need_redraw;
-  bool_t has_bitmap;
   uint32_t timer_id;
   void* prepare_image_ctx;
   mutable_image_prepare_image_t prepare_image;
