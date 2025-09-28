@@ -371,7 +371,7 @@ static ret_t scroll_bar_on_copy(widget_t* widget, widget_t* other) {
 }
 
 static ret_t scroll_bar_on_layout_children(widget_t* widget) {
-  uint32_t button_margin = 0;
+  int32_t button_margin = 0;
   int32_t widget_w = widget->w;
   int32_t widget_h = widget->h;
   rect_t r = rect_init(0, 0, 0, 0);
