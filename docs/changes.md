@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/09/30
+  * 修改windows上readdir对虚拟文件(比如dwFileAttributes值为0x00120000)无法正常识别的问题(感谢朝泽提供补丁)
+
 2025/09/28
   * 增加 str_remove_str_right(感谢智明提供补丁)
   * mutable image 去掉 has_bitmap （感谢俊杰提供补丁)
