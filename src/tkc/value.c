@@ -1417,13 +1417,6 @@ ret_t value_get_bit(value_t* v, value_t* result, uint32_t n) {
   return ret;
 }
 
-#define TK_SET_OR_CLEAR_BIT(v, n, b) \
-  if (b) {                           \
-    TK_SET_BIT(v, n);                \
-  } else {                           \
-    TK_CLEAR_BIT(v, n);              \
-  }
-
 ret_t value_set_bit(value_t* v, value_t* result, uint32_t n, bool_t bit) {
   ret_t ret = RET_OK;
   return_value_if_fail(v != NULL && result != NULL, RET_BAD_PARAMS);

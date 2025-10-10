@@ -615,6 +615,7 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define TK_CLEAR_BIT(v, n) ((v) &= ~(1UL << (n)))
 #define TK_TOGGLE_BIT(v, n) ((v) ^= (1UL << (n)))
 #define TK_TEST_BIT(v, n) (((v) >> (n)) & 1U)
+#define TK_SET_OR_CLEAR_BIT(v, n, b) ((b) ? TK_SET_BIT(v, n) : TK_CLEAR_BIT(v, n))
 
 #ifndef TK_DEFAULT_WAIT_TIME
 #define TK_DEFAULT_WAIT_TIME 16

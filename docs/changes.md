@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/10/10
+  * 公开TK_SET_OR_CLEAR_BIT(感谢兆坤提供补丁)
+
 2025/09/30
   * 修改windows上readdir对虚拟文件(比如dwFileAttributes值为0x00120000)无法正常识别的问题(感谢朝泽提供补丁)
 
