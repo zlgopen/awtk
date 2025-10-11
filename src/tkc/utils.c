@@ -172,14 +172,14 @@ double tk_atof(const char* str) {
   return neg ? -result : result;
 }
 
-static const char* tk_itoa_simple(char* str, int len, int64_t n, const char** end) {
+static const char* tk_itoa_simple(char* str, int len, int64_t n, bool_t is_unsigned, const char** end) {
   int i = 0;
   int need_len = 0;
-  int64_t value = n;
+  uint64_t value = is_unsigned ? (uint64_t)n : (n < 0 ? -n : n);
 
   return_value_if_fail(str != NULL && len > 2, NULL);
 
-  if (n == 0) {
+  if (value == 0) {
     str[0] = '0';
     str[1] = '\0';
 
@@ -190,15 +190,14 @@ static const char* tk_itoa_simple(char* str, int len, int64_t n, const char** en
     return str;
   }
 
-  if (n < 0) {
-    n = -n;
+  if (!is_unsigned && n < 0) {
     str[0] = '-';
     need_len++;
   }
 
-  value = n;
-  while (value > 0) {
-    value = value / 10;
+  uint64_t tmp = value;
+  while (tmp > 0) {
+    tmp /= 10;
     need_len++;
   }
 
@@ -206,9 +205,9 @@ static const char* tk_itoa_simple(char* str, int len, int64_t n, const char** en
   return_value_if_fail(len > (need_len), NULL);
 
   i = need_len - 2;
-  while (n > 0) {
-    str[i--] = (n % 10) + '0';
-    n = n / 10;
+  while (value > 0) {
+    str[i--] = (value % 10) + '0';
+    value /= 10;
   }
   str[need_len - 1] = '\0';
 
@@ -220,11 +219,15 @@ static const char* tk_itoa_simple(char* str, int len, int64_t n, const char** en
 }
 
 const char* tk_itoa(char* str, int len, int n) {
-  return tk_itoa_simple(str, len, n, NULL);
+  return tk_itoa_simple(str, len, n, FALSE, NULL);
 }
 
-const char* tk_lltoa(char* str, int len, uint64_t n) {
-  return tk_itoa_simple(str, len, n, NULL);
+const char* tk_lltoa(char* str, int len, int64_t n) {
+  return tk_itoa_simple(str, len, n, FALSE, NULL);
+}
+
+const char* tk_ulltoa(char* str, int len, uint64_t n) {
+  return tk_itoa_simple(str, len, (int64_t)n, TRUE, NULL);
 }
 
 #else
@@ -260,6 +263,14 @@ const char* tk_lltoa(char* str, int len, int64_t n) {
   return_value_if_fail(str != NULL, NULL);
 
   tk_snprintf(str, len, "%" PRId64, n);
+
+  return str;
+}
+
+const char* tk_ulltoa(char* str, int len, uint64_t n) {
+  return_value_if_fail(str != NULL, NULL);
+
+  tk_snprintf(str, len, "%" PRIu64, n);
 
   return str;
 }

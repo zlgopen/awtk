@@ -47,6 +47,12 @@ TEST(Utils, basic) {
 
   ASSERT_EQ(tk_atol("0xFFFFFFFF"), 0xFFFFFFFF);
   ASSERT_EQ(strcmp(tk_lltoa(str, sizeof(str), tk_atol("0xFFFFFFFF")), "4294967295"), 0);
+
+  memset(str, 0, sizeof(str));
+  ASSERT_EQ(strcmp(tk_ulltoa(str, sizeof(str), 1122334455667788), "1122334455667788"), 0);
+  memset(str, 0, sizeof(str));
+  ASSERT_EQ(tk_atoul("18446744073709551615"), 18446744073709551615ULL);
+  ASSERT_EQ(strcmp(tk_ulltoa(str, sizeof(str), 18446744073709551615ULL), "18446744073709551615"), 0);
 }
 
 static void check_buff16(uint16_t* buff, uint16_t val, uint32_t size) {
