@@ -573,7 +573,7 @@ static ret_t on_combo_box_item_click(void* ctx, event_t* e) {
   combo_box->target = NULL;
   combo_box->key_target = NULL;
   window_close(widget_get_window(combo_box_item));
-  widget_set_focused_internal(combo_box, TRUE);
+  widget_set_focused(combo_box, TRUE);
 
   return RET_OK;
 }
