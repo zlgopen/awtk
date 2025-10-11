@@ -2328,3 +2328,19 @@ TEST(Utils, str_is_float) {
   ASSERT_EQ(tk_str_is_float("-1.414"), TRUE);
   ASSERT_EQ(tk_str_is_float("+360.0"), TRUE);
 }
+
+TEST(Utils, bit) {
+  uint32_t num = 0b10101010;
+
+  ASSERT_EQ(0b10100010, TK_TOGGLE_BIT(num, 3));
+  ASSERT_EQ(0b10100110, TK_TOGGLE_BIT(num, 2));
+
+  ASSERT_EQ(0b10100010, TK_SET_OR_CLEAR_BIT(num, 2, 0));
+  ASSERT_EQ(0b10101010, TK_SET_OR_CLEAR_BIT(num, 3, 1));
+
+  ASSERT_EQ(0b10111010, TK_SET_BIT(num, 4));
+  ASSERT_EQ(0b10011010, TK_CLEAR_BIT(num, 5));
+
+  ASSERT_EQ(0, TK_TEST_BIT(num, 6));
+  ASSERT_EQ(1, TK_TEST_BIT(num, 7));
+}
