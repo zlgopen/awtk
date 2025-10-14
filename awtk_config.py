@@ -54,7 +54,6 @@ NANOVG_BACKEND = 'GL3'
 
 # NANOVG_BACKEND='GLES2'
 # NANOVG_BACKEND='GLES3'
-# NANOVG_BACKEND='AGG'
 # NANOVG_BACKEND='AGGE'
 # NANOVG_BACKEND='GL2'
 if is_raspberrypi():
@@ -69,12 +68,7 @@ if VGCANVAS == 'CAIRO':
     FRAME_BUFFER_FORMAT = compile_helper.get_value('LCD_COLOR_FORMAT', 'bgr565')
     # FRAME_BUFFER_FORMAT='bgra8888'
 else:
-    if NANOVG_BACKEND == 'AGGE' or NANOVG_BACKEND == 'AGG':
-        LCD = 'SDL_FB'
-        FRAME_BUFFER_FORMAT = 'bgr565'
-        # FRAME_BUFFER_FORMAT='bgra8888'
-    else:
-        LCD = 'SDL_GPU'
+    LCD = 'SDL_GPU'
 # LCD='SDL_FB_MONO'
 
 if NANOVG_BACKEND == 'AGGE' or NANOVG_BACKEND == 'AGGE' :
@@ -194,11 +188,7 @@ else:
         joinPath(TK_3RD_ROOT, 'nanovg/base'),
         joinPath(TK_3RD_ROOT, 'nanovg/agge'),
         joinPath(TK_3RD_ROOT, 'nanovg/bgfx')]
-    if NANOVG_BACKEND == 'AGG':
-        NANOVG_BACKEND_LIBS = ['nanovg-agg', 'nanovg', 'agg']
-        NANOVG_BACKEND_PROJS += ['3rd/agg/SConscript']
-        COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_AGG '
-    elif NANOVG_BACKEND == 'AGGE':
+    if NANOVG_BACKEND == 'AGGE':
         NANOVG_BACKEND_LIBS = ['nanovg-agge', 'nanovg', 'agge']
         NANOVG_BACKEND_PROJS += ['3rd/agge/SConscript']
         COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_AGGE '
@@ -283,7 +273,6 @@ CPPPATH = [TK_ROOT,
            joinPath(TK_3RD_ROOT, 'bgfx/bx/include'),
            joinPath(TK_3RD_ROOT, 'bgfx/bimg/include'),
            joinPath(TK_3RD_ROOT, 'agge'),
-           joinPath(TK_3RD_ROOT, 'agg/include'),
            joinPath(TK_3RD_ROOT, 'SDL/src'),
            joinPath(TK_3RD_ROOT, 'SDL/include'),
            joinPath(TK_3RD_ROOT, 'agge/src'),
