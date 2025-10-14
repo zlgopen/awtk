@@ -3025,10 +3025,13 @@ static ret_t widget_on_keyup_children(widget_t* widget, key_event_t* e) {
 #else
       bool_t is_control = e->ctrl;
 #endif
-      widget_t* final_key_target = widget_get_final_key_target(widget);
-      if (!final_key_target->vt->return_key_to_activate && !is_control &&
-          !widget_get_prop_bool(final_key_target, WIDGET_PROP_ACCEPT_RETRUN, FALSE)) {
-        return widget_on_keyup(accept_button_widget, e);
+      if (!is_control) {
+        widget_t* final_key_target = widget_get_final_key_target(widget);
+        if (NULL == final_key_target ||
+            (!final_key_target->vt->return_key_to_activate &&
+             !widget_get_prop_bool(final_key_target, WIDGET_PROP_ACCEPT_RETRUN, FALSE))) {
+          return widget_on_keyup(accept_button_widget, e);
+        }
       }
     } else if (cancel_button_widget != NULL && e->key == TK_KEY_ESCAPE) {
       return widget_on_keyup(cancel_button_widget, e);
