@@ -703,12 +703,11 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
   return ret;
 }
 
-static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
+static ret_t window_enable_35keys_mode_on_keyup_before_children(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
   key_event_t* evt = key_event_cast(e);
   window_base_t* base = WINDOW_BASE(win);
   widget_t* focus = widget_get_focused_widget(win);
-  keyboard_type_t keyboard_type = system_info()->keyboard_type;
   return_value_if_fail(win != NULL && evt != NULL && base != NULL, RET_BAD_PARAMS);
 
   if (focus != NULL) {
@@ -737,8 +736,21 @@ static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
         return ret;
       }
     }
+  }
 
+  return RET_OK;
+}
+
+static ret_t window_enable_35keys_mode_on_keydown_before_children(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  key_event_t* evt = key_event_cast(e);
+  window_base_t* base = WINDOW_BASE(win);
+  widget_t* focus = widget_get_focused_widget(win);
+  return_value_if_fail(win != NULL && evt != NULL && base != NULL, RET_BAD_PARAMS);
+
+  if (focus != NULL) {
     if (base->moving_focus_mode) {
+      keyboard_type_t keyboard_type = system_info()->keyboard_type;
       if (keyboard_type == KEYBOARD_3KEYS) {
         if (key_code_is_left(evt->key) || key_code_is_up(evt->key)) {
           widget_focus_prev(focus);
@@ -769,7 +781,10 @@ static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
 }
 
 ret_t window_enable_35keys_mode(widget_t* win) {
-  widget_on(win, EVT_KEY_DOWN_BEFORE_CHILDREN, window_on_keydown_before_children, win);
+  widget_on(win, EVT_KEY_UP_BEFORE_CHILDREN, window_enable_35keys_mode_on_keyup_before_children,
+            win);
+  widget_on(win, EVT_KEY_DOWN_BEFORE_CHILDREN, window_enable_35keys_mode_on_keydown_before_children,
+            win);
   return RET_OK;
 }
 
