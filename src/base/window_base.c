@@ -703,12 +703,11 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
   return ret;
 }
 
-static ret_t window_enable_35keys_mode_on_keyup_before_children(void* ctx, event_t* e) {
-  widget_t* win = WIDGET(ctx);
-  key_event_t* evt = key_event_cast(e);
-  window_base_t* base = WINDOW_BASE(win);
-  widget_t* focus = widget_get_focused_widget(win);
-  return_value_if_fail(win != NULL && evt != NULL && base != NULL, RET_BAD_PARAMS);
+static ret_t window_35keys_mode_activate(window_base_t* base, int key) {
+  widget_t* focus = NULL;
+  return_value_if_fail(base != NULL, RET_BAD_PARAMS);
+
+  focus = widget_get_focused_widget(WIDGET(base));
 
   if (focus != NULL) {
     if (focus->vt->return_key_to_activate) {
@@ -716,10 +715,11 @@ static ret_t window_enable_35keys_mode_on_keyup_before_children(void* ctx, event
       base->moving_focus_mode = TRUE;
     } else {
       /*其它控件，回车键用于切换模式*/
-      if (key_code_is_enter(evt->key)) {
+      if (key_code_is_enter(key)) {
         ret_t ret = RET_OK;
         base->moving_focus_mode = !base->moving_focus_mode;
-        log_debug("change moving_focus_mode:%d\n", base->moving_focus_mode);
+        log_debug("%s: change moving_focus_mode:%s.\n", __FUNCTION__,
+                  base->moving_focus_mode ? "on" : "off");
 
 #ifdef WITH_STATE_ACTIVATED
         if (!base->moving_focus_mode) {
@@ -736,55 +736,79 @@ static ret_t window_enable_35keys_mode_on_keyup_before_children(void* ctx, event
         return ret;
       }
     }
-  }
-
-  return RET_OK;
-}
-
-static ret_t window_enable_35keys_mode_on_keydown_before_children(void* ctx, event_t* e) {
-  widget_t* win = WIDGET(ctx);
-  key_event_t* evt = key_event_cast(e);
-  window_base_t* base = WINDOW_BASE(win);
-  widget_t* focus = widget_get_focused_widget(win);
-  return_value_if_fail(win != NULL && evt != NULL && base != NULL, RET_BAD_PARAMS);
-
-  if (focus != NULL) {
-    if (base->moving_focus_mode) {
-      keyboard_type_t keyboard_type = system_info()->keyboard_type;
-      if (keyboard_type == KEYBOARD_3KEYS) {
-        if (key_code_is_left(evt->key) || key_code_is_up(evt->key)) {
-          widget_focus_prev(focus);
-          return RET_STOP;
-        } else if (key_code_is_right(evt->key) || key_code_is_down(evt->key)) {
-          widget_focus_next(focus);
-          return RET_STOP;
-        }
-      } else {
-        if (key_code_is_left(evt->key)) {
-          widget_focus_left(focus);
-          return RET_STOP;
-        } else if (key_code_is_right(evt->key)) {
-          widget_focus_right(focus);
-          return RET_STOP;
-        } else if (key_code_is_up(evt->key)) {
-          widget_focus_up(focus);
-          return RET_STOP;
-        } else if (key_code_is_down(evt->key)) {
-          widget_focus_down(focus);
-          return RET_STOP;
-        }
-      }
+  } else {
+    /* 当窗口没有焦点控件时，设置一个默认的焦点控件以保证流程正常 */
+    if (key_code_is_enter(key)) {
+      widget_focus_first(WIDGET(base));
+      log_debug("%s: reset focus widget.\n", __FUNCTION__);
+      return RET_STOP;
     }
   }
 
   return RET_OK;
 }
 
+static ret_t window_35keys_mode_moving_focus(window_base_t* base, int key) {
+  widget_t* focus = NULL;
+  return_value_if_fail(base != NULL, RET_BAD_PARAMS);
+
+  if (!base->moving_focus_mode) {
+    return RET_OK;
+  }
+
+  focus = widget_get_focused_widget(WIDGET(base));
+  if (focus == NULL) {
+    return RET_OK;
+  }
+
+  if (KEYBOARD_3KEYS == system_info()->keyboard_type) {
+    if (key_code_is_left(key) || key_code_is_up(key)) {
+      widget_focus_prev(focus);
+      return RET_STOP;
+    } else if (key_code_is_right(key) || key_code_is_down(key)) {
+      widget_focus_next(focus);
+      return RET_STOP;
+    }
+  } else {
+    if (key_code_is_left(key)) {
+      widget_focus_left(focus);
+      return RET_STOP;
+    } else if (key_code_is_right(key)) {
+      widget_focus_right(focus);
+      return RET_STOP;
+    } else if (key_code_is_up(key)) {
+      widget_focus_up(focus);
+      return RET_STOP;
+    } else if (key_code_is_down(key)) {
+      widget_focus_down(focus);
+      return RET_STOP;
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t window_35keys_mode_on_keyup_before_children(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  key_event_t* evt = key_event_cast(e);
+  window_base_t* base = WINDOW_BASE(win);
+  return_value_if_fail(win != NULL && evt != NULL && base != NULL, RET_BAD_PARAMS);
+
+  return window_35keys_mode_activate(base, evt->key);
+}
+
+static ret_t window_35keys_mode_on_keydown_before_children(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  key_event_t* evt = key_event_cast(e);
+  window_base_t* base = WINDOW_BASE(win);
+  return_value_if_fail(win != NULL && evt != NULL && base != NULL, RET_BAD_PARAMS);
+
+  return window_35keys_mode_moving_focus(base, evt->key);
+}
+
 ret_t window_enable_35keys_mode(widget_t* win) {
-  widget_on(win, EVT_KEY_UP_BEFORE_CHILDREN, window_enable_35keys_mode_on_keyup_before_children,
-            win);
-  widget_on(win, EVT_KEY_DOWN_BEFORE_CHILDREN, window_enable_35keys_mode_on_keydown_before_children,
-            win);
+  widget_on(win, EVT_KEY_UP_BEFORE_CHILDREN, window_35keys_mode_on_keyup_before_children, win);
+  widget_on(win, EVT_KEY_DOWN_BEFORE_CHILDREN, window_35keys_mode_on_keydown_before_children, win);
   return RET_OK;
 }
 
