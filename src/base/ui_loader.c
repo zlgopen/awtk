@@ -45,8 +45,7 @@ widget_t* ui_loader_load_widget_with_parent(const char* name, widget_t* parent) 
   char applet_name[MAX_PATH + 1] = {0};
   assets_manager_t* am = assets_manager();
   ui_loader_t* loader = default_ui_loader();
-  if (strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) != 0 &&
-      assets_managers_is_applet_assets_supported()) {
+  if (!tk_str_start_with(name, STR_SCHEMA_FILE) && assets_managers_is_applet_assets_supported()) {
     const char* p = strchr(name, '.');
     if (p != NULL) {
       tk_strncpy_s(applet_name, sizeof(applet_name), name, p - name);
@@ -57,7 +56,7 @@ widget_t* ui_loader_load_widget_with_parent(const char* name, widget_t* parent) 
   ui = assets_manager_ref(am, ASSET_TYPE_UI, name);
   return_value_if_fail(ui != NULL, NULL);
 
-  if (strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) == 0 || ui->data[0] == '<') {
+  if (tk_str_start_with(name, STR_SCHEMA_FILE) || ui->data[0] == '<') {
     path_basename(name, rname, sizeof(rname) - 1);
     name = rname;
     if (strstr(name, ".xml") != NULL || ui->data[0] == '<') {
