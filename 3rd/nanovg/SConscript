@@ -15,7 +15,7 @@ env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
 
 NANOVG_BACKEND=os.environ['NANOVG_BACKEND'];
 
-elif NANOVG_BACKEND == 'AGGE':
+if NANOVG_BACKEND == 'AGGE':
   env.Library(os.path.join(LIB_DIR, 'nanovg-agge'), Glob('agge/*.cpp'))
   
 #  env['LIBS'] = ['nanovg-agge', 'agge', 'nanovg'] + env['LIBS']
