@@ -749,16 +749,6 @@ struct _widget_t {
  */
 
 /**
- * @event {event_t} EVT_ANIM_STOP
- * 控件动画被主动停止的事件。
- */
-
-/**
- * @event {event_t} EVT_ANIM_PAUSE
- * 控件动画被暂停的事件。
- */
-
-/**
  * @event {event_t} EVT_ANIM_ONCE
  * 控件动画yoyo/repeat时，完成一次的事件。
  */
@@ -766,11 +756,6 @@ struct _widget_t {
 /**
  * @event {event_t} EVT_ANIM_END
  * 控件动画完成事件。
- */
-
-/**
- * @event {event_t} EVT_WIDGET_LOAD
- * 控件加载完成事件。
  */
 
 /**
