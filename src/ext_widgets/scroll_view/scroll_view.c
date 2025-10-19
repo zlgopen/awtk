@@ -319,6 +319,10 @@ static ret_t scroll_view_on_pointer_down_abort(scroll_view_t* scroll_view, point
   return RET_OK;
 }
 
+#ifndef VELOCITY_CUT_OFF_LOWER_LIMIT
+#define VELOCITY_CUT_OFF_LOWER_LIMIT 15
+#endif /*VELOCITY_CUT_OFF_LOWER_LIMIT*/
+
 static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event_t* e) {
   widget_t* widget = WIDGET(scroll_view);
   velocity_t* v = &(scroll_view->velocity);
@@ -330,6 +334,14 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
 #ifndef WITHOUT_WIDGET_ANIMATORS
     int yv = v->yv;
     int xv = v->xv;
+
+    if (abs(yv) < VELOCITY_CUT_OFF_LOWER_LIMIT) {
+      yv = 0;
+    }
+
+    if (abs(xv) < VELOCITY_CUT_OFF_LOWER_LIMIT) {
+      xv = 0;
+    }
 #else
     int yv = 0;
     int xv = 0;
