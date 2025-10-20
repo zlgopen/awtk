@@ -95,11 +95,29 @@ typedef struct _gif_image_t {
    */
   uint32_t loop;
 
+  /**
+   * @property {bool_t} part_buffer_load_mode
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 边加载边播放模式。（比较耗费性能，但占用内存较小）
+   *
+   */
+  bool_t part_buffer_load_mode;
+
   /*private*/
   uint32_t index;
   uint32_t delay;
   uint32_t timer_id;
   uint32_t loop_done;
+  bitmap_t bitmap;
+  bool_t gif_update_flag;
+  int gif_delays;
+  bool_t gif_on_end;
+  uint32_t gif_layers;
+  void* gif_msg;
+  void* gif_cache;
+  void* gif_context;
+  const asset_info_t* gif_res;
+  assets_manager_t* gif_am;
 } gif_image_t;
 
 /**
@@ -158,6 +176,17 @@ ret_t gif_image_pause(widget_t* widget);
 ret_t gif_image_set_loop(widget_t* widget, uint32_t loop);
 
 /**
+ * @method gif_image_set_part_buffer_load_mode
+ * 设置是否使用部分加载模式。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} part_buffer_load_mode 循环播放次数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t gif_image_set_part_buffer_load_mode(widget_t* widget, bool_t part_buffer_load_mode);
+
+/**
  * @method gif_image_cast
  * 转换为gif_image对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]
@@ -168,6 +197,7 @@ ret_t gif_image_set_loop(widget_t* widget, uint32_t loop);
 widget_t* gif_image_cast(widget_t* widget);
 
 #define WIDGET_TYPE_GIF_IMAGE "gif"
+#define WIDGET_PROP_PART_BUFFER_LOAD_MODE "part_buffer_load_mode"
 
 #define GIF_IMAGE(widget) ((gif_image_t*)(gif_image_cast(WIDGET(widget))))
 

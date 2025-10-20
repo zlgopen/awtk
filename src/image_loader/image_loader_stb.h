@@ -68,6 +68,70 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
                      bitmap_format_t transparent_bitmap_format,
                      bitmap_format_t opaque_bitmap_format, lcd_orientation_t o);
 
+/*for gif image only*/
+
+/**
+ * @method stb_load_gif_next_frame
+ * 按帧加载gif图片。
+ *
+ * @annotation ["static"]
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @param {void**} gif_context gif_context对象。
+ * @param {void**} gif_msg gif_msg对象。
+ * @param {void**} gif_cache gif_cache对象。
+ * @param {int*} gif_delays gif_delays对象。
+ * @param {const uint8_t*} buff 资源数据。
+ * @param {uint32_t} buff_size 资源数据长度。
+ * @param {int*} layers 图层数量。
+ * @param {bool_t*} on_end 是否结束。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t stb_load_gif_next_frame(bitmap_t* bitmap, void** gif_context, void** gif_msg, void** gif_cache,
+                              int* gif_delays, const uint8_t* buff, uint32_t buff_size,
+                              int* layers, bool_t* on_end);
+
+
+/**
+ * @method stb_gif_frame_create
+ * 创建gif图缓存。
+ *
+ * @annotation ["static"]
+ * @param {void**} gif_context 对象。
+ * @param {void**} gif_msg 对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t stb_gif_frame_create(void** gif_context, void** gif_msg);
+
+/**
+ * @method stb_gif_frame_reset
+ * 重置gif图缓存。
+ *
+ * @annotation ["static"]
+ * @param {void**} gif_context 对象。
+ * @param {void**} gif_msg 对象。
+ * @param {void**} gif_cache 对象。
+ * @param {bool_t} is_reset_gif_cache 是否重置gif_cache。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t stb_gif_frame_reset(void** gif_context, void** gif_msg, void** gif_cache,
+                          bool_t is_reset_gif_cache);
+
+ /**
+ * @method stb_gif_frame_free
+ * 释放gif图缓存。
+ *
+ * @annotation ["static"]
+ * @param {void**} gif_context 对象。
+ * @param {void**} gif_msg 对象。
+ * @param {void**} gif_cache 对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t stb_gif_frame_free(void** gif_context, void** gif_msg, void** gif_cache);
+
 END_C_DECLS
 
 #endif /*TK_IMAGE_LOADER_STB_H*/
