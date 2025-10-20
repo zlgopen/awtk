@@ -92,14 +92,13 @@ ret_t stb_load_gif_next_frame(bitmap_t* bitmap, void** gif_context, void** gif_m
   stbi_uc *two_back = 0;
   uint8_t* data = NULL;
   ret_t ret = RET_FAIL;
-  system_info_t* info = system_info();
   lcd_orientation_t o = LCD_ORIENTATION_0;
   bitmap_format_t opaque_bitmap_format = BITMAP_FMT_RGBA8888;
   return_value_if_fail(bitmap != NULL && buff != NULL, RET_FAIL);
 
 #if !defined(WITH_VGCANVAS_CAIRO) && defined(WITH_FAST_LCD_PORTRAIT)
   if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
-    o = info->lcd_orientation;
+    o = system_info()->lcd_orientation;
   }
 #endif
 

@@ -1102,7 +1102,6 @@ ret_t str_append_format(str_t* str, uint32_t size, const char* format, ...) {
 }
 
 ret_t str_append_vformat(str_t* str, uint32_t size, const char* format, va_list ap) {
-  va_list va;
   int32_t ret = 0;
   return_value_if_fail(str != NULL && format != NULL, RET_BAD_PARAMS);
   return_value_if_fail(str_extend(str, str->size + size + 1) == RET_OK, RET_OOM);

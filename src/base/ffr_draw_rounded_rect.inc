@@ -662,7 +662,6 @@ static void ffr_draw_rounded_rect_draw_stroke_bottom_right_with_vg(vgcanvas_t* v
 }
 
 static void ffr_draw_rounded_rect_draw_stroke_with_vg(canvas_t* c, vgcanvas_t* vg, uint32_t border_width, color_t color, ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], int32_t border_model) {
-  uint32_t i = 0;
   pointf_t start_pos1 = {0, 0};
   pointf_t start_pos2 = {0, 0};
   vgcanvas_save(vg);

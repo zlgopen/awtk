@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
         if (tk_istream_wait_for_data(istream, 0xFFFFFFFF) != RET_OK) {
           uint64_t exit_code = 0;
           ret = tk_iostream_get_exit_code(process, &exit_code);
-          printf("[info] close process ! exit_code(is %s) : %lu(%c), ret : %d \r\n", data, exit_code, (char)exit_code, ret);
+          printf("[info] close process ! exit_code(is %s) : %lu(%c), ret : %d \r\n", data, (long)exit_code, (char)exit_code, ret);
         }
       }
     }

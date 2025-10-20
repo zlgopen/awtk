@@ -251,7 +251,6 @@ static ret_t gif_image_paint_self_part_buffer_load(widget_t* widget, canvas_t* c
   wh_t h = 0;
   rect_t src;
   rect_t dst;
-  uint32_t frames_nr;
   vgcanvas_t* vg = NULL;
   gif_image_t* image = GIF_IMAGE(widget);
   image_base_t* image_base = IMAGE_BASE(widget);

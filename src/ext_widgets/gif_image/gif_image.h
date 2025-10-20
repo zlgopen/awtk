@@ -112,7 +112,7 @@ typedef struct _gif_image_t {
   bool_t gif_update_flag;
   int gif_delays;
   bool_t gif_on_end;
-  uint32_t gif_layers;
+  int32_t gif_layers;
   void* gif_msg;
   void* gif_cache;
   void* gif_context;
