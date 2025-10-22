@@ -1297,3 +1297,31 @@ TEST(Str, escape_char1) {
 
   str_reset(&s);
 }
+
+TEST(Str, dequote) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 0);
+
+  ASSERT_EQ(str_set(s, "\"abc\""), RET_OK);
+  ASSERT_EQ(str_dequote(s, '\"'), RET_OK);
+  ASSERT_EQ(string(s->str), "abc");
+
+  ASSERT_EQ(str_set(s, "'abc'"), RET_OK);
+  ASSERT_EQ(str_dequote(s, '\''), RET_OK);
+  ASSERT_EQ(string(s->str), "abc");
+
+  ASSERT_EQ(str_set(s, "abc"), RET_OK);
+  ASSERT_NE(str_dequote(s, '\"'), RET_OK);
+  ASSERT_EQ(string(s->str), "abc");
+
+  ASSERT_EQ(str_set(s, "abc"), RET_OK);
+  ASSERT_NE(str_dequote(s, '\''), RET_OK);
+  ASSERT_EQ(string(s->str), "abc");
+
+  ASSERT_EQ(str_set(s, ""), RET_OK);
+  ASSERT_NE(str_dequote(s, '\''), RET_OK);
+  ASSERT_EQ(string(s->str), "");
+
+  str_reset(s);
+}

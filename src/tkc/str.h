@@ -889,6 +889,16 @@ ret_t str_append_format_padding(str_t* str, uint32_t size, const char* format, .
 ret_t str_append_json_pair(str_t* str, const char* key, const value_t* value);
 
 /**
+ * @method str_dequote
+ * 去除字符串首尾的引号。
+ * @param {str_t*} str str对象。
+ * @param {char} quote_char 引号字符，如'"'或'\''。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_dequote(str_t* str, char quote_char);
+
+/**
  * @method str_escape_char
  * 转义字符。
  * > 如：'\n'转义为"n"。

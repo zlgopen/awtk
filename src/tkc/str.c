@@ -1195,3 +1195,16 @@ ret_t str_append_json_pair(str_t* str, const char* key, const value_t* value) {
 
   return RET_OK;
 }
+
+ret_t str_dequote(str_t* str, char quote_char) {
+  return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str->size >= 2, RET_BAD_PARAMS);
+  return_value_if_fail(str->str[0] == quote_char && str->str[str->size - 1] == quote_char,
+                       RET_BAD_PARAMS);
+
+  memmove(str->str, str->str + 1, str->size - 2);
+  str->size -= 2;
+  str->str[str->size] = '\0';
+
+  return RET_OK;
+}
