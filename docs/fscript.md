@@ -967,13 +967,15 @@ a = exec_ex("clear", "all")
 ##### 原型
 
 ```js
-var_exists(name) => bool
+var_exists('var_name') => bool
 ```
+
+> 变量名要用引号引起来。
 
 ##### 示例
 
 ```js
-value = var_exists(a) ? a : b;
+value = var_exists('a') ? a : b;
 ```
 
 ### 4.2 字符串函数

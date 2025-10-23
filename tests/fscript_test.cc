@@ -3659,12 +3659,12 @@ TEST(FScript, prop_exist) {
   ASSERT_STREQ(value_str(&v), "ABC");
   value_reset(&v);
   
-  fscript_eval(obj, "var_exists(str_b)?str_b:str_a", &v);
+  fscript_eval(obj, "var_exists('str_b')?str_b:str_a", &v);
   ASSERT_STREQ(value_str(&v), "ABC");
   value_reset(&v);
 
   tk_object_remove_prop(obj, "str_b");
-  fscript_eval(obj, "var_exists(str_b)?str_b:str_a", &v);
+  fscript_eval(obj, "var_exists('str_b')?str_b:str_a", &v);
   ASSERT_STREQ(value_str(&v), "abc");
   value_reset(&v);
 
