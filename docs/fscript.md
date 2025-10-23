@@ -958,6 +958,24 @@ a = exec_ex("clear", "all")
 
 > 具体功能与 object 的实现有关。
 
+#### 4.1.27 var_exists
+
+> 检查变量是否存在
+
+----------------------------
+
+##### 原型
+
+```js
+var_exists(name) => bool
+```
+
+##### 示例
+
+```js
+value = var_exists(a) ? a : b;
+```
+
 ### 4.2 字符串函数
 
 #### 4.2.1 join

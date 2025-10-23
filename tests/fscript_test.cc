@@ -3647,3 +3647,26 @@ TEST(FScript, create_ex2_3) {
   ASSERT_EQ(obj->ref_count, 1);
   fscript_destroy(fscript);
 }
+
+TEST(FScript, prop_exist) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  tk_object_set_prop_str(obj, "str_a", "abc");
+  tk_object_set_prop_str(obj, "str_b", "ABC");
+
+  fscript_eval(obj, "str_b?str_b:str_a", &v);
+  ASSERT_STREQ(value_str(&v), "ABC");
+  value_reset(&v);
+  
+  fscript_eval(obj, "var_exists(str_b)?str_b:str_a", &v);
+  ASSERT_STREQ(value_str(&v), "ABC");
+  value_reset(&v);
+
+  tk_object_remove_prop(obj, "str_b");
+  fscript_eval(obj, "var_exists(str_b)?str_b:str_a", &v);
+  ASSERT_STREQ(value_str(&v), "abc");
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}

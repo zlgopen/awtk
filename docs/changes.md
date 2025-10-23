@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/10/23
+  * 增加fscript 函数 var_exists
+
 2025/10/22
   * 增加函数 str_dequote
 
