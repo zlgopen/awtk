@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/10/27
+  * fix-mingw-win32-macro (感谢陈谭提供补丁)
+
 2025/10/23
   * 增加fscript 函数 var_exists
 

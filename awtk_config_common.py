@@ -158,31 +158,28 @@ elif OS_NAME == 'Windows':
     if TOOLS_NAME == '':
         OS_LIBS = ['gdi32', 'user32', 'winmm.lib', 'imm32.lib', 'version.lib', 'shell32.lib', 'Setupapi',
                    'ole32.lib', 'Oleaut32.lib', 'Advapi32.lib', 'DelayImp.lib', 'psapi.lib', "ws2_32"]
-        OS_FLAGS = '-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE   /FS /Z7 /utf-8 '
+        OS_FLAGS = '-DWIN32 -DWINDOWS /EHsc -D_CONSOLE   /FS /Z7 /utf-8 '
         if TARGET_ARCH == 'x86':
             OS_LINKFLAGS = '/MACHINE:X86 '
             OS_SUBSYSTEM_CONSOLE = '/SUBSYSTEM:CONSOLE,5.01  '
             OS_SUBSYSTEM_WINDOWS = '/SUBSYSTEM:WINDOWS,5.01  '
-            OS_FLAGS = OS_FLAGS + ' -D_WIN32 '
         else:
             OS_FLAGS = OS_FLAGS + ' -DWITH_64BIT_CPU '
             OS_LINKFLAGS = '/MACHINE:X64 '
             OS_SUBSYSTEM_CONSOLE = '/SUBSYSTEM:CONSOLE  '
             OS_SUBSYSTEM_WINDOWS = '/SUBSYSTEM:WINDOWS  '
-            OS_FLAGS = OS_FLAGS + ' -D_WIN64 '
         OS_FLAGS = OS_FLAGS + ' -DHAVE_LIBC '
 
     elif TOOLS_NAME == 'mingw':
         OS_LIBS = ['kernel32', 'gdi32', 'user32', 'winmm', 'imm32', 'version', 'shell32', 'Setupapi',
                    'ole32', 'Oleaut32', 'Advapi32', 'oleaut32', 'uuid', 'stdc++', "ws2_32", "iphlpapi"]
-        OS_FLAGS = '-DMINGW -DWINDOWS -D_CONSOLE  -Wall'
+        OS_FLAGS = '-DWIN32 -DMINGW -DWINDOWS -D_CONSOLE  -Wall'
         OS_LINKFLAGS = ' -Wl,-rpath=./bin -Wl,-rpath=./ '
         OS_SUBSYSTEM_CONSOLE = ' -mconsole  '
         OS_SUBSYSTEM_WINDOWS = ' -mwindows  '
         COMMON_CFLAGS = COMMON_CFLAGS+' -std=gnu99 '
         OS_FLAGS = OS_FLAGS+' -U__FLT_EVAL_METHOD__ -D__FLT_EVAL_METHOD__=0 -DDECLSPEC=  '
 
-    #OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 -D_DEBUG /MDd '
     OS_FLAGS = OS_FLAGS + '-D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS -D_HAS_EXCEPTIONS=0 -D_HAS_ITERATOR_DEBUGGING=0 -D_ITERATOR_DEBUG_LEVEL=0 -D_SCL_SECURE=0'
     OS_FLAGS = OS_FLAGS + \
         '-D_SECURE_SCL=0 -D_SCL_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE '
