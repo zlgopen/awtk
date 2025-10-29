@@ -351,6 +351,18 @@ ret_t scroll_bar_set_wheel_scroll(widget_t* widget, bool_t scroll);
  */
 ret_t scroll_bar_set_scroll_delta(widget_t* widget, uint32_t scroll_delta);
 
+/**
+ * @method scroll_bar_set_scroll_rows
+ * 设置每次鼠标滚动行数(仅对desktop风格的滚动条有效)。
+ * 
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget scroll_bar控件。
+ * @param {uint8_t} scroll_rows 每次鼠标滚动行数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_bar_set_scroll_rows(widget_t* widget, uint8_t scroll_rows);
+
 /* private */
 
 #define SCROLL_BAR_PROP_IS_MOBILE "is_mobile"
