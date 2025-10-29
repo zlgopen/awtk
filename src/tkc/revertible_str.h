@@ -88,7 +88,8 @@ typedef struct _revertible_str_t {
  *
  * @return {revertible_str_t*} str对象。
  */
-revertible_str_t* revertible_str_init(revertible_str_t* str, uint32_t capacity, uint32_t offset_capacity);
+revertible_str_t* revertible_str_init(revertible_str_t* str, uint32_t capacity,
+                                      uint32_t offset_capacity);
 
 /**
  * @method revertible_str_deinit
@@ -146,7 +147,7 @@ const char* revertible_str_get_str(const revertible_str_t* str);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t revertible_str_append(revertible_str_t* str, const char* text); 
+ret_t revertible_str_append(revertible_str_t* str, const char* text);
 
 /**
  * @method revertible_str_append_format
@@ -162,4 +163,3 @@ ret_t revertible_str_append_format(revertible_str_t* str, uint32_t size, const c
 END_C_DECLS
 
 #endif /*TK_revertible_str_H*/
-

@@ -172,7 +172,8 @@ double tk_atof(const char* str) {
   return neg ? -result : result;
 }
 
-static const char* tk_itoa_simple(char* str, int len, int64_t n, bool_t is_unsigned, const char** end) {
+static const char* tk_itoa_simple(char* str, int len, int64_t n, bool_t is_unsigned,
+                                  const char** end) {
   int i = 0;
   int need_len = 0;
   uint64_t value = is_unsigned ? (uint64_t)n : (n < 0 ? -n : n);

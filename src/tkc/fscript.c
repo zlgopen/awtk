@@ -3085,24 +3085,6 @@ static ret_t func_abs(fscript_t* fscript, fscript_args_t* args, value_t* result)
   return RET_OK;
 }
 
-static ret_t func_var_exists(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  value_t v;
-  const char* name = NULL;
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  name = value_str(args->args);
-  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
-
-  value_set_int(&v, 0);
-  if (fscript_get_var(fscript, name, &v) == RET_OK) {
-    value_set_bool(result, TRUE);
-  } else {
-    value_set_bool(result, FALSE);
-  }
-  value_reset(&v);
-
-  return RET_OK;
-}
-
 static ret_t func_len(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   char buff[64];
   const char* str = NULL;
@@ -3330,7 +3312,6 @@ static const func_entry_t s_builtin_funcs[] = {{"func", func_function_def, 4},
                                                {"trim", func_trim, 1},
                                                {"&&", func_and, 2},
                                                {"abs", func_abs, 1},
-                                               {"var_exists", func_var_exists, 1},
                                                {"round", func_round, 1},
                                                {"floor", func_floor, 1},
                                                {"ceil", func_ceil, 1},

@@ -113,7 +113,7 @@ typedef struct _rich_text_t {
    * 标识控件是否需要重新绘图。
    */
   bool_t need_reset;
-  
+
   /**
    * @property {bool_t} word_wrap
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]

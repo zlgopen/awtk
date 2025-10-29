@@ -617,8 +617,8 @@ static ret_t rich_text_init(widget_t* widget) {
   return RET_OK;
 }
 
-static const char* s_rich_text_clone_properties[] = {WIDGET_PROP_MARGIN, WIDGET_PROP_LINE_GAP, WIDGET_PROP_WORD_WRAP,
-                                                     NULL};
+static const char* s_rich_text_clone_properties[] = {WIDGET_PROP_MARGIN, WIDGET_PROP_LINE_GAP,
+                                                     WIDGET_PROP_WORD_WRAP, NULL};
 TK_DECL_VTABLE(rich_text) = {.size = sizeof(rich_text_t),
                              .type = "rich_text",
                              .get_parent_vt = TK_GET_PARENT_VTABLE(widget),

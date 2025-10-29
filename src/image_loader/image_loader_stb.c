@@ -80,16 +80,17 @@ static uint8_t* convert_1_to_4(uint8_t* src, uint32_t w, uint32_t h) {
   return data;
 }
 
-ret_t stb_load_gif_next_frame(bitmap_t* bitmap, void** gif_context, void** gif_msg, void** gif_cache, int* gif_delays,
-                              const uint8_t* buff, uint32_t buff_size, int* layers, bool_t* is_end) {
+ret_t stb_load_gif_next_frame(bitmap_t* bitmap, void** gif_context, void** gif_msg,
+                              void** gif_cache, int* gif_delays, const uint8_t* buff,
+                              uint32_t buff_size, int* layers, bool_t* is_end) {
   int comp;
   int stride;
   int req_comp = 0;
-  stbi_uc *u = 0;
-  stbi_uc *out = 0;
+  stbi_uc* u = 0;
+  stbi_uc* out = 0;
   stbi__gif* g = 0;
   stbi__context* s = 0;
-  stbi_uc *two_back = 0;
+  stbi_uc* two_back = 0;
   uint8_t* data = NULL;
   ret_t ret = RET_FAIL;
   lcd_orientation_t o = LCD_ORIENTATION_0;
@@ -182,9 +183,11 @@ ret_t stb_load_gif_next_frame(bitmap_t* bitmap, void** gif_context, void** gif_m
     if (opaque_bitmap_format == BITMAP_FMT_MONO) {
       ret = bitmap_init_from_rgba(bitmap, g->w, g->h, BITMAP_FMT_MONO, data, comp, o);
     } else {
-      if (opaque_bitmap_format == BITMAP_FMT_BGR565 && rgba_data_is_opaque(data, g->w, g->h, comp)) {
+      if (opaque_bitmap_format == BITMAP_FMT_BGR565 &&
+          rgba_data_is_opaque(data, g->w, g->h, comp)) {
         ret = bitmap_init_from_rgba(bitmap, g->w, g->h, BITMAP_FMT_BGR565, data, comp, o);
-      } else if (opaque_bitmap_format == BITMAP_FMT_RGB565 && rgba_data_is_opaque(data, g->w, g->h, comp)) {
+      } else if (opaque_bitmap_format == BITMAP_FMT_RGB565 &&
+                 rgba_data_is_opaque(data, g->w, g->h, comp)) {
         ret = bitmap_init_from_rgba(bitmap, g->w, g->h, BITMAP_FMT_RGB565, data, comp, o);
       } else if (opaque_bitmap_format == BITMAP_FMT_BGRA8888) {
         ret = bitmap_init_from_rgba(bitmap, g->w, g->h, BITMAP_FMT_BGRA8888, data, comp, o);

@@ -66,7 +66,7 @@ ret_t process_kill(process_handle_t handle) {
 ret_t process_get_exit_code(process_handle_t handle, uint64_t* exit_code) {
   DWORD ExitCode = 0;
   return_value_if_fail(handle != NULL && exit_code != NULL, RET_BAD_PARAMS);
-  
+
   if (!GetExitCodeProcess(handle->proc_info.hProcess, &ExitCode)) {
     return RET_FAIL;
   }
@@ -292,7 +292,7 @@ static void* process_wait_for_on_thread(void* args) {
   if (WIFEXITED(stat)) {
     handle->exit_code = WEXITSTATUS(stat);  // 需要添加 exit_code 字段
   } else {
-    handle->exit_code = -1; // 非正常退出
+    handle->exit_code = -1;  // 非正常退出
   }
 
   handle->broken = TRUE;
@@ -348,9 +348,9 @@ ret_t process_kill(process_handle_t handle) {
 
 ret_t process_get_exit_code(process_handle_t handle, uint64_t* exit_code) {
   return_value_if_fail(handle != NULL && exit_code != NULL, RET_BAD_PARAMS);
-  
+
   if (!handle->broken) {
-    return RET_BUSY; // 进程仍在运行
+    return RET_BUSY;  // 进程仍在运行
   }
   *exit_code = handle->exit_code;
   return RET_OK;

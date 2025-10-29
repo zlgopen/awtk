@@ -3,7 +3,6 @@
 #include "common.h"
 
 TEST(revertible_str, create) {
-  
   revertible_str_t* s = revertible_str_create(10, 10);
   ASSERT_EQ(s != NULL, true);
 
@@ -23,7 +22,6 @@ TEST(revertible_str, create) {
 }
 
 TEST(revertible_str, append) {
-  
   revertible_str_t s;
   revertible_str_init(&s, 10, 10);
 
@@ -43,7 +41,6 @@ TEST(revertible_str, append) {
 }
 
 TEST(revertible_str, append_format) {
-  
   revertible_str_t s;
   revertible_str_init(&s, 10, 10);
 
@@ -61,4 +58,3 @@ TEST(revertible_str, append_format) {
 
   revertible_str_deinit(&s);
 }
-

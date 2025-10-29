@@ -28,7 +28,8 @@
 #ifdef WITH_STB_IMAGE
 #include "image_loader/image_loader_stb.h"
 
-static ret_t gif_image_load_gif_stb(widget_t* widget, const char* name, bitmap_t* bitmap, bool_t is_fragmented_loading) {
+static ret_t gif_image_load_gif_stb(widget_t* widget, const char* name, bitmap_t* bitmap,
+                                    bool_t is_fragmented_loading) {
   gif_image_t* image = GIF_IMAGE(widget);
   assets_manager_t* am = image->gif_am;
   locale_info_t* locale = locale_info();
@@ -64,8 +65,9 @@ static ret_t gif_image_load_gif_stb(widget_t* widget, const char* name, bitmap_t
         res = assets_manager_ref(am, ASSET_TYPE_IMAGE, real_name);
         if (res != NULL) {
           image->gif_res = res;
-          return stb_load_gif_next_frame(bitmap, &(image->gif_context), &(image->gif_msg), &(image->gif_cache), &(image->gif_delays),
-                                         res->data, res->size, &(image->gif_layers), &(image->gif_on_end));
+          return stb_load_gif_next_frame(bitmap, &(image->gif_context), &(image->gif_msg),
+                                         &(image->gif_cache), &(image->gif_delays), res->data,
+                                         res->size, &(image->gif_layers), &(image->gif_on_end));
         }
       }
 
@@ -73,33 +75,38 @@ static ret_t gif_image_load_gif_stb(widget_t* widget, const char* name, bitmap_t
       res = assets_manager_ref(am, ASSET_TYPE_IMAGE, real_name);
       if (res != NULL) {
         image->gif_res = res;
-        return stb_load_gif_next_frame(bitmap, &(image->gif_context), &(image->gif_msg), &(image->gif_cache), &(image->gif_delays),
-                                       res->data, res->size, &(image->gif_layers), &(image->gif_on_end));
+        return stb_load_gif_next_frame(bitmap, &(image->gif_context), &(image->gif_msg),
+                                       &(image->gif_cache), &(image->gif_delays), res->data,
+                                       res->size, &(image->gif_layers), &(image->gif_on_end));
       }
 
       tk_replace_locale(name, real_name, "");
       res = assets_manager_ref(am, ASSET_TYPE_IMAGE, real_name);
       if (res != NULL) {
         image->gif_res = res;
-        return stb_load_gif_next_frame(bitmap, &(image->gif_context), &(image->gif_msg), &(image->gif_cache), &(image->gif_delays),
-                                       res->data, res->size, &(image->gif_layers), &(image->gif_on_end));
+        return stb_load_gif_next_frame(bitmap, &(image->gif_context), &(image->gif_msg),
+                                       &(image->gif_cache), &(image->gif_delays), res->data,
+                                       res->size, &(image->gif_layers), &(image->gif_on_end));
       }
 
       return RET_FAIL;
     } else {
       res = assets_manager_ref(am, ASSET_TYPE_IMAGE, name);
       image->gif_res = res;
-      return stb_load_gif_next_frame(bitmap, &(image->gif_context), &(image->gif_msg), &(image->gif_cache), &(image->gif_delays),
-                                     res->data, res->size, &(image->gif_layers), &(image->gif_on_end));
+      return stb_load_gif_next_frame(bitmap, &(image->gif_context), &(image->gif_msg),
+                                     &(image->gif_cache), &(image->gif_delays), res->data,
+                                     res->size, &(image->gif_layers), &(image->gif_on_end));
     }
   } else {
-    return stb_load_gif_next_frame(bitmap, &(image->gif_context), &(image->gif_msg), &(image->gif_cache), &(image->gif_delays),
-                                   image->gif_res->data, image->gif_res->size, &(image->gif_layers), &(image->gif_on_end));
+    return stb_load_gif_next_frame(
+        bitmap, &(image->gif_context), &(image->gif_msg), &(image->gif_cache), &(image->gif_delays),
+        image->gif_res->data, image->gif_res->size, &(image->gif_layers), &(image->gif_on_end));
   }
 }
 #endif /*WITH_STB_IMAGE*/
 
-static ret_t gif_image_load_gif(widget_t* widget, const char* name, bitmap_t* bitmap, bool_t is_fragmented_loading) {
+static ret_t gif_image_load_gif(widget_t* widget, const char* name, bitmap_t* bitmap,
+                                bool_t is_fragmented_loading) {
   gif_image_t* image = GIF_IMAGE(widget);
   return_value_if_fail(image != NULL && name != NULL && bitmap != NULL, RET_BAD_PARAMS);
 
@@ -263,7 +270,7 @@ static ret_t gif_image_paint_self_part_buffer_load(widget_t* widget, canvas_t* c
     return RET_OK;
   }
   vg = canvas_get_vgcanvas(c);
-  
+
   if (bitmap->buffer == NULL) {
     return RET_BAD_PARAMS;
   }
@@ -298,8 +305,9 @@ static ret_t gif_image_paint_self_part_buffer_load(widget_t* widget, canvas_t* c
       timer_info_t* timer = (timer_info_t*)timer_find(image->timer_id);
       if (timer) timer->duration = image->delay;
       if (image->gif_on_end) {
-        return_value_if_fail(gif_image_load_gif(widget, image_base->image, bitmap, image->part_buffer_load_mode) == RET_OK,
-                                                RET_BAD_PARAMS);
+        return_value_if_fail(gif_image_load_gif(widget, image_base->image, bitmap,
+                                                image->part_buffer_load_mode) == RET_OK,
+                             RET_BAD_PARAMS);
       }
     }
   } else if (image->timer_id != TK_INVALID_ID) {
@@ -345,11 +353,16 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   return gif_image_paint_self_normal(widget, c);
 }
 
-static const char* s_gif_image_properties[] = {WIDGET_PROP_IMAGE,     WIDGET_PROP_SCALE_X,
-                                               WIDGET_PROP_SCALE_Y,   WIDGET_PROP_ANCHOR_X,
-                                               WIDGET_PROP_ANCHOR_Y,  WIDGET_PROP_ROTATION,
-                                               WIDGET_PROP_CLICKABLE, WIDGET_PROP_SELECTABLE,
-                                               WIDGET_PROP_LOOP,      WIDGET_PROP_PART_BUFFER_LOAD_MODE,
+static const char* s_gif_image_properties[] = {WIDGET_PROP_IMAGE,
+                                               WIDGET_PROP_SCALE_X,
+                                               WIDGET_PROP_SCALE_Y,
+                                               WIDGET_PROP_ANCHOR_X,
+                                               WIDGET_PROP_ANCHOR_Y,
+                                               WIDGET_PROP_ROTATION,
+                                               WIDGET_PROP_CLICKABLE,
+                                               WIDGET_PROP_SELECTABLE,
+                                               WIDGET_PROP_LOOP,
+                                               WIDGET_PROP_PART_BUFFER_LOAD_MODE,
                                                NULL};
 
 static ret_t gif_image_on_destroy(widget_t* widget) {
@@ -405,9 +418,11 @@ ret_t gif_image_stop(widget_t* widget) {
 #ifdef WITH_STB_IMAGE
   if (gif_image->part_buffer_load_mode) {
     return_value_if_fail(am != NULL, RET_BAD_PARAMS);
-    stb_gif_frame_reset(&(gif_image->gif_context), &(gif_image->gif_msg), &(gif_image->gif_cache), FALSE);
+    stb_gif_frame_reset(&(gif_image->gif_context), &(gif_image->gif_msg), &(gif_image->gif_cache),
+                        FALSE);
     gif_image->gif_layers = 0;
-    gif_image_load_gif(widget, image_base->image, &(gif_image->bitmap), gif_image->part_buffer_load_mode);
+    gif_image_load_gif(widget, image_base->image, &(gif_image->bitmap),
+                       gif_image->part_buffer_load_mode);
   }
 #endif /*WITH_STB_IMAGE*/
 #endif /*AWTK_WEB*/
@@ -438,7 +453,8 @@ ret_t gif_image_set_part_buffer_load_mode(widget_t* widget, bool_t part_buffer_l
 #ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
   if (gif_image->part_buffer_load_mode && !part_buffer_load_mode) {
-    stb_gif_frame_reset(&(gif_image->gif_context), &(gif_image->gif_msg), &(gif_image->gif_cache), FALSE);
+    stb_gif_frame_reset(&(gif_image->gif_context), &(gif_image->gif_msg), &(gif_image->gif_cache),
+                        FALSE);
     assets_manager_unref(am, gif_image->gif_res);
     gif_image->gif_res = NULL;
   }
@@ -461,11 +477,13 @@ ret_t gif_image_set_name(widget_t* widget, const char* name) {
 #ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
   if (gif_image->part_buffer_load_mode) {
-    stb_gif_frame_reset(&(gif_image->gif_context), &(gif_image->gif_msg), &(gif_image->gif_cache), TRUE);
+    stb_gif_frame_reset(&(gif_image->gif_context), &(gif_image->gif_msg), &(gif_image->gif_cache),
+                        TRUE);
     assets_manager_unref(gif_image->gif_am, gif_image->gif_res);
     gif_image->gif_res = NULL;
     gif_image->gif_layers = 0;
-    gif_image_load_gif(widget, image_base->image, &(gif_image->bitmap), gif_image->part_buffer_load_mode);
+    gif_image_load_gif(widget, image_base->image, &(gif_image->bitmap),
+                       gif_image->part_buffer_load_mode);
   }
 #endif /*WITH_STB_IMAGE*/
 #endif /*AWTK_WEB*/

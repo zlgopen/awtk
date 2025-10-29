@@ -87,10 +87,9 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t stb_load_gif_next_frame(bitmap_t* bitmap, void** gif_context, void** gif_msg, void** gif_cache,
-                              int* gif_delays, const uint8_t* buff, uint32_t buff_size,
-                              int* layers, bool_t* on_end);
-
+ret_t stb_load_gif_next_frame(bitmap_t* bitmap, void** gif_context, void** gif_msg,
+                              void** gif_cache, int* gif_delays, const uint8_t* buff,
+                              uint32_t buff_size, int* layers, bool_t* on_end);
 
 /**
  * @method stb_gif_frame_create
@@ -119,7 +118,7 @@ ret_t stb_gif_frame_create(void** gif_context, void** gif_msg);
 ret_t stb_gif_frame_reset(void** gif_context, void** gif_msg, void** gif_cache,
                           bool_t is_reset_gif_cache);
 
- /**
+/**
  * @method stb_gif_frame_free
  * 释放gif图缓存。
  *

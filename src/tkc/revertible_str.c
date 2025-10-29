@@ -47,7 +47,8 @@ static ret_t revertible_str_add_offset(revertible_str_t* str, uint32_t offset) {
   return RET_OK;
 }
 
-revertible_str_t* revertible_str_init(revertible_str_t* str, uint32_t capacity, uint32_t offset_capacity) {
+revertible_str_t* revertible_str_init(revertible_str_t* str, uint32_t capacity,
+                                      uint32_t offset_capacity) {
   return_value_if_fail(str != NULL, NULL);
   return_value_if_fail(str_init(&str->base, capacity) != NULL, NULL);
   str->offsets = TKMEM_ZALLOCN(uint32_t, offset_capacity);
@@ -62,7 +63,7 @@ revertible_str_t* revertible_str_init(revertible_str_t* str, uint32_t capacity, 
 }
 
 ret_t revertible_str_deinit(revertible_str_t* str) {
-  return_value_if_fail(str!= NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
   if (str->offsets != NULL) {
     TKMEM_FREE(str->offsets);
     str->offsets = NULL;
@@ -131,6 +132,6 @@ ret_t revertible_str_append_format(revertible_str_t* str, uint32_t size, const c
 }
 
 const char* revertible_str_get_str(const revertible_str_t* str) {
-  return_value_if_fail(str!= NULL, NULL);
-  return str->base.str; 
+  return_value_if_fail(str != NULL, NULL);
+  return str->base.str;
 }

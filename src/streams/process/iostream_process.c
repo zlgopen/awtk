@@ -173,7 +173,7 @@ ret_t tk_iostream_process_kill(tk_iostream_t* iostream) {
 
 ret_t tk_iostream_get_exit_code(tk_iostream_t* iostream, uint64_t* exit_code) {
   tk_iostream_process_t* iostream_process = TK_IOSTREAM_PROCESS(iostream);
-  return_value_if_fail(iostream_process!= NULL && exit_code != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(iostream_process != NULL && exit_code != NULL, RET_BAD_PARAMS);
   return process_get_exit_code(iostream_process->handle, exit_code);
 }
 
@@ -196,4 +196,3 @@ ret_t tk_iostream_process_set_show_window(tk_iostream_t* iostream, bool_t show_w
   iostream_process->start_info.show_window = show_window;
   return RET_OK;
 }
-
