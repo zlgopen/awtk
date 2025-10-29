@@ -56,6 +56,11 @@ static ret_t list_view_get_prop(widget_t* widget, const char* name, value_t* v) 
   } else if (tk_str_eq(name, WIDGET_PROP_ITEM_WIDTH)) {
     value_set_int(v, list_view->item_width);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ROW) /* scroll_bar need */) {
+    if (list_view->item_height > 0) {
+      value_set_int(v, list_view->item_height);
+      return RET_OK;
+    }
   }
 
   return RET_NOT_FOUND;

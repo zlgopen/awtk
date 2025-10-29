@@ -226,6 +226,7 @@
 #include "default/inc/ui/list_view_h.data"
 #include "default/inc/ui/floating_keyboard.data"
 #include "default/inc/ui/color_picker_rgb.data"
+#include "default/inc/ui/scroll_rows.data"
 #include "default/inc/ui/tab_bottom_compact.data"
 #include "default/inc/ui/popup.data"
 #include "default/inc/ui/overlay_test.data"
@@ -1173,6 +1174,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_list_view_h_default);
   assets_manager_add(am, ui_floating_keyboard_default);
   assets_manager_add(am, ui_color_picker_rgb_default);
+  assets_manager_add(am, ui_scroll_rows_default);
   assets_manager_add(am, ui_tab_bottom_compact_default);
   assets_manager_add(am, ui_popup_default);
   assets_manager_add(am, ui_overlay_test_default);

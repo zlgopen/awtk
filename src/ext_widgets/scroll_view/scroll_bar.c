@@ -53,7 +53,8 @@ static ret_t scroll_bar_desktop_init(widget_t* widget);
 static ret_t scroll_bar_update_dragger(widget_t* widget);
 static ret_t scroll_bar_create_children(widget_t* widget);
 static ret_t scroll_bar_set_is_mobile(widget_t* widget, bool_t value);
-widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+static ret_t scroll_bar_set_scroll_rows(widget_t* widget, uint8_t scroll_rows);
+static widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /*mobile*/
 static ret_t scroll_bar_mobile_get_dragger_size(widget_t* widget, rect_t* r) {
@@ -472,6 +473,13 @@ static ret_t scroll_bar_create_children(widget_t* widget) {
   }
 
   scroll_bar->row = 30;
+  if (widget->parent != NULL) {
+    value_t v;
+    if (RET_OK == widget_get_prop(widget->parent, WIDGET_PROP_ROW, &v)) {
+      scroll_bar->row = value_int(&v);
+    }
+  }
+
   scroll_bar->dragger = dragger;
   widget_set_need_relayout_children(widget);
 
@@ -533,6 +541,9 @@ static ret_t scroll_bar_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, SCROLL_BAR_PROP_SCROLL_DELTA)) {
     value_set_uint32(v, scroll_bar->scroll_delta);
     return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_BAR_PROP_SCROLL_ROWS)) {
+    value_set_uint8(v, scroll_bar->scroll_rows);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -570,6 +581,8 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
     return scroll_bar_set_wheel_scroll(widget, value_bool(v));
   } else if (tk_str_eq(name, SCROLL_BAR_PROP_SCROLL_DELTA)) {
     return scroll_bar_set_scroll_delta(widget, value_uint32(v));
+  } else if (tk_str_eq(name, SCROLL_BAR_PROP_SCROLL_ROWS)) {
+    return scroll_bar_set_scroll_rows(widget, value_uint8(v));
   }
 
   return RET_NOT_FOUND;
@@ -579,12 +592,22 @@ static ret_t scroll_bar_desktop_on_parent_wheel_event(void* ctx, event_t* e) {
   wheel_event_t* evt = (wheel_event_t*)e;
   widget_t* widget = WIDGET(ctx);
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
-  int32_t delta = scroll_bar->scroll_delta == 0
-                      ? -evt->dy
-                      : (evt->dy > 0 ? -scroll_bar->scroll_delta : scroll_bar->scroll_delta);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
   return_value_if_equal(widget_on_wheel_children(widget->parent, evt), RET_STOP);
+
   if (widget->enable && widget->sensitive && scroll_bar->wheel_scroll) {
+    int32_t delta = -evt->dy;
+    if (scroll_bar->scroll_rows > 0) {
+      delta = scroll_bar->row * scroll_bar->scroll_rows;
+      if (evt->dy > 0) {
+        delta = -delta;
+      }
+    } else if (scroll_bar->scroll_delta > 0) {
+      delta = scroll_bar->scroll_delta;
+      if (evt->dy > 0) {
+        delta = -delta;
+      }
+    }
     scroll_bar_add_delta(widget, delta);
     return RET_STOP;
   } else {
@@ -627,6 +650,7 @@ static const char* s_scroll_bar_clone_properties[] = {WIDGET_PROP_MAX,
                                                       WIDGET_PROP_AUTO_HIDE,
                                                       SCROLL_BAR_PROP_ANIMATOR_TIME,
                                                       SCROLL_BAR_PROP_SCROLL_DELTA,
+                                                      SCROLL_BAR_PROP_SCROLL_ROWS,
                                                       SCROLL_BAR_PROP_WHEEL_SCROLL,
                                                       NULL};
 static const char* s_scroll_bar_persitent_properties[] = {WIDGET_PROP_ANIMATABLE, NULL};
@@ -855,7 +879,7 @@ static ret_t scroll_bar_desktop_init(widget_t* widget) {
   return RET_OK;
 }
 
-widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+static widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget =
       scroll_bar_create_internal(parent, x, y, w, h, TK_REF_VTABLE(scroll_bar_desktop));
   scroll_bar_desktop_init(widget);
@@ -967,5 +991,12 @@ ret_t scroll_bar_set_scroll_delta(widget_t* widget, uint32_t scroll_delta) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL && !scroll_bar_is_mobile(widget), RET_BAD_PARAMS);
   scroll_bar->scroll_delta = scroll_delta;
+  return RET_OK;
+}
+
+ret_t scroll_bar_set_scroll_rows(widget_t* widget, uint8_t scroll_rows) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar != NULL && !scroll_bar_is_mobile(widget), RET_BAD_PARAMS);
+  scroll_bar->scroll_rows = scroll_rows;
   return RET_OK;
 }

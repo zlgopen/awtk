@@ -306,7 +306,8 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     text_edit_get_state(mledit->model, &state);
     value_set_int(v, state.caret.y - state.oy);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_LINE_HEIGHT)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_LINE_HEIGHT) ||
+             tk_str_eq(name, WIDGET_PROP_ROW) /* scroll_bar need */) {
     text_edit_state_t state;
     text_edit_get_state(mledit->model, &state);
     value_set_int(v, state.line_height);

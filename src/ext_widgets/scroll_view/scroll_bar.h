@@ -100,6 +100,12 @@ typedef struct _scroll_bar_t {
    */
   uint32_t scroll_delta;
   /**
+   * @property {uint32_t} scroll_rows
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 每次鼠标滚动行数。（与 scroll_delta 互斥，缺省值为0，0 则使用 scroll_delta）
+   */
+  uint8_t scroll_rows;
+  /**
    * @property {bool_t} animatable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 滚动时是否启用动画。
@@ -352,6 +358,7 @@ ret_t scroll_bar_set_scroll_delta(widget_t* widget, uint32_t scroll_delta);
 #define SCROLL_BAR_PROP_ANIMATOR_TIME "animator_time"
 #define SCROLL_BAR_PROP_WHEEL_SCROLL "wheel_scroll"
 #define SCROLL_BAR_PROP_SCROLL_DELTA "scroll_delta"
+#define SCROLL_BAR_PROP_SCROLL_ROWS "scroll_rows"
 #define SCROLL_BAR(widget) ((scroll_bar_t*)(scroll_bar_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

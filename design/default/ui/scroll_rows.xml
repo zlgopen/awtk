@@ -1,0 +1,67 @@
+<window anim_hint="htranslate" children_layout="default(r=0,c=1)" name="scroll_rows">
+  <mledit h="40%" focus="true" bottom_margin="2" left_margin="33" max_lines="100" right_margin="16" text="1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n" top_margin="2" wrap_word="true">
+    <line_number x="0" y="0" w="32" h="100%" value="0"/>
+    <scroll_bar_d x="right" y="0" w="14" h="100%" scroll_rows="3" value="0"/>
+  </mledit>
+  <list_view h="60%" item_height="60">
+    <scroll_view x="0" y="0" w="-12" h="100%" name="view">
+      <list_item children_layout="default(r=1,c=0)" focused="true" style="odd_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="1.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="even_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="2.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="odd_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="3.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="even_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="4.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="odd_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="5.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="even_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="6.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="odd_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="7.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="even_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="8.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="odd_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="9.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="even_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="10.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="odd_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="11.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="even_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="12.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="odd_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="13.Hello AWTK !"/>
+      </list_item>
+      <list_item children_layout="default(r=1,c=0)" style="even_clickable">
+        <image w="30" image="earth" draw_type="icon"/>
+        <label w="-30" text="14.Hello AWTK !"/>
+      </list_item>
+    </scroll_view>
+    <scroll_bar_d x="right" y="0" w="12" h="100%" scroll_rows="3" name="bar" animator_time="0" value="0"/>
+  </list_view>
+</window>

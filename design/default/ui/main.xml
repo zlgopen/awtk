@@ -14,6 +14,7 @@
       <button focusable="true" name="open:combo_box" text="ComboBox"/>
       <button focusable="true" name="open:rich_text" text="RichText"/>
       <button focusable="true" name="open:color_picker" text="Color Picker"/>
+      <button focusable="true" name="open:scroll_rows" text="Scroll Rows"/>
     </view>
     
     <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
