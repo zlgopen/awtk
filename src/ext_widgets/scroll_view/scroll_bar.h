@@ -100,7 +100,7 @@ typedef struct _scroll_bar_t {
    */
   uint32_t scroll_delta;
   /**
-   * @property {uint32_t} scroll_rows
+   * @property {uint8_t} scroll_rows
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 每次鼠标滚动行数。（与 scroll_delta 互斥，缺省值为0，0 则使用 scroll_delta）
    */

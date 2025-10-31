@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/10/31
+  * 完善scroll_bar注释(感谢兆坤提供补丁)
+
 2025/10/29
   * scroll_bar增加scroll_rows属性并且row属性初始化的值为parent的row属性值(感谢兆坤提供补丁) 
   * 完善 scroll_bar (感谢兆坤提供补丁)
