@@ -42,12 +42,13 @@ static void* action_darray_thread_entry(void* args) {
 
       if (qaction_notify(action, done_event_init(&done, ret)) == RET_NOT_IMPL) {
         qaction_destroy(action);
+        action = NULL;
       }
 
+      thread->executed_actions_nr++;
       if (thread->quit) {
         break;
       }
-      thread->executed_actions_nr++;
     }
 
     if (thread->on_idle != NULL) {
@@ -150,6 +151,7 @@ action_darray_thread_t* action_darray_thread_create_with_darray_ex(waitable_acti
 
 ret_t action_darray_thread_set_strategy(action_darray_thread_t* thread,
                                         action_darray_thread_strategy_t strategy) {
+  return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
   thread->strategy = strategy;
   return RET_OK;
 }
@@ -186,7 +188,7 @@ static ret_t qaction_quit_exec(qaction_t* action) {
 }
 
 static ret_t action_darray_thread_quit(action_darray_thread_t* thread) {
-  qaction_t* a = qaction_create(qaction_quit_exec, NULL, 0);
+  qaction_t* a = NULL;
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
 
   if (thread->quited || !thread->darray) {
@@ -195,7 +197,15 @@ static ret_t action_darray_thread_quit(action_darray_thread_t* thread) {
 
   thread->quit = TRUE;
 
-  return waitable_action_darray_send(thread->darray, a, 3000);
+  a = qaction_create(qaction_quit_exec, NULL, 0);
+  return_value_if_fail(a != NULL, RET_OOM);
+
+  if (waitable_action_darray_send(thread->darray, a, 3000) != RET_OK) {
+    qaction_destroy(a);
+    return RET_FAIL;
+  }
+
+  return RET_OK;
 }
 
 ret_t action_darray_thread_destroy(action_darray_thread_t* thread) {

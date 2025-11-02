@@ -1,5 +1,9 @@
 # 最新动态
 
+2025/11/2
+  * 修复潜在的内存问题。
+  * 完善 waitable_action_darray_send
+
 2025/10/31
   * 完善scroll_bar注释(感谢兆坤提供补丁)
 

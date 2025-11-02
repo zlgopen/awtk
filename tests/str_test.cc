@@ -235,6 +235,86 @@ TEST(Str, insert) {
   str_reset(s);
 }
 
+TEST(Str, insert_with_len) {
+  str_t str;
+  str_t* s = str_init(&str, 0);
+  
+  /* 基本功能测试 */
+  str_set(s, "hello");
+  ASSERT_EQ(str_insert_with_len(s, 5, " world", 6), RET_OK);
+  ASSERT_EQ(string(s->str), "hello world");
+  ASSERT_EQ(s->size, 11);
+  
+  /* 在开头插入 */
+  str_set(s, "world");
+  ASSERT_EQ(str_insert_with_len(s, 0, "hello ", 6), RET_OK);
+  ASSERT_EQ(string(s->str), "hello world");
+  ASSERT_EQ(s->size, 11);
+  
+  /* 在中间插入 */
+  str_set(s, "helworld");
+  ASSERT_EQ(str_insert_with_len(s, 3, "lo ", 3), RET_OK);
+  ASSERT_EQ(string(s->str), "hello world");
+  ASSERT_EQ(s->size, 11);
+  
+  /* 插入空字符串（len=0） */
+  str_set(s, "hello");
+  ASSERT_EQ(str_insert_with_len(s, 5, "", 0), RET_OK);
+  ASSERT_EQ(string(s->str), "hello");
+  ASSERT_EQ(s->size, 5);
+  
+  /* 插入包含null字符的字符串 */
+  str_set(s, "abc");
+  char text_with_null[5] = {'d', '\0', 'e', 'f', '\0'};
+  ASSERT_EQ(str_insert_with_len(s, 3, text_with_null, 5), RET_OK);
+  ASSERT_EQ(s->size, 8);
+  ASSERT_EQ(s->str[0], 'a');
+  ASSERT_EQ(s->str[1], 'b');
+  ASSERT_EQ(s->str[2], 'c');
+  ASSERT_EQ(s->str[3], 'd');
+  ASSERT_EQ(s->str[4], '\0');
+  ASSERT_EQ(s->str[5], 'e');
+  ASSERT_EQ(s->str[6], 'f');
+  ASSERT_EQ(s->str[7], '\0');
+  
+  /* 在末尾插入 */
+  str_set(s, "hello");
+  ASSERT_EQ(str_insert_with_len(s, 5, " world", 6), RET_OK);
+  ASSERT_EQ(string(s->str), "hello world");
+  
+  /* 测试边界：offset等于size */
+  str_set(s, "test");
+  ASSERT_EQ(str_insert_with_len(s, 4, "ing", 3), RET_OK);
+  ASSERT_EQ(string(s->str), "testing");
+  
+  /* 测试NULL参数 */
+  ASSERT_EQ(str_insert_with_len(NULL, 0, "test", 4), RET_BAD_PARAMS);
+  ASSERT_EQ(str_insert_with_len(s, 0, NULL, 4), RET_BAD_PARAMS);
+  
+  /* 测试越界offset */
+  str_set(s, "test");
+  ASSERT_EQ(str_insert_with_len(s, 10, "abc", 3), RET_BAD_PARAMS);
+  
+  str_reset(s);
+}
+
+TEST(Str, insert_with_len_extend) {
+  str_t str;
+  str_t* s = str_init(&str, 5);  /* 初始容量小，测试扩展 */
+  
+  str_set(s, "abc");
+  ASSERT_EQ(s->size, 3);
+  ASSERT_EQ(s->capacity, 5);
+  
+  /* 插入会触发扩展 */
+  ASSERT_EQ(str_insert_with_len(s, 3, "defghij", 7), RET_OK);
+  ASSERT_EQ(string(s->str), "abcdefghij");
+  ASSERT_EQ(s->size, 10);
+  ASSERT_GE(s->capacity, 10);
+  
+  str_reset(s);
+}
+
 TEST(Str, remove) {
   str_t str;
   str_t* s = str_init(&str, 0);
@@ -693,6 +773,50 @@ TEST(Str, common_prefix) {
   ASSERT_EQ(str_common_prefix(&str, "abc.cde.123"), RET_OK);
   ASSERT_STREQ(str.str, "");
 
+  str_reset(&str);
+}
+
+TEST(Str, common_prefix_boundary) {
+  str_t str;
+  char buff[10];
+  
+  /* 测试边界情况：capacity == size */
+  str_attach(&str, buff, sizeof(buff));
+  str_set(&str, "abcdefghi");  /* 9 chars, capacity is 10 */
+  ASSERT_EQ(str_common_prefix(&str, "abcdefghij"), RET_OK);
+  ASSERT_STREQ(str.str, "abcdefghi");
+  ASSERT_EQ(str.size, 9);
+
+  /* 测试完全匹配到capacity边界 */
+  str_clear(&str);
+  str_set(&str, "123456789");  /* 9 chars */
+  ASSERT_EQ(str_common_prefix(&str, "123456789"), RET_OK);
+  ASSERT_STREQ(str.str, "123456789");
+  ASSERT_EQ(str.size, 9);
+
+  /* 测试字符串中间有不同字符 */
+  str_clear(&str);
+  str_set(&str, "abc123456");
+  ASSERT_EQ(str_common_prefix(&str, "abc999999"), RET_OK);
+  ASSERT_STREQ(str.str, "abc");
+  ASSERT_EQ(str.size, 3);
+
+  str_reset(&str);
+}
+
+TEST(Str, common_prefix_null_check) {
+  str_t str;
+  
+  str_init(&str, 100);
+  str_set(&str, "test");
+  
+  /* 测试NULL参数 */
+  ASSERT_EQ(str_common_prefix(NULL, "test"), RET_BAD_PARAMS);
+  ASSERT_EQ(str_common_prefix(&str, NULL), RET_BAD_PARAMS);
+  
+  /* 测试str->str为NULL的情况（理论上不应该发生，但测试防御性编程） */
+  str_reset(&str);
+  
   str_reset(&str);
 }
 

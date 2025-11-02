@@ -804,10 +804,15 @@ ret_t str_to_upper(str_t* s) {
 }
 
 ret_t str_insert_with_len(str_t* s, uint32_t offset, const char* text, uint32_t size) {
+  uint32_t move_size = 0;
   return_value_if_fail(s != NULL && offset <= s->size && text != NULL, RET_BAD_PARAMS);
   return_value_if_fail(str_extend(s, s->size + size + 1) == RET_OK, RET_OOM);
 
-  memmove(s->str + offset + size, s->str + offset, tk_strlen(s->str + offset));
+  /* 使用 s->size - offset 而不是 tk_strlen，确保正确处理包含null字符的字符串 */
+  move_size = s->size - offset;
+  if (move_size > 0) {
+    memmove(s->str + offset + size, s->str + offset, move_size);
+  }
   memcpy(s->str + offset, text, size);
   s->size += size;
   s->str[s->size] = '\0';
@@ -1039,13 +1044,21 @@ ret_t str_decode_hex(str_t* str, void* data, uint32_t size) {
 ret_t str_common_prefix(str_t* str, const char* other) {
   uint32_t i = 0;
   return_value_if_fail(str != NULL && other != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str->str != NULL, RET_BAD_PARAMS);
 
-  for (i = 0; i < str->size && other[i] != '\0'; i++) {
+  for (i = 0; i < str->size && i < str->capacity && other[i] != '\0'; i++) {
     if (str->str[i] != other[i]) {
       break;
     }
   }
-  str->str[i] = '\0';
+  /* 确保不会越界写入 */
+  if (i < str->capacity) {
+    str->str[i] = '\0';
+  } else if (str->capacity > 0) {
+    /* 如果i等于capacity，写入最后一个位置 */
+    str->str[str->capacity - 1] = '\0';
+    i = str->capacity - 1;
+  }
   str->size = i;
 
   return RET_OK;

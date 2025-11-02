@@ -358,8 +358,30 @@ char* tk_strncpy_s(char* dst, size_t dst_len, const char* src, size_t src_len) {
   return_value_if_fail(dst != NULL && src != NULL && dst_len > 0, NULL);
 
   len = tk_min(dst_len - 1, src_len);
+  
+  /* 直接实现安全复制，避免调用 tk_strncpy 可能导致的越界问题 */
+  if (dst != src && len > 0) {
+    size_t i = 0;
+    for (i = 0; i < len && src[i] != '\0'; i++) {
+      dst[i] = src[i];
+    }
+    /* 确保字符串以 null 结尾，且不会越界 */
+    if (i < dst_len) {
+      dst[i] = '\0';
+    } else if (dst_len > 0) {
+      dst[dst_len - 1] = '\0';
+    }
+  } else if (dst == src) {
+    /* 相同地址，直接返回 */
+    return dst;
+  } else {
+    /* len == 0，只添加 null 结尾 */
+    if (dst_len > 0) {
+      dst[0] = '\0';
+    }
+  }
 
-  return tk_strncpy(dst, src, len);
+  return dst;
 }
 
 char* tk_strndup(const char* str, uint32_t len) {

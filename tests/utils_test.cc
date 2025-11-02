@@ -218,6 +218,76 @@ TEST(Utils, tk_strncpy_s) {
   ASSERT_EQ(string(tk_strncpy_s(dst, sizeof(dst), str, strlen(str) + 1)), string(str));
 }
 
+TEST(Utils, tk_strncpy_s_comprehensive) {
+  char dst[32];
+  const char* src = "hello world";
+  char* result = NULL;
+  
+  /* 测试正常情况 */
+  memset(dst, 0xFF, sizeof(dst));
+  result = tk_strncpy_s(dst, sizeof(dst), src, strlen(src));
+  ASSERT_NE(result, (char*)NULL);
+  ASSERT_EQ(string(dst), string(src));
+  ASSERT_EQ(dst[strlen(src)], '\0');
+  
+  /* 测试dst_len小于src_len */
+  memset(dst, 0xFF, sizeof(dst));
+  result = tk_strncpy_s(dst, 5, src, strlen(src));
+  ASSERT_NE(result, (char*)NULL);
+  ASSERT_EQ(string(dst), string("hell"));
+  ASSERT_EQ(dst[4], '\0');
+  
+  /* 测试dst_len等于src_len+1（刚好容纳） */
+  memset(dst, 0xFF, sizeof(dst));
+  result = tk_strncpy_s(dst, 6, "hello", 5);
+  ASSERT_NE(result, (char*)NULL);
+  ASSERT_EQ(string(dst), string("hello"));
+  ASSERT_EQ(dst[5], '\0');
+  
+  /* 测试空字符串 */
+  memset(dst, 0xFF, sizeof(dst));
+  result = tk_strncpy_s(dst, sizeof(dst), "", 0);
+  ASSERT_NE(result, (char*)NULL);
+  ASSERT_EQ(string(dst), string(""));
+  ASSERT_EQ(dst[0], '\0');
+  
+  /* 测试src_len为0 */
+  memset(dst, 0xFF, sizeof(dst));
+  result = tk_strncpy_s(dst, sizeof(dst), src, 0);
+  ASSERT_NE(result, (char*)NULL);
+  ASSERT_EQ(string(dst), string(""));
+  ASSERT_EQ(dst[0], '\0');
+  
+  /* 测试dst == src的情况 */
+  char same_buff[32];
+  tk_strcpy(same_buff, "test");
+  result = tk_strncpy_s(same_buff, sizeof(same_buff), same_buff, 4);
+  ASSERT_NE(result, (char*)NULL);
+  ASSERT_EQ(result, same_buff);
+  ASSERT_EQ(string(same_buff), string("test"));
+  
+  /* 测试NULL参数 */
+  ASSERT_EQ(tk_strncpy_s(NULL, 10, src, 5), (char*)NULL);
+  ASSERT_EQ(tk_strncpy_s(dst, 10, NULL, 5), (char*)NULL);
+  ASSERT_EQ(tk_strncpy_s(dst, 0, src, 5), (char*)NULL);
+  
+  /* 测试边界：dst_len=1 */
+  memset(dst, 0xFF, sizeof(dst));
+  result = tk_strncpy_s(dst, 1, src, strlen(src));
+  ASSERT_NE(result, (char*)NULL);
+  ASSERT_EQ(string(dst), string(""));
+  ASSERT_EQ(dst[0], '\0');
+  
+  /* 测试包含null字符的源字符串 */
+  char src_with_null[10] = "ab\0def";
+  memset(dst, 0xFF, sizeof(dst));
+  result = tk_strncpy_s(dst, sizeof(dst), src_with_null, 6);
+  ASSERT_NE(result, (char*)NULL);
+  ASSERT_EQ(dst[0], 'a');
+  ASSERT_EQ(dst[1], 'b');
+  ASSERT_EQ(dst[2], '\0');
+}
+
 TEST(Utils, filename_to_name) {
   char name[TK_NAME_LEN + 1];
 

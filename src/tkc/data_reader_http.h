@@ -26,6 +26,9 @@
 
 BEGIN_C_DECLS
 
+/* 最大HTTP响应大小限制：100MB */
+#define HTTP_MAX_CONTENT_LENGTH (100 * 1024 * 1024)
+
 /**
  * @class data_reader_http_t
  * @parent data_reader_t

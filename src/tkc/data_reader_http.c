@@ -24,6 +24,7 @@
 #include "tkc/utils.h"
 #include "tkc/buffer.h"
 #include "tkc/data_reader_http.h"
+#include "tkc/log.h"
 #include "streams/stream_factory.h"
 
 typedef struct _data_reader_http_t {
@@ -77,8 +78,10 @@ static uint8_t* data_reader_http_get_chunked_data(uint8_t* data, uint32_t* size)
 
 static ret_t data_reader_http_decode_chuncked_data(data_reader_http_t* http, wbuffer_t* wb) {
   uint32_t size = 0;
+  uint32_t total_size = 0;
   uint8_t* src = NULL;
   uint8_t* dst = NULL;
+  uint8_t* dst_end = NULL;
 
   return_value_if_fail(http != NULL && wb != NULL, RET_BAD_PARAMS);
   http->data = TKMEM_ALLOC(wb->cursor + 1);
@@ -86,14 +89,27 @@ static ret_t data_reader_http_decode_chuncked_data(data_reader_http_t* http, wbu
 
   src = wb->data;
   dst = http->data;
+  dst_end = http->data + wb->cursor;
+  
   while ((src = data_reader_http_get_chunked_data(src, &size)) != NULL) {
+    /* 检查边界：确保不会超出分配的内存 */
+    if (dst + size > dst_end) {
+      log_warn("data_reader_http_decode_chuncked_data: chunk size exceeds buffer\n");
+      TKMEM_FREE(http->data);
+      http->data = NULL;
+      return RET_FAIL;
+    }
+    
     memcpy(dst, src, size);
     dst += size;
+    total_size += size;
     src += size + 2;
   }
 
-  http->size = dst - http->data;
-  http->data[http->size] = '\0';
+  http->size = total_size;
+  if (http->size < (uint64_t)(dst_end - http->data)) {
+    http->data[http->size] = '\0';
+  }
 
   log_debug("%s\n", http->data);
 
@@ -130,8 +146,12 @@ static ret_t data_reader_http_get(data_reader_http_t* http, const char* url) {
       while (*p == ' ') {
         p++;
       }
-      http->size = tk_atoi(p);
-      goto_error_if_fail(http->size > 0);
+      /* 验证 Content-Length 值，防止整数溢出和过大分配 */
+      int64_t content_length = tk_atoi(p);
+      goto_error_if_fail(content_length > 0);
+      goto_error_if_fail(content_length <= HTTP_MAX_CONTENT_LENGTH);
+      
+      http->size = (uint64_t)content_length;
 
       http->data = TKMEM_ALLOC(http->size + 1);
       goto_error_if_fail(http->data != NULL);
@@ -141,11 +161,22 @@ static ret_t data_reader_http_get(data_reader_http_t* http, const char* url) {
 
       p += 4;
       nr = nr - (p - buff);
-      memcpy(http->data, p, nr);
+      /* 确保不会复制超过分配的内存 */
+      if (nr > 0) {
+        uint32_t copy_size = tk_min(nr, (int32_t)http->size);
+        memcpy(http->data, p, copy_size);
+        nr = copy_size;
+      }
 
-      if (http->size > nr) {
-        nr = tk_iostream_read_len(io, http->data + nr, http->size - nr, TK_ISTREAM_DEFAULT_TIMEOUT);
-        goto_error_if_fail(nr > 0);
+      if (http->size > (uint64_t)nr) {
+        uint64_t remaining = http->size - nr;
+        int32_t read_nr = tk_iostream_read_len(io, http->data + nr, (uint32_t)remaining, TK_ISTREAM_DEFAULT_TIMEOUT);
+        goto_error_if_fail(read_nr > 0);
+        /* 确保读取的字节数不超过预期 */
+        if ((uint64_t)read_nr > remaining) {
+          log_warn("data_reader_http_get: read more than expected\n");
+          read_nr = (int32_t)remaining;
+        }
       }
 
       http->data[http->size] = '\0';
