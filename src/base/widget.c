@@ -5098,8 +5098,9 @@ static ret_t widget_unref_in_idle(const idle_info_t* info) {
 }
 
 ret_t widget_unref(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->ref_count > 0 && widget->vt != NULL,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  ENSURE(widget->ref_count > 0);
+  return_value_if_fail(widget->ref_count > 0 && widget->vt != NULL, RET_BAD_PARAMS);
 
   if (widget->ref_count > 1) {
     widget->ref_count--;

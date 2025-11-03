@@ -61,7 +61,6 @@ static void test_read(tk_iostream_t* ios, const char* str) {
   ASSERT_EQ(tk_object_get_prop_int(TK_OBJECT(ios), TK_ISTREAM_STATS_PROP_READ, -1), 16);
   ASSERT_EQ(tk_object_exec(TK_OBJECT(ios), TK_ISTREAM_STATS_CMD_RESET, NULL), RET_OK);
   ASSERT_EQ(tk_object_get_prop_int(TK_OBJECT(ios), TK_ISTREAM_STATS_PROP_READ, -1), 0);
-  tk_object_unref(TK_OBJECT(ios));
 }
 
 TEST(StreamStats, basic) {

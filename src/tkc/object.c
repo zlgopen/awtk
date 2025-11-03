@@ -93,7 +93,9 @@ tk_object_t* tk_object_create(const object_vtable_t* vt) {
 }
 
 ret_t tk_object_unref(tk_object_t* obj) {
-  return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count > 0, RET_BAD_PARAMS);
+  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+  ENSURE(obj->ref_count > 0);
+  return_value_if_fail(obj->ref_count > 0 && obj->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(!(obj->visiting), RET_BUSY);
 
   if (obj->ref_count == 1) {
