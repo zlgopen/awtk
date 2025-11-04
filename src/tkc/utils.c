@@ -30,6 +30,7 @@
 #include "tkc/data_writer_factory.h"
 
 #define IS_ADDRESS_ALIGN_4(addr) !((((size_t)(addr)) & 0x3) | 0x0)
+#define MOD_BY_POW2(num, div) ((num) & ((div)-1)) /* div是2的幂次方才能用 */
 
 #ifndef WITH_WASM
 #include "tkc/thread.h"
@@ -358,7 +359,7 @@ char* tk_strncpy_s(char* dst, size_t dst_len, const char* src, size_t src_len) {
   return_value_if_fail(dst != NULL && src != NULL && dst_len > 0, NULL);
 
   len = tk_min(dst_len - 1, src_len);
-  
+
   /* 直接实现安全复制，避免调用 tk_strncpy 可能导致的越界问题 */
   if (dst != src && len > 0) {
     size_t i = 0;
@@ -433,10 +434,9 @@ uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
   uint32_t n = 0;
   uint16_t* p = buff;
   uint8_t* pb = (uint8_t*)buff;
-
   return_value_if_fail(buff != NULL, NULL);
 
-  while ((size_t)pb % 4 != 0 && size > 0) {
+  while (MOD_BY_POW2((uintptr_t)pb, 4) != 0 && size > 0) {
     *p = val;
 
     p++;
@@ -444,7 +444,7 @@ uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
     pb += 2;
   }
 
-  n = size / 8; /*16bytes*/
+  n = size >> 3; /*16bytes*/
   if (n > 0) {
     uint32_t* p32 = NULL;
     uint32_t data = val | (val << 16);
@@ -462,13 +462,11 @@ uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
     }
   }
 
-  n = size % 8;
+  n = MOD_BY_POW2(size, 8);
   if (n > 0) {
-    p = (uint16_t*)pb;
-    while (n > 0) {
-      *p = val;
-      p++;
-      n--;
+    uint32_t i = 0;
+    for (i = 0, p = (uint16_t*)pb; i < n; i++) {
+      p[i] = val;
     }
   }
 
@@ -481,7 +479,7 @@ uint32_t* tk_memset24(uint32_t* buff, void* val, uint32_t size) {
   uint8_t* pb = (uint8_t*)buff;
   uint8_t* src = (uint8_t*)val;
 
-  while ((size_t)pb % 4 != 0 && size > 0) {
+  while (MOD_BY_POW2((uintptr_t)pb, 4) != 0 && size > 0) {
     pb[0] = src[0];
     pb[1] = src[1];
     pb[2] = src[2];
@@ -1771,8 +1769,8 @@ const char* ret_code_to_name(ret_t ret) {
 
 ret_t bits_stream_get(const uint8_t* buff, uint32_t size, uint32_t index, bool_t* value) {
   uint8_t v = 0;
-  uint32_t offset = index % 8;
-  uint32_t max_index = size * 8;
+  uint32_t offset = MOD_BY_POW2(index, 8);
+  uint32_t max_index = size << 3;
   return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
   return_value_if_fail(value != NULL, RET_BAD_PARAMS);
   if (index >= max_index) {
@@ -1790,8 +1788,8 @@ ret_t bits_stream_get(const uint8_t* buff, uint32_t size, uint32_t index, bool_t
 
 ret_t bits_stream_set(uint8_t* buff, uint32_t size, uint32_t index, bool_t value) {
   uint8_t v = 0;
-  uint32_t offset = index % 8;
-  uint32_t max_index = size * 8;
+  uint32_t offset = MOD_BY_POW2(index, 8);
+  uint32_t max_index = size << 3;
   return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
   if (index >= max_index) {
     log_debug("bits_stream_get failed: %u >= %u\n", index, max_index);
