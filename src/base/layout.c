@@ -221,17 +221,17 @@ ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char*
     if (y != NULL && self_layouter_get_param(widget->self_layout, "y", &old_v) == RET_OK) {
       self_layouter_set_param(widget->self_layout, "y", value_set_str(&v, y));
       self_layouter_get_param(widget->self_layout, "y", &new_v);
-      ret = value_equal(&old_v, &new_v) ? RET_NOT_MODIFIED : RET_OK;
+      ret = ret != RET_OK && !value_equal(&old_v, &new_v) ? RET_OK : ret;
     }
     if (w != NULL && self_layouter_get_param(widget->self_layout, "w", &old_v) == RET_OK) {
       self_layouter_set_param(widget->self_layout, "w", value_set_str(&v, w));
       self_layouter_get_param(widget->self_layout, "w", &new_v);
-      ret = value_equal(&old_v, &new_v) ? RET_NOT_MODIFIED : RET_OK;
+      ret = ret != RET_OK && !value_equal(&old_v, &new_v) ? RET_OK : ret;
     }
     if (h != NULL && self_layouter_get_param(widget->self_layout, "h", &old_v) == RET_OK) {
       self_layouter_set_param(widget->self_layout, "h", value_set_str(&v, h));
       self_layouter_get_param(widget->self_layout, "h", &new_v);
-      ret = value_equal(&old_v, &new_v) ? RET_NOT_MODIFIED : RET_OK;
+      ret = ret != RET_OK && !value_equal(&old_v, &new_v) ? RET_OK : ret;
     }
     if (ret == RET_OK) {
       return widget_set_need_relayout(widget);

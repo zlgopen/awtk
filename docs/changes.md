@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/11/4
+  * 完善widget_set_self_layout_params接口(感谢雨欣提供补丁)
+
 2025/11/3
   * 优化debug(感谢兆坤提供补丁)
   * 优化widget_set_self_layout_params，值发生变化时才触发layout(感谢雨欣提供补丁)
