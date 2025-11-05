@@ -149,13 +149,6 @@
  */
 
 /**
- * 在没有GPU时，如果启用agg作为nanovg的后端(较agge作为后端：大，慢，图形质量好)，请定义本宏。
- * 注意：agg是以GPL协议开源。
- *
- * #define WITH_NANOVG_AGG 1
- */
-
-/**
  * 如果启用鼠标指针，请定义本宏
  *
  * #define ENABLE_CURSOR 1

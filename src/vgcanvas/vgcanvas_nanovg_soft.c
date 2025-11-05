@@ -29,9 +29,7 @@
 
 #ifdef WITH_NANOVG_AGGE
 #include "agge/nanovg_agge.h"
-#elif defined(WITH_NANOVG_AGG)
-#include "agg/nanovg_agg.h"
-#endif /*WITH_NANOVG_AGGE|WITH_NANOVG_AGG*/
+#endif /*WITH_NANOVG_AGGE*/
 
 typedef struct _vgcanvas_nanovg_t {
   vgcanvas_t base;
@@ -59,10 +57,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   nanovg->base.buff = (uint32_t*)data;
 
   vgcanvas_nanovg_init((vgcanvas_t*)nanovg);
-
-#if defined(WITH_NANOVG_AGG)
-  nanovg->vg = nvgCreateAGG(w, h, stride, f, (uint8_t*)data);
-#elif defined(WITH_NANOVG_AGGE)
+#if defined(WITH_NANOVG_AGGE)
   nanovg->vg = nvgCreateAGGE(w, h, stride, f, (uint8_t*)data);
 #else
   assert(!"not support backend");

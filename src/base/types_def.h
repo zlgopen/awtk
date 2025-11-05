@@ -274,11 +274,11 @@ typedef enum _app_type_t {
 #define WITH_G2D 1
 #endif /*WITH_PXP_G2D*/
 
-#if defined(WITH_NANOVG_AGGE) || defined(WITH_NANOVG_AGG)
+#if defined(WITH_NANOVG_AGGE)
 #ifndef WITH_NANOVG_SOFT
 #define WITH_NANOVG_SOFT
 #endif /*WITH_NANOVG_SOFT*/
-#endif /*defined(WITH_NANOVG_AGGE) || defined(WITH_NANOVG_AGG)*/
+#endif /*defined(WITH_NANOVG_AGGE)*/
 
 #if defined(WITH_NANOVG_GPU)
 #define WITH_GPU 1
