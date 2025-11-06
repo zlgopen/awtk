@@ -530,7 +530,7 @@ uint32_t* tk_memset32(uint32_t* buff, uint32_t val, uint32_t size) {
   return buff;
 }
 
-uint16_t* tk_memcpy16(uint16_t* dst, uint16_t* src, uint32_t size) {
+uint16_t* tk_memcpy16(uint16_t* dst, const uint16_t* src, uint32_t size) {
   uint32_t i = 0;
   return_value_if_fail(dst != NULL && src != NULL, NULL);
 
@@ -541,7 +541,7 @@ uint16_t* tk_memcpy16(uint16_t* dst, uint16_t* src, uint32_t size) {
   return dst;
 }
 
-uint32_t* tk_memcpy32(uint32_t* dst, uint32_t* src, uint32_t size) {
+uint32_t* tk_memcpy32(uint32_t* dst, const uint32_t* src, uint32_t size) {
   uint32_t i = 0;
   return_value_if_fail(dst != NULL && src != NULL, NULL);
 

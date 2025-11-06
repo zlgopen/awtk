@@ -479,12 +479,12 @@ uint32_t* tk_memset32(uint32_t* buff, uint32_t val, uint32_t size);
  * 拷贝数据2字节。
  *
  * @param {uint16_t*} dst 目标
- * @param {uint16_t*} src 源。
+ * @param {const uint16_t*} src 源。
  * @param {uint32_t} size 个数。
  *
  * @return {uint16_t*} 返回设置好的buff。
  */
-uint16_t* tk_memcpy16(uint16_t* dst, uint16_t* src, uint32_t size);
+uint16_t* tk_memcpy16(uint16_t* dst, const uint16_t* src, uint32_t size);
 
 /**
  * @method tk_memcpy32
@@ -492,12 +492,12 @@ uint16_t* tk_memcpy16(uint16_t* dst, uint16_t* src, uint32_t size);
  * 拷贝数据4字节。
  *
  * @param {uint32_t*} dst 目标
- * @param {uint32_t*} src 源。
+ * @param {const uint32_t*} src 源。
  * @param {uint32_t} size 个数。
  *
  * @return {uint32_t*} 返回设置好的buff。
  */
-uint32_t* tk_memcpy32(uint32_t* dst, uint32_t* src, uint32_t size);
+uint32_t* tk_memcpy32(uint32_t* dst, const uint32_t* src, uint32_t size);
 
 /**
  * @method tk_pixel_copy
