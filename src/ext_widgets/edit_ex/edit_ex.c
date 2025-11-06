@@ -165,11 +165,11 @@ static ret_t edit_ex_on_event(widget_t* widget, event_t* e) {
     } break;
     case EVT_FOCUS: {
       ret = widget_vtable_on_event_by_parent(widget, e, WIDGET_VTABLE_GET_VTABLE(edit_ex));
-      edit_ex_show_suggest_words(widget);
+      edit_ex_update_suggest_words_popup(widget);
       return ret;
     } break;
     case EVT_VALUE_CHANGING: {
-      edit_ex_show_suggest_words(widget);
+      edit_ex_update_suggest_words_popup(widget);
     } break;
     default: {
     } break;
@@ -183,7 +183,7 @@ static ret_t edit_ex_on_destroy(widget_t* widget) {
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
   if (edit_ex->suggest_words_popup != NULL) {
-    widget_destroy(edit_ex->suggest_words_popup);
+    window_close(edit_ex->suggest_words_popup);
   }
 
   edit_ex_set_suggest_words_item_formats(widget, NULL);

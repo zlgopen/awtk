@@ -513,7 +513,7 @@ static ret_t edit_ex_update_suggest_words_popup_on_visit(void* ctx, const void* 
   return RET_OK;
 }
 
-static ret_t edit_ex_update_suggest_words_popup(widget_t* widget) {
+static ret_t edit_ex_layout_suggest_words_popup(widget_t* widget) {
   /* base on combo_box_ex_create_scroll_popup() */
   int32_t w = 0;
   edit_ex_t* edit_ex = EDIT_EX(widget);
@@ -659,7 +659,7 @@ static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
               edit_ex_suggest_words_popup_on_key_down_before_children, widget);
   }
 
-  edit_ex_update_suggest_words_popup(widget);
+  edit_ex_layout_suggest_words_popup(widget);
   widget_layout(edit_ex->suggest_words_popup);
 
   if (RET_OK == edit_ex_suggest_words_popup_calc_position(widget, &p)) {
@@ -674,7 +674,7 @@ close:
   return RET_OK;
 }
 
-static ret_t edit_ex_show_suggest_words(widget_t* widget) {
+ret_t edit_ex_update_suggest_words_popup(widget_t* widget) {
   ret_t ret = RET_OK;
   str_t str;
   str_init(&str, 0);

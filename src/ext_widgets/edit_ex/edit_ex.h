@@ -114,6 +114,17 @@ ret_t edit_ex_set_suggest_words_item_formats(widget_t* widget, const char* forma
 ret_t edit_ex_set_suggest_words_input_name(widget_t* widget, const char* name);
 
 /**
+ * @method edit_ex_update_suggest_words_popup
+ * 请求刷新显示建议词窗口。
+ * > suggest_words 为空时关闭窗口。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget edit_ex对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_ex_update_suggest_words_popup(widget_t* widget);
+
+/**
  * @method edit_ex_cast
  * 转换为edit对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]
