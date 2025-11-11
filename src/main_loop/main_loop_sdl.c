@@ -156,7 +156,7 @@ static ret_t main_loop_sdl2_dispatch_touch_event(main_loop_simple_t* loop, SDL_E
     widget_dispatch(win, e);
   }
 
-  log_debug("touch event: type=%d touch_id=% " PRId64 " finger_id=%" PRId64 "  x=%f y=%f\n", type,
+  log_debug("touch event: type=%d touch_id=%" PRId64 " finger_id=%" PRId64 "  x=%f y=%f\n", type,
             event.touch_id, event.finger_id, event.x, event.y);
 
   return RET_OK;
