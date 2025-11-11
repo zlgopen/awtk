@@ -622,6 +622,14 @@ inline static ret_t edit_ex_suggest_words_popup_calc_position(widget_t* widget, 
   return RET_OK;
 }
 
+inline static ret_t edit_ex_close_suggest_words_popup(edit_ex_t* edit_ex) {
+  ret_t ret = RET_OK;
+  if (edit_ex->suggest_words_popup != NULL) {
+    ret = window_close(edit_ex->suggest_words_popup);
+  }
+  return ret;
+}
+
 static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
   ret_t ret = RET_OK;
   edit_ex_t* edit_ex = EDIT_EX(widget);
@@ -630,7 +638,8 @@ static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
   if (edit_ex->suggest_words == NULL) {
-    goto close;
+    edit_ex_close_suggest_words_popup(edit_ex);
+    return RET_OK;
   }
 
   /* 通知 suggest_words 更新 */
@@ -640,7 +649,8 @@ static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
   return_value_if_fail(RET_OK == ret, ret);
 
   if (tk_object_get_prop_int(edit_ex->suggest_words, TK_OBJECT_PROP_SIZE, 0) == 0) {
-    goto close;
+    edit_ex_close_suggest_words_popup(edit_ex);
+    return RET_OK;
   }
 
   if (edit_ex->suggest_words_popup == NULL) {
@@ -667,11 +677,6 @@ static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
   }
 
   return ret;
-close:
-  if (edit_ex->suggest_words_popup != NULL) {
-    window_close(edit_ex->suggest_words_popup);
-  }
-  return RET_OK;
 }
 
 ret_t edit_ex_update_suggest_words_popup(widget_t* widget) {

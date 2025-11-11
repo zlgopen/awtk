@@ -30,7 +30,9 @@ ret_t edit_ex_set_suggest_words(widget_t* widget, tk_object_t* suggest_words) {
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
   TK_OBJECT_UNREF(edit_ex->suggest_words);
-  edit_ex->suggest_words = TK_OBJECT_REF(suggest_words);
+  if (suggest_words != NULL) {
+    edit_ex->suggest_words = TK_OBJECT_REF(suggest_words);
+  }
 
   return RET_OK;
 }
@@ -182,14 +184,13 @@ static ret_t edit_ex_on_destroy(widget_t* widget) {
   edit_ex_t* edit_ex = EDIT_EX(widget);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
-  if (edit_ex->suggest_words_popup != NULL) {
-    window_close(edit_ex->suggest_words_popup);
-  }
+  edit_ex_close_suggest_words_popup(edit_ex);
 
   edit_ex_set_suggest_words_item_formats(widget, NULL);
 
   TK_OBJECT_UNREF(edit_ex->suggest_words_ui_props);
-  TK_OBJECT_UNREF(edit_ex->suggest_words);
+
+  edit_ex_set_suggest_words(widget, NULL);
 
   return widget_vtable_on_destroy_by_parent(widget, WIDGET_VTABLE_GET_VTABLE(edit_ex));
 }
