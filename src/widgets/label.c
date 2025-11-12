@@ -261,19 +261,20 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
 
   max_line_w = label_get_text_line_max_w(widget, c);
   if (label->line_wrap) {
-    w = widget->w - margin_left - margin_right;
+    w = widget->w;
     if (max_w != 0) {
-      w = max_line_w;
+      w = max_line_w + 1;
     }
   } else {
-    w = max_line_w;
+    w = max_line_w + 1;
   }
 
   if (max_w != 0) {
     if (w > max_w) {
-      w = max_w - margin_left - margin_right;
+      w = max_w;
     }
   }
+  w = w - margin_left - margin_right;
   return_value_if_fail(w > 0, RET_BAD_PARAMS);
 
   return_value_if_fail(line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size, w,
