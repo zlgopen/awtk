@@ -166,7 +166,7 @@ static ret_t color_picker_sync_children(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t color_picker_update_color(widget_t* widget, color_t color);
+static ret_t color_picker_update_color(widget_t* widget, color_t color, bool_t force);
 
 static ret_t color_picker_set_color_r(widget_t* widget, float_t r) {
   color_t c;
@@ -177,7 +177,7 @@ static ret_t color_picker_set_color_r(widget_t* widget, float_t r) {
   c.rgba.r = (uint8_t)r;
   color_picker->c_r_value = r;
 
-  return color_picker_update_color(widget, c);
+  return color_picker_update_color(widget, c, FALSE);
 }
 
 static ret_t color_picker_set_color_g(widget_t* widget, float_t g) {
@@ -189,7 +189,7 @@ static ret_t color_picker_set_color_g(widget_t* widget, float_t g) {
   c.rgba.g = (uint8_t)g;
   color_picker->c_g_value = g;
 
-  return color_picker_update_color(widget, c);
+  return color_picker_update_color(widget, c, FALSE);
 }
 
 static ret_t color_picker_set_color_b(widget_t* widget, float_t b) {
@@ -201,7 +201,7 @@ static ret_t color_picker_set_color_b(widget_t* widget, float_t b) {
   c.rgba.b = (uint8_t)b;
   color_picker->c_b_value = b;
 
-  return color_picker_update_color(widget, c);
+  return color_picker_update_color(widget, c, FALSE);
 }
 
 static ret_t color_picker_set_color_h(widget_t* widget, float hh) {
@@ -212,12 +212,16 @@ static ret_t color_picker_set_color_h(widget_t* widget, float hh) {
   color_picker_t* color_picker = COLOR_PICKER(widget);
   return_value_if_fail(widget != NULL && color_picker != NULL, RET_BAD_PARAMS);
 
-  color_picker->last_hue = hh;
-  c = color_picker->c;
-  convertRGBtoHSV(c.rgba.r, c.rgba.g, c.rgba.b, &h, &s, &v);
-  convertHSVtoRGB(hh, s, v, &(c.rgba.r), &(c.rgba.g), &(c.rgba.b));
+  if (color_picker->last_hue != hh) {
+    color_picker->last_hue = hh;
+    c = color_picker->c;
+    convertRGBtoHSV(c.rgba.r, c.rgba.g, c.rgba.b, &h, &s, &v);
+    convertHSVtoRGB(hh, s, v, &(c.rgba.r), &(c.rgba.g), &(c.rgba.b));
 
-  return color_picker_update_color(widget, c);
+    return color_picker_update_color(widget, c, TRUE);
+  }
+
+  return RET_OK;
 }
 
 static ret_t color_picker_set_color_s(widget_t* widget, float ss) {
@@ -232,7 +236,7 @@ static ret_t color_picker_set_color_s(widget_t* widget, float ss) {
   convertRGBtoHSV(c.rgba.r, c.rgba.g, c.rgba.b, &h, &s, &v);
   convertHSVtoRGB(h, ss, v, &(c.rgba.r), &(c.rgba.g), &(c.rgba.b));
 
-  return color_picker_update_color(widget, c);
+  return color_picker_update_color(widget, c, FALSE);
 }
 
 static ret_t color_picker_set_color_v(widget_t* widget, float vv) {
@@ -247,7 +251,7 @@ static ret_t color_picker_set_color_v(widget_t* widget, float vv) {
   convertRGBtoHSV(c.rgba.r, c.rgba.g, c.rgba.b, &h, &s, &v);
   convertHSVtoRGB(h, s, vv, &(c.rgba.r), &(c.rgba.g), &(c.rgba.b));
 
-  return color_picker_update_color(widget, c);
+  return color_picker_update_color(widget, c, FALSE);
 }
 
 static ret_t color_picker_set_color_sv(widget_t* widget, float ss, float vv) {
@@ -263,7 +267,7 @@ static ret_t color_picker_set_color_sv(widget_t* widget, float ss, float vv) {
   if (color_picker->last_hue != -1) h = color_picker->last_hue;
   convertHSVtoRGB(h, ss, vv, &(c.rgba.r), &(c.rgba.g), &(c.rgba.b));
 
-  return color_picker_update_color(widget, c);
+  return color_picker_update_color(widget, c, FALSE);
 }
 
 static ret_t color_picker_on_child_value_changing(void* ctx, event_t* e) {
@@ -379,7 +383,7 @@ widget_t* color_picker_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
   return widget;
 }
 
-static ret_t color_picker_update_color(widget_t* widget, color_t color) {
+static ret_t color_picker_update_color(widget_t* widget, color_t color, bool_t force) {
   color_picker_t* color_picker = COLOR_PICKER(widget);
   return_value_if_fail(widget != NULL && color_picker != NULL, RET_BAD_PARAMS);
 
@@ -391,7 +395,7 @@ static ret_t color_picker_update_color(widget_t* widget, color_t color) {
     color_picker->last_hue = h;
   }
 
-  if (color_picker->c.color != color.color) {
+  if (force || color_picker->c.color != color.color) {
     value_change_event_t evt;
     value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
     value_set_uint32(&(evt.old_value), color_picker->c.color);
@@ -425,7 +429,7 @@ ret_t color_picker_set_color(widget_t* widget, const char* color) {
   convertRGBtoHSV(color_picker->init_c.rgba.r, color_picker->init_c.rgba.g,
                   color_picker->init_c.rgba.b, &h, &s, &v);
   color_picker->last_hue = h;
-  color_picker_update_color(widget, color_picker->init_c);
+  color_picker_update_color(widget, color_picker->init_c, FALSE);
   return RET_OK;
 }
 

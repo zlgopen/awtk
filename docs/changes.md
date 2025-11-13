@@ -2,6 +2,7 @@
 
 2025/11/13
   * 完善label的auto_adjust_resize(感谢泽武提供补丁)
+  * 修改color_picker的当前颜色饱和度为0时，色相值变化没有刷新“sv”子控件的问题(感谢朝泽提供补丁)
 
 2025/11/12
   * 完善label的auto_adjust_resize(感谢泽武提供补丁)
