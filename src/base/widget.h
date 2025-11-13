@@ -2866,7 +2866,7 @@ ret_t widget_re_translate_text(widget_t* widget);
  *
  * > 请用widget\_create代替本函数。
  *
- * @depreated
+ * @deprecated
  * @param {widget_t*} widget widget对象。
  * @param {widget_t*} parent widget的父控件。
  * @param {const widget_vtable_t*} vt 虚表。
@@ -2877,6 +2877,7 @@ ret_t widget_re_translate_text(widget_t* widget);
  *
  * @return {widget_t*} widget对象本身。
  */
+TK_DEPRECATED("Please use widget_create() instead.")
 widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y,
                       wh_t w, wh_t h);
 
