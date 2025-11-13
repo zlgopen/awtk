@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/11/13
+  * 完善label的auto_adjust_resize(感谢泽武提供补丁)
+
 2025/11/12
   * 完善label的auto_adjust_resize(感谢泽武提供补丁)
 
