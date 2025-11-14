@@ -2740,12 +2740,10 @@ bool_t tk_rad_equal(double r1, double r2, double epsilon) {
 }
 
 ret_t tk_str_trim_left(char* str, const char* chars) {
-  const char* p = str;
+  const char* p = NULL;
   return_value_if_fail(str != NULL && chars != NULL, RET_BAD_PARAMS);
 
-  while (*p && strchr(chars, *p) != NULL) {
-    p++;
-  }
+  p = tk_skip_chars(str, chars);
 
   if (p != str) {
     memmove(str, p, tk_strlen(p) + 1);
@@ -2755,8 +2753,10 @@ ret_t tk_str_trim_left(char* str, const char* chars) {
 }
 
 ret_t tk_str_trim_right(char* str, const char* chars) {
-  char* p = str + tk_strlen(str) - 1;
+  char* p = NULL;
   return_value_if_fail(str != NULL && chars != NULL, RET_BAD_PARAMS);
+
+  p = str + tk_strlen(str) - 1;
   return_value_if_fail(p >= str, RET_BAD_PARAMS);
 
   while (p >= str && strchr(chars, *p) != NULL) {
