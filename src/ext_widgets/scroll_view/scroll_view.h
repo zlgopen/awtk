@@ -383,7 +383,7 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
 
 /**
  * @method scroll_view_scroll_delta_to
- * 滚动到指定的偏移量。
+ * 在当前偏移量基础上滚动指定偏移量。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t} xoffset_delta x偏移量。
