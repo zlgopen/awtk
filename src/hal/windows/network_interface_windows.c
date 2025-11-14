@@ -580,7 +580,7 @@ static bool_t local_exec_method(network_interface_windows_t* network_interface,
   int last_error_code_ = 0;
   IWbemClassObject* results = NULL;
 
-  auto res = network_interface->p_service_->lpVtbl->ExecMethod(
+  HRESULT res = network_interface->p_service_->lpVtbl->ExecMethod(
       network_interface->p_service_, network_interface->path_.bstrVal, method, 0, NULL,
       params_instance, &results, NULL);
   if (SUCCEEDED(res)) {
@@ -693,7 +693,7 @@ static ret_t network_interface_windows_set_ipaddr(network_interface_t* network_i
   params->lpVtbl->SpawnInstance(params, 0, &paramsInst);
 
   darray_clear(windows_network_interface->arg);
-  darray_push(windows_network_interface->arg, ipaddr);
+  darray_push(windows_network_interface->arg, (void*)ipaddr);
   SAFEARRAY* p1 = create_SAFEARRAY(windows_network_interface->arg);
 
   VARIANT paramVt;
@@ -703,7 +703,7 @@ static ret_t network_interface_windows_set_ipaddr(network_interface_t* network_i
   SafeArrayDestroy(p1);
 
   darray_clear(windows_network_interface->arg);
-  darray_push(windows_network_interface->arg, netmask);
+  darray_push(windows_network_interface->arg, (void*)netmask);
   p1 = create_SAFEARRAY(windows_network_interface->arg);
   paramVt.parray = p1;
   paramsInst->lpVtbl->Put(paramsInst, L"SubnetMask", 0, &paramVt, 0);
@@ -734,7 +734,7 @@ static ret_t network_interface_windows_set_dns(network_interface_t* network_inte
   params->lpVtbl->SpawnInstance(params, 0, &paramsInst);
 
   darray_clear(windows_network_interface->arg);
-  darray_push(windows_network_interface->arg, dns);
+  darray_push(windows_network_interface->arg, (void*)dns);
   SAFEARRAY* p1 = create_SAFEARRAY(windows_network_interface->arg);
   VARIANT paramVt;
   paramVt.vt = VT_ARRAY | VT_BSTR;
@@ -765,7 +765,7 @@ static ret_t network_interface_windows_set_gateway(network_interface_t* network_
   params->lpVtbl->SpawnInstance(params, 0, &paramsInst);
 
   darray_clear(windows_network_interface->arg);
-  darray_push(windows_network_interface->arg, gateway);
+  darray_push(windows_network_interface->arg, (void*)gateway);
   SAFEARRAY* p1 = create_SAFEARRAY(windows_network_interface->arg);
 
   VARIANT paramVt;
