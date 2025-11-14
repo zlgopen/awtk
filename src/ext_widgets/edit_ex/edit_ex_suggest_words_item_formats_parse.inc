@@ -113,15 +113,15 @@ inline static const char* edit_ex_suggest_words_find_pair_char(const char* str, 
   uint32_t need_num = 1;
 
   do {
-    if (*ret == '\0') {
+    if ('\0' == *ret) {
       return NULL;
     }
-    if (*ret == rep_char) {
+    if (rep_char == *ret) {
       ++need_num;
-    } else if (*ret == pair_char) {
+    } else if (pair_char == *ret) {
       --need_num;
     }
-    if (need_num == 0) {
+    if (0 == need_num) {
       break;
     }
   } while (++ret);
@@ -129,14 +129,29 @@ inline static const char* edit_ex_suggest_words_find_pair_char(const char* str, 
   return ret;
 }
 
-inline static str_t* edit_ex_suggest_words_create_str_by_slice(const char* start, const char* end) {
-  str_t* ret = NULL;
+inline static const char* edit_ex_suggest_words_set_str_by_slice(str_t* str, const char* start,
+                                                                 const char* end,
+                                                                 const char* trim_text) {
+  return_value_if_fail(str != NULL, NULL);
   return_value_if_fail(start != NULL && end != NULL && end >= start, NULL);
 
-  ret = str_create(0);
-  str_set_with_len(ret, start, end - start);
+  if (TK_STR_IS_NOT_EMPTY(trim_text)) {
+    const char* p = start;
+    while (p < end && strchr(trim_text, *p) != NULL) {
+      p++;
+    }
+    start = p;
 
-  return ret;
+    p = end - 1;
+    while (p + 1 > start && strchr(trim_text, *p) != NULL) {
+      p--;
+    }
+    end = p + 1;
+  }
+
+  return_value_if_fail(RET_OK == str_set_with_len(str, start, end - start), NULL);
+
+  return str->str;
 }
 
 inline static widget_t* edit_ex_suggest_words_widget_create_by_type(widget_t* parent,
@@ -152,6 +167,7 @@ inline static widget_t* edit_ex_suggest_words_widget_create_by_type(widget_t* pa
 
 static ret_t edit_ex_suggest_words_widget_props_format_parse(edit_ex_t* edit_ex, const char* format,
                                                              widget_t* widget) {
+  ret_t ret = RET_OK;
   const char* prop_format = NULL;
   str_t name;
   str_t value;
@@ -163,14 +179,15 @@ static ret_t edit_ex_suggest_words_widget_props_format_parse(edit_ex_t* edit_ex,
 
   for (prop_format = tokenizer_next(&t); prop_format != NULL; prop_format = tokenizer_next(&t)) {
     const char* iter_eq = strchr(prop_format, '=');
-    return_value_if_fail(iter_eq != NULL, RET_BAD_PARAMS);
+    goto_error_if_fail_ex(iter_eq != NULL, ret = RET_BAD_PARAMS);
 
-    str_set_with_len(&name, prop_format, iter_eq - prop_format);
-    str_trim(&name, " \r\n");
+    goto_error_if_fail_ex(
+        NULL != edit_ex_suggest_words_set_str_by_slice(&name, prop_format, iter_eq, " \r\n"),
+        ret = RET_FAIL);
     str_set(&value, iter_eq + 1);
     str_trim(&value, " \r\n");
     if (name.size > 0 && value.size > 0) {
-      if (value.str[0] == '$') {
+      if ('$' == value.str[0]) {
         str_insert(&name, 0, EDIT_EX_SUGGEST_WORDS_ITEM_FORMAT_PREFIX);
         str_remove(&value, 0, 1); /* 去掉 $ */
       }
@@ -178,12 +195,13 @@ static ret_t edit_ex_suggest_words_widget_props_format_parse(edit_ex_t* edit_ex,
     }
   }
 
+error:
   str_reset(&value);
   str_reset(&name);
 
   tokenizer_deinit(&t);
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t edit_ex_suggest_words_item_format_parse(edit_ex_t* edit_ex, const char* item_format,
@@ -193,29 +211,29 @@ static ret_t edit_ex_suggest_words_item_format_parse(edit_ex_t* edit_ex, const c
   const char* last_p = item_format;
   widget_t* curr_item = NULL;
   widget_t* curr_parent = parent;
+  str_t slice;
+  str_init(&slice, 0);
+
   while (*p != '\0') {
     switch (*p) {
       case '(': {
-        if (curr_item == NULL) {
-          str_t* type = edit_ex_suggest_words_create_str_by_slice(last_p, p);
-          return_value_if_fail(type != NULL, RET_FAIL);
-          str_trim(type, " \r\n");
-          curr_item = edit_ex_suggest_words_widget_create_by_type(curr_parent, type->str);
-          str_destroy(type);
-          return_value_if_fail(curr_item != NULL, RET_FAIL);
+        if (NULL == curr_item) {
+          const char* type = edit_ex_suggest_words_set_str_by_slice(&slice, last_p, p, " \r\n");
+          goto_error_if_fail_ex(type != NULL, ret = RET_FAIL);
+          curr_item = edit_ex_suggest_words_widget_create_by_type(curr_parent, type);
+          goto_error_if_fail_ex(curr_item != NULL, ret = RET_FAIL);
         }
 
         last_p = ++p;
         p = edit_ex_suggest_words_find_pair_char(p, '(', ')');
-        return_value_if_fail(p != NULL, RET_FAIL);
+        goto_error_if_fail_ex(p != NULL, ret = RET_FAIL);
 
         {
-          str_t* props_format = edit_ex_suggest_words_create_str_by_slice(last_p, p);
-          return_value_if_fail(props_format != NULL, RET_FAIL);
-          ret = edit_ex_suggest_words_widget_props_format_parse(edit_ex, props_format->str,
-                                                                curr_item);
-          str_destroy(props_format);
-          return_value_if_fail(ret == RET_OK, ret);
+          const char* props_format =
+              edit_ex_suggest_words_set_str_by_slice(&slice, last_p, p, " \r\n");
+          goto_error_if_fail_ex(props_format != NULL, ret = RET_FAIL);
+          ret = edit_ex_suggest_words_widget_props_format_parse(edit_ex, props_format, curr_item);
+          goto_error_if_fail(RET_OK == ret);
         }
 
         if (curr_parent != parent) { /* 分隔线布局 */
@@ -232,25 +250,23 @@ static ret_t edit_ex_suggest_words_item_format_parse(edit_ex_t* edit_ex, const c
         last_p = ++p;
       } break;
       case '[': {
-        if (curr_item == NULL) {
-          str_t* type = edit_ex_suggest_words_create_str_by_slice(last_p, p);
-          return_value_if_fail(type != NULL, RET_FAIL);
-          str_trim(type, " \r\n");
-          curr_item = edit_ex_suggest_words_widget_create_by_type(curr_parent, type->str);
-          str_destroy(type);
-          return_value_if_fail(curr_item != NULL, RET_FAIL);
+        if (NULL == curr_item) {
+          const char* type = edit_ex_suggest_words_set_str_by_slice(&slice, last_p, p, " \r\n");
+          goto_error_if_fail_ex(type != NULL, ret = RET_FAIL);
+          curr_item = edit_ex_suggest_words_widget_create_by_type(curr_parent, type);
+          goto_error_if_fail_ex(curr_item != NULL, ret = RET_FAIL);
         }
 
         last_p = ++p;
         p = edit_ex_suggest_words_find_pair_char(p, '[', ']');
-        return_value_if_fail(p != NULL, RET_FAIL);
+        goto_error_if_fail_ex(p != NULL, ret = RET_FAIL);
 
         {
-          str_t* subitem_format = edit_ex_suggest_words_create_str_by_slice(last_p, p);
-          return_value_if_fail(subitem_format != NULL, RET_FAIL);
-          ret = edit_ex_suggest_words_item_format_parse(edit_ex, subitem_format->str, curr_item);
-          str_destroy(subitem_format);
-          return_value_if_fail(ret == RET_OK, ret);
+          const char* subitem_format =
+              edit_ex_suggest_words_set_str_by_slice(&slice, last_p, p, " \r\n");
+          goto_error_if_fail_ex(subitem_format != NULL, ret = RET_FAIL);
+          ret = edit_ex_suggest_words_item_format_parse(edit_ex, subitem_format, curr_item);
+          goto_error_if_fail(RET_OK == ret);
         }
 
         last_p = ++p;
@@ -274,6 +290,8 @@ static ret_t edit_ex_suggest_words_item_format_parse(edit_ex_t* edit_ex, const c
     }
   }
 
+error:
+  str_reset(&slice);
   return ret;
 }
 
@@ -283,53 +301,60 @@ static ret_t edit_ex_suggest_words_item_formats_parse(edit_ex_t* edit_ex, const 
   ret_t ret = RET_OK;
   uint32_t i = 0;
   tokenizer_t t;
+  str_t str_format;
   return_value_if_fail(item_formats != NULL && result != NULL, RET_BAD_PARAMS);
 
   tokenizer_init(&t, item_formats, UINT32_MAX, ";");
+  str_init(&str_format, 0);
 
   for (item_format = tokenizer_next(&t), i = 0; item_format != NULL;
        item_format = tokenizer_next(&t), i++) {
     uint32_t len = tk_strlen(item_format);
     const char* brace_left = strchr(item_format, '{');
     if (brace_left != NULL && item_format[len - 1] == '}') {
-      str_t str_format;
-      widget_t* item = edit_ex_suggest_words_create_item(edit_ex, NULL);
-      return_value_if_fail(item != NULL, RET_OOM);
+      widget_t* item = NULL;
 
-      str_init(&str_format, 0);
-
-      str_set_with_len(&str_format, item_format, brace_left - item_format); /* 设置 { 前的名称 */
-      str_trim(&str_format, " \r\n");
+      /* 设置 { 前的名称 */
+      goto_error_if_fail_ex(NULL != edit_ex_suggest_words_set_str_by_slice(&str_format, item_format,
+                                                                           brace_left, " \r\n"),
+                            ret = RET_FAIL);
 
       /* 避免与索引产生冲突 */
-      return_value_if_fail(!tk_str_indexable(str_format.str), (str_reset(&str_format), RET_FAIL));
+      goto_error_if_fail_ex(!tk_str_indexable(str_format.str), ret = RET_FAIL);
 
-      if (str_format.size == 0) {
-        str_set(&str_format, "[");
+      if (0 == str_format.size) {
+        str_append_char(&str_format, '[');
         str_append_uint32(&str_format, i);
-        str_append(&str_format, "]");
+        str_append_char(&str_format, ']');
       }
+
+      item = edit_ex_suggest_words_create_item(edit_ex, NULL);
+      goto_error_if_fail_ex(item != NULL, ret = RET_OOM);
 
       widget_set_prop_str(item, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, str_format.str);
       widget_set_name(item, str_format.str);
 
-      str_set_with_len(&str_format, brace_left + 1,
-                       len - 2 - (brace_left - item_format)); /* 去掉 {} 和名称 */
+      /* 去掉 {} 和名称 */
+      goto_error_if_fail_ex(
+          NULL != edit_ex_suggest_words_set_str_by_slice(&str_format, brace_left + 1,
+                                                         &item_format[len - 2], " \r\n"),
+          (widget_destroy(item), ret = RET_FAIL));
 
       ret = edit_ex_suggest_words_item_format_parse(edit_ex, str_format.str, item);
-      return_value_if_fail(ret == RET_OK, (str_reset(&str_format), ret));
+      goto_error_if_fail_ex(RET_OK == ret, widget_destroy(item));
 
-      darray_push(result, item);
-
-      str_reset(&str_format);
+      ret = darray_push(result, item);
+      goto_error_if_fail_ex(RET_OK == ret, widget_destroy(item));
     } else {
       log_debug("%s:fail to parse item_format:\"%s\"!\n", __FUNCTION__, item_format);
     }
   }
 
+error:
+  str_reset(&str_format);
   tokenizer_deinit(&t);
 
-  return RET_OK;
+  return ret;
 }
 
 END_C_DECLS
