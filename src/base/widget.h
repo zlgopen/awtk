@@ -2861,27 +2861,6 @@ widget_t* widget_find_target(widget_t* widget, xy_t x, xy_t y);
 ret_t widget_re_translate_text(widget_t* widget);
 
 /**
- * @method widget_init
- * 初始化控件。仅在子类控件构造函数中使用。
- *
- * > 请用widget\_create代替本函数。
- *
- * @deprecated
- * @param {widget_t*} widget widget对象。
- * @param {widget_t*} parent widget的父控件。
- * @param {const widget_vtable_t*} vt 虚表。
- * @param {xy_t}   x x坐标
- * @param {xy_t}   y y坐标
- * @param {wh_t}   w 宽度
- * @param {wh_t}   h 高度
- *
- * @return {widget_t*} widget对象本身。
- */
-TK_DEPRECATED("Please use widget_create() instead.")
-widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y,
-                      wh_t w, wh_t h);
-
-/**
  * @method widget_create
  * 创建控件。仅在子类控件构造函数中使用。
  * @param {widget_t*} parent widget的父控件。
@@ -3523,8 +3502,26 @@ ret_t widget_reload_style_recursive(widget_t* widget);
 /* private */
 ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, const rect_t* r, color_t bd,
                                                 int32_t border, uint32_t border_width);
-
 /* internal use */
+/**
+ * @method widget_init
+ * 初始化控件。仅在子类控件构造函数中使用。
+ *
+ * > 请用widget\_create代替本函数。
+ *
+ * @param {widget_t*} widget widget对象。
+ * @param {widget_t*} parent widget的父控件。
+ * @param {const widget_vtable_t*} vt 虚表。
+ * @param {xy_t}   x x坐标
+ * @param {xy_t}   y y坐标
+ * @param {wh_t}   w 宽度
+ * @param {wh_t}   h 高度
+ *
+ * @return {widget_t*} widget对象本身。
+ */
+widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y,
+                      wh_t w, wh_t h);
+
 ret_t widget_on_wheel_children(widget_t* widget, wheel_event_t* e);
 rect_t widget_get_content_area_ex(widget_t* widget, int32_t default_margin);
 ret_t widget_draw_image_with_region(widget_t* widget, canvas_t* c, bitmap_t* img,
