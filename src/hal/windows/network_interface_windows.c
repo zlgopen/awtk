@@ -835,8 +835,8 @@ static void network_interface_windows_destroy(network_interface_t* network_inter
 }
 
 static const network_interface_vtable_t s_windows_eth_vtable = {
-    .type = "linux_eth",
-    .desc = "vtable for linux eth device",
+    .type = "windows_eth",
+    .desc = "vtable for windows eth device",
     .enable = network_interface_windows_enable,
     .disable = network_interface_windows_disable,
     .destroy = network_interface_windows_destroy,
@@ -851,8 +851,8 @@ static const network_interface_vtable_t s_windows_eth_vtable = {
 };
 
 static const network_interface_vtable_t s_windows_wifi_vtable = {
-    .type = "linux_wifi",
-    .desc = "vtable for linux wifi device",
+    .type = "windows_wifi",
+    .desc = "vtable for windows wifi device",
     .enable = network_interface_windows_enable,
     .disable = network_interface_windows_disable,
     .destroy = network_interface_windows_destroy,
@@ -869,8 +869,8 @@ static const network_interface_vtable_t s_windows_wifi_vtable = {
 };
 
 static const network_interface_vtable_t s_windows_mobile_vtable = {
-    .type = "linux_mobile",
-    .desc = "vtable for linux mobile device",
+    .type = "windows_mobile",
+    .desc = "vtable for windows mobile device",
     .enable = network_interface_windows_enable,
     .disable = network_interface_windows_disable,
     .destroy = network_interface_windows_destroy,
@@ -879,8 +879,8 @@ static const network_interface_vtable_t s_windows_mobile_vtable = {
 };
 
 static const network_interface_vtable_t s_windows_unknown_vtable = {
-    .type = "linux_unknown_network",
-    .desc = "vtable for linux common network",
+    .type = "windows_unknown_network",
+    .desc = "vtable for windows common network",
     .get_ipaddr = network_interface_windows_get_ipaddr,
     .get_macaddr = network_interface_windows_get_macaddr,
 };
