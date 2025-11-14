@@ -579,8 +579,8 @@ static bool_t local_exec_method(network_interface_windows_t* network_interface,
   bool_t rt = FALSE;
   int last_error_code_ = 0;
   IWbemClassObject* results = NULL;
-	BSTR bstr_method = SysAllocString(method);
-	return_value_if_fail(bstr_method != NULL, FALSE);
+  BSTR bstr_method = SysAllocString(method);
+  return_value_if_fail(bstr_method != NULL, FALSE);
 
   HRESULT res = network_interface->p_service_->lpVtbl->ExecMethod(
       network_interface->p_service_, network_interface->path_.bstrVal, bstr_method, 0, NULL,
