@@ -341,8 +341,8 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
 static void mledit_reset_text_edit_layout(mledit_t* mledit) {
   text_edit_layout(mledit->model);
   text_edit_set_offset(mledit->model, 0, 0);
-  mledit_set_select(mledit, 0, 0);
-  mledit_set_cursor(mledit, mledit_get_cursor(mledit));
+  mledit_set_select(WIDGET(mledit), 0, 0);
+  mledit_set_cursor(WIDGET(mledit), mledit_get_cursor(WIDGET(mledit)));
 }
 
 static ret_t mledit_set_text(widget_t* widget, const value_t* v) {
@@ -595,7 +595,7 @@ ret_t mledit_clear(mledit_t* mledit) {
   return_value_if_fail(widget != NULL && mledit != NULL, RET_BAD_PARAMS);
 
   widget->text.size = 0;
-  mledit_set_cursor(mledit, 0);
+  mledit_set_cursor(WIDGET(mledit), 0);
 
   return widget_invalidate_force(widget, NULL);
 }
@@ -1137,8 +1137,8 @@ static void mledit_fix_state(mledit_t* mledit, uint32_t offset, uint32_t rm_num,
   }
 
   mledit->model->ignore_layout = TRUE;
-  mledit_set_select(mledit, state.select_start, state.select_end);
-  mledit_set_cursor(mledit, cursor);
+  mledit_set_select(WIDGET(mledit), state.select_start, state.select_end);
+  mledit_set_cursor(WIDGET(mledit), cursor);
   mledit->model->ignore_layout = FALSE;
 }
 

@@ -519,7 +519,7 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
       break;
   }
 
-  edit_set_cursor(edit, 0xffffffff);
+  edit_set_cursor(WIDGET(edit), 0xffffffff);
 
   return RET_OK;
 }
@@ -786,7 +786,7 @@ static ret_t edit_select_all_async(const idle_info_t* info) {
   text_edit_select_all(edit->model);
 
   if (edit->fix_value != NULL) {
-    edit_set_cursor(edit, 0);
+    edit_set_cursor(WIDGET(edit), 0);
   }
 
   return RET_REMOVE;
@@ -1523,7 +1523,7 @@ static ret_t edit_set_text(widget_t* widget, const value_t* v) {
     }
     wstr_set_with_len(&(widget->text), str.str, len);
 
-    edit_set_cursor(edit, 0);
+    edit_set_cursor(WIDGET(edit), 0);
     text_edit_layout(edit->model);
     edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
     edit->is_text_error = FALSE;
@@ -1655,7 +1655,7 @@ ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible) {
   edit->password_visible = password_visible;
   text_edit_set_mask(edit->model, !password_visible);
   text_edit_set_mask_char(edit->model, PASSWORD_MASK_CHAR);
-  edit_set_cursor(edit, 0xffffffff);
+  edit_set_cursor(WIDGET(edit), 0xffffffff);
   widget_invalidate(widget, NULL);
 
   return RET_OK;
@@ -1889,7 +1889,7 @@ static ret_t edit_inc_default(edit_t* edit) {
   if (!edit->readonly) {
     text_edit_select_all(edit->model);
   }
-  edit_set_cursor(edit, text->size);
+  edit_set_cursor(WIDGET(edit), text->size);
   edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 
   return widget_invalidate_force(widget, NULL);
@@ -1944,7 +1944,7 @@ static ret_t edit_dec_default(edit_t* edit) {
   if (!edit->readonly) {
     text_edit_select_all(edit->model);
   }
-  edit_set_cursor(edit, text->size);
+  edit_set_cursor(WIDGET(edit), text->size);
   edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 
   return widget_invalidate_force(widget, NULL);
@@ -1955,7 +1955,7 @@ ret_t edit_clear(edit_t* edit) {
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
   wstr_set(&(widget->text), L"");
-  edit_set_cursor(edit, 0xffffffff);
+  edit_set_cursor(WIDGET(edit), 0xffffffff);
   edit_update_status(widget);
 
   if (edit->fix_value != NULL) {
@@ -2273,8 +2273,8 @@ ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep) {
               break;
             }
           }
-          edit_set_cursor(edit, state.cursor - 1);
-          edit_set_select(edit, i + 1, state.cursor - 1);
+          edit_set_cursor(WIDGET(edit), state.cursor - 1);
+          edit_set_select(WIDGET(edit), i + 1, state.cursor - 1);
           return RET_STOP;
         }
       } else if (key_code_is_right(key)) {
@@ -2285,8 +2285,8 @@ ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep) {
               break;
             }
           }
-          edit_set_cursor(edit, state.cursor + 1);
-          edit_set_select(edit, state.cursor + 1, i);
+          edit_set_cursor(WIDGET(edit), state.cursor + 1);
+          edit_set_select(WIDGET(edit), state.cursor + 1, i);
           return RET_STOP;
         }
       }
@@ -2326,7 +2326,7 @@ ret_t edit_pre_delete_with_sep(widget_t* widget, delete_type_t delete_type, char
     *d = 0;
 
     text_edit_unselect(edit->model);
-    edit_set_cursor(edit, state.select_start);
+    edit_set_cursor(WIDGET(edit), state.select_start);
     if (delete_type == DELETE_BY_KEY_BACKSPACE || delete_type == DELETE_BY_KEY_DELETE) {
       return RET_STOP;
     }
@@ -2334,22 +2334,22 @@ ret_t edit_pre_delete_with_sep(widget_t* widget, delete_type_t delete_type, char
     if (delete_type == DELETE_BY_KEY_BACKSPACE) {
       if (state.cursor > 0 && text->str[state.cursor - 1] == sep) {
         /*不允许删除分隔符*/
-        edit_set_cursor(edit, state.cursor - 1);
+        edit_set_cursor(WIDGET(edit), state.cursor - 1);
         return RET_STOP;
       } else if (state.cursor > 1 && text->str[state.cursor - 2] == sep) {
         /*分隔符之间保留一个字符*/
         text->str[state.cursor - 1] = EDIT_DEFAULT_CHAR;
-        edit_set_cursor(edit, state.cursor - 1);
+        edit_set_cursor(WIDGET(edit), state.cursor - 1);
         return RET_STOP;
       } else if (state.cursor == 1) {
         /*不允许删除首字符*/
         text->str[0] = EDIT_DEFAULT_CHAR;
-        edit_set_cursor(edit, state.cursor - 1);
+        edit_set_cursor(WIDGET(edit), state.cursor - 1);
         return RET_STOP;
       }
     } else if (delete_type == DELETE_BY_KEY_DELETE) {
       if (text->str[state.cursor] == sep) {
-        edit_set_cursor(edit, state.cursor + 1);
+        edit_set_cursor(WIDGET(edit), state.cursor + 1);
         return RET_STOP;
       }
     }
@@ -2395,7 +2395,7 @@ ret_t edit_add_value_with_sep(widget_t* widget, int delta, char sep) {
     text->str[cursor] = c;
   }
 
-  edit_set_select(edit, cursor, cursor + 1);
+  edit_set_select(WIDGET(edit), cursor, cursor + 1);
   edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 
   return widget_invalidate_force(widget, NULL);
