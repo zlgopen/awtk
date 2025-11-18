@@ -203,6 +203,16 @@ ret_t text_edit_key_up(text_edit_t* text_edit, key_event_t* evt);
 ret_t text_edit_set_select(text_edit_t* text_edit, uint32_t start, uint32_t end);
 
 /**
+ * @method text_edit_select_word
+ * 选中指定光标位置的词。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {uint32_t} cursor 光标位置。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_select_word(text_edit_t* text_edit, uint32_t cursor);
+
+/**
  * @method text_edit_select_all
  * 全选。
  * @param {text_edit_t*} text_edit text_edit对象。

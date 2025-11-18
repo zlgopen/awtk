@@ -137,6 +137,8 @@ static ret_t text_edit_notify(text_edit_t* text_edit);
 static bool_t text_edit_is_need_layout(text_edit_t* text_edit);
 static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter);
 static ret_t text_edit_update_caret_pos(text_edit_t* text_edit);
+static ret_t text_edit_select_word_impl(text_edit_t* text_edit, uint32_t cursor, int32_t* start,
+                                        int32_t* end);
 
 #ifdef WITH_SDL
 #include <SDL.h>
@@ -1812,6 +1814,11 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
   bool_t move_caret_pos = FALSE;
   STB_TexteditState* state = NULL;
   text_layout_info_t* layout_info = NULL;
+#ifdef MACOS
+  bool_t is_control = evt->cmd;
+#else
+  bool_t is_control = evt->ctrl;
+#endif
   return_value_if_fail(impl != NULL, RET_BAD_PARAMS);
 
   key = evt->key;
@@ -1880,10 +1887,22 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
       break;
     }
     case TK_KEY_DELETE: {
+      if (is_control) {
+        uint32_t cursor = text_edit_get_cursor(text_edit);
+        text_edit->ignore_layout = TRUE;
+        text_edit_select_word_impl(text_edit, cursor, &cursor, NULL);
+        text_edit->ignore_layout = FALSE;
+      }
       key = STB_TEXTEDIT_K_DELETE;
       break;
     }
     case TK_KEY_BACKSPACE: {
+      if (is_control) {
+        uint32_t cursor = text_edit_get_cursor(text_edit);
+        text_edit->ignore_layout = TRUE;
+        text_edit_select_word_impl(text_edit, cursor, NULL, &cursor);
+        text_edit->ignore_layout = FALSE;
+      }
       key = STB_TEXTEDIT_K_BACKSPACE;
       break;
     }
@@ -2236,6 +2255,36 @@ ret_t text_edit_set_select(text_edit_t* text_edit, uint32_t start, uint32_t end)
   text_edit_layout(text_edit);
 
   return RET_OK;
+}
+
+static ret_t text_edit_select_word_impl(text_edit_t* text_edit, uint32_t cursor, int32_t* start,
+                                        int32_t* end) {
+  int32_t left = 0, right = 0;
+  uint32_t len = text_edit->widget->text.size;
+  wchar_t* text = text_edit->widget->text.str;
+
+  if (start != NULL && end != NULL) {
+    text_edit_set_select(text_edit, *start, *end);
+  } else {
+    if (RET_OK == tk_wstr_select_word(text, len, cursor, &left, &right)) {
+      ret_t ret = RET_OK;
+      if (start != NULL && right <= *start) {
+        ret = tk_wstr_select_word(text, len, right + 1, &left, &right);
+      } else if (end != NULL && *end <= left) {
+        ret = tk_wstr_select_word(text, len, left - 1, &left, &right);
+      }
+      if (RET_OK == ret) {
+        text_edit_set_select(text_edit, (start != NULL) ? *start : left,
+                             (end != NULL) ? *end : right);
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t text_edit_select_word(text_edit_t* text_edit, uint32_t cursor) {
+  return text_edit_select_word_impl(text_edit, cursor, NULL, NULL);
 }
 
 ret_t text_edit_select_all(text_edit_t* text_edit) {

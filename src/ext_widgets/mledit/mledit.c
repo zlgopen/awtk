@@ -338,11 +338,11 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static void mledit_reset_text_edit_layout(text_edit_t* text_edit) {
-  text_edit_layout(text_edit);
-  text_edit_set_offset(text_edit, 0, 0);
-  text_edit_set_select(text_edit, 0, 0);
-  text_edit_set_cursor(text_edit, text_edit_get_cursor(text_edit));
+static void mledit_reset_text_edit_layout(mledit_t* mledit) {
+  text_edit_layout(mledit->model);
+  text_edit_set_offset(mledit->model, 0, 0);
+  mledit_set_select(mledit, 0, 0);
+  mledit_set_cursor(mledit, mledit_get_cursor(mledit));
 }
 
 static ret_t mledit_set_text(widget_t* widget, const value_t* v) {
@@ -355,7 +355,7 @@ static ret_t mledit_set_text(widget_t* widget, const value_t* v) {
   if (!wstr_equal(&(widget->text), &str)) {
     wstr_set(&(widget->text), str.str);
     mledit_update_text(widget);
-    mledit_reset_text_edit_layout(mledit->model);
+    mledit_reset_text_edit_layout(mledit);
     text_edit_layout(mledit->model);
     mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
     mledit_update_status(widget);
@@ -398,23 +398,23 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
     mledit->margin = value_int(v);
-    mledit_reset_text_edit_layout(mledit->model);
+    mledit_reset_text_edit_layout(mledit);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     mledit->left_margin = value_int(v);
-    mledit_reset_text_edit_layout(mledit->model);
+    mledit_reset_text_edit_layout(mledit);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_RIGHT_MARGIN)) {
     mledit->right_margin = value_int(v);
-    mledit_reset_text_edit_layout(mledit->model);
+    mledit_reset_text_edit_layout(mledit);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TOP_MARGIN)) {
     mledit->top_margin = value_int(v);
-    mledit_reset_text_edit_layout(mledit->model);
+    mledit_reset_text_edit_layout(mledit);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_BOTTOM_MARGIN)) {
     mledit->bottom_margin = value_int(v);
-    mledit_reset_text_edit_layout(mledit->model);
+    mledit_reset_text_edit_layout(mledit);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FOCUS) || tk_str_eq(name, WIDGET_PROP_FOCUSED)) {
     mledit_set_focus(widget, value_bool(v));
@@ -595,7 +595,7 @@ ret_t mledit_clear(mledit_t* mledit) {
   return_value_if_fail(widget != NULL && mledit != NULL, RET_BAD_PARAMS);
 
   widget->text.size = 0;
-  text_edit_set_cursor(mledit->model, 0);
+  mledit_set_cursor(mledit, 0);
 
   return widget_invalidate_force(widget, NULL);
 }
@@ -708,21 +708,10 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_DOUBLE_CLICK: {
-      uint32_t len = 0;
-      int32_t left = 0;
-      int32_t right = 0;
-      uint32_t cursor = 0;
-      wchar_t* text = NULL;
       pointer_event_t evt = *(pointer_event_t*)e;
 
       if (widget_find_target(widget, evt.x, evt.y) == NULL) {
-        cursor = mledit_get_cursor(widget);
-        len = mledit->model->widget->text.size;
-        text = mledit->model->widget->text.str;
-
-        if (tk_wstr_select_word(text, len, cursor, &left, &right) == RET_OK) {
-          mledit_set_select(widget, left, right);
-        }
+        text_edit_select_word(mledit->model, mledit_get_cursor(widget));
       }
       break;
     }
@@ -935,7 +924,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
-      mledit_reset_text_edit_layout(mledit->model);
+      mledit_reset_text_edit_layout(mledit);
       widget_invalidate(widget, NULL);
       break;
     }
@@ -1148,8 +1137,8 @@ static void mledit_fix_state(mledit_t* mledit, uint32_t offset, uint32_t rm_num,
   }
 
   mledit->model->ignore_layout = TRUE;
-  text_edit_set_select(mledit->model, state.select_start, state.select_end);
-  text_edit_set_cursor(mledit->model, cursor);
+  mledit_set_select(mledit, state.select_start, state.select_end);
+  mledit_set_cursor(mledit, cursor);
   mledit->model->ignore_layout = FALSE;
 }
 
