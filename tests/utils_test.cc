@@ -2415,3 +2415,19 @@ TEST(Utils, bit) {
   ASSERT_EQ(0, TK_TEST_BIT(num, 6));
   ASSERT_EQ(1, TK_TEST_BIT(num, 7));
 }
+
+TEST(Utils, tk_days_in_month) {
+  ASSERT_EQ(tk_days_in_month(2024, 1), 31);
+  ASSERT_EQ(tk_days_in_month(2024, 2), 29);
+  ASSERT_EQ(tk_days_in_month(2023, 2), 28);
+  ASSERT_EQ(tk_days_in_month(2024, 3), 31);
+  ASSERT_EQ(tk_days_in_month(2024, 4), 30);
+  ASSERT_EQ(tk_days_in_month(2024, 5), 31);
+  ASSERT_EQ(tk_days_in_month(2024, 6), 30);
+  ASSERT_EQ(tk_days_in_month(2024, 7), 31);
+  ASSERT_EQ(tk_days_in_month(2024, 8), 31);
+  ASSERT_EQ(tk_days_in_month(2024, 9), 30);
+  ASSERT_EQ(tk_days_in_month(2024, 10), 31);
+  ASSERT_EQ(tk_days_in_month(2024, 11), 30);
+  ASSERT_EQ(tk_days_in_month(2024, 12), 31);
+}

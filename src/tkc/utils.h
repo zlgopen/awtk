@@ -1447,6 +1447,15 @@ bool_t tk_str_is_int(const char* str);
  */
 bool_t tk_str_is_float(const char* str);
 
+/**
+ * @method tk_days_in_month
+ * 获取某年某月的天数。
+ * @param {int32_t} year 年。
+ * @param {int32_t} month 月(1-12)。
+ * @return {int} 返回天数。
+ */
+int tk_days_in_month(int32_t year, int32_t month);
+
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL
 

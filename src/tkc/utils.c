@@ -2828,3 +2828,23 @@ bool_t tk_str_is_float(const char* str) {
   }
   return ret;
 }
+
+int tk_days_in_month(int32_t year, int32_t month) {
+  static const int32_t days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  int32_t days = 0;
+
+  if (month < 1 || month > 12) {
+    return 0;
+  }
+
+  days = days_in_month[month - 1];
+  if (month == 2) {
+    /* 闰年 */
+    if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+      days++;
+    }
+  }
+
+  return days;
+}
+
