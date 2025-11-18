@@ -951,8 +951,9 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       if (evt->replace) {
         edit_clear(edit);
       }
-      edit_commit_str(widget, evt->text);
-      log_debug("EVT_IM_COMMIT:%s\n", evt->text);
+      if (RET_OK == edit_commit_str(widget, evt->text)) {
+        log_debug("EVT_IM_COMMIT:%s\n", evt->text);
+      }
       widget_invalidate(widget, NULL);
 
       break;

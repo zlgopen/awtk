@@ -43,9 +43,6 @@ static ret_t main_loop_sdl2_dispatch_text_input(main_loop_simple_t* loop, SDL_Ev
   memset(&event, 0x00, sizeof(event));
   event.e = event_init(EVT_IM_COMMIT, NULL);
   event.text = text_input_event->text;
-  if (loop->key_pressed && *(event.text) == TK_KEY_BACKSPACE) {
-    return RET_OK;
-  }
 
   return input_method_dispatch_to_widget(input_method(), &(event.e));
 }

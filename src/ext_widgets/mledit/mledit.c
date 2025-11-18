@@ -469,12 +469,15 @@ static ret_t mledit_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t mledit_commit_str(widget_t* widget, const char* str) {
   mledit_t* mledit = MLEDIT(widget);
+  ret_t ret = RET_BAD_PARAMS;
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
   wstr_set_utf8(&(mledit->temp), str);
 
   wstr_set(&(mledit->last_changing_text), widget->text.str);
-  text_edit_paste(mledit->model, mledit->temp.str, mledit->temp.size);
-  mledit_dispatch_event(widget, EVT_VALUE_CHANGING);
+  ret = text_edit_paste(mledit->model, mledit->temp.str, mledit->temp.size);
+  if (ret == RET_OK) {
+    mledit_dispatch_event(widget, EVT_VALUE_CHANGING);
+  }
 
   return RET_OK;
 }

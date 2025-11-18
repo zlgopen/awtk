@@ -4,6 +4,9 @@
   * text_edit 增加整词删除功能(感谢兆坤提供补丁)
   * 增加了 conf_doc_foreach_ex 和 conf_doc_foreach_path 函数 (感谢林福提供补丁)
   * 增加函数 tk_days_in_month。
+  * 完善 text_edit (感谢兆坤提供补丁)
+    - 修复在桌面模式下按下ctrl+backspace会将delete作为字符输入到edit上的问题
+    - 去除整词删除的警告
 
 2025/11/14
   * 修复编译警告(感谢兆坤提供补丁)

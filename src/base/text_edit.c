@@ -2098,32 +2098,50 @@ ret_t text_edit_cut(text_edit_t* text_edit) {
   return RET_OK;
 }
 
+inline static bool_t text_edit_str_is_delete_key(const wchar_t* str, uint32_t size, uint32_t* key,
+                                                 delete_type_t* type) {
+  uint32_t tmp_key = 0;
+  delete_type_t tmp_type = DELETE_BY_INPUT;
+  return_value_if_fail(str != NULL, FALSE);
+
+  if (NULL == key) {
+    key = &tmp_key;
+  }
+  if (NULL == type) {
+    type = &tmp_type;
+  }
+
+  if (size == 1) {
+    char text[4] = {0};
+    tk_utf8_from_utf16(str, text, sizeof(text));
+    if (1 == tk_strlen(text)) {
+      switch (*text) {
+        case TK_KEY_BACKSPACE: {
+          *key = STB_TEXTEDIT_K_BACKSPACE;
+          *type = DELETE_BY_KEY_BACKSPACE;
+          return TRUE;
+        } break;
+        case TK_KEY_DELETE: {
+          *key = STB_TEXTEDIT_K_DELETE;
+          *type = DELETE_BY_KEY_DELETE;
+          return TRUE;
+        } break;
+        default: {
+        } break;
+      }
+    }
+  }
+
+  return FALSE;
+}
+
 ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size) {
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL && str != NULL, RET_BAD_PARAMS);
 
-  if (size == 1) {
-    uint32_t key = 0;
-    char text[4] = {0};
-    delete_type_t delete_type;
-    tk_utf8_from_utf16(str, text, 4);
-    if (tk_strlen(text) == 1 && *text == 8) {
-      key = STB_TEXTEDIT_K_BACKSPACE;
-      delete_type = DELETE_BY_KEY_BACKSPACE;
-    } else if (tk_strlen(text) == 1 && *text == 127) {
-      key = STB_TEXTEDIT_K_DELETE;
-      delete_type = DELETE_BY_KEY_DELETE;
-    }
-    if (key != 0) {
-      if (impl->on_text_will_delete &&
-          impl->on_text_will_delete(impl->on_text_will_delete_ctx, delete_type) == RET_STOP) {
-        return RET_OK;
-      }
-      stb_textedit_key(text_edit, &(impl->state), key);
-      text_edit_layout(text_edit);
-      text_edit_update_input_rect(text_edit);
-      return RET_OK;
-    }
+  if (text_edit_str_is_delete_key(str, size, NULL, NULL)) {
+    /* input_method 发过来的，text_edit_key_down 已经处理了，所以这里跳过 */
+    return RET_SKIP;
   }
 
   if (impl->on_text_will_delete) {
@@ -2244,9 +2262,7 @@ ret_t text_edit_set_select(text_edit_t* text_edit, uint32_t start, uint32_t end)
   return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
 
   if (start > end) {
-    uint32_t t = start;
-    start = end;
-    end = t;
+    tk_swap(start, end, uint32_t);
   }
 
   impl->state.select_start = start;
@@ -2259,28 +2275,38 @@ ret_t text_edit_set_select(text_edit_t* text_edit, uint32_t start, uint32_t end)
 
 static ret_t text_edit_select_word_impl(text_edit_t* text_edit, uint32_t cursor, int32_t* start,
                                         int32_t* end) {
-  int32_t left = 0, right = 0;
-  uint32_t len = text_edit->widget->text.size;
-  wchar_t* text = text_edit->widget->text.str;
+  ret_t ret = RET_SKIP;
 
   if (start != NULL && end != NULL) {
-    text_edit_set_select(text_edit, *start, *end);
+    ret = text_edit_set_select(text_edit, *start, *end);
   } else {
-    if (RET_OK == tk_wstr_select_word(text, len, cursor, &left, &right)) {
-      ret_t ret = RET_OK;
+    int32_t left = 0, right = 0;
+    uint32_t len = text_edit->widget->text.size;
+    wchar_t* text = text_edit->widget->text.str;
+
+    ret = tk_wstr_select_word(text, len, cursor, &left, &right);
+    if (RET_OK == ret) {
       if (start != NULL && right <= *start) {
-        ret = tk_wstr_select_word(text, len, right + 1, &left, &right);
+        if (right + 1 <= len) {
+          ret = tk_wstr_select_word(text, len, right + 1, &left, &right);
+        } else {
+          ret = RET_SKIP;
+        }
       } else if (end != NULL && *end <= left) {
-        ret = tk_wstr_select_word(text, len, left - 1, &left, &right);
+        if (left >= 1) {
+          ret = tk_wstr_select_word(text, len, left - 1, &left, &right);
+        } else {
+          ret = RET_SKIP;
+        }
       }
       if (RET_OK == ret) {
-        text_edit_set_select(text_edit, (start != NULL) ? *start : left,
-                             (end != NULL) ? *end : right);
+        ret = text_edit_set_select(text_edit, (start != NULL) ? *start : left,
+                                   (end != NULL) ? *end : right);
       }
     }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t text_edit_select_word(text_edit_t* text_edit, uint32_t cursor) {
