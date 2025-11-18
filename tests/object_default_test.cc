@@ -834,3 +834,91 @@ TEST(ObjectDefault, case_insensitive) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+typedef struct {
+  str_t* s;
+  char root[MAX_PATH + 1];
+} foreach_prop_ctx_t;
+
+static ret_t on_foreach_prop(void* ctx, const void* data) {
+  foreach_prop_ctx_t* prop_ctx = (foreach_prop_ctx_t*)ctx;
+  const named_value_t* nv = (const named_value_t*)data;
+
+  if (nv->value.type == VALUE_TYPE_OBJECT) {
+    foreach_prop_ctx_t sub_ctx = {0};
+    sub_ctx.s = prop_ctx->s;
+    tk_snprintf(sub_ctx.root, sizeof(sub_ctx.root), "%s%s.", prop_ctx->root, nv->name);
+    tk_object_foreach_prop(value_object(&nv->value), on_foreach_prop, &sub_ctx);
+  } else if (nv->value.type == VALUE_TYPE_STRING) {
+    str_append_format(prop_ctx->s, 64, "%s%s=%s;", prop_ctx->root, nv->name,
+                      value_str(&nv->value));
+  } else {
+    str_append_format(prop_ctx->s, 64, "%s%s=%d;", prop_ctx->root, nv->name,
+                      value_int(&nv->value));
+  }
+
+  return RET_OK;
+}
+
+TEST(ObjectDefault, foreach_object) {
+  tk_object_t* root = object_default_create();
+  tk_object_t* com0 = object_default_create();
+  tk_object_t* com1 = object_default_create();
+  tk_object_t* com2 = object_default_create();
+
+  tk_object_set_prop_object(root, "com0", com0);
+  tk_object_set_prop_object(root, "com1", com1);
+  tk_object_set_prop_object(root, "com2", com2);
+
+  tk_object_set_prop_int(com0, "baudrate", 115200);
+  tk_object_set_prop_int(com0, "data_bits", 8);
+  tk_object_set_prop_int(com0, "stop_bits", 1);
+  tk_object_set_prop_int(com0, "parity", 0);
+  tk_object_set_prop_int(com0, "flow_control", 0);
+  tk_object_set_prop_int(com0, "timeout", 10);
+  tk_object_set_prop_int(com0, "read_timeout", 1000);
+  tk_object_set_prop_int(com0, "write_timeout", 1000);
+
+  tk_object_set_prop_int(com1, "baudrate", 921600);
+  tk_object_set_prop_int(com1, "data_bits", 8);
+  tk_object_set_prop_int(com1, "stop_bits", 1);
+  tk_object_set_prop_int(com1, "parity", 0);
+  tk_object_set_prop_int(com1, "flow_control", 0);
+  tk_object_set_prop_int(com1, "timeout", 20);
+  tk_object_set_prop_int(com1, "read_timeout", 1000);
+  tk_object_set_prop_int(com1, "write_timeout", 1000);
+
+  tk_object_set_prop_int(com2, "baudrate", 3000000);
+  tk_object_set_prop_int(com2, "data_bits", 8);
+  tk_object_set_prop_int(com2, "stop_bits", 1);
+  tk_object_set_prop_int(com2, "parity", 0);
+  tk_object_set_prop_int(com2, "flow_control", 0);
+  tk_object_set_prop_int(com2, "timeout", 30);
+  tk_object_set_prop_int(com2, "read_timeout", 1000);
+  tk_object_set_prop_int(com2, "write_timeout", 1000);
+
+  foreach_prop_ctx_t prop_ctx = {0};
+  str_t* s = str_create(1024);
+
+  prop_ctx.s = s;
+
+  tk_object_foreach_prop(root, on_foreach_prop, &prop_ctx);
+
+  log_info("foreach object: %s\n", s->str);
+  ASSERT_TRUE(strstr(s->str, "com0.baudrate=115200;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com0.data_bits=8;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com0.stop_bits=1;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com0.parity=0;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com0.flow_control=0;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com0.timeout=10;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com0.read_timeout=1000;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com0.write_timeout=1000;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com1.baudrate=921600;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com1.timeout=20;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com1.write_timeout=1000;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com2.baudrate=3000000;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com2.data_bits=8;") != NULL);
+  ASSERT_TRUE(strstr(s->str, "com2.stop_bits=1;") != NULL);
+
+  str_destroy(s);
+}

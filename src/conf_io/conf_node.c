@@ -1323,9 +1323,21 @@ static ret_t conf_node_foreach_sibling(const char* root, conf_node_t* iter,
   return RET_OK;
 }
 
-ret_t conf_doc_foreach(conf_doc_t* doc, conf_doc_on_visit_t on_visit, void* ctx) {
+ret_t conf_doc_foreach_ex(conf_doc_t* doc, conf_node_t* node, conf_doc_on_visit_t on_visit, void* ctx) {
   return_value_if_fail(doc && on_visit, RET_BAD_PARAMS);
-  return conf_node_foreach_sibling(NULL, conf_node_get_first_child(doc->root), on_visit, ctx);
+  return_value_if_fail(node != NULL, RET_NOT_FOUND);
+  return conf_node_foreach_sibling(NULL, conf_node_get_first_child(node), on_visit, ctx);
+}
+
+ret_t conf_doc_foreach(conf_doc_t* doc, conf_doc_on_visit_t on_visit, void* ctx) {
+  return conf_doc_foreach_ex(doc, doc->root, on_visit, ctx);
+}
+
+ret_t conf_doc_foreach_path(conf_doc_t* doc, const char* path, conf_doc_on_visit_t on_visit, void* ctx) {
+  conf_node_t* node = conf_doc_find_node(doc ,NULL, path, FALSE);
+  return_value_if_fail(node != NULL, RET_NOT_FOUND);
+
+  return conf_doc_foreach_ex(doc, node, on_visit, ctx);
 }
 
 static ret_t conf_doc_save_str(const char* p, str_t* str, char comment_char) {

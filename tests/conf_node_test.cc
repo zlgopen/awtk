@@ -437,3 +437,51 @@ TEST(ConfNode, foreach) {
   conf_doc_destroy(doc);
   TK_OBJECT_UNREF(data);
 }
+
+static ret_t on_foreach_path(void* ctx, const char* path, value_t* v) {
+  str_t* str = (str_t*)ctx;
+  char buf[128];
+  tk_snprintf(buf, sizeof(buf), "%s=%s;", path, value_str(v));
+  str_append(str, buf);
+  return RET_OK;
+}
+
+TEST(ConfNode, foreach_path) {
+  conf_doc_t* doc = conf_doc_create(100);
+  str_t *str = str_create(1024);
+  tk_object_t* data = object_default_create();
+
+  tk_object_set_prop_str(data, "client.ip", "192.168.8.101");
+  tk_object_set_prop_str(data, "client.port", "8383");
+  tk_object_set_prop_str(data, "server.stat.up", "true");
+  tk_object_set_prop_str(data, "server.stat.linkup", "false");
+  tk_object_set_prop_str(data, "server.dns.[0]", "8.8.8.1");
+  tk_object_set_prop_str(data, "server.dns.[1]", "4.4.4.1");
+
+  tk_object_foreach_prop(data, conf_doc_on_copy_data, doc);
+
+  conf_doc_foreach_path(doc, "client", on_foreach_path, str);
+  log_info("  %s\n", str->str);
+  ASSERT_STREQ(str->str, "ip=192.168.8.101;port=8383;");
+  str_reset(str);
+
+  conf_doc_foreach_path(doc, "server.stat", on_foreach_path, str);
+  log_info("  %s\n", str->str);
+  ASSERT_STREQ(str->str, "linkup=false;up=true;");
+  str_reset(str);
+
+  conf_doc_foreach_path(doc, "server.dns", on_foreach_path, str);
+  log_info("  %s\n", str->str);
+  ASSERT_STREQ(str->str, "[0]=8.8.8.1;[1]=4.4.4.1;");
+  str_reset(str);
+
+  conf_doc_foreach_path(doc, "server", on_foreach_path, str);
+  log_info("  %s\n", str->str);
+  ASSERT_STREQ(str->str, "dns.[0]=8.8.8.1;dns.[1]=4.4.4.1;stat.linkup=false;stat.up=true;");
+  str_reset(str);
+
+  conf_doc_destroy(doc);
+  TK_OBJECT_UNREF(data);
+  str_destroy(str);
+
+}

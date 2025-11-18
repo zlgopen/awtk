@@ -960,6 +960,32 @@ uint32_t conf_node_count_children(conf_node_t* node);
  */
 ret_t conf_doc_foreach(conf_doc_t* doc, conf_doc_on_visit_t on_visit, void* ctx);
 
+/**
+ * @method conf_doc_foreach_ex
+ * 遍历节点类型为 CONF_NODE_SIMPLE 的节点。
+ *
+ * @param {conf_doc_t*}         doc 文档对象。
+ * @param {conf_node_t*}        node 节点对象。
+ * @param {conf_doc_on_visit_t} on_visit 回调。
+ * @param {void*}               ctx 回调参数。
+ *
+ * @return {ret_t} 返回 ret_t 值
+ */
+ret_t conf_doc_foreach_ex(conf_doc_t* doc, conf_node_t* node, conf_doc_on_visit_t on_visit, void* ctx);
+
+/**
+ * @method conf_doc_foreach_path
+ * 遍历指定路径的节点。
+ *
+ * @param {conf_doc_t*}         doc 文档对象。
+ * @param {const char*}         path 节点路径。
+ * @param {conf_doc_on_visit_t} on_visit 回调。
+ * @param {void*}               ctx 回调参数。
+ *
+ * @return {ret_t} 返回 ret_t 值
+ */
+ret_t conf_doc_foreach_path(conf_doc_t* doc, const char* path, conf_doc_on_visit_t on_visit, void* ctx);
+
 #define CONF_NODE_ROOT_NAME "root"
 
 #define CONF_SPECIAL_ATTR_SIZE "#size"
