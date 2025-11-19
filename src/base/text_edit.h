@@ -378,7 +378,7 @@ ret_t text_edit_paint(text_edit_t* text_edit, canvas_t* c);
 ret_t text_edit_layout(text_edit_t* text_edit);
 
 /**
- * @method text_edit_muti_line_insert_text_layout
+ * @method text_edit_multi_line_insert_text_layout
  * 插入字符串后的重新排版。（内部使用函数）
  * @param {text_edit_t*} text_edit text_edit对象。
  * @param {uint32_t} offset 插入的字符串偏移。
@@ -389,9 +389,9 @@ ret_t text_edit_layout(text_edit_t* text_edit);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t text_edit_muti_line_insert_text_layout(text_edit_t* text_edit, uint32_t offset,
-                                             uint32_t insert_length, const wchar_t* wtext,
-                                             bool_t overwrite, uint32_t rm_num);
+ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t offset,
+                                              uint32_t insert_length, const wchar_t* wtext,
+                                              bool_t overwrite, uint32_t rm_num);
 
 /**
  * @method text_edit_set_offset

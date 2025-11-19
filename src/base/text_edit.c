@@ -692,9 +692,9 @@ static ret_t text_edit_row_transfer(text_edit_t* text_edit, uint32_t start, uint
   return RET_OK;
 }
 
-ret_t text_edit_muti_line_insert_text_layout(text_edit_t* text_edit, uint32_t offset,
-                                             uint32_t insert_length, const wchar_t* wtext,
-                                             bool_t overwrite, uint32_t rm_num) {
+ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t offset,
+                                              uint32_t insert_length, const wchar_t* wtext,
+                                              bool_t overwrite, uint32_t rm_num) {
   uint32_t i, j;
   uint32_t row_num = 0;
   uint32_t row_num_tmp = 0;
@@ -2499,7 +2499,7 @@ static ret_t text_edit_insert_wtext_with_len(text_edit_t* text_edit, uint32_t of
     if (impl->single_line) {
       text_edit_layout(text_edit);
     } else {
-      text_edit_muti_line_insert_text_layout(text_edit, offset, len, wtext, FALSE, 0);
+      text_edit_multi_line_insert_text_layout(text_edit, offset, len, wtext, FALSE, 0);
     }
     if (offset + len != text_edit_get_cursor(text_edit)) {
       text_edit_set_cursor(text_edit, offset + len);

@@ -1206,7 +1206,7 @@ static ret_t mledit_insert_text_overwrite(widget_t* widget, uint32_t offset, con
   rm_cnt = mledit_update_text(widget);
 
   /* layout insert text & fix select & cursor */
-  text_edit_muti_line_insert_text_layout(mledit->model, offset, newtext_len, s.str, TRUE, rm_cnt);
+  text_edit_multi_line_insert_text_layout(mledit->model, offset, newtext_len, s.str, TRUE, rm_cnt);
   mledit_fix_state(mledit, offset, rm_cnt, text->size);
   wstr_reset(&s);
 
