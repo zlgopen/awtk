@@ -257,12 +257,15 @@ typedef enum _event_type_t {
    * @const EVT_WINDOW_TO_BACKGROUND
    * 窗口被切换到后台事件(event_t)。
    * 打开新窗口时，当前窗口被切换到后台时，对当前窗口触发本事件。
+   * 或者切换窗口时，对切换到后台的窗口触发本事件。
    */
   EVT_WINDOW_TO_BACKGROUND,
   /**
    * @const EVT_WINDOW_TO_FOREGROUND
    * 窗口被切换到前台事件(event_t)。
    * 关闭当前窗口时，前一个窗口被切换到前台时，对前一个窗口触发本事件。
+   * 或者切换窗口时，对切换到前台的窗口触发本事件。
+   * 打开窗口时不会触发本事件。
    */
   EVT_WINDOW_TO_FOREGROUND,
   /**
