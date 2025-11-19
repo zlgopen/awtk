@@ -3490,6 +3490,7 @@ ret_t widget_on_context_menu(widget_t* widget, pointer_event_t* e);
 bool_t widget_is_focusable(widget_t* widget);
 ret_t widget_destroy_sync(widget_t* widget);
 ret_t widget_dispatch_leave_event(widget_t* widget, pointer_event_t* e);
+ret_t widget_dispatch_enter_event(widget_t* widget, pointer_event_t* e);
 
 /* 调用这个函数，需要注意因为风格不同导致的脏矩形不同的问题 */
 ret_t widget_reload_style_recursive(widget_t* widget);

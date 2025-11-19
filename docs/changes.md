@@ -4,6 +4,7 @@
   * 修复拼写错误(感谢兆坤提供补丁)
   * 完善注释(感谢泽武提供补丁)
   * 修复 text_edit 在 redo/undo 时光标位置错误的问题(感谢泽武提供补丁)
+  * 完善 pointer_enter_event 和 pointer_leave_event 事件的触发时机(感谢泽武提供补丁)
 
 2025/11/18
   * text_edit 增加整词删除功能(感谢兆坤提供补丁)

@@ -722,6 +722,9 @@ static ret_t window_manager_pending_open_window_on_destroy_func(void* ctx, event
 
 static ret_t window_manager_default_open_window(widget_t* widget, widget_t* window) {
   ret_t ret = RET_OK;
+  xy_t pointer_x = 0;
+  xy_t pointer_y = 0;
+  pointer_event_t event;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
 
@@ -738,6 +741,17 @@ static ret_t window_manager_default_open_window(widget_t* widget, widget_t* wind
   ret = widget_add_child(widget, window);
   return_value_if_fail(ret == RET_OK, RET_FAIL);
   window_manager_default_layout_child(widget, window);
+
+  pointer_x = window_manager_get_pointer_x(widget);
+  pointer_y = window_manager_get_pointer_y(widget);
+
+  if (!(widget_is_keyboard(window) || widget_is_overlay(window))
+      && (!widget_is_point_in(window, pointer_x, pointer_y, FALSE))) {
+    pointer_event_init(&event, EVT_POINTER_LEAVE, widget->target, 0 , 0);
+    widget_dispatch_leave_event(widget->target, &event);
+    pointer_event_init(&event, EVT_POINTER_ENTER, window, 0 , 0);
+    widget_dispatch_enter_event(window, &event);
+  }
 
   window->dirty = FALSE;
   widget->target = window;

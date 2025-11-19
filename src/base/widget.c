@@ -3219,6 +3219,19 @@ ret_t widget_dispatch_leave_event(widget_t* widget, pointer_event_t* e) {
   return ret;
 }
 
+ret_t widget_dispatch_enter_event(widget_t* widget, pointer_event_t* e) {
+  ret_t ret = RET_OK;
+  widget_t* wm = widget_get_window_manager(widget);
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
+  pointer_event_t enter = *e;
+  enter.e.type = EVT_POINTER_ENTER;
+  ret = widget_dispatch(widget, (event_t*)(&enter));
+  window_manager_set_cursor(wm, widget_get_pointer_cursor(widget));
+
+  return ret;
+}
+
 static ret_t widget_dispatch_blur_event(widget_t* widget) {
   widget_t* target = widget;
   widget_t* temp;
@@ -3387,10 +3400,7 @@ ret_t widget_on_pointer_move_children(widget_t* widget, pointer_event_t* e) {
       widget->target = NULL;
     } else {
       if (target != NULL) {
-        pointer_event_t enter = *e;
-        enter.e.type = EVT_POINTER_ENTER;
-        ret = widget_dispatch(target, (event_t*)(&enter));
-        widget_update_pointer_cursor(target);
+        widget_dispatch_enter_event(target, e);
       } else {
         widget_update_pointer_cursor(widget);
       }

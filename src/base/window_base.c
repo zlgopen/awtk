@@ -649,11 +649,17 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       ret = RET_STOP;
     }
   } else if (e->type == EVT_WINDOW_TO_FOREGROUND) {
+    pointer_event_t enter;
+    widget_t* wm = widget_get_window_manager(widget);
     win->stage = WINDOW_STAGE_OPENED;
     widget->parent->grab_widget_count =
         widget->grab_widget_count + win->grab_count_when_to_foreground;
     if (widget->parent->grab_widget_count) {
       widget->parent->grab_widget = widget;
+    }
+    if (wm->target != widget) {
+      pointer_event_init(&enter, EVT_POINTER_ENTER, widget, 0, 0);
+      widget_dispatch_enter_event(widget, &enter);
     }
     if (win->save_focus_widget) {
       widget_set_focused_internal(win->save_focus_widget, TRUE);
@@ -665,8 +671,13 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       }
     }
   } else if (e->type == EVT_WINDOW_TO_BACKGROUND) {
+    pointer_event_t leave;
+    widget_t* wm = widget_get_window_manager(widget);
     win->stage = WINDOW_STAGE_SUSPEND;
-
+    if (wm->target == widget) {
+      pointer_event_init(&leave, EVT_POINTER_LEAVE, widget, 0, 0);
+      widget_dispatch_leave_event(widget, &leave);
+    }
     if (win->pressed) {
       pointer_event_t abort;
       pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, 0, 0);
