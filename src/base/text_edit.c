@@ -1807,6 +1807,31 @@ static ret_t text_edit_briefly_show_char_done(text_edit_t* text_edit) {
   return text_edit_briefly_show_char_done_impl(text_edit);
 }
 
+inline static ret_t text_edit_key_down_delete_word_prepare(text_edit_t* text_edit, key_event_t* evt,
+                                                           bool_t is_prev) {
+#ifdef MACOS
+  bool_t is_control = evt->cmd;
+#else
+  bool_t is_control = evt->ctrl;
+#endif
+  DECL_IMPL(text_edit);
+  STB_TexteditState* state = &(impl->state);
+  ret_t ret = RET_OK;
+
+  if (is_control && state->select_start == state->select_end) {
+    uint32_t cursor = text_edit_get_cursor(text_edit);
+    text_edit->ignore_layout = TRUE;
+    if (is_prev) {
+      ret = text_edit_select_word_impl(text_edit, cursor, NULL, (int32_t*)&cursor);
+    } else {
+      ret = text_edit_select_word_impl(text_edit, cursor, (int32_t*)&cursor, NULL);
+    }
+    text_edit->ignore_layout = FALSE;
+  }
+
+  return ret;
+}
+
 ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
   uint32_t key = 0;
   wstr_t* text = NULL;
@@ -1814,11 +1839,6 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
   bool_t move_caret_pos = FALSE;
   STB_TexteditState* state = NULL;
   text_layout_info_t* layout_info = NULL;
-#ifdef MACOS
-  bool_t is_control = evt->cmd;
-#else
-  bool_t is_control = evt->ctrl;
-#endif
   return_value_if_fail(impl != NULL, RET_BAD_PARAMS);
 
   key = evt->key;
@@ -1887,23 +1907,12 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
       break;
     }
     case TK_KEY_DELETE: {
-      if (is_control) {
-        uint32_t cursor = text_edit_get_cursor(text_edit);
-        text_edit->ignore_layout = TRUE;
-        text_edit_select_word_impl(text_edit, cursor, (int32_t*)&cursor, NULL);
-        tk_swap(impl->state.select_start, impl->state.select_end, uint32_t);
-        text_edit->ignore_layout = FALSE;
-      }
+      text_edit_key_down_delete_word_prepare(text_edit, evt, FALSE);
       key = STB_TEXTEDIT_K_DELETE;
       break;
     }
     case TK_KEY_BACKSPACE: {
-      if (is_control) {
-        uint32_t cursor = text_edit_get_cursor(text_edit);
-        text_edit->ignore_layout = TRUE;
-        text_edit_select_word_impl(text_edit, cursor, NULL, (int32_t*)&cursor);
-        text_edit->ignore_layout = FALSE;
-      }
+      text_edit_key_down_delete_word_prepare(text_edit, evt, TRUE);
       key = STB_TEXTEDIT_K_BACKSPACE;
       break;
     }
