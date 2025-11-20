@@ -1891,6 +1891,7 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
         uint32_t cursor = text_edit_get_cursor(text_edit);
         text_edit->ignore_layout = TRUE;
         text_edit_select_word_impl(text_edit, cursor, (int32_t*)&cursor, NULL);
+        tk_swap(impl->state.select_start, impl->state.select_end, uint32_t);
         text_edit->ignore_layout = FALSE;
       }
       key = STB_TEXTEDIT_K_DELETE;
