@@ -1826,7 +1826,6 @@ inline static ret_t text_edit_key_down_delete_word_prepare(text_edit_t* text_edi
     } else {
       ret = text_edit_select_word_impl(text_edit, cursor, (int32_t*)&cursor, NULL);
     }
-    tk_swap(impl->state.select_start, impl->state.select_end, uint32_t);
     text_edit->ignore_layout = FALSE;
   }
 

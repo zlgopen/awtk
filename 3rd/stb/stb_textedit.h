@@ -598,15 +598,15 @@ static void stb_textedit_delete(STB_TEXTEDIT_STRING *str, STB_TexteditState *sta
 }
 
 // delete the section
-static void stb_textedit_delete_selection(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
+static void stb_textedit_delete_selection(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, int cursor_at_end)
 {
    stb_textedit_clamp(str, state);
    if (STB_TEXT_HAS_SELECTION(state)) {
       if (state->select_start < state->select_end) {
-         stb_textedit_delete(str, state, state->select_start, state->select_end - state->select_start, 1);
+         stb_textedit_delete(str, state, state->select_start, state->select_end - state->select_start, cursor_at_end);
          state->select_end = state->cursor = state->select_start;
       } else {
-         stb_textedit_delete(str, state, state->select_end, state->select_start - state->select_end, 0);
+         stb_textedit_delete(str, state, state->select_end, state->select_start - state->select_end, cursor_at_end);
          state->select_start = state->cursor = state->select_end;
       }
       state->has_preferred_x = 0;
@@ -698,7 +698,7 @@ static void stb_textedit_prep_selection_at_cursor(STB_TexteditState *state)
 static int stb_textedit_cut(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
 {
    if (STB_TEXT_HAS_SELECTION(state)) {
-      stb_textedit_delete_selection(str,state); // implicitly clamps
+      stb_textedit_delete_selection(str, state, 1); // implicitly clamps
       state->has_preferred_x = 0;
       return 1;
    }
@@ -710,7 +710,7 @@ static int stb_textedit_paste_internal(STB_TEXTEDIT_STRING *str, STB_TexteditSta
 {
    // if there's a selection, the paste should delete it
    stb_textedit_clamp(str, state);
-   stb_textedit_delete_selection(str,state);
+   stb_textedit_delete_selection(str, state, 1);
    // try to insert the characters
    if (STB_TEXTEDIT_INSERTCHARS(str, state->cursor, text, len)) {
       stb_text_makeundo_insert(state, state->cursor, len);
@@ -750,7 +750,7 @@ retry:
                   state->has_preferred_x = 0;
                }
             } else {
-               stb_textedit_delete_selection(str,state); // implicitly clamps
+               stb_textedit_delete_selection(str, state, 1); // implicitly clamps
                if (STB_TEXTEDIT_INSERTCHARS(str, state->cursor, &ch, 1)) {
                   stb_text_makeundo_insert(state, state->cursor, 1);
                   ++state->cursor;
@@ -969,7 +969,7 @@ retry:
       case STB_TEXTEDIT_K_DELETE:
       case STB_TEXTEDIT_K_DELETE | STB_TEXTEDIT_K_SHIFT:
          if (STB_TEXT_HAS_SELECTION(state))
-            stb_textedit_delete_selection(str, state);
+            stb_textedit_delete_selection(str, state, 0);
          else {
             int n = STB_TEXTEDIT_STRINGLEN(str);
             if (state->cursor < n)
@@ -981,7 +981,7 @@ retry:
       case STB_TEXTEDIT_K_BACKSPACE:
       case STB_TEXTEDIT_K_BACKSPACE | STB_TEXTEDIT_K_SHIFT:
          if (STB_TEXT_HAS_SELECTION(state))
-            stb_textedit_delete_selection(str, state);
+            stb_textedit_delete_selection(str, state, 1);
          else {
             stb_textedit_clamp(str, state);
             if (state->cursor > 0) {
