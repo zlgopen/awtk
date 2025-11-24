@@ -1,4 +1,5 @@
 ﻿#include "tkc/buffer.h"
+#include "tkc/endian.h"
 #include "tkc/object_rbuffer.h"
 #include "tkc/object_wbuffer.h"
 #include "gtest/gtest.h"
@@ -469,4 +470,38 @@ TEST(Buffer, value) {
   ASSERT_EQ(v.type, VALUE_TYPE_STRING);
 
   wbuffer_deinit(&wbuffer);
+}
+
+TEST(Buffer, read_from_hexstr) {
+  rbuffer_t rbuffer;
+  uint64_t v64;
+  uint32_t v32;
+  uint16_t v16;
+  uint8_t v8;
+
+  char* uuids[] = {"12345678-90ab-1def-befc-fe9d70b60000", "12345678  90ab:1def:befc-fe9d70b60000",
+                   "12345678 90ab 1defbefcfe9d70b60000"};
+  for (int i = 0; i < sizeof(uuids) / sizeof(uuids[0]); i++) {
+    rbuffer_init(&rbuffer, uuids[i], strlen(uuids[i]));
+
+    ASSERT_EQ(rbuffer_read_uint32_from_hexstr(&rbuffer, &v32), RET_OK);
+    ASSERT_EQ(uint32_from_little_endian(v32), 0x12345678);
+
+    ASSERT_EQ(rbuffer_read_uint16_from_hexstr(&rbuffer, &v16), RET_OK);
+    ASSERT_EQ(uint16_from_little_endian(v16), 0x90ab);
+
+    ASSERT_EQ(rbuffer_read_uint16_from_hexstr(&rbuffer, &v16), RET_OK);
+    ASSERT_EQ(uint16_from_little_endian(v16), 0x1def);
+
+    ASSERT_EQ(rbuffer_read_uint8_from_hexstr(&rbuffer, &v8), RET_OK);
+    ASSERT_EQ(v8, 0xbe);
+    ASSERT_EQ(rbuffer_read_uint8_from_hexstr(&rbuffer, &v8), RET_OK);
+    ASSERT_EQ(v8, 0xfc);
+
+    ASSERT_EQ(rbuffer_read_uint64_from_hexstr(&rbuffer, &v64), RET_OK);
+    ASSERT_EQ(uint64_from_little_endian(v64), 0xfe9d70b60000);
+
+    ASSERT_EQ(rbuffer_has_more(&rbuffer), FALSE);
+  }
+
 }

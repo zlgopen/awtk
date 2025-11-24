@@ -133,7 +133,7 @@ wbuffer_t* wbuffer_create_extendable(void);
  * 克隆wbuffer对象。（需要使用 wbuffer_destroy 来销毁对象）
  * @annotation ["constructor"]
  * @param {const wbuffer_t*} wbuffer wbuffer对象。
- * 
+ *
  * @return {wbuffer_t*} 成功返回 wbuffer 对象，失败返回 NULL。
  */
 wbuffer_t* wbuffer_clone(const wbuffer_t* wbuffer);
@@ -575,6 +575,45 @@ ret_t rbuffer_read_value(rbuffer_t* rbuffer, value_t* v);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t rbuffer_read_string(rbuffer_t* rbuffer, const char** str);
+
+/**
+ * @method rbuffer_read_uint8_from_hexstr
+ * 从hex字符串读取uint8数据。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ * @param {uint8_t*} value 返回读取的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_read_uint8_from_hexstr(rbuffer_t* rbuffer, uint8_t* value);
+
+/**
+ * @method rbuffer_read_uint16_from_hexstr
+ * 从hex字符串读取uint16数据。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ * @param {uint16_t*} value 返回读取的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_read_uint16_from_hexstr(rbuffer_t* rbuffer, uint16_t* value);
+/**
+ * @method rbuffer_read_uint32_from_hexstr
+ * 从hex字符串读取uint32数据。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ * @param {uint32_t*} value 返回读取的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_read_uint32_from_hexstr(rbuffer_t* rbuffer, uint32_t* value);
+
+/**
+ * @method rbuffer_read_uint64_from_hexstr
+ * 从hex字符串读取uint64数据。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ * @param {uint64_t*} value 返回读取的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_read_uint64_from_hexstr(rbuffer_t* rbuffer, uint64_t* value);
 
 /**
  * @method rbuffer_peek_uint8

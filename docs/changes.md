@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/11/24
+  * 增加函数 rbuffer_read_uint_from_hexstr(感谢林福提供补丁)
+
 2025/11/21
   * 完善text_edit(感谢兆坤提供补丁)
 

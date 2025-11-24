@@ -622,6 +622,60 @@ ret_t rbuffer_read_string(rbuffer_t* rbuffer, const char** str) {
   return RET_OK;
 }
 
+static ret_t __decode_hex(rbuffer_t* rbuffer, void* data, uint32_t size) {
+  char* p = NULL;
+  char v[3] = {0, 0, 0};
+  uint8_t* d = data;
+  uint8_t* dend = d + size;
+  const char* str = (const char*)rbuffer->data + rbuffer->cursor;
+  uint32_t slen = tk_strnlen(str, rbuffer->capacity - rbuffer->cursor);
+
+  return_value_if_fail(str != NULL && data != NULL, RET_BAD_PARAMS);
+
+  for (p = str; p < str + slen && d < dend; p += 2) {
+    while (p[0] == ' ' || p[0] == ':' || p[0] == '-') {
+      p++;
+    }
+    if (p[0] == '0' && (p[1] == 'x' || p[1] == 'X')) {
+      p += 2;
+    }
+    tk_strncpy(v, p, 2);
+
+    /* 存为小端数据 */
+    dend--;
+    *dend = tk_strtol(v, 0, 16);
+  }
+
+  if (d < dend) {
+    memmove(d, dend, size - (dend - d));
+    memset(d + size - (dend - d), 0, dend - d);
+  }
+
+  rbuffer->cursor += p - str;
+
+  return RET_OK;
+}
+
+ret_t rbuffer_read_uint8_from_hexstr(rbuffer_t* rbuffer, uint8_t* value) {
+  return_value_if_fail(rbuffer != NULL && rbuffer->data != NULL && value != NULL, RET_BAD_PARAMS);
+  return __decode_hex(rbuffer, value, sizeof(*value));
+}
+
+ret_t rbuffer_read_uint16_from_hexstr(rbuffer_t* rbuffer, uint16_t* value) {
+  return_value_if_fail(rbuffer != NULL && rbuffer->data != NULL && value != NULL, RET_BAD_PARAMS);
+  return __decode_hex(rbuffer, value, sizeof(*value));
+}
+
+ret_t rbuffer_read_uint32_from_hexstr(rbuffer_t* rbuffer, uint32_t* value) {
+  return_value_if_fail(rbuffer != NULL && rbuffer->data != NULL && value != NULL, RET_BAD_PARAMS);
+  return __decode_hex(rbuffer, value, sizeof(*value));
+}
+
+ret_t rbuffer_read_uint64_from_hexstr(rbuffer_t* rbuffer, uint64_t* value) {
+  return_value_if_fail(rbuffer != NULL && rbuffer->data != NULL && value != NULL, RET_BAD_PARAMS);
+  return __decode_hex(rbuffer, value, sizeof(*value));
+}
+
 ret_t rbuffer_peek_uint8(rbuffer_t* rbuffer, uint8_t* value) {
   return_value_if_fail(rbuffer != NULL && rbuffer->data != NULL && value != NULL, RET_BAD_PARAMS);
   return_value_if_fail((rbuffer->cursor + sizeof(*value)) <= rbuffer->capacity, RET_BAD_PARAMS);
