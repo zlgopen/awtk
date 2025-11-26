@@ -2,6 +2,7 @@
 
 2025/11/26
   * 完善线程退出(感谢兆坤提供补丁)
+  * 增加函数 conf_node_load_json (感谢林福提供补丁)
 
 2025/11/24
   * 增加函数 rbuffer_read_uint_from_hexstr(感谢林福提供补丁)

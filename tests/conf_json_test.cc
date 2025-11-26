@@ -844,3 +844,17 @@ TEST(Json, format) {
 
   wbuffer_deinit(&wb);
 }
+
+TEST(Json, node_load_json) {
+  const char *data = "{\"deviceId\":\"01-781B38F8-FA41E8EB\",\"deviceName\":\"600E\"}";
+  conf_doc_t* doc = conf_doc_create(100);
+
+  conf_doc_set_str(doc, "license.user.name", "tom");
+
+  ASSERT_EQ(conf_node_load_json(doc, "license.bindDevice", data,-1), RET_OK);
+
+  ASSERT_STREQ(conf_doc_get_str(doc, "license.bindDevice.deviceId", NULL), "01-781B38F8-FA41E8EB");
+  ASSERT_STREQ(conf_doc_get_str(doc, "license.bindDevice.deviceName", NULL), "600E");
+
+  conf_doc_destroy(doc);
+}

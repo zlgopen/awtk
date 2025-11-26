@@ -37,7 +37,7 @@ BEGIN_C_DECLS
  *
  * 示例
  *
- *```c 
+ *```c
  * char filename[MAX_PATH + 1] = {0};
  * path_prepend_temp_path(filename, "test.json");
  *
@@ -79,7 +79,7 @@ BEGIN_C_DECLS
  *
  * // 销毁对象
  * TK_OBJECT_UNREF(json);
- *```        
+ *```
  */
 
 /**
@@ -163,6 +163,19 @@ ret_t conf_json_save_as(tk_object_t* obj, const char* url);
  * @return {conf_doc_t*} 返回doc对象。
  */
 conf_doc_t* conf_doc_load_json(const char* data, int32_t size);
+
+/**
+ * @method conf_node_load_json
+ * 将 JSON 字符串加载到指定路径的节点。
+ *
+ * @param {conf_doc_t*} doc doc 对象。
+ * @param {const char*} path 节点路径。
+ * @param {const char*} data JSON 字符串。
+ * @param {int32_t} size JSON 字符串长度。
+ *
+ * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败。
+ */
+ret_t conf_node_load_json(conf_doc_t* doc, const char* path, const char* data, int32_t size);
 
 /**
  * @method conf_doc_save_json

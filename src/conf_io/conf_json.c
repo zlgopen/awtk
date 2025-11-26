@@ -632,3 +632,40 @@ ret_t conf_json_save_to_buff(tk_object_t* obj, wbuffer_t* wb) {
 
   return conf_json_save_as(obj, url);
 }
+
+typedef struct {
+  conf_doc_t* doc;
+  conf_node_t* node;
+} foreach_args_t;
+
+static ret_t on_node_load_json(void* ctx, const char* path, value_t* v) {
+  foreach_args_t* args = (foreach_args_t*)ctx;
+  return conf_doc_set_ex(args->doc, args->node, path, v);
+}
+
+ret_t conf_node_load_json(conf_doc_t* doc, const char* path, const char* data, int32_t size) {
+  conf_doc_t* sub_doc = conf_doc_load_json(data, size);
+  ret_t ret = RET_FAIL;
+  conf_node_t* node;
+  foreach_args_t args;
+
+  return_value_if_fail(sub_doc, RET_OOM);
+
+  conf_doc_remove(doc, path);
+  node = conf_doc_find_node(doc, NULL, path, TRUE);
+  return_value_if_fail(node != NULL, RET_OOM);
+
+  if (sub_doc->root != NULL) {
+    args.doc = doc;
+    args.node = node;
+    ret = conf_doc_foreach(sub_doc, on_node_load_json, &args);
+
+  } else {
+    /* data 为普通字符串 */
+    value_t v = {0};
+    ret = conf_node_set_value(node, value_set_str(&v, data));
+  }
+
+  conf_doc_destroy(sub_doc);
+  return ret;
+}
