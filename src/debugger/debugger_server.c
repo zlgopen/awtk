@@ -52,7 +52,7 @@ typedef struct _debugger_server_t {
 } debugger_server_t;
 
 static bool_t s_single_mode = FALSE;
-static bool_t s_server_running = FALSE;
+static volatile bool_t s_server_running = FALSE;
 static debugger_server_t* s_debugger_server = NULL;
 
 static void* debugger_server_run(void* ctx);

@@ -42,7 +42,7 @@ typedef struct _serial_info_t {
   serial_dev_t dev;
   OVERLAPPED read_overlapped;
   OVERLAPPED write_overlapped;
-  bool_t closed;
+  volatile bool_t closed;
   bool_t has_signal;
   int client_fd;
   int server_fd;

@@ -57,7 +57,7 @@ typedef struct _process_start_info_t {
 #include <Windows.h>
 
 struct _process_info_t {
-  bool_t quit;
+  volatile bool_t quit;
   bool_t broken;
 
   HANDLE h_std_in_wr;

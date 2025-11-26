@@ -70,7 +70,7 @@ struct _action_thread_t {
 
   /*private*/
   /*请求退出*/
-  bool_t quit;
+  volatile bool_t quit;
 
   /*已经退出*/
   bool_t quited;

@@ -76,7 +76,7 @@ struct _action_darray_thread_t {
   uint32_t idle_interval;
   /*private*/
   /*请求退出*/
-  bool_t quit;
+  volatile bool_t quit;
 
   /*已经退出*/
   bool_t quited;
