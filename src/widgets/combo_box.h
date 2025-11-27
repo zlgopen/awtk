@@ -229,6 +229,7 @@ typedef struct _combo_box_t {
   combo_box_option_t* option_items;
   combo_box_custom_open_popup_t open_popup;
   combo_box_custom_on_layout_combobox_popup_t on_layout_combobox_popup;
+  bool_t is_button_click;
   event_func_t on_item_click;
   void* on_item_click_ctx;
   uint32_t init_popup_button_idle_id;

@@ -514,10 +514,11 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_UP: {
-      if (widget->target == NULL && edit->readonly && combo_box->pressed) {
+      if (combo_box->is_button_click == FALSE && edit->readonly && combo_box->pressed) {
         combo_box_active(widget);
         return RET_STOP;
       }
+      combo_box->is_button_click = FALSE;
       combo_box->pressed = FALSE;
       break;
     }
@@ -837,7 +838,11 @@ static ret_t combo_box_active(widget_t* widget) {
 }
 
 static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
-  return combo_box_active(WIDGET(ctx));
+  widget_t* widget = WIDGET(ctx);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  combo_box->is_button_click = TRUE;
+  return combo_box_active(widget);
 }
 
 widget_t* combo_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
