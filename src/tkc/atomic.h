@@ -28,6 +28,39 @@
 #include "tkc/mem.h"
 
 /**
+ * @enum tk_atomic_memory_order_t
+ * @prefix TK_ATOMIC_MEMORY_ORDER_
+ * 内存顺序。
+ */
+typedef enum _tk_atomic_memory_order_t {
+  /**
+   * @value TK_ATOMIC_MEMORY_ORDER_SEQ_CST
+   * 顺序一致性。
+   */
+  TK_ATOMIC_MEMORY_ORDER_SEQ_CST = 0,
+  /**
+   * @value TK_ATOMIC_MEMORY_ORDER_ACQUIRE
+   * 获取顺序。
+   */
+  TK_ATOMIC_MEMORY_ORDER_ACQUIRE,
+  /**
+   * @value TK_ATOMIC_MEMORY_ORDER_RELEASE
+   * 释放顺序。
+   */
+  TK_ATOMIC_MEMORY_ORDER_RELEASE,
+  /**
+   * @value TK_ATOMIC_MEMORY_ORDER_ACQ_REL
+   * 获得+释放顺序。
+   */
+  TK_ATOMIC_MEMORY_ORDER_ACQ_REL,
+  /**
+   * @value TK_ATOMIC_MEMORY_ORDER_RELAXED
+   * 松散顺序。
+   */
+  TK_ATOMIC_MEMORY_ORDER_RELAXED,
+} tk_atomic_memory_order_t;
+
+/**
  * @method tk_atomic_support_value_type
  * @annotation ["static"]
  * @export none
@@ -170,6 +203,127 @@ static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v);
  */
 static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v);
 
+/**
+ * @method tk_atomic_thread_fence
+ * @export none
+ * 线程栅栏。
+ *
+ * @param {tk_atomic_memory_order_t} mem_order 内存顺序。
+ *
+ * @return {void}
+ */
+static void tk_atomic_thread_fence(tk_atomic_memory_order_t mem_order);
+
+/**
+ * @method tk_atomic_exchange_explicit
+ * @export none
+ * 原子交换操作。
+ *
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
+ * @param {value_t*} v 交换值。
+ * @param {tk_atomic_memory_order_t} mem_order 内存顺序。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t tk_atomic_exchange_explicit(tk_atomic_t* atomic, value_t* v,
+                                         tk_atomic_memory_order_t mem_order);
+
+/**
+ * @method tk_atomic_compare_exchange_weak_explicit
+ * @export none
+ * 原子比较交换操作(Compare And Swap)。
+ * > 如果 atomic 等于 expect，则将 atomic 改为 desire, 否则将 expect 改为 atomic。
+ * 
+ * weak版本的CAS允许偶然出乎意料的返回（比如在字段值和期待值一样的时候却返回了FALSE），
+ * 不过在一些循环算法中，这是可以接受的。通常它比起strong有更高的性能。
+ *
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
+ * @param {value_t*} expect 期望值。
+ * @param {value_t*} desire 设定值。
+ * @param {tk_atomic_memory_order_t} success_mem_order 成功时的内存顺序。
+ * @param {tk_atomic_memory_order_t} failure_mem_order 失败时的内存顺序。
+ *
+ * @return {bool_t} 返回TRUE表示成功，否则表示失败。
+ */
+static bool_t tk_atomic_compare_exchange_weak_explicit(tk_atomic_t* atomic, value_t* expect,
+                                                       value_t* desire,
+                                                       tk_atomic_memory_order_t success_mem_order,
+                                                       tk_atomic_memory_order_t failure_mem_order);
+
+/**
+ * @method tk_atomic_compare_exchange_strong_explicit
+ * @export none
+ * 原子比较交换操作(Compare And Swap)。
+ * > 如果 atomic 等于 expect，则将 atomic 改为 desire, 否则将 expect 改为 atomic。
+ *
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
+ * @param {value_t*} expect 期望值。
+ * @param {value_t*} desire 设定值。
+ * @param {tk_atomic_memory_order_t} success_mem_order 成功时的内存顺序。
+ * @param {tk_atomic_memory_order_t} failure_mem_order 失败时的内存顺序。
+ *
+ * @return {bool_t} 返回TRUE表示成功，否则表示失败。
+ */
+static bool_t tk_atomic_compare_exchange_strong_explicit(
+    tk_atomic_t* atomic, value_t* expect, value_t* desire,
+    tk_atomic_memory_order_t success_mem_order, tk_atomic_memory_order_t failure_mem_order);
+
+/**
+ * @method tk_atomic_store_explicit
+ * @export none
+ * 原子写操作。
+ *
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
+ * @param {const value_t*} v 写入值。
+ * @param {tk_atomic_memory_order_t} mem_order 内存顺序。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t tk_atomic_store_explicit(tk_atomic_t* atomic, const value_t* v,
+                                      tk_atomic_memory_order_t mem_order);
+
+/**
+ * @method tk_atomic_load_explicit
+ * @export none
+ * 原子读操作。
+ *
+ * @param {const tk_atomic_t*} atomic 原子操作类对象。
+ * @param {value_t*} v 用于返回读取值。
+ * @param {tk_atomic_memory_order_t} mem_order 内存顺序。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t tk_atomic_load_explicit(const tk_atomic_t* atomic, value_t* v,
+                                     tk_atomic_memory_order_t mem_order);
+
+/**
+ * @method tk_atomic_fetch_add_explicit
+ * @export none
+ * 原子加操作。
+ *
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
+ * @param {value_t*} v 值。
+ * @param {tk_atomic_memory_order_t} mem_order 内存顺序。
+ *
+ * @return {value_t} 返回操作前的旧值。
+ */
+static value_t tk_atomic_fetch_add_explicit(tk_atomic_t* atomic, value_t* v,
+                                            tk_atomic_memory_order_t mem_order);
+
+/**
+ * @method tk_atomic_fetch_sub_explicit
+ * @export none
+ * 原子减操作。
+ *
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
+ * @param {value_t*} v 值。
+ * @param {tk_atomic_memory_order_t} mem_order 内存顺序。
+ *
+ * @return {value_t} 返回操作前的旧值。
+ */
+static value_t tk_atomic_fetch_sub_explicit(tk_atomic_t* atomic, value_t* v,
+                                            tk_atomic_memory_order_t mem_order);
+
 #if defined(WIN32) && !defined(MINGW)
 #include <winnt.h>
 
@@ -197,46 +351,56 @@ inline static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
   return ret;
 }
 
-TK_MAYBE_UNUSED static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
+inline static void tk_atomic_thread_fence(tk_atomic_memory_order_t mem_order) {
+  (void)mem_order;
+  return MemoryBarrier();
+}
+
+TK_MAYBE_UNUSED static ret_t tk_atomic_exchange_explicit(tk_atomic_t* atomic, value_t* v,
+                                                         tk_atomic_memory_order_t mem_order) {
   value_t tmp;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
-  switch (atomic->value.type) {
-    case VALUE_TYPE_BOOL: {
-      value_set_bool(&tmp,
-                     InterlockedExchange8((CHAR*)(&atomic->value.value.b), (CHAR)value_bool(v)));
+  memset(&tmp, 0, sizeof(value_t));
+  tmp.type = atomic->value.type;
+
+  switch (value_type_size(atomic->value.type)) {
+    case sizeof(int8_t): {
+      tmp.value.i8 = InterlockedExchange8((CHAR*)(&atomic->value.value), (CHAR)(v->value.i8));
     } break;
-    case VALUE_TYPE_INT8: {
-      value_set_int8(&tmp,
-                     InterlockedExchange8((CHAR*)(&atomic->value.value.i8), (CHAR)value_int8(v)));
+    case sizeof(int16_t): {
+      tmp.value.i16 = InterlockedExchange16((SHORT*)(&atomic->value.value), (SHORT)(v->value.i16));
     } break;
-    case VALUE_TYPE_UINT8: {
-      value_set_uint8(&tmp,
-                      InterlockedExchange8((CHAR*)(&atomic->value.value.u8), (CHAR)value_uint8(v)));
+    case sizeof(int32_t): {
+      switch (mem_order) {
+        case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+          tmp.value.i32 =
+              InterlockedExchangeAcquire((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+        } break;
+        case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+          tmp.value.i32 =
+              InterlockedExchangeNoFence((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+        } break;
+        default: {
+          tmp.value.i32 = InterlockedExchange((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+        } break;
+      }
     } break;
-    case VALUE_TYPE_INT16: {
-      value_set_int16(
-          &tmp, InterlockedExchange16((SHORT*)(&atomic->value.value.i16), (SHORT)value_int16(v)));
-    } break;
-    case VALUE_TYPE_UINT16: {
-      value_set_uint16(
-          &tmp, InterlockedExchange16((SHORT*)(&atomic->value.value.u16), (SHORT)value_uint16(v)));
-    } break;
-    case VALUE_TYPE_INT32: {
-      value_set_int32(&tmp,
-                      InterlockedExchange((LONG*)(&atomic->value.value.i32), (LONG)value_int32(v)));
-    } break;
-    case VALUE_TYPE_UINT32: {
-      value_set_uint32(
-          &tmp, InterlockedExchange((LONG*)(&atomic->value.value.u32), (LONG)value_uint32(v)));
-    } break;
-    case VALUE_TYPE_INT64: {
-      value_set_int64(
-          &tmp, InterlockedExchange64((LONG64*)(&atomic->value.value.i64), (LONG64)value_int64(v)));
-    } break;
-    case VALUE_TYPE_UINT64: {
-      value_set_uint64(&tmp, InterlockedExchange64((LONG64*)(&atomic->value.value.u64),
-                                                   (LONG64)value_uint64(v)));
+    case sizeof(int64_t): {
+      switch (mem_order) {
+        case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+          tmp.value.i64 =
+              InterlockedExchangeAcquire64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+        } break;
+        case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+          tmp.value.i64 =
+              InterlockedExchangeNoFence64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+        } break;
+        default: {
+          tmp.value.i64 =
+              InterlockedExchange64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+        } break;
+      }
     } break;
     default: {
       /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
@@ -248,62 +412,93 @@ TK_MAYBE_UNUSED static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v)
   return value_copy(v, &tmp);
 }
 
-inline static bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expect,
-                                                     value_t* desire) {
-  return tk_atomic_compare_exchange_strong(atomic, expect, desire);
+inline static bool_t tk_atomic_compare_exchange_weak_explicit(
+    tk_atomic_t* atomic, value_t* expect, value_t* desire,
+    tk_atomic_memory_order_t success_mem_order, tk_atomic_memory_order_t failure_mem_order) {
+  return tk_atomic_compare_exchange_strong_explicit(atomic, expect, desire, success_mem_order,
+                                                    failure_mem_order);
 }
 
-TK_MAYBE_UNUSED static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic,
-                                                                value_t* expect, value_t* desire) {
+TK_MAYBE_UNUSED static bool_t tk_atomic_compare_exchange_strong_explicit(
+    tk_atomic_t* atomic, value_t* expect, value_t* desire,
+    tk_atomic_memory_order_t success_mem_order, tk_atomic_memory_order_t failure_mem_order) {
   bool_t ret = TRUE;
   value_t tmp;
+  (void)failure_mem_order;
   return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
 
-  switch (atomic->value.type) {
-    case VALUE_TYPE_BOOL: {
-      value_set_bool(
-          &tmp, InterlockedCompareExchange16((SHORT*)(&atomic->value.value.b),
-                                             (SHORT)value_bool(desire), (SHORT)value_bool(expect)));
+  memset(&tmp, 0, sizeof(value_t));
+  tmp.type = atomic->value.type;
+
+  switch (value_type_size(atomic->value.type)) {
+    case sizeof(int8_t):
+    case sizeof(int16_t): {
+      switch (success_mem_order) {
+        case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+          tmp.value.i16 = InterlockedCompareExchangeAcquire16((SHORT*)(&atomic->value.value),
+                                                              (SHORT)(desire->value.i16),
+                                                              (SHORT)(expect->value.i16));
+        } break;
+        case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+          tmp.value.i16 = InterlockedCompareExchangeRelease16((SHORT*)(&atomic->value.value),
+                                                              (SHORT)(desire->value.i16),
+                                                              (SHORT)(expect->value.i16));
+        } break;
+        case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+          tmp.value.i16 = InterlockedCompareExchangeNoFence16((SHORT*)(&atomic->value.value),
+                                                              (SHORT)(desire->value.i16),
+                                                              (SHORT)(expect->value.i16));
+        } break;
+        default: {
+          tmp.value.i16 =
+              InterlockedCompareExchange16((SHORT*)(&atomic->value.value),
+                                           (SHORT)(desire->value.i16), (SHORT)(expect->value.i16));
+        } break;
+      }
     } break;
-    case VALUE_TYPE_INT8: {
-      value_set_int8(
-          &tmp, InterlockedCompareExchange16((SHORT*)(&atomic->value.value.i8),
-                                             (SHORT)value_int8(desire), (SHORT)value_int8(expect)));
+    case sizeof(int32_t): {
+      switch (success_mem_order) {
+        case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+          tmp.value.i32 = InterlockedCompareExchangeAcquire(
+              (LONG*)(&atomic->value.value), (LONG)(desire->value.i32), (LONG)(expect->value.i32));
+        } break;
+        case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+          tmp.value.i32 = InterlockedCompareExchangeRelease(
+              (LONG*)(&atomic->value.value), (LONG)(desire->value.i32), (LONG)(expect->value.i32));
+        } break;
+        case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+          tmp.value.i32 = InterlockedCompareExchangeNoFence(
+              (LONG*)(&atomic->value.value), (LONG)(desire->value.i32), (LONG)(expect->value.i32));
+        } break;
+        default: {
+          tmp.value.i32 = InterlockedCompareExchange(
+              (LONG*)(&atomic->value.value), (LONG)(desire->value.i32), (LONG)(expect->value.i32));
+        } break;
+      }
     } break;
-    case VALUE_TYPE_UINT8: {
-      value_set_uint8(&tmp, InterlockedCompareExchange16((SHORT*)(&atomic->value.value.u8),
-                                                         (SHORT)value_uint8(desire),
-                                                         (SHORT)value_uint8(expect)));
-    } break;
-    case VALUE_TYPE_INT16: {
-      value_set_int16(&tmp, InterlockedCompareExchange16((SHORT*)(&atomic->value.value.i16),
-                                                         (SHORT)value_int16(desire),
-                                                         (SHORT)value_int16(expect)));
-    } break;
-    case VALUE_TYPE_UINT16: {
-      value_set_uint16(&tmp, InterlockedCompareExchange16((SHORT*)(&atomic->value.value.u16),
-                                                          (SHORT)value_uint16(desire),
-                                                          (SHORT)value_uint16(expect)));
-    } break;
-    case VALUE_TYPE_INT32: {
-      value_set_int32(
-          &tmp, InterlockedCompareExchange((LONG*)(&atomic->value.value.i32),
-                                           (LONG)value_int32(desire), (LONG)value_int32(expect)));
-    } break;
-    case VALUE_TYPE_UINT32: {
-      value_set_uint32(
-          &tmp, InterlockedCompareExchange((LONG*)(&atomic->value.value.u32),
-                                           (LONG)value_uint32(desire), (LONG)value_uint32(expect)));
-    } break;
-    case VALUE_TYPE_INT64: {
-      value_set_int64(&tmp, InterlockedCompareExchange64((LONG64*)(&atomic->value.value.i64),
-                                                         (LONG64)value_int64(desire),
-                                                         (LONG64)value_int64(expect)));
-    } break;
-    case VALUE_TYPE_UINT64: {
-      value_set_uint64(&tmp, InterlockedCompareExchange64((LONG64*)(&atomic->value.value.u64),
-                                                          (LONG64)value_uint64(desire),
-                                                          (LONG64)value_uint64(expect)));
+    case sizeof(int64_t): {
+      switch (success_mem_order) {
+        case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+          tmp.value.i64 = InterlockedCompareExchangeAcquire64((LONG64*)(&atomic->value.value),
+                                                              (LONG64)(desire->value.i64),
+                                                              (LONG64)(expect->value.i64));
+        } break;
+        case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+          tmp.value.i64 = InterlockedCompareExchangeRelease64((LONG64*)(&atomic->value.value),
+                                                              (LONG64)(desire->value.i64),
+                                                              (LONG64)(expect->value.i64));
+        } break;
+        case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+          tmp.value.i64 = InterlockedCompareExchangeNoFence64((LONG64*)(&atomic->value.value),
+                                                              (LONG64)(desire->value.i64),
+                                                              (LONG64)(expect->value.i64));
+        } break;
+        default: {
+          tmp.value.i64 = InterlockedCompareExchange64((LONG64*)(&atomic->value.value),
+                                                       (LONG64)(desire->value.i64),
+                                                       (LONG64)(expect->value.i64));
+        } break;
+      }
     } break;
     default: {
       /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
@@ -320,18 +515,23 @@ TK_MAYBE_UNUSED static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* ato
   return ret;
 }
 
-inline static ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
+inline static ret_t tk_atomic_store_explicit(tk_atomic_t* atomic, const value_t* v,
+                                             tk_atomic_memory_order_t mem_order) {
   value_t tmp;
+  (void)mem_order;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
   value_copy(&tmp, v);
   return tk_atomic_exchange(atomic, &tmp);
 }
 
-TK_MAYBE_UNUSED static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
+TK_MAYBE_UNUSED static ret_t tk_atomic_load_explicit(const tk_atomic_t* atomic, value_t* v,
+                                                     tk_atomic_memory_order_t mem_order) {
+  (void)mem_order;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
-  value_set_int(v, 0);
+  memset(v, 0, sizeof(value_t));
+  v->type = atomic->value.type;
 
   switch (atomic->value.type) {
     case VALUE_TYPE_BOOL: {
@@ -368,94 +568,129 @@ TK_MAYBE_UNUSED static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* 
     } break;
   }
 
-  v->type = atomic->value.type;
-
   return RET_OK;
 }
 
-TK_MAYBE_UNUSED static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
+TK_MAYBE_UNUSED static value_t tk_atomic_fetch_add_explicit(tk_atomic_t* atomic, value_t* v,
+                                                            tk_atomic_memory_order_t mem_order) {
   value_t ret;
   memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
 
-  switch (atomic->value.type) {
-    case VALUE_TYPE_BOOL: {
-      if (value_bool(v)) {
-        value_copy(&ret, v);
-        tk_atomic_exchange(atomic, &ret);
-      } else {
-        tk_atomic_load(atomic, &ret);
-      }
-    } break;
-    case VALUE_TYPE_INT8: {
+  ret.type = atomic->value.type;
+
+  switch (value_type_size(atomic->value.type)) {
+    case sizeof(int8_t):
+    case sizeof(int16_t): {
       if (1 == value_int(v)) {
-        value_set_int8(&ret, InterlockedIncrement16((SHORT*)(&atomic->value.value.i8)));
+        switch (mem_order) {
+          case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+            ret.value.i16 = InterlockedIncrementAcquire16((SHORT*)(&atomic->value.value));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+            ret.value.i16 = InterlockedIncrementRelease16((SHORT*)(&atomic->value.value));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+            ret.value.i16 = InterlockedIncrementNoFence16((SHORT*)(&atomic->value.value));
+          } break;
+          default: {
+            ret.value.i16 = InterlockedIncrement16((SHORT*)(&atomic->value.value));
+          } break;
+        }
       } else {
-        value_set_int8(&ret, InterlockedAdd((LONG*)(&atomic->value.value.i8), (LONG)value_int8(v)));
+        switch (mem_order) {
+          case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+            ret.value.i16 =
+                InterlockedAddAcquire((LONG*)(&atomic->value.value), (LONG)(v->value.i16));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+            ret.value.i16 =
+                InterlockedAddRelease((LONG*)(&atomic->value.value), (LONG)(v->value.i16));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+            ret.value.i16 =
+                InterlockedAddNoFence((LONG*)(&atomic->value.value), (LONG)(v->value.i16));
+          } break;
+          default: {
+            ret.value.i16 = InterlockedAdd((LONG*)(&atomic->value.value), (LONG)(v->value.i16));
+          } break;
+        }
       }
       /* InterlockedIncrement 和 InterlockedAdd 的返回值都是新值，需要减去增加的值得到旧值 */
       value_sub(&ret, v, &ret);
     } break;
-    case VALUE_TYPE_UINT8: {
+    case sizeof(int32_t): {
       if (1 == value_int(v)) {
-        value_set_uint8(&ret, InterlockedIncrement16((SHORT*)(&atomic->value.value.u8)));
+        switch (mem_order) {
+          case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+            ret.value.i32 = InterlockedIncrementAcquire((LONG*)(&atomic->value.value));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+            ret.value.i32 = InterlockedIncrementRelease((LONG*)(&atomic->value.value));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+            ret.value.i32 = InterlockedIncrementNoFence((LONG*)(&atomic->value.value));
+          } break;
+          default: {
+            ret.value.i32 = InterlockedIncrement((LONG*)(&atomic->value.value));
+          } break;
+        }
       } else {
-        value_set_uint8(&ret,
-                        InterlockedAdd((LONG*)(&atomic->value.value.u8), (LONG)value_uint8(v)));
+        switch (mem_order) {
+          case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+            ret.value.i32 =
+                InterlockedAddAcquire((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+            ret.value.i32 =
+                InterlockedAddRelease((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+            ret.value.i32 =
+                InterlockedAddNoFence((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+          } break;
+          default: {
+            ret.value.i32 = InterlockedAdd((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+          } break;
+        }
       }
       value_sub(&ret, v, &ret);
     } break;
-    case VALUE_TYPE_INT16: {
+    case sizeof(int64_t): {
       if (1 == value_int(v)) {
-        value_set_int16(&ret, InterlockedIncrement16((SHORT*)(&atomic->value.value.i16)));
+        switch (mem_order) {
+          case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+            ret.value.i64 = InterlockedIncrementAcquire64((LONG64*)(&atomic->value.value));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+            ret.value.i64 = InterlockedIncrementRelease64((LONG64*)(&atomic->value.value));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+            ret.value.i64 = InterlockedIncrementNoFence64((LONG64*)(&atomic->value.value));
+          } break;
+          default: {
+            ret.value.i64 = InterlockedIncrement64((LONG64*)(&atomic->value.value));
+          } break;
+        }
       } else {
-        value_set_int16(&ret,
-                        InterlockedAdd((LONG*)(&atomic->value.value.i16), (LONG)value_int16(v)));
-      }
-      value_sub(&ret, v, &ret);
-    } break;
-    case VALUE_TYPE_UINT16: {
-      if (1 == value_int(v)) {
-        value_set_uint16(&ret, InterlockedIncrement16((SHORT*)(&atomic->value.value.u16)));
-      } else {
-        value_set_uint16(&ret,
-                         InterlockedAdd((LONG*)(&atomic->value.value.u16), (LONG)value_uint16(v)));
-      }
-      value_sub(&ret, v, &ret);
-    } break;
-    case VALUE_TYPE_INT32: {
-      if (1 == value_int(v)) {
-        value_set_int32(&ret, InterlockedIncrement((LONG*)(&atomic->value.value.i32)));
-      } else {
-        value_set_int32(&ret,
-                        InterlockedAdd((LONG*)(&atomic->value.value.i32), (LONG)value_int32(v)));
-      }
-      value_sub(&ret, v, &ret);
-    } break;
-    case VALUE_TYPE_UINT32: {
-      if (1 == value_int(v)) {
-        value_set_uint32(&ret, InterlockedIncrement((LONG*)(&atomic->value.value.u32)));
-      } else {
-        value_set_uint32(&ret,
-                         InterlockedAdd((LONG*)(&atomic->value.value.u32), (LONG)value_uint32(v)));
-      }
-      value_sub(&ret, v, &ret);
-    } break;
-    case VALUE_TYPE_INT64: {
-      if (1 == value_int(v)) {
-        value_set_int64(&ret, InterlockedIncrement64((LONG64*)(&atomic->value.value.i64)));
-      } else {
-        value_set_int64(
-            &ret, InterlockedAdd64((LONG64*)(&atomic->value.value.i64), (LONG64)value_int64(v)));
-      }
-      value_sub(&ret, v, &ret);
-    } break;
-    case VALUE_TYPE_UINT64: {
-      if (1 == value_int(v)) {
-        value_set_uint64(&ret, InterlockedIncrement64((LONG64*)(&atomic->value.value.u64)));
-      } else {
-        value_set_uint64(
-            &ret, InterlockedAdd64((LONG64*)(&atomic->value.value.u64), (LONG64)value_uint64(v)));
+        switch (mem_order) {
+          case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+            ret.value.i64 =
+                InterlockedAddAcquire64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+            ret.value.i64 =
+                InterlockedAddRelease64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+            ret.value.i64 =
+                InterlockedAddNoFence64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+          } break;
+          default: {
+            ret.value.i64 =
+                InterlockedAdd64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+          } break;
+        }
       }
       value_sub(&ret, v, &ret);
     } break;
@@ -468,90 +703,126 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t*
   return ret;
 }
 
-TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
+TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub_explicit(tk_atomic_t* atomic, value_t* v,
+                                                            tk_atomic_memory_order_t mem_order) {
   value_t ret;
   memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
 
-  switch (atomic->value.type) {
-    case VALUE_TYPE_BOOL: {
-      if (value_bool(v)) {
-        value_set_bool(&ret, FALSE);
-        tk_atomic_exchange(atomic, &ret);
-      } else {
-        tk_atomic_load(atomic, &ret);
-      }
-    } break;
-    case VALUE_TYPE_INT8: {
+  ret.type = atomic->value.type;
+
+  switch (value_type_size(atomic->value.type)) {
+    case sizeof(int8_t):
+    case sizeof(int16_t): {
       if (1 == value_int(v)) {
-        value_set_int8(&ret, InterlockedDecrement16((SHORT*)(&atomic->value.value.i8)));
+        switch (mem_order) {
+          case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+            ret.value.i16 = InterlockedDecrementAcquire16((SHORT*)(&atomic->value.value));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+            ret.value.i16 = InterlockedDecrementRelease16((SHORT*)(&atomic->value.value));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+            ret.value.i16 = InterlockedDecrementNoFence16((SHORT*)(&atomic->value.value));
+          } break;
+          default: {
+            ret.value.i16 = InterlockedDecrement16((SHORT*)(&atomic->value.value));
+          } break;
+        }
       } else {
-        value_set_int8(&ret,
-                       InterlockedAdd((LONG*)(&atomic->value.value.i8), -(LONG)value_int8(v)));
+        switch (mem_order) {
+          case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+            ret.value.i16 =
+                InterlockedAddAcquire((LONG*)(&atomic->value.value), -(LONG)(v->value.i16));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+            ret.value.i16 =
+                InterlockedAddRelease((LONG*)(&atomic->value.value), -(LONG)(v->value.i16));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+            ret.value.i16 =
+                InterlockedAddNoFence((LONG*)(&atomic->value.value), -(LONG)(v->value.i16));
+          } break;
+          default: {
+            ret.value.i16 = InterlockedAdd((LONG*)(&atomic->value.value), -(LONG)(v->value.i16));
+          } break;
+        }
       }
       /* InterlockedDecrement 和 InterlockedAdd 的返回值都是新值，需要增加减去的值得到旧值 */
       value_add(&ret, v, &ret);
     } break;
-    case VALUE_TYPE_UINT8: {
+    case sizeof(int32_t): {
       if (1 == value_int(v)) {
-        value_set_uint8(&ret, InterlockedDecrement16((SHORT*)(&atomic->value.value.u8)));
+        switch (mem_order) {
+          case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+            ret.value.i32 = InterlockedDecrementAcquire((LONG*)(&atomic->value.value));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+            ret.value.i32 = InterlockedDecrementRelease((LONG*)(&atomic->value.value));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+            ret.value.i32 = InterlockedDecrementNoFence((LONG*)(&atomic->value.value));
+          } break;
+          default: {
+            ret.value.i32 = InterlockedDecrement((LONG*)(&atomic->value.value));
+          } break;
+        }
       } else {
-        value_set_uint8(&ret,
-                        InterlockedAdd((LONG*)(&atomic->value.value.u8), -(LONG)value_uint8(v)));
+        switch (mem_order) {
+          case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+            ret.value.i32 =
+                InterlockedAddAcquire((LONG*)(&atomic->value.value), -(LONG)(v->value.i32));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+            ret.value.i32 =
+                InterlockedAddRelease((LONG*)(&atomic->value.value), -(LONG)(v->value.i32));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+            ret.value.i32 =
+                InterlockedAddNoFence((LONG*)(&atomic->value.value), -(LONG)(v->value.i32));
+          } break;
+          default: {
+            ret.value.i32 = InterlockedAdd((LONG*)(&atomic->value.value), -(LONG)(v->value.i32));
+          } break;
+        }
       }
       value_add(&ret, v, &ret);
     } break;
-    case VALUE_TYPE_INT16: {
+    case sizeof(int64_t): {
       if (1 == value_int(v)) {
-        value_set_int16(&ret, InterlockedDecrement16((SHORT*)(&atomic->value.value.i16)));
+        switch (mem_order) {
+          case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+            ret.value.i64 = InterlockedDecrementAcquire64((LONG64*)(&atomic->value.value));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+            ret.value.i64 = InterlockedDecrementRelease64((LONG64*)(&atomic->value.value));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+            ret.value.i64 = InterlockedDecrementNoFence64((LONG64*)(&atomic->value.value));
+          } break;
+          default: {
+            ret.value.i64 = InterlockedDecrement64((LONG64*)(&atomic->value.value));
+          } break;
+        }
       } else {
-        value_set_int16(&ret,
-                        InterlockedAdd((LONG*)(&atomic->value.value.i16), -(LONG)value_int16(v)));
-      }
-      value_add(&ret, v, &ret);
-    } break;
-    case VALUE_TYPE_UINT16: {
-      if (1 == value_int(v)) {
-        value_set_uint16(&ret, InterlockedDecrement16((SHORT*)(&atomic->value.value.u16)));
-      } else {
-        value_set_uint16(&ret,
-                         InterlockedAdd((LONG*)(&atomic->value.value.u16), -(LONG)value_uint16(v)));
-      }
-      value_add(&ret, v, &ret);
-    } break;
-    case VALUE_TYPE_INT32: {
-      if (1 == value_int(v)) {
-        value_set_int32(&ret, InterlockedDecrement((LONG*)(&atomic->value.value.i32)));
-      } else {
-        value_set_int32(&ret,
-                        InterlockedAdd((LONG*)(&atomic->value.value.i32), -(LONG)value_int32(v)));
-      }
-      value_add(&ret, v, &ret);
-    } break;
-    case VALUE_TYPE_UINT32: {
-      if (1 == value_int(v)) {
-        value_set_uint32(&ret, InterlockedDecrement((LONG*)(&atomic->value.value.u32)));
-      } else {
-        value_set_uint32(&ret,
-                         InterlockedAdd((LONG*)(&atomic->value.value.u32), -(LONG)value_uint32(v)));
-      }
-      value_add(&ret, v, &ret);
-    } break;
-    case VALUE_TYPE_INT64: {
-      if (1 == value_int(v)) {
-        value_set_int64(&ret, InterlockedDecrement64((LONG64*)(&atomic->value.value.i64)));
-      } else {
-        value_set_int64(
-            &ret, InterlockedAdd64((LONG64*)(&atomic->value.value.i64), -(LONG64)value_int64(v)));
-      }
-      value_add(&ret, v, &ret);
-    } break;
-    case VALUE_TYPE_UINT64: {
-      if (1 == value_int(v)) {
-        value_set_uint64(&ret, InterlockedDecrement64((LONG64*)(&atomic->value.value.u64)));
-      } else {
-        value_set_uint64(
-            &ret, InterlockedAdd64((LONG64*)(&atomic->value.value.u64), -(LONG64)value_uint64(v)));
+        switch (mem_order) {
+          case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
+            ret.value.i64 =
+                InterlockedAddAcquire64((LONG64*)(&atomic->value.value), -(LONG64)(v->value.i64));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
+            ret.value.i64 =
+                InterlockedAddRelease64((LONG64*)(&atomic->value.value), -(LONG64)(v->value.i64));
+          } break;
+          case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
+            ret.value.i64 =
+                InterlockedAddNoFence64((LONG64*)(&atomic->value.value), -(LONG64)(v->value.i64));
+          } break;
+          default: {
+            ret.value.i64 =
+                InterlockedAdd64((LONG64*)(&atomic->value.value), -(LONG64)(v->value.i64));
+          } break;
+        }
       }
       value_add(&ret, v, &ret);
     } break;
@@ -562,11 +833,44 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t*
   }
 
   return ret;
+}
+
+inline static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
+  return tk_atomic_exchange_explicit(atomic, v, TK_ATOMIC_MEMORY_ORDER_SEQ_CST);
+}
+
+inline static bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expect,
+                                                     value_t* desire) {
+  return tk_atomic_compare_exchange_weak_explicit(
+      atomic, expect, desire, TK_ATOMIC_MEMORY_ORDER_SEQ_CST, TK_ATOMIC_MEMORY_ORDER_SEQ_CST);
+}
+
+inline static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* expect,
+                                                       value_t* desire) {
+  return tk_atomic_compare_exchange_strong_explicit(
+      atomic, expect, desire, TK_ATOMIC_MEMORY_ORDER_SEQ_CST, TK_ATOMIC_MEMORY_ORDER_SEQ_CST);
+}
+
+inline static ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
+  return tk_atomic_store_explicit(atomic, v, TK_ATOMIC_MEMORY_ORDER_SEQ_CST);
+}
+
+inline static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
+  return tk_atomic_load_explicit(atomic, v, TK_ATOMIC_MEMORY_ORDER_SEQ_CST);
+}
+
+inline static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
+  return tk_atomic_fetch_add_explicit(atomic, v, TK_ATOMIC_MEMORY_ORDER_SEQ_CST);
+}
+
+inline static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
+  return tk_atomic_fetch_sub_explicit(atomic, v, TK_ATOMIC_MEMORY_ORDER_SEQ_CST);
 }
 #elif ((__cplusplus >= 201103L) || (__STDC_VERSION__ >= 201112L)) && !defined(__STDC_NO_ATOMICS__)
 #ifdef __cplusplus
 #include <atomic>
 #define _Atomic(X) std::atomic<X>
+#define _Std(X) std::X
 #else
 #include <stdatomic.h>
 #endif /* __cplusplus */
@@ -893,12 +1197,7 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t*
 
   switch (atomic->type) {
     case VALUE_TYPE_BOOL: {
-      if (value_bool(v)) {
-        value_copy(&ret, v);
-        tk_atomic_exchange(atomic, &ret);
-      } else {
-        tk_atomic_load(atomic, &ret);
-      }
+      value_set_bool(&ret, atomic_fetch_add(&atomic->value.b, value_bool(v)));
     } break;
     case VALUE_TYPE_INT8: {
       value_set_int8(&ret, atomic_fetch_add(&atomic->value.i8, value_int8(v)));
@@ -940,12 +1239,7 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t*
 
   switch (atomic->type) {
     case VALUE_TYPE_BOOL: {
-      if (value_bool(v)) {
-        value_set_bool(&ret, FALSE);
-        tk_atomic_exchange(atomic, &ret);
-      } else {
-        tk_atomic_load(atomic, &ret);
-      }
+      value_set_bool(&ret, atomic_fetch_sub(&atomic->value.b, value_bool(v)));
     } break;
     case VALUE_TYPE_INT8: {
       value_set_int8(&ret, atomic_fetch_sub(&atomic->value.i8, value_int8(v)));
@@ -970,6 +1264,456 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t*
     } break;
     case VALUE_TYPE_UINT64: {
       value_set_uint64(&ret, atomic_fetch_sub(&atomic->value.u64, value_uint64(v)));
+    } break;
+    default: {
+      /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
+      assert(!"Not support type!");
+    } break;
+  }
+
+  return ret;
+}
+
+inline static _Std(memory_order) tk_atomic_memory_order_to_std(tk_atomic_memory_order_t mem_order) {
+  switch (mem_order) {
+    case TK_ATOMIC_MEMORY_ORDER_SEQ_CST:
+      return _Std(memory_order_seq_cst);
+    case TK_ATOMIC_MEMORY_ORDER_ACQUIRE:
+      return _Std(memory_order_acquire);
+    case TK_ATOMIC_MEMORY_ORDER_RELEASE:
+      return _Std(memory_order_release);
+    case TK_ATOMIC_MEMORY_ORDER_ACQ_REL:
+      return _Std(memory_order_acq_rel);
+    case TK_ATOMIC_MEMORY_ORDER_RELAXED:
+      return _Std(memory_order_relaxed);
+    default: {
+      assert(!"Not support memory order!");
+      return _Std(memory_order_seq_cst);
+    }
+  }
+}
+
+inline static void tk_atomic_thread_fence(tk_atomic_memory_order_t mem_order) {
+  return atomic_thread_fence(tk_atomic_memory_order_to_std(mem_order));
+}
+
+TK_MAYBE_UNUSED static ret_t tk_atomic_exchange_explicit(tk_atomic_t* atomic, value_t* v,
+                                                         tk_atomic_memory_order_t mem_order) {
+  value_t tmp;
+  return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
+
+  switch (atomic->type) {
+    case VALUE_TYPE_BOOL: {
+      value_set_bool(&tmp, atomic_exchange_explicit(&atomic->value.b, value_bool(v),
+                                                    tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT8: {
+      value_set_int8(&tmp, atomic_exchange_explicit(&atomic->value.i8, value_int8(v),
+                                                    tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT8: {
+      value_set_uint8(&tmp, atomic_exchange_explicit(&atomic->value.u8, value_uint8(v),
+                                                     tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT16: {
+      value_set_int16(&tmp, atomic_exchange_explicit(&atomic->value.i16, value_int16(v),
+                                                     tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT16: {
+      value_set_uint16(&tmp, atomic_exchange_explicit(&atomic->value.u16, value_uint16(v),
+                                                      tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT32: {
+      value_set_int32(&tmp, atomic_exchange_explicit(&atomic->value.i32, value_int32(v),
+                                                     tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT32: {
+      value_set_uint32(&tmp, atomic_exchange_explicit(&atomic->value.u32, value_uint32(v),
+                                                      tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT64: {
+      value_set_int64(&tmp, atomic_exchange_explicit(&atomic->value.i64, value_int64(v),
+                                                     tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT64: {
+      value_set_uint64(&tmp, atomic_exchange_explicit(&atomic->value.u64, value_uint64(v),
+                                                      tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    default: {
+      /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
+      assert(!"Not support type!");
+      return RET_BAD_PARAMS;
+    } break;
+  }
+
+  return value_copy(v, &tmp);
+}
+
+TK_MAYBE_UNUSED static bool_t tk_atomic_compare_exchange_weak_explicit(
+    tk_atomic_t* atomic, value_t* expect, value_t* desire,
+    tk_atomic_memory_order_t success_mem_order, tk_atomic_memory_order_t failure_mem_order) {
+  bool_t ret = TRUE;
+  return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
+
+  switch (atomic->type) {
+    case VALUE_TYPE_BOOL: {
+      bool_t tmp = value_bool(expect);
+      ret = atomic_compare_exchange_weak_explicit(&atomic->value.b, &tmp, value_bool(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_bool(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT8: {
+      int8_t tmp = value_int8(expect);
+      ret = atomic_compare_exchange_weak_explicit(&atomic->value.i8, &tmp, value_int8(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_int8(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT8: {
+      uint8_t tmp = value_uint8(expect);
+      ret = atomic_compare_exchange_weak_explicit(&atomic->value.u8, &tmp, value_uint8(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_uint8(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT16: {
+      int16_t tmp = value_int16(expect);
+      ret = atomic_compare_exchange_weak_explicit(&atomic->value.i16, &tmp, value_int16(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_int16(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT16: {
+      uint16_t tmp = value_uint16(expect);
+      ret = atomic_compare_exchange_weak_explicit(&atomic->value.u16, &tmp, value_uint16(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_uint16(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT32: {
+      int32_t tmp = value_int32(expect);
+      ret = atomic_compare_exchange_weak_explicit(&atomic->value.i32, &tmp, value_int32(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_int32(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT32: {
+      uint32_t tmp = value_uint32(expect);
+      ret = atomic_compare_exchange_weak_explicit(&atomic->value.u32, &tmp, value_uint32(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_uint32(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT64: {
+      int64_t tmp = value_int64(expect);
+      ret = atomic_compare_exchange_weak_explicit(&atomic->value.i64, &tmp, value_int64(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_int64(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT64: {
+      uint64_t tmp = value_uint64(expect);
+      ret = atomic_compare_exchange_weak_explicit(&atomic->value.u64, &tmp, value_uint64(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_uint64(expect, tmp);
+    } break;
+    default: {
+      /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
+      assert(!"Not support type!");
+      return FALSE;
+    } break;
+  }
+
+  return ret;
+}
+
+TK_MAYBE_UNUSED static bool_t tk_atomic_compare_exchange_strong_explicit(
+    tk_atomic_t* atomic, value_t* expect, value_t* desire,
+    tk_atomic_memory_order_t success_mem_order, tk_atomic_memory_order_t failure_mem_order) {
+  bool_t ret = TRUE;
+  return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
+
+  switch (atomic->type) {
+    case VALUE_TYPE_BOOL: {
+      bool_t tmp = value_bool(expect);
+      ret =
+          atomic_compare_exchange_strong_explicit(&atomic->value.b, &tmp, value_bool(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_bool(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT8: {
+      int8_t tmp = value_int8(expect);
+      ret =
+          atomic_compare_exchange_strong_explicit(&atomic->value.i8, &tmp, value_int8(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_int8(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT8: {
+      uint8_t tmp = value_uint8(expect);
+      ret =
+          atomic_compare_exchange_strong_explicit(&atomic->value.u8, &tmp, value_uint8(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_uint8(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT16: {
+      int16_t tmp = value_int16(expect);
+      ret =
+          atomic_compare_exchange_strong_explicit(&atomic->value.i16, &tmp, value_int16(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_int16(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT16: {
+      uint16_t tmp = value_uint16(expect);
+      ret =
+          atomic_compare_exchange_strong_explicit(&atomic->value.u16, &tmp, value_uint16(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_uint16(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT32: {
+      int32_t tmp = value_int32(expect);
+      ret =
+          atomic_compare_exchange_strong_explicit(&atomic->value.i32, &tmp, value_int32(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_int32(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT32: {
+      uint32_t tmp = value_uint32(expect);
+      ret =
+          atomic_compare_exchange_strong_explicit(&atomic->value.u32, &tmp, value_uint32(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_uint32(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT64: {
+      int64_t tmp = value_int64(expect);
+      ret =
+          atomic_compare_exchange_strong_explicit(&atomic->value.i64, &tmp, value_int64(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_int64(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT64: {
+      uint64_t tmp = value_uint64(expect);
+      ret =
+          atomic_compare_exchange_strong_explicit(&atomic->value.u64, &tmp, value_uint64(desire),
+                                                  tk_atomic_memory_order_to_std(success_mem_order),
+                                                  tk_atomic_memory_order_to_std(failure_mem_order));
+      value_set_uint64(expect, tmp);
+    } break;
+    default: {
+      /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
+      assert(!"Not support type!");
+      return FALSE;
+    } break;
+  }
+
+  return ret;
+}
+
+TK_MAYBE_UNUSED static ret_t tk_atomic_store_explicit(tk_atomic_t* atomic, const value_t* v,
+                                                      tk_atomic_memory_order_t mem_order) {
+  return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
+
+  switch (atomic->type) {
+    case VALUE_TYPE_BOOL: {
+      atomic_store_explicit(&atomic->value.b, value_bool(v),
+                            tk_atomic_memory_order_to_std(mem_order));
+    } break;
+    case VALUE_TYPE_INT8: {
+      atomic_store_explicit(&atomic->value.i8, value_int8(v),
+                            tk_atomic_memory_order_to_std(mem_order));
+    } break;
+    case VALUE_TYPE_UINT8: {
+      atomic_store_explicit(&atomic->value.u8, value_uint8(v),
+                            tk_atomic_memory_order_to_std(mem_order));
+    } break;
+    case VALUE_TYPE_INT16: {
+      atomic_store_explicit(&atomic->value.i16, value_int16(v),
+                            tk_atomic_memory_order_to_std(mem_order));
+    } break;
+    case VALUE_TYPE_UINT16: {
+      atomic_store_explicit(&atomic->value.u16, value_uint16(v),
+                            tk_atomic_memory_order_to_std(mem_order));
+    } break;
+    case VALUE_TYPE_INT32: {
+      atomic_store_explicit(&atomic->value.i32, value_int32(v),
+                            tk_atomic_memory_order_to_std(mem_order));
+    } break;
+    case VALUE_TYPE_UINT32: {
+      atomic_store_explicit(&atomic->value.u32, value_uint32(v),
+                            tk_atomic_memory_order_to_std(mem_order));
+    } break;
+    case VALUE_TYPE_INT64: {
+      atomic_store_explicit(&atomic->value.i64, value_int64(v),
+                            tk_atomic_memory_order_to_std(mem_order));
+    } break;
+    case VALUE_TYPE_UINT64: {
+      atomic_store_explicit(&atomic->value.u64, value_uint64(v),
+                            tk_atomic_memory_order_to_std(mem_order));
+    } break;
+    default: {
+      /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
+      assert(!"Not support type!");
+      return RET_BAD_PARAMS;
+    } break;
+  }
+
+  return RET_OK;
+}
+
+TK_MAYBE_UNUSED static ret_t tk_atomic_load_explicit(const tk_atomic_t* atomic, value_t* v,
+                                                     tk_atomic_memory_order_t mem_order) {
+  return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
+
+  switch (atomic->type) {
+    case VALUE_TYPE_BOOL: {
+      value_set_bool(
+          v, atomic_load_explicit(&atomic->value.b, tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT8: {
+      value_set_int8(
+          v, atomic_load_explicit(&atomic->value.i8, tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT8: {
+      value_set_uint8(
+          v, atomic_load_explicit(&atomic->value.u8, tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT16: {
+      value_set_int16(
+          v, atomic_load_explicit(&atomic->value.i16, tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT16: {
+      value_set_uint16(
+          v, atomic_load_explicit(&atomic->value.u16, tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT32: {
+      value_set_int32(
+          v, atomic_load_explicit(&atomic->value.i32, tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT32: {
+      value_set_uint32(
+          v, atomic_load_explicit(&atomic->value.u32, tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT64: {
+      value_set_int64(
+          v, atomic_load_explicit(&atomic->value.i64, tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT64: {
+      value_set_uint64(
+          v, atomic_load_explicit(&atomic->value.u64, tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    default: {
+      /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
+      assert(!"Not support type!");
+      return RET_BAD_PARAMS;
+    } break;
+  }
+
+  return RET_OK;
+}
+
+TK_MAYBE_UNUSED static value_t tk_atomic_fetch_add_explicit(tk_atomic_t* atomic, value_t* v,
+                                                            tk_atomic_memory_order_t mem_order) {
+  value_t ret;
+  memset(&ret, 0, sizeof(value_t));
+  return_value_if_fail(atomic != NULL && v != NULL, ret);
+
+  switch (atomic->type) {
+    case VALUE_TYPE_BOOL: {
+      value_set_bool(&ret, atomic_fetch_add_explicit(&atomic->value.b, value_bool(v),
+                                                     tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT8: {
+      value_set_int8(&ret, atomic_fetch_add_explicit(&atomic->value.i8, value_int8(v),
+                                                     tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT8: {
+      value_set_uint8(&ret, atomic_fetch_add_explicit(&atomic->value.u8, value_uint8(v),
+                                                      tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT16: {
+      value_set_int16(&ret, atomic_fetch_add_explicit(&atomic->value.i16, value_int16(v),
+                                                      tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT16: {
+      value_set_uint16(&ret, atomic_fetch_add_explicit(&atomic->value.u16, value_uint16(v),
+                                                       tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT32: {
+      value_set_int32(&ret, atomic_fetch_add_explicit(&atomic->value.i32, value_int32(v),
+                                                      tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT32: {
+      value_set_uint32(&ret, atomic_fetch_add_explicit(&atomic->value.u32, value_uint32(v),
+                                                       tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT64: {
+      value_set_int64(&ret, atomic_fetch_add_explicit(&atomic->value.i64, value_int64(v),
+                                                      tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT64: {
+      value_set_uint64(&ret, atomic_fetch_add_explicit(&atomic->value.u64, value_uint64(v),
+                                                       tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    default: {
+      /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
+      assert(!"Not support type!");
+    } break;
+  }
+
+  return ret;
+}
+
+TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub_explicit(tk_atomic_t* atomic, value_t* v,
+                                                            tk_atomic_memory_order_t mem_order) {
+  value_t ret;
+  memset(&ret, 0, sizeof(value_t));
+  return_value_if_fail(atomic != NULL && v != NULL, ret);
+
+  switch (atomic->type) {
+    case VALUE_TYPE_BOOL: {
+      value_set_bool(&ret, atomic_fetch_sub_explicit(&atomic->value.b, value_bool(v),
+                                                     tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT8: {
+      value_set_int8(&ret, atomic_fetch_sub_explicit(&atomic->value.i8, value_int8(v),
+                                                     tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT8: {
+      value_set_uint8(&ret, atomic_fetch_sub_explicit(&atomic->value.u8, value_uint8(v),
+                                                      tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT16: {
+      value_set_int16(&ret, atomic_fetch_sub_explicit(&atomic->value.i16, value_int16(v),
+                                                      tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT16: {
+      value_set_uint16(&ret, atomic_fetch_sub_explicit(&atomic->value.u16, value_uint16(v),
+                                                       tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT32: {
+      value_set_int32(&ret, atomic_fetch_sub_explicit(&atomic->value.i32, value_int32(v),
+                                                      tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT32: {
+      value_set_uint32(&ret, atomic_fetch_sub_explicit(&atomic->value.u32, value_uint32(v),
+                                                       tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_INT64: {
+      value_set_int64(&ret, atomic_fetch_sub_explicit(&atomic->value.i64, value_int64(v),
+                                                      tk_atomic_memory_order_to_std(mem_order)));
+    } break;
+    case VALUE_TYPE_UINT64: {
+      value_set_uint64(&ret, atomic_fetch_sub_explicit(&atomic->value.u64, value_uint64(v),
+                                                       tk_atomic_memory_order_to_std(mem_order)));
     } break;
     default: {
       /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
@@ -1140,6 +1884,62 @@ inline static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
   tk_mutex_unlock(atomic->lock);
 
   return ret;
+}
+
+inline static void tk_atomic_thread_fence(tk_atomic_memory_order_t mem_order) {
+  (void)mem_order;
+  static tk_mutex_t* s_dummy = NULL;
+  if (NULL == s_dummy) {
+    s_dummy = tk_mutex_create();
+    return_if_fail(s_dummy != NULL);
+  }
+
+  return_if_fail(RET_OK == tk_mutex_lock(s_dummy));
+  tk_mutex_unlock(s_dummy);
+}
+
+inline static ret_t tk_atomic_exchange_explicit(tk_atomic_t* atomic, value_t* v,
+                                                tk_atomic_memory_order_t mem_order) {
+  (void)mem_order;
+  return tk_atomic_exchange(atomic, v);
+}
+
+inline static bool_t tk_atomic_compare_exchange_weak_explicit(
+    tk_atomic_t* atomic, value_t* expect, value_t* desire,
+    tk_atomic_memory_order_t success_mem_order, tk_atomic_memory_order_t failure_mem_order) {
+  (void)success_mem_order, (void)failure_mem_order;
+  return tk_atomic_compare_exchange_weak(atomic, expect, desire);
+}
+
+inline static bool_t tk_atomic_compare_exchange_strong_explicit(
+    tk_atomic_t* atomic, value_t* expect, value_t* desire,
+    tk_atomic_memory_order_t success_mem_order, tk_atomic_memory_order_t failure_mem_order) {
+  (void)success_mem_order, (void)failure_mem_order;
+  return tk_atomic_compare_exchange_strong(atomic, expect, desire);
+}
+
+inline static ret_t tk_atomic_store_explicit(tk_atomic_t* atomic, const value_t* v,
+                                             tk_atomic_memory_order_t mem_order) {
+  (void)mem_order;
+  return tk_atomic_store(atomic, v);
+}
+
+inline static ret_t tk_atomic_load_explicit(const tk_atomic_t* atomic, value_t* v,
+                                            tk_atomic_memory_order_t mem_order) {
+  (void)mem_order;
+  return tk_atomic_load(atomic, v);
+}
+
+inline static value_t tk_atomic_fetch_add_explicit(tk_atomic_t* atomic, value_t* v,
+                                                   tk_atomic_memory_order_t mem_order) {
+  (void)mem_order;
+  return tk_atomic_fetch_add(atomic, v);
+}
+
+inline static value_t tk_atomic_fetch_sub_explicit(tk_atomic_t* atomic, value_t* v,
+                                                   tk_atomic_memory_order_t mem_order) {
+  (void)mem_order;
+  return tk_atomic_fetch_sub(atomic, v);
 }
 #endif
 
