@@ -3,6 +3,7 @@
 2025/11/28
   * 修复 label auto_adjust_size 时会将self_layout重置的问题(感谢兆坤提供补丁)
   * improve demoui(感谢兆坤提供补丁)
+  * double_click事件回调函数返回STOP时停止继续发送 (感谢雨欣提供补丁)
 
 2025/11/27
   * 修复combo_box使用按钮打开popup时，popup会被重复打开的问题(感谢泽武提供补丁) 

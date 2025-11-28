@@ -3258,16 +3258,21 @@ static ret_t widget_dispatch_blur_event(widget_t* widget) {
 }
 
 ret_t widget_dispatch_event_to_target_recursive(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   widget_t* target = NULL;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
   target = widget->grab_widget ? widget->grab_widget : widget->target;
   while (target != NULL) {
-    widget_dispatch(target, e);
-    target = target->target != NULL ? target->target : target->key_target;
+    ret = widget_dispatch(target, e);
+    if (ret != RET_STOP) {
+      target = target->target != NULL ? target->target : target->key_target;
+    } else {
+      break;
+    }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t widget_on_pointer_down_before_children(widget_t* widget, pointer_event_t* e) {
