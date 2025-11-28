@@ -1,12 +1,10 @@
 <?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_label&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
 <list_view name="list_view" x="0" y="0" w="100%" h="100%">
   <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=66,x=0,y=10,s=20)">
-    <view name="view_lb" h="280" children_layout="default(r=0,c=1,x=0,y=0,s=13)">
+    <view name="view_lb" children_layout="default(r=0,c=1,x=0,y=0,s=13)" self_layout="flex(h=flex)">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Label"/>
-      <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=0)">
-        <view w="280">
-          <label name="lb" w="100%" style:normal:text_align_h="left" line_wrap="true" word_wrap="true" x="0" y="0" h="100%" style:normal:text_align_v="top" tr_text="AWTK, called Toolkit AnyWhere, is a GUI framework developed by ZLG based on C language. Aims to provide users with a powerful, efficient and reliable, easy to use, can easily make cool effects of THE GUI engine, and support cross-platform synchronous development, programming, lifetime use."/>
-        </view>
+      <view self_layout="flex(h=flex)">
+        <label name="lb" x="20" y="0" w="-40" auto_adjust_size="true" line_wrap="true" word_wrap="true" style:normal:text_align_h="left" style:normal:text_align_v="top" tr_text="AWTK, called Toolkit AnyWhere, is a GUI framework developed by ZLG based on C language. Aims to provide users with a powerful, efficient and reliable, easy to use, can easily make cool effects of THE GUI engine, and support cross-platform synchronous development, programming, lifetime use."/>
       </view>
     </view>
     <view name="view_rt" h="357" children_layout="default(r=0,c=1,x=0,y=0,s=13)">
