@@ -294,7 +294,7 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
     widget_h = tk_min(widget_h, max_h);
   }
   line_parser_deinit(&p);
-  return widget_resize(widget, widget_w, widget_h);
+  return widget_move_resize_ex(widget, widget->x, widget->y, widget_w, widget_h, FALSE);
 }
 
 static ret_t label_auto_adjust_size(widget_t* widget) {
