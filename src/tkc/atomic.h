@@ -353,7 +353,7 @@ inline static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
 
 inline static void tk_atomic_thread_fence(tk_atomic_memory_order_t mem_order) {
   (void)mem_order;
-  return MemoryBarrier();
+  MemoryBarrier();
 }
 
 TK_MAYBE_UNUSED static ret_t tk_atomic_exchange_explicit(tk_atomic_t* atomic, value_t* v,
@@ -366,23 +366,23 @@ TK_MAYBE_UNUSED static ret_t tk_atomic_exchange_explicit(tk_atomic_t* atomic, va
 
   switch (value_type_size(atomic->value.type)) {
     case sizeof(int8_t): {
-      tmp.value.i8 = InterlockedExchange8((CHAR*)(&atomic->value.value), (CHAR)(v->value.i8));
+      tmp.value.i8 = InterlockedExchange8((CHAR*)(&atomic->value.value), (CHAR)value_int8(v));
     } break;
     case sizeof(int16_t): {
-      tmp.value.i16 = InterlockedExchange16((SHORT*)(&atomic->value.value), (SHORT)(v->value.i16));
+      tmp.value.i16 = InterlockedExchange16((SHORT*)(&atomic->value.value), (SHORT)value_int16(v));
     } break;
     case sizeof(int32_t): {
       switch (mem_order) {
         case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
           tmp.value.i32 =
-              InterlockedExchangeAcquire((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+              InterlockedExchangeAcquire((LONG*)(&atomic->value.value), (LONG)value_int32(v));
         } break;
         case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
           tmp.value.i32 =
-              InterlockedExchangeNoFence((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+              InterlockedExchangeNoFence((LONG*)(&atomic->value.value), (LONG)value_int32(v));
         } break;
         default: {
-          tmp.value.i32 = InterlockedExchange((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+          tmp.value.i32 = InterlockedExchange((LONG*)(&atomic->value.value), (LONG)value_int32(v));
         } break;
       }
     } break;
@@ -390,15 +390,15 @@ TK_MAYBE_UNUSED static ret_t tk_atomic_exchange_explicit(tk_atomic_t* atomic, va
       switch (mem_order) {
         case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
           tmp.value.i64 =
-              InterlockedExchangeAcquire64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+              InterlockedExchangeAcquire64((LONG64*)(&atomic->value.value), (LONG64)value_int64(v));
         } break;
         case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
           tmp.value.i64 =
-              InterlockedExchangeNoFence64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+              InterlockedExchangeNoFence64((LONG64*)(&atomic->value.value), (LONG64)value_int64(v));
         } break;
         default: {
           tmp.value.i64 =
-              InterlockedExchange64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+              InterlockedExchange64((LONG64*)(&atomic->value.value), (LONG64)value_int64(v));
         } break;
       }
     } break;
@@ -436,23 +436,23 @@ TK_MAYBE_UNUSED static bool_t tk_atomic_compare_exchange_strong_explicit(
       switch (success_mem_order) {
         case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
           tmp.value.i16 = InterlockedCompareExchangeAcquire16((SHORT*)(&atomic->value.value),
-                                                              (SHORT)(desire->value.i16),
-                                                              (SHORT)(expect->value.i16));
+                                                              (SHORT)value_int16(desire),
+                                                              (SHORT)value_int16(expect));
         } break;
         case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
           tmp.value.i16 = InterlockedCompareExchangeRelease16((SHORT*)(&atomic->value.value),
-                                                              (SHORT)(desire->value.i16),
-                                                              (SHORT)(expect->value.i16));
+                                                              (SHORT)value_int16(desire),
+                                                              (SHORT)value_int16(expect));
         } break;
         case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
           tmp.value.i16 = InterlockedCompareExchangeNoFence16((SHORT*)(&atomic->value.value),
-                                                              (SHORT)(desire->value.i16),
-                                                              (SHORT)(expect->value.i16));
+                                                              (SHORT)value_int16(desire),
+                                                              (SHORT)value_int16(expect));
         } break;
         default: {
           tmp.value.i16 =
               InterlockedCompareExchange16((SHORT*)(&atomic->value.value),
-                                           (SHORT)(desire->value.i16), (SHORT)(expect->value.i16));
+                                           (SHORT)value_int16(desire), (SHORT)value_int16(expect));
         } break;
       }
     } break;
@@ -460,19 +460,19 @@ TK_MAYBE_UNUSED static bool_t tk_atomic_compare_exchange_strong_explicit(
       switch (success_mem_order) {
         case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
           tmp.value.i32 = InterlockedCompareExchangeAcquire(
-              (LONG*)(&atomic->value.value), (LONG)(desire->value.i32), (LONG)(expect->value.i32));
+              (LONG*)(&atomic->value.value), (LONG)value_int32(desire), (LONG)value_int32(expect));
         } break;
         case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
           tmp.value.i32 = InterlockedCompareExchangeRelease(
-              (LONG*)(&atomic->value.value), (LONG)(desire->value.i32), (LONG)(expect->value.i32));
+              (LONG*)(&atomic->value.value), (LONG)value_int32(desire), (LONG)value_int32(expect));
         } break;
         case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
           tmp.value.i32 = InterlockedCompareExchangeNoFence(
-              (LONG*)(&atomic->value.value), (LONG)(desire->value.i32), (LONG)(expect->value.i32));
+              (LONG*)(&atomic->value.value), (LONG)value_int32(desire), (LONG)value_int32(expect));
         } break;
         default: {
           tmp.value.i32 = InterlockedCompareExchange(
-              (LONG*)(&atomic->value.value), (LONG)(desire->value.i32), (LONG)(expect->value.i32));
+              (LONG*)(&atomic->value.value), (LONG)value_int32(desire), (LONG)value_int32(expect));
         } break;
       }
     } break;
@@ -480,23 +480,23 @@ TK_MAYBE_UNUSED static bool_t tk_atomic_compare_exchange_strong_explicit(
       switch (success_mem_order) {
         case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
           tmp.value.i64 = InterlockedCompareExchangeAcquire64((LONG64*)(&atomic->value.value),
-                                                              (LONG64)(desire->value.i64),
-                                                              (LONG64)(expect->value.i64));
+                                                              (LONG64)value_int64(desire),
+                                                              (LONG64)value_int64(expect));
         } break;
         case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
           tmp.value.i64 = InterlockedCompareExchangeRelease64((LONG64*)(&atomic->value.value),
-                                                              (LONG64)(desire->value.i64),
-                                                              (LONG64)(expect->value.i64));
+                                                              (LONG64)value_int64(desire),
+                                                              (LONG64)value_int64(expect));
         } break;
         case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
           tmp.value.i64 = InterlockedCompareExchangeNoFence64((LONG64*)(&atomic->value.value),
-                                                              (LONG64)(desire->value.i64),
-                                                              (LONG64)(expect->value.i64));
+                                                              (LONG64)value_int64(desire),
+                                                              (LONG64)value_int64(expect));
         } break;
         default: {
           tmp.value.i64 = InterlockedCompareExchange64((LONG64*)(&atomic->value.value),
-                                                       (LONG64)(desire->value.i64),
-                                                       (LONG64)(expect->value.i64));
+                                                       (LONG64)value_int64(desire),
+                                                       (LONG64)value_int64(expect));
         } break;
       }
     } break;
@@ -601,18 +601,18 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_add_explicit(tk_atomic_t* atomic,
         switch (mem_order) {
           case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
             ret.value.i16 =
-                InterlockedAddAcquire((LONG*)(&atomic->value.value), (LONG)(v->value.i16));
+                InterlockedAddAcquire((LONG*)(&atomic->value.value), (LONG)value_int16(v));
           } break;
           case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
             ret.value.i16 =
-                InterlockedAddRelease((LONG*)(&atomic->value.value), (LONG)(v->value.i16));
+                InterlockedAddRelease((LONG*)(&atomic->value.value), (LONG)value_int16(v));
           } break;
           case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
             ret.value.i16 =
-                InterlockedAddNoFence((LONG*)(&atomic->value.value), (LONG)(v->value.i16));
+                InterlockedAddNoFence((LONG*)(&atomic->value.value), (LONG)value_int16(v));
           } break;
           default: {
-            ret.value.i16 = InterlockedAdd((LONG*)(&atomic->value.value), (LONG)(v->value.i16));
+            ret.value.i16 = InterlockedAdd((LONG*)(&atomic->value.value), (LONG)value_int16(v));
           } break;
         }
       }
@@ -639,18 +639,18 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_add_explicit(tk_atomic_t* atomic,
         switch (mem_order) {
           case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
             ret.value.i32 =
-                InterlockedAddAcquire((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+                InterlockedAddAcquire((LONG*)(&atomic->value.value), (LONG)value_int32(v));
           } break;
           case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
             ret.value.i32 =
-                InterlockedAddRelease((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+                InterlockedAddRelease((LONG*)(&atomic->value.value), (LONG)value_int32(v));
           } break;
           case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
             ret.value.i32 =
-                InterlockedAddNoFence((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+                InterlockedAddNoFence((LONG*)(&atomic->value.value), (LONG)value_int32(v));
           } break;
           default: {
-            ret.value.i32 = InterlockedAdd((LONG*)(&atomic->value.value), (LONG)(v->value.i32));
+            ret.value.i32 = InterlockedAdd((LONG*)(&atomic->value.value), (LONG)value_int32(v));
           } break;
         }
       }
@@ -676,19 +676,19 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_add_explicit(tk_atomic_t* atomic,
         switch (mem_order) {
           case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
             ret.value.i64 =
-                InterlockedAddAcquire64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+                InterlockedAddAcquire64((LONG64*)(&atomic->value.value), (LONG64)value_int64(v));
           } break;
           case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
             ret.value.i64 =
-                InterlockedAddRelease64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+                InterlockedAddRelease64((LONG64*)(&atomic->value.value), (LONG64)value_int64(v));
           } break;
           case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
             ret.value.i64 =
-                InterlockedAddNoFence64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+                InterlockedAddNoFence64((LONG64*)(&atomic->value.value), (LONG64)value_int64(v));
           } break;
           default: {
             ret.value.i64 =
-                InterlockedAdd64((LONG64*)(&atomic->value.value), (LONG64)(v->value.i64));
+                InterlockedAdd64((LONG64*)(&atomic->value.value), (LONG64)value_int64(v));
           } break;
         }
       }
@@ -733,18 +733,18 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub_explicit(tk_atomic_t* atomic,
         switch (mem_order) {
           case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
             ret.value.i16 =
-                InterlockedAddAcquire((LONG*)(&atomic->value.value), -(LONG)(v->value.i16));
+                InterlockedAddAcquire((LONG*)(&atomic->value.value), -(LONG)value_int16(v));
           } break;
           case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
             ret.value.i16 =
-                InterlockedAddRelease((LONG*)(&atomic->value.value), -(LONG)(v->value.i16));
+                InterlockedAddRelease((LONG*)(&atomic->value.value), -(LONG)value_int16(v));
           } break;
           case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
             ret.value.i16 =
-                InterlockedAddNoFence((LONG*)(&atomic->value.value), -(LONG)(v->value.i16));
+                InterlockedAddNoFence((LONG*)(&atomic->value.value), -(LONG)value_int16(v));
           } break;
           default: {
-            ret.value.i16 = InterlockedAdd((LONG*)(&atomic->value.value), -(LONG)(v->value.i16));
+            ret.value.i16 = InterlockedAdd((LONG*)(&atomic->value.value), -(LONG)value_int16(v));
           } break;
         }
       }
@@ -771,18 +771,18 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub_explicit(tk_atomic_t* atomic,
         switch (mem_order) {
           case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
             ret.value.i32 =
-                InterlockedAddAcquire((LONG*)(&atomic->value.value), -(LONG)(v->value.i32));
+                InterlockedAddAcquire((LONG*)(&atomic->value.value), -(LONG)value_int32(v));
           } break;
           case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
             ret.value.i32 =
-                InterlockedAddRelease((LONG*)(&atomic->value.value), -(LONG)(v->value.i32));
+                InterlockedAddRelease((LONG*)(&atomic->value.value), -(LONG)value_int32(v));
           } break;
           case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
             ret.value.i32 =
-                InterlockedAddNoFence((LONG*)(&atomic->value.value), -(LONG)(v->value.i32));
+                InterlockedAddNoFence((LONG*)(&atomic->value.value), -(LONG)value_int32(v));
           } break;
           default: {
-            ret.value.i32 = InterlockedAdd((LONG*)(&atomic->value.value), -(LONG)(v->value.i32));
+            ret.value.i32 = InterlockedAdd((LONG*)(&atomic->value.value), -(LONG)value_int32(v));
           } break;
         }
       }
@@ -808,19 +808,19 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub_explicit(tk_atomic_t* atomic,
         switch (mem_order) {
           case TK_ATOMIC_MEMORY_ORDER_ACQUIRE: {
             ret.value.i64 =
-                InterlockedAddAcquire64((LONG64*)(&atomic->value.value), -(LONG64)(v->value.i64));
+                InterlockedAddAcquire64((LONG64*)(&atomic->value.value), -(LONG64)value_int64(v));
           } break;
           case TK_ATOMIC_MEMORY_ORDER_RELEASE: {
             ret.value.i64 =
-                InterlockedAddRelease64((LONG64*)(&atomic->value.value), -(LONG64)(v->value.i64));
+                InterlockedAddRelease64((LONG64*)(&atomic->value.value), -(LONG64)value_int64(v));
           } break;
           case TK_ATOMIC_MEMORY_ORDER_RELAXED: {
             ret.value.i64 =
-                InterlockedAddNoFence64((LONG64*)(&atomic->value.value), -(LONG64)(v->value.i64));
+                InterlockedAddNoFence64((LONG64*)(&atomic->value.value), -(LONG64)value_int64(v));
           } break;
           default: {
             ret.value.i64 =
-                InterlockedAdd64((LONG64*)(&atomic->value.value), -(LONG64)(v->value.i64));
+                InterlockedAdd64((LONG64*)(&atomic->value.value), -(LONG64)value_int64(v));
           } break;
         }
       }
@@ -1294,7 +1294,7 @@ inline static _Std(memory_order) tk_atomic_memory_order_to_std(tk_atomic_memory_
 }
 
 inline static void tk_atomic_thread_fence(tk_atomic_memory_order_t mem_order) {
-  return atomic_thread_fence(tk_atomic_memory_order_to_std(mem_order));
+  atomic_thread_fence(tk_atomic_memory_order_to_std(mem_order));
 }
 
 TK_MAYBE_UNUSED static ret_t tk_atomic_exchange_explicit(tk_atomic_t* atomic, value_t* v,

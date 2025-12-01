@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/12/1
+  * 完善 atomic 函数(感谢兆坤提供补丁)
+
 2025/11/28
   * 修复 label auto_adjust_size 时会将self_layout重置的问题(感谢兆坤提供补丁)
   * improve demoui(感谢兆坤提供补丁)
