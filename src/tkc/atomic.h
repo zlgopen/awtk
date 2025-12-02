@@ -342,9 +342,6 @@ inline static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(tk_atomic_support_value_type(v->type), RET_BAD_PARAMS);
 
-  ret = tk_atomic_deinit(atomic);
-  return_value_if_fail(RET_OK == ret, ret);
-
   ret = value_copy((value_t*)(&atomic->value), v);
   return_value_if_fail(RET_OK == ret, ret);
 
@@ -518,11 +515,10 @@ TK_MAYBE_UNUSED static bool_t tk_atomic_compare_exchange_strong_explicit(
 inline static ret_t tk_atomic_store_explicit(tk_atomic_t* atomic, const value_t* v,
                                              tk_atomic_memory_order_t mem_order) {
   value_t tmp;
-  (void)mem_order;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
   value_copy(&tmp, v);
-  return tk_atomic_exchange(atomic, &tmp);
+  return tk_atomic_exchange_explicit(atomic, &tmp, mem_order);
 }
 
 TK_MAYBE_UNUSED static ret_t tk_atomic_load_explicit(const tk_atomic_t* atomic, value_t* v,
@@ -900,9 +896,6 @@ TK_MAYBE_UNUSED static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* 
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(tk_atomic_support_value_type(v->type), RET_BAD_PARAMS);
-
-  ret = tk_atomic_deinit(atomic);
-  return_value_if_fail(RET_OK == ret, ret);
 
   atomic->type = v->type;
 
@@ -1762,9 +1755,6 @@ inline static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(tk_atomic_support_value_type(v->type), RET_BAD_PARAMS);
-
-  ret = tk_atomic_deinit(atomic);
-  return_value_if_fail(RET_OK == ret, ret);
 
   ret = value_copy(&atomic->value, v);
   return_value_if_fail(RET_OK == ret, ret);
