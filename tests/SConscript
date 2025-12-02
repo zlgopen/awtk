@@ -55,8 +55,10 @@ env.Program(os.path.join(BIN_DIR, 'async_call_test'), ["async_call_test.cpp"])
 
 if OS_NAME == 'Windows' :
   env.Program(os.path.join(BIN_DIR, 'atomic_test'), ["atomic_test.cpp"])
+  env.Program(os.path.join(BIN_DIR, 'lf_bp_buffer_test'), ["lf_bp_buffer_test.cpp"])
 else :
   env.Program(os.path.join(BIN_DIR, 'atomic_test'), ["atomic_test.cpp"], CCFLAGS = env["CCFLAGS"] + ' -std=c++11 ')
+  env.Program(os.path.join(BIN_DIR, 'lf_bp_buffer_test'), ["lf_bp_buffer_test.cpp"], CCFLAGS = env["CCFLAGS"] + ' -std=c++11 ')
 
 env.SharedLibrary(os.path.join(BIN_DIR+"/plugins_for_test", 'a'), ["a.c"])
 env.SharedLibrary(os.path.join(BIN_DIR+"/plugins_for_test", 'b'), ["b.c"])
