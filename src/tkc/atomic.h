@@ -1191,7 +1191,7 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t*
 
   switch (atomic->type) {
     case VALUE_TYPE_BOOL: {
-      value_set_bool(&ret, atomic_fetch_add(&atomic->value.b, value_bool(v)));
+      value_set_bool(&ret, (bool_t)atomic_fetch_add(&atomic->value.u8, value_uint8(v)));
     } break;
     case VALUE_TYPE_INT8: {
       value_set_int8(&ret, atomic_fetch_add(&atomic->value.i8, value_int8(v)));
@@ -1233,7 +1233,7 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t*
 
   switch (atomic->type) {
     case VALUE_TYPE_BOOL: {
-      value_set_bool(&ret, atomic_fetch_sub(&atomic->value.b, value_bool(v)));
+      value_set_bool(&ret, (bool_t)atomic_fetch_sub(&atomic->value.u8, value_uint8(v)));
     } break;
     case VALUE_TYPE_INT8: {
       value_set_int8(&ret, atomic_fetch_sub(&atomic->value.i8, value_int8(v)));
@@ -1623,8 +1623,9 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_add_explicit(tk_atomic_t* atomic,
 
   switch (atomic->type) {
     case VALUE_TYPE_BOOL: {
-      value_set_bool(&ret, atomic_fetch_add_explicit(&atomic->value.b, value_bool(v),
-                                                     tk_atomic_memory_order_to_std(mem_order)));
+      value_set_bool(&ret,
+                     (bool_t)atomic_fetch_add_explicit(&atomic->value.u8, value_uint8(v),
+                                                       tk_atomic_memory_order_to_std(mem_order)));
     } break;
     case VALUE_TYPE_INT8: {
       value_set_int8(&ret, atomic_fetch_add_explicit(&atomic->value.i8, value_int8(v),
@@ -1675,8 +1676,9 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub_explicit(tk_atomic_t* atomic,
 
   switch (atomic->type) {
     case VALUE_TYPE_BOOL: {
-      value_set_bool(&ret, atomic_fetch_sub_explicit(&atomic->value.b, value_bool(v),
-                                                     tk_atomic_memory_order_to_std(mem_order)));
+      value_set_bool(&ret,
+                     (bool_t)atomic_fetch_sub_explicit(&atomic->value.u8, value_uint8(v),
+                                                       tk_atomic_memory_order_to_std(mem_order)));
     } break;
     case VALUE_TYPE_INT8: {
       value_set_int8(&ret, atomic_fetch_sub_explicit(&atomic->value.i8, value_int8(v),

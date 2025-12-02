@@ -4,6 +4,7 @@
   * 完善 atomic 函数(感谢兆坤提供补丁)
   * 增加 lf_bp_buffer (感谢兆坤提供补丁)
   * 修复 atomic 在 linux 上无法通过编译的问题(感谢兆坤提供补丁)
+  * 修复 atomic bool fetch add 和 sub 编译报错的问题(感谢兆坤提供补丁)
 
 2025/12/1
   * 完善 atomic 函数(感谢兆坤提供补丁)
