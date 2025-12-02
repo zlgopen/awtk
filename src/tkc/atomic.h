@@ -866,9 +866,10 @@ inline static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
 #ifdef __cplusplus
 #include <atomic>
 #define _Atomic(X) std::atomic<X>
-#define _Std(X) std::X
+#define _TK_ATOMIC_STD_NAMESPACE(X) std::X
 #else
 #include <stdatomic.h>
+#define _TK_ATOMIC_STD_NAMESPACE(X) X
 #endif /* __cplusplus */
 
 struct _tk_atomic_t {
@@ -1267,21 +1268,22 @@ TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t*
   return ret;
 }
 
-inline static _Std(memory_order) tk_atomic_memory_order_to_std(tk_atomic_memory_order_t mem_order) {
+inline static _TK_ATOMIC_STD_NAMESPACE(memory_order)
+    tk_atomic_memory_order_to_std(tk_atomic_memory_order_t mem_order) {
   switch (mem_order) {
     case TK_ATOMIC_MEMORY_ORDER_SEQ_CST:
-      return _Std(memory_order_seq_cst);
+      return _TK_ATOMIC_STD_NAMESPACE(memory_order_seq_cst);
     case TK_ATOMIC_MEMORY_ORDER_ACQUIRE:
-      return _Std(memory_order_acquire);
+      return _TK_ATOMIC_STD_NAMESPACE(memory_order_acquire);
     case TK_ATOMIC_MEMORY_ORDER_RELEASE:
-      return _Std(memory_order_release);
+      return _TK_ATOMIC_STD_NAMESPACE(memory_order_release);
     case TK_ATOMIC_MEMORY_ORDER_ACQ_REL:
-      return _Std(memory_order_acq_rel);
+      return _TK_ATOMIC_STD_NAMESPACE(memory_order_acq_rel);
     case TK_ATOMIC_MEMORY_ORDER_RELAXED:
-      return _Std(memory_order_relaxed);
+      return _TK_ATOMIC_STD_NAMESPACE(memory_order_relaxed);
     default: {
       assert(!"Not support memory order!");
-      return _Std(memory_order_seq_cst);
+      return _TK_ATOMIC_STD_NAMESPACE(memory_order_seq_cst);
     }
   }
 }
