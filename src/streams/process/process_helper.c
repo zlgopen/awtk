@@ -45,9 +45,11 @@ static void* process_read_pipe_on_thread(void* args) {
       break;
     }
     while (size > 0) {
-      uint32_t len = tk_socket_send(handle->server_fd, buff + pos, size, 0);
+      int32_t len = tk_socket_send(handle->server_fd, buff + pos, size, 0);
       if (len <= 0) {
         log_warn("send fb buff fail \r\n");
+        sleep_ms(1);
+        continue;
       }
       size -= len;
       pos += len;
