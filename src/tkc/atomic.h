@@ -30,35 +30,43 @@
 /**
  * @enum tk_atomic_memory_order_t
  * @prefix TK_ATOMIC_MEMORY_ORDER_
+ * @export none
  * 内存顺序。
  */
 typedef enum _tk_atomic_memory_order_t {
   /**
-   * @value TK_ATOMIC_MEMORY_ORDER_SEQ_CST
+   * @const TK_ATOMIC_MEMORY_ORDER_SEQ_CST
    * 顺序一致性。
    */
   TK_ATOMIC_MEMORY_ORDER_SEQ_CST = 0,
   /**
-   * @value TK_ATOMIC_MEMORY_ORDER_ACQUIRE
+   * @const TK_ATOMIC_MEMORY_ORDER_ACQUIRE
    * 获取顺序。
    */
   TK_ATOMIC_MEMORY_ORDER_ACQUIRE,
   /**
-   * @value TK_ATOMIC_MEMORY_ORDER_RELEASE
+   * @const TK_ATOMIC_MEMORY_ORDER_RELEASE
    * 释放顺序。
    */
   TK_ATOMIC_MEMORY_ORDER_RELEASE,
   /**
-   * @value TK_ATOMIC_MEMORY_ORDER_ACQ_REL
+   * @const TK_ATOMIC_MEMORY_ORDER_ACQ_REL
    * 获得+释放顺序。
    */
   TK_ATOMIC_MEMORY_ORDER_ACQ_REL,
   /**
-   * @value TK_ATOMIC_MEMORY_ORDER_RELAXED
+   * @const TK_ATOMIC_MEMORY_ORDER_RELAXED
    * 松散顺序。
    */
   TK_ATOMIC_MEMORY_ORDER_RELAXED,
 } tk_atomic_memory_order_t;
+
+/**
+ * @class tk_atomic_t
+ * @annotation ["fake"]
+ * @export none
+ * 原子操作类。
+ */
 
 /**
  * @method tk_atomic_support_value_type
@@ -205,6 +213,7 @@ static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v);
 
 /**
  * @method tk_atomic_thread_fence
+ * @annotation ["static"]
  * @export none
  * 线程栅栏。
  *
