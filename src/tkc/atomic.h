@@ -882,7 +882,7 @@ inline static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
 #endif /* __cplusplus */
 
 struct _tk_atomic_t {
-  value_type_t type : 8;
+  value_type_t type;
   union _value {
     _Atomic(bool_t) b;
     _Atomic(int8_t) i8;

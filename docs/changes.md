@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/12/4
+  * 修复 atomic: remove bit (感谢兆坤提供补丁)
+
 2025/12/3
   * 修复 atomic 注释(感谢兆坤提供补丁)
   * 完善 process_read_pipe_on_thread (感谢兆坤提供补丁)
