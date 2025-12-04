@@ -41,7 +41,7 @@ static void* process_read_pipe_on_thread(void* args) {
     char buff[1024];
     BOOL ret = ReadFile(handle->h_std_out_rd, buff, sizeof(buff), &size, NULL);
     if (!ret || size < 0) {
-      handle->broken = TRUE;
+      handle->close = TRUE;
       break;
     }
     while (size > 0) {
@@ -90,6 +90,10 @@ ret_t process_destroy(process_handle_t handle) {
   if (handle->h_std_in_wr != NULL) {
     CloseHandle(handle->h_std_in_wr);
     handle->h_std_in_wr = NULL;
+  }
+  if (handle->h_std_in_rd_child!= NULL) {
+    CloseHandle(handle->h_std_in_rd_child);
+    handle->h_std_in_rd_child = NULL; 
   }
 
   if (handle->rthread != NULL) {
@@ -200,7 +204,7 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
   goto_error_if_fail(ret);
 
   CloseHandle(h_std_out_wr);
-  CloseHandle(h_std_in_rd);
+  handle->h_std_in_rd_child = h_std_in_rd;
 
   goto_error_if_fail(tk_socketpair(socks) == 0);
   handle->client_fd = socks[0];
@@ -234,19 +238,25 @@ int process_handle_get_fd(process_handle_t handle) {
 }
 
 ret_t process_wait_for_data(process_handle_t handle, uint32_t timeout_ms) {
+  ret_t ret = RET_OK;
   int fd = process_handle_get_fd(handle);
   if (fd <= 0) {
     return RET_IO;
   }
-  return tk_socket_wait_for_data(fd, timeout_ms);
+  ret = tk_socket_wait_for_data(fd, timeout_ms);
+  if (ret == RET_TIMEOUT && handle->close) {
+    handle->broken = TRUE;
+  }
+  return ret;
 }
 
 int32_t process_read(process_handle_t handle, uint8_t* buff, uint32_t max_size) {
   int fd = process_handle_get_fd(handle);
   int32_t size = tk_socket_recv(fd, buff, max_size, 0);
-  if (size <= 0 && handle->broken) {
+  if (size <= 0 && handle->close) {
     tk_socket_close(handle->client_fd);
     handle->client_fd = -1;
+    handle->broken = TRUE;
   }
   return size;
 }

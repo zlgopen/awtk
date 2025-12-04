@@ -39,11 +39,7 @@ int main(int argc, char* argv[]) {
       printf("random[%d]:%d \r\n", i, rand() % 100);
     }
   }
+  printf("++++++++++++ end \r\n");
   fflush(stdout);
-#ifdef WIN32
-  Sleep(1000 * 1);
-#else
-  usleep(1000 * 1000 * 1);
-#endif
   return ret;
 }

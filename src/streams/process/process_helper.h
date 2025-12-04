@@ -58,10 +58,12 @@ typedef struct _process_start_info_t {
 
 struct _process_info_t {
   volatile bool_t quit;
+  bool_t close;
   bool_t broken;
 
   HANDLE h_std_in_wr;
   HANDLE h_std_out_rd;
+  HANDLE h_std_in_rd_child;
   STARTUPINFOEXW start_info;
   PROCESS_INFORMATION proc_info;
 
