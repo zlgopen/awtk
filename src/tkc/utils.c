@@ -1645,6 +1645,21 @@ ret_t xml_file_expand(const char* filename, str_t* s, const char* data) {
   return RET_OK;
 }
 
+ret_t xml_file_read_to_str(const char* filename, str_t* s) {
+  uint32_t size = 0;
+  char* buff = NULL;
+  return_value_if_fail(filename != NULL && s != NULL, RET_BAD_PARAMS);
+
+  str_set(s, "");
+  buff = (char*)file_read(filename, &size);
+  return_value_if_fail(buff != NULL, RET_FAIL);
+  str_set_with_len(s, (const char*)buff, size);
+
+  TKMEM_FREE(buff);
+
+  return RET_OK;
+}
+
 ret_t xml_file_expand_read(const char* filename, str_t* s) {
   uint32_t size = 0;
   char* buff = NULL;

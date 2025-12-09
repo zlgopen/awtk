@@ -382,7 +382,7 @@ static widget_t* preview_ui(const char* filename) {
   if (is_bin) {
     content = (uint8_t*)file_read(filename, &size);
   } else {
-    xml_file_expand_read(filename, &s);
+    xml_file_read_to_str(filename, &s);
     content = (uint8_t*)s.str;
     size = s.size;
   }

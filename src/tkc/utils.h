@@ -592,6 +592,18 @@ ret_t filename_to_name_ex(const char* filename, char* str, uint32_t size, bool_t
 ret_t xml_file_expand_read(const char* filename, str_t* s);
 
 /**
+ * @method xml_file_read_to_str
+ *
+ * read xml file to str_t.
+ *
+ * @param {const char*} filename 文件名。
+ * @param {str_t*} s 用于返回内容。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t xml_file_read_to_str(const char* filename, str_t* s);
+
+/**
  * @method xml_file_expand_subfilenames_get
  *
  * 从xml文件中获取所有使用 <?include filename="" ?> 导入的文件名称

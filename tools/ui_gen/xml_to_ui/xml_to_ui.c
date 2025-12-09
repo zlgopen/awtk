@@ -41,10 +41,11 @@ static ret_t gen_one(const char* in_filename, const char* out_filename, bool_t o
     ui_loader_t* loader = xml_ui_loader();
     ui_builder_t* builder =
         ui_binary_writer_init(&ui_binary_writer, wbuffer_init_extendable(&wbuffer));
+    builder->name = in_filename;
     str_init(&s, 0);
     do {
       ret = RET_FAIL;
-      if (xml_file_expand_read(in_filename, &s) != RET_OK) break;
+      if (xml_file_read_to_str(in_filename, &s) != RET_OK) break;
       content = s.str;
       size = s.size;
       wbuffer_extend_capacity(&wbuffer, size);
