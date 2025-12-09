@@ -34,7 +34,8 @@ struct _XmlParser {
   const char* read_ptr;
   const char* end;
   int attrs_nr;
-  char* attrs[MAX_ATTR_KEY_VALUE_NR + 1];
+  int attrs_capacity;
+  char** attrs;
 
   char* buffer;
   int buffer_used;
@@ -60,6 +61,8 @@ XmlParser* xml_parser_create(void) {
 
   parser->trim_text = TRUE;
   str_init(&(parser->text), 100);
+  parser->attrs = (char**)TKMEM_REALLOCT(char*, parser->attrs, MAX_ATTR_KEY_VALUE_NR + 1);
+  parser->attrs_capacity = MAX_ATTR_KEY_VALUE_NR;
 
   return parser;
 }
@@ -237,8 +240,11 @@ static void xml_parser_parse_attrs(XmlParser* parser, char end_char) {
   const char* start = parser->read_ptr;
 
   parser->attrs_nr = 0;
-  for (; *parser->read_ptr != '\0' && parser->attrs_nr < MAX_ATTR_KEY_VALUE_NR;
-       parser->read_ptr++) {
+  for (; *parser->read_ptr != '\0'; parser->read_ptr++) {
+    if (parser->attrs_capacity <= parser->attrs_nr) {
+      parser->attrs = (char**)TKMEM_REALLOCT(char*, parser->attrs, (parser->attrs_capacity << 1) + 1);
+      parser->attrs_capacity = parser->attrs_capacity << 1;
+    }
     char c = *parser->read_ptr;
 
     switch (state) {
@@ -511,6 +517,7 @@ void xml_parser_destroy(XmlParser* parser) {
   if (parser != NULL) {
     str_reset(&(parser->text));
     TKMEM_FREE(parser->buffer);
+    TKMEM_FREE(parser->attrs);
     TKMEM_FREE(parser);
   }
 
