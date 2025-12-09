@@ -595,7 +595,7 @@ tk_object_t* conf_json_load(const char* url, bool_t create_if_not_exist) {
 tk_object_t* conf_json_load_ex(const char* url, bool_t create_if_not_exist,
                                bool_t use_extend_type) {
   return conf_obj_create_ex(conf_doc_save_json_writer, conf_doc_load_json_reader, url,
-                            create_if_not_exist, TRUE);
+                            create_if_not_exist, use_extend_type);
 }
 
 ret_t conf_json_save_as(tk_object_t* obj, const char* url) {
