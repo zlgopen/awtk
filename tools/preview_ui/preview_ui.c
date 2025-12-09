@@ -34,6 +34,10 @@
 
 #define MAX_ARGV 14
 
+#ifndef tk_isalpha
+#define tk_isalpha(c) ((c >= 'a' && c <= 'z') || (c >= 'A' || c <= 'Z'))
+#endif
+
 #ifndef APP_RES_ROOT_DEFAULT_VALUE
 #define APP_RES_ROOT_DEFAULT_VALUE NULL
 #endif /*APP_RES_ROOT_DEFAULT_VALUE*/
@@ -50,6 +54,10 @@ static const char* s_log_level = NULL;
 static const char* s_fps = NULL;
 static bool_t s_enable_std_font = FALSE;
 static locale_info_t* s_old_locale_info = NULL;
+const char window_tag[][TK_NAME_LEN] = {WIDGET_TYPE_NORMAL_WINDOW, WIDGET_TYPE_OVERLAY, WIDGET_TYPE_TOOL_BAR,
+                                        WIDGET_TYPE_DIALOG, WIDGET_TYPE_POPUP, WIDGET_TYPE_SYSTEM_BAR,
+                                        WIDGET_TYPE_SYSTEM_BAR_BOTTOM, WIDGET_TYPE_SPRITE, WIDGET_TYPE_KEYBOARD};
+
 
 #undef APP_RES_ROOT  // 以便可以通过命令行参数指定res目录
 
@@ -296,8 +304,71 @@ static ret_t application_on_exit(void) {
   return RET_OK;
 }
 
+static ret_t find_first_tag(str_t* s, char* tag) {
+  int i = 0;
+  int start = 0;
+  enum _State {
+    STAT_START_TAG,
+    STAT_NONE,
+  } state = STAT_NONE;
+  return_value_if_fail(s != NULL && s->size != 0, RET_BAD_PARAMS);
+
+  for (i = 0; i < s->size; i++) {
+    switch (state) {
+      case STAT_START_TAG: {
+        if (!(tk_isalpha(s->str[i]) || s->str[i] == '_')) {
+          state = STAT_NONE;
+        }
+        if (s->str[i] == ' ') {
+          state = STAT_NONE;
+          tk_strncpy(tag, s->str + start, i - start);
+          return RET_OK;
+        }
+        break;
+      }
+      case STAT_NONE: {
+        if (s->str[i] == '<') {
+          start = i + 1;
+          state = STAT_START_TAG;
+        }
+        break;
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
+// 检测当前xml是否为窗口
+static ret_t confirm_file_data_window(str_t* file_data) {
+  str_t temp;
+  str_init(&temp, 0);
+  bool_t with_window = FALSE;
+  char first_tag[TK_NAME_LEN + 1] = {0};
+  return_value_if_fail(file_data != NULL, RET_FAIL);
+
+  find_first_tag(file_data, first_tag);
+  for (int i = 0; i < ARRAY_SIZE(window_tag); i++) {
+    if (tk_str_eq(first_tag, window_tag[i])) {
+      with_window = TRUE;
+      break;
+    }
+  }
+
+  if (!with_window) {
+    str_set(&temp, "<window>");
+    str_append(&temp, file_data->str);
+    str_append(&temp, "</window>");
+    str_set(file_data, temp.str);
+  }
+  str_reset(&temp);
+
+  return RET_OK;
+}
+
 static widget_t* preview_ui(const char* filename) {
   str_t s;
+  str_t file_data;
   uint32_t size = 0;
   widget_t* root = NULL;
   char name[TK_NAME_LEN + 1];
@@ -307,6 +378,7 @@ static widget_t* preview_ui(const char* filename) {
   ui_loader_t* loader = is_bin ? default_ui_loader() : xml_ui_loader();
 
   str_init(&s, 0);
+  str_init(&file_data, 0);
   if (is_bin) {
     content = (uint8_t*)file_read(filename, &size);
   } else {
@@ -314,12 +386,13 @@ static widget_t* preview_ui(const char* filename) {
     content = (uint8_t*)s.str;
     size = s.size;
   }
-
+  str_set(&file_data, (const char*)content);
+  confirm_file_data_window(&file_data);
   filename_to_name(filename, name, TK_NAME_LEN);
-  builder = ui_builder_default_create(name);
+  builder = ui_builder_default_create(filename);
   printf("preview %s\n", filename);
-  return_value_if_fail(content != NULL, NULL);
-  ui_loader_load(loader, content, size, builder);
+  return_value_if_fail(file_data.size != 0, NULL);
+  ui_loader_load(loader, (uint8_t*)file_data.str, size, builder);
 
   if (builder->root == NULL) {
     builder->root = label_create(NULL, 10, 10, 100, 30);
@@ -340,6 +413,7 @@ static widget_t* preview_ui(const char* filename) {
     str_reset(&s);
   }
 
+  str_reset(&file_data);
   root = builder->root;
   ui_builder_destroy(builder);
 
