@@ -389,8 +389,6 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
   char subfilename[MAX_PATH] = {0};
   char absfilename[MAX_PATH] = {0};
   char bname_normalize[MAX_PATH] = {0};
-  char filename_with_ext[MAX_PATH] = {0};
-  char filename_without_ext[MAX_PATH] = {0};
   XmlParser* parser = NULL;
   const asset_info_t* ui = NULL;
   ui_builder_t* builder = b->ui_builder;
@@ -412,17 +410,11 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
     path_normalize(builder->name, bname_normalize, MAX_PATH);
 
     if (filename != NULL) {
-      memcpy(filename_with_ext, filename, strlen(filename));
-      // 检测参数合法性
-      if (!tk_str_end_with(filename, ".xml")) {
-        tk_str_append(filename_with_ext, MAX_PATH, ".xml");
-      }
-
       // 替换路径名
       if (b->is_include) {
-        path_replace_basename(subfilename, MAX_PATH, b->include_name[b->include_count - 1], filename_with_ext);
+        path_replace_basename(subfilename, MAX_PATH, b->include_name[b->include_count - 1], filename);
       } else {
-        path_replace_basename(subfilename, MAX_PATH, bname_normalize, filename_with_ext);
+        path_replace_basename(subfilename, MAX_PATH, bname_normalize, filename);
       }
       path_abs_normalize(subfilename, absfilename, MAX_PATH);
       
