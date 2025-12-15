@@ -1611,7 +1611,7 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t te
         r_icon->w = img_w_r;
         r_icon->h = img_h_r;
         r_icon->x = ir->x + ir->w - img_w_r;
-        r_icon->y = icon_at == ICON_AT_RIGHT_TOP ? 0 : (ir->h - img_h_r);
+        r_icon->y = icon_at == ICON_AT_RIGHT_TOP ? ir->y : (ir->y + ir->h - img_h_r);
         r_text->w = ir->w - img_w_r - spacer;
       }
       break;
@@ -1639,7 +1639,7 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t te
         r_icon->w = img_w_r;
         r_icon->h = img_h_r;
         r_icon->x = ir->x;
-        r_icon->y = icon_at == ICON_AT_LEFT_TOP ? 0 : (ir->h - img_h_r);
+        r_icon->y = icon_at == ICON_AT_LEFT_TOP ? ir->y : (ir->y + ir->h - img_h_r);
         r_text->w = ir->w - img_w_r - spacer;
         r_text->x = ir->x + img_w_r + spacer;
       }
