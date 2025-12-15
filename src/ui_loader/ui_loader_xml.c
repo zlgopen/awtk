@@ -54,6 +54,8 @@ typedef struct _xml_builder_t {
   props_state_t properties_state;
   const char** include_attrs;
   const char*** include_attrs_list;
+  bool_t** include_attrs_uses_list;
+  str_t** widget_name_list;
   char property_name[TK_NAME_LEN * 2 + 2];
 } xml_builder_t;
 
@@ -211,10 +213,13 @@ static void xml_loader_on_start_widget(XmlBuilder* thiz, const char* tag, const 
     }
     if (b->is_include) {
       if (tk_str_eq(key, "name")) {
-        if (b->widget_name.size > 0) {
-          str_append(&(b->widget_name), ".");
+        for (int32_t i = 0; i < b->include_count; i++) {
+          str_t* widget_name = b->widget_name_list[i];
+          if (widget_name->size > 0) {
+            str_append(widget_name, ".");
+          }
+          str_append(widget_name, value);
         }
-        str_append(&(b->widget_name), value);
         b->is_set_name = TRUE;
       }
     }
@@ -259,16 +264,24 @@ static void xml_loader_on_prop_end(XmlBuilder* thiz) {
   const char* widget_name = NULL;
   const char* widget_prop = NULL;
   const char** include_attrs = NULL;
+  str_t* widget_name_str = NULL;
+  bool_t* include_attrs_used = NULL;
   return_if_fail(b->format_error == FALSE);
 
   if (b->is_include && b->is_on_start) {
-    if (!b->is_set_name) {
-      str_append(&(b->widget_name), ".");
-    }
-    for (k = 0; k < b->include_count; k++) {
-      include_attrs = b->include_attrs_list[k];
+    for (k = b->include_count - 1; k >= 0; k--) {
       i = 0;
+      include_attrs = b->include_attrs_list[k];
+      widget_name_str = b->widget_name_list[k];
+      include_attrs_used = b->include_attrs_uses_list[k];
+      if (!b->is_set_name) {
+        str_append(widget_name_str, ".");
+      }
       while (include_attrs[i] != NULL) {
+        if (include_attrs_used[i]) {
+          i += 2;
+          continue;
+        }
         const char* key = include_attrs[i];
         const char* value = include_attrs[i + 1];
         if (tk_str_eq(key, "filename")) {
@@ -277,8 +290,9 @@ static void xml_loader_on_prop_end(XmlBuilder* thiz) {
         }
         tokenizer_init(&t, key, tk_strlen(key), "-");
         widget_name = tokenizer_next(&t);
-        if (tk_str_eq(widget_name, b->widget_name.str)) {
+        if (tk_str_eq(widget_name, widget_name_str->str)) {
           widget_prop = tokenizer_next(&t);
+          include_attrs_used[i] = TRUE;
           ui_builder_on_widget_prop(b->ui_builder, widget_prop, value);
         }
         tokenizer_deinit(&t);
@@ -332,12 +346,15 @@ static void xml_loader_on_end(XmlBuilder* thiz, const char* tag) {
     xml_loader_on_prop_end(thiz);
 
     if (b->is_include) {
-      widget_name_start = tk_strrstr(b->widget_name.str, ".");
-      if (widget_name_start == NULL) {
-        widget_name_start = b->widget_name.str;
+      for (int32_t i = b->include_count - 1; i >= 0; i--) {
+        str_t* widget_name = b->widget_name_list[i];
+        widget_name_start = tk_strrstr(widget_name->str, ".");
+        if (widget_name_start == NULL) {
+          widget_name_start = widget_name->str;
+        }
+        offset = widget_name_start - widget_name->str;
+        str_remove(widget_name, offset, widget_name->size - offset);
       }
-      offset = widget_name_start - b->widget_name.str;
-      str_remove(&(b->widget_name), offset, b->widget_name.size - offset);
     }
 
     ui_builder_on_widget_end(b->ui_builder);
@@ -356,10 +373,13 @@ static void xml_loader_on_text(XmlBuilder* thiz, const char* text, size_t length
     str_set_with_len(&(b->str), text, length);
     if (b->is_include) {
       if (tk_str_eq(b->property_name, "name")) {
-        if (b->widget_name.size > 0) {
-          str_append(&(b->widget_name), ".");
+        for (int32_t i = 0; i < b->include_count; i++) {
+          str_t* widget_name = b->widget_name_list[i];
+          if (widget_name->size > 0) {
+            str_append(widget_name, ".");
+          }
+          str_append(widget_name, b->str.str);
         }
-        str_append(&(b->widget_name), b->str.str);
         b->is_set_name = TRUE;
       }
     }
@@ -382,21 +402,25 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
   int32_t i = 0;
   uint32_t size = 0;
   str_t xml_data;
+  int32_t pairs = 0;
   char* data = NULL;
+  XmlParser* parser = NULL;
+  const char* res_root = NULL;
   const char* filename = NULL;
+  const char* theme_name = NULL;
   bool_t include_name_loop = FALSE;
-  char extname[MAX_PATH] = {0};
+  bool_t* include_attrs_used = NULL;
   char subfilename[MAX_PATH] = {0};
   char absfilename[MAX_PATH] = {0};
+  char b_name_build[MAX_PATH] = {0};
   char bname_normalize[MAX_PATH] = {0};
-  XmlParser* parser = NULL;
-  const asset_info_t* ui = NULL;
   ui_builder_t* builder = b->ui_builder;
   assets_manager_t* am = assets_manager();
-  str_init(&xml_data, 100);
   return_if_fail(b->format_error == FALSE);
 
   if (tk_str_eq(tag, "include")) {
+    str_init(&xml_data, 100);
+
     while (attrs[i] != NULL) {
       const char* key = attrs[i];
       const char* value = attrs[i + 1];
@@ -414,6 +438,16 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
       if (b->is_include) {
         path_replace_basename(subfilename, MAX_PATH, b->include_name[b->include_count - 1], filename);
       } else {
+        if (!path_is_abs(bname_normalize)) {
+          if (am!= NULL) {
+            res_root = assets_manager_get_res_root(am);
+            theme_name = assets_manager_get_theme_name(am);
+            if (res_root != NULL) {
+              path_build(b_name_build, MAX_PATH, res_root, theme_name, "ui", builder->name, NULL);
+              path_normalize(b_name_build, bname_normalize, MAX_PATH);
+            }
+          }
+        }
         path_replace_basename(subfilename, MAX_PATH, bname_normalize, filename);
       }
       path_abs_normalize(subfilename, absfilename, MAX_PATH);
@@ -434,6 +468,7 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
         TKMEM_FREE(data);
       } else {
         if (am != NULL) {
+          str_reset(&xml_data);
           return;
         } else {
           if (b->include_count > 0) {
@@ -449,22 +484,34 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
         xml_builder_t b_include;
         parser = xml_parser_create();
         xml_parser_set_builder(parser, builder_init(&b_include, b->ui_builder));
+        while (attrs[pairs] != NULL) {
+          pairs += 2;
+        }
+        include_attrs_used = (bool_t*)TKMEM_ZALLOCN(bool_t, pairs);
+        b_include.include_name = (const char**)TKMEM_ZALLOCN(char*, b->include_count + 1);
+        b_include.include_attrs_list = (const char***)TKMEM_ZALLOCN(char**, b->include_count + 1);
+        b_include.widget_name_list = (str_t**)TKMEM_ZALLOCN(str_t*, b->include_count + 1);
+        b_include.include_attrs_uses_list = (bool_t**)TKMEM_ZALLOCN(bool_t*, b->include_count + 1);
+
         b_include.is_include = TRUE;
         b_include.format_error = FALSE;
         b_include.include_attrs = attrs;
         b_include.properties_state = b->properties_state;
         b_include.is_set_name = b->is_set_name;
         b_include.is_on_start = b->is_on_start;
-        str_set(&(b_include.widget_name), b->widget_name.str);
-        b_include.include_name = (const char**)TKMEM_ZALLOCN(char*, b->include_count + 1);
-        b_include.include_attrs_list = (const char***)TKMEM_ZALLOCN(char**, b->include_count + 1);
+
         for (i = 0; i < b->include_count; i++) {
           b_include.include_name[i] = b->include_name[i];
           b_include.include_attrs_list[i] = b->include_attrs_list[i];
+          b_include.widget_name_list[i] = b->widget_name_list[i];
+          b_include.include_attrs_uses_list[i] = b->include_attrs_uses_list[i];
         }
         b_include.include_name[b->include_count] = absfilename;
         b_include.include_attrs_list[b->include_count] = attrs;
+        b_include.widget_name_list[b->include_count] = &(b_include.widget_name);
+        b_include.include_attrs_uses_list[b->include_count] = include_attrs_used;
         b_include.include_count = b->include_count + 1;
+
         xml_parser_parse(parser, xml_data.str, xml_data.size);
         // 判断被包含的路径是否为非组件文件
         if (am == NULL && b_include.format_error) {
@@ -477,20 +524,20 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
         }
         b->properties_state = b_include.properties_state;
         b_include.is_include = FALSE;
+
         xml_parser_destroy(parser);
         str_reset(&(b_include.str));
         str_reset(&(b_include.widget_name));
+        TKMEM_FREE(include_attrs_used);
+        TKMEM_FREE(b_include.widget_name_list);
         TKMEM_FREE(b_include.include_name);
         TKMEM_FREE(b_include.include_attrs_list);
+        TKMEM_FREE(b_include.include_attrs_uses_list);
       } else {
         log_warn("!!!File is empty\n");
       }
-
-      if (am != NULL && ui != NULL) {
-        assets_manager_unref(am, ui);
-      }
-      str_reset(&xml_data);
     }
+    str_reset(&xml_data);
   }
 
   return;

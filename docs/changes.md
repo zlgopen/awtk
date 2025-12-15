@@ -7,6 +7,7 @@
     - 修复第一次点击，打开popup后，第二次点击关闭popup，第三次再点击popup出不来
     - 增加功能：enter键开启/关闭popup
     - 完善代码：edit_ex_suggest_words_popup_on_close函数和edit_ex_suggest_words_popup_confirm函数
+  * 完善 ui_loader_xml 中 对<?include?> 标签的读取功能(感谢泽武提供补丁)
 
 2025/12/13
   * 完善 demoui (感谢兆坤提供补丁)
