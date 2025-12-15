@@ -412,12 +412,21 @@ typedef enum _ret_t {
     }                    \
   }
 
+#define break_if_fail_ex(p, sentence) \
+  {                                   \
+    if (!(p)) {                       \
+      sentence;                       \
+      break;                          \
+    }                                 \
+  }
+
 #define return_value_if_fail(p, value) \
   do {                                 \
     if (!(p)) {                        \
       return (value);                  \
     }                                  \
   } while (0)
+
 #define return_ret_if_fail(p)                    \
   do {                                           \
     ret_t TK_CONCAT(__ret_, __LINE__) = p;       \
@@ -452,6 +461,15 @@ typedef enum _ret_t {
     }                                                                        \
   }
 
+#define break_if_fail_ex(p, sentence)                                        \
+  {                                                                          \
+    if (!(p)) {                                                              \
+      log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
+      sentence;                                                              \
+      break;                                                                 \
+    }                                                                        \
+  }
+
 #define return_if_fail(p)                                                    \
   do {                                                                       \
     if (!(p)) {                                                              \
@@ -467,6 +485,7 @@ typedef enum _ret_t {
       return (value);                                                        \
     }                                                                        \
   } while (0)
+
 #define return_ret_if_fail(p)                                        \
   do {                                                               \
     ret_t TK_CONCAT(__ret_, __LINE__) = p;                           \

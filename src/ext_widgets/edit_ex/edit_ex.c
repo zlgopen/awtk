@@ -165,6 +165,12 @@ static ret_t edit_ex_on_event(widget_t* widget, event_t* e) {
     case EVT_KEY_UP: {
       edit_ex_suggest_words_enable_focus(widget, TRUE);
     } break;
+    case EVT_POINTER_UP: {
+      pointer_event_t* evt = pointer_event_cast(e);
+      if (evt->pressed && widget->focused) {
+        edit_ex_update_suggest_words_popup(widget);
+      }
+    } break;
     case EVT_FOCUS: {
       ret = widget_vtable_on_event_by_parent(widget, e, WIDGET_VTABLE_GET_VTABLE(edit_ex));
       edit_ex_update_suggest_words_popup(widget);

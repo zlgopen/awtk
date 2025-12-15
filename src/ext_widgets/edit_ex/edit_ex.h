@@ -62,6 +62,7 @@ typedef struct _edit_ex_t {
   tk_object_t* suggest_words_ui_props;
   widget_t* suggest_words_popup;
   darray_t* suggest_words_model_items;
+  bool_t key_downing : 1;
 } edit_ex_t;
 
 /**
