@@ -4,6 +4,9 @@
   * 修复点击overlay窗口后导致其窗口变成后台窗口的问题(感谢智明提供补丁)
   * 修复 icon 在部分模式下绘制位置错误的问题(感谢泽武提供补丁)
   * 完善 edit_ex (感谢兆坤提供补丁)
+    - 修复第一次点击，打开popup后，第二次点击关闭popup，第三次再点击popup出不来
+    - 增加功能：enter键开启/关闭popup
+    - 完善代码：edit_ex_suggest_words_popup_on_close函数和edit_ex_suggest_words_popup_confirm函数
 
 2025/12/13
   * 完善 demoui (感谢兆坤提供补丁)
