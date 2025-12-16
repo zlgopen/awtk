@@ -81,12 +81,12 @@ static ret_t edit_ex_suggest_words_popup_on_key_down_before_children(void* ctx, 
 }
 
 inline static bool_t edit_ex_widget_set_prop_is_support(const char* name) {
-  const char* not_support_props[] = {
+  static const char* s_not_support_props[] = {
       WIDGET_PROP_NAME,
   };
   uint32_t i = 0;
-  for (i = 0; i < ARRAY_SIZE(not_support_props); i++) {
-    if (tk_str_eq(name, not_support_props[i])) {
+  for (i = 0; i < ARRAY_SIZE(s_not_support_props); i++) {
+    if (tk_str_eq(name, s_not_support_props[i])) {
       return FALSE;
     }
   }

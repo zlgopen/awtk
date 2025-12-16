@@ -202,12 +202,12 @@ static ret_t edit_ex_on_destroy(widget_t* widget) {
 }
 
 static ret_t edit_ex_init(widget_t* widget) {
-  uint32_t i = 0;
-  const char* suggest_words_ui_prop_names[] = {
+  static const char* s_suggest_words_ui_prop_names[] = {
       EDIT_EX_SUGGEST_WORDS_UI_NAME_POPUP,       EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW,
       EDIT_EX_SUGGEST_WORDS_UI_NAME_VBAR,        EDIT_EX_SUGGEST_WORDS_UI_NAME_HBAR,
       EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW,
   };
+  uint32_t i = 0;
   edit_ex_t* edit_ex = EDIT_EX(widget);
   ret_t ret = widget_vtable_init_by_parent(widget, WIDGET_VTABLE_GET_VTABLE(edit_ex));
   return_value_if_fail(ret == RET_OK || ret == RET_NOT_IMPL, ret);
@@ -216,12 +216,12 @@ static ret_t edit_ex_init(widget_t* widget) {
   ENSURE(edit_ex->suggest_words_ui_props != NULL);
   return_value_if_fail(edit_ex->suggest_words_ui_props != NULL, RET_OOM);
 
-  for (i = 0; i < ARRAY_SIZE(suggest_words_ui_prop_names); i++) {
+  for (i = 0; i < ARRAY_SIZE(s_suggest_words_ui_prop_names); i++) {
     tk_object_t* ui_props = object_default_create_ex(FALSE);
     ENSURE(ui_props != NULL);
     return_value_if_fail(ui_props != NULL, RET_OOM);
 
-    tk_object_set_prop_object(edit_ex->suggest_words_ui_props, suggest_words_ui_prop_names[i],
+    tk_object_set_prop_object(edit_ex->suggest_words_ui_props, s_suggest_words_ui_prop_names[i],
                               ui_props);
     tk_object_unref(ui_props);
   }
