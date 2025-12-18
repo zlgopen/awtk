@@ -202,6 +202,7 @@ static uint64_t date_time_to_time_impl(date_time_t* dt) {
 static ret_t date_time_from_time_impl(date_time_t* dt, uint64_t timeval) {
   time_t tm = timeval;
   struct tm* t = gmtime(&tm);
+  return_value_if_fail(t != NULL, RET_BAD_PARAMS);
   return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
 
   memset(dt, 0x00, sizeof(date_time_t));
