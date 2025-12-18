@@ -67,6 +67,7 @@ static ret_t edit_ex_suggest_words_popup_on_key_down_before_children(void* ctx, 
       /* 移动光标 */ (key_code_is_left(evt->key) || key_code_is_right(evt->key))) {
     /* 转抛给 edit_ex */
     key_event_t clone_evt = *evt;
+    clone_evt.e.target = NULL;
 
     clone_evt.e.type = EVT_KEY_DOWN;
     widget_dispatch(WIDGET(edit_ex), &clone_evt.e);
@@ -75,6 +76,22 @@ static ret_t edit_ex_suggest_words_popup_on_key_down_before_children(void* ctx, 
     widget_dispatch(WIDGET(edit_ex), &clone_evt.e);
 
     return RET_STOP;
+  }
+
+  return RET_OK;
+}
+
+static ret_t edit_ex_suggest_words_popup_on_pointer_event(void* ctx, event_t* e) {
+  edit_ex_t* edit_ex = EDIT_EX(ctx);
+  pointer_event_t* evt = pointer_event_cast(e);
+  return_value_if_fail(edit_ex != NULL && evt != NULL, RET_BAD_PARAMS);
+
+  if (widget_is_point_in(WIDGET(edit_ex), evt->x, evt->y, FALSE)) {
+    /* 转抛给 edit_ex */
+    pointer_event_t clone_evt = *evt;
+    clone_evt.e.target = NULL;
+
+    return widget_dispatch(WIDGET(edit_ex), &clone_evt.e);
   }
 
   return RET_OK;
@@ -658,6 +675,22 @@ static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
   }
 
   if (edit_ex->suggest_words_popup == NULL) {
+    static const event_type_t s_pointer_event_types[] = {
+        EVT_POINTER_DOWN,
+        EVT_POINTER_DOWN_BEFORE_CHILDREN,
+        EVT_POINTER_MOVE,
+        EVT_POINTER_MOVE_BEFORE_CHILDREN,
+        EVT_POINTER_UP,
+        EVT_POINTER_UP_BEFORE_CHILDREN,
+        EVT_POINTER_DOWN_ABORT,
+        // EVT_CONTEXT_MENU,  //todo: 目前右键菜单弹出后会关掉建议词弹框，暂时不需要
+        EVT_POINTER_ENTER,
+        EVT_POINTER_LEAVE,
+        EVT_LONG_PRESS,
+        EVT_CLICK,
+        EVT_DOUBLE_CLICK,
+    };
+    uint32_t i = 0;
     edit_ex->suggest_words_popup = edit_ex_create_suggest_words_popup(widget);
     return_value_if_fail(edit_ex->suggest_words_popup != NULL, RET_FAIL);
 
@@ -671,6 +704,11 @@ static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
 
     widget_on(edit_ex->suggest_words_popup, EVT_KEY_DOWN_BEFORE_CHILDREN,
               edit_ex_suggest_words_popup_on_key_down_before_children, widget);
+
+    for (i = 0; i < ARRAY_SIZE(s_pointer_event_types); i++) {
+      widget_on(edit_ex->suggest_words_popup, s_pointer_event_types[i],
+                edit_ex_suggest_words_popup_on_pointer_event, widget);
+    }
   }
 
   edit_ex_layout_suggest_words_popup(widget);
