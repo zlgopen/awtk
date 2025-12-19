@@ -496,6 +496,11 @@ static ret_t serial_wait_for_data_impl(serial_handle_t handle, uint32_t timeout_
   COMSTAT cstate = {0};
   ret_t ret = RET_FAIL;
   serial_dev_t dev = serial_handle_get_dev(handle);
+
+  // Fix for some USB-to-Serial device WaitCommEvent return ERROR_INVALID_PARAMETER(87)
+  // Make sure to call SetCommMask before every WaitCommEvent to correct this problem.
+  SetCommMask(dev, EV_RXCHAR);
+
   if (!WaitCommEvent(dev, &mask, &handle->read_overlapped)) {
     err = GetLastError();
     if (err == ERROR_IO_PENDING) {

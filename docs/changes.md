@@ -1,4 +1,7 @@
 # 最新动态
+2025/12/20
+  * 修正了Win32中部分USB转串口设备调用WaitCommEvent返回ERROR_INVALID_PARAMETER的问题，每次WaitCommEvent前要重置CommMask(感谢陈谭提供补丁)
+
 2025/12/18
   * 完善 date_time_to_time_impl (感谢兆坤发现问题)
 
