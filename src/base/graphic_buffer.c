@@ -62,7 +62,7 @@ ret_t graphic_buffer_attach(graphic_buffer_t* buffer, void* data, uint32_t w, ui
 }
 
 ret_t graphic_buffer_set_physical_width(graphic_buffer_t* buffer, uint32_t width) {
-  return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->get_width != NULL, 0);
+  return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->set_width != NULL, 0);
 
   return buffer->vt->set_width(buffer, width);
 }
