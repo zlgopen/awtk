@@ -1,6 +1,7 @@
 # 最新动态
 2025/12/23
   * 修复graphic_buffer设置逻辑高的参数合法性验证错误(感谢泽武提供补丁)
+  * 添加行号、偏移位置的转换接口，以及修改控件大小变化时保持当前显示的第一行不变(感谢朝泽提供补丁)
 
 2025/12/20
   * 修正了Win32中部分USB转串口设备调用WaitCommEvent返回ERROR_INVALID_PARAMETER的问题，每次WaitCommEvent前要重置CommMask(感谢陈谭提供补丁)

@@ -1472,6 +1472,146 @@ ret_t text_edit_set_max_chars(text_edit_t* text_edit, uint32_t max_chars) {
   return RET_OK;
 }
 
+ret_t text_edit_get_offset_at_line(text_edit_t* text_edit, uint32_t line_index, uint32_t* start,
+                                   uint32_t* end) {
+  uint32_t i = 0;
+  uint32_t k = 0;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL && start != NULL && end != NULL, RET_BAD_PARAMS);
+
+  for (i = 0; i < impl->rows->size; i++) {
+    uint32_t j = 0;
+    row_info_t* row = impl->rows->row + i;
+    assert(row != NULL);
+
+    for (j = 0; j < row->line_num; j++, k++) {
+      line_info_t* line = (line_info_t*)darray_get(&row->info, j);
+      assert(line != NULL);
+
+      if (k == line_index) {
+        *start = line->offset;
+        *end = line->offset + line->length;
+        return RET_OK;
+      }
+    }
+  }
+
+  return RET_NOT_FOUND;
+}
+
+ret_t text_edit_get_offset_at_row(text_edit_t* text_edit, uint32_t row_index, uint32_t* start,
+                                  uint32_t* end) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL && start != NULL && end != NULL, RET_BAD_PARAMS);
+
+  if (row_index < impl->rows->size) {
+    line_info_t* line = NULL;
+    row_info_t* row = impl->rows->row + row_index;
+    assert(row != NULL);
+
+    line = (line_info_t*)darray_get(&row->info, 0);
+    assert(line != NULL);
+
+    *start = line->offset;
+    *end = line->offset + row->length;
+    return RET_OK;
+  }
+
+  return RET_NOT_FOUND;
+}
+
+int32_t text_edit_get_line_at(text_edit_t* text_edit, uint32_t offset) {
+  uint32_t i = 0;
+  uint32_t k = 0;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, -1);
+
+  for (i = 0; i < impl->rows->size; i++) {
+    uint32_t j = 0;
+    row_info_t* row = impl->rows->row + i;
+    assert(row != NULL);
+
+    for (j = 0; j < row->line_num; j++, k++) {
+      line_info_t* line = (line_info_t*)darray_get(&row->info, j);
+      assert(line != NULL);
+
+      if (offset < line->offset + line->length) {
+        return k;
+      }
+    }
+  }
+
+  return -1;
+}
+
+int32_t text_edit_get_row_at(text_edit_t* text_edit, uint32_t offset) {
+  uint32_t i = 0;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, -1);
+
+  for (i = 0; i < impl->rows->size; i++) {
+    uint32_t j = 0;
+    row_info_t* row = impl->rows->row + i;
+    assert(row != NULL);
+
+    for (j = 0; j < row->line_num; j++) {
+      line_info_t* line = (line_info_t*)darray_get(&row->info, j);
+      assert(line != NULL);
+
+      if (offset < line->offset + line->length) {
+        return i;
+      }
+    }
+  }
+
+  return -1;
+}
+
+int32_t text_edit_get_row_of_line(text_edit_t* text_edit, uint32_t line) {
+  uint32_t i = 0;
+  uint32_t k = 0;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, -1);
+
+  for (i = 0; i < impl->rows->size; i++) {
+    row_info_t* row = impl->rows->row + i;
+    assert(row != NULL);
+
+    if (line >= k && line < k + row->line_num) {
+      return i;
+    }
+
+    k += row->line_num;
+  }
+
+  return -1;
+}
+
+ret_t text_edit_get_line_of_row(text_edit_t* text_edit, uint32_t row_index, uint32_t* start,
+                                uint32_t* end) {
+  uint32_t i = 0;
+  uint32_t k = 0;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL && start != NULL && end != NULL, RET_BAD_PARAMS);
+
+  if (row_index < impl->rows->size) {
+    for (i = 0; i < impl->rows->size; i++) {
+      row_info_t* row = impl->rows->row + i;
+      assert(row != NULL);
+
+      if (i == row_index) {
+        *start = k;
+        *end = k + row->line_num;
+        return RET_OK;
+      }
+
+      k += row->line_num;
+    }
+  }
+
+  return RET_NOT_FOUND;
+}
+
 uint32_t text_edit_get_height(text_edit_t* text_edit, uint32_t offset) {
   uint32_t i = 0;
   uint32_t k = 0;
@@ -1481,8 +1621,12 @@ uint32_t text_edit_get_height(text_edit_t* text_edit, uint32_t offset) {
   for (i = 0; i < impl->rows->size; i++) {
     uint32_t j = 0;
     row_info_t* row = impl->rows->row + i;
+    assert(row != NULL);
+
     for (j = 0; j < row->line_num; j++, k++) {
       line_info_t* line = (line_info_t*)darray_get(&row->info, j);
+      assert(line != NULL);
+
       if (offset < line->offset + line->length) {
         return impl->line_height * k;
       }

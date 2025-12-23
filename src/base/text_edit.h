@@ -309,6 +309,75 @@ ret_t text_edit_set_max_rows(text_edit_t* text_edit, uint32_t max_rows);
 ret_t text_edit_set_max_chars(text_edit_t* text_edit, uint32_t max_chars);
 
 /**
+ * @method text_edit_get_offset_at_line
+ * 获取指定视觉行对应的偏移位置。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {uint32_t} line 行号。
+ * @param {uint32_t*} start 起始偏移。
+ * @param {uint32_t*} end 结束偏移。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_get_offset_at_line(text_edit_t* text_edit, uint32_t line, uint32_t* start,
+                                   uint32_t* end);
+
+/**
+ * @method text_edit_get_offset_at_row
+ * 获取指定物理行对应的偏移位置。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {uint32_t} row 行号。
+ * @param {uint32_t*} start 起始偏移。
+ * @param {uint32_t*} end 结束偏移。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_get_offset_at_row(text_edit_t* text_edit, uint32_t row, uint32_t* start,
+                                  uint32_t* end);
+
+/**
+ * @method text_edit_get_line_at
+ * 获取指定偏移所在的视觉行号(一行文本可能分多行显示)。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {uint32_t} offset 偏移。
+ *
+ * @return {int32_t} 返回行号，不在范围内则返回-1。
+ */
+int32_t text_edit_get_line_at(text_edit_t* text_edit, uint32_t offset);
+
+/**
+ * @method text_edit_get_row_at
+ * 获取指定偏移所在的物理行号。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {uint32_t} offset 偏移。
+ *
+ * @return {int32_t} 返回行号，不在范围内则返回-1。
+ */
+int32_t text_edit_get_row_at(text_edit_t* text_edit, uint32_t offset);
+
+/**
+ * @method text_edit_get_row_of_line
+ * 获取指定视觉行号所在的物理行号。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {uint32_t} line 视觉行号。
+ *
+ * @return {int32_t} 返回物理行号，不在范围内则返回-1。
+ */
+int32_t text_edit_get_row_of_line(text_edit_t* text_edit, uint32_t line);
+
+/**
+ * @method text_edit_get_line_of_row
+ * 获取指定物理行号所在的视觉行号。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {uint32_t} row 物理行号。
+ * @param {uint32_t*} start 起始视觉行号。
+ * @param {uint32_t*} end 结束视觉行号。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_get_line_of_row(text_edit_t* text_edit, uint32_t row, uint32_t* start,
+                                uint32_t* end);
+
+/**
  * @method text_edit_get_height
  * 获取偏移字符位置高度。
  * @param {text_edit_t*} text_edit text_edit对象。

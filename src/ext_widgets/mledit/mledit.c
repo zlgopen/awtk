@@ -927,7 +927,22 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
+      int32_t saved_offset = -1;
+      int32_t start_line = mledit_get_start_line_index(widget);
+      if (start_line >= 0) {
+        uint32_t start = -1;
+        uint32_t end = -1;
+        if (mledit_get_offset_at_line(widget, start_line, &start, &end) == RET_OK) {
+          saved_offset = start;
+        }
+      }
+
       mledit_reset_text_edit_layout(mledit);
+
+      if (saved_offset >= 0) {
+        mledit_scroll_to_offset(widget, saved_offset);
+      }
+
       widget_invalidate(widget, NULL);
       break;
     }
@@ -1359,4 +1374,60 @@ uint32_t mledit_get_current_row_index(widget_t* widget) {
   return_value_if_fail(text_edit_get_state(mledit->model, &state) == RET_OK, 0);
 
   return state.current_row_index;
+}
+
+int32_t mledit_get_start_line_index(widget_t* widget) {
+  text_edit_state_t state;
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, -1);
+  return_value_if_fail(text_edit_get_state(mledit->model, &state) == RET_OK, -1);
+  return_value_if_fail(state.line_height > 0, -1);
+
+  return state.oy / state.line_height;
+}
+
+int32_t mledit_get_start_row_index(widget_t* widget) {
+  text_edit_state_t state;
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, -1);
+  return_value_if_fail(text_edit_get_state(mledit->model, &state) == RET_OK, -1);
+  return_value_if_fail(state.line_height > 0, -1);
+
+  return text_edit_get_row_of_line(mledit->model, state.oy / state.line_height);
+}
+
+ret_t mledit_get_offset_at_line(widget_t* widget, uint32_t line, uint32_t* start, uint32_t* end) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, RET_BAD_PARAMS);
+  return text_edit_get_offset_at_line(mledit->model, line, start, end);
+}
+
+ret_t mledit_get_offset_at_row(widget_t* widget, uint32_t row, uint32_t* start, uint32_t* end) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, RET_BAD_PARAMS);
+  return text_edit_get_offset_at_row(mledit->model, row, start, end);
+}
+
+int32_t mledit_get_line_at(widget_t* widget, uint32_t offset) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, -1);
+  return text_edit_get_line_at(mledit->model, offset);
+}
+
+int32_t mledit_get_row_at(widget_t* widget, uint32_t offset) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, -1);
+  return text_edit_get_row_at(mledit->model, offset);
+}
+
+int32_t mledit_get_row_of_line(widget_t* widget, uint32_t line) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, -1);
+  return text_edit_get_row_of_line(mledit->model, line);
+}
+
+ret_t mledit_get_line_of_row(widget_t* widget, uint32_t row, uint32_t* start, uint32_t* end) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, RET_BAD_PARAMS);
+  return text_edit_get_line_of_row(mledit->model, row, start, end);
 }

@@ -407,6 +407,95 @@ uint32_t mledit_get_current_line_index(widget_t* widget);
 uint32_t mledit_get_current_row_index(widget_t* widget);
 
 /**
+ * @method mledit_get_start_line_index
+ * 获取当前显示部分的起始视觉行号(一行文本可能分多行显示)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {int32_t} 返回行号。
+ */
+int32_t mledit_get_start_line_index(widget_t* widget);
+
+/**
+ * @method mledit_get_start_row_index
+ * 获取当前显示部分的起始物理行号。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {int32_t} 返回行号。
+ */
+int32_t mledit_get_start_row_index(widget_t* widget);
+
+/**
+ * @method mledit_get_offset_at_line
+ * 获取指定视觉行对应的偏移位置。
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} line 行号。
+ * @param {uint32_t*} start 起始偏移。
+ * @param {uint32_t*} end 结束偏移。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_get_offset_at_line(widget_t* widget, uint32_t line, uint32_t* start, uint32_t* end);
+
+/**
+ * @method mledit_get_offset_at_row
+ * 获取指定物理行对应的偏移位置。
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} line 行号。
+ * @param {uint32_t*} start 起始偏移。
+ * @param {uint32_t*} end 结束偏移。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_get_offset_at_row(widget_t* widget, uint32_t row, uint32_t* start, uint32_t* end);
+
+/**
+ * @method mledit_get_line_at
+ * 获取指定偏移所在的视觉行号(一行文本可能分多行显示)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} offset 偏移。
+ *
+ * @return {int32_t} 返回行号，不在范围内则返回-1。
+ */
+int32_t mledit_get_line_at(widget_t* widget, uint32_t offset);
+
+/**
+ * @method mledit_get_row_at
+ * 获取指定偏移所在的物理行号。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} offset 偏移。
+ *
+ * @return {int32_t} 返回行号，不在范围内则返回-1。
+ */
+int32_t mledit_get_row_at(widget_t* widget, uint32_t offset);
+
+/**
+ * @method mledit_get_row_of_line
+ * 获取指定视觉行号所在的物理行号。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} line 视觉行号。
+ *
+ * @return {int32_t} 返回物理行号，不在范围内则返回-1。
+ */
+int32_t mledit_get_row_of_line(widget_t* widget, uint32_t line);
+
+/**
+ * @method mledit_get_line_of_row
+ * 获取指定物理行号所在的视觉行号。
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} row 物理行号。
+ * @param {uint32_t*} start 起始视觉行号。
+ * @param {uint32_t*} end 结束视觉行号。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_get_line_of_row(widget_t* widget, uint32_t row, uint32_t* start, uint32_t* end);
+
+/**
  * @method mledit_insert_text
  * 插入一段文本。
  * @annotation ["scriptable"]
