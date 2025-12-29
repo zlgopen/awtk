@@ -169,6 +169,9 @@ native_window_t* native_window_create(widget_t* widget) {
   native_window_t* nw = s_shared_win;
   return_value_if_fail(nw != NULL, NULL);
 
+  if (nw != NULL) {
+    tk_object_ref(TK_OBJECT(nw));
+  }
   widget_set_prop_pointer(widget, WIDGET_PROP_NATIVE_WINDOW, nw);
 
   return nw;
