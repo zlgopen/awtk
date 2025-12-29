@@ -255,6 +255,7 @@ class AppHelperBase:
         else :
             self.compile_helper = compile_config.compile_helper()
             self.compile_helper.set_compile_config(COMPILE_CONFIG)
+            self.compile_helper.try_load_default_config()
             self.compile_helper.scons_user_sopt(ARGUMENTS)
         compile_config.set_curr_config(self.compile_helper)
 
