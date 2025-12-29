@@ -311,9 +311,12 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     h = layout_h - 2 * y_margin;
     w = layout_w - 2 * x_margin - (n - 1) * spacing;
 
-    if (!(h > 0 && w > 0)) {
-      ret = RET_SKIP;
-      goto exit;
+    if (w < 0) {
+      w = 0;
+    }
+
+    if (h < 0) {
+      h = 0;
     }
 
     area = rect_init(0, 0, w, h);
@@ -362,9 +365,12 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     w = layout_w - 2 * x_margin;
     h = layout_h - 2 * y_margin - (n - 1) * spacing;
 
-    if (!(w > 0 && h > 0)) {
-      ret = RET_SKIP;
-      goto exit;
+    if (w < 0) {
+      w = 0;
+    }
+
+    if (h < 0) {
+      h = 0;
     }
 
     area = rect_init(0, 0, w, h);
@@ -399,7 +405,7 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
       w = layout_w;
     } else {
       w = layout_w - 2 * x_margin - (cols - 1) * spacing;
-      item_w = w / cols;
+      item_w = w <= 0 ? 0 : (w / cols);
       w = (cols - 1) * spacing + cols * item_w;
       x_margin = (layout_w - w) >> 1;
     }
@@ -409,14 +415,9 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
       h = layout_h;
     } else {
       h = layout_h - 2 * y_margin - (rows - 1) * spacing;
-      item_h = h / rows;
+      item_h = h <= 0 ? 0 : (h / rows);
       h = (rows - 1) * spacing + rows * item_h;
       y_margin = (layout_h - h) >> 1;
-    }
-
-    if (!(item_w > 0 && item_h > 0)) {
-      ret = RET_SKIP;
-      goto exit;
     }
 
     x = x_margin;
@@ -464,7 +465,6 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     log_debug("not supported(rows=%d, cols=%d)\n", rows, cols);
   }
 
-exit:
   darray_deinit(&(children_for_layout));
 
   return ret;
