@@ -72,6 +72,17 @@ static ret_t object_compositor_get_prop(tk_object_t* obj, const char* name, valu
   return tk_object_get_prop(o->obj2, name, v);
 }
 
+static ret_t object_compositor_copy_props(tk_object_t* obj, tk_object_t* src, bool_t overwrite) {
+  object_compositor_t* o = OBJECT_COMPOSITOR(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (tk_object_copy_props(o->obj1, src, overwrite) == RET_OK) {
+    return RET_OK;
+  }
+
+  return tk_object_copy_props(o->obj2, src, overwrite);
+}
+
 static ret_t object_compositor_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, void* ctx) {
   ret_t ret = RET_OK;
   uint32_t i = 0;
@@ -84,6 +95,53 @@ static ret_t object_compositor_foreach_prop(tk_object_t* obj, tk_visit_t on_prop
 
   for (i = 0; i < ARRAY_SIZE(objs); i++) {
     ret = tk_object_foreach_prop(objs[i], on_prop, ctx);
+    TK_FOREACH_VISIT_RESULT_PROCESSING(
+        ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
+  }
+
+  return ret;
+}
+
+static ret_t object_compositor_clear_props(tk_object_t* obj) {
+  object_compositor_t* o = OBJECT_COMPOSITOR(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  tk_object_clear_props(o->obj1);
+  tk_object_clear_props(o->obj2);
+
+  return RET_OK;
+}
+
+static value_t* object_compositor_find_prop(tk_object_t* obj, tk_compare_t cmp, const void* ctx) {
+  value_t* ret = NULL;
+  uint32_t i = 0;
+  tk_object_t* objs[2] = {NULL};
+  object_compositor_t* o = OBJECT_COMPOSITOR(obj);
+  return_value_if_fail(o != NULL, NULL);
+
+  objs[0] = o->obj1;
+  objs[1] = o->obj2;
+
+  for (i = 0; i < ARRAY_SIZE(objs) && (NULL == ret); i++) {
+    ret = tk_object_find_prop(objs[i], cmp, ctx);
+  }
+
+  return ret;
+}
+
+static ret_t object_compositor_find_props(tk_object_t* obj, tk_compare_t cmp, const void* ctx,
+                                          darray_t* matched) {
+  ret_t ret = RET_OK;
+  uint32_t i = 0;
+  tk_object_t* objs[2] = {NULL};
+  object_compositor_t* o = OBJECT_COMPOSITOR(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  objs[0] = o->obj1;
+  objs[1] = o->obj2;
+
+  for (i = 0; i < ARRAY_SIZE(objs); i++) {
+    ret = tk_object_find_props(objs[i], cmp, ctx, matched);
     TK_FOREACH_VISIT_RESULT_PROCESSING(
         ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
   }
@@ -111,6 +169,36 @@ static ret_t object_compositor_exec(tk_object_t* obj, const char* name, const ch
   return tk_object_exec(o->obj2, name, args);
 }
 
+static ret_t object_compositor_exec_ex(tk_object_t* obj, const char* name, const char* args,
+                                       value_t* result) {
+  object_compositor_t* o = OBJECT_COMPOSITOR(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+  if (tk_object_exec_ex(o->obj1, name, args, result) == RET_OK) {
+    return RET_OK;
+  }
+
+  return tk_object_exec_ex(o->obj2, name, args, result);
+}
+
+static tk_object_t* object_compositor_clone(tk_object_t* obj) {
+  tk_object_t* ret = NULL;
+  tk_object_t *clone_obj1 = NULL, *clone_obj2 = NULL;
+  object_compositor_t* o = OBJECT_COMPOSITOR(obj);
+  return_value_if_fail(o != NULL, NULL);
+
+  clone_obj1 = tk_object_clone(o->obj1);
+  goto_error_if_fail(clone_obj1 != NULL);
+
+  clone_obj2 = tk_object_clone(o->obj2);
+  goto_error_if_fail(clone_obj2 != NULL);
+
+  ret = object_compositor_create(clone_obj1, clone_obj2);
+error:
+  TK_OBJECT_UNREF(clone_obj2);
+  TK_OBJECT_UNREF(clone_obj1);
+  return ret;
+}
+
 static const object_vtable_t s_object_compositor_vtable = {
     .type = OBJECT_COMPOSITOR_TYPE,
     .desc = OBJECT_COMPOSITOR_TYPE,
@@ -118,12 +206,19 @@ static const object_vtable_t s_object_compositor_vtable = {
     .is_collection = FALSE,
     .on_destroy = object_compositor_on_destroy,
     .exec = object_compositor_exec,
+    .exec_ex = object_compositor_exec_ex,
     .can_exec = object_compositor_can_exec,
     .compare = tk_object_compare_name_without_nullptr,
     .get_prop = object_compositor_get_prop,
     .set_prop = object_compositor_set_prop,
+    .copy_props = object_compositor_copy_props,
     .remove_prop = object_compositor_remove_prop,
-    .foreach_prop = object_compositor_foreach_prop};
+    .foreach_prop = object_compositor_foreach_prop,
+    .clear_props = object_compositor_clear_props,
+    .find_prop = object_compositor_find_prop,
+    .find_props = object_compositor_find_props,
+    .clone = object_compositor_clone,
+};
 
 static ret_t object_compositor_forward_events(void* ctx, event_t* e) {
   object_compositor_t* o = OBJECT_COMPOSITOR(ctx);
