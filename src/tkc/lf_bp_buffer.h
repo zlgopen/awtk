@@ -105,13 +105,15 @@ typedef struct _tk_lf_bp_buffer_t {
   tk_atomic_t i;
 #endif /*TK_LF_BP_BUFFER_MULTICORE_HOSTED*/
 
-  /** @property {bool_t} write_wrapped
+  /** 
+   * @property {bool_t} write_wrapped
    * @annotation ["readable"]
    * 写环绕标志，仅在生产者中使用。
    */
   bool_t write_wrapped;
 
-  /** @property {bool_t} read_wrapped
+  /** 
+   * @property {bool_t} read_wrapped
    * @annotation ["readable"]
    * 读环绕标志，仅在消费者中使用。
    */
@@ -244,7 +246,7 @@ error:
  * 申请写入缓冲区。
  *
  * @param {tk_lf_bp_buffer_t*} buffer 缓冲区对象。
- * @param {uint64_t} free_required 所需的空闲空间大小，并返回实际申请写入缓冲区的大小。
+ * @param {uint64_t*} free_required 所需的空闲空间大小，并返回实际申请写入缓冲区的大小。
  * @param {bool_t} accept_smaller 是否接受小于所需大小的空间。
  *
  * @return {uint8_t*} 返回写入缓冲区的指针。
