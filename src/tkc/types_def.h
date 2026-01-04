@@ -566,7 +566,7 @@ int __cppcheck__strncmp(const char* s1, const char* s2, size_t n);
 #endif /*WITH_CPPCHECK*/
 
 #define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0001)
-#define tk_lfequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
+#define tk_lfequal(f1, f2) (fabs((f1) - (f2)) < 0.000001)
 
 #ifndef M_PI
 #define M_PI 3.1415926f
