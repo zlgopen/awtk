@@ -74,6 +74,8 @@ typedef struct _debugger_lldb_t {
   /* st 特有的首行代码断点 */
   tk_object_t* st_first_code_breakpoints;
   uint32_t timeout;
+
+  bool_t is_disconnecting;
 } debugger_lldb_t;
 
 /**

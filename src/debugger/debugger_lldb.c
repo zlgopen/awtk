@@ -628,15 +628,21 @@ static tk_object_t* debugger_lldb_create_disconnect_req(debugger_t* debugger,
 static ret_t debugger_lldb_disconnect(debugger_t* debugger, bool_t terminate_debuggee) {
   ret_t ret = RET_FAIL;
   tk_object_t* req = NULL;
-  return_value_if_fail(debugger != NULL, RET_BAD_PARAMS);
+  debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
+  return_value_if_fail(lldb != NULL, RET_BAD_PARAMS);
+  if (lldb->is_disconnecting) {
+    return RET_OK;
+  }
+
   req = debugger_lldb_create_disconnect_req(debugger, terminate_debuggee);
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
+  lldb->is_disconnecting = TRUE;
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
     ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_DISCONNECT,
                                                        LLDB_REQUEST_TIMEOUT);
   }
-
+  lldb->is_disconnecting = FALSE;
   TK_OBJECT_UNREF(req);
 
   return ret;
