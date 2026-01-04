@@ -106,6 +106,41 @@ static ret_t func_object_forward_events(fscript_t* fscript, fscript_args_t* args
   return RET_OK;
 }
 
+static ret_t func_object_can_exec(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  tk_object_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(3 == args->size, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+  value_set_bool(result,
+                 tk_object_can_exec(obj, value_str(args->args + 1), value_str(args->args + 2)));
+
+  return RET_OK;
+}
+
+static ret_t func_object_exec(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  tk_object_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(3 == args->size, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+  value_set_bool(
+      result, RET_OK == tk_object_exec(obj, value_str(args->args + 1), value_str(args->args + 2)));
+
+  return RET_OK;
+}
+
+static ret_t func_object_exec_ex(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  tk_object_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(3 == args->size, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+  tk_object_exec_ex(obj, value_str(args->args + 1), value_str(args->args + 2), result);
+
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_object)
 FACTORY_TABLE_ENTRY("object_create", func_object_create)
 FACTORY_TABLE_ENTRY("object_ref", func_object_ref)
@@ -114,6 +149,9 @@ FACTORY_TABLE_ENTRY("object_set", func_object_set_prop)
 FACTORY_TABLE_ENTRY("object_get", func_object_get_prop)
 FACTORY_TABLE_ENTRY("object_remove", func_object_remove_prop)
 FACTORY_TABLE_ENTRY("object_forward_events", func_object_forward_events)
+FACTORY_TABLE_ENTRY("object_can_exec", func_object_can_exec)
+FACTORY_TABLE_ENTRY("object_exec", func_object_exec)
+FACTORY_TABLE_ENTRY("object_exec_ex", func_object_exec_ex)
 FACTORY_TABLE_END()
 
 ret_t fscript_object_register(void) {

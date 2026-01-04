@@ -169,3 +169,65 @@ var g = object_create()
 g.arr = array_create()
 object_forward_events(g.arr, g)
 ```
+
+#### 7 object\_can\_exec
+
+> 判断 object 里的一个命令是否可执行。
+
+----------------------------
+
+##### 原型
+
+```js
+object_can_exec(obj, cmd, arg) => bool
+```
+
+##### 示例
+
+```js
+if (object_can_exec(obj, "clear", "all")) {
+  object_exec(obj, "clear", "all")
+}
+```
+
+> 具体功能与 object 的实现有关。
+
+#### 8 object\_exec
+
+> 执行 object 里的一个命令。
+
+----------------------------
+
+##### 原型
+
+```js
+object_exec(obj, cmd, arg) => bool
+```
+
+##### 示例
+
+```js
+object_exec(obj, "clear", "all")
+```
+
+> 具体功能与 object 的实现有关。
+
+#### 9 object\_exec\_ex
+
+> 执行 object 里的一个命令。
+
+----------------------------
+
+##### 原型
+
+```js
+object_exec_ex(obj, cmd, arg) => value
+```
+
+##### 示例
+
+```js
+a = object_exec_ex(obj, "clear", "all")
+```
+
+> 具体功能与 object 的实现有关。
