@@ -41,11 +41,13 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
 static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
                         const char* dir_name, bool_t output_bin) {
   ret_t ret = RET_OK;
-  fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
   fs_item_t item;
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};
-  while (fs_dir_read(dir, &item) != RET_FAIL) {
+  fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
+  return_value_if_fail(dir != NULL, RET_FAIL);
+
+  while (fs_dir_read(dir, &item) == RET_OK) {
     if (item.is_reg_file && case_end_with(item.name, ".xml")) {
       path_build(in_name, MAX_PATH, in_foldername, item.name, NULL);
       ret = gen_one(in_name, out_foldername, theme, dir_name, output_bin);

@@ -73,12 +73,13 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, b
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};
   fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
+  return_value_if_fail(dir != NULL, RET_FAIL);
 
   if (!fs_dir_exist(os_fs(), out_foldername)) {
     fs_create_dir(os_fs(), out_foldername);
   }
 
-  while (fs_dir_read(dir, &item) != RET_FAIL) {
+  while (fs_dir_read(dir, &item) == RET_OK) {
     if (item.is_reg_file && case_end_with(item.name, c_xml)) {
       str_t str_name;
       str_t sub_res_name;

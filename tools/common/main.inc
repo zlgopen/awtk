@@ -1,4 +1,9 @@
 #include "tkc.h"
+#include "charset/encoding.h"
+
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 wchar_t** argvw_create(int argc, char* argv[]) {
   int i = 0;
@@ -8,7 +13,19 @@ wchar_t** argvw_create(int argc, char* argv[]) {
   wstr_init(&str, 100);
 
   for (i = 0; i < argc; i++) {
+#ifdef WIN32
+    char utf8[MAX_PATH] = {0};
+    /* windows 系统下，gdb调试时参数是utf-8编码（可能gdb内部做了处理），而正常运行时是gbk编码，需要先转码为utf-8 */
+    if(IsDebuggerPresent()) {
+      wstr_set_utf8(&str, argv[i]);
+    } else {
+      encoding_gbk_to_utf8(argv[i], MAX_PATH, utf8, MAX_PATH);
+      wstr_set_utf8(&str, utf8);
+    }
+#else
+    /* linux/mac 系统下，参数一般是utf-8编码，直接使用 */
     wstr_set_utf8(&str, argv[i]);
+#endif
     argvw[i] = wcs_dup(str.str);
   }
   argvw[i] = NULL;

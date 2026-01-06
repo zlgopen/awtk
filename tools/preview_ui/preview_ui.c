@@ -163,7 +163,7 @@ static ret_t plugins_dll_register(const char* dirname, const char* render_mode) 
 
   str_init(&funcname, 0);
 
-  while (fs_dir_read(dir, &item) != RET_FAIL) {
+  while (fs_dir_read(dir, &item) == RET_OK) {
     if (item.is_dir) {
       if (!tk_str_eq(item.name, ".") && !tk_str_eq(item.name, "..")) {
         path_build(path, MAX_PATH, dirname, item.name, NULL);
