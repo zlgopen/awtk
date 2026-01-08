@@ -119,13 +119,13 @@ static ret_t line_parser_next(line_parser_t* parser) {
     uint32_t line_number = parser->curr_line_number++;
     parser->line = parser->str + parser->line_numbers[line_number];
     if (parser->nline_numbers == 1) {
-      parser->line_size = wcslen(parser->str);
+      parser->line_size = parser->size;
     } else {
       if (line_number + 1 < parser->nline_numbers) {
         parser->line_size =
             parser->line_numbers[line_number + 1] - parser->line_numbers[line_number];
       } else {
-        parser->line_size = wcslen(parser->line);
+        parser->line_size = parser->size - parser->line_numbers[line_number];
       }
     }
     return RET_OK;

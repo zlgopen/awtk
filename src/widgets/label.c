@@ -85,8 +85,8 @@ static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str,
   rect_t r = widget_get_content_area_ex(widget, 0);
 
   return_value_if_fail((r.w > 0 && widget->h >= c->font_size), RET_FAIL);
-  return_value_if_fail(line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size,
-                                        r.w, label->line_wrap, label->word_wrap) == RET_OK,
+  return_value_if_fail(line_parser_init(&p, c, widget->text.str, size, c->font_size, r.w,
+                                        label->line_wrap, label->word_wrap) == RET_OK,
                        RET_BAD_PARAMS);
 
   if (p.total_lines > 1) {
@@ -123,9 +123,11 @@ static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
   line_parser_t parser;
   line_parser_t* p = &parser;
   wstr_t* str = &(widget->text);
+  label_t* label = LABEL(widget);
+  uint32_t size = label->length >= 0 ? tk_min(label->length, widget->text.size) : widget->text.size;
 
   return_value_if_fail(
-      line_parser_init(p, c, str->str, str->size, c->font_size, 0xffff, FALSE, FALSE) == RET_OK,
+      line_parser_init(p, c, str->str, size, c->font_size, 0xffff, FALSE, FALSE) == RET_OK,
       RET_BAD_PARAMS);
 
   while (line_parser_next(p) == RET_OK) {
@@ -252,6 +254,7 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
   int32_t margin_right = style_get_int(style, STYLE_ID_MARGIN_RIGHT, margin);
   int32_t margin_bottom = style_get_int(style, STYLE_ID_MARGIN_BOTTOM, margin);
   int32_t spacer = style_get_int(style, STYLE_ID_SPACER, 2);
+  uint32_t size = label->length >= 0 ? tk_min(label->length, widget->text.size) : widget->text.size;
 
   widget_prepare_text_style(widget, c);
   line_height = c->font_size + spacer;
@@ -277,7 +280,7 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
 
   return_value_if_fail(w > 0, RET_BAD_PARAMS);
 
-  return_value_if_fail(line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size, w,
+  return_value_if_fail(line_parser_init(&p, c, widget->text.str, size, c->font_size, w,
                                         label->line_wrap, label->word_wrap) == RET_OK,
                        RET_BAD_PARAMS);
 
