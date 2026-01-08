@@ -599,6 +599,7 @@ bool_t value_is_null(value_t* v) {
 }
 
 int value_int(const value_t* v) {
+  return_value_if_fail(v != NULL, 0);
   return_value_if_fail(v->type != VALUE_TYPE_INVALID, 0);
 
   switch (v->type) {
