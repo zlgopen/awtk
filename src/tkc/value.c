@@ -26,7 +26,8 @@
 #include "tkc/object.h"
 
 bool_t value_bool(const value_t* v) {
-  return_value_if_fail(v->type != VALUE_TYPE_INVALID, 0);
+  return_value_if_fail(v != NULL, FALSE);
+  return_value_if_fail(v->type != VALUE_TYPE_INVALID, FALSE);
 
   switch (v->type) {
     case VALUE_TYPE_BOOL: {
