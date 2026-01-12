@@ -617,7 +617,6 @@ ret_t bitmap_init_ex2(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_le
   if (bitmap->format == BITMAP_FMT_MONO) {
     line_length = TK_BITMAP_MONO_LINE_LENGTH(w);
   } else {
-    uint32_t bpp = bitmap_get_bpp_of_format(format);
     line_length = tk_max(w * bpp, line_length);
   }
 
