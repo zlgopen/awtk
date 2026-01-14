@@ -374,6 +374,12 @@ tk_object_t* conf_yaml_load(const char* url, bool_t create_if_not_exist) {
                          create_if_not_exist);
 }
 
+tk_object_t* conf_yaml_load_ex(const char* url, bool_t create_if_not_exist,
+                               bool_t use_extend_type) {
+  return conf_obj_create_ex(conf_doc_save_yaml_writer, conf_doc_load_yaml_reader, url,
+                            create_if_not_exist, use_extend_type);
+}
+
 ret_t conf_yaml_save_as(tk_object_t* obj, const char* url) {
   data_writer_t* writer = NULL;
   conf_doc_t* doc = conf_obj_get_doc(obj);
