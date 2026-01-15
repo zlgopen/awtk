@@ -1,0 +1,10 @@
+"{DEFAULT}":
+  output: file
+  level: DEBUG
+  format_prefix: '\n[${hh}:${mm}:${ss}] >\n'
+
+pou_variable_watch_manager:
+  "raw_data":
+    output_ignore_level: false
+  "var_monitoring":
+    format_prefix: '\n[${hh}:${mm}:${ss}] >\n'
