@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+﻿#include "gtest/gtest.h"
 #include "conf_io/conf_yaml.h"
 
 /* 辅助函数：验证保存和重新加载的一致性 */
@@ -6,60 +6,62 @@ static void verify_save_and_reload(conf_doc_t* doc) {
   str_t str;
   value_t v1, v2;
   conf_doc_t* reloaded_doc = NULL;
-  
+
   str_init(&str, 1000);
   conf_doc_save_yaml(doc, &str);
-  
+
   /* 重新加载保存的 YAML */
   reloaded_doc = conf_doc_load_yaml(str.str);
   ASSERT_NE(reloaded_doc, nullptr);
-  
+
   /* 比较根节点的子节点数量 */
   if (conf_doc_get(doc, "#size", &v1) == RET_OK) {
     ASSERT_EQ(conf_doc_get(reloaded_doc, "#size", &v2), RET_OK);
     ASSERT_EQ(value_int(&v1), value_int(&v2));
   }
-  
+
   str_reset(&str);
   conf_doc_destroy(reloaded_doc);
 }
 
 /* 辅助函数：验证保存和重新加载后特定路径的值 */
-static void verify_save_and_reload_value(conf_doc_t* doc, const char* path, const char* expected_str, int32_t expected_int, float expected_float, int expected_bool) {
+static void verify_save_and_reload_value(conf_doc_t* doc, const char* path,
+                                         const char* expected_str, int32_t expected_int,
+                                         float expected_float, int expected_bool) {
   str_t str;
   conf_doc_t* reloaded_doc = NULL;
-  
+
   str_init(&str, 1000);
   conf_doc_save_yaml(doc, &str);
-  
+
   /* 重新加载保存的 YAML */
   reloaded_doc = conf_doc_load_yaml(str.str);
   ASSERT_NE(reloaded_doc, nullptr);
-  
+
   /* 验证字符串值 */
   if (expected_str != NULL) {
     const char* reloaded_str = conf_doc_get_str(reloaded_doc, path, NULL);
     ASSERT_STREQ(reloaded_str, expected_str);
   }
-  
+
   /* 验证整数值 */
   if (expected_int != INT32_MIN) {
     int32_t reloaded_int = conf_doc_get_int(reloaded_doc, path, INT32_MIN);
     ASSERT_EQ(reloaded_int, expected_int);
   }
-  
+
   /* 验证浮点数值 */
   if (expected_float != FLT_MAX) {
     float reloaded_float = conf_doc_get_float(reloaded_doc, path, FLT_MAX);
     ASSERT_FLOAT_EQ(reloaded_float, expected_float);
   }
-  
+
   /* 验证布尔值 */
   if (expected_bool >= 0) {
     bool_t reloaded_bool = conf_doc_get_bool(reloaded_doc, path, -1);
     ASSERT_EQ(reloaded_bool, expected_bool);
   }
-  
+
   str_reset(&str);
   conf_doc_destroy(reloaded_doc);
 }
@@ -110,7 +112,10 @@ TEST(Yaml, basic2) {
 
 TEST(Yaml, basic3) {
   value_t v;
-  conf_doc_t* doc = conf_doc_load_yaml("person:\r\n  name: jim\n  age:100");
+  conf_doc_t* doc = conf_doc_load_yaml(
+      "person:\r\n"
+      "  name: jim\n"
+      "  age:100");
 
   ASSERT_EQ(conf_doc_get(doc, "#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
@@ -121,7 +126,10 @@ TEST(Yaml, basic3) {
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "person:\n  name: jim\n  age: 100\n");
+  ASSERT_STREQ(str.str,
+               "person:\n"
+               "  name: jim\n"
+               "  age: 100\n");
   str_reset(&str);
 
   /* 验证保存和重新加载 */
@@ -133,7 +141,11 @@ TEST(Yaml, basic3) {
 
 TEST(Yaml, basic4) {
   value_t v;
-  conf_doc_t* doc = conf_doc_load_yaml("jim:\r\n  age:100\ntom:\n  age:99\n");
+  conf_doc_t* doc = conf_doc_load_yaml(
+      "jim:\r\n"
+      "  age:100\n"
+      "tom:\n"
+      "  age:99\n");
 
   ASSERT_EQ(conf_doc_get(doc, "#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 2);
@@ -144,7 +156,11 @@ TEST(Yaml, basic4) {
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "jim:\n  age: 100\ntom:\n  age: 99\n");
+  ASSERT_STREQ(str.str,
+               "jim:\n"
+               "  age: 100\n"
+               "tom:\n"
+               "  age: 99\n");
   str_reset(&str);
 
   /* 验证保存和重新加载 */
@@ -156,7 +172,10 @@ TEST(Yaml, basic4) {
 
 TEST(Yaml, basic5) {
   value_t v;
-  conf_doc_t* doc = conf_doc_load_yaml("jim:\r\n  age:100\n  weight: 60");
+  conf_doc_t* doc = conf_doc_load_yaml(
+      "jim:\r\n"
+      "  age:100\n"
+      "  weight: 60");
 
   ASSERT_EQ(conf_doc_get(doc, "#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
@@ -170,7 +189,10 @@ TEST(Yaml, basic5) {
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "jim:\n  age: 100\n  weight: 60\n");
+  ASSERT_STREQ(str.str,
+               "jim:\n"
+               "  age: 100\n"
+               "  weight: 60\n");
   str_reset(&str);
 
   /* 验证保存和重新加载 */
@@ -182,8 +204,13 @@ TEST(Yaml, basic5) {
 
 TEST(Yaml, basic6) {
   value_t v;
-  conf_doc_t* doc =
-      conf_doc_load_yaml("jim:\r\n  age:100\n  weight: 60\ntom:\n  age:99\n  weight:70");
+  conf_doc_t* doc = conf_doc_load_yaml(
+      "jim:\r\n"
+      "  age:100\n"
+      "  weight: 60\n"
+      "tom:\n"
+      "  age:99\n"
+      "  weight:70");
 
   ASSERT_EQ(conf_doc_get(doc, "#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 2);
@@ -202,7 +229,13 @@ TEST(Yaml, basic6) {
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "jim:\n  age: 100\n  weight: 60\ntom:\n  age: 99\n  weight: 70\n");
+  ASSERT_STREQ(str.str,
+               "jim:\n"
+               "  age: 100\n"
+               "  weight: 60\n"
+               "tom:\n"
+               "  age: 99\n"
+               "  weight: 70\n");
   str_reset(&str);
 
   /* 验证保存和重新加载 */
@@ -217,11 +250,11 @@ TEST(Yaml, basic6) {
 TEST(Yaml, basic7) {
   value_t v;
   const char* data =
-      "plan_request_params:\n\
-  planning_attempts: 1\n\
-  planning_pipeline: ompl\n\
-  max_velocity_scaling_factor: 1.0\n\
-  max_acceleration_scaling_factor: 0.5 ";
+      "plan_request_params:\n"
+      "  planning_attempts: 1\n"
+      "  planning_pipeline: ompl\n"
+      "  max_velocity_scaling_factor: 1.0\n"
+      "  max_acceleration_scaling_factor: 0.5 ";
 
   conf_doc_t* doc = conf_doc_load_yaml(data);
 
@@ -242,8 +275,11 @@ TEST(Yaml, basic7) {
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
   ASSERT_STREQ(str.str,
-               "plan_request_params:\n  planning_attempts: 1\n  planning_pipeline: ompl\n  "
-               "max_velocity_scaling_factor: 1.0\n  max_acceleration_scaling_factor: 0.5\n");
+               "plan_request_params:\n"
+               "  planning_attempts: 1\n"
+               "  planning_pipeline: ompl\n"
+               "  max_velocity_scaling_factor: 1.0\n"
+               "  max_acceleration_scaling_factor: 0.5\n");
   str_reset(&str);
   conf_doc_destroy(doc);
 }
@@ -251,9 +287,9 @@ TEST(Yaml, basic7) {
 TEST(Yaml, list1) {
   value_t v;
   const char* data =
-      "planning_pipelines:\n\
-  pipeline_names:\n\
-    - ompl\n";
+      "planning_pipelines:\n"
+      "  pipeline_names:\n"
+      "    - ompl\n";
 
   conf_doc_t* doc = conf_doc_load_yaml(data);
 
@@ -269,7 +305,10 @@ TEST(Yaml, list1) {
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "planning_pipelines:\n  pipeline_names:\n    - ompl\n");
+  ASSERT_STREQ(str.str,
+               "planning_pipelines:\n"
+               "  pipeline_names:\n"
+               "    - ompl\n");
   str_reset(&str);
   conf_doc_destroy(doc);
 }
@@ -277,11 +316,11 @@ TEST(Yaml, list1) {
 TEST(Yaml, list2) {
   value_t v;
   const char* data =
-      "planning_pipelines:\n\
-  pipeline_names:\n\
-    - ompl\n\
-    - kdl\n\
-    - ikfast\n";
+      "planning_pipelines:\n"
+      "  pipeline_names:\n"
+      "    - ompl\n"
+      "    - kdl\n"
+      "    - ikfast\n";
 
   conf_doc_t* doc = conf_doc_load_yaml(data);
 
@@ -298,7 +337,11 @@ TEST(Yaml, list2) {
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
   ASSERT_STREQ(str.str,
-               "planning_pipelines:\n  pipeline_names:\n    - ompl\n    - kdl\n    - ikfast\n");
+               "planning_pipelines:\n"
+               "  pipeline_names:\n"
+               "    - ompl\n"
+               "    - kdl\n"
+               "    - ikfast\n");
   str_reset(&str);
   conf_doc_destroy(doc);
 }
@@ -352,12 +395,12 @@ TEST(Yaml, comment2) {
 TEST(Yaml, comment3) {
   value_t v;
   const char* data =
-      "planning_pipelines:#comment\n\
-  pipeline_names:#comment\n\
-    - ompl#comment\n\
-    #comment\n\
-    - kdl#comment\n\
-    - ikfast #comment\n";
+      "planning_pipelines:#comment\n"
+      "  pipeline_names:#comment\n"
+      "    - ompl#comment\n"
+      "    #comment\n"
+      "    - kdl#comment\n"
+      "    - ikfast #comment\n";
 
   conf_doc_t* doc = conf_doc_load_yaml(data);
 
@@ -374,7 +417,11 @@ TEST(Yaml, comment3) {
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
   ASSERT_STREQ(str.str,
-               "planning_pipelines:\n  pipeline_names:\n    - ompl\n    - kdl\n    - ikfast\n");
+               "planning_pipelines:\n"
+               "  pipeline_names:\n"
+               "    - ompl\n"
+               "    - kdl\n"
+               "    - ikfast\n");
   str_reset(&str);
   conf_doc_destroy(doc);
 }
@@ -410,14 +457,16 @@ TEST(Yaml, error2) {
 
   node = conf_node_find_child(doc->root, "hello");
   ASSERT_EQ(node == NULL, true);
-  
+
   node = conf_node_find_child(doc->root, "hel");
   ASSERT_EQ(node != NULL, true);
 
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "hel:\n  lo:\n");
+  ASSERT_STREQ(str.str,
+               "hel:\n"
+               "  lo:\n");
   str_reset(&str);
 
   conf_doc_destroy(doc);
@@ -519,7 +568,12 @@ TEST(Yaml, set2) {
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "name: \"#hello\"\ntom:\n  age: 100\n  weight: 60.000000\n  male: 1\n");
+  ASSERT_STREQ(str.str,
+               "name: \"#hello\"\n"
+               "tom:\n"
+               "  age: 100\n"
+               "  weight: 60.000000\n"
+               "  male: 1\n");
   str_reset(&str);
 
   conf_doc_destroy(doc);
@@ -564,13 +618,18 @@ TEST(Yaml, file1) {
   /* 验证 {DEFAULT} 键（特殊字符键名） */
   ASSERT_STREQ(tk_object_get_prop_str(conf, "{DEFAULT}.output"), "file");
   ASSERT_STREQ(tk_object_get_prop_str(conf, "{DEFAULT}.level"), "DEBUG");
-  ASSERT_STREQ(tk_object_get_prop_str(conf, "{DEFAULT}.format_prefix"), "\n[${hh}:${mm}:${ss}] >\n");
+  ASSERT_STREQ(tk_object_get_prop_str(conf, "{DEFAULT}.format_prefix"),
+               "\n[${hh}:${mm}:${ss}] >\n");
 
   /* 验证嵌套对象 */
-  ASSERT_STREQ(tk_object_get_prop_str(conf, "pou_variable_watch_manager.var_monitoring.format_prefix"), "\n[${hh}:${mm}:${ss}] >\n");
+  ASSERT_STREQ(
+      tk_object_get_prop_str(conf, "pou_variable_watch_manager.var_monitoring.format_prefix"),
+      "\n[${hh}:${mm}:${ss}] >\n");
 
   /* 验证布尔值 */
-  ASSERT_EQ(tk_object_get_prop_bool(conf, "pou_variable_watch_manager.raw_data.output_ignore_level", TRUE), FALSE);
+  ASSERT_EQ(tk_object_get_prop_bool(conf, "pou_variable_watch_manager.raw_data.output_ignore_level",
+                                    TRUE),
+            FALSE);
 
   /* 验证保存和重新加载 */
   str_t str;
@@ -578,13 +637,15 @@ TEST(Yaml, file1) {
   conf_doc_t* doc = conf_obj_get_doc(conf);
   ASSERT_NE(doc, nullptr);
   conf_doc_save_yaml(doc, &str);
-  
+
   conf_doc_t* reloaded_doc = conf_doc_load_yaml(str.str);
   ASSERT_NE(reloaded_doc, nullptr);
   ASSERT_STREQ(conf_doc_get_str(reloaded_doc, "{DEFAULT}.output", ""), "file");
   ASSERT_STREQ(conf_doc_get_str(reloaded_doc, "{DEFAULT}.level", ""), "DEBUG");
-  ASSERT_EQ(conf_doc_get_bool(reloaded_doc, "pou_variable_watch_manager.raw_data.output_ignore_level", TRUE), FALSE);
-  
+  ASSERT_EQ(conf_doc_get_bool(reloaded_doc,
+                              "pou_variable_watch_manager.raw_data.output_ignore_level", TRUE),
+            FALSE);
+
   str_reset(&str);
   conf_doc_destroy(reloaded_doc);
 
@@ -597,14 +658,19 @@ TEST(Yaml, file2) {
   /* 验证 {DEFAULT} 键（特殊字符键名） */
   ASSERT_STREQ(tk_object_get_prop_str(conf, "{DEFAULT}.output"), "file");
   ASSERT_STREQ(tk_object_get_prop_str(conf, "{DEFAULT}.level"), "DEBUG");
-  /* 单引号字符串应该保留字面值（不转义），\n 被解析为两个字符：\ 和 n */
-  ASSERT_STREQ(tk_object_get_prop_str(conf, "{DEFAULT}.format_prefix"), "\\n[${hh}:${mm}:${ss}] >\\n");
+  /* 单引号字符串应该保留字面值（不转义），\n"" 被解析为两个字符：\ 和 n */
+  ASSERT_STREQ(tk_object_get_prop_str(conf, "{DEFAULT}.format_prefix"),
+               "\\n[${hh}:${mm}:${ss}] >\\n");
 
   /* 验证嵌套对象 */
-  ASSERT_STREQ(tk_object_get_prop_str(conf, "pou_variable_watch_manager.var_monitoring.format_prefix"), "\\n[${hh}:${mm}:${ss}] >\\n");
+  ASSERT_STREQ(
+      tk_object_get_prop_str(conf, "pou_variable_watch_manager.var_monitoring.format_prefix"),
+      "\\n[${hh}:${mm}:${ss}] >\\n");
 
   /* 验证布尔值 */
-  ASSERT_EQ(tk_object_get_prop_bool(conf, "pou_variable_watch_manager.raw_data.output_ignore_level", TRUE), FALSE);
+  ASSERT_EQ(tk_object_get_prop_bool(conf, "pou_variable_watch_manager.raw_data.output_ignore_level",
+                                    TRUE),
+            FALSE);
 
   /* 验证保存和重新加载 */
   str_t str;
@@ -612,13 +678,15 @@ TEST(Yaml, file2) {
   conf_doc_t* doc = conf_obj_get_doc(conf);
   ASSERT_NE(doc, nullptr);
   conf_doc_save_yaml(doc, &str);
-  
+
   conf_doc_t* reloaded_doc = conf_doc_load_yaml(str.str);
   ASSERT_NE(reloaded_doc, nullptr);
   ASSERT_STREQ(conf_doc_get_str(reloaded_doc, "{DEFAULT}.output", ""), "file");
   ASSERT_STREQ(conf_doc_get_str(reloaded_doc, "{DEFAULT}.level", ""), "DEBUG");
-  ASSERT_EQ(conf_doc_get_bool(reloaded_doc, "pou_variable_watch_manager.raw_data.output_ignore_level", TRUE), FALSE);
-  
+  ASSERT_EQ(conf_doc_get_bool(reloaded_doc,
+                              "pou_variable_watch_manager.raw_data.output_ignore_level", TRUE),
+            FALSE);
+
   str_reset(&str);
   conf_doc_destroy(reloaded_doc);
 
@@ -676,11 +744,11 @@ TEST(Yaml, float_negative) {
 
 TEST(Yaml, deep_nesting) {
   const char* data =
-      "level1:\n\
-  level2:\n\
-    level3:\n\
-      level4:\n\
-        value: deep";
+      "level1:\n"
+      "  level2:\n"
+      "    level3:\n"
+      "      level4:\n"
+      "        value: deep";
 
   conf_doc_t* doc = conf_doc_load_yaml(data);
 
@@ -689,7 +757,12 @@ TEST(Yaml, deep_nesting) {
   str_t str;
   str_init(&str, 200);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "level1:\n  level2:\n    level3:\n      level4:\n        value: deep\n");
+  ASSERT_STREQ(str.str,
+               "level1:\n"
+               "  level2:\n"
+               "    level3:\n"
+               "      level4:\n"
+               "        value: deep\n");
   str_reset(&str);
 
   conf_doc_destroy(doc);
@@ -716,7 +789,9 @@ TEST(Yaml, empty_object) {
 
 TEST(Yaml, empty_array) {
   value_t v;
-  const char* data = "items:\n  -";
+  const char* data =
+      "items:\n"
+      "  -";
 
   conf_doc_t* doc = conf_doc_load_yaml(data);
 
@@ -726,7 +801,9 @@ TEST(Yaml, empty_array) {
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "items:\n  -\n");
+  ASSERT_STREQ(str.str,
+               "items:\n"
+               "  -\n");
   str_reset(&str);
 
   conf_doc_destroy(doc);
@@ -735,13 +812,13 @@ TEST(Yaml, empty_array) {
 TEST(Yaml, array_with_objects) {
   value_t v;
   const char* data =
-      "users:\n\
-  -\n\
-    name: jim\n\
-    age: 30\n\
-  -\n\
-    name: tom\n\
-    age: 25";
+      "users:\n"
+      "  -\n"
+      "    name: jim\n"
+      "    age: 30\n"
+      "  -\n"
+      "    name: tom\n"
+      "    age: 25";
 
   conf_doc_t* doc = conf_doc_load_yaml(data);
 
@@ -757,7 +834,13 @@ TEST(Yaml, array_with_objects) {
   str_init(&str, 200);
   conf_doc_save_yaml(doc, &str);
   ASSERT_STREQ(str.str,
-               "users:\n  -\n    name: jim\n    age: 30\n  -\n    name: tom\n    age: 25\n");
+               "users:\n"
+               "  -\n"
+               "    name: jim\n"
+               "    age: 30\n"
+               "  -\n"
+               "    name: tom\n"
+               "    age: 25\n");
   str_reset(&str);
 
   /* 验证保存和重新加载 */
@@ -856,19 +939,19 @@ TEST(Yaml, bool_false) {
 
 TEST(Yaml, complex_nested) {
   const char* data =
-      "server:\n\
-  host: localhost\n\
-  port: 8080\n\
-  ssl:\n\
-    enabled: 1\n\
-    cert: /path/to/cert\n\
-  databases:\n\
-    -\n\
-      name: db1\n\
-      type: mysql\n\
-    -\n\
-      name: db2\n\
-      type: postgres";
+      "server:\n"
+      "  host: localhost\n"
+      "  port: 8080\n"
+      "  ssl:\n"
+      "    enabled: 1\n"
+      "    cert: /path/to/cert\n"
+      "  databases:\n"
+      "    -\n"
+      "      name: db1\n"
+      "      type: mysql\n"
+      "    -\n"
+      "      name: db2\n"
+      "      type: postgres";
 
   conf_doc_t* doc = conf_doc_load_yaml(data);
 
@@ -885,9 +968,20 @@ TEST(Yaml, complex_nested) {
   str_init(&str, 500);
   conf_doc_save_yaml(doc, &str);
   ASSERT_STREQ(str.str,
-               "server:\n  host: localhost\n  port: 8080\n  ssl:\n    enabled: 1\n    cert: "
-               "/path/to/cert\n  databases:\n    -\n      name: db1\n      type: mysql\n    -\n      "
-               "name: db2\n      type: postgres\n");
+               "server:\n"
+               "  host: localhost\n"
+               "  port: 8080\n"
+               "  ssl:\n"
+               "    enabled: 1\n"
+               "    cert: "
+               "/path/to/cert\n"
+               "  databases:\n"
+               "    -\n"
+               "      name: db1\n"
+               "      type: mysql\n"
+               "    -\n"
+               "      name: db2\n"
+               "      type: postgres\n");
   str_reset(&str);
 
   /* 验证保存和重新加载 */
@@ -898,7 +992,8 @@ TEST(Yaml, complex_nested) {
   verify_save_and_reload_value(doc, "server.databases.[0].name", "db1", INT32_MIN, FLT_MAX, -1);
   verify_save_and_reload_value(doc, "server.databases.[0].type", "mysql", INT32_MIN, FLT_MAX, -1);
   verify_save_and_reload_value(doc, "server.databases.[1].name", "db2", INT32_MIN, FLT_MAX, -1);
-  verify_save_and_reload_value(doc, "server.databases.[1].type", "postgres", INT32_MIN, FLT_MAX, -1);
+  verify_save_and_reload_value(doc, "server.databases.[1].type", "postgres", INT32_MIN, FLT_MAX,
+                               -1);
 
   conf_doc_destroy(doc);
 }
@@ -920,14 +1015,20 @@ TEST(Yaml, set_nested) {
   str_init(&str, 200);
   conf_doc_save_yaml(doc, &str);
   ASSERT_STREQ(str.str,
-               "name: test\nuser:\n  name: jim\n  age: 30\n  weight: 70.500000\n  male: 1\n");
+               "name: test\nuser:\n"
+               "  name: jim\n"
+               "  age: 30\n"
+               "  weight: 70.500000\n"
+               "  male: 1\n");
   str_reset(&str);
 
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, set_array_element) {
-  conf_doc_t* doc = conf_doc_load_yaml("items:\n  - first");
+  conf_doc_t* doc = conf_doc_load_yaml(
+      "items:\n"
+      "  - first");
 
   conf_doc_set_str(doc, "items.[1]", "second");
   conf_doc_set_str(doc, "items.[2]", "third");
@@ -939,7 +1040,11 @@ TEST(Yaml, set_array_element) {
   str_t str;
   str_init(&str, 200);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "items:\n  - first\n  - second\n  - third\n");
+  ASSERT_STREQ(str.str,
+               "items:\n"
+               "  - first\n"
+               "  - second\n"
+               "  - third\n");
   str_reset(&str);
 
   /* 验证保存和重新加载 */
@@ -969,7 +1074,10 @@ TEST(Yaml, empty_doc) {
 }
 
 TEST(Yaml, whitespace_only) {
-  conf_doc_t* doc = conf_doc_load_yaml("   \n  \n  ");
+  conf_doc_t* doc = conf_doc_load_yaml(
+      "   \n"
+      "  \n"
+      "  ");
 
   ASSERT_NE(doc, (conf_doc_t*)NULL);
 
@@ -1049,12 +1157,12 @@ TEST(Yaml, multiple_root_keys) {
 TEST(Yaml, list_of_numbers) {
   value_t v;
   const char* data =
-      "numbers:\n\
-  - 1\n\
-  - 2\n\
-  - 3\n\
-  - 4\n\
-  - 5";
+      "numbers:\n"
+      "  - 1\n"
+      "  - 2\n"
+      "  - 3\n"
+      "  - 4\n"
+      "  - 5";
 
   conf_doc_t* doc = conf_doc_load_yaml(data);
 
@@ -1070,7 +1178,13 @@ TEST(Yaml, list_of_numbers) {
   str_t str;
   str_init(&str, 200);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "numbers:\n  - 1\n  - 2\n  - 3\n  - 4\n  - 5\n");
+  ASSERT_STREQ(str.str,
+               "numbers:\n"
+               "  - 1\n"
+               "  - 2\n"
+               "  - 3\n"
+               "  - 4\n"
+               "  - 5\n");
   str_reset(&str);
 
   /* 验证保存和重新加载 */
@@ -1196,7 +1310,7 @@ TEST(Yaml, quoted_string_with_comment_after) {
 }
 
 TEST(Yaml, single_quote_literal_backslash) {
-  /* 单引号字符串：\n 应该被解析为字面值（两个字符：\ 和 n），而不是换行符 */
+  /* 单引号字符串：\n"" 应该被解析为字面值（两个字符：\ 和 n），而不是换行符 */
   conf_doc_t* doc = conf_doc_load_yaml("text: 'hello\\nworld'");
 
   const char* result = conf_doc_get_str(doc, "text", "");
@@ -1206,7 +1320,7 @@ TEST(Yaml, single_quote_literal_backslash) {
 }
 
 TEST(Yaml, double_quote_escape_newline) {
-  /* 双引号字符串：\n 应该被解析为换行符 */
+  /* 双引号字符串：\n"" 应该被解析为换行符 */
   conf_doc_t* doc = conf_doc_load_yaml("text: \"hello\\nworld\"");
 
   const char* result = conf_doc_get_str(doc, "text", "");
@@ -1407,7 +1521,8 @@ TEST(Yaml, empty_quoted_string) {
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
   /* 空字符串不包含特殊字符，保存时可能不加引号 */
-  ASSERT_TRUE(str.str != NULL && (strcmp(str.str, "name:\n") == 0 || strcmp(str.str, "name: \"\"\n") == 0));
+  ASSERT_TRUE(str.str != NULL &&
+              (strcmp(str.str, "name:\n") == 0 || strcmp(str.str, "name: \"\"\n") == 0));
   str_reset(&str);
 
   conf_doc_destroy(doc);
@@ -1662,7 +1777,11 @@ TEST(Yaml, null_value_tilde) {
 }
 
 TEST(Yaml, null_value_in_array) {
-  const char* data = "items:\n  - null\n  - value\n  - ~";
+  const char* data =
+      "items:\n"
+      "  - null\n"
+      "  - value\n"
+      "  - ~";
   conf_doc_t* doc = conf_doc_load_yaml(data);
 
   ASSERT_TRUE(conf_doc_get_str(doc, "items.[0]", "default") == NULL);
@@ -1672,7 +1791,11 @@ TEST(Yaml, null_value_in_array) {
   str_t str;
   str_init(&str, 200);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "items:\n  - null\n  - value\n  - null\n");
+  ASSERT_STREQ(str.str,
+               "items:\n"
+               "  - null\n"
+               "  - value\n"
+               "  - null\n");
   str_reset(&str);
 
   conf_doc_destroy(doc);
@@ -1760,7 +1883,8 @@ TEST(Yaml, flow_mapping_with_quotes) {
 }
 
 TEST(Yaml, flow_nested_deep) {
-  conf_doc_t* doc = conf_doc_load_yaml("config: {servers: [{name: s1, port: 80}, {name: s2, port: 443}], timeout: 30}");
+  conf_doc_t* doc = conf_doc_load_yaml(
+      "config: {servers: [{name: s1, port: 80}, {name: s2, port: 443}], timeout: 30}");
 
   ASSERT_STREQ(conf_doc_get_str(doc, "config.servers.[0].name", ""), "s1");
   ASSERT_EQ(conf_doc_get_int(doc, "config.servers.[0].port", 0), 80);
@@ -1786,158 +1910,212 @@ TEST(Yaml, flow_save_as_block) {
 }
 
 TEST(Yaml, literal_block_basic) {
-  const char* data = "text: |\n  Line 1\n  Line 2\n  Line 3\n";
+  const char* data =
+      "text: |\n"
+      "  Line 1\n"
+      "  Line 2\n"
+      "  Line 3\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   const char* value = conf_doc_get_str(doc, "text", "");
   ASSERT_STREQ(value, "Line 1\nLine 2\nLine 3");
-  
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, literal_block_empty) {
   const char* data = "text: |\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   const char* value = conf_doc_get_str(doc, "text", "");
   ASSERT_STREQ(value, "");
-  
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, folded_block_basic) {
-  const char* data = "text: >\n  This is a\n  long string\n  that folds\n";
+  const char* data =
+      "text: >\n"
+      "  This is a\n"
+      "  long string\n"
+      "  that folds\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   const char* value = conf_doc_get_str(doc, "text", "");
   ASSERT_STREQ(value, "This is a long string that folds");
-  
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, literal_block_with_modifiers) {
-  const char* data = "text_plus: |+\n  Line 1\n  Line 2\n\ntext_minus: |-\n  Line 1\n  Line 2\n";
+  const char* data =
+      "text_plus: |+\n"
+      "  Line 1\n"
+      "  Line 2\n"
+      "\n"
+      "text_minus: |-\n"
+      "  Line 1\n"
+      "  Line 2\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   const char* value1 = conf_doc_get_str(doc, "text_plus", "");
   const char* value2 = conf_doc_get_str(doc, "text_minus", "");
-  
+
   /* |+ 保留末尾换行 */
   ASSERT_TRUE(strlen(value1) > 0);
   /* |- 去除末尾换行 */
   ASSERT_TRUE(strlen(value2) > 0);
-  
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, multiline_in_nested) {
-  const char* data = "person:\n  name: John\n  bio: |\n    This is a\n    multi-line bio\n";
+  const char* data =
+      "person:\n"
+      "  name: John\n"
+      "  bio: |\n"
+      "    This is a\n"
+      "    multi-line bio\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   ASSERT_STREQ(conf_doc_get_str(doc, "person.name", ""), "John");
   ASSERT_STREQ(conf_doc_get_str(doc, "person.bio", ""), "This is a\nmulti-line bio");
-  
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, literal_block_single_line) {
-  const char* data = "text: |\n  Single line\n";
+  const char* data =
+      "text: |\n"
+      "  Single line\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   const char* value = conf_doc_get_str(doc, "text", "");
   ASSERT_STREQ(value, "Single line");
-  
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, folded_block_single_line) {
-  const char* data = "text: >\n  Single line\n";
+  const char* data =
+      "text: >\n"
+      "  Single line\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   const char* value = conf_doc_get_str(doc, "text", "");
   ASSERT_STREQ(value, "Single line");
-  
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, literal_block_with_empty_lines) {
-  const char* data = "text: |\n  Line 1\n\n  Line 2\n";
+  const char* data =
+      "text: |\n"
+      "  Line 1\n"
+      "\n"
+      "  Line 2\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   const char* value = conf_doc_get_str(doc, "text", "");
-  ASSERT_STREQ(value, "Line 1\n\nLine 2");
-  
+  ASSERT_STREQ(value,
+               "Line 1\n"
+               "\n"
+               "Line 2");
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, literal_block_modifier_plus) {
-  const char* data = "text: |+\n  Line 1\n  Line 2\n";
+  const char* data =
+      "text: |+\n"
+      "  Line 1\n"
+      "  Line 2\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   const char* value = conf_doc_get_str(doc, "text", "");
   /* |+ 保留末尾换行 */
   ASSERT_TRUE(strlen(value) > 0);
-  ASSERT_TRUE(value[strlen(value) - 1] == '\n' || strstr(value, "\n\n") != NULL);
-  
+  ASSERT_TRUE(value[strlen(value) - 1] == '\n' || strstr(value,
+                                                         "\n"
+                                                         "\n") != NULL);
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, literal_block_modifier_minus) {
-  const char* data = "text: |-\n  Line 1\n  Line 2\n";
+  const char* data =
+      "text: |-\n"
+      "  Line 1\n"
+      "  Line 2\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   const char* value = conf_doc_get_str(doc, "text", "");
   /* |- 去除末尾换行 */
   ASSERT_TRUE(strlen(value) > 0);
   /* 末尾不应该是换行（除非是空字符串） */
-  
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, folded_block_modifier_plus) {
-  const char* data = "text: >+\n  Line 1\n  Line 2\n";
+  const char* data =
+      "text: >+\n"
+      "  Line 1\n"
+      "  Line 2\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   const char* value = conf_doc_get_str(doc, "text", "");
   ASSERT_STREQ(value, "Line 1 Line 2");
-  
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, folded_block_modifier_minus) {
-  const char* data = "text: >-\n  Line 1\n  Line 2\n";
+  const char* data =
+      "text: >-\n"
+      "  Line 1\n"
+      "  Line 2\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   const char* value = conf_doc_get_str(doc, "text", "");
   ASSERT_STREQ(value, "Line 1 Line 2");
-  
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, multiline_in_array) {
-  const char* data = "items:\n  - |\n    Item 1\n    Line 2\n  - |\n    Item 2\n";
+  const char* data =
+      "items:\n"
+      "  - |\n"
+      "    Item 1\n"
+      "    Line 2\n"
+      "  - |\n"
+      "    Item 2\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   ASSERT_STREQ(conf_doc_get_str(doc, "items.[0]", ""), "Item 1\nLine 2");
   ASSERT_STREQ(conf_doc_get_str(doc, "items.[1]", ""), "Item 2");
-  
+
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, multiline_save_test) {
-  const char* data = "text: |\n  Line 1\n  Line 2\n";
+  const char* data =
+      "text: |\n"
+      "  Line 1\n"
+      "  Line 2\n";
   conf_doc_t* doc = conf_doc_load_yaml(data);
-  
+
   const char* original_value = conf_doc_get_str(doc, "text", "");
   ASSERT_STREQ(original_value, "Line 1\nLine 2");
-  
+
   str_t str;
   str_init(&str, 200);
   conf_doc_save_yaml(doc, &str);
   /* 保存时应该保留多行字符串的内容（可能使用引号格式） */
   ASSERT_TRUE(strstr(str.str, "Line 1") != NULL);
   ASSERT_TRUE(strstr(str.str, "Line 2") != NULL);
-  
+
   /* 验证保存和重新加载 - 如果保存的字符串包含转义的换行符，则验证重新加载 */
   if (strstr(str.str, "\\n") != NULL) {
     conf_doc_t* reloaded_doc = conf_doc_load_yaml(str.str);
@@ -1947,7 +2125,7 @@ TEST(Yaml, multiline_save_test) {
     ASSERT_STREQ(reloaded_value, original_value);
     conf_doc_destroy(reloaded_doc);
   }
-  
+
   str_reset(&str);
   conf_doc_destroy(doc);
 }
