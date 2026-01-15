@@ -1003,18 +1003,36 @@ static ret_t yaml_parser_parse_line(yaml_parser_t* parser) {
       /* 检查是否是 null 值 */
       if (yaml_is_null_value(value)) {
         value_set_str(&v, NULL);
+        conf_node_set_value(node, &v);
       } else if (*value) {
-        /* 检查是否是布尔值 */
+        /* 非空值：检查是否是布尔值 */
         if (yaml_parse_bool_value(value, &bool_val) == RET_OK) {
           value_set_bool(&v, bool_val);
         } else {
           value_set_str(&v, value);
         }
+        conf_node_set_value(node, &v);
       } else {
-        /* 空字符串 */
-        value_set_str(&v, value);
+        /* 空字符串：可能是对象节点（如果后续有子节点）或空字符串值
+         * 对于非列表项，暂时设置为对象节点，如果后续没有子节点，会在保存时处理 */
+        if (!is_list) {
+          /* 暂时设置为对象节点，如果后续没有子节点，会在保存时处理 */
+          node->node_type = CONF_NODE_OBJECT;
+          node->value_type = CONF_NODE_VALUE_NODE;
+        } else {
+          /* 列表项的空值 */
+          value_set_str(&v, value);
+          conf_node_set_value(node, &v);
+        }
       }
-      conf_node_set_value(node, &v);
+    }
+  } else {
+    /* 值为 NULL 表示只有键名和冒号，没有值
+     * 如果后续有子节点（通过缩进表示），这应该是一个对象节点
+     * 暂时设置为对象节点，如果后续没有子节点，会在保存时处理 */
+    if (!is_list) {
+      node->node_type = CONF_NODE_OBJECT;
+      node->value_type = CONF_NODE_VALUE_NODE;
     }
   }
 

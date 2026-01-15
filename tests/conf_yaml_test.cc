@@ -1,4 +1,4 @@
-﻿#include "gtest/gtest.h"
+#include "gtest/gtest.h"
 #include "conf_io/conf_yaml.h"
 
 /* 辅助函数：验证保存和重新加载的一致性 */
@@ -691,6 +691,509 @@ TEST(Yaml, file2) {
   conf_doc_destroy(reloaded_doc);
 
   TK_OBJECT_UNREF(conf);
+}
+
+TEST(Yaml, file3) {
+  tk_object_t* conf = conf_yaml_load_ex("file://./tests/testdata/test2.yaml", TRUE, TRUE);
+
+  ASSERT_TRUE(NULL != tk_object_get_prop_object(conf, "{DEFAULT}"));
+
+  TK_OBJECT_UNREF(conf);
+}
+
+TEST(Yaml, file4) {
+  tk_object_t* conf = conf_yaml_load_ex("file://./tests/testdata/test2.yaml", TRUE, TRUE);
+  ASSERT_NE(conf, nullptr);
+
+  /* 验证 {DEFAULT} 节点存在 */
+  conf_doc_t* doc = conf_obj_get_doc(conf);
+  ASSERT_NE(doc, nullptr);
+  ASSERT_EQ(doc->use_extend_type, TRUE);
+  
+  conf_node_t* node = conf_node_find_child(doc->root, "{DEFAULT}");
+  ASSERT_NE(node, nullptr);
+  ASSERT_EQ(node->node_type, CONF_NODE_OBJECT);
+  ASSERT_EQ(node->value_type, CONF_NODE_VALUE_NODE);
+  
+  /* 验证可以通过 tk_object_get_prop_object 获取对象 */
+  tk_object_t* obj = tk_object_get_prop_object(conf, "{DEFAULT}");
+  ASSERT_NE(obj, nullptr);
+  
+  /* 验证对象有子属性 */
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "output"), "file");
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "level"), "DEBUG");
+
+  TK_OBJECT_UNREF(conf);
+}
+
+TEST(Yaml, extend_type_nested_object) {
+  /* 测试嵌套对象的扩展类型 */
+  const char* data =
+      "server:\n"
+      "  host: localhost\n"
+      "  port: 8080\n"
+      "  ssl:\n"
+      "    enabled: true\n"
+      "    cert: /path/to/cert\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  /* 验证可以通过扩展类型获取嵌套对象 */
+  value_t v;
+  ASSERT_EQ(conf_doc_get(doc, "server", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* server_obj = value_object(&v);
+  ASSERT_NE(server_obj, nullptr);
+  ASSERT_STREQ(tk_object_get_prop_str(server_obj, "host"), "localhost");
+  ASSERT_EQ(tk_object_get_prop_int(server_obj, "port", 0), 8080);
+  
+  ASSERT_EQ(conf_doc_get(doc, "server.ssl", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* ssl_obj = value_object(&v);
+  ASSERT_NE(ssl_obj, nullptr);
+  ASSERT_EQ(tk_object_get_prop_bool(ssl_obj, "enabled", FALSE), TRUE);
+  ASSERT_STREQ(tk_object_get_prop_str(ssl_obj, "cert"), "/path/to/cert");
+  
+  conf_doc_destroy(doc);
+}
+
+TEST(Yaml, extend_type_array) {
+  /* 测试数组的扩展类型 */
+  const char* data =
+      "users:\n"
+      "  -\n"
+      "    name: jim\n"
+      "    age: 30\n"
+      "  -\n"
+      "    name: tom\n"
+      "    age: 25\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  /* 验证可以通过扩展类型获取数组 */
+  value_t v;
+  ASSERT_EQ(conf_doc_get(doc, "users", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* users_array = value_object(&v);
+  ASSERT_NE(users_array, nullptr);
+  ASSERT_TRUE(tk_object_is_collection(users_array));
+  
+  /* 验证数组元素 - 通过完整路径访问对象属性 */
+  ASSERT_STREQ(conf_doc_get_str(doc, "users.[0].name", ""), "jim");
+  ASSERT_EQ(conf_doc_get_int(doc, "users.[0].age", 0), 30);
+  ASSERT_STREQ(conf_doc_get_str(doc, "users.[1].name", ""), "tom");
+  ASSERT_EQ(conf_doc_get_int(doc, "users.[1].age", 0), 25);
+  
+  /* 验证数组大小 */
+  ASSERT_EQ(conf_doc_get(doc, "users.#size", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 2);
+  
+  conf_doc_destroy(doc);
+}
+
+TEST(Yaml, extend_type_empty_object) {
+  /* 测试空对象的扩展类型 */
+  const char* data = "empty:\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  /* 验证空对象可以通过扩展类型获取 */
+  value_t v;
+  ASSERT_EQ(conf_doc_get(doc, "empty", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* empty_obj = value_object(&v);
+  ASSERT_NE(empty_obj, nullptr);
+  
+  /* 验证空对象没有属性 */
+  value_t v2;
+  ASSERT_NE(tk_object_get_prop(empty_obj, "any", &v2), RET_OK);
+  
+  conf_doc_destroy(doc);
+}
+
+TEST(Yaml, extend_type_complex_nested) {
+  /* 测试复杂嵌套结构的扩展类型 */
+  const char* data =
+      "config:\n"
+      "  app:\n"
+      "    name: MyApp\n"
+      "    version: 1.0.0\n"
+      "  database:\n"
+      "    host: localhost\n"
+      "    port: 5432\n"
+      "    connections:\n"
+      "      - pool1\n"
+      "      - pool2\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  /* 验证多级嵌套对象 */
+  value_t v;
+  ASSERT_EQ(conf_doc_get(doc, "config", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* config_obj = value_object(&v);
+  ASSERT_NE(config_obj, nullptr);
+  
+  ASSERT_EQ(conf_doc_get(doc, "config.app", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* app_obj = value_object(&v);
+  ASSERT_NE(app_obj, nullptr);
+  ASSERT_STREQ(tk_object_get_prop_str(app_obj, "name"), "MyApp");
+  ASSERT_STREQ(tk_object_get_prop_str(app_obj, "version"), "1.0.0");
+  
+  ASSERT_EQ(conf_doc_get(doc, "config.database", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* db_obj = value_object(&v);
+  ASSERT_NE(db_obj, nullptr);
+  ASSERT_STREQ(tk_object_get_prop_str(db_obj, "host"), "localhost");
+  ASSERT_EQ(tk_object_get_prop_int(db_obj, "port", 0), 5432);
+  
+  ASSERT_EQ(conf_doc_get(doc, "config.database.connections", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* conn_array = value_object(&v);
+  ASSERT_NE(conn_array, nullptr);
+  ASSERT_STREQ(tk_object_get_prop_str_by_path(conn_array, "[0]"), "pool1");
+  ASSERT_STREQ(tk_object_get_prop_str_by_path(conn_array, "[1]"), "pool2");
+  
+  conf_doc_destroy(doc);
+}
+
+TEST(Yaml, extend_type_with_quoted_keys) {
+  /* 测试带引号键名的扩展类型 */
+  const char* data =
+      "\"key with spaces\":\n"
+      "  value1: test1\n"
+      "  value2: test2\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  /* 验证带引号的键名可以通过扩展类型获取 - 键名在解析时已去掉引号 */
+  value_t v;
+  ASSERT_EQ(conf_doc_get(doc, "key with spaces", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* obj = value_object(&v);
+  ASSERT_NE(obj, nullptr);
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "value1"), "test1");
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "value2"), "test2");
+  
+  conf_doc_destroy(doc);
+}
+
+TEST(Yaml, extend_type_save_and_reload) {
+  /* 测试扩展类型的保存和重新加载 */
+  const char* data =
+      "person:\n"
+      "  name: John\n"
+      "  age: 30\n"
+      "  address:\n"
+      "    city: Beijing\n"
+      "    country: China\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  /* 保存 */
+  str_t str;
+  str_init(&str, 1000);
+  conf_doc_save_yaml(doc, &str);
+  
+  /* 重新加载 */
+  conf_doc_t* reloaded_doc = conf_doc_load_yaml(str.str);
+  ASSERT_NE(reloaded_doc, nullptr);
+  
+  conf_doc_use_extend_type(reloaded_doc, TRUE);
+  
+  /* 验证重新加载后的扩展类型 */
+  value_t v;
+  ASSERT_EQ(conf_doc_get(reloaded_doc, "person", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* person_obj = value_object(&v);
+  ASSERT_NE(person_obj, nullptr);
+  ASSERT_STREQ(tk_object_get_prop_str(person_obj, "name"), "John");
+  ASSERT_EQ(tk_object_get_prop_int(person_obj, "age", 0), 30);
+  
+  ASSERT_EQ(conf_doc_get(reloaded_doc, "person.address", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* addr_obj = value_object(&v);
+  ASSERT_NE(addr_obj, nullptr);
+  ASSERT_STREQ(tk_object_get_prop_str(addr_obj, "city"), "Beijing");
+  ASSERT_STREQ(tk_object_get_prop_str(addr_obj, "country"), "China");
+  
+  str_reset(&str);
+  conf_doc_destroy(doc);
+  conf_doc_destroy(reloaded_doc);
+}
+
+TEST(Yaml, extend_type_flow_collections) {
+  /* 测试流式集合的扩展类型 */
+  const char* data =
+      "config: {servers: [{name: s1, port: 80}, {name: s2, port: 443}], timeout: 30}\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  /* 验证流式集合可以通过扩展类型获取 */
+  value_t v;
+  ASSERT_EQ(conf_doc_get(doc, "config", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* config_obj = value_object(&v);
+  ASSERT_NE(config_obj, nullptr);
+  ASSERT_EQ(tk_object_get_prop_int(config_obj, "timeout", 0), 30);
+  
+  ASSERT_EQ(conf_doc_get(doc, "config.servers", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* servers_array = value_object(&v);
+  ASSERT_NE(servers_array, nullptr);
+  
+  ASSERT_EQ(conf_doc_get(doc, "config.servers.[0]", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* server1 = value_object(&v);
+  ASSERT_NE(server1, nullptr);
+  ASSERT_STREQ(tk_object_get_prop_str(server1, "name"), "s1");
+  ASSERT_EQ(tk_object_get_prop_int(server1, "port", 0), 80);
+  
+  ASSERT_EQ(conf_doc_get(doc, "config.servers.[1]", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* server2 = value_object(&v);
+  ASSERT_NE(server2, nullptr);
+  ASSERT_STREQ(tk_object_get_prop_str(server2, "name"), "s2");
+  ASSERT_EQ(tk_object_get_prop_int(server2, "port", 0), 443);
+  
+  conf_doc_destroy(doc);
+}
+
+TEST(Yaml, extend_type_mixed_values) {
+  /* 测试混合值类型（字符串、数字、布尔、对象）的扩展类型 */
+  const char* data =
+      "mixed:\n"
+      "  string_val: hello\n"
+      "  int_val: 42\n"
+      "  bool_val: true\n"
+      "  float_val: 3.14\n"
+      "  object_val:\n"
+      "    nested: value\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  value_t v;
+  ASSERT_EQ(conf_doc_get(doc, "mixed", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* mixed_obj = value_object(&v);
+  ASSERT_NE(mixed_obj, nullptr);
+  
+  /* 验证各种类型的值 */
+  ASSERT_STREQ(tk_object_get_prop_str(mixed_obj, "string_val"), "hello");
+  ASSERT_EQ(tk_object_get_prop_int(mixed_obj, "int_val", 0), 42);
+  ASSERT_EQ(tk_object_get_prop_bool(mixed_obj, "bool_val", FALSE), TRUE);
+  ASSERT_FLOAT_EQ(tk_object_get_prop_float(mixed_obj, "float_val", 0), 3.14f);
+  
+  /* 验证嵌套对象 */
+  ASSERT_EQ(conf_doc_get(doc, "mixed.object_val", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* obj_val = value_object(&v);
+  ASSERT_NE(obj_val, nullptr);
+  ASSERT_STREQ(tk_object_get_prop_str(obj_val, "nested"), "value");
+  
+  conf_doc_destroy(doc);
+}
+
+TEST(Yaml, extend_type_null_values) {
+  /* 测试包含 null 值的扩展类型 */
+  const char* data =
+      "config:\n"
+      "  value1: null\n"
+      "  value2: ~\n"
+      "  nested:\n"
+      "    value3: test\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  value_t v;
+  ASSERT_EQ(conf_doc_get(doc, "config", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* config_obj = value_object(&v);
+  ASSERT_NE(config_obj, nullptr);
+  
+  /* 验证 null 值 */
+  const char* value1 = tk_object_get_prop_str(config_obj, "value1");
+  ASSERT_TRUE(value1 == NULL || strlen(value1) == 0);
+  
+  const char* value2 = tk_object_get_prop_str(config_obj, "value2");
+  ASSERT_TRUE(value2 == NULL || strlen(value2) == 0);
+  
+  /* 验证嵌套对象 */
+  ASSERT_EQ(conf_doc_get(doc, "config.nested", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* nested_obj = value_object(&v);
+  ASSERT_NE(nested_obj, nullptr);
+  ASSERT_STREQ(tk_object_get_prop_str(nested_obj, "value3"), "test");
+  
+  conf_doc_destroy(doc);
+}
+
+TEST(Yaml, extend_type_modify_object) {
+  /* 测试通过扩展类型修改对象属性 */
+  const char* data =
+      "person:\n"
+      "  name: John\n"
+      "  age: 30\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  value_t v;
+  ASSERT_EQ(conf_doc_get(doc, "person", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* person_obj = value_object(&v);
+  ASSERT_NE(person_obj, nullptr);
+  
+  /* 修改属性 */
+  ASSERT_EQ(tk_object_set_prop_str(person_obj, "name", "Jane"), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(person_obj, "age", 25), RET_OK);
+  
+  /* 验证修改 */
+  ASSERT_STREQ(tk_object_get_prop_str(person_obj, "name"), "Jane");
+  ASSERT_EQ(tk_object_get_prop_int(person_obj, "age", 0), 25);
+  
+  /* 验证通过 doc 对象也能看到修改 */
+  ASSERT_STREQ(conf_doc_get_str(doc, "person.name", ""), "Jane");
+  ASSERT_EQ(conf_doc_get_int(doc, "person.age", 0), 25);
+  
+  conf_doc_destroy(doc);
+}
+
+TEST(Yaml, extend_type_add_property) {
+  /* 测试通过扩展类型添加新属性 */
+  const char* data =
+      "person:\n"
+      "  name: John\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  value_t v;
+  ASSERT_EQ(conf_doc_get(doc, "person", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* person_obj = value_object(&v);
+  ASSERT_NE(person_obj, nullptr);
+  
+  /* 添加新属性 */
+  ASSERT_EQ(tk_object_set_prop_int(person_obj, "age", 30), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_str(person_obj, "city", "Beijing"), RET_OK);
+  
+  /* 验证新属性 */
+  ASSERT_STREQ(tk_object_get_prop_str(person_obj, "name"), "John");
+  ASSERT_EQ(tk_object_get_prop_int(person_obj, "age", 0), 30);
+  ASSERT_STREQ(tk_object_get_prop_str(person_obj, "city"), "Beijing");
+  
+  /* 验证通过 doc 对象也能看到新属性 */
+  ASSERT_STREQ(conf_doc_get_str(doc, "person.name", ""), "John");
+  ASSERT_EQ(conf_doc_get_int(doc, "person.age", 0), 30);
+  ASSERT_STREQ(conf_doc_get_str(doc, "person.city", ""), "Beijing");
+  
+  conf_doc_destroy(doc);
+}
+
+TEST(Yaml, extend_type_empty_array) {
+  /* 测试空数组的扩展类型 */
+  const char* data = "items:\n  -\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  /* 验证空数组可以通过扩展类型获取 */
+  value_t v;
+  ASSERT_EQ(conf_doc_get(doc, "items", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* items_array = value_object(&v);
+  ASSERT_NE(items_array, nullptr);
+  ASSERT_TRUE(tk_object_is_collection(items_array));
+  
+  conf_doc_destroy(doc);
+}
+
+TEST(Yaml, extend_type_deep_nesting) {
+  /* 测试深层嵌套的扩展类型 */
+  const char* data =
+      "level1:\n"
+      "  level2:\n"
+      "    level3:\n"
+      "      level4:\n"
+      "        value: deep\n";
+  
+  conf_doc_t* doc = conf_doc_load_yaml(data);
+  ASSERT_NE(doc, nullptr);
+  conf_doc_use_extend_type(doc, TRUE);
+  
+  /* 验证深层嵌套对象 */
+  value_t v;
+  ASSERT_EQ(conf_doc_get(doc, "level1", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* l1 = value_object(&v);
+  ASSERT_NE(l1, nullptr);
+  
+  ASSERT_EQ(conf_doc_get(doc, "level1.level2", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* l2 = value_object(&v);
+  ASSERT_NE(l2, nullptr);
+  
+  ASSERT_EQ(conf_doc_get(doc, "level1.level2.level3", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* l3 = value_object(&v);
+  ASSERT_NE(l3, nullptr);
+  
+  ASSERT_EQ(conf_doc_get(doc, "level1.level2.level3.level4", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_OBJECT);
+  
+  tk_object_t* l4 = value_object(&v);
+  ASSERT_NE(l4, nullptr);
+  ASSERT_STREQ(tk_object_get_prop_str(l4, "value"), "deep");
+  
+  conf_doc_destroy(doc);
 }
 
 TEST(Yaml, empty_string) {

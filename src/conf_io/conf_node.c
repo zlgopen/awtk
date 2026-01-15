@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   conf_node.c
  * Author: AWTK Develop Team
  * Brief:  conf node
@@ -260,6 +260,20 @@ ret_t conf_doc_append_sibling(conf_doc_t* doc, conf_node_t* node, conf_node_t* s
 ret_t conf_doc_append_child(conf_doc_t* doc, conf_node_t* node, conf_node_t* child) {
   conf_node_t* first_child = conf_node_get_first_child(node);
   return_value_if_fail(doc != NULL && node != NULL && child != NULL, RET_BAD_PARAMS);
+
+  /* 如果节点有子节点，且 value_type 为 NONE，则设置为 NODE 类型 */
+  if (node->value_type == CONF_NODE_VALUE_NONE && 
+      (node->node_type == CONF_NODE_OBJECT || node->node_type == CONF_NODE_ARRAY)) {
+    node->value_type = CONF_NODE_VALUE_NODE;
+  }
+  
+  /* 如果节点有子节点，确保 node_type 是正确的类型 */
+  if (first_child == NULL && node->value_type == CONF_NODE_VALUE_NODE) {
+    /* 第一个子节点，确保父节点类型正确 */
+    if (node->node_type != CONF_NODE_OBJECT && node->node_type != CONF_NODE_ARRAY) {
+      node->node_type = CONF_NODE_OBJECT;
+    }
+  }
 
   if (first_child == NULL) {
     conf_node_set_first_child(node, child);
@@ -763,6 +777,7 @@ const char* conf_node_get_value_str(conf_node_t* node, const char* defval) {
 
 static tokenizer_t* conf_doc_get_tokenizer(conf_doc_t* doc, const char* path) {
   tokenizer_t* tokenizer = &(doc->tokenizer);
+  /* 确保分隔符已设置（在 conf_doc_create 中已初始化） */
   tokenizer->str = path;
   tokenizer->cursor = 0;
   tokenizer->size = strlen(path);
@@ -941,6 +956,32 @@ ret_t conf_doc_get_value_extend_type(conf_doc_t* doc, conf_node_t* node, value_t
         default: {
           return RET_NOT_IMPL;
         }
+      }
+      break;
+    }
+    case CONF_NODE_VALUE_NONE: {
+      /* 如果节点有子节点，且 node_type 是 OBJECT 或 ARRAY，也应该返回对象 */
+      if (conf_node_get_first_child(node) != NULL) {
+        switch (node->node_type) {
+          case CONF_NODE_OBJECT:
+          case CONF_NODE_ARRAY: {
+            /* 更新 value_type 为 NODE */
+            node->value_type = CONF_NODE_VALUE_NODE;
+            tk_object_t* obj = TK_OBJECT(conf_doc_obj_array_find(doc, node));
+            if (obj == NULL) {
+              value_t tmp;
+              obj = conf_node_obj_create(doc, node);
+              object_array_push(doc->obj_array, value_set_object(&tmp, obj));
+              tk_object_unref(obj);
+            }
+            value_set_object(v, obj);
+          } break;
+          default: {
+            return RET_NOT_IMPL;
+          }
+        }
+      } else {
+        return RET_NOT_IMPL;
       }
       break;
     }
