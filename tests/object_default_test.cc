@@ -921,4 +921,8 @@ TEST(ObjectDefault, foreach_object) {
   ASSERT_TRUE(strstr(s->str, "com2.stop_bits=1;") != NULL);
 
   str_destroy(s);
+  TK_OBJECT_UNREF(com0);
+  TK_OBJECT_UNREF(com1);
+  TK_OBJECT_UNREF(com2);
+  TK_OBJECT_UNREF(root);
 }
