@@ -87,21 +87,25 @@ TEST(ConfUtils, object_from_json) {
 TEST(ConfUtils, object_load_conf_disable_path) {
   char url[MAX_PATH + 1];
   const char* str =
-      "abc.log:\n"
-      "  output: file\n"
-      "  level: DEBUG\n";
+      "category.1:\n"
+      "  abc.log:\n"
+      "    output: file\n"
+      "    level: DEBUG\n";
   tk_object_t* obj = object_default_create_ex(FALSE);
-  tk_object_t* sub_obj = NULL;
+  tk_object_t *obj_category = NULL, *obj_file = NULL;
 
   data_reader_mem_build_url(str, tk_strlen(str), url);
 
   ASSERT_EQ(object_load_conf(obj, url, "yaml"), RET_OK);
 
-  sub_obj = tk_object_get_prop_object(obj, "abc.log");
-  ASSERT_TRUE(sub_obj != NULL);
+  obj_category = tk_object_get_prop_object(obj, "category.1");
+  ASSERT_TRUE(obj_category != NULL);
 
-  ASSERT_STREQ(tk_object_get_prop_str(sub_obj, "output"), "file");
-  ASSERT_STREQ(tk_object_get_prop_str(sub_obj, "level"), "DEBUG");
+  obj_file = tk_object_get_prop_object(obj_category, "abc.log");
+  ASSERT_TRUE(obj_file != NULL);
+
+  ASSERT_STREQ(tk_object_get_prop_str(obj_file, "output"), "file");
+  ASSERT_STREQ(tk_object_get_prop_str(obj_file, "level"), "DEBUG");
 
   TK_OBJECT_UNREF(obj);
 }
