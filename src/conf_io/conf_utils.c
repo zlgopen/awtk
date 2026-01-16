@@ -29,9 +29,20 @@
 #include "conf_io/conf_json.h"
 #include "conf_io/conf_yaml.h"
 
-static ret_t object_load_conf_copy_props(tk_object_t* obj, tk_object_t* src);
+typedef struct _object_load_conf_ctx {
+  bool_t disable_path : 1;
+} object_load_conf_ctx;
 
-static ret_t object_load_conf_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
+typedef struct _object_load_conf_copy_props_on_visit_ctx_t {
+  const object_load_conf_ctx* ctx;
+  tk_object_t* obj;
+} object_load_conf_copy_props_on_visit_ctx_t;
+
+static ret_t object_load_conf_copy_props(tk_object_t* obj, tk_object_t* src,
+                                         const object_load_conf_ctx* ctx);
+
+static ret_t object_load_conf_set_prop(tk_object_t* obj, const char* name, const value_t* v,
+                                       const object_load_conf_ctx* ctx) {
   ret_t ret = RET_OK;
   value_t value;
 
@@ -42,9 +53,9 @@ static ret_t object_load_conf_set_prop(tk_object_t* obj, const char* name, const
     if (tk_object_is_collection(v_obj)) {
       o = object_array_create();
     } else {
-      o = object_hash_create();
+      o = object_hash_create_ex(!ctx->disable_path);
     }
-    object_load_conf_copy_props(o, v_obj);
+    object_load_conf_copy_props(o, v_obj, ctx);
     value_set_object(&tmp, o);
     value_deep_copy(&value, &tmp);
     TK_OBJECT_UNREF(o);
@@ -65,15 +76,21 @@ static ret_t object_load_conf_set_prop(tk_object_t* obj, const char* name, const
 
 static ret_t object_load_conf_copy_props_on_visit(void* ctx, const void* data) {
   named_value_t* nv = (named_value_t*)data;
-  tk_object_t* obj = TK_OBJECT(ctx);
-  object_load_conf_set_prop(obj, nv->name, &(nv->value));
+  object_load_conf_copy_props_on_visit_ctx_t* actx =
+      (object_load_conf_copy_props_on_visit_ctx_t*)(ctx);
+  object_load_conf_set_prop(actx->obj, nv->name, &(nv->value), actx->ctx);
   return RET_OK;
 }
 
-inline static ret_t object_load_conf_copy_props(tk_object_t* obj, tk_object_t* src) {
+inline static ret_t object_load_conf_copy_props(tk_object_t* obj, tk_object_t* src,
+                                                const object_load_conf_ctx* ctx) {
+  object_load_conf_copy_props_on_visit_ctx_t on_visit_ctx = {
+      .ctx = ctx,
+      .obj = obj,
+  };
   return_value_if_fail(obj != NULL && src != NULL, RET_BAD_PARAMS);
 
-  return tk_object_foreach_prop(src, object_load_conf_copy_props_on_visit, obj);
+  return tk_object_foreach_prop(src, object_load_conf_copy_props_on_visit, &on_visit_ctx);
 }
 
 static tk_object_t* conf_obj_load_ex(const char* url, bool_t create_if_not_exist,
@@ -95,12 +112,17 @@ static tk_object_t* conf_obj_load_ex(const char* url, bool_t create_if_not_exist
 ret_t object_load_conf(tk_object_t* obj, const char* url, const char* type) {
   ret_t ret = RET_OK;
   tk_object_t* obj_conf = NULL;
+  object_load_conf_ctx ctx = {0};
   return_value_if_fail(obj != NULL && TK_STR_IS_NOT_EMPTY(url), RET_BAD_PARAMS);
 
   obj_conf = conf_obj_load_ex(url, FALSE, TRUE, type);
   return_value_if_fail(obj_conf != NULL, RET_FAIL);
 
-  ret = object_load_conf_copy_props(obj, obj_conf);
+  ctx.disable_path = tk_object_get_prop_bool(obj, TK_OBJECT_PROP_DISABLE_PATH, FALSE);
+
+  conf_doc_disable_path(conf_obj_get_doc(obj_conf), ctx.disable_path);
+
+  ret = object_load_conf_copy_props(obj, obj_conf, &ctx);
 
   TK_OBJECT_UNREF(obj_conf);
 

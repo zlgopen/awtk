@@ -50,6 +50,7 @@ typedef struct _conf_doc_t {
   bool_t use_extend_type;
 
   /*private*/
+  bool_t disable_path;
   tokenizer_t tokenizer;
   tk_object_t* obj_array;
   conf_node_t* prealloc_nodes;
@@ -971,7 +972,8 @@ ret_t conf_doc_foreach(conf_doc_t* doc, conf_doc_on_visit_t on_visit, void* ctx)
  *
  * @return {ret_t} 返回 ret_t 值
  */
-ret_t conf_doc_foreach_ex(conf_doc_t* doc, conf_node_t* node, conf_doc_on_visit_t on_visit, void* ctx);
+ret_t conf_doc_foreach_ex(conf_doc_t* doc, conf_node_t* node, conf_doc_on_visit_t on_visit,
+                          void* ctx);
 
 /**
  * @method conf_doc_foreach_path
@@ -984,7 +986,8 @@ ret_t conf_doc_foreach_ex(conf_doc_t* doc, conf_node_t* node, conf_doc_on_visit_
  *
  * @return {ret_t} 返回 ret_t 值
  */
-ret_t conf_doc_foreach_path(conf_doc_t* doc, const char* path, conf_doc_on_visit_t on_visit, void* ctx);
+ret_t conf_doc_foreach_path(conf_doc_t* doc, const char* path, conf_doc_on_visit_t on_visit,
+                            void* ctx);
 
 #define CONF_NODE_ROOT_NAME "root"
 
@@ -995,6 +998,7 @@ ret_t conf_doc_foreach_path(conf_doc_t* doc, const char* path, conf_doc_on_visit
 /* private */
 ret_t conf_doc_set_ex(conf_doc_t* doc, conf_node_t* node, const char* path, const value_t* v);
 ret_t conf_doc_get_value_extend_type(conf_doc_t* doc, conf_node_t* node, value_t* v);
+ret_t conf_doc_disable_path(conf_doc_t* doc, bool_t disable_path);
 
 /*ini/yaml使用*/
 ret_t conf_node_save_value(str_t* str, const value_t* v, char comment_char);

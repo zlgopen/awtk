@@ -207,8 +207,12 @@ static ret_t object_default_get_prop(tk_object_t* obj, const char* name, value_t
   ret_t ret = RET_NOT_FOUND;
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
   if (tk_str_eq(name, TK_OBJECT_PROP_SIZE)) {
     value_set_uint32(v, o->props.size);
+    return RET_OK;
+  } else if (tk_str_eq(name, TK_OBJECT_PROP_DISABLE_PATH)) {
+    value_set_bool(v, !o->enable_path);
     return RET_OK;
   }
 

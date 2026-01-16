@@ -262,11 +262,11 @@ ret_t conf_doc_append_child(conf_doc_t* doc, conf_node_t* node, conf_node_t* chi
   return_value_if_fail(doc != NULL && node != NULL && child != NULL, RET_BAD_PARAMS);
 
   /* 如果节点有子节点，且 value_type 为 NONE，则设置为 NODE 类型 */
-  if (node->value_type == CONF_NODE_VALUE_NONE && 
+  if (node->value_type == CONF_NODE_VALUE_NONE &&
       (node->node_type == CONF_NODE_OBJECT || node->node_type == CONF_NODE_ARRAY)) {
     node->value_type = CONF_NODE_VALUE_NODE;
   }
-  
+
   /* 如果节点有子节点，确保 node_type 是正确的类型 */
   if (first_child == NULL && node->value_type == CONF_NODE_VALUE_NODE) {
     /* 第一个子节点，确保父节点类型正确 */
@@ -792,71 +792,83 @@ static conf_node_t* conf_doc_get_node(conf_doc_t* doc, const char* path,
   return conf_doc_find_node(doc, doc->root, path, create_if_not_exist);
 }
 
+static conf_node_t* conf_doc_find_node_impl(conf_doc_t* doc, conf_node_t* node, const char* name,
+                                            bool_t create_if_not_exist, bool_t* is_stop) {
+  conf_node_t* ret = NULL;
+  bool_t _is_stop = FALSE;
+  if (NULL == is_stop) {
+    is_stop = &_is_stop;
+  }
+  *is_stop = FALSE;
+
+  if (*name == '[') {
+    int32_t index = tk_atoi(name + 1);
+    ret = conf_node_find_child_by_index(node, index);
+    if (ret == NULL) {
+      if (index < 0) {
+        /*append*/
+        assert(node->node_type == CONF_NODE_ARRAY);
+      } else if (index == conf_node_count_children(node)) {
+        if (index == 0) {
+          node->node_type = CONF_NODE_ARRAY;
+        }
+        /*append*/
+      } else {
+        /*node must be exist if find by index */
+        return_value_if_fail(ret != NULL, NULL);
+      }
+    }
+  } else if (*name == '#') {
+    *is_stop = TRUE;
+    return node;
+  } else {
+    ret = conf_node_find_child(node, name);
+  }
+
+  if (NULL == ret && create_if_not_exist) {
+    ret = conf_doc_create_node(doc, name);
+    return_value_if_fail(ret != NULL, NULL);
+    conf_doc_append_child(doc, node, ret);
+  }
+
+  return ret;
+}
+
 conf_node_t* conf_doc_find_node(conf_doc_t* doc, conf_node_t* node, const char* path,
                                 bool_t create_if_not_exist) {
-  uint32_t deep = 1;
-  const char* token = NULL;
-  conf_node_t* iter = NULL;
-  tokenizer_t* t = conf_doc_get_tokenizer(doc, path);
-  return_value_if_fail(t != NULL, NULL);
   if (node == NULL) {
     node = doc->root;
   }
   return_value_if_fail(node != NULL, NULL);
 
-  while (tokenizer_has_more(t)) {
-    if (deep < doc->max_deep_level) {
-      token = tokenizer_next(t);
-    } else {
-      token = t->str + t->cursor;
-      t->cursor = t->size;
-    }
+  if (doc->disable_path) {
+    return conf_doc_find_node_impl(doc, node, path, create_if_not_exist, NULL);
+  } else {
+    uint32_t deep = 1;
+    const char* token = NULL;
+    conf_node_t* iter = NULL;
+    tokenizer_t* t = conf_doc_get_tokenizer(doc, path);
+    return_value_if_fail(t != NULL, NULL);
 
-    if (*token == '[') {
-      int32_t index = tk_atoi(token + 1);
-      iter = conf_node_find_child_by_index(node, index);
-      if (iter == NULL) {
-        if (index < 0) {
-          /*append*/
-          assert(node->node_type == CONF_NODE_ARRAY);
-        } else if (index == conf_node_count_children(node)) {
-          if (index == 0) {
-            node->node_type = CONF_NODE_ARRAY;
-          }
-          /*append*/
-        } else {
-          /*node must be exist if find by index */
-          return_value_if_fail(iter != NULL, NULL);
-        }
-      }
-    } else if (*token == '#') {
-      return node;
-    } else {
-      iter = conf_node_find_child(node, token);
-    }
-
-    if (iter == NULL) {
-      if (create_if_not_exist) {
-        iter = conf_doc_create_node(doc, token);
-        return_value_if_fail(iter != NULL, NULL);
-        conf_doc_append_child(doc, node, iter);
-        if (!tokenizer_has_more(t)) {
-          return iter;
-        } else {
-          node = iter;
-        }
+    while (tokenizer_has_more(t)) {
+      bool_t is_stop = FALSE;
+      if (deep < doc->max_deep_level) {
+        token = tokenizer_next(t);
       } else {
-        return NULL;
+        token = t->str + t->cursor;
+        t->cursor = t->size;
       }
-    } else {
-      if (tokenizer_has_more(t)) {
+
+      iter = conf_doc_find_node_impl(doc, node, token, create_if_not_exist, &is_stop);
+
+      if (iter != NULL && !is_stop && tokenizer_has_more(t)) {
         node = iter;
       } else {
         return iter;
       }
-    }
 
-    deep++;
+      deep++;
+    }
   }
 
   return NULL;
@@ -1241,6 +1253,12 @@ ret_t conf_doc_use_extend_type(conf_doc_t* doc, bool_t use) {
   return ret;
 }
 
+ret_t conf_doc_disable_path(conf_doc_t* doc, bool_t disable_path) {
+  return_value_if_fail(doc != NULL, RET_BAD_PARAMS);
+  doc->disable_path = disable_path;
+  return RET_OK;
+}
+
 ret_t conf_node_get_child_value(conf_node_t* node, const char* name, value_t* v) {
   conf_node_t* child = conf_node_find_child(node, name);
   return_value_if_fail(v != NULL, RET_BAD_PARAMS);
@@ -1364,7 +1382,8 @@ static ret_t conf_node_foreach_sibling(const char* root, conf_node_t* iter,
   return RET_OK;
 }
 
-ret_t conf_doc_foreach_ex(conf_doc_t* doc, conf_node_t* node, conf_doc_on_visit_t on_visit, void* ctx) {
+ret_t conf_doc_foreach_ex(conf_doc_t* doc, conf_node_t* node, conf_doc_on_visit_t on_visit,
+                          void* ctx) {
   return_value_if_fail(doc && on_visit, RET_BAD_PARAMS);
   return_value_if_fail(node != NULL, RET_NOT_FOUND);
   return conf_node_foreach_sibling(NULL, conf_node_get_first_child(node), on_visit, ctx);
@@ -1374,8 +1393,9 @@ ret_t conf_doc_foreach(conf_doc_t* doc, conf_doc_on_visit_t on_visit, void* ctx)
   return conf_doc_foreach_ex(doc, doc->root, on_visit, ctx);
 }
 
-ret_t conf_doc_foreach_path(conf_doc_t* doc, const char* path, conf_doc_on_visit_t on_visit, void* ctx) {
-  conf_node_t* node = conf_doc_find_node(doc ,NULL, path, FALSE);
+ret_t conf_doc_foreach_path(conf_doc_t* doc, const char* path, conf_doc_on_visit_t on_visit,
+                            void* ctx) {
+  conf_node_t* node = conf_doc_find_node(doc, NULL, path, FALSE);
   return_value_if_fail(node != NULL, RET_NOT_FOUND);
 
   return conf_doc_foreach_ex(doc, node, on_visit, ctx);

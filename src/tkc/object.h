@@ -1202,6 +1202,12 @@ int32_t tk_object_compare_name_without_nullptr(tk_object_t* obj, tk_object_t* ot
 #define TK_OBJECT_PROP_SIZE "#size"
 
 /**
+ * @const TK_OBJECT_PROP_DISABLE_PATH
+ * 是否禁用按路径访问属性。
+ */
+#define TK_OBJECT_PROP_DISABLE_PATH "#disable_path"
+
+/**
  * @const TK_OBJECT_PROP_CHECKED
  * 属性是否勾选。
  */

@@ -1,5 +1,6 @@
 #include "tkc/object_default.h"
 #include "tkc/object_array.h"
+#include "tkc/data_reader_mem.h"
 #include "conf_io/conf_utils.h"
 
 #include "gtest/gtest.h"
@@ -79,6 +80,28 @@ TEST(ConfUtils, object_from_json) {
 
   ASSERT_STREQ(tk_object_get_prop_str(obj, "addr.city"), "sz");
   ASSERT_STREQ(tk_object_get_prop_str(obj, "addr.country"), "zh");
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(ConfUtils, object_load_conf_disable_path) {
+  char url[MAX_PATH + 1];
+  const char* str =
+      "abc.log:\n"
+      "  output: file\n"
+      "  level: DEBUG\n";
+  tk_object_t* obj = object_default_create_ex(FALSE);
+  tk_object_t* sub_obj = NULL;
+
+  data_reader_mem_build_url(str, tk_strlen(str), url);
+
+  ASSERT_EQ(object_load_conf(obj, url, "yaml"), RET_OK);
+
+  sub_obj = tk_object_get_prop_object(obj, "abc.log");
+  ASSERT_TRUE(sub_obj != NULL);
+
+  ASSERT_STREQ(tk_object_get_prop_str(sub_obj, "output"), "file");
+  ASSERT_STREQ(tk_object_get_prop_str(sub_obj, "level"), "DEBUG");
 
   TK_OBJECT_UNREF(obj);
 }
