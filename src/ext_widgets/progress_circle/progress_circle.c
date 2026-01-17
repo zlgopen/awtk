@@ -123,44 +123,114 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
     end_angle = t;
   }
 
-  if (!progress_circle->is_redraw && (end_angle - start_angle) < (M_PI / 2)) {
-    xy_t cx = widget->w / 2;
-    xy_t cy = widget->h / 2;
-    float_t r = progress_circle_get_radius(widget);
+  xy_t cx = widget->w / 2;
+  xy_t cy = widget->h / 2;
+  float_t r = progress_circle_get_radius(widget);
+  int32_t r_int = tk_roundi(r);
+  float_t angle_diff = end_angle - start_angle;
 
-    start_p.y = tk_roundi(r * sin(start_angle));
-    start_p.x = tk_roundi(r * cos(start_angle));
+  start_p.y = tk_roundi(r * sin(start_angle));
+  start_p.x = tk_roundi(r * cos(start_angle));
 
-    end_p.y = tk_roundi(r * sin(end_angle));
-    end_p.x = tk_roundi(r * cos(end_angle));
+  end_p.y = tk_roundi(r * sin(end_angle));
+  end_p.x = tk_roundi(r * cos(end_angle));
 
+  if (angle_diff < (M_PI / 2)) {
+    /* 小角度差：使用起点和终点的边界框 */
     min_x = tk_min(start_p.x, end_p.x) - line_width;
     max_x = tk_max(start_p.x, end_p.x) + line_width;
     min_y = tk_min(start_p.y, end_p.y) - line_width;
     max_y = tk_max(start_p.y, end_p.y) + line_width;
     if (start_p.x > 0 && end_p.x < 0) {
       /*跨越第1和2象限*/
-      max_y = tk_max_int(r, max_y);
+      max_y = tk_max_int(r_int, max_y);
     } else if (start_p.y > 0 && end_p.y < 0) {
       /*跨越第2和3象限*/
-      min_x = tk_min_int(-r, min_x);
+      min_x = tk_min_int(-r_int, min_x);
     } else if (start_p.x < 0 && end_p.x > 0) {
       /*跨越第3和4象限*/
-      min_y = tk_min_int(-r, min_y);
+      min_y = tk_min_int(-r_int, min_y);
     } else if (start_p.y < 0 && end_p.y > 0) {
       /*跨越第4和1象限*/
-      max_x = tk_max_int(r, max_x);
+      max_x = tk_max_int(r_int, max_x);
     }
-
-    assert(min_x <= max_x);
-    assert(min_y <= max_y);
-    rect = rect_init(min_x, min_y, max_x - min_x, max_y - min_y);
-    rect.x += cx;
-    rect.y += cy;
   } else {
-    progress_circle->is_redraw = FALSE;
-    rect = rect_init(0, 0, widget->w, widget->h);
+    /* 大角度差：需要覆盖整个弧段，计算关键点的边界框 */
+    int32_t i = 0;
+    float_t step = angle_diff / 8; /* 采样8个点 */
+    point_t p = {0, 0};
+    
+    /* 初始化边界框为起点和终点 */
+    min_x = tk_min(start_p.x, end_p.x) - line_width;
+    max_x = tk_max(start_p.x, end_p.x) + line_width;
+    min_y = tk_min(start_p.y, end_p.y) - line_width;
+    max_y = tk_max(start_p.y, end_p.y) + line_width;
+    
+    /* 采样弧段上的关键点 */
+    for (i = 1; i < 8; i++) {
+      float_t angle = start_angle + step * i;
+      p.x = tk_roundi(r * cos(angle));
+      p.y = tk_roundi(r * sin(angle));
+      
+      min_x = tk_min_int(min_x, p.x - line_width);
+      max_x = tk_max_int(max_x, p.x + line_width);
+      min_y = tk_min_int(min_y, p.y - line_width);
+      max_y = tk_max_int(max_y, p.y + line_width);
+    }
+    
+    /* 检查是否跨越象限边界，如果是则需要扩展边界框 */
+    if (angle_diff >= M_PI / 2) {
+      /* 检查是否经过右边界（x最大） */
+      if ((start_angle < M_PI / 2 && end_angle > M_PI / 2) ||
+          (start_angle < -3 * M_PI / 2 && end_angle > -3 * M_PI / 2)) {
+        max_x = tk_max_int(r_int, max_x);
+      }
+      /* 检查是否经过上边界（y最大） */
+      if ((start_angle < M_PI && end_angle > M_PI) ||
+          (start_angle < -M_PI && end_angle > -M_PI)) {
+        max_y = tk_max_int(r_int, max_y);
+      }
+      /* 检查是否经过左边界（x最小） */
+      if ((start_angle < 3 * M_PI / 2 && end_angle > 3 * M_PI / 2) ||
+          (start_angle < -M_PI / 2 && end_angle > -M_PI / 2)) {
+        min_x = tk_min_int(-r_int, min_x);
+      }
+      /* 检查是否经过下边界（y最小） */
+      if ((start_angle < 2 * M_PI && end_angle > 2 * M_PI) ||
+          (start_angle < 0 && end_angle > 0)) {
+        min_y = tk_min_int(-r_int, min_y);
+      }
+    }
   }
+
+  assert(min_x <= max_x);
+  assert(min_y <= max_y);
+  rect = rect_init(min_x, min_y, max_x - min_x, max_y - min_y);
+  rect.x += cx;
+  rect.y += cy;
+  
+  /* 确保脏区不超出控件边界 */
+  if (rect.x < 0) {
+    rect.w += rect.x;
+    rect.x = 0;
+    if (rect.w < 0) rect.w = 0;
+  }
+  if (rect.y < 0) {
+    rect.h += rect.y;
+    rect.y = 0;
+    if (rect.h < 0) rect.h = 0;
+  }
+  if (rect.x + rect.w > widget->w) {
+    rect.w = widget->w - rect.x;
+    if (rect.w < 0) rect.w = 0;
+  }
+  if (rect.y + rect.h > widget->h) {
+    rect.h = widget->h - rect.y;
+    if (rect.h < 0) rect.h = 0;
+  }
+  
+  /* 重置 is_redraw 标志 */
+  progress_circle->is_redraw = FALSE;
 
   return rect;
 }
