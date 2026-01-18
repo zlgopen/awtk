@@ -156,7 +156,7 @@ uint16_t tk_chksum(uint16_t sum, const void* data, int data_length) {
  *
  * This file is licensed under the MIT License as stated below
  *
- * Copyright (c) 1999-2016 Lammert Bies
+ * Copyright (c) 1999 - 2026 Lammert Bies
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  Lock Free Bipartite Buffer
  *
- * Copyright (c) 2025 - 2025 Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2025 - 2026 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,7 +20,7 @@
  */
 
 /**************************************************************
- * Copyright (c) 2022 Djordje Nedic
+ * Copyright (c) 2022 - 2026 Djordje Nedic
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated

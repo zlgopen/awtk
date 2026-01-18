@@ -4,7 +4,7 @@
  * Author: AWTK Develop Team
  * Brief:  g2d base on pixman.
  *
- * Copyright (c) 2024 - 2025 Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2024 - 2026 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * this program is distributed in the hope that it will be useful,
  * but without any warranty; without even the implied warranty of

@@ -1,7 +1,7 @@
 ﻿/*
 *   SHA-256 implementation.
 *
-*   Copyright (c) 2010 Ilya O. Levin, http://www.literatecode.com
+*   Copyright (c) 2010 - 2026 Ilya O. Levin, http://www.literatecode.com
 *
 *   Permission to use, copy, modify, and distribute this software for any
 *   purpose with or without fee is hereby granted, provided that the above
