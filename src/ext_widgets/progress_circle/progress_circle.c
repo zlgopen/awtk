@@ -201,13 +201,13 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
         min_y = tk_min_int(-r_int, min_y);
       }
     }
-  }
+    }
 
-  assert(min_x <= max_x);
-  assert(min_y <= max_y);
-  rect = rect_init(min_x, min_y, max_x - min_x, max_y - min_y);
-  rect.x += cx;
-  rect.y += cy;
+    assert(min_x <= max_x);
+    assert(min_y <= max_y);
+    rect = rect_init(min_x, min_y, max_x - min_x, max_y - min_y);
+    rect.x += cx;
+    rect.y += cy;
   
   /* 确保脏区不超出控件边界 */
   if (rect.x < 0) {
