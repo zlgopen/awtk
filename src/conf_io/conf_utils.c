@@ -101,9 +101,9 @@ static tk_object_t* conf_obj_load_ex(const char* url, bool_t create_if_not_exist
       type++;
     }
   }
-  if (tk_str_ieq("json", type)) {
+  if (tk_str_ieq("json", type) || tk_str_ieq("jsonc", type)) {
     return conf_json_load_ex(url, create_if_not_exist, use_extend_type);
-  } else if (tk_str_ieq("yaml", type)) {
+  } else if (tk_str_ieq("yaml", type) || tk_str_ieq("yml", type)) {
     return conf_yaml_load_ex(url, create_if_not_exist, use_extend_type);
   }
   return NULL;

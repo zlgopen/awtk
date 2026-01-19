@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/01/19
+  * improve object_load_conf (感谢兆坤提供补丁) 
+
 2026/01/17
   * 完善 progress_circle 脏矩形计算。
 
