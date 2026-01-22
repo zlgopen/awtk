@@ -1499,16 +1499,27 @@ static uint32_t nvgp_gl_max_vert_count(const nvgp_darray_t* paths) {
 static nvgp_bool_t nvgp_gl_render_fast_fill_rect(nvgp_gl_context_t* gl, nvgp_paint_t* paint, nvgp_scissor_t* scissor, float fringe, const float* bounds, const nvgp_darray_t* paths) {
   if (paint->image == 0 && !nvgp_gl_color_is_translucent(paint) && !nvgp_gl_check_is_matrix_transformer(&paint->mat, 1.0f) && !nvgp_gl_check_is_matrix_transformer(&scissor->matrix, 1.0f) && nvgp_gl_is_fast_draw_rect((nvgp_darray_t*)paths)) {
     nvgp_path_t* path = nvgp_darray_get_ptr(paths, 0, nvgp_path_t);
-    float l = path->fill[0].x * gl->pixel_ratio;
-    float t = path->fill[0].y * gl->pixel_ratio;
-    float r = path->fill[2].x * gl->pixel_ratio;
-    float b = path->fill[2].y * gl->pixel_ratio;
-    float w = r - l;
-    float h = b - t;
+    float l, t, r, b, w, h;
     float cx = scissor->matrix.mat.trans_x * gl->pixel_ratio;
     float cy = scissor->matrix.mat.trans_y * gl->pixel_ratio;
     float hw = scissor->extent[0] * gl->pixel_ratio;
     float hh = scissor->extent[1] * gl->pixel_ratio;
+    if (path->fill[0].x > path->fill[2].x) {
+      l = path->fill[2].x * gl->pixel_ratio;
+      r = path->fill[0].x * gl->pixel_ratio;
+    } else {
+      l = path->fill[0].x * gl->pixel_ratio;
+      r = path->fill[2].x * gl->pixel_ratio;
+    }
+    if (path->fill[0].y > path->fill[2].y) {
+      t = path->fill[2].y * gl->pixel_ratio;
+      b = path->fill[0].y * gl->pixel_ratio;
+    } else {
+      t = path->fill[0].y * gl->pixel_ratio;
+      b = path->fill[2].y * gl->pixel_ratio;
+    }
+    w = r - l;
+    h = b - t;
     if(nvgp_gl_rect_intersect_f(cx - hw, cy - hh, hw * 2, hh * 2, &l, &t, &w, &h)){
       nvgp_gl_call_fast_fill_rect_t* call = NVGP_ZALLOC(nvgp_gl_call_fast_fill_rect_t);
       if (call == NULL) {
