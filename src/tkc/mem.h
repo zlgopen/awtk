@@ -24,7 +24,6 @@
 
 #include "tkc/types_def.h"
 #ifdef WITH_WASM
-void* realloc(void* ptr, size_t size);
 #define TKMEM_ALLOC(size) malloc(size)
 #define TKMEM_CALLOC(nmemb, size) calloc(nmemb, size)
 #define TKMEM_REALLOC(p, size) realloc(p, size)
