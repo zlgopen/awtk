@@ -212,16 +212,25 @@ static const object_vtable_t s_object_override_vtable = {
 };
 
 tk_object_t* object_override_create(tk_object_t* base_obj, const object_vtable_t* override_vt) {
-  object_override_t* ret = NULL;
-  return_value_if_fail(base_obj != NULL, NULL);
-
-  ret = (object_override_t*)tk_object_create(&s_object_override_vtable);
+  object_override_t* ret = (object_override_t*)tk_object_create(&s_object_override_vtable);
   return_value_if_fail(ret != NULL, NULL);
 
-  ret->base_obj = TK_OBJECT_REF(base_obj);
   ret->override_vt = override_vt;
+  object_override_set_base_obj(ret, base_obj);
 
   return TK_OBJECT(ret);
+}
+
+ret_t object_override_set_base_obj(tk_object_t* obj, tk_object_t* base_obj) {
+  object_override_t* override = OBJECT_OVERRIDE(obj);
+  return_value_if_fail(override != NULL, RET_BAD_PARAMS);
+
+  TK_OBJECT_UNREF(override->base_obj);
+  if (base_obj) {
+    override->base_obj = TK_OBJECT_REF(base_obj);
+  }
+
+  return RET_OK;
 }
 
 object_override_t* object_override_cast(tk_object_t* obj) {

@@ -67,6 +67,16 @@ typedef struct _object_override_t {
 tk_object_t* object_override_create(tk_object_t* base_obj, const object_vtable_t* override_vt);
 
 /**
+ * @method object_override_set_base_obj
+ * 设置原始对象。
+ * @param {tk_object_t*} obj 对象。
+ * @param {tk_object_t*} base_obj 原始对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_override_set_base_obj(tk_object_t* obj, tk_object_t* base_obj);
+
+/**
  * @method object_override_cast
  *
  * 转换为object_override对象。
