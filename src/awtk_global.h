@@ -81,6 +81,18 @@ ret_t tk_run(void);
 ret_t tk_quit(void);
 
 /**
+ * @method tk_await
+ * 等待TK事件主循环。
+ * @alias global_await
+ * @annotation ["static"]
+ * @param {tk_callback_t} callback 回调函数。
+ * @param {void*} ctx 回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_await(tk_callback_t callback, void* ctx);
+
+/**
  * @method tk_quit_ex
  * 退出TK事件主循环。
  * @alias global_quit_ex

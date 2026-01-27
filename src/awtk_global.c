@@ -482,6 +482,22 @@ ret_t tk_quit() {
   return tk_quit_ex(0);
 }
 
+ret_t tk_await(tk_callback_t callback, void* ctx) {
+  ret_t ret = RET_OK;
+  main_loop_t* loop = main_loop();
+  return_value_if_fail(callback != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(loop != NULL, RET_FAIL);
+
+  while (TRUE) {
+    ret = callback(ctx);
+    TK_FOREACH_VISIT_RESULT_PROCESSING(ret, break);
+    main_loop_step(loop);
+    main_loop_sleep(loop);
+  }
+
+  return ret;
+}
+
 ret_t tk_set_lcd_orientation(lcd_orientation_t orientation) {
   main_loop_t* loop = main_loop();
   lcd_orientation_t old_orientation;
