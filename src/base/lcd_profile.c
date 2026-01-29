@@ -41,7 +41,7 @@ static ret_t lcd_profile_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rect
   profile->stroke_cost = 0;
   profile->stroke_pixels = 0;
 
-  profile->begin_frame_time = time_now_ms();
+  profile->begin_frame_time = time_now_us();
   ret = lcd_begin_frame(profile->impl, dirty_rects, lcd->draw_mode);
 
   return ret;
@@ -112,10 +112,10 @@ static ret_t lcd_profile_draw_vline(lcd_t* lcd, xy_t x, xy_t y, xy_t h) {
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
-  uint64_t start = time_now_ms();
+  uint64_t start = time_now_us();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_draw_vline(profile->impl, x, y, h);
-  cost = time_now_ms() - start;
+  cost = time_now_us() - start;
 
   profile->stroke_times++;
   profile->stroke_cost += cost;
@@ -128,10 +128,10 @@ static ret_t lcd_profile_draw_hline(lcd_t* lcd, xy_t x, xy_t y, xy_t w) {
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
-  uint64_t start = time_now_ms();
+  uint64_t start = time_now_us();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_draw_hline(profile->impl, x, y, w);
-  cost = time_now_ms() - start;
+  cost = time_now_us() - start;
 
   profile->stroke_times++;
   profile->stroke_cost += cost;
@@ -144,10 +144,10 @@ static ret_t lcd_profile_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
-  uint64_t start = time_now_ms();
+  uint64_t start = time_now_us();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_draw_points(profile->impl, points, nr);
-  cost = time_now_ms() - start;
+  cost = time_now_us() - start;
 
   profile->stroke_times++;
   profile->stroke_cost += cost;
@@ -166,10 +166,10 @@ static ret_t lcd_profile_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
-  uint64_t start = time_now_ms();
+  uint64_t start = time_now_us();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_fill_rect(profile->impl, x, y, w, h);
-  cost = time_now_ms() - start;
+  cost = time_now_us() - start;
 
   profile->fill_times++;
   profile->fill_cost += cost;
@@ -182,10 +182,10 @@ static ret_t lcd_profile_stroke_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h)
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
-  uint64_t start = time_now_ms();
+  uint64_t start = time_now_us();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_stroke_rect(profile->impl, x, y, w, h);
-  cost = time_now_ms() - start;
+  cost = time_now_us() - start;
 
   profile->stroke_times++;
   profile->stroke_cost += cost;
@@ -198,10 +198,10 @@ static ret_t lcd_profile_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* sr
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
-  uint64_t start = time_now_ms();
+  uint64_t start = time_now_us();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_draw_glyph(profile->impl, glyph, src, x, y);
-  cost = time_now_ms() - start;
+  cost = time_now_us() - start;
 
   profile->draw_text_times++;
   profile->draw_text_cost += cost;
@@ -220,10 +220,10 @@ static ret_t lcd_profile_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr, 
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
-  uint64_t start = time_now_ms();
+  uint64_t start = time_now_us();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_draw_text(profile->impl, str, nr, x, y);
-  cost = time_now_ms() - start;
+  cost = time_now_us() - start;
 
   profile->draw_text_times++;
   profile->draw_text_cost += cost;
@@ -237,10 +237,10 @@ static ret_t lcd_profile_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* sr
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
-  uint64_t start = time_now_ms();
+  uint64_t start = time_now_us();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_draw_image(profile->impl, img, src, dst);
-  cost = time_now_ms() - start;
+  cost = time_now_us() - start;
 
   profile->draw_image_times++;
   profile->draw_image_cost += cost;
@@ -253,10 +253,10 @@ static ret_t lcd_profile_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) 
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
-  uint64_t start = time_now_ms();
+  uint64_t start = time_now_us();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_draw_image_matrix(profile->impl, info);
-  cost = time_now_ms() - start;
+  cost = time_now_us() - start;
 
   profile->draw_image_times++;
   profile->draw_image_cost += cost;
@@ -280,10 +280,10 @@ static ret_t lcd_profile_swap(lcd_t* lcd) {
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
-  uint64_t start = time_now_ms();
+  uint64_t start = time_now_us();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_swap(profile->impl);
-  cost = time_now_ms() - start;
+  cost = time_now_us() - start;
 
   profile->swap_cost = cost;
 
@@ -294,10 +294,10 @@ static ret_t lcd_profile_flush(lcd_t* lcd) {
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
-  uint64_t start = time_now_ms();
+  uint64_t start = time_now_us();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_flush(profile->impl);
-  cost = time_now_ms() - start;
+  cost = time_now_us() - start;
 
   profile->flush_cost = cost;
 
@@ -309,19 +309,19 @@ static ret_t lcd_profile_end_frame(lcd_t* lcd) {
 
   uint32_t cost = 0;
   uint32_t end = 0;
-  uint64_t start = time_now_ms();
+  uint64_t start = time_now_us();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_end_frame(profile->impl);
-  end = time_now_ms();
+  end = time_now_us();
   cost = end - start;
 
-  profile->total_cost = time_now_ms() - profile->begin_frame_time;
+  profile->total_cost = time_now_us() - profile->begin_frame_time;
 
   if (profile->total_cost > 25) {
     log_debug("#####################################\n");
     log_debug("%s:%d\n", __FILE__, __LINE__);
     log_debug("-------------------------------------\n");
-    log_debug("  total_cost=%u \n", profile->total_cost);
+    log_debug("  total_cost=%u us \n", profile->total_cost);
     log_debug("  draw_image_cost=%u times=%u\n", profile->draw_image_cost,
               profile->draw_image_times);
     log_debug("  draw_text_cost=%u times=%u\n", profile->draw_text_cost, profile->draw_text_times);
@@ -329,7 +329,7 @@ static ret_t lcd_profile_end_frame(lcd_t* lcd) {
     log_debug("  stroke_cost=%u times=%u\n", profile->stroke_cost, profile->stroke_times);
 
     if (cost) {
-      log_debug("  end_frame_cost=%u\n", cost);
+      log_debug("  end_frame_cost=%u us \n", cost);
     }
     if (profile->flush_cost) {
       log_debug("  flush_cost=%u\n", profile->flush_cost);
