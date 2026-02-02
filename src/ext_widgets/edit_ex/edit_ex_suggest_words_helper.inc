@@ -63,8 +63,10 @@ static ret_t edit_ex_suggest_words_popup_on_key_down_before_children(void* ctx, 
   key_event_t* evt = key_event_cast(e);
   return_value_if_fail(edit_ex != NULL && evt != NULL, RET_BAD_PARAMS);
 
-  if (/* 删除 */ (TK_KEY_DELETE == evt->key || TK_KEY_BACKSPACE == evt->key) ||
-      /* 移动光标 */ (key_code_is_left(evt->key) || key_code_is_right(evt->key))) {
+  if (/* 选中item */ (key_code_is_up(evt->key) || key_code_is_down(evt->key)) ||
+      /* 选择item */ (key_code_is_enter(evt->key))) {
+    return RET_OK;
+  } else {
     /* 转抛给 edit_ex */
     key_event_t clone_evt = *evt;
     clone_evt.e.target = NULL;
@@ -77,8 +79,6 @@ static ret_t edit_ex_suggest_words_popup_on_key_down_before_children(void* ctx, 
 
     return RET_STOP;
   }
-
-  return RET_OK;
 }
 
 static ret_t edit_ex_suggest_words_popup_on_pointer_event(void* ctx, event_t* e) {
