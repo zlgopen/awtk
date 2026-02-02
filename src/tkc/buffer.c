@@ -623,7 +623,7 @@ ret_t rbuffer_read_string(rbuffer_t* rbuffer, const char** str) {
 }
 
 static ret_t __decode_hex(rbuffer_t* rbuffer, void* data, uint32_t size) {
-  char* p = NULL;
+  const char* p = NULL;
   char v[3] = {0, 0, 0};
   uint8_t* d = data;
   uint8_t* dend = d + size;
