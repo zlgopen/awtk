@@ -216,7 +216,7 @@ tk_object_t* object_override_create(tk_object_t* base_obj, const object_vtable_t
   return_value_if_fail(ret != NULL, NULL);
 
   ret->override_vt = override_vt;
-  object_override_set_base_obj(ret, base_obj);
+  object_override_set_base_obj(TK_OBJECT(ret), base_obj);
 
   return TK_OBJECT(ret);
 }
