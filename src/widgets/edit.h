@@ -725,6 +725,7 @@ bool_t edit_is_valid_char(widget_t* widget, wchar_t c);
 ret_t edit_add_value_with_sep(widget_t* widget, int delta, char sep);
 ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep);
 ret_t edit_pre_delete_with_sep(widget_t* widget, delete_type_t delete_type, char sep);
+ret_t edit_set_text_impl(widget_t* widget, const value_t* v, bool_t changing);
 
 /*for compatability*/
 #define edit_set_input_tips(w, t) edit_set_tips(w, t)

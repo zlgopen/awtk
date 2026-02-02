@@ -116,6 +116,9 @@ static ret_t edit_ex_set_prop(widget_t* widget, const char* name, const value_t*
     return edit_ex_set_suggest_words_item_formats(widget, value_str(v));
   } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS_INPUT_NAME)) {
     return edit_ex_set_suggest_words_input_name(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_TEXT)) {
+    /* 要分发 value changing 事件否则 MVVM 的 view-model 与 view 双向绑定的值不同步 */
+    return edit_set_text_impl(widget, v, TRUE);
   }
 
   return widget_vtable_set_prop_by_parent(widget, name, v, WIDGET_VTABLE_GET_VTABLE(edit_ex));
