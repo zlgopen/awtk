@@ -414,7 +414,16 @@ ret_t emitter_forward(void* ctx, event_t* e) {
 }
 
 ret_t emitter_forward_retarget(void* ctx, event_t* e) {
+  ret_t ret = RET_OK;
+  void* target = NULL;
   return_value_if_fail(e != NULL, RET_BAD_PARAMS);
+
+  target = e->target;
   e->target = ctx;
-  return emitter_dispatch(EMITTER(ctx), e);
+
+  ret = emitter_dispatch(EMITTER(ctx), e);
+
+  e->target = target;
+
+  return ret;
 }
