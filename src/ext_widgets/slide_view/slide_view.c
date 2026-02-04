@@ -140,6 +140,19 @@ static ret_t slide_view_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t slide_view_on_remove_child(widget_t* widget, widget_t* child) {
+  slide_view_t* slide_view = SLIDE_VIEW(widget);
+  return_value_if_fail(slide_view != NULL && widget != NULL && child != NULL, RET_BAD_PARAMS);
+
+  if (slide_view->next == child) {
+    slide_view->next = NULL;
+  } else if (slide_view->prev == child) {
+    slide_view->prev = NULL;
+  }
+
+  return RET_OK;
+}
+
 static ret_t slide_view_on_pointer_down(slide_view_t* slide_view, pointer_event_t* e) {
   velocity_t* v = &(slide_view->velocity);
 
@@ -152,13 +165,14 @@ static ret_t slide_view_on_pointer_down(slide_view_t* slide_view, pointer_event_
 }
 
 static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
-  uint32_t active;
+  int32_t active = 0;
   widget_t* widget = WIDGET(ctx);
   slide_view_t* slide_view = SLIDE_VIEW(ctx);
   return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
 
   if (slide_view->xoffset < 0 || slide_view->yoffset < 0) {
     active = widget_index_of(slide_view->prev);
+    active = active < 0 ? 0 : active;
     if (slide_view->check_last) {
       active = active == slide_view->last_active ? active : slide_view->last_active;
     }
@@ -170,6 +184,7 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
     }
   } else if (slide_view->xoffset > 0 || slide_view->yoffset > 0) {
     active = widget_index_of(slide_view->next);
+    active = active < 0 ? 0 : active;
     if (slide_view->check_last) {
       active = active == slide_view->last_active ? active : slide_view->last_active;
     }
@@ -808,6 +823,7 @@ TK_DECL_VTABLE(slide_view) = {.size = sizeof(slide_view_t),
                               .find_target = slide_view_find_target,
                               .on_paint_children = slide_view_on_paint_children,
                               .on_paint_self = slide_view_on_paint_self,
+                              .on_remove_child = slide_view_on_remove_child,
                               .on_destroy = slide_view_on_destroy};
 
 static ret_t slide_view_on_idle_init_save_target(const idle_info_t* idle) {
@@ -1067,7 +1083,9 @@ static ret_t slide_view_on_timer_next(const timer_info_t* timer) {
   }
 
   slide_view->next = slide_view_get_next(slide_view);
-  slide_view_animate_to(slide_view, 0, 0, xoffset_end, yoffset_end);
+  if (slide_view->next != NULL) {
+    slide_view_animate_to(slide_view, 0, 0, xoffset_end, yoffset_end);
+  }
 
   return RET_REPEAT;
 }
