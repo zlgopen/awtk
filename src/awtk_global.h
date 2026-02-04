@@ -71,16 +71,6 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
 ret_t tk_run(void);
 
 /**
- * @method tk_quit
- * 退出TK事件主循环。
- * @alias global_quit
- * @annotation ["static", "scriptable"]
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t tk_quit(void);
-
-/**
  * @method tk_await
  * 等待TK事件主循环。
  * @alias global_await
@@ -91,6 +81,26 @@ ret_t tk_quit(void);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_await(tk_callback_t callback, void* ctx);
+
+/**
+ * @method tk_yield_when_timeout
+ * 当超时时，处理TK事件主循环。
+ * @alias global_yield_when_timeout
+ * @annotation ["static"]
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_yield_when_timeout(void);
+
+/**
+ * @method tk_quit
+ * 退出TK事件主循环。
+ * @alias global_quit
+ * @annotation ["static", "scriptable"]
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_quit(void);
 
 /**
  * @method tk_quit_ex

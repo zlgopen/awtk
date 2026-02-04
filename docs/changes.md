@@ -1,4 +1,7 @@
 # 最新动态
+2026/02/04
+  *  增加 tk_yield_when_timeout (感谢兆坤提供补丁)
+
 2026/02/03
   * 修复 emitter_forward_retarget 会改变后续执行的 target 的问题(感谢兆坤提供补丁)
 

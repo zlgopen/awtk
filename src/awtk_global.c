@@ -498,6 +498,20 @@ ret_t tk_await(tk_callback_t callback, void* ctx) {
   return ret;
 }
 
+ret_t tk_yield_when_timeout(void) {
+  uint64_t gap = 0;
+  main_loop_t* loop = main_loop();
+  return_value_if_fail(loop != NULL, RET_FAIL);
+
+  gap = time_now_ms() - loop->last_loop_time;
+  if (gap > TK_MAX_SLEEP_TIME) {
+    main_loop_step(loop);
+    loop->last_loop_time = time_now_ms();
+  }
+
+  return RET_OK;
+}
+
 ret_t tk_set_lcd_orientation(lcd_orientation_t orientation) {
   main_loop_t* loop = main_loop();
   lcd_orientation_t old_orientation;
