@@ -2,6 +2,7 @@
 2026/02/04
   * 增加 tk_yield_when_timeout (感谢兆坤提供补丁)
   * 完善 slide_view (感谢俊杰提供补丁)
+  * edit_ex 修复 先设置 suggest_words 后设置 text 会弹出 popup 的问题 (感谢兆坤提供补丁)
 
 2026/02/03
   * 修复 emitter_forward_retarget 会改变后续执行的 target 的问题(感谢兆坤提供补丁)

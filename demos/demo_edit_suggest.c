@@ -146,6 +146,7 @@ static ret_t init_widget(void* ctx, const void* iter) {
       } else {
         edit_ex_set_suggest_words(widget, s_suggest_words);
       }
+      widget_set_text_utf8(widget, "AWTK");
     } else if (tk_str_eq(type, WIDGET_TYPE_MLEDIT) && tk_str_eq(name, "suggest_words")) {
       mledit_suggest_words_init(widget);
     }

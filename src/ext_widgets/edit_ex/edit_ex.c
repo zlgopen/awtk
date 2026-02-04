@@ -180,7 +180,9 @@ static ret_t edit_ex_on_event(widget_t* widget, event_t* e) {
       return ret;
     } break;
     case EVT_VALUE_CHANGING: {
-      edit_ex_update_suggest_words_popup(widget);
+      if (widget->focused) {
+        edit_ex_update_suggest_words_popup(widget);
+      }
     } break;
     default: {
     } break;
