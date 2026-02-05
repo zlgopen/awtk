@@ -2,6 +2,7 @@
 
 2026/02/06
   * edit_ex 支持按下 enter 键搜索(感谢兆坤提供补丁)
+  * 修复hscroll_label一开始text不空，后面设置text为空后，获取text_w属性值不对的问题(感谢俊杰提供补丁)
 
 2026/02/04
   * 增加 tk_yield_when_timeout (感谢兆坤提供补丁)

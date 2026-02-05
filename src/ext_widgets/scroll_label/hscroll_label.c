@@ -102,6 +102,7 @@ static ret_t hscroll_label_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t save_r = {0, 0, 0, 0};
   rect_t clip_r = {0, 0, 0, 0};
   rect_t widget_r = {0, 0, 0, 0};
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
 
   if (widget->text.size > 0) {
     style_t* style = widget->astyle;
@@ -124,6 +125,8 @@ static ret_t hscroll_label_on_paint_self(widget_t* widget, canvas_t* c) {
 
     hscroll_label_do_paint_self(widget, c, left_margin, right_margin);
     canvas_set_clip_rect(c, &save_r);
+  } else {
+    hscroll_label->text_w = 0;
   }
 
   return RET_OK;
