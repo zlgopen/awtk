@@ -61,10 +61,15 @@ static ret_t edit_ex_suggest_words_popup_on_close(void* ctx, event_t* e) {
 static ret_t edit_ex_suggest_words_popup_on_key_down_before_children(void* ctx, event_t* e) {
   edit_ex_t* edit_ex = EDIT_EX(ctx);
   key_event_t* evt = key_event_cast(e);
+  widget_t* popup = NULL;
   return_value_if_fail(edit_ex != NULL && evt != NULL, RET_BAD_PARAMS);
+  popup = WIDGET(e->target);
+  return_value_if_fail(popup != NULL, RET_BAD_PARAMS);
 
-  if (/* 选中item */ (key_code_is_up(evt->key) || key_code_is_down(evt->key)) ||
-      /* 选择item */ (key_code_is_enter(evt->key))) {
+  if (/* 选中item */ key_code_is_up(evt->key) || key_code_is_down(evt->key)) {
+    return RET_OK;
+  } else if (/* 选择item */ key_code_is_enter(evt->key) &&
+             widget_has_focused_widget_in_window(popup)) {
     return RET_OK;
   } else {
     /* 转抛给 edit_ex */
@@ -268,6 +273,13 @@ static widget_t* edit_ex_create_suggest_words_popup(widget_t* widget) {
   return win;
 }
 
+inline static void edit_ex_close_suggest_words_popup(edit_ex_t* edit_ex) {
+  if (edit_ex->suggest_words_popup != NULL) {
+    window_close(edit_ex->suggest_words_popup);
+    edit_ex->suggest_words_popup = NULL;
+  }
+}
+
 static ret_t edit_ex_suggest_words_popup_confirm(widget_t* widget, widget_t* item) {
   /* base on combo_box_on_item_click() */
   ret_t ret = RET_OK;
@@ -300,14 +312,20 @@ static ret_t edit_ex_suggest_words_popup_confirm(widget_t* widget, widget_t* ite
         ret = widget_set_text(widget, text);
       }
       if (RET_OK == ret) {
+        key_event_t evt;
         edit_set_cursor(widget, -1);
+
+        key_event_init(&evt, EVT_KEY_DOWN, NULL, TK_KEY_RETURN);
+        widget_dispatch(widget, &evt.e);
+        evt.e.type = EVT_KEY_UP;
+        widget_dispatch(WIDGET(edit_ex), &evt.e);
       }
     } while (0);
   }
 
   widget->target = NULL;
   widget->key_target = NULL;
-  window_close(edit_ex->suggest_words_popup);
+  edit_ex_close_suggest_words_popup(edit_ex);
   widget_set_focused_internal(widget, TRUE);
 
   return ret;
@@ -331,14 +349,6 @@ inline static ret_t edit_ex_suggest_words_enable_focus(widget_t* widget, bool_t 
   return RET_OK;
 }
 
-inline static ret_t edit_ex_toggle_suggest_words_popup(edit_ex_t* edit_ex) {
-  if (edit_ex->suggest_words_popup != NULL) {
-    return window_close(edit_ex->suggest_words_popup);
-  } else {
-    return edit_ex_update_suggest_words_popup(WIDGET(edit_ex));
-  }
-}
-
 static ret_t edit_ex_suggest_words_focus_by_key(widget_t* widget, uint32_t key) {
   ret_t ret = RET_SKIP;
   edit_ex_t* edit_ex = EDIT_EX(widget);
@@ -352,7 +362,8 @@ static ret_t edit_ex_suggest_words_focus_by_key(widget_t* widget, uint32_t key) 
       }
     }
   } else if (key_code_is_enter(key)) {
-    ret = edit_ex_toggle_suggest_words_popup(edit_ex);
+    edit_ex_close_suggest_words_popup(edit_ex);
+    ret = RET_CONTINUE;
   }
 
   return ret;
@@ -641,14 +652,6 @@ inline static ret_t edit_ex_suggest_words_popup_calc_position(widget_t* widget, 
   }
 
   return RET_OK;
-}
-
-inline static ret_t edit_ex_close_suggest_words_popup(edit_ex_t* edit_ex) {
-  ret_t ret = RET_OK;
-  if (edit_ex->suggest_words_popup != NULL) {
-    ret = window_close(edit_ex->suggest_words_popup);
-  }
-  return ret;
 }
 
 static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {

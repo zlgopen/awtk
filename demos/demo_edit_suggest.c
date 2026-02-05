@@ -126,6 +126,25 @@ static ret_t on_close_window(void* ctx, event_t* e) {
   return window_close(win);
 }
 
+static ret_t search_on_keydown(void* ctx, event_t* e) {
+  (void)ctx;
+  key_event_t* evt = key_event_cast(e);
+  widget_t* widget = NULL;
+  return_value_if_fail(evt != NULL, RET_BAD_PARAMS);
+  widget = WIDGET(e->target);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (key_code_is_enter(evt->key)) {
+    str_t str;
+    str_init(&str, 0);
+    str_from_wstr(&str, widget_get_text(widget));
+    log_info("%s: %s search : \"%s\".\n", __FUNCTION__, widget->name, str.str);
+    str_reset(&str);
+  }
+
+  return RET_OK;
+}
+
 /**
  * 子控件初始化(主要是设置click回调、初始显示信息)
  */
@@ -147,6 +166,7 @@ static ret_t init_widget(void* ctx, const void* iter) {
         edit_ex_set_suggest_words(widget, s_suggest_words);
       }
       widget_set_text_utf8(widget, "AWTK");
+      widget_on(widget, EVT_KEY_DOWN, search_on_keydown, NULL);
     } else if (tk_str_eq(type, WIDGET_TYPE_MLEDIT) && tk_str_eq(name, "suggest_words")) {
       mledit_suggest_words_init(widget);
     }
