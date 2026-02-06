@@ -406,6 +406,8 @@ int32_t event_from_name(const char* name) {
         return EVT_VALUE_CHANGED;
       } else if (tk_str_eq(name, STR_VALUE_CHANGED_BY_UI)) {
         return EVT_VALUE_CHANGED;
+      } else if (tk_str_eq(name, "value_changing")) {
+        return EVT_VALUE_CHANGING;
       }
       break;
     }
