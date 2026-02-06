@@ -58,6 +58,13 @@ typedef struct _edit_ex_t {
    */
   char* suggest_words_input_name;
 
+  /**
+   * @property {bool_t} is_select_suggest_word
+   * @annotation ["get_prop","readable","persitent","design","scriptable"]
+   * 是否选中输入建议词。
+   */
+  bool_t is_select_suggest_word;
+
   /* private */
   tk_object_t* suggest_words_ui_props;
   widget_t* suggest_words_popup;
@@ -254,6 +261,12 @@ widget_t* edit_ex_cast(widget_t* widget);
  */
 #define EDIT_EX_PROP_SUGGEST_WORDS_INPUT_NAME "suggest_words_input_name"
 #define EDIT_EX_DEFAULT_SUGGEST_WORDS_INPUT_NAME "INPUT"
+
+/**
+ * @const EDIT_EX_PROP_IS_SELECT_SUGGEST_WORD
+ * 是否选中输入建议词。
+ */
+#define EDIT_EX_PROP_IS_SELECT_SUGGEST_WORD "is_select_suggest_word"
 
 #define WIDGET_TYPE_EDIT_EX "edit_ex"
 

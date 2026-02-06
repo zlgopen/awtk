@@ -41,6 +41,21 @@ BEGIN_C_DECLS
 #define EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MAXNR 5
 #define EDIT_SUGGEST_WORDS_SCROLL_BAR_DEFAULT_WH 12
 
+inline static void edit_ex_set_is_select_suggest_word(edit_ex_t* edit_ex,
+                                                      bool_t is_select_suggest_word) {
+  value_t v;
+  prop_change_event_t evt;
+
+  prop_change_event_init(&evt, EVT_PROP_WILL_CHANGE, EDIT_EX_PROP_IS_SELECT_SUGGEST_WORD,
+                         value_set_bool(&v, is_select_suggest_word));
+  emitter_dispatch(EMITTER(edit_ex), &evt.e);
+
+  edit_ex->is_select_suggest_word = is_select_suggest_word;
+
+  evt.e.type = EVT_PROP_CHANGED;
+  emitter_dispatch(EMITTER(edit_ex), &evt.e);
+}
+
 static ret_t edit_ex_suggest_words_popup_on_open(void* ctx, event_t* e) {
   edit_ex_t* edit_ex = EDIT_EX(ctx);
   widget_t* window = WIDGET(e->target);
@@ -315,10 +330,14 @@ static ret_t edit_ex_suggest_words_popup_confirm(widget_t* widget, widget_t* ite
         key_event_t evt;
         edit_set_cursor(widget, -1);
 
+        edit_ex_set_is_select_suggest_word(edit_ex, TRUE);
+
         key_event_init(&evt, EVT_KEY_DOWN, NULL, TK_KEY_RETURN);
         widget_dispatch(widget, &evt.e);
         evt.e.type = EVT_KEY_UP;
         widget_dispatch(WIDGET(edit_ex), &evt.e);
+
+        edit_ex_set_is_select_suggest_word(edit_ex, FALSE);
       }
     } while (0);
   }

@@ -142,6 +142,9 @@ static ret_t edit_ex_get_prop(widget_t* widget, const char* name, value_t* v) {
                          ? edit_ex->suggest_words_input_name
                          : EDIT_EX_DEFAULT_SUGGEST_WORDS_INPUT_NAME);
     return RET_OK;
+  } else if (tk_str_eq(name, EDIT_EX_PROP_IS_SELECT_SUGGEST_WORD)) {
+    value_set_bool(v, edit_ex->is_select_suggest_word);
+    return RET_OK;
   }
 
   return widget_vtable_get_prop_by_parent(widget, name, v, WIDGET_VTABLE_GET_VTABLE(edit_ex));

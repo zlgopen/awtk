@@ -138,7 +138,13 @@ static ret_t search_on_keydown(void* ctx, event_t* e) {
     str_t str;
     str_init(&str, 0);
     str_from_wstr(&str, widget_get_text(widget));
-    log_info("%s: %s search : \"%s\".\n", __FUNCTION__, widget->name, str.str);
+
+    if (widget_get_prop_bool(widget, EDIT_EX_PROP_IS_SELECT_SUGGEST_WORD, FALSE)) {
+      log_info("%s: %s select : \"%s\".\n", __FUNCTION__, widget->name, str.str);
+    } else {
+      log_info("%s: %s search : \"%s\".\n", __FUNCTION__, widget->name, str.str);
+    }
+
     str_reset(&str);
   }
 
