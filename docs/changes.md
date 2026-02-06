@@ -3,6 +3,7 @@
 2026/02/06
   * 增加 tk_str_ieq_with_len 和 tk_str_find (感谢兆坤提供补丁)
   * event_from_name 函数 增加 value_changing 属性(感谢兆坤提供补丁)
+  * tk_yield_when_timeout改名为tk_yield (感谢兆坤提供补丁)
 
 2026/02/06
   * edit_ex 支持按下 enter 键搜索(感谢兆坤提供补丁)

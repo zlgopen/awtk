@@ -83,14 +83,14 @@ ret_t tk_run(void);
 ret_t tk_await(tk_callback_t callback, void* ctx);
 
 /**
- * @method tk_yield_when_timeout
- * 当超时时，处理TK事件主循环。
- * @alias global_yield_when_timeout
+ * @method tk_yield
+ * 当需要刷新界面时，让出执行流，处理TK事件主循环。
+ * @alias global_yield
  * @annotation ["static"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_yield_when_timeout(void);
+ret_t tk_yield(void);
 
 /**
  * @method tk_quit
