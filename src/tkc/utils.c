@@ -30,7 +30,7 @@
 #include "tkc/data_writer_factory.h"
 
 #define IS_ADDRESS_ALIGN_4(addr) !((((size_t)(addr)) & 0x3) | 0x0)
-#define MOD_BY_POW2(num, div) ((num) & ((div)-1)) /* div是2的幂次方才能用 */
+#define MOD_BY_POW2(num, div) ((num) & ((div) - 1)) /* div是2的幂次方才能用 */
 
 #ifndef WITH_WASM
 #include "tkc/thread.h"
@@ -701,6 +701,22 @@ int32_t tk_stricmp(const char* a, const char* b) {
   return strcasecmp(a, b);
 }
 
+int32_t tk_strnicmp(const char* a, const char* b, size_t n) {
+  if (a == b) {
+    return 0;
+  }
+
+  if (a == NULL) {
+    return -1;
+  }
+
+  if (b == NULL) {
+    return 1;
+  }
+
+  return strncasecmp(a, b, n);
+}
+
 int32_t tk_wstrcmp(const wchar_t* a, const wchar_t* b) {
   if (a == b) {
     return 0;
@@ -1247,25 +1263,43 @@ ret_t tk_qsort(void** array, size_t nr, tk_compare_t cmp) {
 }
 
 const char* tk_strrstr(const char* str, const char* substr) {
-  char c = 0;
-  uint32_t len = 0;
-  const char* p = NULL;
-  const char* end = NULL;
+  return tk_str_find(str, substr, &(tk_str_find_option_t){.reverse = TRUE});
+}
+
+const char* tk_str_find(const char* str, const char* substr, const tk_str_find_option_t* opt) {
+  tk_str_find_option_t default_opt;
   return_value_if_fail(str != NULL && substr != NULL, NULL);
 
-  c = *substr;
-  len = tk_strlen(substr);
-  end = str + tk_strlen(str) - 1;
-
-  for (p = end; p >= str; p--) {
-    if (*p == c) {
-      if (tk_strncmp(p, substr, len) == 0) {
-        return p;
-      }
-    }
+  memset(&default_opt, 0, sizeof(default_opt));
+  if (NULL == opt) {
+    opt = &default_opt;
   }
 
-  return NULL;
+  if (0 == memcmp(opt, &default_opt, sizeof(tk_str_find_option_t))) {
+    return strstr(str, substr);
+  } else {
+    uint32_t len = tk_strlen(substr);
+    int32_t (*cmp)(const char* a, const char* b, size_t n) =
+        opt->case_insensitive ? tk_strnicmp : tk_strncmp;
+
+    if (opt->reverse) {
+      const char* p = str + tk_strlen(str) - 1;
+      for (; p >= str; p--) {
+        if (0 == cmp(p, substr, len)) {
+          return p;
+        }
+      }
+    } else {
+      const char* p = str;
+      for (; *p != '\0'; p++) {
+        if (0 == cmp(p, substr, len)) {
+          return p;
+        }
+      }
+    }
+
+    return NULL;
+  }
 }
 
 bool_t tk_int_is_in_array(int32_t v, const int32_t* array, uint32_t array_size) {
@@ -2862,4 +2896,3 @@ int tk_days_in_month(int32_t year, int32_t month) {
 
   return days;
 }
-

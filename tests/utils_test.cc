@@ -1,4 +1,4 @@
-﻿#include <string>
+#include <string>
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/object_default.h"
@@ -222,42 +222,42 @@ TEST(Utils, tk_strncpy_s_comprehensive) {
   char dst[32];
   const char* src = "hello world";
   char* result = NULL;
-  
+
   /* 测试正常情况 */
   memset(dst, 0xFF, sizeof(dst));
   result = tk_strncpy_s(dst, sizeof(dst), src, strlen(src));
   ASSERT_NE(result, (char*)NULL);
   ASSERT_EQ(string(dst), string(src));
   ASSERT_EQ(dst[strlen(src)], '\0');
-  
+
   /* 测试dst_len小于src_len */
   memset(dst, 0xFF, sizeof(dst));
   result = tk_strncpy_s(dst, 5, src, strlen(src));
   ASSERT_NE(result, (char*)NULL);
   ASSERT_EQ(string(dst), string("hell"));
   ASSERT_EQ(dst[4], '\0');
-  
+
   /* 测试dst_len等于src_len+1（刚好容纳） */
   memset(dst, 0xFF, sizeof(dst));
   result = tk_strncpy_s(dst, 6, "hello", 5);
   ASSERT_NE(result, (char*)NULL);
   ASSERT_EQ(string(dst), string("hello"));
   ASSERT_EQ(dst[5], '\0');
-  
+
   /* 测试空字符串 */
   memset(dst, 0xFF, sizeof(dst));
   result = tk_strncpy_s(dst, sizeof(dst), "", 0);
   ASSERT_NE(result, (char*)NULL);
   ASSERT_EQ(string(dst), string(""));
   ASSERT_EQ(dst[0], '\0');
-  
+
   /* 测试src_len为0 */
   memset(dst, 0xFF, sizeof(dst));
   result = tk_strncpy_s(dst, sizeof(dst), src, 0);
   ASSERT_NE(result, (char*)NULL);
   ASSERT_EQ(string(dst), string(""));
   ASSERT_EQ(dst[0], '\0');
-  
+
   /* 测试dst == src的情况 */
   char same_buff[32];
   tk_strcpy(same_buff, "test");
@@ -265,19 +265,19 @@ TEST(Utils, tk_strncpy_s_comprehensive) {
   ASSERT_NE(result, (char*)NULL);
   ASSERT_EQ(result, same_buff);
   ASSERT_EQ(string(same_buff), string("test"));
-  
+
   /* 测试NULL参数 */
   ASSERT_EQ(tk_strncpy_s(NULL, 10, src, 5), (char*)NULL);
   ASSERT_EQ(tk_strncpy_s(dst, 10, NULL, 5), (char*)NULL);
   ASSERT_EQ(tk_strncpy_s(dst, 0, src, 5), (char*)NULL);
-  
+
   /* 测试边界：dst_len=1 */
   memset(dst, 0xFF, sizeof(dst));
   result = tk_strncpy_s(dst, 1, src, strlen(src));
   ASSERT_NE(result, (char*)NULL);
   ASSERT_EQ(string(dst), string(""));
   ASSERT_EQ(dst[0], '\0');
-  
+
   /* 测试包含null字符的源字符串 */
   char src_with_null[10] = "ab\0def";
   memset(dst, 0xFF, sizeof(dst));
@@ -678,6 +678,26 @@ TEST(Utils, strrstr) {
   ASSERT_EQ(tk_strrstr("bc", "123") == NULL, true);
 }
 
+TEST(Utils, str_find) {
+  tk_str_find_option_t opt = {};
+
+  ASSERT_STREQ(tk_str_find("1abc abc2", "abc", NULL), "abc abc2");
+  ASSERT_STREQ(tk_str_find("1abc abc2", "abc", &opt), "abc abc2");
+
+  opt.reverse = TRUE;
+  ASSERT_STREQ(tk_str_find("1abc abc2", "abc", &opt), "abc2");
+  memset(&opt, 0, sizeof(opt));
+
+  opt.case_insensitive = TRUE;
+  ASSERT_STREQ(tk_str_find("1abc abc2", "AbC", &opt), "abc abc2");
+  memset(&opt, 0, sizeof(opt));
+
+  opt.reverse = TRUE;
+  opt.case_insensitive = TRUE;
+  ASSERT_STREQ(tk_str_find("1abc abc2", "AbC", &opt), "abc2");
+  memset(&opt, 0, sizeof(opt));
+}
+
 TEST(Utils, totitle) {
   char str[] = "it is nice!";
   ASSERT_STREQ(tk_str_totitle(str), "It Is Nice!");
@@ -896,6 +916,38 @@ TEST(Utils, str_ieq) {
   ASSERT_EQ(tk_str_ieq("a", "a"), TRUE);
   ASSERT_EQ(tk_str_ieq("a", "A"), TRUE);
   ASSERT_EQ(tk_str_ieq("aaa", "Aaa"), TRUE);
+}
+
+TEST(Utils, str_ieq_with_len) {
+  /* NULL 指针测试 */
+  ASSERT_EQ(tk_str_ieq_with_len(NULL, NULL, 0), FALSE);
+  ASSERT_EQ(tk_str_ieq_with_len("a", NULL, 1), FALSE);
+  ASSERT_EQ(tk_str_ieq_with_len(NULL, "a", 1), FALSE);
+
+  /* 相同字符串（相同大小写） */
+  ASSERT_EQ(tk_str_ieq_with_len("abc", "abc", 3), TRUE);
+  ASSERT_EQ(tk_str_ieq_with_len("abc", "abc", 2), TRUE);
+  ASSERT_EQ(tk_str_ieq_with_len("abc", "abc", 1), TRUE);
+
+  /* 相同字符串（不同大小写） */
+  ASSERT_EQ(tk_str_ieq_with_len("ABC", "abc", 3), TRUE);
+  ASSERT_EQ(tk_str_ieq_with_len("abc", "ABC", 3), TRUE);
+  ASSERT_EQ(tk_str_ieq_with_len("AbC", "aBc", 3), TRUE);
+  ASSERT_EQ(tk_str_ieq_with_len("Trigger", "trigger", 7), TRUE);
+
+  /* 不同字符串 */
+  ASSERT_EQ(tk_str_ieq_with_len("abc", "def", 3), FALSE);
+  ASSERT_EQ(tk_str_ieq_with_len("abc", "abd", 3), FALSE);
+
+  /* 长度限制测试 */
+  ASSERT_EQ(tk_str_ieq_with_len("abc", "abC", 2), TRUE);  /* 前2个字符相同（忽略大小写） */
+  ASSERT_EQ(tk_str_ieq_with_len("abc", "abD", 2), TRUE);  /* 前2个字符相同 */
+  ASSERT_EQ(tk_str_ieq_with_len("abc", "abD", 3), FALSE); /* 第3个字符不同 */
+  ASSERT_EQ(tk_str_ieq_with_len("abc", "ABCx", 3), TRUE); /* 前3个字符相同（忽略大小写） */
+
+  /* 空字符串测试 */
+  ASSERT_EQ(tk_str_ieq_with_len("", "", 0), TRUE);
+  ASSERT_EQ(tk_str_ieq_with_len("a", "", 0), TRUE);  /* 长度为0时总是相等 */
 }
 
 TEST(Utils, wstr_eq) {

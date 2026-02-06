@@ -128,6 +128,19 @@ int32_t tk_strncmp(const char* a, const char* b, size_t n);
 int32_t tk_stricmp(const char* a, const char* b);
 
 /**
+ * @method tk_strnicmp
+ *
+ * 字符串比较函数（不区分大小写）。
+ *
+ * @param {const char*} a 要进行比较的第一个字符串。
+ * @param {const char*} b 要进行比较的第二个字符串。
+ * @param {size_t} n 长度。
+ *
+ * @return {int32_t} 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。
+ */
+int32_t tk_strnicmp(const char* a, const char* b, size_t n);
+
+/**
  * @method tk_wstrcmp
  *
  * 字符串比较函数。
@@ -420,6 +433,29 @@ uint32_t tk_strnlen(const char* str, uint32_t maxlen);
  * @return {const char*} 返回字符串的位置或者NULL。
  */
 const char* tk_strrstr(const char* str, const char* substr);
+
+typedef struct _tk_str_find_option_t {
+  /**
+   * @property {bool_t} reverse
+   * 反向查找。
+   */
+  bool_t reverse : 1;
+  /**
+   * @property {bool_t} case_insensitive
+   * 忽略大小写。
+   */
+  bool_t case_insensitive : 1;
+} tk_str_find_option_t;
+
+/**
+ * @method tk_str_find
+ * 在字符串中查找子字符串。
+ * @param {const char*} str 字符串。
+ * @param {const char*} substr 子字符串。
+ * @param {const tk_str_find_option_t*} opt 选项。
+ * @return {const char*} 返回找到的字符串。
+ */
+const char* tk_str_find(const char* str, const char* substr, const tk_str_find_option_t* opt);
 
 /**
  * @method tk_str_append

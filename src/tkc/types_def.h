@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   types_def.h
  * Author: AWTK Develop Team
  * Brief:  basic types definitions.
@@ -112,6 +112,7 @@ BEGIN_C_DECLS
 int32_t tk_strcmp(const char* a, const char* b);
 int32_t tk_strncmp(const char* a, const char* b, size_t n);
 int32_t tk_stricmp(const char* a, const char* b);
+int32_t tk_strnicmp(const char* a, const char* b, size_t n);
 int32_t tk_wstrcmp(const wchar_t* a, const wchar_t* b);
 int32_t tk_wstricmp(const wchar_t* a, const wchar_t* b);
 END_C_DECLS
@@ -556,6 +557,9 @@ int __cppcheck__strncmp(const char* s1, const char* s2, size_t n);
 #define tk_str_ieq(s1, s2)           \
   (((s1) == NULL && (s2) == NULL) || \
    (((s1) != NULL) && ((s2) != NULL) && tk_stricmp((s1), (s2)) == 0))
+#define tk_str_ieq_with_len(s1, s2, len) \
+  (((s1) != NULL) && ((s2) != NULL) && tk_strnicmp((s1), (s2), len) == 0)
+
 #define tk_wstr_eq(s1, s2)                                                                \
   (((s1) == NULL && (s2) == NULL) ||                                                      \
    (((s1) != NULL) && ((s2) != NULL) && *((const wchar_t*)s1) == *((const wchar_t*)s2) && \
