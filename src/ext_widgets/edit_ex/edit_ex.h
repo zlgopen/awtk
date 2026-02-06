@@ -143,6 +143,13 @@ ret_t edit_ex_update_suggest_words_popup(widget_t* widget);
 widget_t* edit_ex_cast(widget_t* widget);
 
 /**
+ * @enum edit_ex_prop_t
+ * @annotation ["string", "scriptable"]
+ * @prefix EDIT_EX_PROP_
+ * 属性。
+ */
+
+/**
  * @const EDIT_EX_PROP_SUGGEST_WORDS
  * 输入建议词。
  */
@@ -220,6 +227,20 @@ widget_t* edit_ex_cast(widget_t* widget);
 #define EDIT_EX_PROP_SUGGEST_WORDS_ITEM_SEPARATE_STYLE "item_separate_style"
 
 /**
+ * @const EDIT_EX_PROP_SUGGEST_WORDS_INPUT_NAME
+ * 最终输入到edit控件的文本的属性名。
+ * > 设置了 suggest_words_item_formats 才会被用到。
+ */
+#define EDIT_EX_PROP_SUGGEST_WORDS_INPUT_NAME "suggest_words_input_name"
+#define EDIT_EX_DEFAULT_SUGGEST_WORDS_INPUT_NAME "INPUT"
+
+/**
+ * @const EDIT_EX_PROP_IS_SELECT_SUGGEST_WORD
+ * 是否选中输入建议词。
+ */
+#define EDIT_EX_PROP_IS_SELECT_SUGGEST_WORD "is_select_suggest_word"
+
+/**
  * @const EDIT_EX_PROP_SUGGEST_WORDS_ITEM_FORMATS
  * 项格式。
  * > 格式说明：
@@ -235,6 +256,13 @@ widget_t* edit_ex_cast(widget_t* widget);
  * ```
  */
 #define EDIT_EX_PROP_SUGGEST_WORDS_ITEM_FORMATS "suggest_words_item_formats"
+
+/**
+ * @enum edit_ex_suggest_words_prop_t
+ * @annotation ["string", "scriptable"]
+ * @prefix EDIT_EX_SUGGEST_WORDS_PROP_
+ * 属性。
+ */
 
 /**
  * @const EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME
@@ -253,20 +281,6 @@ widget_t* edit_ex_cast(widget_t* widget);
  * ```
  */
 #define EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME "@format_name"
-
-/**
- * @const EDIT_EX_PROP_SUGGEST_WORDS_INPUT_NAME
- * 最终输入到edit控件的文本的属性名。
- * > 设置了 suggest_words_item_formats 才会被用到。
- */
-#define EDIT_EX_PROP_SUGGEST_WORDS_INPUT_NAME "suggest_words_input_name"
-#define EDIT_EX_DEFAULT_SUGGEST_WORDS_INPUT_NAME "INPUT"
-
-/**
- * @const EDIT_EX_PROP_IS_SELECT_SUGGEST_WORD
- * 是否选中输入建议词。
- */
-#define EDIT_EX_PROP_IS_SELECT_SUGGEST_WORD "is_select_suggest_word"
 
 #define WIDGET_TYPE_EDIT_EX "edit_ex"
 
