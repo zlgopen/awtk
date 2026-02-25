@@ -488,10 +488,17 @@ ret_t tk_await(tk_callback_t callback, void* ctx) {
   return_value_if_fail(callback != NULL, RET_BAD_PARAMS);
   return_value_if_fail(loop != NULL, RET_FAIL);
 
+  if (loop->quit_num > 0) {
+    return RET_QUIT;
+  }
+
   while (TRUE) {
     ret = callback(ctx);
     TK_FOREACH_VISIT_RESULT_PROCESSING(ret, break);
     main_loop_step(loop);
+    if (loop->quit_num > 0) {
+      return RET_QUIT;
+    }
     main_loop_sleep(loop);
   }
 
@@ -503,9 +510,16 @@ ret_t tk_yield(void) {
   main_loop_t* loop = main_loop();
   return_value_if_fail(loop != NULL, RET_FAIL);
 
+  if (loop->quit_num > 0) {
+    return RET_QUIT;
+  }
+
   gap = time_now_ms() - loop->last_loop_time;
   if (gap >= TK_MAX_SLEEP_TIME) {
     main_loop_step(loop);
+    if (loop->quit_num > 0) {
+      return RET_QUIT;
+    }
     loop->last_loop_time = time_now_ms();
   }
 

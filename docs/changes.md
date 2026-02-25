@@ -1,5 +1,9 @@
 # 最新动态
 
+2026/02/25
+  * improve tk_await and tk_yield(感谢兆坤提供补丁)
+
+
 2026/02/06
   * 增加 tk_str_ieq_with_len 和 tk_str_find (感谢兆坤提供补丁)
   * event_from_name 函数 增加 value_changing 属性(感谢兆坤提供补丁)
