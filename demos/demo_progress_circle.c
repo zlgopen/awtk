@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo_progress_circle.c
  * Author: AWTK Develop Team
  * Brief:  演示环形进度条控件的脏区优化

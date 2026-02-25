@@ -2,7 +2,7 @@
 
 2026/02/25
   * improve tk_await and tk_yield(感谢兆坤提供补丁)
-
+  * 修正了progress_circle控件计算文本脏矩形时，没有把上一帧的脏矩形合并进来，导致字符显示有残留问题。并修正了部分代码没有utf-8的bom导致编译警告问题(感谢陈谭/雪飞提供补丁)
 
 2026/02/06
   * 增加 tk_str_ieq_with_len 和 tk_str_find (感谢兆坤提供补丁)

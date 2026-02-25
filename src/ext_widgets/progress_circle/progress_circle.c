@@ -70,7 +70,7 @@ static float_t progress_circle_get_radius(widget_t* widget) {
   return tk_min(cx, cy) - progress_circle->line_width / 2;
 }
 
-rect_t progress_circle_calc_text_dirty_rect(widget_t* widget) {
+static rect_t progress_circle_calc_text_dirty_rect(widget_t* widget) {
   rect_t r = {0, 0, 0, 0};
   canvas_t* c = widget_get_canvas(widget);
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
@@ -83,9 +83,12 @@ rect_t progress_circle_calc_text_dirty_rect(widget_t* widget) {
   if (c != NULL && progress_circle->show_text) {
     wstr_t* text = &(widget->text);
     widget_prepare_text_style(widget, c);
+
+    float_t last_text_width = (text->str)? (canvas_measure_text(c, text->str, text->size) + 10) : 10;
     progress_circle_update_text(widget);
 
     r.w = canvas_measure_text(c, text->str, text->size) + 10;
+    r.w = tk_max(last_text_width, r.w);
     r.h = c->font_size + 4;
 
     r.x = (widget->w - r.w) / 2;
