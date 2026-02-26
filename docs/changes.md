@@ -2,6 +2,7 @@
 
 2026/02/26
   * 优化 tk_str_find 效率(感谢兆坤提供补丁)
+  * 修复使用scroll_bar_m，并且在 scroll_view 里面有list_item，list_item里面放 hscroll_label，，且hscroll_label设置 loop="true" only_focus="false" only_parent_focus="false"。 在滑动列表的时候，hscroll_label会收到一个EVT_POINTER_DOWN_ABOR(感谢俊杰提供补丁)
 
 2026/02/25
   * improve tk_await and tk_yield(感谢兆坤提供补丁)

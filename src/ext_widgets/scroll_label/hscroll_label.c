@@ -559,6 +559,11 @@ static ret_t hscroll_label_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_UP: {
       hscroll_label->paused = FALSE;
+      if (!hscroll_label->only_focus && !hscroll_label->only_parent_focus) {
+        if (!hscroll_label_is_running(widget) && hscroll_label->loop) {
+          hscroll_label_start(widget);
+        }
+      }
       break;
     }
     case EVT_POINTER_LEAVE: {
