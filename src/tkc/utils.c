@@ -1278,12 +1278,13 @@ const char* tk_str_find(const char* str, const char* substr, const tk_str_find_o
   if (0 == memcmp(opt, &default_opt, sizeof(tk_str_find_option_t))) {
     return strstr(str, substr);
   } else {
-    uint32_t len = tk_strlen(substr);
     int32_t (*cmp)(const char* a, const char* b, size_t n) =
         opt->case_insensitive ? tk_strnicmp : tk_strncmp;
+    uint32_t len = tk_strlen(substr);
+    uint32_t n = tk_strlen(str);
 
     if (opt->reverse) {
-      const char* p = str + tk_strlen(str) - 1;
+      const char* p = (n >= len) ? (str + n - len) : NULL;
       for (; p >= str; p--) {
         if (0 == cmp(p, substr, len)) {
           return p;
@@ -1291,7 +1292,10 @@ const char* tk_str_find(const char* str, const char* substr, const tk_str_find_o
       }
     } else {
       const char* p = str;
-      for (; *p != '\0'; p++) {
+      for (; *p != '\0'; p++, n--) {
+        if (n < len) {
+          break;
+        }
         if (0 == cmp(p, substr, len)) {
           return p;
         }

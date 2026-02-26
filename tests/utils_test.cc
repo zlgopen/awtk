@@ -1,4 +1,4 @@
-#include <string>
+﻿#include <string>
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/object_default.h"
@@ -686,10 +686,12 @@ TEST(Utils, str_find) {
 
   opt.reverse = TRUE;
   ASSERT_STREQ(tk_str_find("1abc abc2", "abc", &opt), "abc2");
+  ASSERT_TRUE(NULL == tk_str_find("abc", "1abc abc2", &opt));
   memset(&opt, 0, sizeof(opt));
 
   opt.case_insensitive = TRUE;
   ASSERT_STREQ(tk_str_find("1abc abc2", "AbC", &opt), "abc abc2");
+  ASSERT_TRUE(NULL == tk_str_find("AbC", "1abc abc2", &opt));
   memset(&opt, 0, sizeof(opt));
 
   opt.reverse = TRUE;
