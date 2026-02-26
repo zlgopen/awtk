@@ -87,6 +87,22 @@ tk_iostream_t* tk_iostream_tcp_create_client(const char* host, int port);
 tk_iostream_t* tk_iostream_tcp_create_client_ex(const char* host, int port, int timeout,
                                                 void* opts);
 
+/**
+ * @method tk_iostream_tcp_set_tcp_keep_info
+ *
+ * 设置socket的keepalive信息。
+ *
+ * @param {tk_iostream_t*} stream iostream对象。
+ * @param {int} keep_idle 空闲时间（单位：秒）。
+ * @param {int} keep_interval 间隔时间（单位：秒）。
+ * @param {int} keep_count 重试次数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_iostream_tcp_set_tcp_keep_info(tk_iostream_t* stream, int keep_idle, int keep_interval, int keep_count);
+
+
 #define TK_IOSTREAM_TCP(obj) ((tk_iostream_tcp_t*)(obj))
 
 END_C_DECLS

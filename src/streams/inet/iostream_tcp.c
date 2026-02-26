@@ -129,3 +129,9 @@ tk_iostream_t* tk_iostream_tcp_create_client_ex(const char* host, int port, int 
 
   return stream;
 }
+
+ret_t tk_iostream_tcp_set_tcp_keep_info(tk_iostream_t* stream, int keep_idle, int keep_interval, int keep_count) {
+  tk_iostream_tcp_t* iostream_tcp = TK_IOSTREAM_TCP(stream);
+  return_value_if_fail(iostream_tcp != NULL, RET_BAD_PARAMS);
+  return tk_socket_set_tcp_keep_info(iostream_tcp->sock, keep_idle, keep_interval, keep_count);
+}

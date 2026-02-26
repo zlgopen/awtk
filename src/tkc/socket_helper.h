@@ -84,6 +84,20 @@ ret_t tk_socket_close(int sock);
 ret_t tk_socket_get_ips_by_ifname(const wchar_t* ifname, darray_t* ips);
 
 /**
+ * @method tk_socket_set_tcp_keep_info
+ * @annotation ["static"]
+ * 设置socket的keepalive信息。
+ *
+ * @param {int} sock socket句柄。
+ * @param {int} keep_idle 空闲时间（单位：秒）。
+ * @param {int} keep_interval 间隔时间（单位：秒）。
+ * @param {int} keep_count 重试次数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_socket_set_tcp_keep_info(int sock, int keep_idle, int keep_interval, int keep_count);
+
+/**
  * @method tk_socket_send
  * @annotation ["static"]
  * 

@@ -42,6 +42,7 @@ static ret_t tk_ignore_sig_pipe(void) {
 #ifdef WIN32
 #include <ws2tcpip.h>
 #include <iphlpapi.h>
+#include <mstcpip.h>
 #pragma comment(lib, "ws2_32")
 #pragma comment(lib, "iphlpapi")
 ret_t tk_socket_init() {
@@ -100,9 +101,29 @@ ret_t tk_socket_get_ips_by_ifname(const wchar_t* ifname, darray_t* ips) {
   free(pAddr);
   return push_ret;
 }
+
+ret_t tk_socket_set_tcp_keep_info(int sock, int keep_idle, int keep_interval, int keep_count) {
+  struct tcp_keepalive keepalive;
+  DWORD bytesReturned;
+
+  return_value_if_fail(sock >= 0, RET_BAD_PARAMS);
+
+  keepalive.onoff = 1;
+  keepalive.keepalivetime = keep_idle * 1000;    // 转换为毫秒
+  keepalive.keepaliveinterval = keep_interval * 1000; // 转换为毫秒
+
+  if (WSAIoctl(sock, SIO_KEEPALIVE_VALS, &keepalive, sizeof(keepalive),
+               NULL, 0, &bytesReturned, NULL, NULL) != 0) {
+    return RET_FAIL;
+  }
+
+  return RET_OK;
+}
+
 #else
 #if defined(LINUX) || defined(MACOS)
 #include <ifaddrs.h>
+#include <netinet/tcp.h>
 ret_t tk_socket_get_ips_by_ifname(const wchar_t* ifname, darray_t* ips) {
 #if defined(ANDROID) || defined(IOS)
   return RET_NOT_IMPL;
@@ -135,6 +156,36 @@ ret_t tk_socket_get_ips_by_ifname(const wchar_t* ifname, darray_t* ips) {
   TKMEM_FREE(name);
   return ret;
 #endif
+}
+
+ret_t tk_socket_set_tcp_keep_info(int sock, int keep_idle, int keep_interval, int keep_count) {
+  int optval = 1;
+  return_value_if_fail(sock >= 0, RET_BAD_PARAMS);
+  printf("tk_socket_set_tcp_keep_info : %d, %d, %d \r\n", keep_idle, keep_interval, keep_count);
+  if (setsockopt(sock, SOL_SOCKET, SO_KEEPALIVE, &optval, sizeof(optval)) < 0) {
+    return RET_FAIL;
+  }
+
+#ifdef TCP_KEEPIDLE
+  if (setsockopt(sock, IPPROTO_TCP, TCP_KEEPIDLE, &keep_idle, sizeof(keep_idle)) < 0) {
+    return RET_FAIL;
+  }
+#endif
+
+#ifndef MACOS
+#ifdef TCP_KEEPINTVL
+  if (setsockopt(sock, IPPROTO_TCP, TCP_KEEPINTVL, &keep_interval, sizeof(keep_interval)) < 0) {
+    return RET_FAIL;
+  }
+#endif
+#endif
+
+#ifdef TCP_KEEPCNT
+  if (setsockopt(sock, IPPROTO_TCP, TCP_KEEPCNT, &keep_count, sizeof(keep_count)) < 0) {
+    return RET_FAIL;
+  }
+#endif
+  return RET_OK;
 }
 #endif
 
