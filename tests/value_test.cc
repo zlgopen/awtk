@@ -1,4 +1,4 @@
-﻿#include "tkc/value.h"
+#include "tkc/value.h"
 #include "gtest/gtest.h"
 #include "tkc/object_default.h"
 
@@ -307,6 +307,67 @@ TEST(ValueTest, deepcopy_binary) {
 
   value_reset(&v);
   value_reset(&other);
+}
+
+TEST(ValueTest, deepcopy_keep_type) {
+  value_t dst;
+  value_t src;
+
+  /* int32 */
+  value_set_int32(&dst, 0);
+  value_set_int32(&src, 12345);
+  ASSERT_EQ(value_deep_copy_keep_type(&dst, &src), RET_OK);
+  ASSERT_EQ(dst.type, VALUE_TYPE_INT32);
+  ASSERT_EQ(value_int32(&dst), 12345);
+  value_reset(&dst);
+  value_reset(&src);
+
+  /* float */
+  value_set_float(&dst, 0);
+  value_set_float(&src, 3.14f);
+  ASSERT_EQ(value_deep_copy_keep_type(&dst, &src), RET_OK);
+  ASSERT_EQ(dst.type, VALUE_TYPE_FLOAT);
+  ASSERT_DOUBLE_EQ(value_float(&dst), 3.14f);
+  value_reset(&dst);
+  value_reset(&src);
+
+  /* string - dst gets dup of src */
+  value_set_str(&dst, "");
+  value_set_str(&src, "hello");
+  ASSERT_EQ(value_deep_copy_keep_type(&dst, &src), RET_OK);
+  ASSERT_EQ(dst.type, VALUE_TYPE_STRING);
+  ASSERT_STREQ(value_str(&dst), "hello");
+  ASSERT_NE(value_str(&dst), value_str(&src));
+  value_reset(&dst);
+  value_reset(&src);
+
+  /* bool */
+  value_set_bool(&dst, FALSE);
+  value_set_bool(&src, TRUE);
+  ASSERT_EQ(value_deep_copy_keep_type(&dst, &src), RET_OK);
+  ASSERT_EQ(dst.type, VALUE_TYPE_BOOL);
+  ASSERT_EQ(value_bool(&dst), TRUE);
+  value_reset(&dst);
+  value_reset(&src);
+
+  /* type mismatch (object vs string) - should fail */
+  {
+    tk_object_t* obj = object_default_create();
+    value_set_object(&dst, obj);
+    value_set_str(&src, "string");
+    ASSERT_NE(value_deep_copy_keep_type(&dst, &src), RET_OK);
+    value_reset(&dst);
+    value_reset(&src);
+    TK_OBJECT_UNREF(obj);
+  }
+
+  /* null params */
+  value_set_int32(&dst, 0);
+  value_set_int32(&src, 0);
+  ASSERT_NE(value_deep_copy_keep_type(NULL, &src), RET_OK);
+  ASSERT_NE(value_deep_copy_keep_type(&dst, NULL), RET_OK);
+  value_reset(&dst);
+  value_reset(&src);
 }
 
 TEST(ValueTest, copy_str) {

@@ -109,3 +109,31 @@ TEST(ConfUtils, object_load_conf_disable_path) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(ConfUtils, object_load_conf_keep_props_order) {
+  char url[MAX_PATH + 1];
+  const char* str =
+      "data:\n"
+      "  alpha: 1\n"
+      "  beta: 2\n"
+      "  gamma: 3\n";
+  tk_object_t* obj = object_default_create();
+  tk_object_t* obj_data = NULL;
+  str_t str_json;
+
+  tk_object_set_prop_bool(obj, TK_OBJECT_PROP_KEEP_PROPS_ORDER, TRUE);
+  data_reader_mem_build_url(str, tk_strlen(str), url);
+
+  ASSERT_EQ(object_load_conf(obj, url, "yaml"), RET_OK);
+
+  obj_data = tk_object_get_prop_object(obj, "data");
+  ASSERT_TRUE(obj_data != NULL);
+
+  str_init(&str_json, 256);
+  ASSERT_EQ(tk_object_to_json(obj_data, &str_json, 0, 0, TRUE), RET_OK);
+  /* 验证属性顺序与 yaml 中一致: alpha, beta, gamma */
+  ASSERT_STREQ(str_json.str, "{\"alpha\": \"1\",\"beta\": \"2\",\"gamma\": \"3\"}");
+
+  str_reset(&str_json);
+  TK_OBJECT_UNREF(obj);
+}
