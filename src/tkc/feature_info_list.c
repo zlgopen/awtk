@@ -70,14 +70,39 @@ typedef struct _feature_info_list_update_on_visit_ctx_t {
   uint32_t base_offset;
 } feature_info_list_update_on_visit_ctx_t;
 
+inline static uint32_t feature_info_list_calc_align(uint32_t size) {
+  if (0 == size) {
+    return 1;
+  }
+
+  /*计算大于等于size的最小2的幂次（内存对齐常用规则）*/
+  size--;
+  size |= size >> 1;
+  size |= size >> 2;
+  size |= size >> 4;
+  size |= size >> 8;
+  size |= size >> 16;
+  size++;
+
+  return size;
+}
+
 inline static ret_t feature_info_list_update_on_visit(void* ctx, const void* data) {
   feature_info_list_item_t* iter = (feature_info_list_item_t*)(data);
   feature_info_list_update_on_visit_ctx_t* actx = (feature_info_list_update_on_visit_ctx_t*)(ctx);
+  uint32_t padding = 0;
   return_value_if_fail(actx != NULL && iter != NULL, RET_BAD_PARAMS);
   return_value_if_fail(actx->list != NULL, RET_BAD_PARAMS);
 
-  iter->offset = actx->base_offset + actx->list->features_size;
-  actx->list->features_size += iter->info->size;
+  if (iter->info->size > 0) {
+    uint32_t align = feature_info_list_calc_align(iter->info->size);
+    padding = (align - ((actx->base_offset + actx->list->features_size) % align)) % align;
+
+    ENSURE(iter->info->size + padding <= UINT32_MAX - actx->list->features_size);
+  }
+
+  iter->offset = actx->base_offset + actx->list->features_size + padding;
+  actx->list->features_size += iter->info->size + padding;
 
   return RET_OK;
 }
