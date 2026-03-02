@@ -828,6 +828,17 @@ ret_t value_copy(value_t* dst, const value_t* src);
 ret_t value_deep_copy(value_t* dst, const value_t* src);
 
 /**
+ * @method value_deep_copy_keep_type
+ * 深拷贝value的值（保持属性类型）。
+ * dst使用完成后，要调用value_reset，确保不会发生内存泄漏。  
+ * @param {value_t*} dst 目的value对象。
+ * @param {const value_t*} src 源value对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_deep_copy_keep_type(value_t* dst, const value_t* src);
+
+/**
  * @method value_replace
  * 替换value的值。
  * @param {value_t*} dst 目的value对象。

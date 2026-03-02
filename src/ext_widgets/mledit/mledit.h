@@ -442,7 +442,7 @@ ret_t mledit_get_offset_at_line(widget_t* widget, uint32_t line, uint32_t* start
  * @method mledit_get_offset_at_row
  * 获取指定物理行对应的偏移位置。
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t} line 行号。
+ * @param {uint32_t} row 行号。
  * @param {uint32_t*} start 起始偏移。
  * @param {uint32_t*} end 结束偏移。
  *

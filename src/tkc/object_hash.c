@@ -136,74 +136,6 @@ static ret_t object_hash_remove_prop(tk_object_t* obj, const char* name) {
   }
 }
 
-static ret_t value_deep_copy_keep_type(value_t* dst, const value_t* src) {
-  ret_t ret = RET_OK;
-  return_value_if_fail(dst != NULL && src != NULL, RET_BAD_PARAMS);
-
-  switch (dst->type) {
-    case VALUE_TYPE_BOOL: {
-      value_set_bool(dst, value_bool(src));
-      break;
-    }
-    case VALUE_TYPE_INT8: {
-      value_set_int8(dst, value_int8(src));
-      break;
-    }
-    case VALUE_TYPE_UINT8: {
-      value_set_uint8(dst, value_uint8(src));
-      break;
-    }
-    case VALUE_TYPE_INT16: {
-      value_set_int16(dst, value_int16(src));
-      break;
-    }
-    case VALUE_TYPE_UINT16: {
-      value_set_uint16(dst, value_uint16(src));
-      break;
-    }
-    case VALUE_TYPE_INT32: {
-      value_set_int32(dst, value_int32(src));
-      break;
-    }
-    case VALUE_TYPE_UINT32: {
-      value_set_uint32(dst, value_uint32(src));
-      break;
-    }
-    case VALUE_TYPE_INT64: {
-      value_set_int64(dst, value_int64(src));
-      break;
-    }
-    case VALUE_TYPE_UINT64: {
-      value_set_uint64(dst, value_uint64(src));
-      break;
-    }
-    case VALUE_TYPE_FLOAT: {
-      value_set_float(dst, value_float(src));
-      break;
-    }
-    case VALUE_TYPE_DOUBLE: {
-      value_set_double(dst, value_double(src));
-      break;
-    }
-    case VALUE_TYPE_STRING: {
-      value_reset(dst);
-      value_dup_str(dst, value_str(src));
-      break;
-    }
-    default: {
-      if (dst->type == src->type) {
-        value_replace(dst, src, TRUE);
-      } else {
-        ret = RET_FAIL;
-        log_debug("not support type:%d\n", dst->type);
-      }
-      break;
-    }
-  }
-
-  return ret;
-}
-
 static ret_t object_hash_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   value_t* vv = NULL;
   ret_t ret = RET_NOT_FOUND;
@@ -355,6 +287,7 @@ static tk_object_t* object_hash_clone(object_hash_t* o) {
 
   dupo->enable_path = o->enable_path;
   dupo->keep_prop_type = o->keep_prop_type;
+  dupo->keep_props_order = o->keep_props_order;
 
   for (i = 0; i < o->props.size; i++) {
     named_value_hash_t* iter = (named_value_hash_t*)(o->props.elms[i]);

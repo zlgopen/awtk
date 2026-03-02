@@ -1208,6 +1208,13 @@ int32_t tk_object_compare_name_without_nullptr(tk_object_t* obj, tk_object_t* ot
 #define TK_OBJECT_PROP_DISABLE_PATH "#disable_path"
 
 /**
+ * @const TK_OBJECT_PROP_KEEP_PROPS_ORDER
+ * 是否保持属性间的顺序。
+ */
+#define TK_OBJECT_PROP_KEEP_PROPS_ORDER "#keep_props_order"
+
+
+/**
  * @const TK_OBJECT_PROP_CHECKED
  * 属性是否勾选。
  */

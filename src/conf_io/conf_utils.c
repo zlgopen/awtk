@@ -31,6 +31,7 @@
 
 typedef struct _object_load_conf_ctx {
   bool_t disable_path : 1;
+  bool_t keep_props_order : 1;
 } object_load_conf_ctx;
 
 typedef struct _object_load_conf_copy_props_on_visit_ctx_t {
@@ -54,6 +55,7 @@ static ret_t object_load_conf_set_prop(tk_object_t* obj, const char* name, const
       o = object_array_create();
     } else {
       o = object_hash_create_ex(!ctx->disable_path);
+      object_hash_set_keep_props_order(o, ctx->keep_props_order);
     }
     object_load_conf_copy_props(o, v_obj, ctx);
     value_set_object(&tmp, o);
@@ -119,6 +121,7 @@ ret_t object_load_conf(tk_object_t* obj, const char* url, const char* type) {
   return_value_if_fail(obj_conf != NULL, RET_FAIL);
 
   ctx.disable_path = tk_object_get_prop_bool(obj, TK_OBJECT_PROP_DISABLE_PATH, FALSE);
+  ctx.keep_props_order = tk_object_get_prop_bool(obj, TK_OBJECT_PROP_KEEP_PROPS_ORDER, FALSE);
 
   conf_doc_disable_path(conf_obj_get_doc(obj_conf), ctx.disable_path);
 
