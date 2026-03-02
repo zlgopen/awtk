@@ -290,8 +290,8 @@ static void xml_loader_on_prop_end(XmlBuilder* thiz) {
         }
         tokenizer_init(&t, key, tk_strlen(key), "-");
         widget_name = tokenizer_next(&t);
-        if (tk_str_eq(widget_name, widget_name_str->str)) {
-          widget_prop = tokenizer_next(&t);
+        if (tk_str_eq(widget_name, widget_name_str->str) && tokenizer_has_more(&t)) {
+          widget_prop = &(t.str[t.cursor]);
           include_attrs_used[i] = TRUE;
           ui_builder_on_widget_prop(b->ui_builder, widget_prop, value);
         }
