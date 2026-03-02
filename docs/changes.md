@@ -5,6 +5,7 @@
   * object_load_conf 接口支持 keep_props_order(感谢雨欣提供补丁)
   * 修复 feature_info_list 没有内存对齐的问题(感谢兆坤提供补丁)
   * 完善 ui_loader_xml(感谢泽武提供补丁)
+  * 增加 raw_darray(感谢兆坤提供补丁)
 
 2026/02/26
   * 优化 tk_str_find 效率(感谢兆坤提供补丁)
