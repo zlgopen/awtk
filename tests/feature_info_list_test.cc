@@ -13,9 +13,9 @@ typedef struct _feature_a_t {
 } feature_a_t;
 
 static const feature_info_list_feature_info_t s_feature_a_info = {
-    .size = sizeof(feature_a_t),
-    .init = NULL,
-    .deinit = NULL,
+    sizeof(feature_a_t),
+    NULL,
+    NULL,
 };
 
 /* 测试用特征：size=5 -> align=8 */
@@ -24,9 +24,9 @@ typedef struct _feature_b_t {
 } feature_b_t;
 
 static const feature_info_list_feature_info_t s_feature_b_info = {
-    .size = sizeof(feature_b_t),
-    .init = NULL,
-    .deinit = NULL,
+    sizeof(feature_b_t),
+    NULL,
+    NULL,
 };
 
 /* 测试用特征：size=8 -> align=8 */
@@ -35,9 +35,9 @@ typedef struct _feature_c_t {
 } feature_c_t;
 
 static const feature_info_list_feature_info_t s_feature_c_info = {
-    .size = sizeof(feature_c_t),
-    .init = NULL,
-    .deinit = NULL,
+    sizeof(feature_c_t),
+    NULL,
+    NULL,
 };
 
 /* 计算大于等于 size 的最小 2 的幂（与 feature_info_list 内部逻辑一致） */
