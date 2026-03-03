@@ -67,6 +67,28 @@ inline static ret_t tk_raw_darray_destroy(void* arr) {
   return RET_OK;
 }
 
+inline static ret_t tk_raw_darray_set_capacity(void** p_arr, size_t cap, size_t elm_size) {
+  tk_raw_darray_header_t *header = NULL, *new_header = NULL;
+  return_value_if_fail(NULL != p_arr && NULL != *p_arr, RET_BAD_PARAMS);
+  return_value_if_fail(!tk_raw_darray_overflow(elm_size, cap), RET_FAIL);
+
+  header = (tk_raw_darray_header_t*)(*p_arr) - 1;
+
+  new_header = (tk_raw_darray_header_t*)TKMEM_REALLOC(
+      header, sizeof(tk_raw_darray_header_t) + elm_size * cap);
+
+  if (NULL != new_header) {
+    new_header->capacity = cap;
+    if (cap < new_header->size) {
+      new_header->size = cap;
+    }
+    *p_arr = (void*)(new_header + 1);
+    return RET_OK;
+  } else {
+    return RET_OOM;
+  }
+}
+
 inline static size_t tk_raw_darray_extend_capacity(size_t cap) {
   /* (cap >> 1) + cap + 1 */
   size_t sum = 0;
@@ -87,19 +109,21 @@ inline static ret_t tk_raw_darray_extend(void** p_arr, size_t elm_size) {
 
   header = (tk_raw_darray_header_t*)(*p_arr) - 1;
   if (header->capacity < header->size) {
-    void* new_header = NULL;
     size_t new_capacity = tk_raw_darray_extend_capacity(header->capacity);
     new_capacity = tk_max(new_capacity, header->size);
-    return_value_if_fail(!tk_raw_darray_overflow(elm_size, new_capacity), RET_FAIL);
+    return tk_raw_darray_set_capacity(p_arr, new_capacity, elm_size);
+  }
 
-    new_header = TKMEM_REALLOC(header, sizeof(tk_raw_darray_header_t) + elm_size * new_capacity);
-    if (NULL != new_header) {
-      header = (tk_raw_darray_header_t*)new_header;
-      header->capacity = new_capacity;
-      *p_arr = (void*)(header + 1);
-    } else {
-      return RET_OOM;
-    }
+  return RET_OK;
+}
+
+inline static ret_t tk_raw_darray_shrink(void** p_arr, size_t elm_size) {
+  tk_raw_darray_header_t* header = NULL;
+  return_value_if_fail(NULL != p_arr && NULL != *p_arr, RET_BAD_PARAMS);
+
+  header = (tk_raw_darray_header_t*)(*p_arr) - 1;
+  if (header->capacity > header->size) {
+    return tk_raw_darray_set_capacity(p_arr, header->size, elm_size);
   }
 
   return RET_OK;
@@ -123,7 +147,7 @@ error:
   return ret;
 }
 
-inline bool_t tk_raw_darray_can_push(void** p_arr, size_t elm_size) {
+inline static bool_t tk_raw_darray_can_push(void** p_arr, size_t elm_size) {
   tk_raw_darray_header_t* header = NULL;
   return_value_if_fail(NULL != p_arr && NULL != *p_arr, FALSE);
 
@@ -133,7 +157,7 @@ inline bool_t tk_raw_darray_can_push(void** p_arr, size_t elm_size) {
          (RET_OK == tk_raw_darray_resize(p_arr, header->size + 1, elm_size));
 }
 
-inline bool_t tk_raw_darray_can_insert(void** p_arr, size_t idx, size_t elm_size) {
+inline static bool_t tk_raw_darray_can_insert(void** p_arr, size_t idx, size_t elm_size) {
   tk_raw_darray_header_t* header = NULL;
   return_value_if_fail(NULL != p_arr && NULL != *p_arr, FALSE);
 
@@ -143,7 +167,7 @@ inline bool_t tk_raw_darray_can_insert(void** p_arr, size_t idx, size_t elm_size
          (RET_OK == tk_raw_darray_resize(p_arr, header->size + 1, elm_size));
 }
 
-inline bool_t tk_raw_darray_can_remove(void** p_arr, size_t idx, size_t elm_size) {
+inline static bool_t tk_raw_darray_can_remove(void** p_arr, size_t idx, size_t elm_size) {
   tk_raw_darray_header_t* header = NULL;
   return_value_if_fail(NULL != p_arr && NULL != *p_arr, FALSE);
 
@@ -153,24 +177,112 @@ inline bool_t tk_raw_darray_can_remove(void** p_arr, size_t idx, size_t elm_size
          (RET_OK == tk_raw_darray_resize(p_arr, header->size - 1, elm_size));
 }
 
+/**
+ * @class TK_RAW_DARRAY_T
+ * @annotation ["fake"]
+ * @export none
+ * 原生动态数组。
+ */
 #define TK_RAW_DARRAY_T(type) type*
 
+/**
+ * @method TK_RAW_DARRAY_CREATE
+ * @annotation ["static"]
+ * @export none
+ * 创建原生动态数组。
+ * @param {T} type 类型。
+ * @param {size_t} cap 容量。
+ *
+ * @return {T*} 返回原生动态数组。
+ */
 #define TK_RAW_DARRAY_CREATE(type, cap) \
   (0 <= (cap) ? (TK_RAW_DARRAY_T(type))tk_raw_darray_create(cap, sizeof(type)) : NULL)
 
+/**
+ * @method TK_RAW_DARRAY_DESTROY
+ * @annotation ["static"]
+ * @export none
+ * 销毁原生动态数组。
+ * @param {T*} arr 原生动态数组。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 #define TK_RAW_DARRAY_DESTROY(arr) \
   ((RET_OK == tk_raw_darray_destroy((void*)arr)) ? ((arr) = NULL, RET_OK) : RET_FAIL)
 
+/**
+ * @method TK_RAW_DARRAY_CAPACITY
+ * @annotation ["static"]
+ * @export none
+ * 获取原生动态数组的容量。
+ * @param {T*} arr 原生动态数组。
+ *
+ * @return {size_t} 返回原生动态数组的容量。
+ */
+#define TK_RAW_DARRAY_CAPACITY(arr) \
+  (NULL != (arr) ? ((tk_raw_darray_header_t*)(arr) - 1)->capacity : 0)
+
+/**
+ * @method TK_RAW_DARRAY_SIZE
+ * @annotation ["static"]
+ * @export none
+ * 获取原生动态数组的大小。
+ * @param {T*} arr 原生动态数组。
+ *
+ * @return {size_t} 返回原生动态数组的大小。
+ */
 #define TK_RAW_DARRAY_SIZE(arr) (NULL != (arr) ? ((tk_raw_darray_header_t*)(arr) - 1)->size : 0)
 
+/**
+ * @method TK_RAW_DARRAY_RESIZE
+ * @annotation ["static"]
+ * @export none
+ * 调整原生动态数组的大小。
+ * @param {T*} arr 原生动态数组。
+ * @param {size_t} size 大小。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 #define TK_RAW_DARRAY_RESIZE(arr, size) \
   (0 <= (size) ? tk_raw_darray_resize((void**)&(arr), size, sizeof(*(arr))) : RET_FAIL)
 
+/**
+ * @method TK_RAW_DARRAY_SHRINK
+ * @annotation ["static"]
+ * @export none
+ * 缩小容量，释放未使用空间。
+ * @param {T*} arr 原生动态数组。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+#define TK_RAW_DARRAY_SHRINK(arr) tk_raw_darray_shrink((void**)&(arr), sizeof(*(arr)))
+
+/**
+ * @method TK_RAW_DARRAY_PUSH
+ * @annotation ["static"]
+ * @export none
+ * 向原生动态数组中添加元素。
+ * @param {T*} arr 原生动态数组。
+ * @param {T} elm 元素。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 #define TK_RAW_DARRAY_PUSH(arr, elm)                          \
   (tk_raw_darray_can_push((void**)&(arr), sizeof(*(arr)))     \
        ? ((arr)[TK_RAW_DARRAY_SIZE(arr) - 1] = (elm), RET_OK) \
        : RET_FAIL)
 
+/**
+ * @method TK_RAW_DARRAY_INSERT
+ * @annotation ["static"]
+ * @export none
+ * 向原生动态数组中插入元素。
+ * @param {T*} arr 原生动态数组。
+ * @param {size_t} idx 索引。
+ * @param {T} elm 元素。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 #define TK_RAW_DARRAY_INSERT(arr, idx, elm)                                      \
   ((0 <= (idx) && tk_raw_darray_can_insert((void**)&(arr), idx, sizeof(*(arr)))) \
        ? (memmove(&(arr)[(idx) + 1], &(arr)[(idx)],                              \
@@ -178,6 +290,16 @@ inline bool_t tk_raw_darray_can_remove(void** p_arr, size_t idx, size_t elm_size
           (arr)[idx] = (elm), RET_OK)                                            \
        : RET_FAIL)
 
+/**
+ * @method TK_RAW_DARRAY_REMOVE
+ * @annotation ["static"]
+ * @export none
+ * 从原生动态数组中删除元素。
+ * @param {T*} arr 原生动态数组。
+ * @param {size_t} idx 索引。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 #define TK_RAW_DARRAY_REMOVE(arr, idx)                                           \
   ((0 <= (idx) && tk_raw_darray_can_remove((void**)&(arr), idx, sizeof(*(arr)))) \
        ? (memmove(&(arr)[(idx)], &(arr)[(idx) + 1],                              \
