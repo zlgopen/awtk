@@ -1,4 +1,5 @@
-﻿#include "gtest/gtest.h"
+﻿#include <string.h>
+#include "gtest/gtest.h"
 #include "tkc/raw_darray.h"
 
 TEST(RawDarray, basic) {
@@ -44,7 +45,7 @@ TEST(RawDarray, remove) {
   TK_RAW_DARRAY_REMOVE(arr, 1);
   ASSERT_EQ(TK_RAW_DARRAY_SIZE(arr), 3);
 
-  int temp[] = {0, 2, 3, 4};
+  int temp[] = {0, 2, 3};
   for (size_t i = 0; i < TK_RAW_DARRAY_SIZE(arr); i++) {
     ASSERT_EQ(arr[i], temp[i]);
   }
@@ -65,7 +66,7 @@ TEST(RawDarray, insert) {
   TK_RAW_DARRAY_INSERT(arr, 3, 33);
   ASSERT_EQ(TK_RAW_DARRAY_SIZE(arr), 5);
 
-  int temp[] = {0, 1, 2, 33, 3, 4};
+  int temp[] = {0, 1, 2, 33, 3};
   for (size_t i = 0; i < TK_RAW_DARRAY_SIZE(arr); i++) {
     ASSERT_EQ(arr[i], temp[i]);
   }
@@ -140,6 +141,31 @@ TEST(RawDarray, func_arg) {
   for (size_t i = 0; i < TK_RAW_DARRAY_SIZE(arr); i++) {
     ASSERT_EQ(arr[i], i * 10);
   }
+
+  ASSERT_EQ(TK_RAW_DARRAY_DESTROY(arr), RET_OK);
+}
+
+TEST(RawDarray, error) {
+  TK_RAW_DARRAY_T(int) arr = NULL;
+  arr = TK_RAW_DARRAY_CREATE(int, -1);
+  ASSERT_FALSE(arr != NULL);
+  arr = TK_RAW_DARRAY_CREATE(int, 4);
+  ASSERT_TRUE(arr != NULL);
+
+  TK_RAW_DARRAY_PUSH(arr, 0);
+  TK_RAW_DARRAY_PUSH(arr, 1);
+  TK_RAW_DARRAY_PUSH(arr, 2);
+
+  ASSERT_NE(TK_RAW_DARRAY_RESIZE(arr, -1), RET_OK);
+  ASSERT_EQ(TK_RAW_DARRAY_SIZE(arr), 3);
+
+  ASSERT_NE(TK_RAW_DARRAY_REMOVE(arr, -1), RET_OK);
+  ASSERT_NE(TK_RAW_DARRAY_REMOVE(arr, TK_RAW_DARRAY_SIZE(arr)), RET_OK);
+  ASSERT_EQ(TK_RAW_DARRAY_SIZE(arr), 3);
+
+  ASSERT_NE(TK_RAW_DARRAY_INSERT(arr, -1, -1), RET_OK);
+  ASSERT_NE(TK_RAW_DARRAY_INSERT(arr, TK_RAW_DARRAY_SIZE(arr) + 1, -2), RET_OK);
+  ASSERT_EQ(TK_RAW_DARRAY_SIZE(arr), 3);
 
   ASSERT_EQ(TK_RAW_DARRAY_DESTROY(arr), RET_OK);
 }
