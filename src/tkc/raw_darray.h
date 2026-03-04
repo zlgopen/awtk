@@ -39,16 +39,16 @@ typedef struct _tk_raw_darray_header_t {
   size_t capacity;
 } TK_ALIGN(tk_raw_darray_header_t, 16);
 
-inline static bool_t tk_raw_darray_overflow(size_t elm_size, size_t cap) {
-  return (elm_size > 0 && cap > SIZE_MAX / elm_size) ||
-         (elm_size * cap) > (SIZE_MAX - sizeof(tk_raw_darray_header_t));
+inline static bool_t tk_raw_darray_overflow(size_t cap, size_t elm_size) {
+  return cap > 0 && ((elm_size > SIZE_MAX / cap) ||
+                     ((cap * elm_size) > (SIZE_MAX - sizeof(tk_raw_darray_header_t))));
 }
 
 inline static void* tk_raw_darray_create(size_t cap, size_t elm_size) {
   tk_raw_darray_header_t* header = NULL;
-  return_value_if_fail(!tk_raw_darray_overflow(elm_size, cap), NULL);
+  return_value_if_fail(!tk_raw_darray_overflow(cap, elm_size), NULL);
 
-  header = (tk_raw_darray_header_t*)TKMEM_ALLOC(sizeof(tk_raw_darray_header_t) + elm_size * cap);
+  header = (tk_raw_darray_header_t*)TKMEM_ALLOC(sizeof(tk_raw_darray_header_t) + cap * elm_size);
   if (NULL != header) {
     memset(header, 0, sizeof(tk_raw_darray_header_t));
     header->capacity = cap;
@@ -70,12 +70,12 @@ inline static ret_t tk_raw_darray_destroy(void* arr) {
 inline static ret_t tk_raw_darray_set_capacity(void** p_arr, size_t cap, size_t elm_size) {
   tk_raw_darray_header_t *header = NULL, *new_header = NULL;
   return_value_if_fail(NULL != p_arr && NULL != *p_arr, RET_BAD_PARAMS);
-  return_value_if_fail(!tk_raw_darray_overflow(elm_size, cap), RET_FAIL);
+  return_value_if_fail(!tk_raw_darray_overflow(cap, elm_size), RET_FAIL);
 
   header = (tk_raw_darray_header_t*)(*p_arr) - 1;
 
   new_header = (tk_raw_darray_header_t*)TKMEM_REALLOC(
-      header, sizeof(tk_raw_darray_header_t) + elm_size * cap);
+      header, sizeof(tk_raw_darray_header_t) + cap * elm_size);
 
   if (NULL != new_header) {
     new_header->capacity = cap;
@@ -147,34 +147,43 @@ error:
   return ret;
 }
 
-inline static bool_t tk_raw_darray_can_push(void** p_arr, size_t elm_size) {
+inline static ret_t tk_raw_darray_push_prepare(void** p_arr, size_t elm_size) {
   tk_raw_darray_header_t* header = NULL;
-  return_value_if_fail(NULL != p_arr && NULL != *p_arr, FALSE);
+  return_value_if_fail(NULL != p_arr && NULL != *p_arr, RET_BAD_PARAMS);
 
   header = (tk_raw_darray_header_t*)(*p_arr) - 1;
 
-  return (header->size < SIZE_MAX) &&
-         (RET_OK == tk_raw_darray_resize(p_arr, header->size + 1, elm_size));
+  if (header->size < SIZE_MAX) {
+    return tk_raw_darray_resize(p_arr, header->size + 1, elm_size);
+  } else {
+    return RET_FAIL;
+  }
 }
 
-inline static bool_t tk_raw_darray_can_insert(void** p_arr, size_t idx, size_t elm_size) {
+inline static ret_t tk_raw_darray_insert_prepare(void** p_arr, size_t idx, size_t elm_size) {
   tk_raw_darray_header_t* header = NULL;
-  return_value_if_fail(NULL != p_arr && NULL != *p_arr, FALSE);
+  return_value_if_fail(NULL != p_arr && NULL != *p_arr, RET_BAD_PARAMS);
 
   header = (tk_raw_darray_header_t*)(*p_arr) - 1;
 
-  return (idx <= header->size) && (header->size < SIZE_MAX) &&
-         (RET_OK == tk_raw_darray_resize(p_arr, header->size + 1, elm_size));
+  if (idx <= header->size && header->size < SIZE_MAX) {
+    return tk_raw_darray_resize(p_arr, header->size + 1, elm_size);
+  } else {
+    return RET_FAIL;
+  }
 }
 
-inline static bool_t tk_raw_darray_can_remove(void** p_arr, size_t idx, size_t elm_size) {
+inline static ret_t tk_raw_darray_remove_prepare(void** p_arr, size_t idx, size_t elm_size) {
   tk_raw_darray_header_t* header = NULL;
-  return_value_if_fail(NULL != p_arr && NULL != *p_arr, FALSE);
+  return_value_if_fail(NULL != p_arr && NULL != *p_arr, RET_BAD_PARAMS);
 
   header = (tk_raw_darray_header_t*)(*p_arr) - 1;
 
-  return (idx < header->size) &&
-         (RET_OK == tk_raw_darray_resize(p_arr, header->size - 1, elm_size));
+  if (idx < header->size) {
+    return tk_raw_darray_resize(p_arr, header->size - 1, elm_size);
+  } else {
+    return RET_FAIL;
+  }
 }
 
 /**
@@ -267,9 +276,9 @@ inline static bool_t tk_raw_darray_can_remove(void** p_arr, size_t idx, size_t e
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-#define TK_RAW_DARRAY_PUSH(arr, elm)                          \
-  (tk_raw_darray_can_push((void**)&(arr), sizeof(*(arr)))     \
-       ? ((arr)[TK_RAW_DARRAY_SIZE(arr) - 1] = (elm), RET_OK) \
+#define TK_RAW_DARRAY_PUSH(arr, elm)                                    \
+  (RET_OK == tk_raw_darray_push_prepare((void**)&(arr), sizeof(*(arr))) \
+       ? ((arr)[TK_RAW_DARRAY_SIZE(arr) - 1] = (elm), RET_OK)           \
        : RET_FAIL)
 
 /**
@@ -283,11 +292,11 @@ inline static bool_t tk_raw_darray_can_remove(void** p_arr, size_t idx, size_t e
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-#define TK_RAW_DARRAY_INSERT(arr, idx, elm)                                      \
-  ((0 <= (idx) && tk_raw_darray_can_insert((void**)&(arr), idx, sizeof(*(arr)))) \
-       ? (memmove(&(arr)[(idx) + 1], &(arr)[(idx)],                              \
-                  (TK_RAW_DARRAY_SIZE(arr) - (idx) - 1) * sizeof(*(arr))),       \
-          (arr)[idx] = (elm), RET_OK)                                            \
+#define TK_RAW_DARRAY_INSERT(arr, idx, elm)                                                    \
+  ((0 <= (idx) && RET_OK == tk_raw_darray_insert_prepare((void**)&(arr), idx, sizeof(*(arr)))) \
+       ? (memmove(&(arr)[(idx) + 1], &(arr)[(idx)],                                            \
+                  (TK_RAW_DARRAY_SIZE(arr) - (idx) - 1) * sizeof(*(arr))),                     \
+          (arr)[idx] = (elm), RET_OK)                                                          \
        : RET_FAIL)
 
 /**
@@ -300,11 +309,11 @@ inline static bool_t tk_raw_darray_can_remove(void** p_arr, size_t idx, size_t e
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-#define TK_RAW_DARRAY_REMOVE(arr, idx)                                           \
-  ((0 <= (idx) && tk_raw_darray_can_remove((void**)&(arr), idx, sizeof(*(arr)))) \
-       ? (memmove(&(arr)[(idx)], &(arr)[(idx) + 1],                              \
-                  (TK_RAW_DARRAY_SIZE(arr) - (idx)) * sizeof(*(arr))),           \
-          RET_OK)                                                                \
+#define TK_RAW_DARRAY_REMOVE(arr, idx)                                                         \
+  ((0 <= (idx) && RET_OK == tk_raw_darray_remove_prepare((void**)&(arr), idx, sizeof(*(arr)))) \
+       ? (memmove(&(arr)[(idx)], &(arr)[(idx) + 1],                                            \
+                  (TK_RAW_DARRAY_SIZE(arr) - (idx)) * sizeof(*(arr))),                         \
+          RET_OK)                                                                              \
        : RET_FAIL)
 
 END_C_DECLS

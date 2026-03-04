@@ -1,4 +1,5 @@
 ﻿#include <string.h>
+#include <stdlib.h>
 #include "gtest/gtest.h"
 #include "tkc/raw_darray.h"
 
@@ -105,6 +106,41 @@ TEST(RawDarray, memcpy) {
 
   for (size_t i = 0; i < TK_RAW_DARRAY_SIZE(arr); i++) {
     ASSERT_EQ(arr[i], temp[i]);
+  }
+
+  ASSERT_EQ(TK_RAW_DARRAY_DESTROY(arr), RET_OK);
+}
+
+static int raw_darray_test_cmp(const void* a, const void* b) {
+  int va = *(int*)(a);
+  int vb = *(int*)(b);
+  return va - vb;
+}
+
+TEST(RawDarray, sort_and_search) {
+  TK_RAW_DARRAY_T(int) arr = TK_RAW_DARRAY_CREATE(int, 0);
+  ASSERT_TRUE(arr != NULL);
+
+  int key = rand() % 100;
+  ASSERT_EQ(TK_RAW_DARRAY_PUSH(arr, key), RET_OK);
+  for (size_t i = TK_RAW_DARRAY_SIZE(arr); i < 10; i++) {
+    ASSERT_EQ(TK_RAW_DARRAY_PUSH(arr, rand() % 100), RET_OK);
+  }
+
+  qsort(arr, TK_RAW_DARRAY_SIZE(arr), sizeof(*arr), raw_darray_test_cmp);
+
+  int* found = (int*)bsearch(&key, arr, TK_RAW_DARRAY_SIZE(arr), sizeof(*arr), raw_darray_test_cmp);
+  ASSERT_TRUE(found != NULL);
+  size_t index = found - arr;
+
+  for (size_t i = 0; i < TK_RAW_DARRAY_SIZE(arr); i++) {
+    if (i < index) {
+      ASSERT_LE(arr[i], key);
+    } else if (i > index) {
+      ASSERT_GE(arr[i], key);
+    } else {
+      ASSERT_EQ(arr[i], key);
+    }
   }
 
   ASSERT_EQ(TK_RAW_DARRAY_DESTROY(arr), RET_OK);
