@@ -193,6 +193,9 @@ static ret_t object_hash_get_prop(tk_object_t* obj, const char* name, value_t* v
   } else if (tk_str_eq(name, TK_OBJECT_PROP_DISABLE_PATH)) {
     value_set_bool(v, !o->enable_path);
     return RET_OK;
+  } else if (tk_str_eq(name, TK_OBJECT_PROP_KEEP_PROPS_ORDER)) {
+    value_set_bool(v, o->keep_props_order);
+    return RET_OK;
   }
 
   if (o->props.size > 0 && o->enable_path) {

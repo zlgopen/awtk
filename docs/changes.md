@@ -1,4 +1,8 @@
 # 最新动态
+
+2026/03/5
+  * object_hash_get_prop补充keep_props_order (感谢雨欣提供补丁) 
+
 2026/03/4
   * 完善 raw_darray(感谢兆坤提供补丁)
 
