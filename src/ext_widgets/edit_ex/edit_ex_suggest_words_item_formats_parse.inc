@@ -310,7 +310,8 @@ static ret_t edit_ex_suggest_words_item_formats_parse(edit_ex_t* edit_ex, const 
        item_format = tokenizer_next(&t), i++) {
     uint32_t len = tk_strlen(item_format);
     const char* brace_left = strchr(item_format, '{');
-    if (brace_left != NULL && item_format[len - 1] == '}') {
+    const char* brace_right = ('}' == item_format[len - 1]) ? &item_format[len - 1] : NULL;
+    if (brace_left != NULL && brace_right != NULL) {
       widget_t* item = NULL;
 
       /* 设置 { 前的名称 */
@@ -334,8 +335,8 @@ static ret_t edit_ex_suggest_words_item_formats_parse(edit_ex_t* edit_ex, const 
       widget_set_name(item, str_format.str);
 
       /* 去掉 {} 和名称 */
-      break_if_fail_ex(NULL != edit_ex_suggest_words_set_str_by_slice(
-                                   &str_format, brace_left + 1, &item_format[len - 2], " \r\n"),
+      break_if_fail_ex(NULL != edit_ex_suggest_words_set_str_by_slice(&str_format, brace_left + 1,
+                                                                      brace_right, " \r\n"),
                        (widget_destroy(item), ret = RET_FAIL));
 
       ret = edit_ex_suggest_words_item_format_parse(edit_ex, str_format.str, item);

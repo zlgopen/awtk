@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/03/9
+  * 修复edit_ex解析suggest_words_item_formats失败的问题(感谢兆坤提供补丁)
+
 2026/03/5
   * object_hash_get_prop补充keep_props_order (感谢雨欣提供补丁) 
 
