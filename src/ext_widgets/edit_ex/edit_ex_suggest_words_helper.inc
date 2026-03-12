@@ -56,6 +56,22 @@ inline static void edit_ex_set_is_select_suggest_word(edit_ex_t* edit_ex,
   emitter_dispatch(EMITTER(edit_ex), &evt.e);
 }
 
+inline static void edit_ex_close_suggest_words_popup(edit_ex_t* edit_ex) {
+  if (edit_ex->suggest_words_popup != NULL) {
+    window_close(edit_ex->suggest_words_popup);
+    edit_ex->suggest_words_popup = NULL;
+  }
+}
+
+static ret_t edit_ex_on_screen_resize(void* ctx, event_t* e) {
+  edit_ex_t* edit_ex = EDIT_EX(ctx);
+  return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
+
+  edit_ex_close_suggest_words_popup(edit_ex);
+
+  return RET_OK;
+}
+
 static ret_t edit_ex_suggest_words_popup_on_open(void* ctx, event_t* e) {
   edit_ex_t* edit_ex = EDIT_EX(ctx);
   widget_t* window = WIDGET(e->target);
@@ -67,6 +83,9 @@ static ret_t edit_ex_suggest_words_popup_on_open(void* ctx, event_t* e) {
 static ret_t edit_ex_suggest_words_popup_on_close(void* ctx, event_t* e) {
   edit_ex_t* edit_ex = EDIT_EX(ctx);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
+
+  widget_off_by_func(window_manager(), EVT_RESIZE, edit_ex_on_screen_resize, edit_ex);
+  widget_off_by_func(window_manager(), EVT_MOVE_RESIZE, edit_ex_on_screen_resize, edit_ex);
 
   edit_ex->suggest_words_popup = NULL;
 
@@ -286,13 +305,6 @@ static widget_t* edit_ex_create_suggest_words_popup(widget_t* widget) {
   widget_set_focused_internal(widget, TRUE);
 
   return win;
-}
-
-inline static void edit_ex_close_suggest_words_popup(edit_ex_t* edit_ex) {
-  if (edit_ex->suggest_words_popup != NULL) {
-    window_close(edit_ex->suggest_words_popup);
-    edit_ex->suggest_words_popup = NULL;
-  }
 }
 
 static ret_t edit_ex_suggest_words_popup_confirm(widget_t* widget, widget_t* item) {
@@ -673,11 +685,19 @@ inline static ret_t edit_ex_suggest_words_popup_calc_position(widget_t* widget, 
   return RET_OK;
 }
 
+inline static ret_t edit_ex_suggest_words_popup_fix_position(edit_ex_t* edit_ex) {
+  point_t p;
+  ret_t ret = edit_ex_suggest_words_popup_calc_position(WIDGET(edit_ex), &p);
+  if (RET_OK == ret) {
+    ret = widget_move(edit_ex->suggest_words_popup, p.x, p.y);
+  }
+  return ret;
+}
+
 static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
   ret_t ret = RET_OK;
   edit_ex_t* edit_ex = EDIT_EX(widget);
   value_change_event_t evt;
-  point_t p;
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
   if (edit_ex->suggest_words == NULL) {
@@ -731,14 +751,15 @@ static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
       widget_on(edit_ex->suggest_words_popup, s_pointer_event_types[i],
                 edit_ex_suggest_words_popup_on_pointer_event, widget);
     }
+
+    widget_on(window_manager(), EVT_RESIZE, edit_ex_on_screen_resize, widget);
+    widget_on(window_manager(), EVT_MOVE_RESIZE, edit_ex_on_screen_resize, widget);
   }
 
   edit_ex_layout_suggest_words_popup(widget);
   widget_layout(edit_ex->suggest_words_popup);
 
-  if (RET_OK == edit_ex_suggest_words_popup_calc_position(widget, &p)) {
-    widget_move(edit_ex->suggest_words_popup, p.x, p.y);
-  }
+  edit_ex_suggest_words_popup_fix_position(edit_ex);
 
   return ret;
 }
