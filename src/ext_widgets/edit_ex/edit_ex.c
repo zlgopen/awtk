@@ -256,8 +256,8 @@ static ret_t edit_ex_set_suggest_words_ui_props(widget_t* widget, tk_object_t* p
 
 static ret_t edit_ex_on_copy(widget_t* widget, widget_t* other) {
   ret_t ret = RET_OK;
-  edit_ex_t* edit_ex = EDIT(widget);
-  edit_ex_t* edit_ex_other = EDIT(other);
+  edit_ex_t* edit_ex = EDIT_EX(widget);
+  edit_ex_t* edit_ex_other = EDIT_EX(other);
   return_value_if_fail(edit_ex != NULL && edit_ex_other != NULL, RET_BAD_PARAMS);
 
   ret = widget_vtable_on_copy_by_parent(widget, other, WIDGET_VTABLE_GET_VTABLE(edit_ex));
