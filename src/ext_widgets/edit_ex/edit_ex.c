@@ -25,6 +25,12 @@
 #include "ext_widgets/edit_ex/edit_ex_suggest_words_helper.inc"
 #include "ext_widgets/edit_ex/edit_ex_suggest_words_item_formats_parse.inc"
 
+static const char* const s_suggest_words_ui_prop_names[] = {
+    EDIT_EX_SUGGEST_WORDS_UI_NAME_POPUP,       EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW,
+    EDIT_EX_SUGGEST_WORDS_UI_NAME_VBAR,        EDIT_EX_SUGGEST_WORDS_UI_NAME_HBAR,
+    EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW,
+};
+
 ret_t edit_ex_set_suggest_words(widget_t* widget, tk_object_t* suggest_words) {
   edit_ex_t* edit_ex = EDIT_EX(widget);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
@@ -194,6 +200,87 @@ static ret_t edit_ex_on_event(widget_t* widget, event_t* e) {
   return widget_vtable_on_event_by_parent(widget, e, WIDGET_VTABLE_GET_VTABLE(edit_ex));
 }
 
+static ret_t edit_ex_set_suggest_words_item_formats_without_parse(widget_t* widget,
+                                                                  const char* formats,
+                                                                  darray_t* model_item) {
+  edit_ex_t* edit_ex = EDIT_EX(widget);
+  ret_t ret = RET_OK;
+  uint32_t i = 0;
+  return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
+
+  if (TK_STR_IS_EMPTY(formats) || NULL == model_item) {
+    return edit_ex_set_suggest_words_item_formats(widget, formats);
+  }
+
+  edit_ex->suggest_words_item_formats = tk_str_copy(edit_ex->suggest_words_item_formats, formats);
+  return_value_if_fail(edit_ex->suggest_words_item_formats != NULL, RET_OOM);
+
+  if (edit_ex->suggest_words_model_items != NULL) {
+    darray_clear(edit_ex->suggest_words_model_items);
+  } else {
+    edit_ex->suggest_words_model_items =
+        darray_create(model_item->size, model_item->destroy, model_item->compare);
+    return_value_if_fail(edit_ex->suggest_words_model_items != NULL, RET_OOM);
+  }
+
+  for (i = 0; i < model_item->size; i++) {
+    widget_t* item = WIDGET(darray_get(model_item, i));
+    widget_t* item_clone = widget_clone(item, NULL);
+    continue_if_fail_ex(item_clone != NULL, ret = RET_OOM);
+    continue_if_fail_ex(RET_OK == darray_push(edit_ex->suggest_words_model_items, item_clone),
+                        (widget_destroy(item_clone), ret = RET_FAIL));
+  }
+
+  return ret;
+}
+
+static ret_t edit_ex_set_suggest_words_ui_props(widget_t* widget, tk_object_t* props) {
+  edit_ex_t* edit_ex = EDIT_EX(widget);
+  ret_t ret = RET_OK;
+  uint32_t i = 0;
+  return_value_if_fail(edit_ex != NULL && props != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit_ex->suggest_words_ui_props != NULL, RET_BAD_PARAMS);
+
+  for (i = 0; i < ARRAY_SIZE(s_suggest_words_ui_prop_names); i++) {
+    tk_object_t* dst = tk_object_get_prop_object(edit_ex->suggest_words_ui_props,
+                                                 s_suggest_words_ui_prop_names[i]);
+    tk_object_t* src = tk_object_get_prop_object(props, s_suggest_words_ui_prop_names[i]);
+    continue_if_fail_ex(dst != NULL && src != NULL, ret = RET_OOM);
+
+    tk_object_clear_props(dst);
+    continue_if_fail_ex(RET_OK == tk_object_copy_props(dst, src, TRUE), ret = RET_FAIL);
+  }
+
+  return ret;
+}
+
+static ret_t edit_ex_on_copy(widget_t* widget, widget_t* other) {
+  ret_t ret = RET_OK;
+  edit_ex_t* edit_ex = EDIT(widget);
+  edit_ex_t* edit_ex_other = EDIT(other);
+  return_value_if_fail(edit_ex != NULL && edit_ex_other != NULL, RET_BAD_PARAMS);
+
+  ret = widget_vtable_on_copy_by_parent(widget, other, WIDGET_VTABLE_GET_VTABLE(edit_ex));
+
+  if (RET_OK == ret) {
+    ret_t result = edit_ex_set_suggest_words(widget, edit_ex_other->suggest_words);
+    ret = tk_max(ret, result);
+
+    result = edit_ex_set_suggest_words_input_name(widget, edit_ex_other->suggest_words_input_name);
+    ret = tk_max(ret, result);
+
+    result = edit_ex_set_suggest_words_item_formats_without_parse(
+        widget, edit_ex_other->suggest_words_item_formats,
+        edit_ex_other->suggest_words_model_items);
+    ret = tk_max(ret, result);
+
+    result = edit_ex_set_suggest_words_ui_props(widget, edit_ex_other->suggest_words_ui_props);
+    ret = tk_max(ret, result);
+  }
+
+  return ret;
+}
+
 static ret_t edit_ex_on_destroy(widget_t* widget) {
   edit_ex_t* edit_ex = EDIT_EX(widget);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
@@ -210,11 +297,6 @@ static ret_t edit_ex_on_destroy(widget_t* widget) {
 }
 
 static ret_t edit_ex_init(widget_t* widget) {
-  static const char* s_suggest_words_ui_prop_names[] = {
-      EDIT_EX_SUGGEST_WORDS_UI_NAME_POPUP,       EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW,
-      EDIT_EX_SUGGEST_WORDS_UI_NAME_VBAR,        EDIT_EX_SUGGEST_WORDS_UI_NAME_HBAR,
-      EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW,
-  };
   uint32_t i = 0;
   edit_ex_t* edit_ex = EDIT_EX(widget);
   ret_t ret = widget_vtable_init_by_parent(widget, WIDGET_VTABLE_GET_VTABLE(edit_ex));
@@ -246,6 +328,7 @@ TK_DECL_VTABLE(edit_ex) = {
     .init = edit_ex_init,
     .create = edit_ex_create,
     .on_destroy = edit_ex_on_destroy,
+    .on_copy = edit_ex_on_copy,
     .on_event = edit_ex_on_event,
     .set_prop = edit_ex_set_prop,
     .get_prop = edit_ex_get_prop,

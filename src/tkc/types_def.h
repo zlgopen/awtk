@@ -406,6 +406,21 @@ typedef enum _ret_t {
     }                     \
   } while (0)
 
+#define continue_if_fail(p) \
+  {                         \
+    if (!(p)) {             \
+      continue;             \
+    }                       \
+  }
+
+#define continue_if_fail_ex(p, sentence) \
+  {                                      \
+    if (!(p)) {                          \
+      sentence;                          \
+      continue;                          \
+    }                                    \
+  }
+
 #define break_if_fail(p) \
   {                      \
     if (!(p)) {          \
@@ -453,6 +468,23 @@ typedef enum _ret_t {
       goto error;                                                            \
     }                                                                        \
   } while (0)
+
+#define continue_if_fail(p)                                                  \
+  {                                                                          \
+    if (!(p)) {                                                              \
+      log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
+      continue;                                                              \
+    }                                                                        \
+  }
+
+#define continue_if_fail_ex(p, sentence)                                     \
+  {                                                                          \
+    if (!(p)) {                                                              \
+      log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
+      sentence;                                                              \
+      continue;                                                              \
+    }                                                                        \
+  }
 
 #define break_if_fail(p)                                                     \
   {                                                                          \

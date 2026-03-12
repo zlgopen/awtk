@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/03/12
+* 完善 edit_ex clone(感谢兆坤提供补丁)
+
 2026/03/9
   * 修复edit_ex解析suggest_words_item_formats失败的问题(感谢兆坤提供补丁)
 
