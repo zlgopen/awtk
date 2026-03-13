@@ -144,6 +144,10 @@ static ret_t object_hash_set_prop(tk_object_t* obj, const char* name, const valu
   uint64_t hash = 0;
   ENSURE(o);
 
+  if (tk_str_eq(name, TK_OBJECT_PROP_KEEP_PROPS_ORDER)) {
+    return object_hash_set_keep_props_order(obj, value_bool(v));
+  }
+
   if (o->props.size > 0 && o->enable_path) {
     tk_object_t* sub = tk_object_get_child_object(obj, name, &name);
     if (sub != NULL) {
