@@ -165,6 +165,7 @@ ret_t popup_set_close_when_click_outside(widget_t* widget, bool_t close_when_cli
 ret_t popup_set_close_when_timeout(widget_t* widget, uint32_t close_when_timeout);
 
 /**
+ * @method popup_set_parent_widget_by_create 
  * 设置是创建 popup 的创建控件对象。
  * 备注：
  *      1，combox 会创建 popup 窗口，所以该 parent_widget 为 combox 控件对象。
