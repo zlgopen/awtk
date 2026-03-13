@@ -123,6 +123,7 @@ static widget_t* combo_box_ex_create_scroll_popup(combo_box_t* combo_box) {
   combo_box_win = widget_get_window(widget);
   applet_name = widget_get_prop_str(combo_box_win, WIDGET_PROP_APPLET_NAME, NULL);
   widget_set_prop_str(win, WIDGET_PROP_APPLET_NAME, applet_name);
+  popup_set_parent_widget_by_create(win, widget);
 
   value_set_bool(&v, TRUE);
   widget_set_prop(win, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE, &v);

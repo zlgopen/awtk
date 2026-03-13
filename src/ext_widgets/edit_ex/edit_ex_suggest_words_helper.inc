@@ -249,6 +249,7 @@ static widget_t* edit_ex_create_suggest_words_popup(widget_t* widget) {
                                 EDIT_EX_SUGGEST_WORDS_UI_NAME_POPUP "." WIDGET_PROP_MIN_W, 0));
   item_height = widget->h;
   win = popup_create(NULL, 0, 0, w, h);
+  popup_set_parent_widget_by_create(win, widget);
 
   applet_name = widget_get_prop_str(window_for_edit_ex, WIDGET_PROP_APPLET_NAME, NULL);
   widget_set_prop_str(win, WIDGET_PROP_APPLET_NAME, applet_name);

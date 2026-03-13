@@ -192,6 +192,21 @@ static ret_t popup_on_copy(widget_t* widget, widget_t* other) {
   return widget_on_copy_recursive(widget, other);
 }
 
+static ret_t popup_on_destroy(widget_t* widget) {
+  popup_t* popup = POPUP(widget);
+  return_value_if_fail(popup != NULL && widget != NULL, RET_REMOVE);
+  if (popup->active_window_by_parent_widget != NULL) {
+    widget_t* foreground_win = window_manager_get_foreground_window(window_manager());
+    if (foreground_win != popup->active_window_by_parent_widget) {
+      if (foreground_win != NULL) {
+        window_manager_dispatch_window_event(foreground_win, EVT_WINDOW_TO_BACKGROUND);
+      }
+      window_manager_dispatch_window_event(popup->active_window_by_parent_widget, EVT_WINDOW_TO_FOREGROUND);
+    }
+  }
+  return window_base_on_destroy(widget);
+}
+
 TK_DECL_VTABLE(popup) = {.size = sizeof(popup_t),
                          .type = WIDGET_TYPE_POPUP,
                          .is_window = TRUE,
@@ -206,7 +221,7 @@ TK_DECL_VTABLE(popup) = {.size = sizeof(popup_t),
                          .on_paint_self = window_base_on_paint_self,
                          .on_paint_begin = window_base_on_paint_begin,
                          .on_paint_end = window_base_on_paint_end,
-                         .on_destroy = window_base_on_destroy};
+                         .on_destroy = popup_on_destroy};
 
 widget_t* popup_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return window_base_create(parent, TK_REF_VTABLE(popup), x, y, w, h);
@@ -256,5 +271,12 @@ ret_t popup_set_close_when_timeout(widget_t* widget, uint32_t close_when_timeout
     popup->timer_id = widget_add_timer(widget, popup_on_timeout, close_when_timeout);
   }
 
+  return RET_OK;
+}
+
+ret_t popup_set_parent_widget_by_create(widget_t* widget, widget_t* parent_widget) {
+  popup_t* popup = POPUP(widget);
+  return_value_if_fail(popup!= NULL, RET_FAIL);
+  popup->active_window_by_parent_widget = widget_get_real_window_or_keyboard(parent_widget);
   return RET_OK;
 }
