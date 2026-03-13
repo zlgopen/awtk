@@ -803,6 +803,26 @@ TEST(ObjectHash, keep_type) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(ObjectHash, case_insensitive) {
+  value_t v;
+  tk_object_t* obj = object_hash_create();
+  object_hash_t* o = OBJECT_HASH(obj);
+
+  object_hash_set_name_case_insensitive(obj, TRUE);
+  ASSERT_EQ(tk_object_set_prop(obj, "abc", value_set_int(&v, 50)), RET_OK);
+  ASSERT_EQ(o->props.size, 1u);
+
+  ASSERT_EQ(tk_object_set_prop(obj, "ABC", value_set_int(&v, 150)), RET_OK);
+  ASSERT_EQ(o->props.size, 1u);
+
+  ASSERT_EQ(tk_object_get_prop_int(obj, "abc", 0), 150);
+
+  ASSERT_EQ(tk_object_remove_prop(obj, "aBC"), RET_OK);
+  ASSERT_EQ(o->props.size, 0u);
+
+  TK_OBJECT_UNREF(obj);
+}
+
 TEST(ObjectHash, keep_props_order) {
   str_t str;
   value_t v;

@@ -64,11 +64,12 @@ typedef struct _object_hash_t {
 
   /*private*/
   darray_t props;
+  /*是否支持按路径访问属性*/
   bool_t enable_path : 1;
-
   /*设置属性值不改变属性的类型*/
   bool_t keep_prop_type : 1;
-
+  /*属性名称大小写不敏感*/
+  bool_t name_case_insensitive : 1;
   /*保持属性间的顺序*/
   bool_t keep_props_order : 1;
 } object_hash_t;
@@ -106,6 +107,16 @@ tk_object_t* object_hash_create_ex(bool_t enable_path);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_hash_set_keep_prop_type(tk_object_t* obj, bool_t keep_prop_type);
+
+/**
+ * @method object_hash_set_name_case_insensitive
+ * 设置属性名是否大小写不敏感。
+ * @annotation ["scriptable"]
+ * @param {tk_object_t*} obj 对象。
+ * @param {bool_t} name_case_insensitive 属性名是否大小写不敏感。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_hash_set_name_case_insensitive(tk_object_t* obj, bool_t name_case_insensitive);
 
 /**
  * @method object_hash_set_keep_props_order

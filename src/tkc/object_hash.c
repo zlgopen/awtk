@@ -28,6 +28,27 @@
 #define OBJECT_HASH_FIND_PROP_BY_NAME_PROPS_SIZE_THRESHOLD 8
 #define OBJECT_HASH_FIND_PROP_BY_NAME_LEN_THRESHOLD 16
 
+inline static uint64_t object_hash_gen_name_hash(object_hash_t* o, const char* name) {
+  if (o->name_case_insensitive) {
+    uint64_t ret = 0;
+    char* lower_name = tk_strdup(name);
+    tk_str_tolower(lower_name);
+    ret = named_value_hash_get_hash_from_str(lower_name);
+    TKMEM_FREE(lower_name);
+    return ret;
+  } else {
+    return named_value_hash_get_hash_from_str(name);
+  }
+}
+
+inline static tk_compare_t object_hash_get_cmp_by_name(object_hash_t* o) {
+  if (o->name_case_insensitive) {
+    return (tk_compare_t)named_value_icompare_by_name;
+  } else {
+    return (tk_compare_t)named_value_compare_by_name;
+  }
+}
+
 static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char* name,
                                                    bool_t* p_is_gen_hash, uint64_t* p_hash) {
   int32_t ret = -1;
@@ -40,9 +61,9 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
   } else if (p_hash == NULL &&
              o->props.size <= OBJECT_HASH_FIND_PROP_BY_NAME_PROPS_SIZE_THRESHOLD &&
              tk_strlen(name) <= OBJECT_HASH_FIND_PROP_BY_NAME_LEN_THRESHOLD) {
-    ret = darray_find_index_ex(&(o->props), (tk_compare_t)named_value_compare_by_name, (void*)name);
+    ret = darray_find_index_ex(&(o->props), object_hash_get_cmp_by_name(o), (void*)name);
   } else {
-    uint64_t hash = named_value_hash_get_hash_from_str(name);
+    uint64_t hash = object_hash_gen_name_hash(o, name);
     if (p_hash != NULL) {
       (*p_hash) = hash;
     }
@@ -60,7 +81,7 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
 
     if (ret >= 0) {
       named_value_hash_t* nvh = (named_value_hash_t*)darray_get(&o->props, ret);
-      if (!tk_str_eq(name, nvh->base.name)) {
+      if (0 != object_hash_get_cmp_by_name(o)(nvh, name)) {
         darray_t bucket;
         darray_init(&bucket, 8, NULL, NULL);
 
@@ -73,7 +94,7 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
         if (RET_OK == darray_find_all(&o->props, (tk_compare_t)named_value_hash_compare_by_hash,
                                       &hash, &bucket)) {
           named_value_hash_t* right_nvh = (named_value_hash_t*)darray_find_ex(
-              &bucket, (tk_compare_t)named_value_compare_by_name, (void*)name);
+              &bucket, object_hash_get_cmp_by_name(o), (void*)name);
           if (right_nvh != NULL) {
             ret = darray_find_index_ex(&o->props, pointer_compare, (void*)right_nvh);
           }
@@ -166,12 +187,8 @@ static ret_t object_hash_set_prop(tk_object_t* obj, const char* name, const valu
     named_value_hash_t* nvh = named_value_hash_create_ex(NULL, v);
     return_value_if_fail(nvh != NULL, RET_OOM);
 
-    if (is_gen_hash) {
-      named_value_set_name(&nvh->base, name);
-      nvh->hash = hash;
-    } else {
-      named_value_hash_set_name(nvh, name);
-    }
+    named_value_set_name(&nvh->base, name);
+    nvh->hash = is_gen_hash ? hash : object_hash_gen_name_hash(o, name);
 
     if (!o->keep_props_order) {
       ret = darray_sorted_insert(&(o->props), nvh, NULL, FALSE);
@@ -294,6 +311,7 @@ static tk_object_t* object_hash_clone(object_hash_t* o) {
 
   dupo->enable_path = o->enable_path;
   dupo->keep_prop_type = o->keep_prop_type;
+  dupo->name_case_insensitive = o->name_case_insensitive;
   dupo->keep_props_order = o->keep_props_order;
 
   for (i = 0; i < o->props.size; i++) {
@@ -349,6 +367,24 @@ ret_t object_hash_set_keep_prop_type(tk_object_t* obj, bool_t keep_prop_type) {
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   o->keep_prop_type = keep_prop_type;
+
+  return RET_OK;
+}
+
+ret_t object_hash_set_name_case_insensitive(tk_object_t* obj, bool_t name_case_insensitive) {
+  object_hash_t* o = OBJECT_HASH(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->name_case_insensitive != name_case_insensitive) {
+    uint32_t i = 0;
+
+    o->name_case_insensitive = name_case_insensitive;
+
+    for (i = 0; i < o->props.size; i++) {
+      named_value_hash_t* iter = (named_value_hash_t*)(o->props.elms[i]);
+      iter->hash = object_hash_gen_name_hash(o, iter->base.name);
+    }
+  }
 
   return RET_OK;
 }
