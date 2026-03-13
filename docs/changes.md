@@ -4,6 +4,7 @@
   * 完善 object_hash_set_prop (感谢兆坤提供补丁)
   * object_hash 支持设置属性名是否大小写不敏感 (感谢兆坤提供补丁)
   * 修复 edite_ex 和 combox 的 popup 窗口关闭后焦点无法回到窗口的情况（有可能被前面的 overlay 窗口抢的情况）(感谢智明提供补丁)
+  * 将 popup_set_parent_widget_by_create 设为私有函数(感谢兆坤提供补丁)
 
 2026/03/12
   * 完善 edit_ex clone(感谢兆坤提供补丁)

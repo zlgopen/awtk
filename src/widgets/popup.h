@@ -164,6 +164,8 @@ ret_t popup_set_close_when_click_outside(widget_t* widget, bool_t close_when_cli
  */
 ret_t popup_set_close_when_timeout(widget_t* widget, uint32_t close_when_timeout);
 
+/*private*/
+
 /**
  * @method popup_set_parent_widget_by_create 
  * 设置是创建 popup 的创建控件对象。
@@ -171,6 +173,7 @@ ret_t popup_set_close_when_timeout(widget_t* widget, uint32_t close_when_timeout
  *      1，combox 会创建 popup 窗口，所以该 parent_widget 为 combox 控件对象。
  *      2，用于解决界面存在多个 overlay 时，关闭 popup 窗口后，前面的 overlay 窗口会被激活的问题。
  *      3，例如：普通窗口的 combox 打开了一个 popup 窗口，关闭 popup 窗口后，希望普通窗口会被激活而非顶层的 overlay 窗口。
+ * @export none
  * @param {widget_t*} widget 控件对象。
  * @param {widget_t*} parent_widget 创建 popup 的控件。
  *
