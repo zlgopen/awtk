@@ -366,6 +366,42 @@ static ret_t confirm_file_data_window(str_t* file_data) {
   return RET_OK;
 }
 
+static ret_t filename_to_res_name(const char* filename, const char* base_dir, char* res_name,
+                                  uint32_t size) {
+  ret_t ret = RET_OK;
+  char normalized_base_dir[MAX_PATH] = {0};
+  char normalized_filename[MAX_PATH] = {0};
+
+  path_normalize(base_dir, normalized_base_dir, MAX_PATH);
+  path_remove_last_slash(normalized_base_dir);
+  path_normalize(filename, normalized_filename, MAX_PATH);
+  path_remove_last_slash(normalized_filename);
+
+  if (strstr(normalized_filename, normalized_base_dir) != NULL) {
+    char* ext_name = NULL;
+
+    strncpy(res_name, normalized_filename + strlen(normalized_base_dir) + 1, size);
+    ext_name = strrchr(res_name, '.');
+    if (ext_name != NULL) {
+      *ext_name = '\0';
+    }
+  } else {
+    ret = filename_to_name(normalized_filename, res_name, size);
+  }
+
+  return ret;
+}
+
+static ret_t try_get_ui_dir_path(const char* filename, char* ui_dir, uint32_t size) {
+  path_build(ui_dir, size, s_res_root, s_theme, "ui", NULL);
+  if (strstr(filename, ui_dir) == NULL) {
+    memset(ui_dir, 0, size);
+    path_build(ui_dir, size, s_res_root, "default", "ui", NULL);
+  }
+
+  return RET_OK;
+}
+
 static widget_t* preview_ui(const char* filename) {
   str_t s;
   str_t file_data;
@@ -376,6 +412,9 @@ static widget_t* preview_ui(const char* filename) {
   uint8_t* content = NULL;
   bool_t is_bin = strstr(filename, ".bin") != NULL;
   ui_loader_t* loader = is_bin ? default_ui_loader() : xml_ui_loader();
+  char ui_dir[MAX_PATH + 1] = {0};
+
+  return_value_if_fail(filename != NULL, NULL);
 
   str_init(&s, 0);
   str_init(&file_data, 0);
@@ -388,8 +427,10 @@ static widget_t* preview_ui(const char* filename) {
   }
   str_set(&file_data, (const char*)content);
   confirm_file_data_window(&file_data);
-  filename_to_name(filename, name, TK_NAME_LEN);
-  builder = ui_builder_default_create(filename);
+
+  try_get_ui_dir_path(filename, ui_dir, MAX_PATH);
+  filename_to_res_name(filename, ui_dir, name, TK_NAME_LEN);
+  builder = ui_builder_default_create(name);
   printf("preview %s\n", filename);
   return_value_if_fail(file_data.size != 0, NULL);
   ui_loader_load(loader, (uint8_t*)file_data.str, size, builder);
