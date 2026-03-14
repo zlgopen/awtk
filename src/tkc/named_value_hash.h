@@ -166,6 +166,9 @@ named_value_hash_t* named_value_hash_clone(named_value_hash_t* nvh);
  */
 uint64_t named_value_hash_get_hash_from_str(const char* str);
 
+/* private */
+uint64_t named_value_hash_get_hash_from_str_with_conv(const char* str, int (*conv)(int c));
+
 END_C_DECLS
 
 #endif /*TK_NAMED_VALUE_HASH_H*/

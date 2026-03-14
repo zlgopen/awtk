@@ -30,12 +30,7 @@
 
 inline static uint64_t object_hash_gen_name_hash(object_hash_t* o, const char* name) {
   if (o->name_case_insensitive) {
-    uint64_t ret = 0;
-    char* lower_name = tk_strdup(name);
-    tk_str_tolower(lower_name);
-    ret = named_value_hash_get_hash_from_str(lower_name);
-    TKMEM_FREE(lower_name);
-    return ret;
+    return named_value_hash_get_hash_from_str_with_conv(name, tolower);
   } else {
     return named_value_hash_get_hash_from_str(name);
   }
