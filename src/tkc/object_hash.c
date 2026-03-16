@@ -379,6 +379,10 @@ ret_t object_hash_set_name_case_insensitive(tk_object_t* obj, bool_t name_case_i
       named_value_hash_t* iter = (named_value_hash_t*)(o->props.elms[i]);
       iter->hash = object_hash_gen_name_hash(o, iter->base.name);
     }
+
+    if (!o->keep_props_order) {
+      darray_sort(&(o->props), NULL);
+    }
   }
 
   return RET_OK;
@@ -391,7 +395,7 @@ ret_t object_hash_set_keep_props_order(tk_object_t* obj, bool_t keep_props_order
   if (o->keep_props_order != keep_props_order) {
     o->keep_props_order = keep_props_order;
 
-    if (!keep_props_order) {
+    if (!o->keep_props_order) {
       darray_sort(&(o->props), NULL);
     }
   }

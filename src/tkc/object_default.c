@@ -302,7 +302,11 @@ ret_t object_default_set_name_case_insensitive(tk_object_t* obj, bool_t name_cas
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  o->name_case_insensitive = name_case_insensitive;
+  if (o->name_case_insensitive != name_case_insensitive) {
+    o->name_case_insensitive = name_case_insensitive;
+
+    darray_sort(&(o->props), object_default_get_cmp(o));
+  }
 
   return RET_OK;
 }
