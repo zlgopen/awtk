@@ -1,4 +1,6 @@
-﻿#include "base/dialog.h"
+#include "base/dialog.h"
+#include "base/self_layouter.h"
+#include "tkc/path.h"
 #include "ui_loader/ui_builder_default.h"
 #include "ui_loader/ui_loader_xml.h"
 #include "gtest/gtest.h"
@@ -174,4 +176,305 @@ TEST(UILoaderXML, ui_loader_load_widget_from_xml) {
   ASSERT_EQ(button != NULL, TRUE);
 
   widget_destroy(root);
+}
+
+TEST(UILoaderXML, self_layout_after_xywh) {
+  widget_t* b1 = NULL;
+  ui_loader_t* loader = xml_ui_loader();
+  ui_builder_t* builder = ui_builder_default_create("");
+  const char* str =
+      "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
+      <button name=\"b1\" x=\"10%\" y=\"20%\" w=\"80%\" h=\"30%\" \
+       self_layout=\"default(x=50%,y=50%,w=40%,h=40%)\" />\
+      </dialog>";
+
+  ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
+  ASSERT_EQ(builder->root != NULL, true);
+
+  b1 = widget_lookup(builder->root, "b1", TRUE);
+  ASSERT_EQ(b1 != NULL, true);
+
+  const char* sl = widget_get_prop_str(b1, WIDGET_PROP_SELF_LAYOUT, NULL);
+  ASSERT_TRUE(sl != NULL);
+  ASSERT_STREQ(sl, "default(x=50%,y=50%,w=40%,h=40%)");
+
+  widget_destroy(builder->root);
+  ui_builder_destroy(builder);
+}
+
+TEST(UILoaderXML, xywh_after_self_layout) {
+  widget_t* b1 = NULL;
+  ui_loader_t* loader = xml_ui_loader();
+  ui_builder_t* builder = ui_builder_default_create("");
+  const char* str =
+      "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
+      <button name=\"b1\" self_layout=\"default(x=50%,y=50%,w=40%,h=40%)\" \
+       x=\"10%\" y=\"20%\" w=\"80%\" h=\"30%\" />\
+      </dialog>";
+
+  ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
+  ASSERT_EQ(builder->root != NULL, true);
+
+  b1 = widget_lookup(builder->root, "b1", TRUE);
+  ASSERT_EQ(b1 != NULL, true);
+
+  const char* sl = widget_get_prop_str(b1, WIDGET_PROP_SELF_LAYOUT, NULL);
+  ASSERT_TRUE(sl != NULL);
+  ASSERT_STREQ(sl, "default(x=10%,y=20%,w=80%,h=30%)");
+
+  widget_destroy(builder->root);
+  ui_builder_destroy(builder);
+}
+
+TEST(UILoaderXML, self_layout_via_property) {
+  widget_t* b1 = NULL;
+  ui_loader_t* loader = xml_ui_loader();
+  ui_builder_t* builder = ui_builder_default_create("");
+  const char* str =
+      "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
+      <button name=\"b1\" x=\"10\" y=\"20\" w=\"80\" h=\"30\">\
+       <property name=\"self_layout\">default(x=50%,y=50%,w=40%,h=40%)</property>\
+      </button>\
+      </dialog>";
+
+  ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
+  ASSERT_EQ(builder->root != NULL, true);
+
+  b1 = widget_lookup(builder->root, "b1", TRUE);
+  ASSERT_EQ(b1 != NULL, true);
+
+  const char* sl = widget_get_prop_str(b1, WIDGET_PROP_SELF_LAYOUT, NULL);
+  ASSERT_TRUE(sl != NULL);
+  ASSERT_STREQ(sl, "default(x=50%,y=50%,w=40%,h=40%)");
+
+  widget_destroy(builder->root);
+  ui_builder_destroy(builder);
+}
+
+TEST(UILoaderXML, mixed_attrs_and_props) {
+  widget_t* root = NULL;
+  widget_t* b1 = NULL;
+  ui_loader_t* loader = xml_ui_loader();
+  ui_builder_t* builder = ui_builder_default_create("");
+  const char* str =
+      "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
+      <button name=\"b1\" x=\"10\" y=\"20\">\
+       <property name=\"w\">80</property>\
+       <property name=\"h\">30</property>\
+       <property name=\"text\">hello</property>\
+      </button>\
+      </dialog>";
+
+  ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
+  root = builder->root;
+  ASSERT_EQ(root != NULL, true);
+
+  b1 = widget_lookup(root, "b1", TRUE);
+  ASSERT_EQ(b1 != NULL, true);
+  ASSERT_EQ(b1->x, 10);
+  ASSERT_EQ(b1->y, 20);
+  ASSERT_EQ(b1->w, 80);
+  ASSERT_EQ(b1->h, 30);
+  ASSERT_EQ(wcscmp(b1->text.str, L"hello"), 0);
+
+  widget_destroy(root);
+  ui_builder_destroy(builder);
+}
+
+TEST(UILoaderXML, many_props) {
+  widget_t* root = NULL;
+  ui_loader_t* loader = xml_ui_loader();
+  ui_builder_t* builder = ui_builder_default_create("");
+  const char* str =
+      "<dialog>\
+      <property name=\"x\">10</property>\
+      <property name=\"y\">20</property>\
+      <property name=\"w\">400</property>\
+      <property name=\"h\">300</property>\
+      <property name=\"name\">test_dialog</property>\
+      <property name=\"tr_text\">translatable_text_value</property>\
+      <property name=\"visible\">true</property>\
+      <property name=\"enable\">true</property>\
+      <property name=\"opacity\">200</property>\
+      <property name=\"focusable\">true</property>\
+      <property name=\"style\">default</property>\
+      <property name=\"text\">many_props_text</property>\
+      </dialog>";
+
+  ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
+  root = builder->root;
+  ASSERT_EQ(root != NULL, true);
+
+  ASSERT_EQ(root->x, 10);
+  ASSERT_EQ(root->y, 20);
+  ASSERT_EQ(root->w, 400);
+  ASSERT_EQ(root->h, 300);
+  ASSERT_STREQ(root->name, "test_dialog");
+  ASSERT_STREQ(root->tr_text, "translatable_text_value");
+  ASSERT_EQ(root->opacity, 200);
+  ASSERT_EQ(wcscmp(root->text.str, L"many_props_text"), 0);
+
+  ui_builder_destroy(builder);
+  widget_destroy(root);
+}
+
+TEST(UILoaderXML, xml_entity_in_prop) {
+  widget_t* root = NULL;
+  ui_loader_t* loader = xml_ui_loader();
+  ui_builder_t* builder = ui_builder_default_create("");
+  const char* str =
+      "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
+      <property name=\"text\">a&lt;b&gt;c&amp;d&quot;e</property>\
+      </dialog>";
+
+  ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
+  root = builder->root;
+  ASSERT_EQ(root != NULL, true);
+
+  ASSERT_EQ(wcscmp(root->text.str, L"a<b>c&d\"e"), 0);
+
+  ui_builder_destroy(builder);
+  widget_destroy(root);
+}
+
+TEST(UILoaderXML, include_override_prop) {
+  char abs_path[MAX_PATH + 1] = {0};
+  path_abs_normalize("tests/testdata/parent", abs_path, MAX_PATH);
+
+  ui_loader_t* loader = xml_ui_loader();
+  ui_builder_t* builder = ui_builder_default_create(abs_path);
+  const char* str =
+      "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
+      <?include filename=\"inc_button.xml\" btn1-text=\"overridden\" ?>\
+      </dialog>";
+
+  ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
+  ASSERT_EQ(builder->root != NULL, true);
+
+  widget_t* btn = widget_lookup(builder->root, "btn1", TRUE);
+  ASSERT_EQ(btn != NULL, true);
+  ASSERT_EQ(wcscmp(btn->text.str, L"overridden"), 0);
+  ASSERT_EQ(btn->x, 10);
+  ASSERT_EQ(btn->y, 20);
+  ASSERT_EQ(btn->w, 80);
+  ASSERT_EQ(btn->h, 30);
+
+  widget_destroy(builder->root);
+  ui_builder_destroy(builder);
+}
+
+TEST(UILoaderXML, include_override_multiple) {
+  char abs_path[MAX_PATH + 1] = {0};
+  path_abs_normalize("tests/testdata/parent", abs_path, MAX_PATH);
+
+  ui_loader_t* loader = xml_ui_loader();
+  ui_builder_t* builder = ui_builder_default_create(abs_path);
+  const char* str =
+      "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
+      <?include filename=\"inc_two_widgets.xml\" \
+       container.btn1-text=\"new_btn\" container.lbl1-text=\"new_lbl\" ?>\
+      </dialog>";
+
+  ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
+  ASSERT_EQ(builder->root != NULL, true);
+
+  widget_t* btn = widget_lookup(builder->root, "btn1", TRUE);
+  ASSERT_EQ(btn != NULL, true);
+  ASSERT_EQ(wcscmp(btn->text.str, L"new_btn"), 0);
+
+  widget_t* lbl = widget_lookup(builder->root, "lbl1", TRUE);
+  ASSERT_EQ(lbl != NULL, true);
+  ASSERT_EQ(wcscmp(lbl->text.str, L"new_lbl"), 0);
+
+  widget_destroy(builder->root);
+  ui_builder_destroy(builder);
+}
+
+TEST(UILoaderXML, include_add_new_prop) {
+  char abs_path[MAX_PATH + 1] = {0};
+  path_abs_normalize("tests/testdata/parent", abs_path, MAX_PATH);
+
+  ui_loader_t* loader = xml_ui_loader();
+  ui_builder_t* builder = ui_builder_default_create(abs_path);
+  const char* str =
+      "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
+      <?include filename=\"inc_button.xml\" btn1-opacity=\"200\" ?>\
+      </dialog>";
+
+  ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
+  ASSERT_EQ(builder->root != NULL, true);
+
+  widget_t* btn = widget_lookup(builder->root, "btn1", TRUE);
+  ASSERT_EQ(btn != NULL, true);
+  ASSERT_EQ(wcscmp(btn->text.str, L"original"), 0);
+  ASSERT_EQ(btn->opacity, 200);
+
+  widget_destroy(builder->root);
+  ui_builder_destroy(builder);
+}
+
+TEST(UILoaderXML, sibling_widgets_with_props) {
+  widget_t* b1 = NULL;
+  widget_t* b2 = NULL;
+  ui_loader_t* loader = xml_ui_loader();
+  ui_builder_t* builder = ui_builder_default_create("");
+  const char* str =
+      "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
+      <button name=\"b1\" x=\"10\" y=\"10\">\
+       <property name=\"w\">80</property>\
+       <property name=\"h\">30</property>\
+       <property name=\"text\">first</property>\
+      </button>\
+      <button name=\"b2\" x=\"100\" y=\"10\">\
+       <property name=\"w\">120</property>\
+       <property name=\"h\">40</property>\
+       <property name=\"text\">second</property>\
+      </button>\
+      </dialog>";
+
+  ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
+  ASSERT_EQ(builder->root != NULL, true);
+
+  b1 = widget_lookup(builder->root, "b1", TRUE);
+  ASSERT_EQ(b1 != NULL, true);
+  ASSERT_EQ(b1->x, 10);
+  ASSERT_EQ(b1->y, 10);
+  ASSERT_EQ(b1->w, 80);
+  ASSERT_EQ(b1->h, 30);
+  ASSERT_EQ(wcscmp(b1->text.str, L"first"), 0);
+
+  b2 = widget_lookup(builder->root, "b2", TRUE);
+  ASSERT_EQ(b2 != NULL, true);
+  ASSERT_EQ(b2->x, 100);
+  ASSERT_EQ(b2->y, 10);
+  ASSERT_EQ(b2->w, 120);
+  ASSERT_EQ(b2->h, 40);
+  ASSERT_EQ(wcscmp(b2->text.str, L"second"), 0);
+
+  widget_destroy(builder->root);
+  ui_builder_destroy(builder);
+}
+
+TEST(UILoaderXML, self_layout_with_pixel_xywh) {
+  widget_t* b1 = NULL;
+  ui_loader_t* loader = xml_ui_loader();
+  ui_builder_t* builder = ui_builder_default_create("");
+  const char* str =
+      "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
+      <button name=\"b1\" x=\"10\" y=\"20\" w=\"80\" h=\"30\" \
+       self_layout=\"default(x=50%,y=50%,w=40%,h=40%)\" />\
+      </dialog>";
+
+  ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
+  ASSERT_EQ(builder->root != NULL, true);
+
+  b1 = widget_lookup(builder->root, "b1", TRUE);
+  ASSERT_EQ(b1 != NULL, true);
+
+  const char* sl = widget_get_prop_str(b1, WIDGET_PROP_SELF_LAYOUT, NULL);
+  ASSERT_TRUE(sl != NULL);
+  ASSERT_STREQ(sl, "default(x=50%,y=50%,w=40%,h=40%)");
+
+  widget_destroy(builder->root);
+  ui_builder_destroy(builder);
 }

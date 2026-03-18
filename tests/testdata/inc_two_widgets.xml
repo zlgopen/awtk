@@ -1,0 +1,4 @@
+<view name="container" x="0" y="0" w="400" h="300">
+<button name="btn1" x="10" y="10" w="80" h="30" text="text1" />
+<label name="lbl1" x="100" y="10" w="80" h="30" text="label1" />
+</view>

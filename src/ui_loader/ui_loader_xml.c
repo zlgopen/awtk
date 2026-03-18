@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   ui_loader_xml.h
  * Author: AWTK Develop Team
  * Brief:  default ui_loader
@@ -110,20 +110,52 @@ static void xml_loader_reset_buffer(XmlBuilder* thiz) {
   return;
 }
 
+static ret_t xml_loader_ensure_attrs_capacity(xml_builder_t* b, int needed) {
+  int new_capacity = 0;
+  char** temp = NULL;
+
+  if (b->attrs_nr + needed > b->attrs_capacity) {
+    new_capacity = (b->attrs_capacity << 1);
+    if (new_capacity < b->attrs_nr + needed) {
+      new_capacity = b->attrs_nr + needed;
+    }
+    temp = (char**)TKMEM_REALLOCT(char*, b->attrs, new_capacity + 1);
+    if (temp != NULL) {
+      b->attrs = temp;
+      b->attrs_capacity = new_capacity;
+      return RET_OK;
+    }
+    return RET_OOM;
+  }
+  return RET_OK;
+}
+
 static char* xml_loader_strdup(XmlBuilder* thiz, const char* start, int length) {
+  int k = 0;
   char* attr = NULL;
   xml_builder_t* b = (xml_builder_t*)thiz;
 
-  if ((b->buffer_used + length) >= b->capacity) {
+  if ((b->buffer_used + length + 1) > b->capacity) {
+    char* old_buffer = b->buffer;
     int new_capacity = b->capacity + (b->capacity >> 1) + length + 32;
     char* buffer = (char*)TKMEM_REALLOCT(char, b->buffer, new_capacity);
     if (buffer != NULL) {
+      if (buffer != old_buffer && old_buffer != NULL) {
+        ptrdiff_t delta = buffer - old_buffer;
+        for (k = 0; k < b->attrs_nr; k++) {
+          if (b->attrs[k] != NULL &&
+              b->attrs[k] >= old_buffer &&
+              b->attrs[k] < old_buffer + b->buffer_used) {
+            b->attrs[k] += delta;
+          }
+        }
+      }
       b->buffer = buffer;
       b->capacity = new_capacity;
     }
   }
 
-  if ((b->buffer_used + length) >= b->capacity) {
+  if ((b->buffer_used + length + 1) > b->capacity) {
     return attr;
   }
 
@@ -235,16 +267,12 @@ static void xml_loader_on_prop(XmlBuilder* thiz) {
     if (have_selflayout && !after_selflayout) {
       ENSURE(str_decode_xml_entity(&(b->str), self_layout) == RET_OK);
       str_unescape(&(b->str));
-      ui_builder_on_widget_prop(b->ui_builder, WIDGET_PROP_SELF_LAYOUT, b->str.str);
-    } else {
-      ui_builder_on_widget_prop(b->ui_builder, WIDGET_PROP_SELF_LAYOUT, b->str.str);
     }
-  } else {
-    if (have_selflayout && !after_selflayout) {
-      ENSURE(str_decode_xml_entity(&(b->str), self_layout) == RET_OK);
-      str_unescape(&(b->str));
-      ui_builder_on_widget_prop(b->ui_builder, WIDGET_PROP_SELF_LAYOUT, b->str.str);
-    }
+    ui_builder_on_widget_prop(b->ui_builder, WIDGET_PROP_SELF_LAYOUT, b->str.str);
+  } else if (have_selflayout && !after_selflayout) {
+    ENSURE(str_decode_xml_entity(&(b->str), self_layout) == RET_OK);
+    str_unescape(&(b->str));
+    ui_builder_on_widget_prop(b->ui_builder, WIDGET_PROP_SELF_LAYOUT, b->str.str);
   }
 
   /*set highest priority props*/
@@ -309,33 +337,16 @@ static void xml_loader_on_prop(XmlBuilder* thiz) {
 }
 
 static void xml_loader_on_start_widget(XmlBuilder* thiz, const char* tag, const char** attrs) {
-  char c = '\0';
   uint32_t i = 0;
-  const char* x = NULL;
-  const char* y = NULL;
-  const char* w = NULL;
-  const char* h = NULL;
-  widget_desc_t desc;
-  const char* key = NULL;
   const char* value = NULL;
   xml_builder_t* b = (xml_builder_t*)thiz;
   return_if_fail(b->format_error == FALSE);
 
   str_set(&(b->tag), tag);
 
-  while(attrs[i] != NULL) {
+  while (attrs[i] != NULL) {
     value = attrs[i];
-    if (b->attrs_nr > b->attrs_capacity) {
-      char** temp_attrs = (char**)TKMEM_REALLOCT(char*, b->attrs, b->attrs_capacity << 1);
-      if (temp_attrs != NULL) {
-        b->attrs = temp_attrs;
-        b->attrs_capacity = b->attrs_capacity << 1;
-      }
-    }
-    if (b->attrs_capacity <= b->attrs_nr) {
-      b->attrs = (char**)TKMEM_REALLOCT(char*, b->attrs, (b->attrs_capacity << 1) + 1);
-      b->attrs_capacity = b->attrs_capacity << 1;
-    }
+    xml_loader_ensure_attrs_capacity(b, 1);
     b->attrs[b->attrs_nr] = xml_loader_strdup(thiz, value, strlen(value));
     b->attrs_nr++;
     i++;
@@ -433,13 +444,12 @@ static void xml_loader_on_prop_end(XmlBuilder* thiz) {
               j += 2;
             }
             if (!is_set_prop) {
-              if (b->attrs_capacity <= b->attrs_nr) {
-                b->attrs = (char**)TKMEM_REALLOCT(char*, b->attrs, (b->attrs_capacity << 1) + 1);
-                b->attrs_capacity = b->attrs_capacity << 1;
-              }
+              xml_loader_ensure_attrs_capacity(b, 2);
+              attrs = b->attrs;
               b->attrs[b->attrs_nr] = xml_loader_strdup(thiz, widget_prop, strlen(widget_prop));
-              b->attrs[b->attrs_nr + 1] = xml_loader_strdup(thiz, value, strlen(value));
-              b->attrs_nr += 2;
+              b->attrs_nr++;
+              b->attrs[b->attrs_nr] = xml_loader_strdup(thiz, value, strlen(value));
+              b->attrs_nr++;
               b->attrs[b->attrs_nr] = NULL;
             }
           }
@@ -471,8 +481,8 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
     b->is_property = FALSE;
     xml_loader_on_prop_end(thiz);
     b->is_on_start = TRUE;
+    b->tag_is_include = b->is_include;
     if (b->is_include) {
-      b->tag_is_include = TRUE;
       for (int i = 0; i < ARRAY_SIZE(window_tag); i++) {
         if (tk_str_eq(tag, window_tag[i])) {
           b->format_error = TRUE;
@@ -521,21 +531,11 @@ static void xml_loader_on_text(XmlBuilder* thiz, const char* text, size_t length
     assert(b->properties_state == PROPS_STATE_START);
 
     str_set_with_len(&(b->str), text, length);
-
-    if (b->attrs_nr > b->attrs_capacity) {
-      char** temp_attrs = (char**)TKMEM_REALLOCT(char*, b->attrs, b->attrs_capacity >> 1);
-      if (temp_attrs != NULL) {
-        b->attrs = temp_attrs;
-        b->attrs_capacity = b->attrs_capacity >> 1;
-      }
-    }
-    if (b->attrs_capacity <= b->attrs_nr) {
-      b->attrs = (char**)TKMEM_REALLOCT(char*, b->attrs, (b->attrs_capacity << 1) + 1);
-      b->attrs_capacity = b->attrs_capacity << 1;
-    }
+    xml_loader_ensure_attrs_capacity(b, 2);
     b->attrs[b->attrs_nr] = xml_loader_strdup(thiz, b->property_name, strlen(b->property_name));
-    b->attrs[b->attrs_nr + 1] = xml_loader_strdup(thiz, b->str.str, b->str.size);
-    b->attrs_nr += 2;
+    b->attrs_nr++;
+    b->attrs[b->attrs_nr] = xml_loader_strdup(thiz, b->str.str, b->str.size);
+    b->attrs_nr++;
     b->attrs[b->attrs_nr] = NULL;
   }
 
@@ -698,6 +698,7 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
         xml_parser_destroy(parser);
         str_reset(&(b_include.str));
         str_reset(&(b_include.widget_name));
+        str_reset(&(b_include.tag));
         TKMEM_FREE(include_attrs_used);
         TKMEM_FREE(b_include.widget_name_list);
         TKMEM_FREE(b_include.include_name);
@@ -739,7 +740,7 @@ static XmlBuilder* builder_init(xml_builder_t* b, ui_builder_t* ui_builder) {
   str_init(&(b->str), 100);
   str_init(&(b->widget_name), 100);
   str_init(&(b->tag), 100);
-  b->attrs = (char**)TKMEM_REALLOCT(char*, b->attrs,  MAX_ATTR_KEY_VALUE_NR + 1);
+  b->attrs = (char**)TKMEM_ZALLOCN(char*, MAX_ATTR_KEY_VALUE_NR + 1);
   b->attrs_capacity = MAX_ATTR_KEY_VALUE_NR;
 
   return &(b->builder);
