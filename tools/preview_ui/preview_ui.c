@@ -394,7 +394,7 @@ static ret_t filename_to_res_name(const char* filename, const char* base_dir, ch
 
 static ret_t try_get_ui_dir_path(const char* filename, char* ui_dir, uint32_t size) {
   path_build(ui_dir, size, s_res_root, s_theme, "ui", NULL);
-  if (strstr(filename, ui_dir) == NULL) {
+  if (strstr(filename, ui_dir) == NULL || s_theme == NULL) {
     memset(ui_dir, 0, size);
     path_build(ui_dir, size, s_res_root, "default", "ui", NULL);
   }
