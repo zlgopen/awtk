@@ -2,6 +2,7 @@
 
 2026/03/18
   * preview_ui 添加 theme 的默认值设置(感谢泽武提供补丁)
+  * WIDGET_PROP_ANIMATE_PREFIX 的处理(感谢泽武提供补丁)
 
 2026/03/16
   * 修复object_default、object_hash切换大小写是否敏感的设置时，里面的元素没有重排导致二分查找失效的问题(感谢兆坤提供补丁)

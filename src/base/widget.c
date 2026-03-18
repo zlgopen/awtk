@@ -2297,6 +2297,9 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   if (tk_str_start_with(name, WIDGET_PROP_ANIMATE_PREFIX)) {
     uint32_t duration = TK_ANIMATING_TIME;
     const char* prop_name = name + strlen(WIDGET_PROP_ANIMATE_PREFIX);
+    if (v->type == VALUE_TYPE_STRING && TK_STR_IS_EMPTY(value_str(v))) {
+      return RET_OK;
+    }
     if (!tk_str_eq(prop_name, WIDGET_PROP_ANIMATING_TIME)) {
       duration = widget_get_prop_int(widget, WIDGET_PROP_ANIMATE_ANIMATING_TIME, TK_ANIMATING_TIME);
       return widget_animate_prop_float_to(widget, prop_name, value_float32(v), duration);
