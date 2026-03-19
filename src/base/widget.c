@@ -65,12 +65,41 @@ static ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 typedef widget_t* (*widget_find_wanted_focus_widget_t)(widget_t* widget, darray_t* all_focusable);
 static ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find);
 
+static void widget_set_need_relayout_parent_if_flex(widget_t* widget, char val) {
+  widget_t* parent = widget->parent;
+  if (parent != NULL) {
+    self_layouter_t* parent_self_layouter = parent->self_layout;
+    if (parent_self_layouter != NULL) {
+      switch (val) {
+        case 'x':
+        case 'w': {
+          if (W_ATTR_FLEX ==
+              self_layouter_get_param_int(parent_self_layouter, "w_attr", W_ATTR_PIXEL)) {
+            widget_set_need_relayout(parent);
+          }
+        } break;
+        case 'y':
+        case 'h': {
+          if (H_ATTR_FLEX ==
+              self_layouter_get_param_int(parent_self_layouter, "h_attr", H_ATTR_PIXEL)) {
+            widget_set_need_relayout(parent);
+          }
+        } break;
+        default: {
+          log_debug("%s:not support '%c'\n", __FUNCTION__, val);
+        } break;
+      }
+    }
+  }
+}
+
 #define widget_set_xywh(widget, val, update_layout, invalidate)    \
   do {                                                             \
     if (widget->val != val) {                                      \
       if (invalidate) widget_invalidate_force(widget, NULL);       \
       widget->val = val;                                           \
       if (invalidate) widget_invalidate_force(widget, NULL);       \
+      widget_set_need_relayout_parent_if_flex(widget, #val[0]);    \
     }                                                              \
     if (update_layout && widget->self_layout != NULL) {            \
       self_layouter_set_param_str(widget->self_layout, #val, "n"); \
