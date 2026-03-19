@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   object_evt_proxy.c
  * Author: AWTK Develop Team
  * Brief:  事件代理对象。
@@ -274,6 +274,7 @@ static ret_t object_evt_proxy_on_publish_on_visit(void* ctx, const void* data) {
       if (NULL == info->opt.evt_filter ||
           info->opt.evt_filter(info->publisher, actx->e, info->opt.evt_filter_ctx)) {
         object_evt_proxy_publish_topic_to_matched(actx->evt_proxy, actx->e, nv->name);
+        break;
       }
     }
   }
@@ -352,7 +353,7 @@ ret_t object_evt_proxy_register(tk_object_t* obj, const char* topic, tk_object_t
   if (!emitter_exist(EMITTER(publisher), evt_type, object_evt_proxy_on_publish, obj)) {
     if (TK_INVALID_ID ==
         emitter_on(EMITTER(publisher), evt_type, object_evt_proxy_on_publish, obj)) {
-      object_evt_proxy_unregister(obj, topic);
+      darray_remove(infos, info);
       return RET_FAIL;
     }
   }
@@ -382,16 +383,17 @@ static int object_evt_proxy_unregister_group_cmp(const void* data, const void* c
 
 ret_t object_evt_proxy_unregister(tk_object_t* obj, const char* topic) {
   value_t v;
+  value_t v_owned;
   ret_t ret = RET_NOT_FOUND;
   object_evt_proxy_t* evt_proxy = OBJECT_EVT_PROXY(obj);
   return_value_if_fail(evt_proxy != NULL && TK_STR_IS_NOT_EMPTY(topic), RET_BAD_PARAMS);
 
   if (RET_OK == tk_object_get_prop(evt_proxy->register_infos_group, topic, &v)) {
-    value_deep_copy(&v, &v);
+    value_deep_copy(&v_owned, &v);
 
     ret = tk_object_remove_prop(evt_proxy->register_infos_group, topic);
     if (RET_OK == ret) {
-      darray_t* infos = (darray_t*)value_pointer(&v);
+      darray_t* infos = (darray_t*)value_pointer(&v_owned);
       uint32_t i = 0;
       for (i = 0; i < infos->size; i++) {
         object_evt_proxy_register_info_t* info =
@@ -405,7 +407,7 @@ ret_t object_evt_proxy_unregister(tk_object_t* obj, const char* topic) {
       }
     }
 
-    value_reset(&v);
+    value_reset(&v_owned);
   }
 
   return ret;
@@ -475,6 +477,9 @@ ret_t object_evt_proxy_unsubscribe(tk_object_t* obj, const char* topic,
         .opt = (opt != NULL) ? *opt : (object_evt_proxy_subscribe_opt_t){0},
     };
     ret = darray_remove(infos, &tmp);
+    if (RET_OK == ret && infos->size == 0) {
+      tk_object_remove_prop(evt_proxy->subscribe_infos_group, topic);
+    }
   }
 
   return ret;

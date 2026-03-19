@@ -290,3 +290,217 @@ TEST(ObjectEvtProxy, bad_params) {
   TK_OBJECT_UNREF(proxy);
   TK_OBJECT_UNREF(publisher);
 }
+
+TEST(ObjectEvtProxy, same_topic_different_publishers) {
+  tk_object_t* proxy = object_evt_proxy_create();
+  tk_object_t* pub1 = object_default_create();
+  tk_object_t* pub2 = object_default_create();
+
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topic", pub1, EVT_PROP_CHANGED, NULL), RET_OK);
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topic", pub2, EVT_PROP_CHANGED, NULL), RET_OK);
+
+  ASSERT_EQ(object_evt_proxy_subscribe(proxy, "topic", test_subscribe_callback, NULL), RET_OK);
+
+  s_callback_called = 0;
+  value_t v;
+  value_set_int(&v, 1);
+  tk_object_set_prop(pub1, "p", &v);
+  ASSERT_EQ(s_callback_called, 1);
+
+  s_callback_called = 0;
+  tk_object_set_prop(pub2, "p", &v);
+  ASSERT_EQ(s_callback_called, 1);
+
+  TK_OBJECT_UNREF(proxy);
+  TK_OBJECT_UNREF(pub1);
+  TK_OBJECT_UNREF(pub2);
+}
+
+TEST(ObjectEvtProxy, same_topic_different_evt_types) {
+  tk_object_t* proxy = object_evt_proxy_create();
+  tk_object_t* publisher = object_default_create();
+
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topic", publisher, EVT_PROP_CHANGED, NULL), RET_OK);
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topic", publisher, EVT_PROP_WILL_CHANGE, NULL),
+            RET_OK);
+
+  ASSERT_EQ(object_evt_proxy_subscribe(proxy, "topic", test_subscribe_callback, NULL), RET_OK);
+
+  s_callback_called = 0;
+  value_t v;
+  value_set_int(&v, 1);
+  tk_object_set_prop(publisher, "p", &v);
+  ASSERT_EQ(s_callback_called, 2);
+
+  TK_OBJECT_UNREF(proxy);
+  TK_OBJECT_UNREF(publisher);
+}
+
+TEST(ObjectEvtProxy, same_topic_different_filters) {
+  tk_object_t* proxy = object_evt_proxy_create();
+  tk_object_t* publisher = object_default_create();
+  object_evt_proxy_register_opt_t opt_accept;
+  object_evt_proxy_register_opt_t opt_reject;
+  memset(&opt_accept, 0, sizeof(opt_accept));
+  memset(&opt_reject, 0, sizeof(opt_reject));
+  opt_accept.evt_filter = test_evt_filter_accept;
+  opt_reject.evt_filter = test_evt_filter_reject;
+
+  ASSERT_EQ(
+      object_evt_proxy_register(proxy, "topic", publisher, EVT_PROP_CHANGED, &opt_accept), RET_OK);
+  ASSERT_EQ(
+      object_evt_proxy_register(proxy, "topic", publisher, EVT_PROP_CHANGED, &opt_reject), RET_OK);
+
+  ASSERT_EQ(object_evt_proxy_subscribe(proxy, "topic", test_subscribe_callback, NULL), RET_OK);
+
+  s_callback_called = 0;
+  value_t v;
+  value_set_int(&v, 1);
+  tk_object_set_prop(publisher, "p", &v);
+  ASSERT_EQ(s_callback_called, 1);
+
+  TK_OBJECT_UNREF(proxy);
+  TK_OBJECT_UNREF(publisher);
+}
+
+TEST(ObjectEvtProxy, unregister_topic_with_multiple_registrations) {
+  tk_object_t* proxy = object_evt_proxy_create();
+  tk_object_t* pub1 = object_default_create();
+  tk_object_t* pub2 = object_default_create();
+
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topic", pub1, EVT_PROP_CHANGED, NULL), RET_OK);
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topic", pub2, EVT_PROP_CHANGED, NULL), RET_OK);
+
+  ASSERT_EQ(object_evt_proxy_subscribe(proxy, "topic", test_subscribe_callback, NULL), RET_OK);
+
+  s_callback_called = 0;
+  value_t v;
+  value_set_int(&v, 1);
+  tk_object_set_prop(pub1, "p", &v);
+  ASSERT_EQ(s_callback_called, 1);
+
+  s_callback_called = 0;
+  tk_object_set_prop(pub2, "p", &v);
+  ASSERT_EQ(s_callback_called, 1);
+
+  ASSERT_EQ(object_evt_proxy_unregister(proxy, "topic"), RET_OK);
+
+  s_callback_called = 0;
+  tk_object_set_prop(pub1, "p", &v);
+  ASSERT_EQ(s_callback_called, 0);
+
+  s_callback_called = 0;
+  tk_object_set_prop(pub2, "p", &v);
+  ASSERT_EQ(s_callback_called, 0);
+
+  TK_OBJECT_UNREF(proxy);
+  TK_OBJECT_UNREF(pub1);
+  TK_OBJECT_UNREF(pub2);
+}
+
+TEST(ObjectEvtProxy, unregister_preserves_shared_publisher_across_topics) {
+  tk_object_t* proxy = object_evt_proxy_create();
+  tk_object_t* publisher = object_default_create();
+
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topicA", publisher, EVT_PROP_CHANGED, NULL), RET_OK);
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topicB", publisher, EVT_PROP_CHANGED, NULL), RET_OK);
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topicA", publisher, EVT_PROP_WILL_CHANGE, NULL),
+            RET_OK);
+
+  ASSERT_EQ(object_evt_proxy_subscribe(proxy, "topicA", test_subscribe_callback, NULL), RET_OK);
+  ASSERT_EQ(object_evt_proxy_subscribe(proxy, "topicB", test_subscribe_callback2, NULL), RET_OK);
+
+  ASSERT_EQ(object_evt_proxy_unregister(proxy, "topicA"), RET_OK);
+
+  s_callback_called = 0;
+  s_callback2_called = 0;
+  value_t v;
+  value_set_int(&v, 1);
+  tk_object_set_prop(publisher, "p", &v);
+  ASSERT_EQ(s_callback_called, 0);
+  ASSERT_EQ(s_callback2_called, 1);
+
+  TK_OBJECT_UNREF(proxy);
+  TK_OBJECT_UNREF(publisher);
+}
+
+TEST(ObjectEvtProxy, empty_topic_subscribe_matches_all) {
+  tk_object_t* proxy = object_evt_proxy_create();
+  tk_object_t* pub1 = object_default_create();
+  tk_object_t* pub2 = object_default_create();
+
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topic_a", pub1, EVT_PROP_CHANGED, NULL), RET_OK);
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topic_b", pub2, EVT_PROP_CHANGED, NULL), RET_OK);
+
+  ASSERT_EQ(object_evt_proxy_subscribe(proxy, "", test_subscribe_callback, NULL), RET_OK);
+
+  s_callback_called = 0;
+  value_t v;
+  value_set_int(&v, 1);
+  tk_object_set_prop(pub1, "p", &v);
+  ASSERT_EQ(s_callback_called, 1);
+
+  s_callback_called = 0;
+  tk_object_set_prop(pub2, "p", &v);
+  ASSERT_EQ(s_callback_called, 1);
+
+  ASSERT_EQ(object_evt_proxy_unsubscribe(proxy, "", test_subscribe_callback, NULL), RET_OK);
+
+  s_callback_called = 0;
+  tk_object_set_prop(pub1, "p", &v);
+  ASSERT_EQ(s_callback_called, 0);
+
+  TK_OBJECT_UNREF(proxy);
+  TK_OBJECT_UNREF(pub1);
+  TK_OBJECT_UNREF(pub2);
+}
+
+TEST(ObjectEvtProxy, wildcard_and_topic_subscribe_both_fire) {
+  tk_object_t* proxy = object_evt_proxy_create();
+  tk_object_t* publisher = object_default_create();
+
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topic", publisher, EVT_PROP_CHANGED, NULL), RET_OK);
+
+  ASSERT_EQ(object_evt_proxy_subscribe(proxy, "topic", test_subscribe_callback, NULL), RET_OK);
+  ASSERT_EQ(object_evt_proxy_subscribe(proxy, NULL, test_subscribe_callback2, NULL), RET_OK);
+
+  s_callback_called = 0;
+  s_callback2_called = 0;
+  value_t v;
+  value_set_int(&v, 1);
+  tk_object_set_prop(publisher, "p", &v);
+  ASSERT_EQ(s_callback_called, 1);
+  ASSERT_EQ(s_callback2_called, 1);
+
+  TK_OBJECT_UNREF(proxy);
+  TK_OBJECT_UNREF(publisher);
+}
+
+TEST(ObjectEvtProxy, duplicate_subscribe_rejected) {
+  tk_object_t* proxy = object_evt_proxy_create();
+  tk_object_t* publisher = object_default_create();
+
+  ASSERT_EQ(object_evt_proxy_register(proxy, "topic", publisher, EVT_PROP_CHANGED, NULL), RET_OK);
+
+  ASSERT_EQ(object_evt_proxy_subscribe(proxy, "topic", test_subscribe_callback, NULL), RET_OK);
+  ASSERT_EQ(object_evt_proxy_subscribe(proxy, "topic", test_subscribe_callback, NULL), RET_FAIL);
+
+  s_callback_called = 0;
+  value_t v;
+  value_set_int(&v, 1);
+  tk_object_set_prop(publisher, "p", &v);
+  ASSERT_EQ(s_callback_called, 1);
+
+  TK_OBJECT_UNREF(proxy);
+  TK_OBJECT_UNREF(publisher);
+}
+
+TEST(ObjectEvtProxy, unsubscribe_not_found) {
+  tk_object_t* proxy = object_evt_proxy_create();
+
+  ASSERT_NE(object_evt_proxy_unsubscribe(proxy, "nonexistent", test_subscribe_callback, NULL),
+            RET_OK);
+  ASSERT_NE(object_evt_proxy_unsubscribe(proxy, NULL, test_subscribe_callback, NULL), RET_OK);
+
+  TK_OBJECT_UNREF(proxy);
+}
