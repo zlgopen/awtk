@@ -111,7 +111,7 @@ ret_t object_evt_proxy_unregister(tk_object_t* obj, const char* topic);
  * 订阅事件代理。
  *
  * @param {tk_object_t*} obj object_evt_proxy对象。
- * @param {const char*} topic 主题。
+ * @param {const char*} topic 主题（为NULL或空字符串时表示订阅所有主题）。
  * @param {object_evt_proxy_subscribe_callback_t} callback 事件代理回调函数。
  * @param {const object_evt_proxy_subscribe_opt_t*} opt 事件代理订阅选项。
  *
@@ -126,7 +126,7 @@ ret_t object_evt_proxy_subscribe(tk_object_t* obj, const char* topic,
  * 取消订阅事件代理。
  *
  * @param {tk_object_t*} obj object_evt_proxy对象。
- * @param {const char*} topic 主题。
+ * @param {const char*} topic 主题（为NULL或空字符串时表示订阅所有主题）。
  * @param {object_evt_proxy_subscribe_callback_t} callback 事件代理回调函数。
  * @param {const object_evt_proxy_subscribe_opt_t*} opt 事件代理订阅选项。
  *

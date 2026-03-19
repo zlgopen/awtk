@@ -1,5 +1,9 @@
 # 最新动态
 
+2026/03/19
+  * object_evt_proxy\ 支持同主题可以有不同的发布者或者事件类型(感谢兆坤提供补丁)
+  * 完善object_evt_proxy(感谢兆坤提供补丁)
+
 2026/03/18
   * preview_ui 添加 theme 的默认值设置(感谢泽武提供补丁)
   * WIDGET_PROP_ANIMATE_PREFIX 的处理(感谢泽武提供补丁)
