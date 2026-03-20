@@ -89,7 +89,7 @@ struct _tk_lf_bp_buffer_t {
    * 读取索引。
    */
   tk_atomic_t r;
-  /** @property {tk_atomic_t} i
+  /** @property {tk_atomic_t} w
    * @annotation ["readable"]
    * 写入索引。
    */
