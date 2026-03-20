@@ -62,6 +62,11 @@ typedef struct _object_evt_proxy_subscribe_opt_t {
    * 回调上下文。
    */
   void* callback_ctx;
+  /**
+   * @property {int16_t} priority
+   * 优先级。（值越大，优先级越高）。
+   */
+  int16_t priority;
 } object_evt_proxy_subscribe_opt_t;
 
 /**
@@ -101,10 +106,11 @@ ret_t object_evt_proxy_register(tk_object_t* obj, const char* topic, tk_object_t
  *
  * @param {tk_object_t*} obj object_evt_proxy对象。
  * @param {const char*} topic 主题。
+ * @param {tk_object_t*} publisher 发布者。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t object_evt_proxy_unregister(tk_object_t* obj, const char* topic);
+ret_t object_evt_proxy_unregister(tk_object_t* obj, const char* topic, tk_object_t* publisher);
 
 /**
  * @method object_evt_proxy_subscribe

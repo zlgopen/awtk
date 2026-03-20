@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   object_evt_proxy.c
  * Author: AWTK Develop Team
  * Brief:  事件代理对象。
@@ -72,8 +72,8 @@ inline static int object_evt_proxy_register_opt_cmp(const object_evt_proxy_regis
   return pointer_compare(opt1->evt_filter_ctx, opt2->evt_filter_ctx);
 }
 
-static int object_evt_proxy_register_info_cmp(const object_evt_proxy_register_info_t* info1,
-                                              const object_evt_proxy_register_info_t* info2) {
+inline static int object_evt_proxy_register_info_cmp(
+    const object_evt_proxy_register_info_t* info1, const object_evt_proxy_register_info_t* info2) {
   int ret = info1->evt_type - info2->evt_type;
   if (0 != ret) {
     return ret;
@@ -140,13 +140,26 @@ inline static int object_evt_proxy_subscribe_opt_cmp(const object_evt_proxy_subs
   return pointer_compare(opt1->callback_ctx, opt2->callback_ctx);
 }
 
-static int object_evt_proxy_subscribe_info_cmp(const object_evt_proxy_subscribe_info_t* info1,
-                                               const object_evt_proxy_subscribe_info_t* info2) {
+inline static int object_evt_proxy_subscribe_info_cmp(
+    const object_evt_proxy_subscribe_info_t* info1,
+    const object_evt_proxy_subscribe_info_t* info2) {
   int ret = pointer_compare(info1->callback, info2->callback);
   if (0 != ret) {
     return ret;
   }
   return object_evt_proxy_subscribe_opt_cmp(&info1->opt, &info2->opt);
+}
+
+inline static int object_evt_proxy_subscribe_info_cmp_by_priority(
+    const object_evt_proxy_subscribe_info_t* info1,
+    const object_evt_proxy_subscribe_info_t* info2) {
+  if (info1->opt.priority < info2->opt.priority) {
+    return 1;
+  } else if (info1->opt.priority > info2->opt.priority) {
+    return -1;
+  } else {
+    return 0;
+  }
 }
 
 inline static ret_t object_evt_proxy_subscribe_infos_destroy(darray_t* infos) {
@@ -161,9 +174,14 @@ inline static darray_t* object_evt_proxy_subscribe_infos_create(void) {
 
 /*********************************************************************************************/
 
+typedef ret_t (*object_evt_proxy_infos_group_foreach_after_infos_foreach_done_t)(darray_t* infos,
+                                                                                 ret_t result,
+                                                                                 void* ctx);
+
 typedef struct _object_evt_proxy_infos_group_foreach_on_visit_ctx_t {
   tk_visit_t visit;
   void* ctx;
+  object_evt_proxy_infos_group_foreach_after_infos_foreach_done_t after_infos_foreach_done;
 } object_evt_proxy_infos_group_foreach_on_visit_ctx_t;
 
 static ret_t object_evt_proxy_infos_group_foreach_on_visit(void* ctx, const void* data) {
@@ -171,17 +189,68 @@ static ret_t object_evt_proxy_infos_group_foreach_on_visit(void* ctx, const void
       (object_evt_proxy_infos_group_foreach_on_visit_ctx_t*)(ctx);
   const named_value_t* nv = (const named_value_t*)(data);
   darray_t* infos = (darray_t*)value_pointer(&nv->value);
-  return darray_foreach(infos, actx->visit, actx->ctx);
+  ret_t ret = darray_foreach(infos, actx->visit, actx->ctx);
+  if (actx->after_infos_foreach_done != NULL) {
+    return actx->after_infos_foreach_done(infos, ret, actx->ctx);
+  }
+  return ret;
 }
 
-static ret_t object_evt_proxy_infos_group_foreach(tk_object_t* infos_group, tk_visit_t visit,
-                                                  void* ctx) {
+inline static ret_t object_evt_proxy_infos_group_foreach(
+    tk_object_t* infos_group, tk_visit_t visit, void* ctx,
+    object_evt_proxy_infos_group_foreach_after_infos_foreach_done_t after_infos_foreach_done) {
   object_evt_proxy_infos_group_foreach_on_visit_ctx_t actx = {
       .visit = visit,
       .ctx = ctx,
+      .after_infos_foreach_done = after_infos_foreach_done,
   };
   return_value_if_fail(infos_group != NULL, RET_BAD_PARAMS);
   return tk_object_foreach_prop(infos_group, object_evt_proxy_infos_group_foreach_on_visit, &actx);
+}
+
+typedef struct _object_evt_proxy_infos_group_remove_on_visit_ctx_t {
+  tk_compare_t compare;
+  void* ctx;
+  bool_t removed : 1;
+} object_evt_proxy_infos_group_remove_on_visit_ctx_t;
+
+static ret_t object_evt_proxy_infos_group_remove_on_visit(void* ctx, const void* data) {
+  object_evt_proxy_infos_group_remove_on_visit_ctx_t* actx =
+      (object_evt_proxy_infos_group_remove_on_visit_ctx_t*)(ctx);
+  if (actx->removed) {
+    return RET_STOP;
+  }
+  if (0 == actx->compare(data, actx->ctx)) {
+    actx->removed = TRUE;
+    return RET_REMOVE;
+  }
+  return RET_OK;
+}
+
+static ret_t object_evt_proxy_infos_group_remove_after_infos_foreach_done(darray_t* infos,
+                                                                          ret_t result, void* ctx) {
+  object_evt_proxy_infos_group_remove_on_visit_ctx_t* actx =
+      (object_evt_proxy_infos_group_remove_on_visit_ctx_t*)(ctx);
+  if (0 == infos->size) {
+    return RET_REMOVE;
+  }
+  if (actx->removed) {
+    return RET_STOP;
+  }
+  return result;
+}
+
+inline static ret_t object_evt_proxy_infos_group_remove(tk_object_t* infos_group,
+                                                        tk_compare_t compare, void* ctx) {
+  object_evt_proxy_infos_group_remove_on_visit_ctx_t actx = {
+      .compare = (compare != NULL) ? compare : pointer_compare,
+      .ctx = ctx,
+  };
+  return_value_if_fail(infos_group != NULL, RET_BAD_PARAMS);
+  object_evt_proxy_infos_group_foreach(
+      infos_group, object_evt_proxy_infos_group_remove_on_visit, &actx,
+      object_evt_proxy_infos_group_remove_after_infos_foreach_done);
+  return actx.removed ? RET_OK : RET_NOT_FOUND;
 }
 
 /*********************************************************************************************/
@@ -192,6 +261,7 @@ struct _object_evt_proxy_t {
   tk_object_t* subscribe_infos_group;
   /* cache */
   darray_t* matched_subscribe_infos;
+  bool_t publishing : 1;
 };
 
 static ret_t object_evt_proxy_publisher_event_off_on_visit(void* ctx, const void* data) {
@@ -205,7 +275,8 @@ static ret_t object_evt_proxy_on_destroy(tk_object_t* obj) {
   return_value_if_fail(evt_proxy != NULL, RET_BAD_PARAMS);
 
   object_evt_proxy_infos_group_foreach(evt_proxy->register_infos_group,
-                                       object_evt_proxy_publisher_event_off_on_visit, evt_proxy);
+                                       object_evt_proxy_publisher_event_off_on_visit, evt_proxy,
+                                       NULL);
   if (evt_proxy->matched_subscribe_infos != NULL) {
     darray_destroy(evt_proxy->matched_subscribe_infos);
     evt_proxy->matched_subscribe_infos = NULL;
@@ -242,8 +313,8 @@ error:
 
 /*********************************************************************************************/
 
-inline static void object_evt_proxy_publish_topic_to_matched(object_evt_proxy_t* evt_proxy,
-                                                             event_t* e, const char* topic) {
+static void object_evt_proxy_publish_topic_to_matched(object_evt_proxy_t* evt_proxy, event_t* e,
+                                                      const char* topic) {
   darray_t* sub_infos =
       (darray_t*)tk_object_get_prop_pointer(evt_proxy->subscribe_infos_group, topic);
   if (sub_infos != NULL) {
@@ -251,7 +322,19 @@ inline static void object_evt_proxy_publish_topic_to_matched(object_evt_proxy_t*
     for (i = 0; i < sub_infos->size; i++) {
       object_evt_proxy_subscribe_info_t* sub_info =
           (object_evt_proxy_subscribe_info_t*)darray_get(sub_infos, i);
-      darray_push_unique(evt_proxy->matched_subscribe_infos, sub_info);
+      int32_t exist_sub_info_index = darray_find_index_ex(
+          evt_proxy->matched_subscribe_infos, (tk_compare_t)object_evt_proxy_subscribe_info_cmp, sub_info);
+      if (exist_sub_info_index >= 0) {
+        object_evt_proxy_subscribe_info_t* exist_sub_info =
+            (object_evt_proxy_subscribe_info_t*)darray_get(evt_proxy->matched_subscribe_infos,
+                                                           exist_sub_info_index);
+        if (object_evt_proxy_subscribe_info_cmp_by_priority(sub_info, exist_sub_info) > 0) {
+          continue;
+        }
+        darray_remove_index(evt_proxy->matched_subscribe_infos, exist_sub_info_index);
+      }
+      darray_sorted_insert(evt_proxy->matched_subscribe_infos, sub_info,
+                           (tk_compare_t)object_evt_proxy_subscribe_info_cmp_by_priority, FALSE);
     }
   }
 }
@@ -282,6 +365,23 @@ static ret_t object_evt_proxy_on_publish_on_visit(void* ctx, const void* data) {
   return RET_OK;
 }
 
+inline static void object_evt_proxy_print_debug_log_when_stop_publish(
+    object_evt_proxy_subscribe_info_t* sub_info) {
+  if (log_get_log_level() <= LOG_LEVEL_DEBUG) {
+    return_if_fail(sub_info != NULL);
+    if (sub_info->opt.subscriber != NULL) {
+      if (TK_STR_IS_NOT_EMPTY(sub_info->opt.subscriber->name)) {
+        log_debug("%s: stop publish subscriber is %p, name is \"%s\".\n", __FUNCTION__,
+                  sub_info->opt.subscriber, sub_info->opt.subscriber->name);
+      } else {
+        log_debug("%s: stop publish subscriber is %p.\n", __FUNCTION__, sub_info->opt.subscriber);
+      }
+    } else {
+      log_debug("%s: stop publish callback is %p.\n", __FUNCTION__, sub_info->callback);
+    }
+  }
+}
+
 static ret_t object_evt_proxy_on_publish(void* ctx, event_t* e) {
   object_evt_proxy_t* evt_proxy = OBJECT_EVT_PROXY((tk_object_t*)ctx);
   object_evt_proxy_on_publish_on_visit_ctx_t actx = {
@@ -289,6 +389,8 @@ static ret_t object_evt_proxy_on_publish(void* ctx, event_t* e) {
       .e = e,
   };
   uint32_t i = 0;
+  ret_t result = RET_OK;
+  object_evt_proxy_subscribe_info_t* sub_info = NULL;
   return_value_if_fail(evt_proxy != NULL, RET_BAD_PARAMS);
 
   if (NULL == evt_proxy->matched_subscribe_infos) {
@@ -302,10 +404,19 @@ static ret_t object_evt_proxy_on_publish(void* ctx, event_t* e) {
                          &actx);
   object_evt_proxy_publish_topic_to_matched(evt_proxy, e, "");
 
+  evt_proxy->publishing = TRUE;
   for (i = 0; i < evt_proxy->matched_subscribe_infos->size; i++) {
-    object_evt_proxy_subscribe_info_t* sub_info =
+    sub_info =
         (object_evt_proxy_subscribe_info_t*)darray_get(evt_proxy->matched_subscribe_infos, i);
-    sub_info->callback(sub_info->opt.subscriber, e, sub_info->opt.callback_ctx);
+    result = sub_info->callback(sub_info->opt.subscriber, e, sub_info->opt.callback_ctx);
+    TK_FOREACH_VISIT_RESULT_PROCESSING(
+        result,
+        object_evt_proxy_infos_group_remove(evt_proxy->subscribe_infos_group, NULL, sub_info));
+  }
+  evt_proxy->publishing = FALSE;
+
+  if (RET_OK != result) {
+    object_evt_proxy_print_debug_log_when_stop_publish(sub_info);
   }
 
   return RET_OK;
@@ -373,41 +484,63 @@ static int object_evt_proxy_unregister_cmp(const void* data, const void* ctx) {
   return pointer_compare(info->publisher, target->publisher);
 }
 
+typedef struct _object_evt_proxy_unregister_group_cmp_ctx_t {
+  object_evt_proxy_t* evt_proxy;
+  tk_object_t* publisher;
+  darray_t* infos;
+  const object_evt_proxy_register_info_t* target;
+} object_evt_proxy_unregister_group_cmp_ctx_t;
+
 static int object_evt_proxy_unregister_group_cmp(const void* data, const void* ctx) {
   const named_value_t* nv = (const named_value_t*)data;
   darray_t* infos = (darray_t*)value_pointer(&nv->value);
-  const object_evt_proxy_register_info_t* target = (const object_evt_proxy_register_info_t*)ctx;
-  return (darray_find_index_ex(infos, object_evt_proxy_unregister_cmp, (void*)target) >= 0) ? 0
-                                                                                            : -1;
+  const object_evt_proxy_unregister_group_cmp_ctx_t* actx =
+      (const object_evt_proxy_unregister_group_cmp_ctx_t*)ctx;
+  if (infos == actx->infos) {
+    return 1;
+  }
+  return (darray_find_index_ex(infos, object_evt_proxy_unregister_cmp, (void*)actx->target) >= 0)
+             ? 0
+             : -1;
 }
 
-ret_t object_evt_proxy_unregister(tk_object_t* obj, const char* topic) {
-  value_t v;
-  value_t v_owned;
+static ret_t object_evt_proxy_unregister_on_visit(void* ctx, const void* data) {
+  object_evt_proxy_unregister_group_cmp_ctx_t* actx =
+      (object_evt_proxy_unregister_group_cmp_ctx_t*)ctx;
+  const object_evt_proxy_register_info_t* info = (const object_evt_proxy_register_info_t*)(data);
+  if (actx->publisher == info->publisher) {
+    actx->target = info;
+    if (NULL == tk_object_find_prop(actx->evt_proxy->register_infos_group,
+                                    (tk_compare_t)object_evt_proxy_unregister_group_cmp, actx)) {
+      emitter_off_by_func(EMITTER(info->publisher), info->evt_type, object_evt_proxy_on_publish,
+                          actx->evt_proxy);
+    }
+    return RET_REMOVE;
+  }
+  return RET_OK;
+}
+
+ret_t object_evt_proxy_unregister(tk_object_t* obj, const char* topic, tk_object_t* publisher) {
+  darray_t* infos = NULL;
   ret_t ret = RET_NOT_FOUND;
   object_evt_proxy_t* evt_proxy = OBJECT_EVT_PROXY(obj);
-  return_value_if_fail(evt_proxy != NULL && TK_STR_IS_NOT_EMPTY(topic), RET_BAD_PARAMS);
+  return_value_if_fail(evt_proxy != NULL && TK_STR_IS_NOT_EMPTY(topic) && publisher != NULL,
+                       RET_BAD_PARAMS);
 
-  if (RET_OK == tk_object_get_prop(evt_proxy->register_infos_group, topic, &v)) {
-    value_deep_copy(&v_owned, &v);
+  infos = (darray_t*)tk_object_get_prop_pointer(evt_proxy->register_infos_group, topic);
 
-    ret = tk_object_remove_prop(evt_proxy->register_infos_group, topic);
-    if (RET_OK == ret) {
-      darray_t* infos = (darray_t*)value_pointer(&v_owned);
-      uint32_t i = 0;
-      for (i = 0; i < infos->size; i++) {
-        object_evt_proxy_register_info_t* info =
-            (object_evt_proxy_register_info_t*)darray_get(infos, i);
-        if (NULL == tk_object_find_prop(evt_proxy->register_infos_group,
-                                        (tk_compare_t)object_evt_proxy_unregister_group_cmp,
-                                        info)) {
-          emitter_off_by_func(EMITTER(info->publisher), info->evt_type, object_evt_proxy_on_publish,
-                              obj);
-        }
-      }
+  if (infos != NULL) {
+    object_evt_proxy_unregister_group_cmp_ctx_t ctx = {
+        .evt_proxy = evt_proxy,
+        .publisher = publisher,
+        .infos = infos,
+    };
+    tk_object_ref(publisher);
+    ret = darray_foreach(infos, object_evt_proxy_unregister_on_visit, &ctx);
+    if (RET_OK == ret && infos->size == 0) {
+      tk_object_remove_prop(evt_proxy->register_infos_group, topic);
     }
-
-    value_reset(&v_owned);
+    tk_object_unref(publisher);
   }
 
   return ret;
@@ -466,6 +599,7 @@ ret_t object_evt_proxy_unsubscribe(tk_object_t* obj, const char* topic,
   darray_t* infos = NULL;
   object_evt_proxy_t* evt_proxy = OBJECT_EVT_PROXY(obj);
   return_value_if_fail(evt_proxy != NULL && callback != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(!evt_proxy->publishing, RET_BUSY);
   if (NULL == topic) {
     topic = "";
   }

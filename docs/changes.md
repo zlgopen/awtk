@@ -3,6 +3,9 @@
 2026/03/20
   * 新增lf_bp_buffer_typedef(感谢雨欣提供补丁)
   * 完善lf_bp_buffer.h注释(感谢兆坤提供补丁)
+  * object_evt_proxy 增加优先级与事件停止执行功能(感谢兆坤提供补丁)
+  * object_evt_proxy 增加事件移除功能(感谢兆坤提供补丁)
+  * 修改 object_evt_proxy_unregister 函数(感谢兆坤提供补丁)
 
 2026/03/19
   * object_evt_proxy\ 支持同主题可以有不同的发布者或者事件类型(感谢兆坤提供补丁)
