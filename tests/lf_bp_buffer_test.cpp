@@ -1,4 +1,5 @@
 ﻿#include "tkc/thread.h"
+#include "tkc/atomic.h"
 #include "tkc/lf_bp_buffer.h"
 
 #include "tkc/str.h"

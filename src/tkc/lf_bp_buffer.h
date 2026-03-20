@@ -53,8 +53,10 @@
 #ifndef TK_LF_BP_BUFFER_H
 #define TK_LF_BP_BUFFER_H
 
-#include "tkc/atomic.h"
+#include "lf_bp_buffer_typedef.h"
+
 #include "tkc/mem.h"
+#include "tkc/atomic_typedef.h"
 
 #ifdef _MSC_VER
 #define TK_ALIGN(v, len) __declspec(align(len)) v
@@ -70,13 +72,7 @@
 #define TK_LF_BP_BUFFER_CACHELINE_LENGTH 64
 #endif /*TK_LF_BP_BUFFER_CACHELINE_LENGTH*/
 
-/**
- * @class tk_lf_bp_buffer_t
- * @export none
- * 无锁双分区缓冲区。
- * > 只适用于单生产者-单消费者（SPSC）场景。
- */
-typedef struct _tk_lf_bp_buffer_t {
+struct _tk_lf_bp_buffer_t {
   /**
    * 避免伪共享：确保生产者和消费者线程的状态变量在不同缓存行中。
    * 在多核 CPU 上，当多个线程频繁修改同一缓存行（cache line）中的不同变量时，会导致以下问题：
@@ -132,7 +128,7 @@ typedef struct _tk_lf_bp_buffer_t {
    * 缓冲区数据指针。
    */
   uint8_t* data;
-} tk_lf_bp_buffer_t;
+};
 
 /**
  * @method tk_lf_bp_buffer_deinit
