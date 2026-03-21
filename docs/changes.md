@@ -1,4 +1,6 @@
 # 最新动态
+2026/03/21
+  * 提升 object_evt_proxy_on_publish 效率(感谢兆坤提供补丁)
 
 2026/03/20
   * 新增lf_bp_buffer_typedef(感谢雨欣提供补丁)

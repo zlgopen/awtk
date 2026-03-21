@@ -322,19 +322,19 @@ static void object_evt_proxy_publish_topic_to_matched(object_evt_proxy_t* evt_pr
     for (i = 0; i < sub_infos->size; i++) {
       object_evt_proxy_subscribe_info_t* sub_info =
           (object_evt_proxy_subscribe_info_t*)darray_get(sub_infos, i);
-      int32_t exist_sub_info_index = darray_find_index_ex(
-          evt_proxy->matched_subscribe_infos, (tk_compare_t)object_evt_proxy_subscribe_info_cmp, sub_info);
+      int32_t exist_sub_info_index =
+          darray_find_index_ex(evt_proxy->matched_subscribe_infos,
+                               (tk_compare_t)object_evt_proxy_subscribe_info_cmp, sub_info);
       if (exist_sub_info_index >= 0) {
         object_evt_proxy_subscribe_info_t* exist_sub_info =
             (object_evt_proxy_subscribe_info_t*)darray_get(evt_proxy->matched_subscribe_infos,
                                                            exist_sub_info_index);
-        if (object_evt_proxy_subscribe_info_cmp_by_priority(sub_info, exist_sub_info) > 0) {
-          continue;
+        if (object_evt_proxy_subscribe_info_cmp_by_priority(sub_info, exist_sub_info) < 0) {
+          darray_replace(evt_proxy->matched_subscribe_infos, exist_sub_info_index, sub_info);
         }
-        darray_remove_index(evt_proxy->matched_subscribe_infos, exist_sub_info_index);
+      } else {
+        darray_push(evt_proxy->matched_subscribe_infos, sub_info);
       }
-      darray_sorted_insert(evt_proxy->matched_subscribe_infos, sub_info,
-                           (tk_compare_t)object_evt_proxy_subscribe_info_cmp_by_priority, FALSE);
     }
   }
 }
@@ -403,6 +403,8 @@ static ret_t object_evt_proxy_on_publish(void* ctx, event_t* e) {
   tk_object_foreach_prop(evt_proxy->register_infos_group, object_evt_proxy_on_publish_on_visit,
                          &actx);
   object_evt_proxy_publish_topic_to_matched(evt_proxy, e, "");
+  darray_sort(evt_proxy->matched_subscribe_infos,
+              (tk_compare_t)object_evt_proxy_subscribe_info_cmp_by_priority);
 
   evt_proxy->publishing = TRUE;
   for (i = 0; i < evt_proxy->matched_subscribe_infos->size; i++) {
