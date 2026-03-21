@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   widget.c
  * Author: AWTK Develop Team
  * Brief:  basic class of all widget
@@ -511,9 +511,6 @@ ret_t widget_set_text_utf8_impl(widget_t* widget, const char* text, bool_t check
     wstr_t str;
     ret_t ret = RET_NOT_MODIFIED;
     uint32_t len = tk_strlen(text);
-    if (len != widget->text.size) {
-      return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, text));
-    }
     return_value_if_fail(wstr_init(&str, len + 2) != NULL, RET_OOM);
     tk_utf8_to_utf16(text, str.str, str.capacity - 1);
 

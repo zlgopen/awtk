@@ -1,4 +1,4 @@
-﻿
+
 #include "base/canvas.h"
 #include "base/widget.h"
 #include "widgets/view.h"
@@ -1439,6 +1439,9 @@ TEST(Widget, set_text) {
   ASSERT_EQ(widget_set_text_utf8_impl(w, "1111", TRUE), RET_OK);
   ASSERT_EQ(widget_set_text_utf8_impl(w, "ok", TRUE), RET_OK);
   ASSERT_EQ(widget_set_text_utf8_impl(w, "ok", TRUE), RET_NOT_MODIFIED);
+  /* issue #983: UTF-8 byte count must not be compared to wide string length */
+  ASSERT_EQ(widget_set_text_utf8_impl(w, "\xe4\xb8\xad\xe6\x96\x87", TRUE), RET_OK);
+  ASSERT_EQ(widget_set_text_utf8_impl(w, "\xe4\xb8\xad\xe6\x96\x87", TRUE), RET_NOT_MODIFIED);
   ASSERT_EQ(widget_set_text_utf8_impl(w, "ok", FALSE), RET_OK);
 
   w->dirty = FALSE;
