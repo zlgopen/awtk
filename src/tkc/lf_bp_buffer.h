@@ -56,7 +56,7 @@
 #include "lf_bp_buffer_typedef.h"
 
 #include "tkc/mem.h"
-#include "tkc/atomic_typedef.h"
+#include "tkc/atomic.h"
 
 #ifdef _MSC_VER
 #define TK_ALIGN(v, len) __declspec(align(len)) v
