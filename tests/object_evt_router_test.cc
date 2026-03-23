@@ -653,3 +653,24 @@ TEST(ObjectEvtRouter, subscription_ret_remove_behavior) {
   TK_OBJECT_UNREF(router);
   TK_OBJECT_UNREF(publisher);
 }
+
+static ret_t test_log_recursion_callback(tk_object_t* subscriber, event_t* e, void* ctx) {
+  log_message_event_t* log_event = log_message_event_cast(e);
+  std::cout << log_event->message;
+  return RET_STOP;
+}
+
+TEST(ObjectEvtRouter, log_recursion) {
+  tk_object_t* router = object_evt_router_create();
+  tk_object_set_name(router, "log_test_router");
+
+  ASSERT_EQ(object_evt_router_register(router, "log_test", router, EVT_LOG_MESSAGE, NULL), RET_OK);
+
+  object_evt_router_subscribe_opt_t opt;
+  memset(&opt, 0, sizeof(opt));
+  opt.subscriber = router;
+  ASSERT_EQ(object_evt_router_subscribe(router, "log_test", test_log_recursion_callback, &opt),
+            RET_OK);
+
+  TK_OBJECT_UNREF(router);
+}

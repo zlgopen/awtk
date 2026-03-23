@@ -46,6 +46,11 @@ typedef struct _object_evt_router_register_opt_t {
    * 事件过滤器上下文。
    */
   void* evt_filter_ctx;
+  /**
+   * @property {tk_object_life_t} publisher_lifecycle
+   * 发布者生命周期。
+   */
+  tk_object_life_t publisher_lifecycle;
 } object_evt_router_register_opt_t;
 
 /**
@@ -68,6 +73,11 @@ typedef struct _object_evt_router_subscribe_opt_t {
    * 优先级。（值越大，优先级越高）。
    */
   int16_t priority;
+  /**
+   * @property {tk_object_life_t} subscriber_lifecycle
+   * 订阅者生命周期。
+   */
+  tk_object_life_t subscriber_lifecycle;
 } object_evt_router_subscribe_opt_t;
 
 /**

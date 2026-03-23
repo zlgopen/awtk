@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   object_evt_router.c
  * Author: AWTK Develop Team
  * Brief:  对象事件路由器。
@@ -26,6 +26,31 @@
 #include "tkc/darray.h"
 #include "tkc/named_value.h"
 
+inline static ret_t object_evt_router_object_unref_by_lifecycle(tk_object_t* obj,
+                                                                tk_object_life_t lifecycle) {
+  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+  switch (lifecycle) {
+    case TK_OBJECT_LIFE_OWN:
+    case TK_OBJECT_LIFE_HOLD:
+      return tk_object_unref(obj);
+    default:
+      return RET_OK;
+  }
+}
+
+inline static tk_object_t* object_evt_router_object_ref_by_lifecycle(tk_object_t* obj,
+                                                                     tk_object_life_t lifecycle) {
+  return_value_if_fail(obj != NULL, NULL);
+  switch (lifecycle) {
+    case TK_OBJECT_LIFE_HOLD:
+      return tk_object_ref(obj);
+    default:
+      return obj;
+  }
+}
+
+/*********************************************************************************************/
+
 typedef struct _object_evt_router_register_info_t {
   tk_object_t* publisher;
   int32_t evt_type;
@@ -35,7 +60,7 @@ typedef struct _object_evt_router_register_info_t {
 static ret_t object_evt_router_register_info_destroy(object_evt_router_register_info_t* info) {
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
   if (info->publisher != NULL) {
-    tk_object_unref(info->publisher);
+    object_evt_router_object_unref_by_lifecycle(info->publisher, info->opt.publisher_lifecycle);
   }
   TKMEM_FREE(info);
   return RET_OK;
@@ -49,13 +74,15 @@ static object_evt_router_register_info_t* object_evt_router_register_info_create
   ret = TKMEM_ZALLOC(object_evt_router_register_info_t);
   return_value_if_fail(ret != NULL, NULL);
 
-  ret->publisher = tk_object_ref(publisher);
-  goto_error_if_fail(ret->publisher != NULL);
-
-  ret->evt_type = evt_type;
   if (opt != NULL) {
     ret->opt = *opt;
   }
+
+  ret->publisher =
+      object_evt_router_object_ref_by_lifecycle(publisher, ret->opt.publisher_lifecycle);
+  goto_error_if_fail(ret->publisher != NULL);
+
+  ret->evt_type = evt_type;
 
   return ret;
 error:
@@ -96,17 +123,27 @@ inline static darray_t* object_evt_router_register_infos_create(void) {
                        (tk_compare_t)object_evt_router_register_info_cmp);
 }
 
+#define OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(reg_info, FORMAT)                    \
+  TK_STR_IS_NOT_EMPTY((reg_info)->publisher->name) ? "[publisher: \"%s\"] " FORMAT "\n" \
+                                                   : "[publisher: %p] " FORMAT "\n"
+
+#define OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(reg_info)                                    \
+  TK_STR_IS_NOT_EMPTY((reg_info)->publisher->name) ? (const char*)(reg_info)->publisher->name \
+                                                   : (void*)(reg_info)->publisher
+
 /*********************************************************************************************/
 
 typedef struct _object_evt_router_subscribe_info_t {
   object_evt_router_subscribe_callback_t callback;
   object_evt_router_subscribe_opt_t opt;
+  bool_t unsubscribed : 1;
 } object_evt_router_subscribe_info_t;
 
 static ret_t object_evt_router_subscribe_info_destroy(object_evt_router_subscribe_info_t* info) {
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
   if (info->opt.subscriber != NULL) {
-    tk_object_unref(info->opt.subscriber);
+    object_evt_router_object_unref_by_lifecycle(info->opt.subscriber,
+                                                info->opt.subscriber_lifecycle);
   }
   TKMEM_FREE(info);
   return RET_OK;
@@ -125,7 +162,8 @@ static object_evt_router_subscribe_info_t* object_evt_router_subscribe_info_crea
   if (opt != NULL) {
     ret->opt = *opt;
     if (opt->subscriber != NULL) {
-      ret->opt.subscriber = tk_object_ref(opt->subscriber);
+      ret->opt.subscriber =
+          object_evt_router_object_ref_by_lifecycle(opt->subscriber, opt->subscriber_lifecycle);
     }
   }
 
@@ -173,16 +211,23 @@ inline static darray_t* object_evt_router_subscribe_infos_create(void) {
                        (tk_compare_t)object_evt_router_subscribe_info_cmp);
 }
 
-/*********************************************************************************************/
+#define OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(sub_info, FORMAT)                           \
+  ((sub_info)->opt.subscriber != NULL) ? (TK_STR_IS_NOT_EMPTY((sub_info)->opt.subscriber->name) \
+                                              ? "[subscriber: \"%s\"] " FORMAT "\n"             \
+                                              : "[subscriber: %p] " FORMAT "\n")                \
+                                       : "[subscriber callback: %p] " FORMAT "\n"
 
-typedef ret_t (*object_evt_router_infos_group_foreach_after_infos_foreach_done_t)(darray_t* infos,
-                                                                                  ret_t result,
-                                                                                  void* ctx);
+#define OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info)                                     \
+  ((sub_info)->opt.subscriber != NULL) ? (TK_STR_IS_NOT_EMPTY((sub_info)->opt.subscriber->name) \
+                                              ? (const char*)(sub_info)->opt.subscriber->name   \
+                                              : (void*)(sub_info)->opt.subscriber)              \
+                                       : (void*)(sub_info)->callback
+
+/*********************************************************************************************/
 
 typedef struct _object_evt_router_infos_group_foreach_on_visit_ctx_t {
   tk_visit_t visit;
   void* ctx;
-  object_evt_router_infos_group_foreach_after_infos_foreach_done_t after_infos_foreach_done;
 } object_evt_router_infos_group_foreach_on_visit_ctx_t;
 
 static ret_t object_evt_router_infos_group_foreach_on_visit(void* ctx, const void* data) {
@@ -190,69 +235,17 @@ static ret_t object_evt_router_infos_group_foreach_on_visit(void* ctx, const voi
       (object_evt_router_infos_group_foreach_on_visit_ctx_t*)(ctx);
   const named_value_t* nv = (const named_value_t*)(data);
   darray_t* infos = (darray_t*)value_pointer(&nv->value);
-  ret_t ret = darray_foreach(infos, actx->visit, actx->ctx);
-  if (actx->after_infos_foreach_done != NULL) {
-    return actx->after_infos_foreach_done(infos, ret, actx->ctx);
-  }
-  return ret;
+  return darray_foreach(infos, actx->visit, actx->ctx);
 }
 
-inline static ret_t object_evt_router_infos_group_foreach(
-    tk_object_t* infos_group, tk_visit_t visit, void* ctx,
-    object_evt_router_infos_group_foreach_after_infos_foreach_done_t after_infos_foreach_done) {
+inline static ret_t object_evt_router_infos_group_foreach(tk_object_t* infos_group,
+                                                          tk_visit_t visit, void* ctx) {
   object_evt_router_infos_group_foreach_on_visit_ctx_t actx = {
       .visit = visit,
       .ctx = ctx,
-      .after_infos_foreach_done = after_infos_foreach_done,
   };
   return_value_if_fail(infos_group != NULL, RET_BAD_PARAMS);
   return tk_object_foreach_prop(infos_group, object_evt_router_infos_group_foreach_on_visit, &actx);
-}
-
-typedef struct _object_evt_router_infos_group_remove_on_visit_ctx_t {
-  tk_compare_t compare;
-  void* ctx;
-  bool_t removed : 1;
-} object_evt_router_infos_group_remove_on_visit_ctx_t;
-
-static ret_t object_evt_router_infos_group_remove_on_visit(void* ctx, const void* data) {
-  object_evt_router_infos_group_remove_on_visit_ctx_t* actx =
-      (object_evt_router_infos_group_remove_on_visit_ctx_t*)(ctx);
-  if (actx->removed) {
-    return RET_STOP;
-  }
-  if (0 == actx->compare(data, actx->ctx)) {
-    actx->removed = TRUE;
-    return RET_REMOVE;
-  }
-  return RET_OK;
-}
-
-static ret_t object_evt_router_infos_group_remove_after_infos_foreach_done(darray_t* infos,
-                                                                           ret_t result,
-                                                                           void* ctx) {
-  object_evt_router_infos_group_remove_on_visit_ctx_t* actx =
-      (object_evt_router_infos_group_remove_on_visit_ctx_t*)(ctx);
-  if (0 == infos->size) {
-    return RET_REMOVE;
-  }
-  if (actx->removed) {
-    return RET_STOP;
-  }
-  return result;
-}
-
-inline static ret_t object_evt_router_infos_group_remove(tk_object_t* infos_group,
-                                                         tk_compare_t compare, void* ctx) {
-  object_evt_router_infos_group_remove_on_visit_ctx_t actx = {
-      .compare = (compare != NULL) ? compare : pointer_compare,
-      .ctx = ctx,
-  };
-  return_value_if_fail(infos_group != NULL, RET_BAD_PARAMS);
-  object_evt_router_infos_group_foreach(
-      infos_group, object_evt_router_infos_group_remove_on_visit, &actx,
-      object_evt_router_infos_group_remove_after_infos_foreach_done);
-  return actx.removed ? RET_OK : RET_NOT_FOUND;
 }
 
 /*********************************************************************************************/
@@ -263,8 +256,83 @@ struct _object_evt_router_t {
   tk_object_t* subscribe_infos_group;
   /* cache */
   darray_t* matched_subscribe_infos;
+  str_t* log;
+  int8_t log_recursion_depth;
   bool_t publishing : 1;
 };
+
+static ret_t object_evt_router_dispatch_log(object_evt_router_t* evt_router, tk_log_level_t level,
+                                            event_t* e, const char* format, ...) {
+  char empty[1];
+  int size = 0;
+  ret_t ret = RET_OK;
+  log_message_event_t evt;
+  va_list args, args_copy;
+  return_value_if_fail(evt_router != NULL && format != NULL, RET_BAD_PARAMS);
+
+  /* 防止无限递归导致栈溢出 */
+  if (evt_router->log_recursion_depth >= 2) {
+    if (e != NULL) {
+      if (EVT_LOG_MESSAGE == e->type && e->target == evt_router) {
+        log_message_event_t* log_evt = log_message_event_cast(e);
+        if (log_evt->level == level) {
+          log_warn("%s: log recursion detected, skip log message: %s\n", __FUNCTION__,
+                   log_evt->message);
+          return RET_SKIP;
+        }
+      }
+    }
+  }
+
+  if (NULL == evt_router->log) {
+    evt_router->log = str_create(0);
+    return_value_if_fail(evt_router->log != NULL, RET_OOM);
+  }
+
+  va_start(args, format);
+  va_copy(args_copy, args);
+  size = tk_vsnprintf(empty, sizeof(empty), format, args_copy);
+  va_end(args_copy);
+
+  str_clear(evt_router->log);
+  ret = str_append_vformat(evt_router->log, size + 1, format, args);
+  va_end(args);
+  return_value_if_fail(RET_OK == ret, ret);
+
+  evt_router->log_recursion_depth++;
+
+  log_message_event_init(&evt, level, evt_router->log->str);
+  ret = emitter_dispatch(EMITTER(evt_router), &evt.e);
+
+  evt_router->log_recursion_depth--;
+
+  return ret;
+}
+
+static ret_t object_evt_router_publisher_log_on_visit(void* ctx, const void* data) {
+  const object_evt_router_register_info_t* info = (const object_evt_router_register_info_t*)(data);
+  object_evt_router_t* evt_router = (object_evt_router_t*)(ctx);
+  evt_router->register_infos_group->visiting = FALSE;
+  object_evt_router_dispatch_log(
+      evt_router, LOG_LEVEL_INFO, NULL,
+      OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(info, "Not unregister on destroy."),
+      OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(info));
+  evt_router->register_infos_group->visiting = TRUE;
+  return RET_OK;
+}
+
+static ret_t object_evt_router_subscriber_log_on_visit(void* ctx, const void* data) {
+  const object_evt_router_subscribe_info_t* info =
+      (const object_evt_router_subscribe_info_t*)(data);
+  object_evt_router_t* evt_router = (object_evt_router_t*)(ctx);
+  evt_router->subscribe_infos_group->visiting = FALSE;
+  object_evt_router_dispatch_log(
+      evt_router, LOG_LEVEL_INFO, NULL,
+      OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(info, "Not unsubscribe on destroy."),
+      OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(info));
+  evt_router->subscribe_infos_group->visiting = TRUE;
+  return RET_OK;
+}
 
 static ret_t object_evt_router_publisher_event_off_on_visit(void* ctx, const void* data) {
   const object_evt_router_register_info_t* info = (const object_evt_router_register_info_t*)(data);
@@ -277,8 +345,16 @@ static ret_t object_evt_router_on_destroy(tk_object_t* obj) {
   return_value_if_fail(evt_router != NULL, RET_BAD_PARAMS);
 
   object_evt_router_infos_group_foreach(evt_router->register_infos_group,
-                                        object_evt_router_publisher_event_off_on_visit, evt_router,
-                                        NULL);
+                                        object_evt_router_publisher_log_on_visit, evt_router);
+  object_evt_router_infos_group_foreach(evt_router->subscribe_infos_group,
+                                        object_evt_router_subscriber_log_on_visit, evt_router);
+
+  object_evt_router_infos_group_foreach(evt_router->register_infos_group,
+                                        object_evt_router_publisher_event_off_on_visit, evt_router);
+  if (evt_router->log != NULL) {
+    str_destroy(evt_router->log);
+    evt_router->log = NULL;
+  }
   if (evt_router->matched_subscribe_infos != NULL) {
     darray_destroy(evt_router->matched_subscribe_infos);
     evt_router->matched_subscribe_infos = NULL;
@@ -315,30 +391,45 @@ error:
 
 /*********************************************************************************************/
 
-static void object_evt_router_publish_topic_to_matched(object_evt_router_t* evt_router, event_t* e,
-                                                       const char* topic) {
+static ret_t object_evt_router_publish_topic_to_matched_on_visit(void* ctx, const void* data) {
+  ret_t ret = RET_OK;
+  object_evt_router_subscribe_info_t* sub_info = (object_evt_router_subscribe_info_t*)(data);
+  object_evt_router_t* evt_router = (object_evt_router_t*)(ctx);
+  int32_t exist_sub_info_index = -1;
+  if (sub_info->unsubscribed) {
+    return RET_REMOVE;
+  }
+  exist_sub_info_index =
+      darray_find_index_ex(evt_router->matched_subscribe_infos,
+                           (tk_compare_t)object_evt_router_subscribe_info_cmp, sub_info);
+  if (exist_sub_info_index >= 0) {
+    object_evt_router_subscribe_info_t* exist_sub_info =
+        (object_evt_router_subscribe_info_t*)darray_get(evt_router->matched_subscribe_infos,
+                                                        exist_sub_info_index);
+    if (object_evt_router_subscribe_info_cmp_by_priority(sub_info, exist_sub_info) < 0) {
+      ret = darray_replace(evt_router->matched_subscribe_infos, exist_sub_info_index, sub_info);
+    }
+  } else {
+    ret = darray_push(evt_router->matched_subscribe_infos, sub_info);
+  }
+  return ret;
+}
+
+inline static ret_t object_evt_router_publish_topic_to_matched(object_evt_router_t* evt_router,
+                                                               const char* topic) {
+  ret_t ret = RET_NOT_FOUND;
   darray_t* sub_infos =
       (darray_t*)tk_object_get_prop_pointer(evt_router->subscribe_infos_group, topic);
   if (sub_infos != NULL) {
-    uint32_t i = 0;
-    for (i = 0; i < sub_infos->size; i++) {
-      object_evt_router_subscribe_info_t* sub_info =
-          (object_evt_router_subscribe_info_t*)darray_get(sub_infos, i);
-      int32_t exist_sub_info_index =
-          darray_find_index_ex(evt_router->matched_subscribe_infos,
-                               (tk_compare_t)object_evt_router_subscribe_info_cmp, sub_info);
-      if (exist_sub_info_index >= 0) {
-        object_evt_router_subscribe_info_t* exist_sub_info =
-            (object_evt_router_subscribe_info_t*)darray_get(evt_router->matched_subscribe_infos,
-                                                            exist_sub_info_index);
-        if (object_evt_router_subscribe_info_cmp_by_priority(sub_info, exist_sub_info) < 0) {
-          darray_replace(evt_router->matched_subscribe_infos, exist_sub_info_index, sub_info);
-        }
-      } else {
-        darray_push(evt_router->matched_subscribe_infos, sub_info);
+    ret =
+        darray_foreach(sub_infos, object_evt_router_publish_topic_to_matched_on_visit, evt_router);
+    if (RET_OK == ret) {
+      if (0 == sub_infos->size) {
+        tk_object_remove_prop(evt_router->subscribe_infos_group, topic);
       }
     }
   }
+  return ret;
 }
 
 typedef struct _object_evt_router_on_publish_on_visit_ctx_t {
@@ -358,30 +449,13 @@ static ret_t object_evt_router_on_publish_on_visit(void* ctx, const void* data) 
     if (info->evt_type == actx->e->type && info->publisher == actx->e->target) {
       if (NULL == info->opt.evt_filter ||
           info->opt.evt_filter(info->publisher, actx->e, info->opt.evt_filter_ctx)) {
-        object_evt_router_publish_topic_to_matched(actx->evt_router, actx->e, nv->name);
+        object_evt_router_publish_topic_to_matched(actx->evt_router, nv->name);
         break;
       }
     }
   }
 
   return RET_OK;
-}
-
-inline static void object_evt_router_print_debug_log_when_stop_publish(
-    object_evt_router_subscribe_info_t* sub_info) {
-  if (log_get_log_level() <= LOG_LEVEL_DEBUG) {
-    return_if_fail(sub_info != NULL);
-    if (sub_info->opt.subscriber != NULL) {
-      if (TK_STR_IS_NOT_EMPTY(sub_info->opt.subscriber->name)) {
-        log_debug("%s: stop publish subscriber is %p, name is \"%s\".\n", __FUNCTION__,
-                  sub_info->opt.subscriber, sub_info->opt.subscriber->name);
-      } else {
-        log_debug("%s: stop publish subscriber is %p.\n", __FUNCTION__, sub_info->opt.subscriber);
-      }
-    } else {
-      log_debug("%s: stop publish callback is %p.\n", __FUNCTION__, sub_info->callback);
-    }
-  }
 }
 
 static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
@@ -404,23 +478,30 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
   darray_clear(evt_router->matched_subscribe_infos);
   tk_object_foreach_prop(evt_router->register_infos_group, object_evt_router_on_publish_on_visit,
                          &actx);
-  object_evt_router_publish_topic_to_matched(evt_router, e, "");
+  object_evt_router_publish_topic_to_matched(evt_router, "");
   darray_sort(evt_router->matched_subscribe_infos,
               (tk_compare_t)object_evt_router_subscribe_info_cmp_by_priority);
 
-  evt_router->publishing = TRUE;
   for (i = 0; i < evt_router->matched_subscribe_infos->size; i++) {
     sub_info =
         (object_evt_router_subscribe_info_t*)darray_get(evt_router->matched_subscribe_infos, i);
+    evt_router->publishing = TRUE;
     result = sub_info->callback(sub_info->opt.subscriber, e, sub_info->opt.callback_ctx);
+    evt_router->publishing = FALSE;
     TK_FOREACH_VISIT_RESULT_PROCESSING(
         result,
-        object_evt_router_infos_group_remove(evt_router->subscribe_infos_group, NULL, sub_info));
+        (sub_info->unsubscribed = TRUE,
+         object_evt_router_dispatch_log(
+             evt_router, LOG_LEVEL_INFO, e,
+             OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(sub_info, "Unsubscribe on publishing."),
+             OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info))));
   }
-  evt_router->publishing = FALSE;
 
   if (RET_OK != result) {
-    object_evt_router_print_debug_log_when_stop_publish(sub_info);
+    object_evt_router_dispatch_log(
+        evt_router, LOG_LEVEL_INFO, e,
+        OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(sub_info, "Publish stopped."),
+        OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info));
   }
 
   return RET_OK;
@@ -473,6 +554,12 @@ ret_t object_evt_router_register(tk_object_t* obj, const char* topic, tk_object_
     }
   }
 
+  object_evt_router_dispatch_log(evt_router, LOG_LEVEL_INFO, NULL,
+                                 OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(
+                                     info, "Register topic: \"%s\", evt_type: %d, filter: %p."),
+                                 OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(info), topic,
+                                 info->evt_type, info->opt.evt_filter);
+
   return ret;
 }
 
@@ -519,6 +606,7 @@ static ret_t object_evt_router_unregister_on_visit(void* ctx, const void* data) 
       emitter_off_by_func(EMITTER(info->publisher), info->evt_type, object_evt_router_on_publish,
                           actx->evt_router);
     }
+    actx->target = NULL;
     return RET_REMOVE;
   }
   return RET_OK;
@@ -541,8 +629,18 @@ ret_t object_evt_router_unregister(tk_object_t* obj, const char* topic, tk_objec
     };
     tk_object_ref(publisher);
     ret = darray_foreach(infos, object_evt_router_unregister_on_visit, &ctx);
-    if (RET_OK == ret && infos->size == 0) {
-      tk_object_remove_prop(evt_router->register_infos_group, topic);
+    if (RET_OK == ret) {
+      object_evt_router_register_info_t tmp = {
+          .publisher = publisher,
+      };
+      object_evt_router_dispatch_log(
+          evt_router, LOG_LEVEL_INFO, NULL,
+          OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(&tmp, "Unregister topic: \"%s\"."),
+          OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), topic);
+
+      if (0 == infos->size) {
+        tk_object_remove_prop(evt_router->register_infos_group, topic);
+      }
     }
     tk_object_unref(publisher);
   }
@@ -593,6 +691,11 @@ ret_t object_evt_router_subscribe(tk_object_t* obj, const char* topic,
     return ret;
   }
 
+  object_evt_router_dispatch_log(
+      evt_router, LOG_LEVEL_INFO, NULL,
+      OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(info, "Subscribe topic: \"%s\", priority: %d."),
+      OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(info), topic, info->opt.priority);
+
   return ret;
 }
 
@@ -603,7 +706,6 @@ ret_t object_evt_router_unsubscribe(tk_object_t* obj, const char* topic,
   darray_t* infos = NULL;
   object_evt_router_t* evt_router = OBJECT_EVT_ROUTER(obj);
   return_value_if_fail(evt_router != NULL && callback != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(!evt_router->publishing, RET_BUSY);
   if (NULL == topic) {
     topic = "";
   }
@@ -614,10 +716,32 @@ ret_t object_evt_router_unsubscribe(tk_object_t* obj, const char* topic,
         .callback = callback,
         .opt = (opt != NULL) ? *opt : (object_evt_router_subscribe_opt_t){0},
     };
-    ret = darray_remove(infos, &tmp);
-    if (RET_OK == ret && infos->size == 0) {
-      tk_object_remove_prop(evt_router->subscribe_infos_group, topic);
+    if (evt_router->publishing) {
+      object_evt_router_subscribe_info_t* info =
+          (object_evt_router_subscribe_info_t*)darray_find(infos, &tmp);
+      if (info != NULL) {
+        info->unsubscribed = TRUE;
+        ret = RET_OK;
+      }
+    } else {
+      ret = darray_remove(infos, &tmp);
+      if (RET_OK == ret) {
+        if (0 == infos->size) {
+          tk_object_remove_prop(evt_router->subscribe_infos_group, topic);
+        }
+      }
     }
+  }
+
+  if (RET_OK == ret) {
+    object_evt_router_subscribe_info_t tmp = {
+        .callback = callback,
+        .opt = (opt != NULL) ? *opt : (object_evt_router_subscribe_opt_t){0},
+    };
+    object_evt_router_dispatch_log(
+        evt_router, LOG_LEVEL_INFO, NULL,
+        OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(&tmp, "Unsubscribe topic: \"%s\"."),
+        OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(&tmp), topic);
   }
 
   return ret;
