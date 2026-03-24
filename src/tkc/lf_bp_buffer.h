@@ -58,12 +58,6 @@
 #include "tkc/mem.h"
 #include "tkc/atomic.h"
 
-#ifdef _MSC_VER
-#define TK_ALIGN(v, len) __declspec(align(len)) v
-#else
-#define TK_ALIGN(v, len) v __attribute__((aligned(len)))
-#endif /*_MSC_VER*/
-
 #ifndef TK_LF_BP_BUFFER_MULTICORE_HOSTED
 #define TK_LF_BP_BUFFER_MULTICORE_HOSTED TK_IS_PC
 #endif /*TK_LF_BP_BUFFER_MULTICORE_HOSTED*/

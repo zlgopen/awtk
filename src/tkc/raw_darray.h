@@ -28,12 +28,6 @@
 
 BEGIN_C_DECLS
 
-#ifdef _MSC_VER
-#define TK_ALIGN(v, len) __declspec(align(len)) v
-#else
-#define TK_ALIGN(v, len) v __attribute__((aligned(len)))
-#endif /*_MSC_VER*/
-
 typedef struct _tk_raw_darray_header_t {
   size_t size;
   size_t capacity;

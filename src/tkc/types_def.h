@@ -626,10 +626,12 @@ int __cppcheck__strncmp(const char* s1, const char* s2, size_t n);
 #define TK_R2D(r) (((r) * 180) / M_PI)
 
 #ifdef _MSC_VER
-#define TK_CONST_DATA_ALIGN(v) __declspec(align(8)) v
+#define TK_ALIGN(v, len) __declspec(align(len)) v
 #else
-#define TK_CONST_DATA_ALIGN(v) v __attribute__((aligned(8)))
+#define TK_ALIGN(v, len) v __attribute__((aligned(len)))
 #endif /*_MSC_VER*/
+
+#define TK_CONST_DATA_ALIGN(v) TK_ALIGN(v, 8)
 
 typedef uint64_t (*tk_get_time_t)(void);
 typedef uint64_t (*tk_get_time_ms_t)(void);
