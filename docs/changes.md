@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/03/24
+  * 增加 tk_object_ref_by_lifecycle 和 tk_object_unref_by_lifecycle (感谢兆坤提供补丁)
+
 2026/03/22 
   * 完善 object_evt_router(感谢兆坤提供补丁)
     - 1.增加发布者订阅者生命周期选项

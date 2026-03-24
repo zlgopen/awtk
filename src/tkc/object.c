@@ -115,6 +115,27 @@ tk_object_t* tk_object_ref(tk_object_t* obj) {
   return obj;
 }
 
+ret_t tk_object_unref_by_lifecycle(tk_object_t* obj, tk_object_life_t lifecycle) {
+  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+  switch (lifecycle) {
+    case TK_OBJECT_LIFE_OWN:
+    case TK_OBJECT_LIFE_HOLD:
+      return tk_object_unref(obj);
+    default:
+      return RET_OK;
+  }
+}
+
+tk_object_t* tk_object_ref_by_lifecycle(tk_object_t* obj, tk_object_life_t lifecycle) {
+  return_value_if_fail(obj != NULL, NULL);
+  switch (lifecycle) {
+    case TK_OBJECT_LIFE_HOLD:
+      return tk_object_ref(obj);
+    default:
+      return obj;
+  }
+}
+
 tk_object_t* tk_object_clone(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->vt->clone != NULL, NULL);
 

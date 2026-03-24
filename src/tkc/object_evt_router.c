@@ -26,31 +26,6 @@
 #include "tkc/darray.h"
 #include "tkc/named_value.h"
 
-inline static ret_t object_evt_router_object_unref_by_lifecycle(tk_object_t* obj,
-                                                                tk_object_life_t lifecycle) {
-  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
-  switch (lifecycle) {
-    case TK_OBJECT_LIFE_OWN:
-    case TK_OBJECT_LIFE_HOLD:
-      return tk_object_unref(obj);
-    default:
-      return RET_OK;
-  }
-}
-
-inline static tk_object_t* object_evt_router_object_ref_by_lifecycle(tk_object_t* obj,
-                                                                     tk_object_life_t lifecycle) {
-  return_value_if_fail(obj != NULL, NULL);
-  switch (lifecycle) {
-    case TK_OBJECT_LIFE_HOLD:
-      return tk_object_ref(obj);
-    default:
-      return obj;
-  }
-}
-
-/*********************************************************************************************/
-
 typedef struct _object_evt_router_register_info_t {
   tk_object_t* publisher;
   int32_t evt_type;
@@ -60,7 +35,7 @@ typedef struct _object_evt_router_register_info_t {
 static ret_t object_evt_router_register_info_destroy(object_evt_router_register_info_t* info) {
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
   if (info->publisher != NULL) {
-    object_evt_router_object_unref_by_lifecycle(info->publisher, info->opt.publisher_lifecycle);
+    tk_object_unref_by_lifecycle(info->publisher, info->opt.publisher_lifecycle);
   }
   TKMEM_FREE(info);
   return RET_OK;
@@ -78,8 +53,7 @@ static object_evt_router_register_info_t* object_evt_router_register_info_create
     ret->opt = *opt;
   }
 
-  ret->publisher =
-      object_evt_router_object_ref_by_lifecycle(publisher, ret->opt.publisher_lifecycle);
+  ret->publisher = tk_object_ref_by_lifecycle(publisher, ret->opt.publisher_lifecycle);
   goto_error_if_fail(ret->publisher != NULL);
 
   ret->evt_type = evt_type;
@@ -142,8 +116,7 @@ typedef struct _object_evt_router_subscribe_info_t {
 static ret_t object_evt_router_subscribe_info_destroy(object_evt_router_subscribe_info_t* info) {
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
   if (info->opt.subscriber != NULL) {
-    object_evt_router_object_unref_by_lifecycle(info->opt.subscriber,
-                                                info->opt.subscriber_lifecycle);
+    tk_object_unref_by_lifecycle(info->opt.subscriber, info->opt.subscriber_lifecycle);
   }
   TKMEM_FREE(info);
   return RET_OK;
@@ -162,8 +135,7 @@ static object_evt_router_subscribe_info_t* object_evt_router_subscribe_info_crea
   if (opt != NULL) {
     ret->opt = *opt;
     if (opt->subscriber != NULL) {
-      ret->opt.subscriber =
-          object_evt_router_object_ref_by_lifecycle(opt->subscriber, opt->subscriber_lifecycle);
+      ret->opt.subscriber = tk_object_ref_by_lifecycle(opt->subscriber, opt->subscriber_lifecycle);
     }
   }
 

@@ -974,9 +974,7 @@ static ret_t fscript_reset(fscript_t* fscript) {
   fscript_hook_on_deinit(fscript);
   fscript_clean(fscript);
 
-  if (fscript->obj_life != TK_OBJECT_LIFE_NONE) {
-    TK_OBJECT_UNREF(fscript->obj);
-  }
+  tk_object_unref_by_lifecycle(fscript->obj, fscript->obj_life);
   memset(fscript, 0x00, sizeof(fscript_t));
 
   return RET_OK;
@@ -2024,11 +2022,7 @@ static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t*
   return_value_if_fail(fscript != NULL, NULL);
   fscript->str = parser->temp;
   fscript->obj_life = obj_life;
-  if (obj_life == TK_OBJECT_LIFE_HOLD) {
-    fscript->obj = TK_OBJECT_REF(parser->obj);
-  } else {
-    fscript->obj = parser->obj;
-  }
+  fscript->obj = tk_object_ref_by_lifecycle(parser->obj, obj_life);
   fscript->first = parser->first;
   fscript->funcs_def = parser->funcs_def;
   fscript->code_id = parser->code_id;
