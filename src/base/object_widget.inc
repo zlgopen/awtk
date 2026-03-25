@@ -51,7 +51,7 @@ static ret_t object_widget_set_widget(object_widget_t* o, widget_t* widget) {
 
 static ret_t object_widget_on_destroy(tk_object_t* obj) {
   object_widget_t* o = OBJECT_WIDGET(obj);
-  return_value_if_fail(o != NULL && o->widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   object_widget_set_widget(o, NULL);
 
@@ -69,7 +69,7 @@ static int32_t object_widget_compare(tk_object_t* obj, tk_object_t* other) {
 
 static ret_t object_widget_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   object_widget_t* o = OBJECT_WIDGET(obj);
-  return_value_if_fail(o != NULL && o->widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, OBJECT_WIDGET_PROP_NATIVE_WIDGET)) {
     widget_t* widget = WIDGET(value_pointer(v));
@@ -81,7 +81,7 @@ static ret_t object_widget_set_prop(tk_object_t* obj, const char* name, const va
 
 static ret_t object_widget_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   object_widget_t* o = OBJECT_WIDGET(obj);
-  return_value_if_fail(o != NULL && o->widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, OBJECT_WIDGET_PROP_NATIVE_WIDGET)) {
     value_set_pointer(v, (void*)o->widget);
