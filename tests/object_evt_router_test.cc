@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
 #include "tkc/object_evt_router.h"
 #include "tkc/object_default.h"
+#include "base/object_widget.h"
+#include "widgets/check_button.h"
 
 static int s_callback_called = 0;
 static event_t s_last_event;
@@ -672,5 +674,31 @@ TEST(ObjectEvtRouter, log_recursion) {
   ASSERT_EQ(object_evt_router_subscribe(router, "log_test", test_log_recursion_callback, &opt),
             RET_OK);
 
+  TK_OBJECT_UNREF(router);
+}
+
+TEST(ObjectEvtRouter, widget) {
+  int called = 0;
+  tk_object_t* router = object_evt_router_create();
+  tk_object_set_name(router, "widget_router");
+
+  widget_t* widget = check_button_create(NULL, 0, 0, 100, 22);
+  tk_object_t* obj_widget = object_widget_create(widget);
+
+  ASSERT_EQ(object_evt_router_register(router, "widget_event", obj_widget, EVT_VALUE_CHANGED, NULL),
+            RET_OK);
+
+  object_evt_router_subscribe_opt_t opt;
+  memset(&opt, 0, sizeof(opt));
+  opt.callback_ctx = &called;
+  ASSERT_EQ(object_evt_router_subscribe(router, "widget_event", test_ok_callback, &opt), RET_OK);
+
+  widget_set_value_int(widget, TRUE);
+  ASSERT_EQ(called, 1);
+
+  object_evt_router_unregister(router, "widget_event", obj_widget);
+
+  widget_destroy(widget);
+  TK_OBJECT_UNREF(obj_widget);
   TK_OBJECT_UNREF(router);
 }

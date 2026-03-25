@@ -1495,6 +1495,10 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
       ret = emitter_dispatch(widget->emitter, e);
       e->target = saved_target;
     }
+
+    if (widget->dispatch_callback != NULL) {
+      widget->dispatch_callback(widget->dispatch_callback_ctx, e);
+    }
   }
   widget_unref(widget);
 

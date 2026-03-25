@@ -566,6 +566,9 @@ struct _widget_t {
 
   /* private */
   const char* last_state_for_style; /* 上一次的 state_for_style */
+  /* 用于将分发的事件转给 object_widget */
+  event_func_t dispatch_callback;
+  void* dispatch_callback_ctx;
 };
 
 /**

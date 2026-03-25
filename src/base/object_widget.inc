@@ -21,11 +21,39 @@
 
 #include "object_widget.h"
 
+static ret_t object_widget_set_widget(object_widget_t* o, widget_t* widget);
+
+static ret_t object_widget_event_dispatch_from_widget(void* ctx, event_t* e) {
+  switch (e->type) {
+    case EVT_DESTROY:
+      return object_widget_set_widget(OBJECT_WIDGET(ctx), NULL);
+    default:
+      return emitter_forward_retarget(ctx, e);
+  }
+}
+
+static ret_t object_widget_set_widget(object_widget_t* o, widget_t* widget) {
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->widget != NULL) {
+    o->widget->dispatch_callback = NULL;
+    o->widget->dispatch_callback_ctx = NULL;
+    o->widget = NULL;
+  }
+  if (widget != NULL) {
+    o->widget = widget;
+    widget->dispatch_callback = object_widget_event_dispatch_from_widget;
+    widget->dispatch_callback_ctx = o;
+  }
+
+  return RET_OK;
+}
+
 static ret_t object_widget_on_destroy(tk_object_t* obj) {
   object_widget_t* o = OBJECT_WIDGET(obj);
   return_value_if_fail(o != NULL && o->widget != NULL, RET_BAD_PARAMS);
 
-  o->widget = NULL;
+  object_widget_set_widget(o, NULL);
 
   return RET_OK;
 }
@@ -40,32 +68,27 @@ static int32_t object_widget_compare(tk_object_t* obj, tk_object_t* other) {
 }
 
 static ret_t object_widget_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
-  ret_t ret = RET_NOT_FOUND;
   object_widget_t* o = OBJECT_WIDGET(obj);
   return_value_if_fail(o != NULL && o->widget != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, OBJECT_WIDGET_PROP_NATIVE_WIDGET)) {
-    o->widget = (widget_t*)value_pointer(v);
-    ret = RET_OK;
-  } else {
-    ret = widget_set_prop(o->widget, name, v);
+    widget_t* widget = WIDGET(value_pointer(v));
+    return object_widget_set_widget(o, widget);
   }
 
-  return ret;
+  return widget_set_prop(o->widget, name, v);
 }
 
 static ret_t object_widget_get_prop(tk_object_t* obj, const char* name, value_t* v) {
-  ret_t ret = RET_NOT_FOUND;
   object_widget_t* o = OBJECT_WIDGET(obj);
   return_value_if_fail(o != NULL && o->widget != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, OBJECT_WIDGET_PROP_NATIVE_WIDGET)) {
     value_set_pointer(v, (void*)o->widget);
-    ret = RET_OK;
-  } else {
-    ret = widget_get_prop(o->widget, name, v);
+    return RET_OK;
   }
-  return ret;
+
+  return widget_get_prop(o->widget, name, v);
 }
 
 static const object_vtable_t s_object_widget_vtable = {.type = OBJECT_WIDGET_TYPE,
@@ -88,7 +111,7 @@ tk_object_t* object_widget_create(widget_t* widget) {
   wrapper = OBJECT_WIDGET(o);
   return_value_if_fail(wrapper != NULL, NULL);
 
-  wrapper->widget = widget;
+  object_widget_set_widget(wrapper, widget);
 
   return o;
 }
@@ -98,4 +121,3 @@ object_widget_t* object_widget_cast(tk_object_t* obj) {
 
   return (object_widget_t*)(obj);
 }
-
