@@ -213,3 +213,10 @@ SDL_GL_DeleteContext
  * @annotation ["global"]
  * @return {int}
  */
+
+    /**
+ * @method SDL_SetTextInputRect
+ * @annotation ["global"]
+ * @param {SDL_Rect*} rect
+ * @return {void}
+ */
