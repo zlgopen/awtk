@@ -29,8 +29,9 @@ BEGIN_C_DECLS
 
 /**
  * @class zip_file_t
+ * @annotation ["fake"]
  * zip文件。
-*/
+ */
 
 /**
  * @method zip_file_extract
