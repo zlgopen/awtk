@@ -67,7 +67,7 @@ static ret_t object_locker_set_prop(tk_object_t* obj, const char* name, const va
 static ret_t object_locker_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_locker_t* o = OBJECT_LOCKER(obj);
-  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(o != NULL && o->mutex != NULL, RET_BAD_PARAMS);
   if (tk_mutex_nest_lock(o->mutex) == RET_OK) {
     ret = tk_object_get_prop(o->obj, name, v);
     tk_mutex_nest_unlock(o->mutex);
@@ -79,9 +79,21 @@ static ret_t object_locker_get_prop(tk_object_t* obj, const char* name, value_t*
 static ret_t object_locker_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, void* ctx) {
   ret_t ret = RET_OK;
   object_locker_t* o = OBJECT_LOCKER(obj);
-  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(o != NULL && o->mutex != NULL, RET_BAD_PARAMS);
   if (tk_mutex_nest_lock(o->mutex) == RET_OK) {
     ret = tk_object_foreach_prop(o->obj, on_prop, ctx);
+    tk_mutex_nest_unlock(o->mutex);
+  }
+
+  return ret;
+}
+
+static ret_t object_locker_clear_props(tk_object_t* obj) {
+  ret_t ret = RET_OK;
+  object_locker_t* o = OBJECT_LOCKER(obj);
+  return_value_if_fail(o != NULL && o->mutex != NULL, RET_BAD_PARAMS);
+  if (tk_mutex_nest_lock(o->mutex) == RET_OK) {
+    ret = tk_object_clear_props(o->obj);
     tk_mutex_nest_unlock(o->mutex);
   }
 
@@ -116,18 +128,22 @@ static ret_t object_locker_exec(tk_object_t* obj, const char* name, const char* 
   return ret;
 }
 
-static const object_vtable_t s_object_locker_vtable = {.type = OBJECT_LOCKER_TYPE,
-                                                       .desc = OBJECT_LOCKER_TYPE,
-                                                       .size = sizeof(object_locker_t),
-                                                       .is_collection = FALSE,
-                                                       .on_destroy = object_locker_on_destroy,
-                                                       .exec = object_locker_exec,
-                                                       .can_exec = object_locker_can_exec,
-                                                       .compare = object_locker_compare,
-                                                       .get_prop = object_locker_get_prop,
-                                                       .set_prop = object_locker_set_prop,
-                                                       .remove_prop = object_locker_remove_prop,
-                                                       .foreach_prop = object_locker_foreach_prop};
+static const object_vtable_t s_object_locker_vtable = {
+    .type = OBJECT_LOCKER_TYPE,
+    .desc = OBJECT_LOCKER_TYPE,
+    .size = sizeof(object_locker_t),
+    .is_collection = FALSE,
+    .on_destroy = object_locker_on_destroy,
+    .exec = object_locker_exec,
+    .can_exec = object_locker_can_exec,
+    .compare = object_locker_compare,
+    .get_prop = object_locker_get_prop,
+    .set_prop = object_locker_set_prop,
+    .remove_prop = object_locker_remove_prop,
+    .foreach_prop = object_locker_foreach_prop,
+    .clear_props = object_locker_clear_props,
+
+};
 
 static ret_t object_locker_forward_events(void* ctx, event_t* e) {
   object_locker_t* o = OBJECT_LOCKER(ctx);

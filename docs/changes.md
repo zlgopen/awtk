@@ -1,6 +1,8 @@
 # 最新动态
+
 2026/03/27
   * 完善zip_file_t的注释(感谢福明提供补丁)
+  * object_locker支持clear_props(感谢雨欣提供补丁)
 
 2026/03/24
   * 增加 tk_object_ref_by_lifecycle 和 tk_object_unref_by_lifecycle (感谢兆坤提供补丁)
