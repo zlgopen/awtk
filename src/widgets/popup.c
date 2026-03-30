@@ -201,8 +201,11 @@ static ret_t popup_on_destroy(widget_t* widget) {
       if (foreground_win != NULL) {
         window_manager_dispatch_window_event(foreground_win, EVT_WINDOW_TO_BACKGROUND);
       }
-      window_manager_dispatch_window_event(popup->active_window_by_parent_widget, EVT_WINDOW_TO_FOREGROUND);
+      window_manager_dispatch_window_event(popup->active_window_by_parent_widget,
+                                           EVT_WINDOW_TO_FOREGROUND);
     }
+
+    popup_set_parent_widget_by_create(widget, NULL);
   }
   return window_base_on_destroy(widget);
 }
@@ -274,9 +277,30 @@ ret_t popup_set_close_when_timeout(widget_t* widget, uint32_t close_when_timeout
   return RET_OK;
 }
 
+static ret_t popup_on_active_window_by_parent_widget_destroy(void* ctx, event_t* e) {
+  popup_t* popup = POPUP(ctx);
+  return_value_if_fail(popup != NULL, RET_BAD_PARAMS);
+
+  return popup_set_parent_widget_by_create(WIDGET(popup), NULL);
+}
+
 ret_t popup_set_parent_widget_by_create(widget_t* widget, widget_t* parent_widget) {
   popup_t* popup = POPUP(widget);
-  return_value_if_fail(popup!= NULL, RET_FAIL);
-  popup->active_window_by_parent_widget = widget_get_real_window_or_keyboard(parent_widget);
+  return_value_if_fail(popup != NULL, RET_BAD_PARAMS);
+
+  if (popup->active_window_by_parent_widget != NULL) {
+    widget_off_by_func(popup->active_window_by_parent_widget, EVT_DESTROY,
+                       popup_on_active_window_by_parent_widget_destroy, popup);
+    popup->active_window_by_parent_widget = NULL;
+  }
+
+  if (parent_widget != NULL) {
+    popup->active_window_by_parent_widget = widget_get_real_window_or_keyboard(parent_widget);
+    return_value_if_fail(popup->active_window_by_parent_widget != NULL, RET_FAIL);
+
+    widget_on(popup->active_window_by_parent_widget, EVT_DESTROY,
+              popup_on_active_window_by_parent_widget_destroy, popup);
+  }
+
   return RET_OK;
 }
