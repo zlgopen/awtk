@@ -1,7 +1,7 @@
 ﻿/**
  * File:   dl.c
  * Author: AWTK Develop Team
- * Brief:  dynamic libaray api
+ * Brief:  dynamic library api
  *
  * Copyright (c) 2020 - 2026 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *

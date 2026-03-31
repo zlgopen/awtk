@@ -209,9 +209,9 @@ static ret_t plugins_dll_register(const char* dirname, const char* render_mode) 
       dl = tk_dl_open(path);
       if (dl == NULL) {
 #ifdef WIN32
-        log_debug("Open dynamic library faild: %s, error code: %d!\n", path, GetLastError());
+        log_debug("Open dynamic library failed: %s, error code: %d!\n", path, GetLastError());
 #else
-        log_debug("Open dynamic library faild: %s!\n", path);
+        log_debug("Open dynamic library failed: %s!\n", path);
 #endif
         continue;
       }
