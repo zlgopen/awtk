@@ -1208,10 +1208,10 @@ static ret_t ffr_draw_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const
                                                     uint32_t radius_bl, uint32_t radius_br, uint32_t border_width, int32_t border_model) {
   color_t tc;
   uint32_t radius = 0;
-  xy_t x = r->x + c->ox;
-  xy_t y = r->y + c->oy;
-  xy_t x2 = x + r->w - 1 + ((border_width + 1) >> 1);
-  xy_t y2 = y + r->h - 1 + ((border_width + 1) >> 1);
+  xy_t x = r->x + c->ox - ((border_width + 1) >> 1);
+  xy_t y = r->y + c->oy - ((border_width + 1) >> 1);
+  xy_t x2 = x + r->w - 1 + ((border_width + 1));
+  xy_t y2 = y + r->h - 1 + ((border_width + 1));
   /* 为了解决 agge 模式圆角矩形的填充抗锯齿部分和边框的抗锯齿部分叠加在一起导致漏出的情况，让边框多画一些东西挡住背景色的抗锯齿部分 */
   rectf_t rf = rectf_init(r->x - 0.4f, r->y - 0.4f, r->w + 0.8f, r->h + 0.8f);
   return_value_if_fail(c != NULL && r != NULL && color != NULL, RET_BAD_PARAMS);
