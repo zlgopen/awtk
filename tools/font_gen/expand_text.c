@@ -5,7 +5,9 @@
 
 int wmain(int argc, wchar_t* argv[]) {
   if (argc != 3) {
-    printf("Usage:%s input_file output_file\n", argv[0]);
+    char exec_file[MAX_PATH+1] = {0};
+    tk_utf8_from_utf16_ex(argv[0], wcslen(argv[0]), exec_file, sizeof(exec_file)-1);
+    printf("Usage:%s input_file output_file\n", exec_file);
   } else {
     uint32_t size = 0;
     str_t str_input_file = {0};
