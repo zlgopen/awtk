@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   object_evt_router.c
  * Author: AWTK Develop Team
  * Brief:  对象事件路由器。

@@ -152,6 +152,9 @@ static ret_t text_edit_update_input_rect(text_edit_t* text_edit) {
   if (system_info()->app_type != APP_DESKTOP) {
     return RET_OK;
   }
+  if (!widget->focused) {
+    return RET_OK;
+  }
 
   return_value_if_fail(impl != NULL && widget != NULL, RET_BAD_PARAMS);
 
@@ -166,7 +169,13 @@ static ret_t text_edit_update_input_rect(text_edit_t* text_edit) {
   r.x = p.x;
   r.y = p.y;
   r.w = text_edit->widget->w;
-  r.h = text_edit->widget->h;
+  r.h = impl->font_size;
+
+  float_t ratio = system_info()->device_pixel_ratio;
+  r.x *= ratio;
+  r.y *= ratio;
+  r.w *= ratio;
+  r.h *= ratio;
 
   SDL_SetTextInputRect(&r);
 
@@ -386,6 +395,8 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
       caret_x = (layout_info->w - text_w) / 2 + caret_text_w;
     }
   }
+
+  y += (layout_info->h - c->font_size) / 2;
   text_edit_set_caret_pos(impl, caret_x, y, c->font_size, line_index, row_num);
 
   return row;
@@ -1001,10 +1012,6 @@ static ret_t text_edit_paint_caret(text_edit_t* text_edit, canvas_t* c) {
   color_t caret_color = style_get_color(style, STYLE_ID_TEXT_COLOR, black);
   uint32_t x = layout_info->margin_l + impl->caret.x - layout_info->ox;
   uint32_t y = layout_info->margin_t + impl->caret.y - layout_info->oy;
-
-  if (impl->single_line) {
-    y += (layout_info->h - c->font_size) / 2;
-  }
 
   canvas_set_stroke_color(c, caret_color);
   canvas_draw_vline(c, x, y, c->font_size);
@@ -1791,6 +1798,8 @@ ret_t text_edit_click(text_edit_t* text_edit, xy_t x, xy_t y) {
     text_edit_update_caret_pos(text_edit);
   }
 
+  input_method_request(input_method(), NULL);
+  input_method_request(input_method(), text_edit->widget);
   text_edit_update_input_rect(text_edit);
 
   return RET_OK;

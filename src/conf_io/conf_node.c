@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   conf_node.c
  * Author: AWTK Develop Team
  * Brief:  conf node

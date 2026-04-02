@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   ui_loader_xml.h
  * Author: AWTK Develop Team
  * Brief:  default ui_loader
