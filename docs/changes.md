@@ -1,4 +1,6 @@
 # 最新动态
+2026/04/2
+  * 增加函数 tk_count_lines / tk_wstr_count_lines 
 
 2026/04/1
   * 修复参数为中文路径时expand_text展开字符失败的问题((感谢培煌提供补丁)

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   utils.h
  * Author: AWTK Develop Team
  * Brief:  utils struct and utils functions.
@@ -1055,6 +1055,31 @@ uint32_t tk_wstr_count_c(const wchar_t* str, wchar_t c) {
   return nr;
 }
 
+uint32_t tk_wstr_count_lines(const wchar_t* str) {
+  uint32_t lines = 0;
+  const wchar_t* p = str;
+  return_value_if_fail(p != NULL, lines);
+  if (*p == '\0') {
+    return lines;
+  }
+  lines = 1;
+  while (*p) {
+    if (*p == L'\r') {
+      p++;
+      if (*p == L'\n') {
+        p++;
+      }
+      lines++;
+    } else if (*p == L'\n') {
+      p++;
+      lines++;
+    } else {
+      p++;
+    }
+  }
+  return lines;
+}
+
 uint32_t tk_count_char(const char* str, char c) {
   uint32_t nr = 0;
   const char* p = str;
@@ -1068,6 +1093,31 @@ uint32_t tk_count_char(const char* str, char c) {
   }
 
   return nr;
+}
+
+uint32_t tk_count_lines(const char* str) {
+  uint32_t lines = 0;
+  const char* p = str;
+  return_value_if_fail(p != NULL, lines);
+  if (*p == '\0') {
+    return lines;
+  }
+  lines = 1;
+  while (*p) {
+    if (*p == '\r') {
+      p++;
+      if (*p == '\n') {
+        p++;
+      }
+      lines++;
+    } else if (*p == '\n') {
+      p++;
+      lines++;
+    } else {
+      p++;
+    }
+  }
+  return lines;
 }
 
 ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int32_t* left,

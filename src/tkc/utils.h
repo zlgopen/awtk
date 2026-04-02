@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   utils.h
  * Author: AWTK Develop Team
  * Brief:  utils struct and utils functions.
@@ -907,6 +907,18 @@ char* tk_utf8_dup_wstr(const wchar_t* str);
 uint32_t tk_wstr_count_c(const wchar_t* str, wchar_t c);
 
 /**
+ * @method tk_wstr_count_lines
+ *
+ * 统计 UCS 字符串按换行切分后的行段数。识别 \\n、单独 \\r 以及 \\r\\n（\\r\\n 只计一次分隔）。
+ * 空串与 NULL 返回 0。
+ *
+ * @param {const wchar_t*} str 字符串。
+ *
+ * @return {uint32_t} 返回行段数。
+ */
+uint32_t tk_wstr_count_lines(const wchar_t* str);
+
+/**
  * @method tk_wstr_select_word
  * @export none
  * 获取字符串中距离某个位置最近的单词（中文或英文字符）或数字字符的范围，选取的范围由标点符号或空格分隔开，得到的范围由left与right两个指针获取。
@@ -1213,6 +1225,15 @@ int32_t tk_levelize(const char* levels, int32_t value);
  * @return {uint32_t} 返回字符出现的次数。
  */
 uint32_t tk_count_char(const char* str, char c);
+
+/**
+ * @method tk_count_lines
+ * 统计 UTF-8 字符串按换行切分后的行段数。识别 \\n、单独 \\r 以及 \\r\\n（\\r\\n 只计一次分隔）。
+ * 空串与 NULL 返回 0。
+ * @param {const char*} str 字符串。
+ * @return {uint32_t} 返回行段数。
+ */
+uint32_t tk_count_lines(const char* str);
 
 /**
  * @method tk_date_time_format

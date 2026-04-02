@@ -1,4 +1,4 @@
-﻿#include <string>
+#include <string>
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/object_default.h"
@@ -587,6 +587,36 @@ TEST(Utils, tk_count_char) {
   ASSERT_EQ(tk_count_char("", 'a'), 0u);
   ASSERT_EQ(tk_count_char("a", 'a'), 1u);
   ASSERT_EQ(tk_count_char("abcaba", 'a'), 3u);
+}
+
+TEST(Utils, tk_count_lines) {
+  ASSERT_EQ(tk_count_lines(NULL), 0u);
+  ASSERT_EQ(tk_count_lines(""), 0u);
+  ASSERT_EQ(tk_count_lines("a"), 1u);
+  ASSERT_EQ(tk_count_lines("a\n"), 2u);
+  ASSERT_EQ(tk_count_lines("a\nb"), 2u);
+  ASSERT_EQ(tk_count_lines("a\r\nb"), 2u);
+  ASSERT_EQ(tk_count_lines("a\rb"), 2u);
+  ASSERT_EQ(tk_count_lines("\n"), 2u);
+  ASSERT_EQ(tk_count_lines("\r\n"), 2u);
+  ASSERT_EQ(tk_count_lines("\r"), 2u);
+  ASSERT_EQ(tk_count_lines("a\n\nb"), 3u);
+  ASSERT_EQ(tk_count_lines("\r\n\n"), 3u);
+}
+
+TEST(Utils, tk_wstr_count_lines) {
+  ASSERT_EQ(tk_wstr_count_lines(NULL), 0u);
+  ASSERT_EQ(tk_wstr_count_lines(L""), 0u);
+  ASSERT_EQ(tk_wstr_count_lines(L"a"), 1u);
+  ASSERT_EQ(tk_wstr_count_lines(L"a\n"), 2u);
+  ASSERT_EQ(tk_wstr_count_lines(L"a\nb"), 2u);
+  ASSERT_EQ(tk_wstr_count_lines(L"a\r\nb"), 2u);
+  ASSERT_EQ(tk_wstr_count_lines(L"a\rb"), 2u);
+  ASSERT_EQ(tk_wstr_count_lines(L"\n"), 2u);
+  ASSERT_EQ(tk_wstr_count_lines(L"\r\n"), 2u);
+  ASSERT_EQ(tk_wstr_count_lines(L"\r"), 2u);
+  ASSERT_EQ(tk_wstr_count_lines(L"a\n\nb"), 3u);
+  ASSERT_EQ(tk_wstr_count_lines(L"\r\n\n"), 3u);
 }
 
 TEST(Utils, tk_wstr_select_word) {
