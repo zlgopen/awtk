@@ -524,9 +524,19 @@ static ret_t hscroll_label_on_destroy(widget_t* widget) {
 static ret_t hscroll_label_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  int32_t range;
   return_value_if_fail(hscroll_label != NULL && widget != NULL, RET_BAD_PARAMS);
 
   switch (type) {
+    case EVT_RESIZE:
+    case EVT_MOVE_RESIZE: {
+      range = hscroll_label_get_range(widget, hscroll_label->stop_at_begin);
+
+      if(range > 0 && !hscroll_label_is_running(widget)) {
+        hscroll_label_check_and_start(widget);
+      }
+      break;
+    }
 #ifdef WITH_STATE_ACTIVATED
     case EVT_ACTIVATED: {
 #else
