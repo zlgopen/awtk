@@ -620,7 +620,15 @@ ret_t vgcanvas_set_fill_gradient(vgcanvas_t* vg, const vg_gradient_t* gradient) 
     color_t c2 = vg_gradient_get_last_color((vg_gradient_t*)gradient);
     if (gradient->gradient.type == GRADIENT_LINEAR) {
       const vg_gradient_linear_info_t* info = &(gradient->info.linear);
-      return vgcanvas_set_fill_linear_gradient(vg, info->sx, info->sy, info->ex, info->ey, c1, c2);
+      float ex = info->ex;
+      float ey = info->ey;
+#ifdef WITH_NANOVG_AGGE
+      if (gradient->gradient.degree == 180 && info->sy == info->ey) {
+        // 因为 agge 判断 sx == ex && sy == ey 时会触发断言，并且绘图异常。
+        ey += 1;
+      }
+#endif
+      return vgcanvas_set_fill_linear_gradient(vg, info->sx, info->sy, ex, ey, c1, c2);
     } else if (gradient->gradient.type == GRADIENT_RADIAL) {
       const vg_gradient_radial_info_t* info = &(gradient->info.radial);
       return vgcanvas_set_fill_radial_gradient(vg, info->x0, info->y0, info->r0, info->r1, c1, c2);
