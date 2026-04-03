@@ -246,17 +246,21 @@ WIN_SetTextInputRect(_THIS, SDL_Rect *rect)
     {
         COMPOSITIONFORM cof;
         CANDIDATEFORM caf;
-        int font_height = rect->h;
 
         LOGFONTW font;
-        if (ImmGetCompositionFontW(himc, &font)) {
-            font_height = font.lfHeight;
-        }
+        SDL_zero(font);
+        font.lfHeight = rect->h;
+        font.lfWidth = 0;
+        font.lfWeight = FW_NORMAL;
+        font.lfCharSet = DEFAULT_CHARSET;
+        font.lfQuality = ANTIALIASED_QUALITY;
+        wcscpy_s(font.lfFaceName, LF_FACESIZE, L"Segoe UI");
+        ImmSetCompositionFontW(himc, &font);
 
         SDL_zero(cof);
         cof.dwStyle = CFS_RECT;
         cof.ptCurrentPos.x = rect->x;
-        cof.ptCurrentPos.y = rect->y + (rect->h - font_height);
+        cof.ptCurrentPos.y = rect->y;
         cof.rcArea.left = rect->x;
         cof.rcArea.right = (LONG)rect->x + rect->w;
         cof.rcArea.top = rect->y;
