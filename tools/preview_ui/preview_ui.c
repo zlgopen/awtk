@@ -314,12 +314,14 @@ static ret_t find_first_tag(str_t* s, char* tag) {
   return_value_if_fail(s != NULL && s->size != 0, RET_BAD_PARAMS);
 
   for (i = 0; i < s->size; i++) {
+    char c = s->str[i];
+
     switch (state) {
       case STAT_START_TAG: {
-        if (!(tk_isalpha(s->str[i]) || s->str[i] == '_')) {
+        if (!(tk_isalpha(c) || c == '_')) {
           state = STAT_NONE;
         }
-        if (s->str[i] == ' ') {
+        if (tk_isspace(c) || c == '>' || c == '/') {
           state = STAT_NONE;
           tk_strncpy(tag, s->str + start, i - start);
           return RET_OK;
@@ -327,7 +329,7 @@ static ret_t find_first_tag(str_t* s, char* tag) {
         break;
       }
       case STAT_NONE: {
-        if (s->str[i] == '<') {
+        if (c == '<') {
           start = i + 1;
           state = STAT_START_TAG;
         }
