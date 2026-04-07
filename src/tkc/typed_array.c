@@ -236,19 +236,15 @@ static ret_t typed_array_extend_delta(typed_array_t* typed_array, uint32_t delta
 }
 
 ret_t typed_array_insert(typed_array_t* typed_array, uint32_t index, const value_t* v) {
-  uint8_t* p = NULL;
-  uint32_t element_size = 0;
-  uint32_t move_size = 0;
   return_value_if_fail(typed_array != NULL && v != NULL, RET_BAD_PARAMS);
+
   index = tk_min(index, typed_array->size);
   return_value_if_fail(typed_array_extend_delta(typed_array, 1) == RET_OK, RET_OOM);
 
-  element_size = typed_array->element_size;
-  move_size = (typed_array->size - index) * element_size;
-  p = typed_array->data + index * element_size;
-
-  if (move_size > 0) {
-    memmove(p + element_size, p, move_size);
+  if (typed_array->size > index) {
+    uint8_t* p = typed_array->data + index * typed_array->element_size;
+    uint32_t move_size = (typed_array->size - index) * typed_array->element_size;
+    memmove(p + typed_array->element_size, p, move_size);
   }
   typed_array->size++;
 
@@ -256,18 +252,13 @@ ret_t typed_array_insert(typed_array_t* typed_array, uint32_t index, const value
 }
 
 ret_t typed_array_remove(typed_array_t* typed_array, uint32_t index) {
-  uint8_t* p = NULL;
-  uint32_t element_size = 0;
-  uint32_t move_size = 0;
-  return_value_if_fail(typed_array != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(typed_array->data != NULL && index < typed_array->size, RET_BAD_PARAMS);
+  return_value_if_fail(typed_array != NULL && index < typed_array->size, RET_BAD_PARAMS);
+  return_value_if_fail(typed_array->data != NULL, RET_FAIL);
 
-  element_size = typed_array->element_size;
-  move_size = (typed_array->size - index - 1) * element_size;
-  p = typed_array->data + index * element_size;
-
-  if (move_size > 0) {
-    memmove(p, p + element_size, move_size);
+  if (typed_array->size - index > 1) {
+    uint8_t* p = typed_array->data + index * typed_array->element_size;
+    uint32_t move_size = (typed_array->size - index - 1) * typed_array->element_size;
+    memmove(p, p + typed_array->element_size, move_size);
   }
   typed_array->size--;
 
