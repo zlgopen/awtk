@@ -228,7 +228,7 @@ static ret_t typed_array_extend_delta(typed_array_t* typed_array, uint32_t delta
   return_value_if_fail(typed_array != NULL, RET_BAD_PARAMS);
 
   if ((typed_array->size + delta) > typed_array->capacity) {
-    uint32_t capacity = (typed_array->size + delta) + 1.2F;
+    uint32_t capacity = (uint32_t)((typed_array->size + delta) * 1.2F);
     return typed_array_extend(typed_array, capacity);
   }
 
