@@ -34,14 +34,18 @@ INCLUDE_PATH = [TK_ROOT,
 
 env['CPPPATH'] = INCLUDE_PATH
 env['LIBS'] = ['assets', 'image_gen', 'theme_gen', 'font_gen', 'str_gen', 'common', 'api_doc'] + awtk.STATIC_LIBS
-env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
+env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS']
+
+APP_CXXFLAGS = ''
+if OS_NAME != 'Windows':
+  APP_CXXFLAGS += ' -std=c++11 '
+env['CXXFLAGS'] = env['CXXFLAGS'] + APP_CXXFLAGS
 
 SOURCES = [
  os.path.join(GTEST_ROOT, 'src/gtest-all.cc'),
 ] + Glob('*.cc') + Glob('*.c')
 
-env['LIBS']=env['LIBS']
-env.Program(os.path.join(BIN_DIR, 'runTest'), SOURCES);
+env.Program(os.path.join(BIN_DIR, 'runTest'), SOURCES)
 env.Program(os.path.join(BIN_DIR, 'recycle_test'), ["recycle_test.cpp"])
 env.Program(os.path.join(BIN_DIR, 'waitable_action_queue_test'), ["waitable_action_queue_test.cpp"])
 env.Program(os.path.join(BIN_DIR, 'waitable_ring_buffer_test'), ["waitable_ring_buffer_test.cpp"])
@@ -53,12 +57,9 @@ env.Program(os.path.join(BIN_DIR, 'ubjson_to_json'), ["ubjson_to_json.cpp"])
 env.Program(os.path.join(BIN_DIR, 'format_xml'), ["format_xml.cpp"])
 env.Program(os.path.join(BIN_DIR, 'async_call_test'), ["async_call_test.cpp"])
 
-if OS_NAME == 'Windows' :
-  env.Program(os.path.join(BIN_DIR, 'atomic_test'), ["atomic_test.cpp"])
-  env.Program(os.path.join(BIN_DIR, 'lf_bp_buffer_test'), ["lf_bp_buffer_test.cpp"])
-else :
-  env.Program(os.path.join(BIN_DIR, 'atomic_test'), ["atomic_test.cpp"], CCFLAGS = env["CCFLAGS"] + ' -std=c++11 ')
-  env.Program(os.path.join(BIN_DIR, 'lf_bp_buffer_test'), ["lf_bp_buffer_test.cpp"], CCFLAGS = env["CCFLAGS"] + ' -std=c++11 ')
+
+env.Program(os.path.join(BIN_DIR, 'atomic_test'), ["atomic_test.cpp"])
+env.Program(os.path.join(BIN_DIR, 'lf_bp_buffer_test'), ["lf_bp_buffer_test.cpp"])
 
 env.SharedLibrary(os.path.join(BIN_DIR+"/plugins_for_test", 'a'), ["a.c"])
 env.SharedLibrary(os.path.join(BIN_DIR+"/plugins_for_test", 'b'), ["b.c"])
