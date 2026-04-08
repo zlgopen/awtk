@@ -147,6 +147,7 @@ static ret_t text_edit_update_input_rect(text_edit_t* text_edit) {
   point_t p = {0, 0};
   DECL_IMPL(text_edit);
   SDL_Rect r = {0, 0, 0, 0};
+  return_value_if_fail(text_edit != NULL && text_edit->widget != NULL, RET_BAD_PARAMS);
   widget_t* widget = text_edit->widget;
 
   if (system_info()->app_type != APP_DESKTOP) {
@@ -155,8 +156,6 @@ static ret_t text_edit_update_input_rect(text_edit_t* text_edit) {
   if (!widget->focused) {
     return RET_OK;
   }
-
-  return_value_if_fail(impl != NULL && widget != NULL, RET_BAD_PARAMS);
 
   text_layout_info_t* layout_info = &(impl->layout_info);
   uint32_t x = layout_info->margin_l + impl->caret.x - layout_info->ox;
