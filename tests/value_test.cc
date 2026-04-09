@@ -1771,6 +1771,35 @@ TEST(value, compare) {
   ASSERT_EQ(value_compare(&v1, &v2), 0);
 }
 
+TEST(value, compare_uint64_large) {
+  value_t v1;
+  value_t v2;
+
+  value_set_uint64(&v1, UINT64_MAX);
+  value_set_uint64(&v2, UINT64_MAX);
+  ASSERT_EQ(value_compare(&v1, &v2), 0);
+
+  value_set_uint64(&v1, UINT64_MAX);
+  value_set_uint64(&v2, UINT64_MAX - 1);
+  ASSERT_EQ(value_compare(&v1, &v2), 1);
+
+  value_set_uint64(&v1, UINT64_MAX - 1);
+  value_set_uint64(&v2, UINT64_MAX);
+  ASSERT_EQ(value_compare(&v1, &v2), -1);
+
+  value_set_uint64(&v1, (uint64_t)INT_MAX + 2u);
+  value_set_uint64(&v2, (uint64_t)INT_MAX + 1u);
+  ASSERT_EQ(value_compare(&v1, &v2), 1);
+
+  value_set_uint64(&v1, 0);
+  value_set_uint64(&v2, UINT64_MAX);
+  ASSERT_EQ(value_compare(&v1, &v2), -1);
+
+  value_set_uint64(&v1, UINT64_MAX);
+  value_set_uint64(&v2, 0);
+  ASSERT_EQ(value_compare(&v1, &v2), 1);
+}
+
 TEST(ValueTest, bool_object) {
   value_t v;
   tk_object_t* o = object_default_create();

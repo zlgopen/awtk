@@ -767,9 +767,11 @@ int value_compare(const value_t* v, const value_t* other) {
     }
     case VALUE_TYPE_UINT64: {
       if (v->value.u64 > other->value.u64) {
-        return v->value.u64 - other->value.u64;
+        return 1;
+      } else if (v->value.u64 < other->value.u64) {
+        return -1;
       } else {
-        return -(int)(other->value.u64 - v->value.u64);
+        return 0;
       }
     }
     case VALUE_TYPE_POINTER: {
