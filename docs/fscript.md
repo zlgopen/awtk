@@ -1547,7 +1547,7 @@ levelize('0-20;21-40;41-60;61-80;81-100', 50) => 2
 ### 5.1 定义函数
 
 ```c
-static ret_t func_foo(object_t* obj, fscript_args_t* args, value_t* v) {
+static ret_t func_foo(fscript_t* fscript, fscript_args_t* args, value_t* v) {
   value_set_int(v, 123);
 
   return RET_OK;
@@ -1657,8 +1657,8 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 | RET\_ITEMS\_CHANGED  | 集合数目变化。         |
 | RET\_BAD\_PARAMS     | 无效参数。             |
 | RET\_TIMEOUT         | 超时。                 |
-| RET\_CRC             | CRC 错误。              |
-| RET\_IO              | IO 错误。               |
+| RET\_CRC             | CRC 错误。             |
+| RET\_IO              | IO 错误。              |
 | RET\_EOS             | End of Stream          |
 | RET\_NOT\_MODIFIED   | 没有改变。             |
 
