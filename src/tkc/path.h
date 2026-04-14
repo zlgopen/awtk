@@ -197,7 +197,7 @@ ret_t path_replace_extname(char* result, int32_t size, const char* filename, con
  *
  * 获取当前所在目录。
  *
- * @param {char*} path 保存当前所在目录的路径。
+ * @param {char*} path 保存当前所在目录的路径（缓冲区大小至少为MAX_PATH + 1）。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -208,7 +208,7 @@ ret_t path_cwd(char path[MAX_PATH + 1]);
  *
  * 获取可执行文件所在目录。
  *
- * @param {char*} path 保存可执行文件所在目录。
+ * @param {char*} path 保存可执行文件所在目录（缓冲区大小至少为MAX_PATH + 1）。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -219,7 +219,7 @@ ret_t path_exe(char path[MAX_PATH + 1]);
  *
  * 获取app所在目录。
  *
- * @param {char*} path 保存app所在目录。
+ * @param {char*} path 保存app所在目录（缓冲区大小至少为MAX_PATH + 1）。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -230,7 +230,7 @@ ret_t path_app_root(char path[MAX_PATH + 1]);
  *
  * 获取app所在目录，并追加subpath到后面。
  *
- * @param {char*} path 保存app所在目录。
+ * @param {char*} path 保存app所在目录（缓冲区大小至少为MAX_PATH + 1）。
  * @param {const char*} subpath 子目录。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -262,7 +262,7 @@ ret_t path_remove_last_slash(char* path);
 /**
  * @method path_prepend_app_root
  * 将前面路径加上app root。
- * @param {char*} full_path 用于返回完整路径。
+ * @param {char*} full_path 用于返回完整路径（缓冲区大小至少为MAX_PATH + 1）。
  * @param {const char*} path 路径。
  *
  * @return {const char*} 返回完整路径。
@@ -272,7 +272,7 @@ const char* path_prepend_app_root(char full_path[MAX_PATH + 1], const char* path
 /**
  * @method path_prepend_temp_path
  * 将前面路径加上临时文件目录。
- * @param {char*} full_path 用于返回完整路径。
+ * @param {char*} full_path 用于返回完整路径（缓冲区大小至少为MAX_PATH + 1）。
  * @param {const char*} path 路径。
  *
  * @return {const char*} 返回完整路径。
@@ -282,7 +282,7 @@ const char* path_prepend_temp_path(char full_path[MAX_PATH + 1], const char* pat
 /**
  * @method path_prepend_user_storage_path
  * 将前面路径加上用户目录。
- * @param {char*} full_path 用于返回完整路径。
+ * @param {char*} full_path 用于返回完整路径（缓冲区大小至少为MAX_PATH + 1）。
  * @param {const char*} path 路径。
  *
  * @return {const char*} 返回完整路径。
@@ -320,7 +320,7 @@ ret_t path_expand_vars(const char* filename, char* result, int32_t size);
  * 将相对路径转换为绝对路径并规范路径字符形式。
  * @param {const char*} root 根目录。
  * @param {const char*} rel_filename 相对路径。
- * @param {char*} filename 用于返回绝对路径。
+ * @param {char*} filename 用于返回绝对路径（缓冲区大小至少为MAX_PATH + 1）。
  * @return {const char*} 返回绝对路径。
 */
 const char* path_abs_normalize_with_root(const char* root, const char* rel_filename,
