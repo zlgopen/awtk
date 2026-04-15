@@ -162,14 +162,12 @@ static ret_t main_loop_sdl2_dispatch_touch_event(main_loop_simple_t* loop, SDL_E
 static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
   key_event_t key_event;
   pointer_event_t event;
-  int type = sdl_event->type;
   widget_t* widget = loop->base.wm;
 
-  memset(&event, 0x00, sizeof(event));
-  switch (type) {
+  switch (sdl_event->type) {
     case SDL_MOUSEBUTTONDOWN: {
       if (sdl_event->button.button == SDL_BUTTON_LEFT) {
-        loop->pressed = 1;
+        loop->pressed = TRUE;
         pointer_event_init(&event, EVT_POINTER_DOWN, widget, sdl_event->button.x,
                            sdl_event->button.y);
         event.button = sdl_event->button.button;
@@ -178,13 +176,16 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
 
         SDL_CaptureMouse(TRUE);
         window_manager_dispatch_input_event(widget, (event_t*)&event);
+      } else if (sdl_event->button.button == SDL_BUTTON_RIGHT) {
       } else if (sdl_event->button.button == SDL_BUTTON_MIDDLE) {
         key_event_init(&key_event, EVT_KEY_DOWN, widget, TK_KEY_WHEEL);
         window_manager_dispatch_input_event(widget, (event_t*)&key_event);
-      } else if (sdl_event->button.button == SDL_BUTTON_X1) {
-        log_debug("%s: SDL_MOUSEBUTTONDOWN: side button(X1) not supported!\n", __FUNCTION__);
-      } else if (sdl_event->button.button == SDL_BUTTON_X2) {
-        log_debug("%s: SDL_MOUSEBUTTONDOWN: side button(X2) not supported!\n", __FUNCTION__);
+      } else {
+        pointer_event_init(&event, EVT_MOUSE_EXTRA_BUTTON_DOWN, widget, sdl_event->button.x,
+                           sdl_event->button.y);
+        event.button = sdl_event->button.button;
+        event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->button.windowID);
+        window_manager_dispatch_input_event(widget, (event_t*)&event);
       }
       break;
     }
@@ -198,7 +199,7 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
         event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->button.windowID);
 
         window_manager_dispatch_input_event(widget, (event_t*)&event);
-        loop->pressed = 0;
+        loop->pressed = FALSE;
       } else if (sdl_event->button.button == SDL_BUTTON_RIGHT) {
         pointer_event_init(&event, EVT_CONTEXT_MENU, widget, sdl_event->button.x,
                            sdl_event->button.y);
@@ -208,10 +209,12 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
       } else if (sdl_event->button.button == SDL_BUTTON_MIDDLE) {
         key_event_init(&key_event, EVT_KEY_UP, widget, TK_KEY_WHEEL);
         window_manager_dispatch_input_event(widget, (event_t*)&key_event);
-      } else if (sdl_event->button.button == SDL_BUTTON_X1) {
-        log_debug("%s: SDL_MOUSEBUTTONUP: side button(X1) not supported!\n", __FUNCTION__);
-      } else if (sdl_event->button.button == SDL_BUTTON_X2) {
-        log_debug("%s: SDL_MOUSEBUTTONUP: side button(X2) not supported!\n", __FUNCTION__);
+      } else {
+        pointer_event_init(&event, EVT_MOUSE_EXTRA_BUTTON_UP, widget, sdl_event->button.x,
+                           sdl_event->button.y);
+        event.button = sdl_event->button.button;
+        event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->button.windowID);
+        window_manager_dispatch_input_event(widget, (event_t*)&event);
       }
       break;
     }

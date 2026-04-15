@@ -77,6 +77,16 @@ typedef enum _event_type_t {
    */
   EVT_CONTEXT_MENU,
   /**
+   * @const EVT_MOUSE_EXTRA_BUTTON_DOWN
+   * 鼠标额外按键按下事件名(pointer_event_t)。
+   */
+  EVT_MOUSE_EXTRA_BUTTON_DOWN,
+  /**
+   * @const EVT_MOUSE_EXTRA_BUTTON_UP
+   * 鼠标额外按键抬起事件名(pointer_event_t)。
+   */
+  EVT_MOUSE_EXTRA_BUTTON_UP,
+  /**
    * @const EVT_POINTER_ENTER
    * 指针进入事件名(pointer_event_t)。
    */
@@ -848,14 +858,14 @@ typedef struct _pointer_event_t {
    */
   xy_t y;
   /**
-   * @property {xy_t} button
+   * @property {int32_t} button
    * @annotation ["readable", "scriptable"]
    * button。
    * 在不同的平台，该属性会发生变化，
    * PC ：左键为 1，中键为 2，右键为 3
    * 嵌入式：默认为 1
    */
-  xy_t button;
+  int32_t button;
   /**
    * @property {bool_t} pressed
    * @annotation ["readable", "scriptable"]
