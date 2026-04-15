@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/04/15
+  * 完善 main_loop_sdl2_dispatch_mouse_event (感谢兆坤提供补丁)
+
 2026/04/14
   * 完善path.h中的相关注释(感谢雨欣提供补丁)
   * 完善fscript文档(感谢雨欣提供补丁)
