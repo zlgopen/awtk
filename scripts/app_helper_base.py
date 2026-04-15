@@ -445,7 +445,7 @@ class AppHelperBase:
         dll_def_gen_tools = os.path.join(
             self.AWTK_ROOT, 'tools/dll_def_gen/index.js')
 
-        cmd = 'node ' + '"' + idl_gen_tools + '"' + ' idl/idl.json ' + self.SRC_DIR
+        cmd = 'node ' + '"' + idl_gen_tools + '"' + ' idl/idl.json "' + self.SRC_DIR + '"'
         if defDirlist != '' :
             cmd += ' "' + defDirlist + '" '
         if os.system(cmd) != 0:
