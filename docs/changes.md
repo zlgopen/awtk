@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/04/16
+  * 修复 widget 没有收到 EVT_MOUSE_EXTRA_BUTTON_DOWN、UP 事件的问题(感谢兆坤提供补丁)
+
 2026/04/15
   * 完善 main_loop_sdl2_dispatch_mouse_event (感谢兆坤提供补丁)
   * 增加鼠标额外按键事件(感谢兆坤提供补丁)

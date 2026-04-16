@@ -438,6 +438,26 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
       }
       break;
     }
+    case EVT_MOUSE_EXTRA_BUTTON_DOWN:
+    case EVT_MOUSE_EXTRA_BUTTON_UP: {
+      if (dispatch) {
+        pointer_event_t* evt = (pointer_event_t*)e;
+        pointer_event_rotate(evt, system_info());
+
+        input_device_status_init_pointer_event(ids, evt);
+
+        do {
+          widget_t* target = widget_find_target(widget, evt->x, evt->y);
+          if (target != NULL) {
+            if (RET_STOP == widget_dispatch(target, e)) {
+              break;
+            }
+          }
+          widget_dispatch(widget, e);
+        } while (0);
+      }
+      break;
+    }
     case EVT_KEY_DOWN: {
       if (dispatch) {
         key_event_t* evt = (key_event_t*)e;
