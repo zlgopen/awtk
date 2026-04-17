@@ -3,6 +3,13 @@
 #include "tkc/object_default.h"
 #include "gtest/gtest.h"
 
+TEST(FScript, eval) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  ASSERT_EQ(fscript_eval(obj, "print('fscript?target=' + AAA.BBB + '&var=item.CC')", &v), RET_OK);
+  TK_OBJECT_UNREF(obj);
+}
+
 TEST(FScript, args) {
   value_t v;
   tk_object_t* obj = object_default_create();
@@ -639,6 +646,29 @@ TEST(FScript, str_end_with) {
 
   fscript_eval(obj, "str_end_with('AWTK', 'WT')", &v);
   ASSERT_EQ(value_bool(&v), FALSE);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, strcasecmp) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "strcasecmp('AbC', 'abc')", &v);
+  ASSERT_EQ(value_int(&v), 0);
+  value_reset(&v);
+
+  fscript_eval(obj, "strcasecmp('a', 'b')", &v);
+  ASSERT_LT(value_int(&v), 0);
+  value_reset(&v);
+
+  fscript_eval(obj, "strncasecmp('AbC', 'ab', 2)", &v);
+  ASSERT_EQ(value_int(&v), 0);
+  value_reset(&v);
+
+  fscript_eval(obj, "strncasecmp('AbC', 'ab', 3)", &v);
+  ASSERT_NE(value_int(&v), 0);
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);

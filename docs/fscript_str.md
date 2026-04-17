@@ -339,3 +339,39 @@ str_end_with(str, prefix) => bool
 ```js
 str_end_with('AWTK', 'TK')
 ```
+
+### 20.strcasecmp
+
+> 按当前 locale 对两字符串做大小写不敏感比较，语义与 C 的 `strcasecmp` 一致；返回值与 `strcmp` 同类（小于 0、等于 0、大于 0）。对 UTF-8 多字节字符不一定具备完整 Unicode 语义级大小写折叠，行为与底层 `tk_stricmp` 一致。
+----------------------------
+
+#### 原型
+
+```js
+strcasecmp(a, b) => int
+```
+
+#### 示例
+
+```js
+assert(strcasecmp('AbC', 'abc') == 0);
+assert(strcasecmp('a', 'b') < 0);
+```
+
+### 21.strncasecmp
+
+> 至多比较前 n 个字符（大小写不敏感），语义与 C 的 `strncasecmp` 一致；返回值同 `strcasecmp`。locale / UTF-8 限制同上。
+----------------------------
+
+#### 原型
+
+```js
+strncasecmp(a, b, n) => int
+```
+
+#### 示例
+
+```js
+assert(strncasecmp('AbC', 'ab', 2) == 0);
+assert(strncasecmp('AbC', 'ab', 3) != 0);
+```

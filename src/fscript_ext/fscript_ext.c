@@ -335,6 +335,24 @@ static ret_t func_str_end_with(fscript_t* fscript, fscript_args_t* args, value_t
   return RET_OK;
 }
 
+static ret_t func_strcasecmp(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  int32_t ret = 0;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  ret = tk_stricmp(value_str(&args->args[0]), value_str(&args->args[1]));
+  value_set_int32(result, ret);
+  return RET_OK;
+}
+
+static ret_t func_strncasecmp(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  int32_t ret = 0;
+  uint32_t n = 0;
+  FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
+  n = value_uint32(args->args + 2);
+  ret = tk_strnicmp(value_str(&args->args[0]), value_str(&args->args[1]), (size_t)n);
+  value_set_int32(result, ret);
+  return RET_OK;
+}
+
 static ret_t func_ulen(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   wstr_t wstr;
   const char* str = NULL;
@@ -499,6 +517,8 @@ FACTORY_TABLE_ENTRY("trim_left", func_trim_left)
 FACTORY_TABLE_ENTRY("trim_right", func_trim_right)
 FACTORY_TABLE_ENTRY("str_start_with", func_str_start_with)
 FACTORY_TABLE_ENTRY("str_end_with", func_str_end_with)
+FACTORY_TABLE_ENTRY("strcasecmp", func_strcasecmp)
+FACTORY_TABLE_ENTRY("strncasecmp", func_strncasecmp)
 FACTORY_TABLE_ENTRY("totitle", func_totitle)
 FACTORY_TABLE_ENTRY("char_at", func_char_at)
 FACTORY_TABLE_ENTRY("text_count", func_text_count)

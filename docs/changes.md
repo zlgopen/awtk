@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/04/17
+  * fscript 增加函数 strcasecmp/strncasecmp 
+
 2026/04/16
   * 修复 widget 没有收到 EVT_MOUSE_EXTRA_BUTTON_DOWN、UP 事件的问题(感谢兆坤提供补丁)
 
