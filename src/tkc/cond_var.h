@@ -22,8 +22,6 @@
 #ifndef TK_COND_VAR_SIMPLE_H
 #define TK_COND_VAR_SIMPLE_H
 
-#include "tkc/cond.h"
-
 BEGIN_C_DECLS
 
 /**

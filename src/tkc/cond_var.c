@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/cond.h"
 #include "tkc/cond_var.h"
 
 struct _tk_cond_var_t {

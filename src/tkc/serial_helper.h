@@ -34,7 +34,7 @@ typedef int64_t serial_dev_t;
 #elif defined(WIN32)
 #include "windows.h"
 #include "tkc/mutex.h"
-#include "tkc/cond_var.h"
+#include "tkc/cond.h"
 #include "tkc/thread.h"
 
 typedef HANDLE serial_dev_t;

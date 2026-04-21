@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/04/21
+  * 修复tk_cond_var的头文件依赖的问题（方便移植到awplc的修改）(感谢智明提供补丁)
+
 2026/04/17
   * fscript 增加函数 strcasecmp/strncasecmp 
 
