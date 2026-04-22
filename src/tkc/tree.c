@@ -104,7 +104,7 @@ static int tree_node_is_ancestor_cmp(const void* iter, const void* ctx) {
   return tree_node_is_ancestor(node, ancestor) ? 0 : -1;
 }
 
-inline static bool_t tree_node_is_leaf(tree_node_t* node) {
+inline static bool_t tree_node_is_leaf(const tree_node_t* node) {
   return_value_if_fail(node != NULL, FALSE);
   return node->child == NULL;
 }
@@ -645,7 +645,7 @@ ret_t tree_foreach(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_
   return tree_node_foreach(node, foreach_type, visit, tree->destroy, &mem_ctx, ctx);
 }
 
-bool_t tree_is_empty(tree_t* tree, tree_node_t* node) {
+bool_t tree_is_empty(const tree_t* tree, tree_node_t* node) {
   return_value_if_fail(tree != NULL, FALSE);
 
   if (node == NULL) {
@@ -885,7 +885,7 @@ ret_t tree_set_shared_node_allocator(tree_t* tree, mem_allocator_t* allocator) {
   return tree_set_node_allocator_impl(tree, allocator, TRUE);
 }
 
-uint32_t tree_get_node_size(tree_t* tree) {
+uint32_t tree_get_node_size(const tree_t* tree) {
   uint32_t ret = sizeof(tree_node_t);
   return_value_if_fail(tree != NULL, 0);
 
@@ -915,7 +915,7 @@ ret_t tree_set_node_features(tree_t* tree, feature_info_list_t* features) {
   return RET_OK;
 }
 
-void* tree_get_node_feature(tree_t* tree, const tree_node_t* node,
+void* tree_get_node_feature(const tree_t* tree, const tree_node_t* node,
                             const feature_info_list_feature_info_t* info) {
   return_value_if_fail(tree != NULL && node != NULL, NULL);
   return_value_if_fail(info != NULL, NULL);
@@ -930,7 +930,7 @@ void* tree_get_node_feature(tree_t* tree, const tree_node_t* node,
   return NULL;
 }
 
-bool_t tree_has_node_feature(tree_t* tree, const feature_info_list_feature_info_t* info) {
+bool_t tree_has_node_feature(const tree_t* tree, const feature_info_list_feature_info_t* info) {
   return_value_if_fail(tree != NULL, FALSE);
   return_value_if_fail(info != NULL, FALSE);
 

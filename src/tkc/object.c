@@ -602,25 +602,25 @@ ret_t tk_object_eval(tk_object_t* obj, const char* expr, value_t* v) {
 }
 #endif /*WITHOUT_FSCRIPT*/
 
-const char* tk_object_get_type(tk_object_t* obj) {
+const char* tk_object_get_type(const tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
 
   return obj->vt->type;
 }
 
-const char* tk_object_get_desc(tk_object_t* obj) {
+const char* tk_object_get_desc(const tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
 
   return obj->vt->desc;
 }
 
-bool_t tk_object_is_collection(tk_object_t* obj) {
+bool_t tk_object_is_collection(const tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, FALSE);
 
   return obj->vt->is_collection;
 }
 
-uint32_t tk_object_get_size(tk_object_t* obj) {
+uint32_t tk_object_get_size(const tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, 0);
 
   return obj->vt->size;
@@ -1174,7 +1174,7 @@ ret_t tk_object_set_prop_str_with_format(tk_object_t* obj, const char* name, con
   return tk_object_set_prop_str(obj, name, str);
 }
 
-bool_t tk_object_is_instance_of(tk_object_t* obj, const char* type) {
+bool_t tk_object_is_instance_of(const tk_object_t* obj, const char* type) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, FALSE);
 
   return tk_str_eq(obj->vt->type, type);

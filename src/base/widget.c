@@ -4058,7 +4058,7 @@ ret_t widget_to_global(widget_t* widget, point_t* p) {
   return RET_OK;
 }
 
-int32_t widget_count_children(widget_t* widget) {
+int32_t widget_count_children(const widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, 0);
 
   return widget->children != NULL ? widget->children->size : 0;
@@ -4073,7 +4073,7 @@ widget_t* widget_get_child(widget_t* widget, int32_t index) {
   return WIDGET(widget->children->elms[index]);
 }
 
-int32_t widget_index_of(widget_t* widget) {
+int32_t widget_index_of(const widget_t* widget) {
   widget_t* parent = NULL;
   return_value_if_fail(widget != NULL && widget->parent != NULL, -1);
 
@@ -4408,7 +4408,7 @@ widget_t* widget_cast(widget_t* widget) {
   return widget;
 }
 
-bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
+bool_t widget_is_instance_of(const widget_t* widget, const widget_vtable_t* vt) {
   const widget_vtable_t* iter = NULL;
   return_value_if_fail(widget != NULL && vt != NULL, FALSE);
 
@@ -5378,7 +5378,7 @@ ret_t widget_draw_text_in_rect(widget_t* widget, canvas_t* c, const wchar_t* str
   return canvas_draw_text_bidi_in_rect(c, str, size, r, bidi_type, ellipses);
 }
 
-bool_t widget_is_parent_of(widget_t* widget, widget_t* child) {
+bool_t widget_is_parent_of(const widget_t* widget, const widget_t* child) {
   widget_t* iter = NULL;
   return_value_if_fail(widget != NULL && child != NULL, FALSE);
 
@@ -5393,7 +5393,7 @@ bool_t widget_is_parent_of(widget_t* widget, widget_t* child) {
   return FALSE;
 }
 
-bool_t widget_is_direct_parent_of(widget_t* widget, widget_t* child) {
+bool_t widget_is_direct_parent_of(const widget_t* widget, const widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL, FALSE);
 
   return child->parent == widget;

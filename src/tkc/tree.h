@@ -413,12 +413,12 @@ ret_t tree_foreach(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_
 /**
  * @method tree_is_empty
  * 树结点是否为空。
- * @param {tree_t*} tree 树结构对象。
+ * @param {const tree_t*} tree 树结构对象。
  * @param {tree_node_t*} node 结点（为NULL时，返回树是否为空）。
  *
  * @return {bool_t} 返回 TRUE 表示空树，返回 FALSE 表示树有数据。
  */
-bool_t tree_is_empty(tree_t* tree, tree_node_t* node);
+bool_t tree_is_empty(const tree_t* tree, tree_node_t* node);
 
 /**
  * @method tree_size
@@ -505,11 +505,11 @@ ret_t tree_set_shared_node_allocator(tree_t* tree, mem_allocator_t* allocator);
 /**
  * @method tree_get_node_size
  * 获取结点大小。
- * @param {tree_t*} tree 树结构对象。
+ * @param {const tree_t*} tree 树结构对象。
  *
  * @return {uint32_t} 返回结点大小。
  */
-uint32_t tree_get_node_size(tree_t* tree);
+uint32_t tree_get_node_size(const tree_t* tree);
 
 /**
  * @method tree_set_node_features
@@ -524,24 +524,24 @@ ret_t tree_set_node_features(tree_t* tree, feature_info_list_t* features);
 /**
  * @method tree_get_node_feature
  * 获取结点特征。
- * @param {tree_t*} tree 树结构对象。
+ * @param {const tree_t*} tree 树结构对象。
  * @param {const tree_node_t*} node 结点。
  * @param {const feature_info_list_feature_info_t*} info 特征信息对象。
  *
  * @return {void*} 返回特征。
  */
-void* tree_get_node_feature(tree_t* tree, const tree_node_t* node,
+void* tree_get_node_feature(const tree_t* tree, const tree_node_t* node,
                             const feature_info_list_feature_info_t* info);
 
 /**
  * @method tree_has_node_feature
  * 是否有指定结点特征。
- * @param {tree_t*} tree 树结构对象。
+ * @param {const tree_t*} tree 树结构对象。
  * @param {const feature_info_list_feature_info_t*} info 特征信息对象。
  *
  * @return {bool_t} 返回 TRUE 表示有指定结点特征，返回 FALSE 表示没有指定结点特征。
  */
-bool_t tree_has_node_feature(tree_t* tree, const feature_info_list_feature_info_t* info);
+bool_t tree_has_node_feature(const tree_t* tree, const feature_info_list_feature_info_t* info);
 
 /**
  * @method tree_deinit

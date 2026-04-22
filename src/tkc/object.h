@@ -213,44 +213,44 @@ tk_object_t* tk_object_create_ex(const object_vtable_t* vt, uint32_t extra_data_
  * 获取对象的类型名称。
  *
  * @annotation ["scriptable"]
- * @param {tk_object_t*} obj object对象。
+ * @param {const tk_object_t*} obj object对象。
  *
  * @return {const char*} 返回对象的类型名称。
  */
-const char* tk_object_get_type(tk_object_t* obj);
+const char* tk_object_get_type(const tk_object_t* obj);
 
 /**
  * @method tk_object_get_desc
  * 获取对象的描述信息。
  *
  * @annotation ["scriptable"]
- * @param {tk_object_t*} obj object对象。
+ * @param {const tk_object_t*} obj object对象。
  *
  * @return {const char*} 返回对象的描述信息。
  */
-const char* tk_object_get_desc(tk_object_t* obj);
+const char* tk_object_get_desc(const tk_object_t* obj);
 
 /**
  * @method tk_object_get_size
  * 获取对象占用内存的大小。
  *
  * @annotation ["scriptable"]
- * @param {tk_object_t*} obj object对象。
+ * @param {const tk_object_t*} obj object对象。
  *
  * @return {uint32_t} 返回对象占用内存的大小。
  */
-uint32_t tk_object_get_size(tk_object_t* obj);
+uint32_t tk_object_get_size(const tk_object_t* obj);
 
 /**
  * @method tk_object_is_collection
  * 判断对象是否是集合。
  *
  * @annotation ["scriptable"]
- * @param {tk_object_t*} obj object对象。
+ * @param {const tk_object_t*} obj object对象。
  *
  * @return {bool_t} 返回TRUE表示是集合，否则不是。
  */
-bool_t tk_object_is_collection(tk_object_t* obj);
+bool_t tk_object_is_collection(const tk_object_t* obj);
 
 /**
  * @method tk_object_set_name
@@ -1127,12 +1127,12 @@ tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path, cons
  * if(tk_object_is_instance_of(obj, OBJECT_ARRAY_TYPE)) {
  * }
  * ```
- * @param {tk_object_t*} obj object对象。
+ * @param {const tk_object_t*} obj object对象。
  * @param {const char*} type 类型。
  * 
  * @return {bool_t} 返回TRUE表示是指定类型的实例，否则表示不是。
  */
-bool_t tk_object_is_instance_of(tk_object_t* obj, const char* type);
+bool_t tk_object_is_instance_of(const tk_object_t* obj, const char* type);
 
 /* private */
 

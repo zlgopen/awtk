@@ -780,11 +780,11 @@ struct _widget_t {
  * @method widget_count_children
  * 获取子控件的个数。
  * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
+ * @param {const widget_t*} widget 控件对象。
  *
  * @return {int32_t} 子控件的个数。
  */
-int32_t widget_count_children(widget_t* widget);
+int32_t widget_count_children(const widget_t* widget);
 
 /**
  * @method widget_get_child
@@ -843,11 +843,11 @@ native_window_t* widget_get_native_window(widget_t* widget);
  * @method widget_index_of
  * 获取控件在父控件中的索引编号。
  * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
+ * @param {const widget_t*} widget 控件对象。
  *
  * @return {int32_t} 在父控件中的索引编号。
  */
-int32_t widget_index_of(widget_t* widget);
+int32_t widget_index_of(const widget_t* widget);
 
 /**
  * @method widget_close_window
@@ -2225,23 +2225,23 @@ bool_t widget_is_window_created(widget_t* widget);
  * @method widget_is_parent_of
  * 判断当前控件是否是指定控件的父控件(包括非直系)。
  * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {widget_t*} child 控件对象。
+ * @param {const widget_t*} widget 控件对象。
+ * @param {const widget_t*} child 控件对象。
  *
  * @return {bool_t} 返回TRUE表示是，否则表示不是。
  */
-bool_t widget_is_parent_of(widget_t* widget, widget_t* child);
+bool_t widget_is_parent_of(const widget_t* widget, const widget_t* child);
 
 /**
  * @method widget_is_direct_parent_of
  * 判断当前控件是否是指定控件的直系父控件。
  * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {widget_t*} child 控件对象。
+ * @param {const widget_t*} widget 控件对象。
+ * @param {const widget_t*} child 控件对象。
  *
  * @return {bool_t} 返回TRUE表示是，否则表示不是。
  */
-bool_t widget_is_direct_parent_of(widget_t* widget, widget_t* child);
+bool_t widget_is_direct_parent_of(const widget_t* widget, const widget_t* child);
 
 /**
  * @method widget_is_window
@@ -3163,12 +3163,12 @@ ret_t widget_on_paint_border(widget_t* widget, canvas_t* c);
 /**
  * @method widget_is_instance_of
  * 检查控件是否是指定的类型。
- * @param {widget_t*} widget 控件对象。
+ * @param {const widget_t*} widget 控件对象。
  * @param {const widget_vtable_t*} vt 虚表。
  *
  *  @return {bool_t} 返回TRUE表示是，FALSE表示否。
  */
-bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
+bool_t widget_is_instance_of(const widget_t* widget, const widget_vtable_t* vt);
 
 /**
  * @method widget_set_need_relayout_children

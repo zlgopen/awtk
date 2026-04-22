@@ -625,11 +625,11 @@ const wchar_t* value_wstr(const value_t* v);
  * @method value_is_null
  * 判断value是否为空值。
  * @annotation ["scriptable"]
- * @param {value_t*} value value对象。
+ * @param {const value_t*} value value对象。
  *
  * @return {bool_t} 为空值返回TRUE，否则返回FALSE。
  */
-bool_t value_is_null(value_t* value);
+bool_t value_is_null(const value_t* value);
 
 /**
  * @method value_equal

@@ -663,7 +663,7 @@ ret_t value_replace(value_t* dst, const value_t* src, bool_t deep_copy) {
   return deep_copy ? value_deep_copy(dst, src) : value_copy(dst, src);
 }
 
-bool_t value_is_null(value_t* v) {
+bool_t value_is_null(const value_t* v) {
   return v == NULL || v->type == VALUE_TYPE_INVALID;
 }
 
