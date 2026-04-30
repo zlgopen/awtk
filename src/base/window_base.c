@@ -652,10 +652,12 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     pointer_event_t enter;
     widget_t* wm = widget_get_window_manager(widget);
     win->stage = WINDOW_STAGE_OPENED;
-    widget->parent->grab_widget_count =
-        widget->grab_widget_count + win->grab_count_when_to_foreground;
-    if (widget->parent->grab_widget_count) {
-      widget->parent->grab_widget = widget;
+    if (widget->parent != NULL) {
+      widget->parent->grab_widget_count =
+          widget->grab_widget_count + win->grab_count_when_to_foreground;
+      if (widget->parent->grab_widget_count) {
+        widget->parent->grab_widget = widget;
+      }
     }
     if (wm->target != widget) {
       pointer_event_init(&enter, EVT_POINTER_ENTER, widget, 0, 0);
@@ -665,7 +667,7 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       widget_set_focused_internal(win->save_focus_widget, TRUE);
       widget_unref(win->save_focus_widget);
       win->save_focus_widget = NULL;
-    } else if (widget_is_window_manager(widget->parent)) {
+    } else if (widget->parent != NULL && widget_is_window_manager(widget->parent)) {
       if (widget->sensitive) {
         widget_set_focused_internal(widget, TRUE);
       }

@@ -721,7 +721,11 @@ ret_t window_manager_dispatch_top_window_changed(widget_t* widget) {
 ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type) {
   window_event_t evt;
   event_t e = event_init(type, window);
-  widget_dispatch_recursive(window, &e);
+  ret_t ret = widget_dispatch_recursive(window, &e);
+
+  if (NULL == window->parent) {
+    return ret;
+  }
 
   evt.window = window;
   evt.e = event_init(type, window->parent);
