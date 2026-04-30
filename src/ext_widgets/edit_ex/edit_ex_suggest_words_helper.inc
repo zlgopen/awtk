@@ -41,6 +41,8 @@ BEGIN_C_DECLS
 #define EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MAXNR 5
 #define EDIT_SUGGEST_WORDS_SCROLL_BAR_DEFAULT_WH 12
 
+static void edit_ex_close_suggest_words_popup(edit_ex_t* edit_ex);
+
 inline static void edit_ex_set_is_select_suggest_word(edit_ex_t* edit_ex,
                                                       bool_t is_select_suggest_word) {
   value_t v;
@@ -56,13 +58,6 @@ inline static void edit_ex_set_is_select_suggest_word(edit_ex_t* edit_ex,
   emitter_dispatch(EMITTER(edit_ex), &evt.e);
 }
 
-inline static void edit_ex_close_suggest_words_popup(edit_ex_t* edit_ex) {
-  if (edit_ex->suggest_words_popup != NULL) {
-    window_close(edit_ex->suggest_words_popup);
-    edit_ex->suggest_words_popup = NULL;
-  }
-}
-
 static ret_t edit_ex_on_screen_resize(void* ctx, event_t* e) {
   edit_ex_t* edit_ex = EDIT_EX(ctx);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
@@ -70,6 +65,24 @@ static ret_t edit_ex_on_screen_resize(void* ctx, event_t* e) {
   edit_ex_close_suggest_words_popup(edit_ex);
 
   return RET_OK;
+}
+
+inline static void edit_ex_deinit_suggest_words_popup(edit_ex_t* edit_ex) {
+  if (edit_ex->suggest_words_popup != NULL) {
+    widget_off_by_func(window_manager(), EVT_RESIZE, edit_ex_on_screen_resize, edit_ex);
+    widget_off_by_func(window_manager(), EVT_MOVE_RESIZE, edit_ex_on_screen_resize, edit_ex);
+
+    widget_off_by_ctx(edit_ex->suggest_words_popup, edit_ex);
+
+    edit_ex->suggest_words_popup = NULL;
+  }
+}
+
+inline static void edit_ex_close_suggest_words_popup(edit_ex_t* edit_ex) {
+  if (edit_ex->suggest_words_popup != NULL) {
+    window_close(edit_ex->suggest_words_popup);
+    edit_ex_deinit_suggest_words_popup(edit_ex);
+  }
 }
 
 static ret_t edit_ex_suggest_words_popup_on_open(void* ctx, event_t* e) {
@@ -84,10 +97,7 @@ static ret_t edit_ex_suggest_words_popup_on_close(void* ctx, event_t* e) {
   edit_ex_t* edit_ex = EDIT_EX(ctx);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
-  widget_off_by_func(window_manager(), EVT_RESIZE, edit_ex_on_screen_resize, edit_ex);
-  widget_off_by_func(window_manager(), EVT_MOVE_RESIZE, edit_ex_on_screen_resize, edit_ex);
-
-  edit_ex->suggest_words_popup = NULL;
+  edit_ex_deinit_suggest_words_popup(edit_ex);
 
   return RET_OK;
 }
