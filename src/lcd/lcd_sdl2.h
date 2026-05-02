@@ -23,7 +23,7 @@
 #define LCD_SDL_H
 
 #include "base/lcd.h"
-#include <SDL.h>
+#include "base/awtk_sdl_api.h"
 
 BEGIN_C_DECLS
 

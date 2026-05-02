@@ -1,0 +1,4 @@
+include("${CMAKE_CURRENT_LIST_DIR}/awtk_build_tree_exports.cmake")
+
+set(awtk_FOUND TRUE)
+set(AWTK_FOUND TRUE)

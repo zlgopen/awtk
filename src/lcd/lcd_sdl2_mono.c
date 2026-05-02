@@ -23,6 +23,32 @@
 #include "lcd/lcd_mono.h"
 #include "lcd/lcd_sdl2_mono.h"
 
+#ifdef AWTK_SDL3
+static bool awtk_sdl_render_copy(SDL_Renderer* renderer, SDL_Texture* texture, const SDL_Rect* srcrect,
+                                 const SDL_Rect* dstrect) {
+  SDL_FRect srcf, dstf;
+  const SDL_FRect* ps = NULL;
+  const SDL_FRect* pd = NULL;
+  if (srcrect != NULL) {
+    srcf.x = (float)srcrect->x;
+    srcf.y = (float)srcrect->y;
+    srcf.w = (float)srcrect->w;
+    srcf.h = (float)srcrect->h;
+    ps = &srcf;
+  }
+  if (dstrect != NULL) {
+    dstf.x = (float)dstrect->x;
+    dstf.y = (float)dstrect->y;
+    dstf.w = (float)dstrect->w;
+    dstf.h = (float)dstrect->h;
+    pd = &dstf;
+  }
+  return SDL_RenderTexture(renderer, texture, ps, pd);
+}
+#else
+#define awtk_sdl_render_copy SDL_RenderCopy
+#endif /*AWTK_SDL3*/
+
 typedef struct _mono_info_t {
   SDL_Renderer* render;
   SDL_Texture* texture;
@@ -99,7 +125,7 @@ static ret_t lcd_sdl2_mono_flush(lcd_t* lcd) {
 
     SDL_UnlockTexture(info->texture);
 
-    SDL_RenderCopy(info->render, info->texture, &sr, &sr);
+    awtk_sdl_render_copy(info->render, info->texture, &sr, &sr);
   }
 
   if (lcd->draw_mode != LCD_DRAW_OFFLINE) {

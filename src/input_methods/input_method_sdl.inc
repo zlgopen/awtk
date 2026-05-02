@@ -19,9 +19,11 @@
  *
  */
 
-#include <SDL.h>
+#include "base/awtk_sdl_api.h"
 #include "tkc/mem.h"
 #include "base/input_method.h"
+#include "base/native_window.h"
+#include "base/window_manager.h"
 #include "main_loop/main_loop_simple.h"
 
 static ret_t input_method_sdl_request(input_method_t* im, widget_t* widget) {
@@ -37,10 +39,33 @@ static ret_t input_method_sdl_request(input_method_t* im, widget_t* widget) {
     r.w = widget->w;
     r.h = 16; // 默认预编辑区字号，作为兜底
 
+#ifdef AWTK_SDL3
+    {
+      native_window_t* nw =
+          (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
+      SDL_Window* win = nw != NULL ? (SDL_Window*)nw->handle : NULL;
+      if (win != NULL) {
+        SDL_StartTextInput(win);
+        SDL_SetTextInputArea(win, &r, 0);
+      }
+    }
+#else
     SDL_StartTextInput();
     SDL_SetTextInputRect(&r);
+#endif
   } else {
+#ifdef AWTK_SDL3
+    {
+      native_window_t* nw =
+          (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
+      SDL_Window* win = nw != NULL ? (SDL_Window*)nw->handle : NULL;
+      if (win != NULL) {
+        SDL_StopTextInput(win);
+      }
+    }
+#else
     SDL_StopTextInput();
+#endif
   }
 
   return RET_OK;

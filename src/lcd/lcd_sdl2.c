@@ -26,6 +26,37 @@
 #include "lcd/lcd_mem_special.h"
 #include "base/lcd_orientation_helper.h"
 
+#ifdef AWTK_SDL3
+static bool awtk_sdl_render_copy(SDL_Renderer* renderer, SDL_Texture* texture, const SDL_Rect* srcrect,
+                                 const SDL_Rect* dstrect) {
+  SDL_FRect srcf, dstf;
+  const SDL_FRect* ps = NULL;
+  const SDL_FRect* pd = NULL;
+  if (srcrect != NULL) {
+    srcf.x = (float)srcrect->x;
+    srcf.y = (float)srcrect->y;
+    srcf.w = (float)srcrect->w;
+    srcf.h = (float)srcrect->h;
+    ps = &srcf;
+  }
+  if (dstrect != NULL) {
+    dstf.x = (float)dstrect->x;
+    dstf.y = (float)dstrect->y;
+    dstf.w = (float)dstrect->w;
+    dstf.h = (float)dstrect->h;
+    pd = &dstf;
+  }
+  return SDL_RenderTexture(renderer, texture, ps, pd);
+}
+
+static void awtk_sdl_get_render_output_size(SDL_Renderer* render, int* w, int* h) {
+  SDL_GetRenderOutputSize(render, w, h);
+}
+#else
+#define awtk_sdl_render_copy SDL_RenderCopy
+#define awtk_sdl_get_render_output_size SDL_GetRendererOutputSize
+#endif /*AWTK_SDL3*/
+
 typedef struct _special_info_t {
   SDL_Renderer* render;
   SDL_Texture* texture;
@@ -119,7 +150,7 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
 
       SDL_UnlockTexture(info->texture);
 
-      SDL_RenderCopy(info->render, info->texture, &sr, &sr);
+      awtk_sdl_render_copy(info->render, info->texture, &sr, &sr);
 
       if (src.buffer != NULL) {
         graphic_buffer_destroy(src.buffer);
@@ -165,7 +196,7 @@ ret_t lcd_sdl2_texture_reset(lcd_t* lcd) {
   special_info_t* info = (special_info_t*)(special->ctx);
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
 
-  SDL_GetRendererOutputSize(info->render, &w, &h);
+  awtk_sdl_get_render_output_size(info->render, &w, &h);
 
   SDL_DestroyTexture(info->texture);
   info->texture = NULL;
@@ -180,7 +211,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   special_info_t* info = NULL;
   return_value_if_fail(render != NULL, NULL);
 
-  SDL_GetRendererOutputSize(render, &w, &h);
+  awtk_sdl_get_render_output_size(render, &w, &h);
   info = special_info_create(render);
   return_value_if_fail(info != NULL, NULL);
 

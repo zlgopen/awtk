@@ -39,8 +39,34 @@ typedef struct _asset_loader_zip_t {
 } asset_loader_zip_t;
 
 #ifdef WITH_SDL
-#include <SDL.h>
+#include "base/awtk_sdl_api.h"
 static void* load_asset(const char* filename, uint32_t* data_size) {
+#ifdef AWTK_SDL3
+  SDL_IOStream* io = SDL_IOFromFile(filename, "rb");
+  if (io != NULL) {
+    Sint64 sz64 = SDL_GetIOSize(io);
+    uint32_t size;
+    void* data = NULL;
+    if (sz64 < 0 || sz64 > (Sint64)0x7fffffff) {
+      SDL_CloseIO(io);
+      return NULL;
+    }
+    size = (uint32_t)sz64;
+    data = TKMEM_ALLOC(size + 1);
+    if (data != NULL) {
+      memset(data, 0x00, size + 1);
+      if (SDL_ReadIO(io, data, (size_t)size) != (size_t)size) {
+        TKMEM_FREE(data);
+        data = NULL;
+        log_warn("!!! SDL_ReadIO [name=%s size=%u] failed!!!\n", filename, size);
+      }
+    }
+    SDL_CloseIO(io);
+    *data_size = size;
+    return data;
+  }
+  return NULL;
+#else
   SDL_RWops* rwops = SDL_RWFromFile(filename, "rb");
   if (rwops != NULL) {
     uint32_t size = rwops->size(rwops);
@@ -61,6 +87,7 @@ static void* load_asset(const char* filename, uint32_t* data_size) {
   } else {
     return NULL;
   }
+#endif
 }
 #else
 static void* load_asset(const char* filename, uint32_t* data_size) {

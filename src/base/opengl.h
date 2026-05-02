@@ -16,9 +16,14 @@
 #include <EGL/eglext.h>
 
 #else
+#ifdef AWTK_SDL3
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_opengl.h>
+#else
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_opengl_glext.h>
+#endif
 #endif /*IOS*/
 #define opengl_loadGL()
 #else

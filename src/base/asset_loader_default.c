@@ -46,11 +46,31 @@ static asset_info_t* load_asset_with_mmap(uint16_t type, uint16_t subtype, const
 }
 
 #ifdef WITH_SDL
-#include <SDL.h>
+#include "base/awtk_sdl_api.h"
 static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* path,
                                 const char* name) {
   asset_info_t* info = load_asset_with_mmap(type, subtype, path, name);
   if (info == NULL) {
+#ifdef AWTK_SDL3
+    SDL_IOStream* io = SDL_IOFromFile(path, "rb");
+    if (io != NULL) {
+      Sint64 sz64 = SDL_GetIOSize(io);
+      int32_t size = (int32_t)sz64;
+      if (sz64 < 0 || size != sz64) {
+        SDL_CloseIO(io);
+        return NULL;
+      }
+      info = asset_info_create(type, subtype, name, size);
+      if (info != NULL) {
+        if (SDL_ReadIO(io, info->data, (size_t)size) != (size_t)size) {
+          asset_info_destroy(info);
+          info = NULL;
+          log_warn("!!! SDL_ReadIO [path=%s size=%d] failed!!!\n", path, size);
+        }
+      }
+      SDL_CloseIO(io);
+    }
+#else
     SDL_RWops* rwops = SDL_RWFromFile(path, "rb");
     if (rwops != NULL) {
       int32_t size = rwops->size(rwops);
@@ -64,12 +84,21 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* pat
       }
       rwops->close(rwops);
     }
+#endif
   }
 
   return info;
 }
 
 static bool_t asset_exist(const char* path) {
+#ifdef AWTK_SDL3
+  SDL_IOStream* io = SDL_IOFromFile(path, "r");
+  if (io != NULL) {
+    SDL_CloseIO(io);
+    return TRUE;
+  }
+  return FALSE;
+#else
   SDL_RWops* rwops = SDL_RWFromFile(path, "r");
 
   if (rwops != NULL) {
@@ -78,6 +107,7 @@ static bool_t asset_exist(const char* path) {
   } else {
     return FALSE;
   }
+#endif
 }
 
 #else

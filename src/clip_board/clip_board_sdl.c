@@ -23,7 +23,7 @@
 #include "tkc/str.h"
 
 #ifdef WITH_SDL
-#include "SDL_clipboard.h"
+#include "base/awtk_sdl_api.h"
 #include "clip_board/clip_board_sdl.h"
 
 typedef struct _clip_board_sdl_t {

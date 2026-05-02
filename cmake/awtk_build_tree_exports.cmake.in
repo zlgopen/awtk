@@ -1,0 +1,5 @@
+add_library(awtk::awtk @AWTK_IMPORT_KIND@ IMPORTED)
+set_target_properties(awtk::awtk PROPERTIES
+  IMPORTED_LOCATION "$<TARGET_FILE:awtk>"
+  INTERFACE_INCLUDE_DIRECTORIES "@CMAKE_SOURCE_DIR@;@CMAKE_SOURCE_DIR@/src"
+)

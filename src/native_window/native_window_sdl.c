@@ -19,7 +19,7 @@
  *
  */
 
-#include <SDL.h>
+#include "base/awtk_sdl_api.h"
 #include "base/system_info.h"
 #include "base/window_manager.h"
 
@@ -33,8 +33,12 @@
 #include <OpenGLES/ES2/glext.h>
 #define GL_ALPHA_TEST 0x0BC0
 #else
+#ifdef AWTK_SDL3
+#include <SDL3/SDL_opengl.h>
+#else
 #include <SDL_opengl.h>
 #include <SDL_opengl_glext.h>
+#endif
 #endif /*IOS*/
 #endif /*WITHOUT_GLAD*/
 
@@ -45,6 +49,14 @@
 #include "lcd/lcd_nanovg.h"
 #include "lcd/lcd_sdl2_mono.h"
 #include "base/native_window.h"
+
+#ifdef AWTK_SDL3
+#define awtk_sdl_free_surface SDL_DestroySurface
+#define awtk_sdl_free_cursor SDL_DestroyCursor
+#else
+#define awtk_sdl_free_surface SDL_FreeSurface
+#define awtk_sdl_free_cursor SDL_FreeCursor
+#endif
 
 typedef struct _native_window_sdl_t {
   native_window_t native_window;
@@ -200,9 +212,17 @@ static ret_t native_window_sdl_set_fullscreen(native_window_t* win, bool_t fulls
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
 
   if (fullscreen) {
+#ifdef AWTK_SDL3
+    SDL_SetWindowFullscreen(sdl->window, true);
+#else
     SDL_SetWindowFullscreen(sdl->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+#endif
   } else {
+#ifdef AWTK_SDL3
+    SDL_SetWindowFullscreen(sdl->window, false);
+#else
     SDL_SetWindowFullscreen(sdl->window, 0);
+#endif
   }
 
   return RET_OK;
@@ -220,7 +240,11 @@ static ret_t native_window_sdl_close(native_window_t* win) {
   }
 
   if (sdl->context != NULL) {
+#ifdef AWTK_SDL3
+    SDL_GL_DestroyContext(sdl->context);
+#else
     SDL_GL_DeleteContext(sdl->context);
+#endif
   }
 
   if (sdl->window != NULL) {
@@ -250,7 +274,11 @@ static ret_t native_window_sdl_gl_make_current(native_window_t* win) {
   SDL_Window* window = sdl->window;
 
   SDL_GL_MakeCurrent(window, sdl->context);
+#ifdef AWTK_SDL3
+  SDL_GetWindowSizeInPixels(window, &fw, &fh);
+#else
   SDL_GL_GetDrawableSize(window, &fw, &fh);
+#endif
 
   glViewport(0, 0, fw, fh);
   if (!sdl->is_init) {
@@ -309,7 +337,11 @@ static ret_t native_window_sdl_get_info(native_window_t* win, native_window_info
 
   SDL_GetWindowPosition(window, &x, &y);
   SDL_GetWindowSize(window, &ww, &wh);
+#ifdef AWTK_SDL3
+  SDL_GetWindowSizeInPixels(window, &fw, &fh);
+#else
   SDL_GL_GetDrawableSize(window, &fw, &fh);
+#endif
 
   memset(info, 0x00, sizeof(*info));
   info->x = x;
@@ -367,17 +399,20 @@ static ret_t calc_cursor_hot_spot(const char* name, bitmap_t* img, point_t* p) {
 }
 
 static ret_t native_window_sdl_cursor_from_bitmap(native_window_t* win, bitmap_t* img, point_t* p) {
+#ifndef AWTK_SDL3
   Uint32 depth = 32;
-  uint8_t* data = NULL;
-  uint32_t w = img->w;
-  uint32_t h = img->h;
   uint32_t rmask = 0;
   uint32_t gmask = 0;
   uint32_t bmask = 0;
   uint32_t amask = 0;
+#endif
+  uint8_t* data = NULL;
+  uint32_t w = img->w;
+  uint32_t h = img->h;
   uint32_t pitch = 4 * w;
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
 
+#ifndef AWTK_SDL3
   if (img->format == BITMAP_FMT_BGRA8888) {
     bmask = 0x000000ff;
     gmask = 0x0000ff00;
@@ -394,16 +429,28 @@ static ret_t native_window_sdl_cursor_from_bitmap(native_window_t* win, bitmap_t
      */
     return RET_FAIL;
   }
+#else
+  if (img->format != BITMAP_FMT_BGRA8888 && img->format != BITMAP_FMT_RGBA8888) {
+    return RET_FAIL;
+  }
+#endif
 
   if (sdl->cursor_surface != NULL) {
-    SDL_FreeSurface(sdl->cursor_surface);
+    awtk_sdl_free_surface(sdl->cursor_surface);
     sdl->cursor_surface = NULL;
   }
 
   data = bitmap_lock_buffer_for_read(img);
   return_value_if_fail(data != NULL, RET_BAD_PARAMS);
+#ifdef AWTK_SDL3
+  sdl->cursor_surface = SDL_CreateSurfaceFrom(
+      (int)w, (int)h,
+      img->format == BITMAP_FMT_BGRA8888 ? SDL_PIXELFORMAT_ARGB8888 : SDL_PIXELFORMAT_RGBA8888, data,
+      (int)pitch);
+#else
   sdl->cursor_surface =
       SDL_CreateRGBSurfaceFrom(data, w, h, depth, pitch, rmask, gmask, bmask, amask);
+#endif
   bitmap_unlock_buffer(img);
   return_value_if_fail(sdl->cursor_surface != NULL, RET_OOM);
 
@@ -414,6 +461,31 @@ static ret_t native_window_sdl_cursor_from_bitmap(native_window_t* win, bitmap_t
 }
 
 static int map_to_sdl_cursor(const char* name) {
+#ifdef AWTK_SDL3
+  if (tk_str_eq(WIDGET_CURSOR_DEFAULT, name)) {
+    return (int)SDL_SYSTEM_CURSOR_DEFAULT;
+  } else if (tk_str_eq(WIDGET_CURSOR_EDIT, name)) {
+    return (int)SDL_SYSTEM_CURSOR_TEXT;
+  } else if (tk_str_eq(WIDGET_CURSOR_HAND, name)) {
+    return (int)SDL_SYSTEM_CURSOR_POINTER;
+  } else if (tk_str_eq(WIDGET_CURSOR_WAIT, name)) {
+    return (int)SDL_SYSTEM_CURSOR_WAIT;
+  } else if (tk_str_eq(WIDGET_CURSOR_CROSS, name)) {
+    return (int)SDL_SYSTEM_CURSOR_CROSSHAIR;
+  } else if (tk_str_eq(WIDGET_CURSOR_NO, name)) {
+    return (int)SDL_SYSTEM_CURSOR_NOT_ALLOWED;
+  } else if (tk_str_eq(WIDGET_CURSOR_SIZENWSE, name)) {
+    return (int)SDL_SYSTEM_CURSOR_NWSE_RESIZE;
+  } else if (tk_str_eq(WIDGET_CURSOR_SIZENESW, name)) {
+    return (int)SDL_SYSTEM_CURSOR_NESW_RESIZE;
+  } else if (tk_str_eq(WIDGET_CURSOR_SIZEWE, name)) {
+    return (int)SDL_SYSTEM_CURSOR_EW_RESIZE;
+  } else if (tk_str_eq(WIDGET_CURSOR_SIZENS, name)) {
+    return (int)SDL_SYSTEM_CURSOR_NS_RESIZE;
+  } else if (tk_str_eq(WIDGET_CURSOR_SIZEALL, name)) {
+    return (int)SDL_SYSTEM_CURSOR_MOVE;
+  }
+#else
   if (tk_str_eq(WIDGET_CURSOR_DEFAULT, name)) {
     return SDL_SYSTEM_CURSOR_ARROW;
   } else if (tk_str_eq(WIDGET_CURSOR_EDIT, name)) {
@@ -437,6 +509,7 @@ static int map_to_sdl_cursor(const char* name) {
   } else if (tk_str_eq(WIDGET_CURSOR_SIZEALL, name)) {
     return SDL_SYSTEM_CURSOR_SIZEALL;
   }
+#endif
 
   return -1;
 }
@@ -445,7 +518,7 @@ static ret_t native_window_sdl_set_cursor(native_window_t* win, const char* name
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
 
   if (sdl->cursor != NULL) {
-    SDL_FreeCursor(sdl->cursor);
+    awtk_sdl_free_cursor(sdl->cursor);
     sdl->cursor = NULL;
   }
 
@@ -578,7 +651,11 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
 #endif /*NATIVE_WINDOW_NOT_RESIZABLE*/
 
 #ifndef WITH_NANOVG_SOFT
+#ifdef AWTK_SDL3
+  flags |= SDL_WINDOW_OPENGL | SDL_WINDOW_HIGH_PIXEL_DENSITY;
+#else
   flags |= SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
+#endif
 
 #if defined(WITH_ANTIALIAS) && defined(WITH_OPENGL_HW_ANTIALIAS)
   win->supported_opengl_antialias_hw = TRUE;
@@ -592,21 +669,45 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
   flags |= SDL_WINDOW_BORDERLESS;
 #endif /*NATIVE_WINDOW_BORDERLESS*/
 
+#ifdef AWTK_SDL3
+  sdl->window = SDL_CreateWindow(title, (int)w, (int)h, flags);
+  if (sdl->window != NULL) {
+    SDL_SetWindowPosition(sdl->window, (int)x, (int)y);
+  }
+#else
   sdl->window = SDL_CreateWindow(title, x, y, w, h, flags);
+#endif
 
 #ifdef WITH_NANOVG_SOFT
+#ifdef AWTK_SDL3
+  sdl->render = SDL_CreateRenderer(sdl->window, NULL);
+  if (sdl->render != NULL) {
+    SDL_SetRenderVSync(sdl->render, 1);
+  }
+  if (sdl->render == NULL) {
+    sdl->render = SDL_CreateRenderer(sdl->window, "software");
+  }
+#else
   sdl->render =
       SDL_CreateRenderer(sdl->window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
   if (sdl->render == NULL) {
     sdl->render = SDL_CreateRenderer(sdl->window, -1, SDL_RENDERER_SOFTWARE);
   }
+#endif
 #elif defined(WITH_ANTIALIAS) && defined(WITH_OPENGL_HW_ANTIALIAS)
   if (sdl->window == NULL) {
     log_warn("Window could not be created! SDL_Error: %s !\n", SDL_GetError());
     log_warn("OPENGL_ANTIALIAS not supported HW, changed SW !\n");
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);  // 启用多重采样缓冲
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);  // 4倍采样
+#ifdef AWTK_SDL3
+    sdl->window = SDL_CreateWindow(title, (int)w, (int)h, flags);
+    if (sdl->window != NULL) {
+      SDL_SetWindowPosition(sdl->window, (int)x, (int)y);
+    }
+#else
     sdl->window = SDL_CreateWindow(title, x, y, w, h, flags);
+#endif
     win->supported_opengl_antialias_hw = FALSE;
   }
 #endif /*WITH_NANOVG_SOFT*/
@@ -684,7 +785,9 @@ static ret_t sdl_init_gl(void) {
   SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+#ifndef AWTK_SDL3
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+#endif
 
 #ifdef WITH_GPU_GL2
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
@@ -712,9 +815,17 @@ ret_t native_window_sdl_init(bool_t shared, uint32_t w, uint32_t h) {
   SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
   SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
 #if defined(SDL_AUDIO_DISABLED)
+#ifdef AWTK_SDL3
+  if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
+#else
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
+#endif
+#else
+#ifdef AWTK_SDL3
+  if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO)) {
 #else
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO) != 0) {
+#endif
 #endif /*SDL_AUDIO_DISABLED*/
     log_debug("Failed to initialize SDL: %s", SDL_GetError());
     exit(0);
@@ -725,14 +836,21 @@ ret_t native_window_sdl_init(bool_t shared, uint32_t w, uint32_t h) {
   sdl_init_gl();
 #endif /*WITH_GPU_GL*/
 
+#ifndef AWTK_SDL3
   SDL_StopTextInput();
+#endif
   if (shared) {
     int32_t x = SDL_WINDOWPOS_UNDEFINED;
     int32_t y = SDL_WINDOWPOS_UNDEFINED;
     s_shared_win = native_window_create_internal(title, 0, x, y, w, h);
     s_shared_win->shared = TRUE;
+#ifdef AWTK_SDL3
+    SDL_StopTextInput(((native_window_sdl_t*)NATIVE_WINDOW_SDL(s_shared_win))->window);
+#endif
   }
+#ifndef AWTK_SDL3
   SDL_EventState(SDL_SYSWMEVENT, SDL_ENABLE);
+#endif
 
   return RET_OK;
 }
@@ -742,7 +860,7 @@ ret_t native_window_sdl_deinit(void) {
     native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(s_shared_win);
 
     if (sdl->cursor_surface != NULL) {
-      SDL_FreeSurface(sdl->cursor_surface);
+      awtk_sdl_free_surface(sdl->cursor_surface);
       sdl->cursor_surface = NULL;
     }
 

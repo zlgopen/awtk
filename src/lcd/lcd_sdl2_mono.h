@@ -22,7 +22,7 @@
 #ifndef LCD_SDL_MONO_H
 #define LCD_SDL_MONO_H
 
-#include <SDL.h>
+#include "base/awtk_sdl_api.h"
 #include "base/lcd.h"
 
 BEGIN_C_DECLS

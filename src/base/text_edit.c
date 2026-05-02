@@ -141,7 +141,9 @@ static ret_t text_edit_select_word_impl(text_edit_t* text_edit, uint32_t cursor,
                                         int32_t* end);
 
 #ifdef WITH_SDL
-#include <SDL.h>
+#include "base/awtk_sdl_api.h"
+#include "base/native_window.h"
+#include "base/window_manager.h"
 
 static ret_t text_edit_update_input_rect(text_edit_t* text_edit) {
   point_t p = {0, 0};
@@ -176,7 +178,18 @@ static ret_t text_edit_update_input_rect(text_edit_t* text_edit) {
   r.w *= ratio;
   r.h *= ratio;
 
+#ifdef AWTK_SDL3
+  {
+    native_window_t* nw =
+        (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
+    SDL_Window* win = nw != NULL ? (SDL_Window*)nw->handle : NULL;
+    if (win != NULL) {
+      SDL_SetTextInputArea(win, &r, 0);
+    }
+  }
+#else
   SDL_SetTextInputRect(&r);
+#endif
 
   return RET_OK;
 }

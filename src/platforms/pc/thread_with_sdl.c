@@ -30,7 +30,7 @@
 #include "tkc/cond.h"
 #include "tkc/semaphore.h"
 
-#include "SDL.h"
+#include "base/awtk_sdl_api.h"
 
 struct _tk_mutex_t {
   SDL_mutex* mutex;
@@ -269,17 +269,11 @@ static int entry(void* arg) {
   return 0;
 }
 
-extern SDL_Thread* SDL_CreateThreadInternal(int(SDLCALL* fn)(void*), const char* name,
-                                            const size_t stacksize, void* data);
-
 ret_t tk_thread_start(tk_thread_t* thread) {
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
-  if (thread->stack_size == 0) {
-    thread->thread = SDL_CreateThread((SDL_ThreadFunction)(entry), thread->name, thread);
-  } else {
-    thread->thread = SDL_CreateThreadInternal((SDL_ThreadFunction)(entry), thread->name,
-                                              thread->stack_size, thread);
-  }
+  /* SDL_CreateThreadInternal is not exported from SDL2.dll; public SDL_CreateThread has no stack-size arg. */
+  (void)thread->stack_size;
+  thread->thread = SDL_CreateThread((SDL_ThreadFunction)(entry), thread->name, thread);
 
   if (thread->thread != NULL) {
     SDL_SetThreadPriority((SDL_ThreadPriority)(thread->priority));
@@ -312,6 +306,10 @@ ret_t tk_thread_destroy(tk_thread_t* thread) {
 }
 
 uint64_t tk_thread_self(void) {
+#ifdef AWTK_SDL3
+  return (uint64_t)SDL_GetCurrentThreadID();
+#else
   return (uint64_t)SDL_ThreadID();
+#endif
 }
 #endif /*HAS_PTHREAD*/
