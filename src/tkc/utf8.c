@@ -41,13 +41,14 @@ uint32_t tk_utf8_get_bytes_of_leading(uint8_t c) {
 
 // 解析UTF-8编码，获取下一个Unicode码点
 static int32_t utf8_get_char(const char* p, const char** next) {
+  int i = 0;
   unsigned char c = (unsigned char)*p;
   int len = utf8_get_char_len(c);
   if (len == -1) return -1;
   // 取出首字节的有效位
   int32_t result = c & ((1 << (8 - len)) - 1);
   // 依次拼接后续字节的低6位
-  for (int i = 1; i < len; ++i) {
+  for (i = 1; i < len; ++i) {
     if ((p[i] & 0xC0) != 0x80) return -1;  // 非法续字节
     result = (result << 6) | (p[i] & 0x3F);
   }
@@ -57,6 +58,7 @@ static int32_t utf8_get_char(const char* p, const char** next) {
 
 // 将单个Unicode码点编码为UTF-8字节序列
 static int unichar_to_utf8(uint32_t c, char* outbuf) {
+  int i = 0;
   int len = 0;
   // 判断需要多少字节表示
   if (c < 0x80)
@@ -73,7 +75,7 @@ static int unichar_to_utf8(uint32_t c, char* outbuf) {
     len = 6;
   if (outbuf) {
     // 低位字节，倒序填充
-    for (int i = len - 1; i > 0; --i) {
+    for (i = len - 1; i > 0; --i) {
       outbuf[i] = (c & 0x3F) | 0x80;
       c >>= 6;
     }
@@ -166,11 +168,12 @@ char* tk_utf8_dup_utf16(const wchar_t* in, int32_t size) {
 
 // 截断不完整的UTF-8字符，保证字符串结尾合法
 char* tk_utf8_trim_invalid_char(char* str) {
+  uint32_t i = 0;
   if (!str) return str;
   char* p = str;
   while (*p) {
     uint32_t n = tk_utf8_get_bytes_of_leading((uint8_t)*p);
-    for (uint32_t i = 1; i < n; ++i) {
+    for (i = 1; i < n; ++i) {
       if ((p[i] & 0xC0) != 0x80 || p[i] == '\0') {
         *p = '\0';  // 截断到此处
         return str;

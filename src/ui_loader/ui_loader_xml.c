@@ -477,6 +477,7 @@ static void xml_loader_on_prop_end(XmlBuilder* thiz) {
 }
 
 static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
+  int32_t i = 0;
   xml_builder_t* b = (xml_builder_t*)thiz;
   return_if_fail(b->format_error == FALSE);
 
@@ -489,7 +490,7 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
     b->is_on_start = TRUE;
     b->tag_is_include = b->is_include;
     if (b->is_include) {
-      for (int i = 0; i < ARRAY_SIZE(window_tag); i++) {
+      for (i = 0; i < ARRAY_SIZE(window_tag); i++) {
         if (tk_str_eq(tag, window_tag[i])) {
           b->format_error = TRUE;
         }
@@ -501,8 +502,9 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
 }
 
 static void xml_loader_on_end(XmlBuilder* thiz, const char* tag) {
-  xml_builder_t* b = (xml_builder_t*)thiz;
+  int32_t i = 0;
   int32_t offset;
+  xml_builder_t* b = (xml_builder_t*)thiz;
   const char* widget_name_start = NULL;
   return_if_fail(b->format_error == FALSE);
 
@@ -512,7 +514,7 @@ static void xml_loader_on_end(XmlBuilder* thiz, const char* tag) {
     xml_loader_on_prop_end(thiz);
 
     if (b->is_include) {
-      for (int32_t i = b->include_count - 1; i >= 0; i--) {
+      for (i = b->include_count - 1; i >= 0; i--) {
         str_t* widget_name = b->widget_name_list[i];
         widget_name_start = tk_strrstr(widget_name->str, ".");
         if (widget_name_start == NULL) {
