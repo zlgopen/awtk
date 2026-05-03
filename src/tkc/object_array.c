@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   object_array.c
  * Author: AWTK Develop Team
  * Brief:  object array
@@ -243,7 +243,7 @@ ret_t object_array_set(tk_object_t* obj, uint32_t index, const value_t* v) {
     value_t* iter = o->props + index;
     ret = value_replace(iter, v, TRUE);
     emitter_dispatch(EMITTER(o), &e);
-  } else if (index == -1) {
+  } else if (index == (uint32_t)-1) {
     ret = object_array_push(obj, v);
   } else {
     ret = RET_BAD_PARAMS;
@@ -283,7 +283,7 @@ ret_t object_array_get(tk_object_t* obj, uint32_t i, value_t* v) {
 
   if (i < o->size) {
     iter = o->props + i;
-  } else if (i == -1) {
+  } else if (i == (uint32_t)1) {
     iter = o->props + (o->size - 1);
   }
 

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   window_manager_default.c
  * Author: AWTK Develop Team
  * Brief:  default window manager
@@ -122,6 +122,7 @@ static widget_t* window_manager_find_prev_normal_window(widget_t* widget) {
   return NULL;
 }
 
+#ifndef WITHOUT_WINDOW_ANIMATORS
 static ret_t window_manager_default_set_paint_system_bar_by_window_animator(widget_t* widget,
                                                                             rect_t* rect) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
@@ -151,6 +152,7 @@ static ret_t window_manager_default_set_paint_system_bar_by_window_animator(widg
   WIDGET_FOR_EACH_CHILD_END()
   return RET_OK;
 }
+#endif
 
 ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img) {
 #ifndef WITHOUT_WINDOW_ANIMATORS

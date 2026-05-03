@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   text_edit.c
  * Author: AWTK Develop Team
  * Brief:  text_edit
@@ -1676,35 +1676,6 @@ const uint32_t* text_edit_get_lines_of_each_row(text_edit_t* text_edit) {
   return lines_of_each_row;
 }
 
-static uint32_t text_edit_get_line_break_offset(text_edit_t* text_edit, uint32_t num) {
-  uint32_t offset = 0;
-  uint32_t i = 0;
-  wstr_t* text = NULL;
-  DECL_IMPL(text_edit);
-  return_value_if_fail(text_edit != NULL && text_edit->widget != NULL, -1);
-  return_value_if_fail(0 < num && num < impl->rows->capacity, -1);
-
-  if (num >= impl->rows->size) {
-    return -1;
-  }
-
-  text = &text_edit->widget->text;
-
-  for (i = 0; i < num; i++) {
-    offset += impl->rows->row[i].length;
-  }
-
-  if (offset >= 2 && TWINS_WCHAR_IS_LINE_BREAK(text->str[offset - 2], text->str[offset - 1])) {
-    offset -= 2;
-  } else if (offset >= 1 && WCHAR_IS_LINE_BREAK(text->str[offset - 1])) {
-    offset--;
-  } else {
-    offset = -1;
-  }
-
-  return offset;
-}
-
 ret_t text_edit_set_canvas(text_edit_t* text_edit, canvas_t* canvas) {
   return_value_if_fail(text_edit != NULL && canvas != NULL, RET_BAD_PARAMS);
 
@@ -2102,8 +2073,6 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
           stb_textedit_key(text_edit, state, STB_TEXTEDIT_K_LINEEND);
         }
         goto layout;
-
-        return RET_OK;
       }
       break;
     }
@@ -2295,12 +2264,12 @@ inline static bool_t text_edit_str_is_delete_key(const wchar_t* str, uint32_t si
           *key = STB_TEXTEDIT_K_BACKSPACE;
           *type = DELETE_BY_KEY_BACKSPACE;
           return TRUE;
-        } break;
+        }
         case TK_KEY_DELETE: {
           *key = STB_TEXTEDIT_K_DELETE;
           *type = DELETE_BY_KEY_DELETE;
           return TRUE;
-        } break;
+        } 
         default: {
         } break;
       }
