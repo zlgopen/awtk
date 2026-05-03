@@ -11,6 +11,11 @@ compile_config.set_curr_config(compile_helper)
 
 import awtk_config as awtk
 
+if awtk.BIDI_BACKEND == 'fribidi':
+  _bidi_sconscript = '3rd/fribidi/SConscript'
+else:
+  _bidi_sconscript = '3rd/SheenBidi-3.0.0/SConscript'
+
 APP_TOOLS = ['default']
 awtk.scons_db_check_and_remove()
 
@@ -42,7 +47,7 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   '3rd/libunibreak/SConscript',
   '3rd/lz4/SConscript',
   '3rd/miniz/SConscript',
-  '3rd/fribidi/SConscript',
+  _bidi_sconscript,
   '3rd/nativefiledialog/SConscript',
   'src/SConscript',
   'src/csv/SConscript',

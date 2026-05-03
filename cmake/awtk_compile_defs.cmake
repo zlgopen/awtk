@@ -9,10 +9,16 @@ function(awtk_apply_common_compile_definitions _target)
   cmake_path(NATIVE_PATH CMAKE_SOURCE_DIR NORMALIZE _tkr)
   string(REPLACE "\\" "\\\\" _tkr "${_tkr}")
   target_compile_options(${_target} PRIVATE "SHELL:-DTK_ROOT=\\\"${_tkr}\\\"")
+  if(AWTK_BIDI_BACKEND STREQUAL "fribidi")
+    set(_awtk_bidi_compile_def WITH_BIDI_FRIBIDI=1)
+  else()
+    set(_awtk_bidi_compile_def WITH_BIDI_SHEEN=1)
+  endif()
   target_compile_definitions(${_target} PRIVATE
     WITH_MBEDTLS=1
     ENABLE_CURSOR=1
     WITH_TEXT_BIDI=1
+    ${_awtk_bidi_compile_def}
     WITH_DATA_READER_WRITER=1
     WITH_EVENT_RECORDER_PLAYER=1
     WITH_ASSET_LOADER
@@ -33,6 +39,9 @@ function(awtk_apply_common_compile_definitions _target)
     WITH_RES_TOOLS
     WITH_MAIN_LOOP_CONSOLE=1
   )
+  if(NOT AWTK_BIDI_BACKEND STREQUAL "fribidi")
+    target_compile_definitions(${_target} PRIVATE SB_CONFIG_EXPERIMENTAL_TEXT_API=1)
+  endif()
 
   if(AWTK_OPENGL_ANTIALIAS STREQUAL "HW")
     target_compile_definitions(${_target} PRIVATE WITH_ANTIALIAS WITH_OPENGL_HW_ANTIALIAS)

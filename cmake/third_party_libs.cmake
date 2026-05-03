@@ -152,11 +152,68 @@ target_include_directories(awtk_miniz PUBLIC "${CMAKE_SOURCE_DIR}/3rd/miniz")
 awtk_apply_platform_compile_options(awtk_miniz)
 awtk_apply_common_compile_definitions(awtk_miniz)
 
-file(GLOB AWTK_FRIBIDI_SRC CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/3rd/fribidi/*.c")
-add_library(awtk_fribidi STATIC ${AWTK_FRIBIDI_SRC})
-target_include_directories(awtk_fribidi PUBLIC "${CMAKE_SOURCE_DIR}/3rd/fribidi")
-awtk_apply_platform_compile_options(awtk_fribidi)
-awtk_apply_common_compile_definitions(awtk_fribidi)
+if(NOT AWTK_BIDI_BACKEND STREQUAL "sheenbidi" AND NOT AWTK_BIDI_BACKEND STREQUAL "fribidi")
+  message(FATAL_ERROR "AWTK_BIDI_BACKEND must be \"sheenbidi\" or \"fribidi\" (got \"${AWTK_BIDI_BACKEND}\")")
+endif()
+
+if(AWTK_BIDI_BACKEND STREQUAL "fribidi")
+  set(_awtk_fribidi_main "${CMAKE_SOURCE_DIR}/3rd/fribidi/fribidi.c")
+  if(NOT EXISTS "${_awtk_fribidi_main}")
+    message(FATAL_ERROR "AWTK_BIDI_BACKEND=fribidi but bundled sources are missing: ${_awtk_fribidi_main}")
+  endif()
+  file(GLOB AWTK_FRIBIDI_SRC CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/3rd/fribidi/*.c")
+  add_library(awtk_fribidi STATIC ${AWTK_FRIBIDI_SRC})
+  target_include_directories(awtk_fribidi PUBLIC "${CMAKE_SOURCE_DIR}/3rd/fribidi")
+  awtk_apply_platform_compile_options(awtk_fribidi)
+  awtk_apply_common_compile_definitions(awtk_fribidi)
+  set(AWTK_BIDI_THIRD_PARTY_TARGET awtk_fribidi)
+else()
+  set(_awtk_sheen_main "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBAlgorithm.c")
+  if(NOT EXISTS "${_awtk_sheen_main}")
+    message(FATAL_ERROR "AWTK_BIDI_BACKEND=sheenbidi but SheenBidi sources are missing: ${_awtk_sheen_main}")
+  endif()
+  set(AWTK_SHEENBIDI_SRC
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBAlgorithm.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBAllocator.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBAttributeList.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBAttributeRegistry.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBBase.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBCodepoint.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBCodepointSequence.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBLine.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBLog.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBMirrorLocator.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBParagraph.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBScriptLocator.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBText.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBTextConfig.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/API/SBTextIterators.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/Core/List.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/Core/Memory.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/Core/Object.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/Core/Once.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/Data/BidiTypeLookup.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/Data/GeneralCategoryLookup.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/Data/PairingLookup.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/Data/ScriptLookup.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/Script/ScriptStack.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/Text/AttributeDictionary.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/Text/AttributeManager.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/UBA/BidiChain.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/UBA/BracketQueue.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/UBA/IsolatingRun.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/UBA/LevelRun.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/UBA/RunQueue.c"
+    "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source/UBA/StatusStack.c"
+  )
+  add_library(awtk_sheenbidi STATIC ${AWTK_SHEENBIDI_SRC})
+  target_include_directories(awtk_sheenbidi PUBLIC "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Headers")
+  target_include_directories(awtk_sheenbidi PRIVATE "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Source")
+  target_compile_definitions(awtk_sheenbidi PRIVATE SB_CONFIG_EXPERIMENTAL_TEXT_API=1)
+  awtk_apply_platform_compile_options(awtk_sheenbidi)
+  awtk_apply_common_compile_definitions(awtk_sheenbidi)
+  set(AWTK_BIDI_THIRD_PARTY_TARGET awtk_sheenbidi)
+endif()
 
 set(AWTK_LINEBREAK_SRC
   graphemebreak.c linebreak.c linebreakdef.c unibreakbase.c unibreakdef.c
@@ -274,7 +331,7 @@ set(AWTK_THIRD_PARTY_TARGETS
   awtk_mbedtls
   awtk_lz4
   awtk_miniz
-  awtk_fribidi
+  ${AWTK_BIDI_THIRD_PARTY_TARGET}
   awtk_linebreak
   awtk_svgtiny
   awtk_gpinyin

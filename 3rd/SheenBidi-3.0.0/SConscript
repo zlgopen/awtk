@@ -1,0 +1,19 @@
+import os
+
+LIB_DIR = os.environ['LIB_DIR']
+
+sheen_env = DefaultEnvironment().Clone()
+sheen_env.Append(CCFLAGS=' -DSB_CONFIG_EXPERIMENTAL_TEXT_API=1 ')
+_sheen_root = Dir('.').srcnode().abspath
+sheen_env.Append(CPPPATH=[os.path.join(_sheen_root, 'Source'), os.path.join(_sheen_root, 'Headers')])
+
+SOURCES = (
+    Glob('Source/API/*.c')
+    + Glob('Source/Core/*.c')
+    + Glob('Source/Data/*.c')
+    + Glob('Source/Script/*.c')
+    + Glob('Source/Text/*.c')
+    + Glob('Source/UBA/*.c')
+)
+
+sheen_env.Library(os.path.join(LIB_DIR, 'sheenbidi'), SOURCES)

@@ -1,5 +1,11 @@
 # Static libraries under src/ (mirrors src/SConscript + src/*/SConscript).
 
+if(AWTK_BIDI_BACKEND STREQUAL "fribidi")
+  set(_awtk_bidi_public_include "${CMAKE_SOURCE_DIR}/3rd/fribidi")
+else()
+  set(_awtk_bidi_public_include "${CMAKE_SOURCE_DIR}/3rd/SheenBidi-3.0.0/Headers")
+endif()
+
 file(GLOB _cw_inc
   "${CMAKE_SOURCE_DIR}/src/custom_widgets/*/src"
   "${CMAKE_SOURCE_DIR}/src/custom_widgets/*/src/*/src"
@@ -12,7 +18,7 @@ set(AWTK_SRC_INCLUDES
   "${CMAKE_SOURCE_DIR}/3rd"
   "${CMAKE_SOURCE_DIR}/src/ext_widgets"
   "${CMAKE_SOURCE_DIR}/src/custom_widgets"
-  "${CMAKE_SOURCE_DIR}/3rd/fribidi"
+  "${_awtk_bidi_public_include}"
   "${CMAKE_SOURCE_DIR}/3rd/mbedtls/include"
   "${CMAKE_SOURCE_DIR}/3rd/mbedtls/3rdparty/everest/include"
   "${CMAKE_SOURCE_DIR}/3rd/gpinyin/include"
@@ -188,7 +194,7 @@ awtk_src_lib(awtk_compressors ${_comp})
 # Ordered STATIC targets merged into libawtk (whole-archive / WHOLEARCHIVE / force_load).
 # Aligns with awtk_config.py:
 #   AWTK_STATIC_LIBS: awtk_global, fscript_ext_widgets, extwidgets, widgets, base, gpinyin,
-#                     fribidi, linebreak, svgtiny [, nfd if SDL_VIDEODRIVER unset]
+#                     sheenbidi|fribidi, linebreak, svgtiny [, nfd if SDL_VIDEODRIVER unset]
 #   + awtk_config_common.TKC_STATIC_LIBS: debugger, fscript_ext, romfs, conf_io, hal, xml, charset,
 #     csv, streams, ubjson, compressors, miniz, tkc_core, mbedtls
 #   + NANOVG_BACKEND_LIBS (e.g. nanovg_plus)
@@ -200,7 +206,7 @@ set(AWTK_CORE_STATIC_LIBS
   awtk_widgets
   awtk_base
   awtk_gpinyin
-  awtk_fribidi
+  ${AWTK_BIDI_THIRD_PARTY_TARGET}
   awtk_linebreak
   awtk_svgtiny
 )

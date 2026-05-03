@@ -11,6 +11,22 @@ from awtk_config_common import OS_NAME, TARGET_ARCH, TOOLS_PREFIX, TK_SRC, TK_BI
 from awtk_config_common import joinPath, toWholeArchive, genIdlAndDefEx, setEnvSpawn, genDllLinkFlags, copySharedLib, cleanSharedLib, scons_db_check_and_remove, is_raspberrypi
 from awtk_config_common import OS_FLAGS, OS_LIBS, OS_LIBPATH, OS_CPPPATH, OS_LINKFLAGS, OS_SUBSYSTEM_CONSOLE, OS_SUBSYSTEM_WINDOWS, OS_PROJECTS, COMMON_CFLAGS
 
+BIDI_BACKEND = compile_helper.get_value('BIDI_BACKEND', 'sheenbidi')
+if isinstance(BIDI_BACKEND, str):
+  BIDI_BACKEND = BIDI_BACKEND.lower()
+if BIDI_BACKEND not in ('sheenbidi', 'fribidi'):
+  print('Invalid BIDI_BACKEND (must be sheenbidi or fribidi):', BIDI_BACKEND)
+  sys.exit(1)
+
+_sheen_algo = os.path.join(TK_ROOT, '3rd', 'SheenBidi-3.0.0', 'Source', 'API', 'SBAlgorithm.c')
+_fribidi_main = os.path.join(TK_ROOT, '3rd', 'fribidi', 'fribidi.c')
+if BIDI_BACKEND == 'fribidi' and not os.path.isfile(_fribidi_main):
+  print('BIDI_BACKEND=fribidi but bundled FriBidi sources are missing:', _fribidi_main)
+  sys.exit(1)
+if BIDI_BACKEND == 'sheenbidi' and not os.path.isfile(_sheen_algo):
+  print('BIDI_BACKEND=sheenbidi but SheenBidi sources are missing:', _sheen_algo)
+  sys.exit(1)
+
 WIN32_AWTK_RES = 'win32_res/awtk.res'
 if TARGET_ARCH == 'x86':
     WIN32_AWTK_RES = 'win32_res/awtk_x86.res'
@@ -27,7 +43,11 @@ if not os.path.isabs(WIN32_AWTK_RES) :
     WIN32_AWTK_RES = os.path.join(compile_config.get_curr_app_root(), WIN32_AWTK_RES)
 
 AWTK_STATIC_LIBS = ['awtk_global', 'fscript_ext_widgets', 'extwidgets',
-                    'widgets', 'base', 'gpinyin', 'fribidi', 'linebreak', 'svgtiny']
+                    'widgets', 'base', 'gpinyin', 'linebreak', 'svgtiny']
+if BIDI_BACKEND == 'fribidi':
+  AWTK_STATIC_LIBS.insert(6, 'fribidi')
+else:
+  AWTK_STATIC_LIBS.insert(6, 'sheenbidi')
 
 if os.getenv('SDL_VIDEODRIVER') is None:
   AWTK_STATIC_LIBS += ['nfd']
@@ -118,6 +138,11 @@ if compile_helper.get_value('NATIVE_WINDOW_NOT_RESIZABLE', False) :
 COMMON_CCFLAGS = COMMON_CCFLAGS+' -DWITH_MBEDTLS=1 '
 COMMON_CCFLAGS = COMMON_CCFLAGS+' -DENABLE_CURSOR=1 '
 COMMON_CCFLAGS = COMMON_CCFLAGS+' -DWITH_TEXT_BIDI=1 '
+if BIDI_BACKEND == 'fribidi':
+  COMMON_CCFLAGS = COMMON_CCFLAGS+' -DWITH_BIDI_FRIBIDI=1 '
+else:
+  COMMON_CCFLAGS = COMMON_CCFLAGS+' -DWITH_BIDI_SHEEN=1 '
+  COMMON_CCFLAGS = COMMON_CCFLAGS+' -DSB_CONFIG_EXPERIMENTAL_TEXT_API=1 '
 #COMMON_CCFLAGS=COMMON_CCFLAGS+' -DLOAD_ASSET_WITH_MMAP=1 '
 COMMON_CCFLAGS = COMMON_CCFLAGS+' -DWITH_DATA_READER_WRITER=1 '
 COMMON_CCFLAGS = COMMON_CCFLAGS+' -DWITH_EVENT_RECORDER_PLAYER=1 '
@@ -269,7 +294,7 @@ CPPPATH = [TK_ROOT,
            TK_3RD_ROOT,
            joinPath(TK_SRC, 'ext_widgets'),
            joinPath(TK_SRC, 'custom_widgets'),
-           joinPath(TK_3RD_ROOT, 'fribidi'),
+           joinPath(TK_3RD_ROOT, 'fribidi') if BIDI_BACKEND == 'fribidi' else joinPath(TK_3RD_ROOT, 'SheenBidi-3.0.0/Headers'),
            joinPath(TK_3RD_ROOT, 'mbedtls/include'),
            joinPath(TK_3RD_ROOT, 'mbedtls/3rdparty/everest/include'),
            joinPath(TK_3RD_ROOT, 'pixman'),

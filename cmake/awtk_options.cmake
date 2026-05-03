@@ -28,6 +28,9 @@ option(AWTK_NATIVE_WINDOW_BORDERLESS "Borderless native window" OFF)
 option(AWTK_NATIVE_WINDOW_NOT_RESIZABLE "Non-resizable native window" OFF)
 option(AWTK_WITH_NFD "Build nativefiledialog (off if SDL_VIDEODRIVER set in env)" ON)
 
+set(AWTK_BIDI_BACKEND "sheenbidi" CACHE STRING "Unicode bidi backend: sheenbidi (default) or fribidi")
+set_property(CACHE AWTK_BIDI_BACKEND PROPERTY STRINGS sheenbidi fribidi)
+
 set(AWTK_SDL_VIDEODRIVER "" CACHE STRING "Linux: x11|wayland (empty uses x11; matches SDL_VIDEODRIVER env in SCons)")
 
 set(AWTK_SDL_VERSION "2" CACHE STRING "SDL backend: 2 (bundled 3rd/SDL) or 3 (find_package SDL3)")
