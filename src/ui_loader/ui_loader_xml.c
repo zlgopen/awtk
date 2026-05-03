@@ -32,6 +32,12 @@
 
 #define TAG_PROPERTY "property"
 
+#ifdef HAS_STDIO
+#define EXIT(code) exit(code)
+#else
+#define EXIT(code) return
+#endif
+
 typedef enum _props_state_t {
   PROPS_STATE_NONE = 0,
   PROPS_STATE_START,
@@ -629,7 +635,7 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
           } else {
             log_warn("!!!File name = %s error include file %s\n", bname_normalize, filename);
           }
-          exit(EXIT_FAILURE);
+          EXIT(EXIT_FAILURE);
         }
       }
 
@@ -683,7 +689,7 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
           } else {
             log_warn("!!!File name = %s error include file %s\n", bname_normalize, filename);  
           }
-          exit(EXIT_FAILURE);
+          EXIT(EXIT_FAILURE);
         }
         b->properties_state = b_include.properties_state;
         b_include.is_include = FALSE;
