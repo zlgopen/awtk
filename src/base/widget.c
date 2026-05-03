@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   widget.c
  * Author: AWTK Develop Team
  * Brief:  basic class of all widget
@@ -2500,7 +2500,7 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   if (ret == RET_NOT_FOUND) {
     if (tk_str_eq(name, WIDGET_PROP_LAYOUT_W)) {
       if (widget->self_layout != NULL) {
-        w_attr_t w_attr = self_layouter_get_param_int(widget->self_layout, "w_attr", W_ATTR_UNDEF);
+        w_attr_t w_attr = (w_attr_t)self_layouter_get_param_int(widget->self_layout, "w_attr", W_ATTR_UNDEF);
         if (W_ATTR_PIXEL == w_attr) {
           ret = self_layouter_get_param(widget->self_layout, "w", v);
           if (value_int(v) < 0) {
@@ -2514,7 +2514,7 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
       }
     } else if (tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {
       if (widget->self_layout != NULL) {
-        h_attr_t h_attr = self_layouter_get_param_int(widget->self_layout, "h_attr", H_ATTR_UNDEF);
+        h_attr_t h_attr = (h_attr_t)self_layouter_get_param_int(widget->self_layout, "h_attr", H_ATTR_UNDEF);
         if (H_ATTR_PIXEL == h_attr) {
           ret = self_layouter_get_param(widget->self_layout, "h", v);
           if (value_int(v) < 0) {
