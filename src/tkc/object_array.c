@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   object_array.c
  * Author: AWTK Develop Team
  * Brief:  object array

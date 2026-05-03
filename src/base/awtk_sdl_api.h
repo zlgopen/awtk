@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file awtk_sdl_api.h
  * @brief Central SDL include for AWTK (SDL2 bundled or SDL3 via find_package).
  */

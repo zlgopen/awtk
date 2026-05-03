@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   widget.c
  * Author: AWTK Develop Team
  * Brief:  basic class of all widget

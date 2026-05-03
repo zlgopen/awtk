@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   awtk_arabic_shaping.h
  * Author: AWTK Develop Team
  * Brief:  Arabic joining + presentation shaping (Unicode table-driven, no FriBidi).

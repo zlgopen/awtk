@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   awtk_arabic_shaping.c
  * Author: AWTK Develop Team
  * Brief:  Unicode table-driven Arabic joining + shaping (SheenBidi companion, no FriBidi).

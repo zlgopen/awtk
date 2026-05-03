@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   text_edit.c
  * Author: AWTK Develop Team
  * Brief:  text_edit

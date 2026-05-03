@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   graphic_buffer.c
  * Author: AWTK Develop Team
  * Brief:  graphic_buffer
