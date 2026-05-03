@@ -1,31 +1,40 @@
 ﻿/**
- * File:   bidi.h
+ * File:   bidi.c
  * Author: AWTK Develop Team
  * Brief:  Unicode Bidirectional Algorithm.
- *
- * Copyright (c) 2018 - 2026 Guangzhou ZHIYUAN Electronics Co.,Ltd.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * License file for more details.
- *
- */
-
-/**
- * History:
- * ================================================================
- * 2020-07-09 Li XianJing <xianjimli@hotmail.com> created
- *
  */
 
 #include "base/bidi.h"
 
 #ifdef WITH_TEXT_BIDI
-#include "tkc/mem.h"
-#include "fribidi/fribidi.h"
 
-static bidi_type_t bidi_type_from(int fribidi_type) {
+#include <assert.h>
+#include <string.h>
+
+#include "tkc/mem.h"
+#include "tkc/str.h"
+
+#if defined(WITH_BIDI_SHEEN) && defined(WITH_BIDI_FRIBIDI)
+#error "Define at most one of WITH_BIDI_SHEEN or WITH_BIDI_FRIBIDI"
+#elif !defined(WITH_BIDI_SHEEN) && !defined(WITH_BIDI_FRIBIDI)
+#error "WITH_TEXT_BIDI requires WITH_BIDI_SHEEN or WITH_BIDI_FRIBIDI"
+#endif
+
+#if defined(WITH_BIDI_FRIBIDI)
+#include "fribidi/fribidi.h"
+#endif
+
+#if defined(WITH_BIDI_SHEEN)
+#include <SheenBidi/SBBase.h>
+#include <SheenBidi/SBCodepointSequence.h>
+#include <SheenBidi/SBText.h>
+#include <SheenBidi/SBTextConfig.h>
+#include <SheenBidi/SBTextIterators.h>
+#include "base/awtk_arabic_shaping.h"
+#endif
+
+#if defined(WITH_BIDI_FRIBIDI)
+static bidi_type_t bidi_type_from_fribidi_par_type(int fribidi_type) {
   switch (fribidi_type) {
     case FRIBIDI_PAR_RTL:
       return BIDI_TYPE_RTL;
@@ -44,7 +53,7 @@ static bidi_type_t bidi_type_from(int fribidi_type) {
   }
 }
 
-static FriBidiParType bidi_type_to(bidi_type_t type) {
+static FriBidiParType bidi_type_to_fribidi_par_type(bidi_type_t type) {
   switch (type) {
     case BIDI_TYPE_RTL:
       return (FriBidiParType)FRIBIDI_PAR_RTL;
@@ -62,6 +71,47 @@ static FriBidiParType bidi_type_to(bidi_type_t type) {
       return (FriBidiParType)FRIBIDI_PAR_ON;
   }
 }
+#endif
+
+#if defined(WITH_BIDI_SHEEN)
+/**
+ * Map AWTK bidi_type_t to SheenBidi paragraph baseLevel.
+ *
+ * SBParagraph treats values < SBLevelMax as explicit embedding levels (P2-P3 skipped).
+ * FriBidi's FRIBIDI_TYPE_LRO / FRIBIDI_PAR_LTR are strong overrides, not "default then infer".
+ * Using SBLevelDefaultLTR for LRO made bidi.xml line 8 (bidi="lro") diverge from FriBidi.
+ */
+static SBLevel bidi_type_to_sb_base_level(bidi_type_t type) {
+  switch (type) {
+    case BIDI_TYPE_LRO:
+    case BIDI_TYPE_LTR:
+      return (SBLevel)0;
+    case BIDI_TYPE_RLO:
+    case BIDI_TYPE_RTL:
+      return (SBLevel)1;
+    case BIDI_TYPE_WRTL:
+      return SBLevelDefaultRTL;
+    case BIDI_TYPE_WLTR:
+    case BIDI_TYPE_AUTO:
+    default:
+      return SBLevelDefaultLTR;
+  }
+}
+
+static bidi_type_t sb_base_level_to_bidi_type(SBLevel base_level) {
+  if (base_level == 1) {
+    return BIDI_TYPE_RTL;
+  }
+  if (base_level == 0) {
+    return BIDI_TYPE_LTR;
+  }
+  return BIDI_TYPE_AUTO;
+}
+
+static SBStringEncoding awtk_wchar_sb_encoding(void) {
+  return (sizeof(wchar_t) == sizeof(uint32_t)) ? SBStringEncodingUTF32 : SBStringEncodingUTF16;
+}
+#endif
 
 bidi_type_t bidi_type_from_name(const char* name) {
   if (name == NULL || *name == '\0') {
@@ -96,7 +146,8 @@ bidi_t* bidi_init(bidi_t* bidi, bool_t alloc_l2v, bool_t alloc_v2l, bidi_type_t 
   return bidi;
 }
 
-ret_t bidi_log2vis(bidi_t* bidi, const wchar_t* str, uint32_t size) {
+#if defined(WITH_BIDI_FRIBIDI)
+static ret_t bidi_log2vis_fribidi(bidi_t* bidi, const wchar_t* str, uint32_t size) {
   FriBidiLevel level = 0;
   FriBidiParType type = FRIBIDI_PAR_ON;
   return_value_if_fail(bidi != NULL && str != NULL && size > 0, RET_BAD_PARAMS);
@@ -117,16 +168,187 @@ ret_t bidi_log2vis(bidi_t* bidi, const wchar_t* str, uint32_t size) {
     bidi->positions_L_to_V = TKMEM_ZALLOCN(int32_t, size);
   }
   if (bidi->alloc_v2l) {
-    bidi->positions_L_to_V = TKMEM_ZALLOCN(int32_t, size);
+    bidi->positions_V_to_L = TKMEM_ZALLOCN(int32_t, size);
   }
 
-  type = bidi_type_to(bidi->request_type);
-  level = fribidi_log2vis(str, size, &type, bidi->vis_str, bidi->positions_L_to_V,
-                          bidi->positions_V_to_L, NULL);
-  bidi->resolved_type = bidi_type_from(type);
+  type = bidi_type_to_fribidi_par_type(bidi->request_type);
+  level = fribidi_log2vis((const FriBidiChar*)str, (FriBidiStrIndex)size, &type, (FriBidiChar*)bidi->vis_str,
+                           (FriBidiStrIndex*)bidi->positions_L_to_V, (FriBidiStrIndex*)bidi->positions_V_to_L, NULL);
+  bidi->resolved_type = bidi_type_from_fribidi_par_type(type);
   (void)level;
 
   return RET_OK;
+}
+#endif
+
+#if defined(WITH_BIDI_SHEEN)
+static void bidi_clear_log2vis_buffers(bidi_t* bidi) {
+  TKMEM_FREE(bidi->positions_L_to_V);
+  TKMEM_FREE(bidi->positions_V_to_L);
+  bidi->positions_L_to_V = NULL;
+  bidi->positions_V_to_L = NULL;
+  if (bidi->vis_str != NULL && bidi->vis_str != bidi->vis_str_static) {
+    TKMEM_FREE(bidi->vis_str);
+  }
+  bidi->vis_str = NULL;
+  bidi->vis_str_size = 0;
+}
+
+/* Same cutoff as bundled fribidi.c LOCAL_LIST_SIZE for small-stack scratch lists. */
+#define BIDI_SHEEN_SHAPE_SCRATCH_CAP 128
+
+static ret_t bidi_log2vis_sheenbidi(bidi_t* bidi, const wchar_t* str, uint32_t size) {
+  SBTextConfigRef config = NULL;
+  SBTextRef text = NULL;
+  SBVisualRunIteratorRef iterator = NULL;
+  SBUInteger vis_pos = 0;
+
+  return_value_if_fail(bidi != NULL && str != NULL && size > 0, RET_BAD_PARAMS);
+
+  if (ARRAY_SIZE(bidi->vis_str_static) > size) {
+    bidi->vis_str_size = size;
+    bidi->vis_str = bidi->vis_str_static;
+  } else {
+    bidi->vis_str_size = size;
+    assert(bidi->vis_str == NULL);
+    bidi->vis_str = TKMEM_ALLOC((size + 1) * sizeof(wchar_t));
+  }
+  return_value_if_fail(bidi->vis_str != NULL, RET_FAIL);
+
+  if (bidi->alloc_l2v) {
+    bidi->positions_L_to_V = TKMEM_ZALLOCN(int32_t, size);
+    if (bidi->positions_L_to_V == NULL) {
+      bidi_clear_log2vis_buffers(bidi);
+      return RET_FAIL;
+    }
+  }
+  if (bidi->alloc_v2l) {
+    bidi->positions_V_to_L = TKMEM_ZALLOCN(int32_t, size);
+    if (bidi->positions_V_to_L == NULL) {
+      bidi_clear_log2vis_buffers(bidi);
+      return RET_FAIL;
+    }
+  }
+
+  config = SBTextConfigCreate();
+  if (config == NULL) {
+    bidi_clear_log2vis_buffers(bidi);
+    return RET_FAIL;
+  }
+  SBTextConfigSetBaseLevel(config, bidi_type_to_sb_base_level(bidi->request_type));
+
+  text = SBTextCreate((const void*)str, (SBUInteger)size, awtk_wchar_sb_encoding(), config);
+  SBTextConfigRelease(config);
+  config = NULL;
+  if (text == NULL) {
+    bidi_clear_log2vis_buffers(bidi);
+    return RET_FAIL;
+  }
+
+  {
+    SBParagraphInfo pinfo;
+    memset(&pinfo, 0, sizeof(pinfo));
+    SBTextGetCodeUnitParagraphInfo(text, 0, &pinfo);
+    bidi->resolved_type = sb_base_level_to_bidi_type(pinfo.baseLevel);
+  }
+
+  {
+    wchar_t* shaped = NULL;
+    wchar_t shaped_stack[BIDI_SHEEN_SHAPE_SCRATCH_CAP];
+    SBLevel* sb_levels = NULL;
+    SBLevel sb_levels_stack[BIDI_SHEEN_SHAPE_SCRATCH_CAP];
+
+    if (size < BIDI_SHEEN_SHAPE_SCRATCH_CAP) {
+      sb_levels = sb_levels_stack;
+      shaped = shaped_stack;
+    } else {
+      sb_levels = TKMEM_ZALLOCN(SBLevel, size);
+      shaped = TKMEM_ALLOC((size + 1) * sizeof(wchar_t));
+      if (sb_levels == NULL || shaped == NULL) {
+        TKMEM_FREE(sb_levels);
+        TKMEM_FREE(shaped);
+        SBTextRelease(text);
+        bidi_clear_log2vis_buffers(bidi);
+        return RET_FAIL;
+      }
+    }
+
+    SBTextGetResolvedLevels(text, 0, (SBUInteger)size, sb_levels);
+    memcpy(shaped, str, size * sizeof(wchar_t));
+    if (awtk_arabic_shape_logical(str, size, (const uint8_t*)sb_levels, shaped) != RET_OK) {
+      if (size >= BIDI_SHEEN_SHAPE_SCRATCH_CAP) {
+        TKMEM_FREE(sb_levels);
+        TKMEM_FREE(shaped);
+      }
+      SBTextRelease(text);
+      bidi_clear_log2vis_buffers(bidi);
+      return RET_FAIL;
+    }
+
+    iterator = SBTextCreateVisualRunIterator(text, 0, (SBUInteger)size);
+    if (iterator == NULL) {
+      if (size >= BIDI_SHEEN_SHAPE_SCRATCH_CAP) {
+        TKMEM_FREE(sb_levels);
+        TKMEM_FREE(shaped);
+      }
+      SBTextRelease(text);
+      bidi_clear_log2vis_buffers(bidi);
+      return RET_FAIL;
+    }
+
+    while (SBVisualRunIteratorMoveNext(iterator)) {
+      const SBVisualRun* run = SBVisualRunIteratorGetCurrent(iterator);
+      SBUInteger start = run->index;
+      SBUInteger len = run->length;
+      SBBoolean reverse = (SBBoolean)((run->level % 2) == 1);
+      SBUInteger k = 0;
+
+      for (k = 0; k < len; k++) {
+        SBUInteger logical_index = reverse ? (start + len - 1 - k) : (start + k);
+        wchar_t ch = shaped[logical_index];
+
+        bidi->vis_str[vis_pos] = ch;
+
+        if (bidi->positions_L_to_V != NULL) {
+          bidi->positions_L_to_V[logical_index] = (int32_t)vis_pos;
+        }
+        if (bidi->positions_V_to_L != NULL) {
+          bidi->positions_V_to_L[vis_pos] = (int32_t)logical_index;
+        }
+
+        vis_pos++;
+      }
+    }
+
+    SBVisualRunIteratorRelease(iterator);
+    iterator = NULL;
+
+    if (size >= BIDI_SHEEN_SHAPE_SCRATCH_CAP) {
+      TKMEM_FREE(sb_levels);
+      TKMEM_FREE(shaped);
+    }
+  }
+
+  SBTextRelease(text);
+  text = NULL;
+
+  if (vis_pos != (SBUInteger)size) {
+    bidi_clear_log2vis_buffers(bidi);
+    return RET_FAIL;
+  }
+
+  bidi->vis_str[size] = 0;
+
+  return RET_OK;
+}
+#endif
+
+ret_t bidi_log2vis(bidi_t* bidi, const wchar_t* str, uint32_t size) {
+#if defined(WITH_BIDI_SHEEN)
+  return bidi_log2vis_sheenbidi(bidi, str, size);
+#else
+  return bidi_log2vis_fribidi(bidi, str, size);
+#endif
 }
 
 ret_t bidi_deinit(bidi_t* bidi) {

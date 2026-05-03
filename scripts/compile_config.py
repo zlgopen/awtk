@@ -100,6 +100,7 @@ class compile_helper :
     'BUILD_DEMOS' : { 'value' : True, 'type' : bool.__name__, 'desc' : ['build awtk\'s demo examples'], 'help_info' : 'build awtk\'s demo examples, value is true or false, default value is true' },
     'BUILD_TOOLS' : { 'value' : True, 'type' : bool.__name__, 'desc' : ['build awtk\'s tools'], 'help_info' : 'build awtk\'s tools, value is true or false, default value is true' },
     'WIN32_RES' : { 'value' : None, 'type' : str.__name__, 'save_file' : False, 'desc' : ['app\'s win32 res path'], 'help_info' : 'app\'s win32 res path, WIN32_RES=XXXXX, value\'s default=\'awtk/win32_res/awtk.res\' ' },
+    'BIDI_BACKEND' : { 'value' : None, 'type' : str.__name__, 'str_enum' : ['sheenbidi', 'fribidi'], 'desc' : ['Unicode bidi implementation: sheenbidi (default) or fribidi'], 'help_info' : 'set bidi backend, BIDI_BACKEND=sheenbidi|fribidi, default is sheenbidi' },
   })
 
   def try_load_default_config(self) :

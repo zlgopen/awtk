@@ -4,7 +4,7 @@
   Top-level entry (legacy): SConstruct loads compile_config + awtk_config, then SConscript().
 
   Subdirectory boundaries (CMake add_subdirectory or include() modules):
-  - cmake/third_party_libs.cmake : 3rd/cjson, glad, mbedtls, lz4, miniz, fribidi,
+  - cmake/third_party_libs.cmake : 3rd/cjson, glad, mbedtls, lz4, miniz, fribidi or sheenbidi,
     libunibreak (linebreak), svgtiny, gpinyin, nanovg_plus, nativefiledialog (optional),
     SDL2 (bundled add_subdirectory(3rd/SDL), default) or SDL3 (find_package, AWTK_SDL_VERSION=3).
   - cmake/src_libs.cmake        : src/SConscript + src/*/SConscript static libs,

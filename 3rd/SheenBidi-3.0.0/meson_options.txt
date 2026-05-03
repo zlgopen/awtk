@@ -1,0 +1,8 @@
+option('text_api', type: 'feature', value: 'disabled',
+  description: 'Builds the optional text editing and analysis API')
+
+option('unity_mode', type: 'feature', value: 'enabled',
+  description: 'Build with a single unity source file')
+
+option('generator', type: 'feature', value: 'disabled',
+  description: 'Build the Unicode data generator tool')
