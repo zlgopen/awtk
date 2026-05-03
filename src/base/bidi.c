@@ -30,6 +30,7 @@
 #include <SheenBidi/SBText.h>
 #include <SheenBidi/SBTextConfig.h>
 #include <SheenBidi/SBTextIterators.h>
+#include "base/awtk_arabic_shaping.h"
 #endif
 
 #if defined(WITH_BIDI_FRIBIDI)
@@ -73,14 +74,23 @@ static FriBidiParType bidi_type_to_fribidi_par_type(bidi_type_t type) {
 #endif
 
 #if defined(WITH_BIDI_SHEEN)
+/**
+ * Map AWTK bidi_type_t to SheenBidi paragraph baseLevel.
+ *
+ * SBParagraph treats values < SBLevelMax as explicit embedding levels (P2-P3 skipped).
+ * FriBidi's FRIBIDI_TYPE_LRO / FRIBIDI_PAR_LTR are strong overrides, not "default then infer".
+ * Using SBLevelDefaultLTR for LRO made bidi.xml line 8 (bidi="lro") diverge from FriBidi.
+ */
 static SBLevel bidi_type_to_sb_base_level(bidi_type_t type) {
   switch (type) {
-    case BIDI_TYPE_RTL:
+    case BIDI_TYPE_LRO:
+    case BIDI_TYPE_LTR:
+      return (SBLevel)0;
     case BIDI_TYPE_RLO:
+    case BIDI_TYPE_RTL:
+      return (SBLevel)1;
     case BIDI_TYPE_WRTL:
       return SBLevelDefaultRTL;
-    case BIDI_TYPE_LTR:
-    case BIDI_TYPE_LRO:
     case BIDI_TYPE_WLTR:
     case BIDI_TYPE_AUTO:
     default:
@@ -184,6 +194,9 @@ static void bidi_clear_log2vis_buffers(bidi_t* bidi) {
   bidi->vis_str_size = 0;
 }
 
+/* Same cutoff as bundled fribidi.c LOCAL_LIST_SIZE for small-stack scratch lists. */
+#define BIDI_SHEEN_SHAPE_SCRATCH_CAP 128
+
 static ret_t bidi_log2vis_sheenbidi(bidi_t* bidi, const wchar_t* str, uint32_t size) {
   SBTextConfigRef config = NULL;
   SBTextRef text = NULL;
@@ -239,39 +252,85 @@ static ret_t bidi_log2vis_sheenbidi(bidi_t* bidi, const wchar_t* str, uint32_t s
     bidi->resolved_type = sb_base_level_to_bidi_type(pinfo.baseLevel);
   }
 
-  iterator = SBTextCreateVisualRunIterator(text, 0, (SBUInteger)size);
-  if (iterator == NULL) {
-    SBTextRelease(text);
-    bidi_clear_log2vis_buffers(bidi);
-    return RET_FAIL;
-  }
+  {
+    wchar_t* shaped = NULL;
+    wchar_t shaped_stack[BIDI_SHEEN_SHAPE_SCRATCH_CAP];
+    SBLevel* sb_levels = NULL;
+    SBLevel sb_levels_stack[BIDI_SHEEN_SHAPE_SCRATCH_CAP];
 
-  while (SBVisualRunIteratorMoveNext(iterator)) {
-    const SBVisualRun* run = SBVisualRunIteratorGetCurrent(iterator);
-    SBUInteger start = run->index;
-    SBUInteger len = run->length;
-    SBBoolean reverse = (SBBoolean)((run->level % 2) == 1);
-    SBUInteger k = 0;
-
-    for (k = 0; k < len; k++) {
-      SBUInteger logical_index = reverse ? (start + len - 1 - k) : (start + k);
-      wchar_t ch = str[logical_index];
-
-      bidi->vis_str[vis_pos] = ch;
-
-      if (bidi->positions_L_to_V != NULL) {
-        bidi->positions_L_to_V[logical_index] = (int32_t)vis_pos;
+    if (size < BIDI_SHEEN_SHAPE_SCRATCH_CAP) {
+      sb_levels = sb_levels_stack;
+      shaped = shaped_stack;
+    } else {
+      sb_levels = TKMEM_ZALLOCN(SBLevel, size);
+      shaped = TKMEM_ALLOC((size + 1) * sizeof(wchar_t));
+      if (sb_levels == NULL || shaped == NULL) {
+        TKMEM_FREE(sb_levels);
+        TKMEM_FREE(shaped);
+        SBTextRelease(text);
+        bidi_clear_log2vis_buffers(bidi);
+        return RET_FAIL;
       }
-      if (bidi->positions_V_to_L != NULL) {
-        bidi->positions_V_to_L[vis_pos] = (int32_t)logical_index;
-      }
+    }
 
-      vis_pos++;
+    SBTextGetResolvedLevels(text, 0, (SBUInteger)size, sb_levels);
+    memcpy(shaped, str, size * sizeof(wchar_t));
+    if (awtk_arabic_shape_logical(str, size, (const uint8_t*)sb_levels, shaped) != RET_OK) {
+      if (size >= BIDI_SHEEN_SHAPE_SCRATCH_CAP) {
+        TKMEM_FREE(sb_levels);
+        TKMEM_FREE(shaped);
+      }
+      SBTextRelease(text);
+      bidi_clear_log2vis_buffers(bidi);
+      return RET_FAIL;
+    }
+
+    iterator = SBTextCreateVisualRunIterator(text, 0, (SBUInteger)size);
+    if (iterator == NULL) {
+      if (size >= BIDI_SHEEN_SHAPE_SCRATCH_CAP) {
+        TKMEM_FREE(sb_levels);
+        TKMEM_FREE(shaped);
+      }
+      SBTextRelease(text);
+      bidi_clear_log2vis_buffers(bidi);
+      return RET_FAIL;
+    }
+
+    while (SBVisualRunIteratorMoveNext(iterator)) {
+      const SBVisualRun* run = SBVisualRunIteratorGetCurrent(iterator);
+      SBUInteger start = run->index;
+      SBUInteger len = run->length;
+      SBBoolean reverse = (SBBoolean)((run->level % 2) == 1);
+      SBUInteger k = 0;
+
+      for (k = 0; k < len; k++) {
+        SBUInteger logical_index = reverse ? (start + len - 1 - k) : (start + k);
+        wchar_t ch = shaped[logical_index];
+
+        bidi->vis_str[vis_pos] = ch;
+
+        if (bidi->positions_L_to_V != NULL) {
+          bidi->positions_L_to_V[logical_index] = (int32_t)vis_pos;
+        }
+        if (bidi->positions_V_to_L != NULL) {
+          bidi->positions_V_to_L[vis_pos] = (int32_t)logical_index;
+        }
+
+        vis_pos++;
+      }
+    }
+
+    SBVisualRunIteratorRelease(iterator);
+    iterator = NULL;
+
+    if (size >= BIDI_SHEEN_SHAPE_SCRATCH_CAP) {
+      TKMEM_FREE(sb_levels);
+      TKMEM_FREE(shaped);
     }
   }
 
-  SBVisualRunIteratorRelease(iterator);
   SBTextRelease(text);
+  text = NULL;
 
   if (vis_pos != (SBUInteger)size) {
     bidi_clear_log2vis_buffers(bidi);
