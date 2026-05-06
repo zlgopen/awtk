@@ -24,6 +24,7 @@
 
 #include "base/widget.h"
 #include "base/widget_animator.h"
+#include "base/shortcut.h"
 
 BEGIN_C_DECLS
 
@@ -120,12 +121,21 @@ typedef struct _scroll_bar_t {
   /**
    * @property {bool_t} wheel_scroll
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 设置鼠标滚轮是否滚动(仅对desktop风格的滚动条有效)（垂直滚动条缺省值为TRUE，水平滚动条缺省值为FALSE）。
+   * 设置鼠标滚轮是否滚动。
    */
   bool_t wheel_scroll;
 
+  /**
+   * @property {char*} wheel_modifier_key
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 滚轮辅助键(仅对desktop风格的滚动条有效)（垂直滚动条缺省值为空，水平滚动条缺省值为shift）。
+   */
+  char wheel_modifier_key[32];
+
   /*private*/
-  bool_t user_wheel_scroll;
+  bool_t user_wheel_modifier_key;
+  shortcut_t data_wheel_modifier_key;
+
   widget_t* dragger;
   widget_animator_t* wa_value;
   widget_animator_t* wa_opacity;
@@ -371,6 +381,7 @@ ret_t scroll_bar_set_scroll_rows(widget_t* widget, uint8_t scroll_rows);
 #define SCROLL_BAR_PROP_WHEEL_SCROLL "wheel_scroll"
 #define SCROLL_BAR_PROP_SCROLL_DELTA "scroll_delta"
 #define SCROLL_BAR_PROP_SCROLL_ROWS "scroll_rows"
+#define SCROLL_BAR_PROP_WHEEL_MODIFIER_KEY "wheel_modifier_key"
 #define SCROLL_BAR(widget) ((scroll_bar_t*)(scroll_bar_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

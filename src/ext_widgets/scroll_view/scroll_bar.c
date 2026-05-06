@@ -26,7 +26,7 @@
 #include "widgets/dragger.h"
 #include "base/widget_vtable.h"
 #include "base/window_manager.h"
-#include "scroll_view/scroll_bar.h"
+#include "ext_widgets/scroll_view/scroll_bar.h"
 #include "widget_animators/widget_animator_value.h"
 #include "widget_animators/widget_animator_opacity.h"
 
@@ -54,6 +54,34 @@ static ret_t scroll_bar_update_dragger(widget_t* widget);
 static ret_t scroll_bar_create_children(widget_t* widget);
 static ret_t scroll_bar_set_is_mobile(widget_t* widget, bool_t value);
 static widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+inline static ret_t scroll_bar_set_wheel_modifier_key_auto(widget_t* widget,
+                                                           const char* wheel_modifier_key) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
+
+  if (!tk_str_eq(scroll_bar->wheel_modifier_key, wheel_modifier_key)) {
+    tk_strncpy(scroll_bar->wheel_modifier_key, wheel_modifier_key != NULL ? wheel_modifier_key : "",
+               ARRAY_SIZE(scroll_bar->wheel_modifier_key) - 1);
+    shortcut_init_with_str(&scroll_bar->data_wheel_modifier_key, scroll_bar->wheel_modifier_key);
+  }
+
+  return RET_OK;
+}
+
+inline static ret_t scroll_bar_set_wheel_modifier_key(widget_t* widget,
+                                                      const char* wheel_modifier_key) {
+  ret_t ret = RET_OK;
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar != NULL && !scroll_bar_is_mobile(widget), RET_BAD_PARAMS);
+
+  ret = scroll_bar_set_wheel_modifier_key_auto(widget, wheel_modifier_key);
+  if (RET_OK == ret) {
+    scroll_bar->user_wheel_modifier_key = TRUE;
+  }
+
+  return ret;
+}
 
 /*mobile*/
 static ret_t scroll_bar_mobile_get_dragger_size(widget_t* widget, rect_t* r) {
@@ -180,8 +208,8 @@ static ret_t scroll_bar_desktop_on_event(widget_t* widget, event_t* e) {
       widget_t* up = widget_lookup(widget, CHILD_UP, FALSE);
       widget_t* down = widget_lookup(widget, CHILD_DOWN, FALSE);
       bool_t horizon = SCROLL_BAR_IS_HORIZON(widget);
-      if (!scroll_bar->user_wheel_scroll) {
-        scroll_bar->wheel_scroll = !horizon;
+      if (!scroll_bar->user_wheel_modifier_key) {
+        scroll_bar_set_wheel_modifier_key_auto(widget, horizon ? "shift" : "");
       }
       if (up != NULL) {
         const char* style_name =
@@ -543,6 +571,9 @@ static ret_t scroll_bar_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, SCROLL_BAR_PROP_SCROLL_ROWS)) {
     value_set_uint8(v, scroll_bar->scroll_rows);
     return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_BAR_PROP_WHEEL_MODIFIER_KEY)) {
+    value_set_str(v, scroll_bar->wheel_modifier_key);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -582,9 +613,27 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
     return scroll_bar_set_scroll_delta(widget, value_uint32(v));
   } else if (tk_str_eq(name, SCROLL_BAR_PROP_SCROLL_ROWS)) {
     return scroll_bar_set_scroll_rows(widget, value_uint8(v));
+  } else if (tk_str_eq(name, SCROLL_BAR_PROP_WHEEL_MODIFIER_KEY)) {
+    return scroll_bar_set_wheel_modifier_key(widget, value_str(v));
   }
 
   return RET_NOT_FOUND;
+}
+
+inline static bool_t scroll_bar_desktop_on_parent_wheel_event_modifier_key_is_match(
+    scroll_bar_t* scroll_bar, wheel_event_t* evt) {
+  shortcut_t evt_modifier_key;
+  shortcut_init(&evt_modifier_key, scroll_bar->data_wheel_modifier_key.key);
+  if (evt->alt) {
+    evt_modifier_key.alt = evt_modifier_key.lalt = evt_modifier_key.ralt = TRUE;
+  }
+  if (evt->ctrl) {
+    evt_modifier_key.ctrl = evt_modifier_key.lctrl = evt_modifier_key.rctrl = TRUE;
+  }
+  if (evt->shift) {
+    evt_modifier_key.shift = evt_modifier_key.lshift = evt_modifier_key.rshift = TRUE;
+  }
+  return shortcut_match(&scroll_bar->data_wheel_modifier_key, &evt_modifier_key);
 }
 
 static ret_t scroll_bar_desktop_on_parent_wheel_event(void* ctx, event_t* e) {
@@ -594,7 +643,8 @@ static ret_t scroll_bar_desktop_on_parent_wheel_event(void* ctx, event_t* e) {
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
   return_value_if_equal(widget_on_wheel_children(widget->parent, evt), RET_STOP);
 
-  if (widget->enable && widget->sensitive && scroll_bar->wheel_scroll) {
+  if (widget->enable && widget->sensitive && scroll_bar->wheel_scroll &&
+      scroll_bar_desktop_on_parent_wheel_event_modifier_key_is_match(scroll_bar, evt)) {
     int32_t delta = -evt->dy;
     if (scroll_bar->scroll_rows > 0) {
       delta = scroll_bar->row * scroll_bar->scroll_rows;
@@ -982,7 +1032,6 @@ ret_t scroll_bar_set_wheel_scroll(widget_t* widget, bool_t wheel_scroll) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL && !scroll_bar_is_mobile(widget), RET_BAD_PARAMS);
   scroll_bar->wheel_scroll = wheel_scroll;
-  scroll_bar->user_wheel_scroll = TRUE;
   return RET_OK;
 }
 

@@ -1,5 +1,7 @@
 ﻿#include "scroll_view/scroll_bar.h"
 #include "base/canvas.h"
+#include "base/events.h"
+#include "base/window.h"
 #include "base/widget.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
@@ -145,4 +147,97 @@ TEST(ScrollBar, clone) {
   widget_destroy(w1);
 
   widget_destroy(w);
+}
+
+TEST(ScrollBar, wheel_modifier_key_mobile_rejects_set) {
+  widget_t* w = scroll_bar_create_mobile(NULL, 10, 20, 30, 40);
+  value_t v;
+  value_set_str(&v, "shift");
+  ASSERT_EQ(widget_set_prop(w, SCROLL_BAR_PROP_WHEEL_MODIFIER_KEY, &v), RET_BAD_PARAMS);
+  widget_destroy(w);
+}
+
+TEST(ScrollBar, wheel_modifier_key_desktop_prop) {
+  widget_t* win = window_create(NULL, 0, 0, 800, 600);
+  widget_t* bar = scroll_bar_create_desktop(win, 0, 0, 30, 400);
+  value_t v;
+
+  widget_resize(bar, 30, 400);
+  ASSERT_EQ(widget_get_prop(bar, SCROLL_BAR_PROP_WHEEL_MODIFIER_KEY, &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "");
+
+  value_set_str(&v, "ctrl");
+  ASSERT_EQ(widget_set_prop(bar, SCROLL_BAR_PROP_WHEEL_MODIFIER_KEY, &v), RET_OK);
+  ASSERT_EQ(widget_get_prop(bar, SCROLL_BAR_PROP_WHEEL_MODIFIER_KEY, &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "ctrl");
+
+  widget_destroy(win);
+}
+
+TEST(ScrollBar, wheel_modifier_key_desktop_auto_horizontal_shift) {
+  widget_t* win = window_create(NULL, 0, 0, 800, 600);
+  widget_t* bar = scroll_bar_create_desktop(win, 0, 0, 30, 400);
+  value_t v;
+
+  widget_resize(bar, 400, 30);
+  ASSERT_EQ(widget_get_prop(bar, SCROLL_BAR_PROP_WHEEL_MODIFIER_KEY, &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "shift");
+
+  widget_destroy(win);
+}
+
+TEST(ScrollBar, wheel_modifier_key_desktop_parent_wheel_vertical) {
+  widget_t* win = window_create(NULL, 0, 0, 800, 600);
+  widget_t* bar = scroll_bar_create_desktop(win, 0, 0, 30, 400);
+  value_t v;
+
+  widget_resize(bar, 30, 400);
+  value_set_int(&v, 2000);
+  ASSERT_EQ(widget_set_prop(bar, WIDGET_PROP_MAX, &v), RET_OK);
+  value_set_int(&v, 20);
+  ASSERT_EQ(widget_set_prop(bar, WIDGET_PROP_ROW, &v), RET_OK);
+  value_set_int(&v, 0);
+  ASSERT_EQ(widget_set_prop(bar, WIDGET_PROP_VALUE, &v), RET_OK);
+
+  int32_t old = SCROLL_BAR(bar)->value;
+  wheel_event_t we;
+  wheel_event_init(&we, EVT_WHEEL_BEFORE_CHILDREN, win, -120);
+  we.x = 600;
+  we.y = 600;
+  widget_dispatch(win, (event_t*)&we);
+  ASSERT_GT(SCROLL_BAR(bar)->value, old);
+
+  widget_destroy(win);
+}
+
+TEST(ScrollBar, wheel_modifier_key_desktop_parent_wheel_horizontal_requires_shift) {
+  widget_t* win = window_create(NULL, 0, 0, 800, 600);
+  widget_t* bar = scroll_bar_create_desktop(win, 0, 0, 30, 400);
+
+  widget_resize(bar, 400, 30);
+  value_t v;
+  value_set_int(&v, 2000);
+  ASSERT_EQ(widget_set_prop(bar, WIDGET_PROP_MAX, &v), RET_OK);
+  value_set_int(&v, 20);
+  ASSERT_EQ(widget_set_prop(bar, WIDGET_PROP_ROW, &v), RET_OK);
+  value_set_int(&v, 0);
+  ASSERT_EQ(widget_set_prop(bar, WIDGET_PROP_VALUE, &v), RET_OK);
+
+  int32_t old = SCROLL_BAR(bar)->value;
+  wheel_event_t we;
+
+  wheel_event_init(&we, EVT_WHEEL_BEFORE_CHILDREN, win, -120);
+  we.x = 600;
+  we.y = 600;
+  widget_dispatch(win, (event_t*)&we);
+  ASSERT_EQ(SCROLL_BAR(bar)->value, old);
+
+  wheel_event_init(&we, EVT_WHEEL_BEFORE_CHILDREN, win, -120);
+  we.x = 600;
+  we.y = 600;
+  we.shift = TRUE;
+  widget_dispatch(win, (event_t*)&we);
+  ASSERT_GT(SCROLL_BAR(bar)->value, old);
+
+  widget_destroy(win);
 }
