@@ -283,7 +283,7 @@ ret_t object_array_get(tk_object_t* obj, uint32_t i, value_t* v) {
 
   if (i < o->size) {
     iter = o->props + i;
-  } else if (i == (uint32_t)1) {
+  } else if (i == (uint32_t)-1) {
     iter = o->props + (o->size - 1);
   }
 
