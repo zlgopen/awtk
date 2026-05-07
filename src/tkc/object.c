@@ -1070,6 +1070,9 @@ typedef struct _json_info_t {
   bool_t is_array : 1;
 } json_info_t;
 
+static ret_t tk_object_to_json_impl(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t level,
+                                    bool_t oneline, bool_t skip_leading_indent);
+
 static ret_t to_json(void* ctx, const void* data) {
   char buff[64] = {0};
   json_info_t* info = (json_info_t*)ctx;
@@ -1103,7 +1106,7 @@ static ret_t to_json(void* ctx, const void* data) {
       break;
     }
     case VALUE_TYPE_OBJECT: {
-      tk_object_to_json(value_object(v), s, info->indent + 1, info->level, oneline);
+      tk_object_to_json_impl(value_object(v), s, info->indent, info->level, oneline, TRUE);
       break;
     }
     case VALUE_TYPE_INT8:
@@ -1130,35 +1133,43 @@ static ret_t to_json(void* ctx, const void* data) {
   return RET_OK;
 }
 
-ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t level,
-                        bool_t oneline) {
-  bool_t is_array = FALSE;
+static ret_t tk_object_to_json_impl(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t level,
+                                    bool_t oneline, bool_t skip_leading_indent) {
   json_info_t info = {
       .json = json,
       .indent = indent,
-      .level = level,
+      .level = level + 1,
       .oneline = oneline,
       .index = 0,
   };
+  uint32_t before_len = 0;
   return_value_if_fail(obj != NULL && json != NULL, RET_BAD_PARAMS);
 
-  if (!oneline) {
+  info.is_array = tk_object_is_collection(obj);
+
+  if (!oneline && !skip_leading_indent) {
     str_append_n_chars(json, ' ', indent * level);
   }
 
-  is_array = tk_object_is_collection(obj);
-  info.is_array = is_array;
-  str_append_char(json, is_array ? '[' : '{');
-  info.level++;
+  str_append_char(json, info.is_array ? '[' : '{');
+
+  before_len = json->size;
+
   tk_object_foreach_prop(obj, to_json, &info);
 
-  if (!oneline) {
+  if (!oneline && before_len < json->size) {
     str_append_char(json, '\n');
     str_append_n_chars(json, ' ', indent * level);
   }
-  str_append_char(json, is_array ? ']' : '}');
+
+  str_append_char(json, info.is_array ? ']' : '}');
 
   return RET_OK;
+}
+
+ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t level,
+                        bool_t oneline) {
+  return tk_object_to_json_impl(obj, json, indent, level, oneline, FALSE);
 }
 
 ret_t tk_object_set_prop_str_with_format(tk_object_t* obj, const char* name, const char* format,
