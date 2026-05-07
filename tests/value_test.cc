@@ -146,6 +146,27 @@ TEST(value, wstru64) {
   ASSERT_EQ(value_uint64(&v), 10u);
 }
 
+/* double 转 int64/uint64：须保留完整整型范围，不能经 value_int 截断为 32 位 */
+TEST(value, double_to_i64) {
+  value_t v;
+  const int64_t big = 8589934592LL; /* 2^33，超出 int32 */
+  ASSERT_EQ(&v, value_set_double(&v, (double)big));
+  ASSERT_EQ(value_int64(&v), big);
+
+  value_set_double(&v, -12345.9);
+  ASSERT_EQ(value_int64(&v), -12345);
+}
+
+TEST(value, double_to_u64) {
+  value_t v;
+  const uint64_t big = (uint64_t)1 << 40;
+  ASSERT_EQ(&v, value_set_double(&v, (double)big));
+  ASSERT_EQ(value_uint64(&v), big);
+
+  value_set_double(&v, 0.0);
+  ASSERT_EQ(value_uint64(&v), 0u);
+}
+
 TEST(value, float) {
   value_t v;
   ASSERT_EQ(&v, value_set_float(&v, 10));
