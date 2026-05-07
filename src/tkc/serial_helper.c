@@ -55,12 +55,12 @@ serial_dev_t serial_handle_get_dev(serial_handle_t handle) {
   return handle->dev;
 }
 
-static ret_t serial_cond_var_wait(serial_handle_t handle, uint32_t timeout_ms) {
+static ret_t serial_cond_var_wait(serial_handle_t handle) {
   ret_t ret = RET_OK;
 
   tk_mutex_lock(handle->mutex);
   if (!handle->has_signal) {
-    ret = tk_cond_wait_timeout(handle->cond, handle->mutex, timeout_ms);
+    ret = tk_cond_wait(handle->cond, handle->mutex);
   }
   handle->has_signal = FALSE;
   tk_mutex_unlock(handle->mutex);
@@ -92,8 +92,9 @@ static void* serial_thread_entry(void* args) {
         if (handle->closed) {
           break;
         }
+        sleep_ms(100);
       }
-      serial_cond_var_wait(handle, 0xFFFFFFFF);
+      serial_cond_var_wait(handle);
     }
   }
 
@@ -496,6 +497,11 @@ static ret_t serial_wait_for_data_impl(serial_handle_t handle, uint32_t timeout_
   COMSTAT cstate = {0};
   ret_t ret = RET_FAIL;
   serial_dev_t dev = serial_handle_get_dev(handle);
+
+  ClearCommError(dev, &err, &cstate);
+  if (cstate.cbInQue > 0) {
+    return RET_OK;
+  }
 
   // Fix for some USB-to-Serial device WaitCommEvent return ERROR_INVALID_PARAMETER(87)
   // Make sure to call SetCommMask before every WaitCommEvent to correct this problem.
