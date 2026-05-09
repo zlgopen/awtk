@@ -155,6 +155,19 @@ TEST(value, double_to_i64) {
 
   value_set_double(&v, -12345.9);
   ASSERT_EQ(value_int64(&v), -12345);
+
+  ASSERT_EQ(&v, value_set_double(&v, INT64_MAX + 1.0));
+  ASSERT_EQ(value_int64(&v), INT64_MAX);
+  ASSERT_EQ(&v, value_set_double(&v, INT64_MIN - 1.0));
+  ASSERT_EQ(value_int64(&v), INT64_MIN);
+
+  ASSERT_EQ(&v, value_set_double(&v, INFINITY));
+  ASSERT_EQ(value_int64(&v), INT64_MAX);
+  ASSERT_EQ(&v, value_set_double(&v, -INFINITY));
+  ASSERT_EQ(value_int64(&v), INT64_MIN);
+
+  ASSERT_EQ(&v, value_set_double(&v, NAN));
+  ASSERT_DEATH(value_int64(&v), "");
 }
 
 TEST(value, double_to_u64) {
@@ -165,6 +178,19 @@ TEST(value, double_to_u64) {
 
   value_set_double(&v, 0.0);
   ASSERT_EQ(value_uint64(&v), 0u);
+
+  ASSERT_EQ(&v, value_set_double(&v, UINT64_MAX + 1.0));
+  ASSERT_EQ(value_uint64(&v), UINT64_MAX);
+  ASSERT_EQ(&v, value_set_double(&v, -1.0));
+  ASSERT_EQ(value_uint64(&v), 0);
+
+  ASSERT_EQ(&v, value_set_double(&v, INFINITY));
+  ASSERT_EQ(value_uint64(&v), UINT64_MAX);
+  ASSERT_EQ(&v, value_set_double(&v, -INFINITY));
+  ASSERT_EQ(value_uint64(&v), 0);
+
+  ASSERT_EQ(&v, value_set_double(&v, NAN));
+  ASSERT_DEATH(value_uint64(&v), "");
 }
 
 TEST(value, float) {
@@ -1821,7 +1847,7 @@ TEST(value, compare_uint64_large) {
   ASSERT_EQ(value_compare(&v1, &v2), 1);
 }
 
-TEST(ValueTest, bool_object) {
+TEST(value, bool_object) {
   value_t v;
   tk_object_t* o = object_default_create();
 
@@ -1831,13 +1857,13 @@ TEST(ValueTest, bool_object) {
   tk_object_unref(o);
 }
 
-TEST(ValueTest, bool_pointer) {
+TEST(value, bool_pointer) {
   value_t v;
   value_set_pointer(&v, &v);
   ASSERT_EQ(value_bool(&v), TRUE);
 }
 
-TEST(ValueTest, bool_pointer_ex) {
+TEST(value, bool_pointer_ex) {
   value_t v;
   void* data = malloc(100);
   value_set_pointer_ex(&v, data, default_destroy);

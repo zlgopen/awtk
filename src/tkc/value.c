@@ -25,6 +25,9 @@
 #include "tkc/utils.h"
 #include "tkc/object.h"
 
+#define VALUE_FLOAT_TO(f, type, MIN, MAX) \
+  (type)(ENSURE(!isnan(f)), (f <= (double)(MIN)) ? MIN : ((f >= (MAX) + 1.0) ? MAX : (type)(f)))
+
 bool_t value_bool(const value_t* v) {
   return_value_if_fail(v != NULL, FALSE);
   return_value_if_fail(v->type != VALUE_TYPE_INVALID, FALSE);
@@ -185,18 +188,31 @@ value_t* value_set_int64(value_t* v, int64_t value) {
 int64_t value_int64(const value_t* v) {
   return_value_if_fail(v != NULL, 0);
 
-  if (v->type == VALUE_TYPE_INT64) {
-    return v->value.i64;
-  } else if (v->type == VALUE_TYPE_UINT64) {
-    return v->value.u64;
-  } else if (v->type == VALUE_TYPE_STRING) {
-    return tk_atol(v->value.str);
-  } else if (v->type == VALUE_TYPE_UINT32) {
-    return (int64_t)value_uint32(v);
-  } else if (v->type == VALUE_TYPE_DOUBLE) {
-    return (int64_t)v->value.f64;
-  } else {
-    return (int64_t)value_int(v);
+  switch (v->type) {
+    case VALUE_TYPE_INT64: {
+      return v->value.i64;
+    }
+    case VALUE_TYPE_UINT64: {
+      return v->value.u64;
+    }
+    case VALUE_TYPE_STRING: {
+      return tk_atol(v->value.str);
+    }
+    case VALUE_TYPE_UINT32: {
+      return (int64_t)value_uint32(v);
+    }
+    case VALUE_TYPE_FLOAT: {
+      return VALUE_FLOAT_TO(v->value.f, int64_t, INT64_MIN, INT64_MAX);
+    }
+    case VALUE_TYPE_FLOAT32: {
+      return VALUE_FLOAT_TO(v->value.f32, int64_t, INT64_MIN, INT64_MAX);
+    }
+    case VALUE_TYPE_DOUBLE: {
+      return VALUE_FLOAT_TO(v->value.f64, int64_t, INT64_MIN, INT64_MAX);
+    }
+    default: {
+      return (int64_t)value_int(v);
+    }
   }
 }
 
@@ -211,16 +227,28 @@ value_t* value_set_uint64(value_t* v, uint64_t value) {
 uint64_t value_uint64(const value_t* v) {
   return_value_if_fail(v != NULL, 0);
 
-  if (v->type == VALUE_TYPE_UINT64) {
-    return v->value.u64;
-  } else if (v->type == VALUE_TYPE_INT64) {
-    return v->value.i64;
-  } else if (v->type == VALUE_TYPE_STRING) {
-    return tk_atoul(v->value.str);
-  } else if (v->type == VALUE_TYPE_DOUBLE) {
-    return (uint64_t)v->value.f64;
-  } else {
-    return (uint64_t)value_int(v);
+  switch (v->type) {
+    case VALUE_TYPE_UINT64: {
+      return v->value.u64;
+    }
+    case VALUE_TYPE_INT64: {
+      return v->value.i64;
+    }
+    case VALUE_TYPE_STRING: {
+      return tk_atoul(v->value.str);
+    }
+    case VALUE_TYPE_FLOAT: {
+      return VALUE_FLOAT_TO(v->value.f, uint64_t, 0, UINT64_MAX);
+    }
+    case VALUE_TYPE_FLOAT32: {
+      return VALUE_FLOAT_TO(v->value.f32, uint64_t, 0, UINT64_MAX);
+    }
+    case VALUE_TYPE_DOUBLE: {
+      return VALUE_FLOAT_TO(v->value.f64, uint64_t, 0, UINT64_MAX);
+    }
+    default: {
+      return (uint64_t)value_int(v);
+    }
   }
 }
 
@@ -699,13 +727,13 @@ int value_int(const value_t* v) {
       return (int)v->value.u64;
     }
     case VALUE_TYPE_FLOAT: {
-      return (int)v->value.f;
+      return VALUE_FLOAT_TO(v->value.f, int, INT_MIN, INT_MAX);
     }
     case VALUE_TYPE_FLOAT32: {
-      return (int)v->value.f32;
+      return VALUE_FLOAT_TO(v->value.f32, int, INT_MIN, INT_MAX);
     }
     case VALUE_TYPE_DOUBLE: {
-      return (int)v->value.f64;
+      return VALUE_FLOAT_TO(v->value.f64, int, INT_MIN, INT_MAX);
     }
     case VALUE_TYPE_BOOL: {
       return (int)v->value.b;
