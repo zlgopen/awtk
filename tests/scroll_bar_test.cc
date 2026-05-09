@@ -3,6 +3,7 @@
 #include "base/events.h"
 #include "base/window.h"
 #include "base/widget.h"
+#include "base/shortcut.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
 #include "gtest/gtest.h"
@@ -238,6 +239,46 @@ TEST(ScrollBar, wheel_modifier_key_desktop_parent_wheel_horizontal_requires_shif
   we.shift = TRUE;
   widget_dispatch(win, (event_t*)&we);
   ASSERT_GT(SCROLL_BAR(bar)->value, old);
+
+  widget_destroy(win);
+}
+
+TEST(ScrollBar, wheel_modifier_key) {
+  value_t v;
+  widget_t* win = window_create(NULL, 0, 0, 800, 600);
+  widget_t* bar = scroll_bar_create_desktop(win, 0, 0, 30, 400);
+
+  value_set_int(&v, 2000);
+  ASSERT_EQ(widget_set_prop(bar, WIDGET_PROP_MAX, &v), RET_OK);
+  value_set_int(&v, 20);
+  ASSERT_EQ(widget_set_prop(bar, WIDGET_PROP_ROW, &v), RET_OK);
+  value_set_int(&v, 0);
+  ASSERT_EQ(widget_set_prop(bar, WIDGET_PROP_VALUE, &v), RET_OK);
+
+  int32_t old = SCROLL_BAR(bar)->value;
+  static const char* s_wheel_modifier_key[] = {
+      "", "shift", "ctrl", "alt", "shift + ctrl", "shift + alt", "ctrl + alt", "shift + ctrl + alt",
+  };
+  for (uint32_t i = 0; i < ARRAY_SIZE(s_wheel_modifier_key); i++) {
+    shortcut_t shortcut;
+    shortcut_init_with_str(&shortcut, s_wheel_modifier_key[i]);
+
+    ASSERT_EQ(widget_set_prop(bar, SCROLL_BAR_PROP_WHEEL_MODIFIER_KEY,
+                              value_set_str(&v, s_wheel_modifier_key[i])),
+              RET_OK);
+
+    wheel_event_t we;
+    wheel_event_init(&we, EVT_WHEEL_BEFORE_CHILDREN, win, -120);
+    we.x = 600;
+    we.y = 600;
+    we.alt = shortcut.alt;
+    we.ctrl = shortcut.ctrl;
+    we.shift = shortcut.shift;
+
+    widget_dispatch(win, (event_t*)&we);
+    ASSERT_GT(SCROLL_BAR(bar)->value, old);
+    SCROLL_BAR(bar)->value = old;
+  }
 
   widget_destroy(win);
 }

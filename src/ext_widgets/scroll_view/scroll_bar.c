@@ -624,6 +624,7 @@ inline static bool_t scroll_bar_desktop_on_parent_wheel_event_modifier_key_is_ma
     scroll_bar_t* scroll_bar, wheel_event_t* evt) {
   shortcut_t evt_modifier_key;
   shortcut_init(&evt_modifier_key, scroll_bar->data_wheel_modifier_key.key);
+  evt_modifier_key.is_valid = scroll_bar->data_wheel_modifier_key.is_valid;
   if (evt->alt) {
     evt_modifier_key.alt = evt_modifier_key.lalt = evt_modifier_key.ralt = TRUE;
   }
