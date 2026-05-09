@@ -376,8 +376,9 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         ids->last_y = evt->y;
         ids->last_pointer_down_time = e->time;
         input_device_status_init_pointer_event(ids, evt);
-
-        widget_on_pointer_down(widget, evt);
+        if (RET_STOP != window_manager_dispatch_input_event_global(wm, e)) {
+          widget_on_pointer_down(widget, evt);
+        }
       }
       break;
     }
@@ -391,7 +392,9 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
           ids->last_y = evt->y;
 
           input_device_status_init_pointer_event(ids, evt);
-          widget_on_pointer_move(widget, evt);
+          if (RET_STOP != window_manager_dispatch_input_event_global(wm, e)) {
+            widget_on_pointer_move(widget, evt);
+          }
         }
       }
       break;
@@ -407,6 +410,10 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
 
         ids->in_pointer_up = TRUE;
         input_device_status_init_pointer_event(ids, evt);
+        if (RET_STOP == window_manager_dispatch_input_event_global(wm, e)) {
+          break;
+        }
+
         widget_on_pointer_up(widget, evt);
         ids->in_pointer_up = FALSE;
 
@@ -434,7 +441,9 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         pointer_event_rotate(evt, system_info());
 
         input_device_status_init_pointer_event(ids, evt);
-        widget_on_context_menu(widget, evt);
+        if (RET_STOP != window_manager_dispatch_input_event_global(wm, e)) {
+          widget_on_context_menu(widget, evt);
+        }
       }
       break;
     }
@@ -445,6 +454,9 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         pointer_event_rotate(evt, system_info());
 
         input_device_status_init_pointer_event(ids, evt);
+        if (RET_STOP == window_manager_dispatch_input_event_global(wm, e)) {
+          break;
+        }
 
         do {
           widget_t* target = widget_find_target(widget, evt->x, evt->y);
@@ -473,6 +485,10 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         info = input_device_status_find_press_info(ids, evt->key);
 
         input_device_status_init_key_event(ids, evt);
+        if (RET_STOP == window_manager_dispatch_input_event_global(wm, e)) {
+          break;
+        }
+
         if (info == NULL || !info->should_abort) {
           if (wm->widget_grab_key != NULL) {
             widget_on_keydown(wm->widget_grab_key, evt);
@@ -496,6 +512,10 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
 
       if (dispatch || info != NULL) {
         input_device_status_init_key_event(ids, evt);
+        if (RET_STOP == window_manager_dispatch_input_event_global(wm, e)) {
+          break;
+        }
+
         if (info == NULL || !info->should_abort) {
           if (wm->widget_grab_key != NULL) {
             widget_on_keyup(wm->widget_grab_key, evt);
@@ -513,19 +533,27 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         wheel_event_t* evt = (wheel_event_t*)e;
 
         input_device_status_init_wheel_event(ids, evt);
-        widget_on_wheel(widget, evt);
+        if (RET_STOP != window_manager_dispatch_input_event_global(wm, e)) {
+          widget_on_wheel(widget, evt);
+        }
       }
       break;
     }
     case EVT_MULTI_GESTURE: {
       if (dispatch) {
         multi_gesture_event_t* evt = (multi_gesture_event_t*)e;
-        widget_on_multi_gesture(widget, evt);
+        if (RET_STOP != window_manager_dispatch_input_event_global(wm, e)) {
+          widget_on_multi_gesture(widget, evt);
+        }
       }
       break;
     }
-    default:
+    default: {
+      if (dispatch) {
+        window_manager_dispatch_input_event_global(wm, e);
+      }
       break;
+    }
   }
 
   return RET_OK;

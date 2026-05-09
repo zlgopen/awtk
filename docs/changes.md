@@ -3,6 +3,7 @@
 2026/5/9
   * 完善 value 浮点数转整数(感谢兆坤提供补丁) 
   * 增加 file_write_ex/file_write_sync_ex (感谢智明提供补丁)
+  * 修复派发global_emitter上注册的事件时事件对象中没有ctrl等修饰键的信息的问题(感谢福明提供补丁)
 
 2026/5/7
   * 修复 value 中 double 转换成 int64 与 uint64 可能出现的截断问题(感谢泽武提供补丁)

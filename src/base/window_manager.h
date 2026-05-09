@@ -331,6 +331,17 @@ ret_t window_manager_check_and_layout(widget_t* widget);
 ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e);
 
 /**
+ * @method window_manager_dispatch_input_event_global
+ * 派发注册在 global_emitter 上的事件。
+ * 
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {event_t*} e 事件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_dispatch_input_event_global(widget_t* widget, event_t* e);
+
+/**
  * @method window_manager_set_show_fps
  * 设置是否显示FPS。
  * @annotation ["scriptable"]

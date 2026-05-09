@@ -300,7 +300,6 @@ ret_t window_manager_paint(widget_t* widget) {
 }
 
 ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
-  void* target = NULL;
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
@@ -310,14 +309,25 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
     return RET_STOP;
   }
 
+  return wm->vt->dispatch_input_event(widget, e);
+}
+
+ret_t window_manager_dispatch_input_event_global(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
+  void* target = NULL;
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(e != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
   target = e->target;
   e->target = wm->global_emitter;
   if (emitter_dispatch(wm->global_emitter, e) == RET_STOP) {
-    return RET_STOP;
+    ret = RET_STOP;
   }
 
   e->target = target;
-  return wm->vt->dispatch_input_event(widget, e);
+
+  return ret;
 }
 
 ret_t window_manager_set_show_fps(widget_t* widget, bool_t show_fps) {
