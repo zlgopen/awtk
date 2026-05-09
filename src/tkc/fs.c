@@ -304,34 +304,18 @@ void* file_read(const char* name, uint32_t* size) {
   }
 }
 
-ret_t file_write(const char* name, const void* buff, uint32_t size) {
+static ret_t file_write_ex_impl(const char* name, const char* mode, const void* buff, uint32_t size,
+                                bool_t need_sync) {
   ret_t ret = RET_OK;
   fs_file_t* fp = NULL;
-  return_value_if_fail(name != NULL && buff != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(name != NULL && mode != NULL && buff != NULL, RET_BAD_PARAMS);
 
-  fp = fs_open_file(os_fs(), name, "wb+");
+  fp = fs_open_file(os_fs(), name, mode);
   return_value_if_fail(fp != NULL, RET_FAIL);
 
   if (fs_file_write(fp, buff, size) != size) {
     ret = RET_FAIL;
-  }
-
-  fs_file_close(fp);
-
-  return ret;
-}
-
-ret_t file_write_sync(const char* name, const void* buff, uint32_t size) {
-  ret_t ret = RET_OK;
-  fs_file_t* fp = NULL;
-  return_value_if_fail(name != NULL && buff != NULL, RET_BAD_PARAMS);
-
-  fp = fs_open_file(os_fs(), name, "wb+");
-  return_value_if_fail(fp != NULL, RET_FAIL);
-
-  if (fs_file_write(fp, buff, size) != size) {
-    ret = RET_FAIL;
-  } else {
+  } else if (need_sync) {
     if (fs_file_sync(fp) != RET_OK) {
       ret = RET_FAIL;
     }
@@ -340,6 +324,22 @@ ret_t file_write_sync(const char* name, const void* buff, uint32_t size) {
   fs_file_close(fp);
 
   return ret;
+}
+
+ret_t file_write(const char* name, const void* buff, uint32_t size) {
+  return file_write_ex_impl(name, "wb+", buff, size, FALSE);
+}
+
+ret_t file_write_ex(const char* name, const char* mode, const void* buff, uint32_t size) {
+  return file_write_ex_impl(name, mode, buff, size, FALSE);
+}
+
+ret_t file_write_sync(const char* name, const void* buff, uint32_t size) {
+  return file_write_ex_impl(name, "wb+", buff, size, TRUE);
+}
+
+ret_t file_write_sync_ex(const char* name, const char* mode, const void* buff, uint32_t size) {
+  return file_write_ex_impl(name, mode, buff, size, TRUE);
 }
 
 ret_t file_remove(const char* name) {

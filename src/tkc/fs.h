@@ -914,6 +914,21 @@ int32_t file_read_part(const char* name, void* buff, uint32_t size, uint32_t off
 ret_t file_write(const char* name, const void* buff, uint32_t size);
 
 /**
+ * @method file_write_ex
+ *
+ * 写入文件（扩展版本，可指定打开方式）。
+ * > mode 取值参考 POSIX fopen，与 fs_open_file 一致。
+ *
+ * @param {const char*} name 文件名。
+ * @param {const char*} mode 打开方式。
+ * @param {const void*} buff 数据缓冲区。
+ * @param {uint32_t} size 数据长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_write_ex(const char* name, const char* mode, const void* buff, uint32_t size);
+
+/**
  * @method file_write_sync
  *
  * 写入文件，立马同步文件系统。
@@ -925,6 +940,21 @@ ret_t file_write(const char* name, const void* buff, uint32_t size);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t file_write_sync(const char* name, const void* buff, uint32_t size);
+
+/**
+ * @method file_write_sync_ex
+ *
+ * 写入文件并同步文件系统（扩展版本，可指定打开方式）。
+ * > mode 取值参考 POSIX fopen，与 fs_open_file 一致。
+ *
+ * @param {const char*} name 文件名。
+ * @param {const char*} mode 打开方式。
+ * @param {const void*} buff 数据缓冲区。
+ * @param {uint32_t} size 数据长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_write_sync_ex(const char* name, const char* mode, const void* buff, uint32_t size);
 
 /*basic function test*/
 ret_t fs_test(fs_t* fs);

@@ -1,4 +1,6 @@
-﻿#include "tkc/fs.h"
+﻿#include <cstring>
+
+#include "tkc/fs.h"
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/darray.h"
@@ -7,6 +9,44 @@
 
 TEST(Fs, basic) {
   ASSERT_EQ(fs_test(os_fs()), RET_OK);
+}
+
+TEST(Fs, file_write_ex) {
+  char buff[32];
+  fs_file_t* fp = NULL;
+  const char* filename = "tkc_test_file_write_ex.txt";
+  fs_t* fs = os_fs();
+
+  if (fs_file_exist(fs, filename)) {
+    ASSERT_EQ(fs_remove_file(fs, filename), RET_OK);
+  }
+
+  ASSERT_EQ(file_write_ex(filename, "wb", "xy", 2), RET_OK);
+  ASSERT_EQ(fs_get_file_size(fs, filename), 2);
+  fp = fs_open_file(fs, filename, "rb");
+  ASSERT_TRUE(fp != NULL);
+  memset(buff, 0, sizeof(buff));
+  ASSERT_EQ(fs_file_read(fp, buff, 2), 2);
+  ASSERT_EQ(memcmp(buff, "xy", 2), 0);
+  ASSERT_EQ(fs_file_close(fp), RET_OK);
+
+  ASSERT_EQ(file_write_ex(filename, "ab", "z", 1), RET_OK);
+  ASSERT_EQ(fs_get_file_size(fs, filename), 3);
+  memset(buff, 0, sizeof(buff));
+  fp = fs_open_file(fs, filename, "rb");
+  ASSERT_TRUE(fp != NULL);
+  ASSERT_EQ(fs_file_read(fp, buff, 3), 3);
+  ASSERT_EQ(memcmp(buff, "xyz", 3), 0);
+  ASSERT_EQ(fs_file_close(fp), RET_OK);
+
+  ASSERT_EQ(file_write_sync_ex(filename, "wb", "a", 1), RET_OK);
+  ASSERT_EQ(fs_get_file_size(fs, filename), 1);
+
+  ASSERT_EQ(file_write_ex(NULL, "wb", "x", 1), RET_BAD_PARAMS);
+  ASSERT_EQ(file_write_ex(filename, NULL, "x", 1), RET_BAD_PARAMS);
+  ASSERT_EQ(file_write_ex(filename, "wb", NULL, 1), RET_BAD_PARAMS);
+
+  ASSERT_EQ(fs_remove_file(fs, filename), RET_OK);
 }
 
 TEST(Fs, read_part) {
