@@ -606,13 +606,19 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
             if (res_root != NULL) {
               path_build(b_name_build, MAX_PATH, res_root, theme_name, "ui", builder->name, NULL);
               path_normalize(b_name_build, bname_normalize, MAX_PATH);
+
+              if (!file_exist(bname_normalize) && !tk_str_eq(theme_name, "default")) {
+                memset(b_name_build, 0x00, MAX_PATH);
+                path_build(b_name_build, MAX_PATH, res_root, "default", "ui", builder->name, NULL);
+                path_normalize(b_name_build, bname_normalize, MAX_PATH);
+              }
             }
           }
         }
         path_replace_basename(subfilename, MAX_PATH, bname_normalize, filename);
       }
       path_abs_normalize(subfilename, absfilename, MAX_PATH);
-      
+
       // 判断是否重复包含
       if (tk_str_eq(bname_normalize, absfilename)) {
         include_name_loop = TRUE;

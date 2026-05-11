@@ -410,6 +410,8 @@ static widget_t* preview_ui(const char* filename) {
   uint32_t size = 0;
   widget_t* root = NULL;
   char name[TK_NAME_LEN + 1];
+  char b_name[MAX_PATH + 1];
+  char* ext = NULL;
   ui_builder_t* builder = NULL;
   uint8_t* content = NULL;
   bool_t is_bin = strstr(filename, ".bin") != NULL;
@@ -432,7 +434,10 @@ static widget_t* preview_ui(const char* filename) {
 
   try_get_ui_dir_path(filename, ui_dir, MAX_PATH);
   filename_to_res_name(filename, ui_dir, name, TK_NAME_LEN);
-  builder = ui_builder_default_create(name);
+  ext = strrchr(filename, '.');
+  tk_str_append(b_name, MAX_PATH, name);
+  tk_str_append(b_name, MAX_PATH, ext);
+  builder = ui_builder_default_create(b_name);
   printf("preview %s\n", filename);
   return_value_if_fail(file_data.size != 0, NULL);
   ui_loader_load(loader, (uint8_t*)file_data.str, size, builder);
