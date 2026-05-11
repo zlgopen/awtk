@@ -25,8 +25,9 @@
 #include "tkc/utils.h"
 #include "tkc/object.h"
 
-#define VALUE_FLOAT_TO(f, type, MIN, MAX) \
-  (type)(ENSURE(!isnan(f)), (f <= (double)(MIN)) ? MIN : ((f >= (MAX) + 1.0) ? MAX : (type)(f)))
+#define VALUE_FLOAT_TO(f, type, MIN, MAX)         \
+  (type)(isnan(f) ? (ENSURE(!"Not a number!"), 0) \
+                  : ((f <= (double)(MIN)) ? MIN : ((f >= (MAX) + 1.0) ? MAX : (type)(f))))
 
 bool_t value_bool(const value_t* v) {
   return_value_if_fail(v != NULL, FALSE);

@@ -167,7 +167,11 @@ TEST(value, double_to_i64) {
   ASSERT_EQ(value_int64(&v), INT64_MIN);
 
   ASSERT_EQ(&v, value_set_double(&v, NAN));
+#if defined(NDEBUG)
+  ASSERT_EQ(value_int64(&v), 0);
+#else
   ASSERT_DEATH(value_int64(&v), "");
+#endif /* NDEBUG */
 }
 
 TEST(value, double_to_u64) {
@@ -190,7 +194,11 @@ TEST(value, double_to_u64) {
   ASSERT_EQ(value_uint64(&v), 0);
 
   ASSERT_EQ(&v, value_set_double(&v, NAN));
+#if defined(NDEBUG)
+  ASSERT_EQ(value_uint64(&v), 0);
+#else
   ASSERT_DEATH(value_uint64(&v), "");
+#endif /* NDEBUG */
 }
 
 TEST(value, float) {
