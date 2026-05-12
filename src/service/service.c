@@ -188,6 +188,7 @@ static ret_t tk_service_start_serial(event_source_manager_t* esm, const char* ur
     int fd = tk_object_get_prop_int(TK_OBJECT(io), TK_STREAM_PROP_FD, -1);
     event_source_t* client_source = event_source_fd_create(fd, tk_service_on_data, service);
     event_source_manager_add(esm, client_source);
+    emitter_on(EMITTER(client_source), EVT_DESTROY, tk_service_on_destory, client_source);
     TK_OBJECT_UNREF(client_source);
     log_debug("service start: %s\n", url);
   } else {
