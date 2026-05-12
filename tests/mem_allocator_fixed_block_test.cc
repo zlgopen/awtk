@@ -78,6 +78,10 @@ TEST(MemAllocatorFixedBlock, invalid_free) {
 
   p3 = (int*)MEM_ALLOCATOR_ALLOC(allocator, mem_allocator_fixed_block_size(allocator));
 
+  // 测试重复释放
+  mem_allocator_free(allocator, p2);
+  mem_allocator_free(allocator, p2);
+
   // 测试无效指针释放
   ASSERT_EQ(
       MEM_ALLOCATOR_REALLOC(allocator, &dummy, mem_allocator_fixed_block_size(allocator)) == NULL,
@@ -88,7 +92,6 @@ TEST(MemAllocatorFixedBlock, invalid_free) {
 
   ASSERT_EQ(mem_allocator_destroy(allocator), RET_OK);
 
-  (void)p2;
   (void)p3;
 }
 
@@ -102,6 +105,28 @@ TEST(MemAllocatorFixedBlock, realloc) {
   ASSERT_EQ(MEM_ALLOCATOR_REALLOC(allocator, (uint8_t*)(p1) + 1,
                                   mem_allocator_fixed_block_size(allocator)) == NULL,
             TRUE);
+
+  ASSERT_EQ(mem_allocator_destroy(allocator), RET_OK);
+}
+
+TEST(MemAllocatorFixedBlock, large_block_many_allocations) {
+  enum {
+    kAllocCount = 24,
+    kBlockSize = 40
+  };
+  void* blocks[kAllocCount] = {0};
+  mem_allocator_t* allocator = mem_allocator_fixed_block_create(kBlockSize, 5);
+  ASSERT_EQ(allocator != NULL, TRUE);
+
+  for (uint32_t i = 0; i < kAllocCount; i++) {
+    blocks[i] = MEM_ALLOCATOR_ALLOC(allocator, mem_allocator_fixed_block_size(allocator));
+    ASSERT_EQ(blocks[i] != NULL, TRUE);
+    memset(blocks[i], (int)(i + 1), kBlockSize);
+  }
+
+  for (int32_t i = kAllocCount - 1; i >= 0; i--) {
+    MEM_ALLOCATOR_FREE(allocator, blocks[i]);
+  }
 
   ASSERT_EQ(mem_allocator_destroy(allocator), RET_OK);
 }
