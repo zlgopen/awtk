@@ -510,7 +510,7 @@ static ret_t on_image_animation_set_interval(void* ctx, event_t* e) {
   widget_t* s_image_animation = WIDGET(ctx);
   int32_t interval = widget_get_prop_int(s_image_animation, "interval", 0);
 
-  widget_set_prop_int(s_image_animation, "interval", interval / 100);
+  widget_set_prop_int(s_image_animation, "interval", interval / 1.01f);
   return RET_OK;
 }
 

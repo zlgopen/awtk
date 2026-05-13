@@ -77,11 +77,17 @@ ret_t timer_dispatch(void) {
 }
 
 ret_t timer_modify(uint32_t timer_id, uint32_t duration) {
+  return timer_modify_ex(timer_id, duration, TRUE);
+}
+
+ret_t timer_modify_ex(uint32_t timer_id, uint32_t duration, bool_t reset_timer) {
   timer_info_t* info = (timer_info_t*)timer_manager_find(timer_manager(), timer_id);
   return_value_if_fail(info != NULL, RET_NOT_FOUND);
 
   info->duration = duration;
-  info->start = timer_manager()->get_time();
+  if (reset_timer) {
+    info->start = timer_manager()->get_time();
+  }
 
   return RET_OK;
 }

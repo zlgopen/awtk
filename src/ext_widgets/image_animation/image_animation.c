@@ -325,7 +325,7 @@ ret_t image_animation_set_interval(widget_t* widget, uint32_t interval) {
     const timer_info_t* info = timer_find(image_animation->timer_id);
     assert(info != NULL);
     if (info != NULL && info->duration != image_animation->interval) {
-      timer_modify(info->id, image_animation->interval);
+      timer_modify_ex(info->id, image_animation->interval, FALSE);
     }
   }
   return RET_OK;
