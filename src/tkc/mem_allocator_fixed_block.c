@@ -31,7 +31,7 @@ typedef union _mem_allocator_fixed_block_node_t mem_allocator_fixed_block_node_t
 union _mem_allocator_fixed_block_node_t {
   /**
    * @property {mem_allocator_fixed_block_node_t*} next
-   * 下一个未使用的内存块链表。
+   * 下一个未使用的内存块结点。
    */
   mem_allocator_fixed_block_node_t* next;
   /**
@@ -92,10 +92,12 @@ typedef struct _mem_allocator_fixed_block_t {
   uint32_t size;
 } mem_allocator_fixed_block_t;
 
+#define MEM_ALLOCATOR_FIXED_BLOCK_ALIGN_UP(size, align) (((size) + (align) - 1) & ~((align) - 1))
+
 #define MEM_ALLOCATOR_FIXED_BLOCK_INFO_SIZE(num) (sizeof(mem_allocator_fixed_block_info_t) * (num))
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_SIZE(type_size) \
-  tk_max(type_size, sizeof(mem_allocator_fixed_block_node_t))
+  MEM_ALLOCATOR_FIXED_BLOCK_ALIGN_UP(type_size, sizeof(mem_allocator_fixed_block_node_t*))
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_MEM_SIZE(type_size, num) \
   (MEM_ALLOCATOR_FIXED_BLOCK_SIZE(type_size) * (num))
@@ -110,12 +112,12 @@ typedef struct _mem_allocator_fixed_block_t {
   ((uint8_t*)(pool) + MEM_ALLOCATOR_FIXED_BLOCK_MEM_START_OFFSET)
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(pool, type_size, index)                \
-  (mem_allocator_fixed_block_pool_t*)(MEM_ALLOCATOR_FIXED_BLOCK_MEM_START(pool) + \
+  (mem_allocator_fixed_block_node_t*)(MEM_ALLOCATOR_FIXED_BLOCK_MEM_START(pool) + \
                                       MEM_ALLOCATOR_FIXED_BLOCK_MEM_SIZE(type_size, index))
 
-#define MEM_ALLOCATOR_FIXED_BLOCK_NODE_INFO_GET(pool, type_size, index)                   \
-  (mem_allocator_fixed_block_info_t*)((uint8_t*)MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(       \
-                                      pool, type_size, (pool)->num) +                      \
+#define MEM_ALLOCATOR_FIXED_BLOCK_NODE_INFO_GET(pool, type_size, index)             \
+  (mem_allocator_fixed_block_info_t*)((uint8_t*)MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET( \
+                                          pool, type_size, (pool)->num) +           \
                                       MEM_ALLOCATOR_FIXED_BLOCK_INFO_SIZE(index))
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_GET_INDEX(target, start, size) \
@@ -256,6 +258,7 @@ inline static mem_allocator_fixed_block_node_t* mem_allocator_fixed_block_pool_a
   pool->used_num++;
 
   info = mem_allocator_fixed_block_node_get_info(pool, ret, type_size);
+  ENSURE(!info->used);
   info->used = TRUE;
 
   return ret;
@@ -314,7 +317,7 @@ inline static uint32_t mem_allocator_fixed_block_pool_num(mem_allocator_fixed_bl
 
 static ret_t mem_allocator_fixed_block_pool_init(mem_allocator_fixed_block_t* allocator,
                                                  mem_allocator_fixed_block_pool_t* pool) {
-  mem_allocator_fixed_block_pool_t* node = NULL;
+  mem_allocator_fixed_block_node_t* node = NULL;
   uint32_t i = 0;
   return_value_if_fail(allocator != NULL && pool != NULL, RET_BAD_PARAMS);
   ENSURE(pool->num > 0);
@@ -324,12 +327,14 @@ static ret_t mem_allocator_fixed_block_pool_init(mem_allocator_fixed_block_t* al
   pool->unused_list = &pool->list;
 
   for (i = 0; i < pool->num - 1; i++) {
-    mem_allocator_fixed_block_pool_t* node =
-        MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(pool, allocator->size, i);
+    node = MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(pool, allocator->size, i);
     node->next = MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(pool, allocator->size, i + 1);
   }
   node = MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(pool, allocator->size, pool->num - 1);
   node->next = NULL;
+
+  memset(MEM_ALLOCATOR_FIXED_BLOCK_NODE_INFO_GET(pool, allocator->size, 0), 0,
+         MEM_ALLOCATOR_FIXED_BLOCK_INFO_SIZE(pool->num));
 
   return RET_OK;
 }
@@ -397,7 +402,7 @@ static ret_t mem_allocator_fixed_block_pools_merge(mem_allocator_fixed_block_t* 
         prev_pool = prev;
       }
     }
-    /* 复用的空池放到最后一个非满池的后，让分配器优先分配非满池里的内存 */
+    /* 复用的空池放到最后一个非满池的后面，让分配器优先分配非满池里的内存 */
     else if (!mem_allocator_fixed_block_pool_is_full(iter)) {
       new_prev_pool = iter;
     }
@@ -568,7 +573,8 @@ static void* mem_allocator_fixed_block_alloc(mem_allocator_t* allocator, uint32_
   mem_allocator_fixed_block_t* fixed_block_allocator = (mem_allocator_fixed_block_t*)allocator;
   (void)func, (void)line;
   return_value_if_fail(fixed_block_allocator != NULL, NULL);
-  return_value_if_fail(fixed_block_allocator->size == size, NULL);
+  return_value_if_fail(
+      0 < size && size <= MEM_ALLOCATOR_FIXED_BLOCK_SIZE(fixed_block_allocator->size), NULL);
 
   return mem_allocator_fixed_block_allocate(fixed_block_allocator);
 }
@@ -577,7 +583,8 @@ static void* mem_allocator_fixed_block_realloc(mem_allocator_t* allocator, void*
                                                const char* func, uint32_t line) {
   mem_allocator_fixed_block_t* fixed_block_allocator = (mem_allocator_fixed_block_t*)allocator;
   return_value_if_fail(fixed_block_allocator != NULL, NULL);
-  return_value_if_fail(fixed_block_allocator->size == size, NULL);
+  return_value_if_fail(
+      0 < size && size <= MEM_ALLOCATOR_FIXED_BLOCK_SIZE(fixed_block_allocator->size), NULL);
 
   if (ptr != NULL) {
     return_value_if_fail(
@@ -612,7 +619,6 @@ static ret_t mem_allocator_fixed_block_dump(mem_allocator_t* allocator) {
   str_append_format(&dump, 40, "%s: {\n", __FUNCTION__);
   str_append(&dump, "  pools: [\n");
   for (pool = fixed_block_allocator->pools, i = 0; pool != NULL; pool = pool->next, i++) {
-    mem_allocator_fixed_block_node_t* node = NULL;
     uint32_t used_nr = pool->used_num;
     uint32_t bytes = MEM_ALLOCATOR_FIXED_BLOCK_POOL_SIZE(fixed_block_allocator->size, pool->num);
     total_bytes += bytes;
@@ -620,19 +626,22 @@ static ret_t mem_allocator_fixed_block_dump(mem_allocator_t* allocator) {
     total_used_nr += used_nr;
 
     str_append_format(&dump, 48, "    [%u]: {\n", i);
-    str_append_format(&dump, 64, "      ptr:        %p\n", pool);
-    str_append_format(&dump, 64, "      mem:        %u bytes\n", bytes);
-    str_append_format(&dump, 64, "      nr:         %u\n", pool->num);
-    str_append_format(&dump, 88, "      used rate:  %u/%u = %.2f%%\n", used_nr, pool->num,
-                      used_nr * 100.0f / pool->num);
+    str_append_format(&dump, 64, "      ptr:       %p\n", pool);
+    str_append_format(&dump, 64, "      mem:       %u bytes\n", bytes);
+    str_append_format(&dump, 64, "      nr:        %u\n", pool->num);
+    str_append_format(&dump, 88, "      used rate: %u/%u = %.2f%%\n", used_nr, pool->num,
+                      used_nr * 100.0f / (pool->num * 1.0f));
     str_append(&dump, "    }\n");
   }
   str_append(&dump, "  ]\n");
-  str_append_format(&dump, 64, "  type size: %u\n", fixed_block_allocator->size);
-  str_append_format(&dump, 64, "  mem:       %u bytes\n", total_bytes);
-  str_append_format(&dump, 64, "  nr:        %u\n", total_nr);
-  str_append_format(&dump, 88, "  used rate: %u/%u = %.2f%%\n", total_used_nr, total_nr,
-                    total_used_nr * 100.0f / total_nr);
+  str_append_format(&dump, 64, "  type size:       %u\n", fixed_block_allocator->size);
+  str_append_format(&dump, 64, "  mem:             %u bytes\n", total_bytes);
+  str_append_format(&dump, 64, "  nr:              %u\n", total_nr);
+  str_append_format(&dump, 96, "  used rate:       %u/%u = %.2f%%\n", total_used_nr, total_nr,
+                    total_used_nr * 100.0f / (total_nr * 1.0f));
+  str_append_format(&dump, 96, "  mem utilization: %u/%u = %.2f%%\n",
+                    fixed_block_allocator->size * total_nr, total_bytes,
+                    fixed_block_allocator->size * total_nr * 100.0f / (total_bytes * 1.0f));
   str_append(&dump, "}\n");
 
   log_debug("%s", dump.str);
