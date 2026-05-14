@@ -128,6 +128,12 @@ typedef struct _mem_allocator_fixed_block_t {
 #define MEM_ALLOCATOR_FIXED_BLOCK_MOD(num, div) \
   (((div) & ((div) - 1) /* 是否为2的幂次方 */) ? (num) % (div) : (num) & ((div) - 1))
 
+#define MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH(pools, iter) \
+  for (iter = pools; iter != NULL; iter = iter->next)
+
+#define MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH_EX(pools, iter, init, step) \
+  for (iter = pools, init; iter != NULL; step, iter = iter->next)
+
 inline static bool_t mem_allocator_fixed_block_pool_is_full(
     mem_allocator_fixed_block_pool_t* pool) {
   return_value_if_fail(pool != NULL, FALSE);
@@ -144,7 +150,7 @@ inline static bool_t mem_allocator_fixed_block_is_full(mem_allocator_fixed_block
   mem_allocator_fixed_block_pool_t* iter = NULL;
   return_value_if_fail(allocator != NULL, FALSE);
 
-  for (iter = allocator->pools; iter != NULL; iter = iter->next) {
+  MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH(allocator->pools, iter) {
     if (!mem_allocator_fixed_block_pool_is_full(iter)) {
       return FALSE;
     }
@@ -157,7 +163,7 @@ inline static bool_t mem_allocator_fixed_block_is_empty(mem_allocator_fixed_bloc
   mem_allocator_fixed_block_pool_t* iter = NULL;
   return_value_if_fail(allocator != NULL, FALSE);
 
-  for (iter = allocator->pools; iter != NULL; iter = iter->next) {
+  MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH(allocator->pools, iter) {
     if (!mem_allocator_fixed_block_pool_is_empty(iter)) {
       return FALSE;
     }
@@ -285,30 +291,28 @@ inline static ret_t mem_allocator_fixed_block_pool_deallocate(
   return RET_OK;
 }
 
+typedef enum _mem_allocator_fixed_block_num_type_t {
+  MEM_ALLOCATOR_FIXED_BLOCK_NUM_TYPE_BLOCK = 0,
+  MEM_ALLOCATOR_FIXED_BLOCK_NUM_TYPE_POOL
+} mem_allocator_fixed_block_num_type_t;
+
 inline static uint32_t mem_allocator_fixed_block_num(mem_allocator_fixed_block_t* allocator,
+                                                     mem_allocator_fixed_block_num_type_t type,
                                                      bool_t only_empty) {
   uint32_t ret = 0;
   mem_allocator_fixed_block_pool_t* iter = NULL;
   return_value_if_fail(allocator != NULL, 0);
 
-  for (iter = allocator->pools; iter != NULL; iter = iter->next) {
+  MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH(allocator->pools, iter) {
     if (!only_empty || mem_allocator_fixed_block_pool_is_empty(iter)) {
-      ret += iter->num;
-    }
-  }
-
-  return ret;
-}
-
-inline static uint32_t mem_allocator_fixed_block_pool_num(mem_allocator_fixed_block_t* allocator,
-                                                          bool_t only_empty) {
-  uint32_t ret = 0;
-  mem_allocator_fixed_block_pool_t* iter = NULL;
-  return_value_if_fail(allocator != NULL, 0);
-
-  for (iter = allocator->pools; iter != NULL; iter = iter->next) {
-    if (!only_empty || mem_allocator_fixed_block_pool_is_empty(iter)) {
-      ret++;
+      switch (type) {
+        case MEM_ALLOCATOR_FIXED_BLOCK_NUM_TYPE_BLOCK: {
+          ret += iter->num;
+        } break;
+        case MEM_ALLOCATOR_FIXED_BLOCK_NUM_TYPE_POOL: {
+          ret++;
+        } break;
+      }
     }
   }
 
@@ -358,28 +362,24 @@ inline static mem_allocator_fixed_block_pool_t* mem_allocator_fixed_block_pool_c
 static ret_t mem_allocator_fixed_block_pools_destroy(mem_allocator_fixed_block_t* allocator,
                                                      bool_t only_empty) {
   mem_allocator_fixed_block_pool_t* iter = NULL;
+  mem_allocator_fixed_block_pool_t* prev = NULL;
   return_value_if_fail(allocator != NULL, RET_BAD_PARAMS);
 
   iter = allocator->pools;
 
-  if (only_empty) {
-    mem_allocator_fixed_block_pool_t* prev = NULL;
-    while (iter != NULL) {
-      mem_allocator_fixed_block_pool_t* next = iter->next;
+  while (iter != NULL) {
+    mem_allocator_fixed_block_pool_t* next = iter->next;
+    if (only_empty) {
       if (mem_allocator_fixed_block_pool_is_empty(iter)) {
         mem_allocator_fixed_block_pool_unlink(&allocator->pools, iter, prev);
         TKMEM_FREE(iter);
       } else {
         prev = iter;
       }
-      iter = next;
-    }
-  } else {
-    while (iter != NULL) {
-      mem_allocator_fixed_block_pool_t* next = iter->next;
+    } else {
       TKMEM_FREE(iter);
-      iter = next;
     }
+    iter = next;
   }
 
   return RET_OK;
@@ -391,10 +391,10 @@ static ret_t mem_allocator_fixed_block_pools_merge(mem_allocator_fixed_block_t* 
   mem_allocator_fixed_block_pool_t *iter = NULL, *prev = NULL;
   return_value_if_fail(allocator != NULL, RET_BAD_PARAMS);
 
-  num = mem_allocator_fixed_block_num(allocator, TRUE);
+  num = mem_allocator_fixed_block_num(allocator, MEM_ALLOCATOR_FIXED_BLOCK_NUM_TYPE_BLOCK, TRUE);
   return_value_if_fail(num > 0, RET_FAIL);
 
-  for (iter = allocator->pools, prev = NULL; iter != NULL; prev = iter, iter = iter->next) {
+  MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH_EX(allocator->pools, iter, prev = NULL, prev = iter) {
     /* 保留一个空间最大的空内存池复用 */
     if (mem_allocator_fixed_block_pool_is_empty(iter)) {
       if (NULL == pool || pool->num < iter->num) {
@@ -433,7 +433,8 @@ static ret_t mem_allocator_fixed_block_extend(mem_allocator_fixed_block_t* alloc
   return_value_if_fail(allocator != NULL, RET_BAD_PARAMS);
 
   if (mem_allocator_fixed_block_is_full(allocator)) {
-    uint32_t num = mem_allocator_fixed_block_num(allocator, FALSE);
+    uint32_t num =
+        mem_allocator_fixed_block_num(allocator, MEM_ALLOCATOR_FIXED_BLOCK_NUM_TYPE_BLOCK, FALSE);
     uint32_t extend_num = MEM_ALLOCATOR_FIXED_BLOCK_NUM_EXTEND(num);
     mem_allocator_fixed_block_pool_t* pool =
         mem_allocator_fixed_block_pool_create(allocator, extend_num - num);
@@ -451,8 +452,8 @@ static void* mem_allocator_fixed_block_allocate(mem_allocator_fixed_block_t* all
   return_value_if_fail(allocator != NULL, NULL);
   return_value_if_fail(RET_OK == mem_allocator_fixed_block_extend(allocator), NULL);
 
-  for (pool = allocator->pools, prev_pool = NULL; pool != NULL;
-       prev_pool = pool, pool = pool->next) {
+  MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH_EX(allocator->pools, pool, prev_pool = NULL,
+                                             prev_pool = pool) {
     if (!mem_allocator_fixed_block_pool_is_full(pool)) {
       break;
     }
@@ -475,8 +476,8 @@ static mem_allocator_fixed_block_node_t* mem_allocator_fixed_block_node_find(
   mem_allocator_fixed_block_pool_t *pool = NULL, *prev_pool = NULL;
   return_value_if_fail(allocator != NULL && allocator->size > 0, NULL);
 
-  for (pool = allocator->pools, prev_pool = NULL; pool != NULL;
-       prev_pool = pool, pool = pool->next) {
+  MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH_EX(allocator->pools, pool, prev_pool = NULL,
+                                             prev_pool = pool) {
     if (pool->num > 0) {
       uint8_t* start = MEM_ALLOCATOR_FIXED_BLOCK_MEM_START(pool);
       if (start <= (uint8_t*)(ptr)) {
@@ -523,7 +524,7 @@ static ret_t mem_allocator_fixed_block_deallocate(mem_allocator_fixed_block_t* a
       RET_OK == mem_allocator_fixed_block_pool_deallocate(pool, node, allocator->size), RET_FAIL);
 
   if (mem_allocator_fixed_block_pool_is_empty(pool) &&
-      mem_allocator_fixed_block_pool_num(allocator, TRUE) > 1) {
+      mem_allocator_fixed_block_num(allocator, MEM_ALLOCATOR_FIXED_BLOCK_NUM_TYPE_POOL, TRUE) > 1) {
     return mem_allocator_fixed_block_pools_merge(allocator);
   }
 
@@ -542,12 +543,13 @@ inline static ret_t mem_allocator_fixed_block_clear(mem_allocator_fixed_block_t*
     return RET_OK;
   }
 
-  for (iter = allocator->pools; iter != NULL; iter = iter->next) {
+  MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH(allocator->pools, iter) {
     iter->used_num = 0;
     iter->unused_list = NULL;
   }
 
-  if (mem_allocator_fixed_block_pool_num(allocator, FALSE) > 1) {
+  if (mem_allocator_fixed_block_num(allocator, MEM_ALLOCATOR_FIXED_BLOCK_NUM_TYPE_POOL, FALSE) >
+      1) {
     return mem_allocator_fixed_block_pools_merge(allocator);
   } else {
     return mem_allocator_fixed_block_pool_init(allocator, allocator->pools);
@@ -618,7 +620,7 @@ static ret_t mem_allocator_fixed_block_dump(mem_allocator_t* allocator) {
 
   str_append_format(&dump, 40, "%s: {\n", __FUNCTION__);
   str_append(&dump, "  pools: [\n");
-  for (pool = fixed_block_allocator->pools, i = 0; pool != NULL; pool = pool->next, i++) {
+  MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH_EX(fixed_block_allocator->pools, pool, i = 0, i++) {
     uint32_t used_nr = pool->used_num;
     uint32_t bytes = MEM_ALLOCATOR_FIXED_BLOCK_POOL_SIZE(fixed_block_allocator->size, pool->num);
     total_bytes += bytes;

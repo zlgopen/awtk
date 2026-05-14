@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/5/14
+  * 完善 mem_allocator_fixed_block (感谢兆坤提供补丁)
+
 2026/5/13
   * 修复设置image_animation时间间隔的时候会导致画面停顿的问题(感谢智明提供补丁)
   * 完善 mem_allocator_fixed_block (感谢兆坤提供补丁)
