@@ -150,7 +150,7 @@ static ret_t slide_view_on_remove_child(widget_t* widget, widget_t* child) {
     slide_view->prev = NULL;
   }
 
-  return RET_OK;
+  return RET_CONTINUE;
 }
 
 static ret_t slide_view_on_pointer_down(slide_view_t* slide_view, pointer_event_t* e) {

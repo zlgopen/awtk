@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/5/15
+  * 修复 slide view 奔溃(感谢俊杰提供补丁)
+
 2026/5/14
   * 完善 mem_allocator_fixed_block (感谢兆坤提供补丁)
 
