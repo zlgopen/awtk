@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "crawler": "^1.3.0",
+    "crawler": "^2.0.2",
     "novel-segment": "^2.7.59",
     "url": "^0.11.0"
   }
