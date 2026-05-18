@@ -214,6 +214,7 @@ static ret_t widget_real_destroy(widget_t* widget) {
   TKMEM_FREE(widget->name);
   TKMEM_FREE(widget->state);
   TKMEM_FREE(widget->style);
+  TKMEM_FREE(widget->last_state_for_style);
   TKMEM_FREE(widget->tr_text);
   TKMEM_FREE(widget->animation);
   TKMEM_FREE(widget->pointer_cursor);
@@ -967,8 +968,8 @@ static inline void widget_sync_state_to_children(widget_t* widget, const char* s
   }
   if (!tk_str_eq(state_for_style, widget->last_state_for_style)) {
     widget_sync_state_to_children_impl(widget, state_for_style);
+    widget->last_state_for_style = tk_str_copy(widget->last_state_for_style, state_for_style);
   }
-  widget->last_state_for_style = state_for_style;
 }
 
 ret_t widget_set_state(widget_t* widget, const char* state) {
@@ -2500,7 +2501,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   if (ret == RET_NOT_FOUND) {
     if (tk_str_eq(name, WIDGET_PROP_LAYOUT_W)) {
       if (widget->self_layout != NULL) {
-        w_attr_t w_attr = (w_attr_t)self_layouter_get_param_int(widget->self_layout, "w_attr", W_ATTR_UNDEF);
+        w_attr_t w_attr =
+            (w_attr_t)self_layouter_get_param_int(widget->self_layout, "w_attr", W_ATTR_UNDEF);
         if (W_ATTR_PIXEL == w_attr) {
           ret = self_layouter_get_param(widget->self_layout, "w", v);
           if (value_int(v) < 0) {
@@ -2514,7 +2516,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
       }
     } else if (tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {
       if (widget->self_layout != NULL) {
-        h_attr_t h_attr = (h_attr_t)self_layouter_get_param_int(widget->self_layout, "h_attr", H_ATTR_UNDEF);
+        h_attr_t h_attr =
+            (h_attr_t)self_layouter_get_param_int(widget->self_layout, "h_attr", H_ATTR_UNDEF);
         if (H_ATTR_PIXEL == h_attr) {
           ret = self_layouter_get_param(widget->self_layout, "h", v);
           if (value_int(v) < 0) {
