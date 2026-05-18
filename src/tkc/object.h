@@ -108,22 +108,22 @@ struct _tk_object_t {
   emitter_t emitter;
 
   /**
-   * @property {int32_t} ref_count
-   * @annotation ["readable", "scriptable"]
-   * 引用计数。
-   */
-  int32_t ref_count;
-
-  /**
    * @property {char*} name
    * @annotation ["readable", "scriptable"]
    * 对象的名称。
    */
   char* name;
 
+  /**
+   * @property {int32_t} ref_count
+   * @annotation ["readable", "scriptable"]
+   * 引用计数。
+   */
+  int32_t ref_count;
+
   /*private*/
+  bool_t visiting;
   const object_vtable_t* vt;
-  uint32_t visiting;
 };
 
 /**
