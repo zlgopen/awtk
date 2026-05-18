@@ -2,6 +2,7 @@
 2026/5/18
   * 调整tk_object_t内存布局(感谢兆坤提供补丁)
   * 修复widget last_state_for_style 可能是野指针的问题(感谢兆坤提供补丁)
+  * 修复当消息剩1条时dialog_toast_quit可能访问野指针的问题(感谢朝泽提供补丁)
 
 2026/5/15
   * 修复 slide view 奔溃(感谢俊杰提供补丁)

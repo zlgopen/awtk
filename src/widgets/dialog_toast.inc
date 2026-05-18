@@ -169,22 +169,23 @@ static ret_t dialog_toast_quit(dialog_toast_t* dialog_toast, bool_t time_up) {
     if (message_list->size > 0) {
       dialog_toast_message_t* message = (dialog_toast_message_t*)darray_tail(message_list);
       uint32_t diff = now - message->start_time;
-      /* 
+      uint32_t duration = message->duration;
+      /*
        * dialog_toast_quit 函数中一定会释放正在显示的信息。
        * 释放正在显示的信息后，检查队列中是否有没有过期的信息。
        */
-      if (message->duration > diff && !first) {
+      if (duration > diff && !first) {
         /* 在宏观时间轴上，之前加入的信息的时间也是在跑的，所以只要显示剩余的时间 */
-        dialog_toast_set_curr_message(dialog_toast, message, message->duration - diff, TRUE);
+        dialog_toast_set_curr_message(dialog_toast, message, duration - diff, TRUE);
         dialog_toast->is_empty = FALSE;
         break;
       } else {
         /* 清除过期的消息和释放其占用的内存 */
         void* data = darray_pop(message_list);
         if (data != NULL) {
-          TKMEM_FREE(data);   
+          TKMEM_FREE(data);
         }
-        if ((!time_up || message->duration > diff) && first) {
+        if ((!time_up || duration > diff) && first) {
           timer_remove(dialog_toast->curr_timer_id);
           dialog_toast->curr_timer_id = TK_INVALID_ID;
         }
