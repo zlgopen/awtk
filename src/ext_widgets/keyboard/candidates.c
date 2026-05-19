@@ -159,7 +159,7 @@ static ret_t candidates_relayout_children(widget_t* widget) {
   widget_t** children = (widget_t**)(widget->children->elms);
   style_t* style = children[0]->astyle;
   canvas_t* c = widget_get_canvas(widget);
-  const char* font = system_info_fix_font_name(NULL);
+  const char* font = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
   int32_t child_margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
 
