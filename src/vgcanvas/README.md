@@ -2,7 +2,7 @@
 
 目前有3类实现：
 
-* vgcanvas\_nanovg\_soft 软件实现(**适合普通嵌入式平台**)。软件实现又有agg和agge两种实现。
+* vgcanvas\_nanovg\_soft 软件实现(**适合普通嵌入式平台**)。基于 agge 实现。
 
 * vgcanvas\_nanovg\_gl OpenGL实现。OpenGL实现又有OpenGL3、OpenGLES2和OpenGLES3三种实现。
 

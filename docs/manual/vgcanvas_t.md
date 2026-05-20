@@ -10,7 +10,7 @@ cairo和skia体积太大，不适合嵌入式平台，但在PC平台也是一种
 
 我们对nanovg进行了一些改进:
 
-* 可以用agg/agge实现软件渲染(暂时不支持文本绘制)。
+* 可以用agge实现软件渲染(暂时不支持文本绘制)。
 
 ![image](images/vgcanvas_t_0.png)
 

@@ -103,7 +103,7 @@ struct _bitmap_t {
   /*destroy时是否需要释放bitmap本身的内存*/
   bool_t should_free_handle;
 
-  /* 显示特定的数据，如OpenGL texture ID，agg/agge中图片等。*/
+  /* 显示特定的数据，如OpenGL texture ID，agge中图片等。*/
   void* specific;
   /*specific_destroy的上下文*/
 

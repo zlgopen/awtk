@@ -268,7 +268,7 @@ typedef struct _vgcanvas_vtable_t {
  * 矢量图画布抽象基类。
  * @annotation ["scriptable"]
  *
- * 具体实现时可以使用agg，nanovg, cairo和skia等方式。
+ * 具体实现时可以使用nanovg, cairo和skia等方式。
  *
  * cairo和skia体积太大，不适合嵌入式平台，但在PC平台也是一种选择。
  *
@@ -276,7 +276,7 @@ typedef struct _vgcanvas_vtable_t {
  *
  * 我们对nanovg进行了一些改进:
  *
- * * 可以用agg/agge实现软件渲染(暂时不支持文本绘制)。
+ * * 可以用agge实现软件渲染(暂时不支持文本绘制)。
  *
  * ```graphviz
  *   [default_style]
@@ -284,7 +284,6 @@ typedef struct _vgcanvas_vtable_t {
  *   vgcanvas_cairo_t -> vgcanvas_t[arrowhead = "empty"]
  *   vgcanvas_nanovg_t -> vgcanvas_t[arrowhead = "empty"]
  *   opengl -> vgcanvas_nanovg_t[arrowhead = "none"]
- *   agg -> vgcanvas_nanovg_t[arrowhead = "none"]
  *   agge -> vgcanvas_nanovg_t[arrowhead = "none"]
  *   vgcanvas_skia_t -> vgcanvas_t[arrowhead = "empty"]
  *   vgcanvas_agge_t -> vgcanvas_t[arrowhead = "empty"]

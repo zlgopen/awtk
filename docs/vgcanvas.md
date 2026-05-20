@@ -12,7 +12,7 @@
 * [agg](http://www.antigrain.com)
 * [agge](https://github.com/tyoma/agge)
 
-其中最后 5 个是开源的，skia 和 cairo 很强但也很大，不太适合嵌入式环境（可以用于 linux 嵌入式平台）。nanovg 是最简洁最优雅的，可惜它只支持 OpenGL，为此，我们用 agg/agge 作为 nanovg 软件渲染的后端。经过一番考虑之后，AWTK 的 canvas 根据硬件环境分为三个层次：
+其中最后 5 个是开源的，skia 和 cairo 很强但也很大，不太适合嵌入式环境（可以用于 linux 嵌入式平台）。nanovg 是最简洁最优雅的，可惜它只支持 OpenGL，为此，我们用 agge 作为 nanovg 软件渲染的后端。经过一番考虑之后，AWTK 的 canvas 根据硬件环境分为三个层次：
 
 * 简约模式。支持基本的绘图函数，但不支持 Vector graphics 绘图函数，能实现 GUI 常见功能。适用于低端的硬件环境，如 CPU 主频小于 100M，RAM 不足以实现。
 

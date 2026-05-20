@@ -58,9 +58,7 @@ if VGCANVAS == 'CAIRO':
 elif VGCANVAS == 'NANOVG_PLUS':
     BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_plus.c']
 else:
-    if NANOVG_BACKEND == 'AGG':
-        BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_soft.c']
-    elif NANOVG_BACKEND == 'AGGE':
+    if NANOVG_BACKEND == 'AGGE':
         BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_soft.c']
     else:
         BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_gl.c']
