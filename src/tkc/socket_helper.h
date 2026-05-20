@@ -19,15 +19,15 @@
  *
  */
 
-#include "tkc/types_def.h"
-#include "tkc/darray.h"
-
-#ifdef WITH_SOCKET
-
 #ifndef TK_SOCKET_HELPER_H
 #define TK_SOCKET_HELPER_H
 
+#include "tkc/types_def.h"
+#include "tkc/darray.h"
+
 BEGIN_C_DECLS
+
+#ifdef WITH_SOCKET
 
 /**
  * @class tk_socket_t
@@ -396,13 +396,14 @@ int tk_udp_connect(const char* host, int port);
  */
 int tk_udp_socket(void);
 
-END_C_DECLS
-
 #include "tkc/socket_helper_compat.h"
 
-#endif /*TK_SOCKET_HELPER_H*/
 #else
 /*提供两个空函数*/
 ret_t tk_socket_init(void);
 ret_t tk_socket_deinit(void);
 #endif /*WITH_SOCKET*/
+
+END_C_DECLS
+
+#endif /*TK_SOCKET_HELPER_H*/
