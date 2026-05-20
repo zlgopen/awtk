@@ -136,7 +136,7 @@ target_link_libraries(myapp PRIVATE awtk::awtk)
 | `AWTK_TOOLS_NAME` | Windows：`mingw` 或空（MSVC 风格） |
 | `AWTK_INPUT_ENGINE` | `null` / `spinyin` / `t9` / `t9ext` / `pinyin` |
 | `AWTK_VGCANVAS` | `NANOVG` / `NANOVG_PLUS` / `CAIRO`（CMake 侧若组合未实现会报错提示） |
-| `AWTK_NANOVG_BACKEND` | `GLES2` / `GLES3` / `GL3` / `AGG` / `AGGE` / `BGFX` 等 |
+| `AWTK_NANOVG_BACKEND` | `GLES2` / `GLES3` / `GL3` / `AGG` / `AGGE` 等 |
 | `AWTK_OPENGL_ANTIALIAS` | `HW` / `SW` / `NONE` |
 | `AWTK_LCD_COLOR_FORMAT` | `bgr565` / `bgra8888` / `mono` 或留空 |
 | `AWTK_WIN32_RES` | 可选 Windows 资源文件路径 |

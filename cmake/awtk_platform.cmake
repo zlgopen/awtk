@@ -25,7 +25,6 @@ function(awtk_apply_platform_compile_options _target)
       -DHAS_SEM_OPEN
       -D__APPLE__ -DHAS_PTHREAD -DMACOS
       -D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS
-      -DBGFX_CONFIG_RENDERER_METAL=1
     )
   elseif(AWTK_OS_LINUX)
     target_compile_options(${_target} PRIVATE
@@ -69,8 +68,6 @@ function(awtk_apply_platform_link_options _target _scope)
       LINKER:-framework,Cocoa
       LINKER:-framework,QuartzCore
       LINKER:-framework,OpenGL
-      LINKER:-weak_framework,Metal
-      LINKER:-weak_framework,MetalKit
     )
   elseif(AWTK_OS_LINUX)
     # Do not use LINKER:-Wl,-rpath,... — CMake splits LINKER: args on commas, so ld sees bare "-Wl".

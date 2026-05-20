@@ -1,4 +1,7 @@
 # 最新动态
+2026/5/20
+  * 移除 BGFX 后端（NANOVG_BACKEND=BGFX 及 3rd/bgfx 集成已删除）
+
 2026/5/18
   * 调整tk_object_t内存布局(感谢兆坤提供补丁)
   * 修复widget last_state_for_style 可能是野指针的问题(感谢兆坤提供补丁)

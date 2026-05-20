@@ -12,8 +12,6 @@ cairo和skia体积太大，不适合嵌入式平台，但在PC平台也是一种
 
 * 可以用agg/agge实现软件渲染(暂时不支持文本绘制)。
 
-* 可以用bgfx使用DirectX(Windows平台)和Metal(iOS)平台硬件加速。
-
 ![image](images/vgcanvas_t_0.png)
 
 

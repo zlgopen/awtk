@@ -18,7 +18,7 @@ set(AWTK_OUTPUT_DIR "" CACHE PATH "Install / output prefix override (maps OUTPUT
 set(AWTK_TOOLS_NAME "" CACHE STRING "Windows: empty for MSVC, 'mingw' for MinGW (maps TOOLS_NAME)")
 set(AWTK_INPUT_ENGINE "pinyin" CACHE STRING "null|spinyin|t9|t9ext|pinyin")
 set(AWTK_VGCANVAS "NANOVG_PLUS" CACHE STRING "NANOVG|NANOVG_PLUS|CAIRO")
-set(AWTK_NANOVG_BACKEND "GL3" CACHE STRING "GLES2|GLES3|GL3|AGG|AGGE|BGFX (valid combos depend on VGCANVAS)")
+set(AWTK_NANOVG_BACKEND "GL3" CACHE STRING "GLES2|GLES3|GL3|AGG|AGGE (valid combos depend on VGCANVAS)")
 set(AWTK_OPENGL_ANTIALIAS "HW" CACHE STRING "HW|SW|NONE")
 set(AWTK_LCD_COLOR_FORMAT "" CACHE STRING "bgr565|bgra8888|mono or empty for defaults")
 set(AWTK_WIN32_RES "" CACHE FILEPATH "Optional Windows .res path (WIN32_RES)")

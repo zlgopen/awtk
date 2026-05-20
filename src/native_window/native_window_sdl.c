@@ -742,8 +742,6 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
   lcd = lcd_sdl2_init(sdl->render);
 #elif WITH_NANOVG_GPU
   lcd = lcd_nanovg_init(win);
-#elif WITH_NANOVG_BGFX
-  lcd = lcd_nanovg_init(win);
 #endif /*WITH_NANOVG_SOFT*/
 #endif /*WITH_LCD_MONO*/
 

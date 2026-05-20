@@ -278,15 +278,12 @@ typedef struct _vgcanvas_vtable_t {
  *
  * * 可以用agg/agge实现软件渲染(暂时不支持文本绘制)。
  *
- * * 可以用bgfx使用DirectX(Windows平台)和Metal(iOS)平台硬件加速。
- *
  * ```graphviz
  *   [default_style]
  *
  *   vgcanvas_cairo_t -> vgcanvas_t[arrowhead = "empty"]
  *   vgcanvas_nanovg_t -> vgcanvas_t[arrowhead = "empty"]
  *   opengl -> vgcanvas_nanovg_t[arrowhead = "none"]
- *   bgfx -> vgcanvas_nanovg_t[arrowhead = "none"]
  *   agg -> vgcanvas_nanovg_t[arrowhead = "none"]
  *   agge -> vgcanvas_nanovg_t[arrowhead = "none"]
  *   vgcanvas_skia_t -> vgcanvas_t[arrowhead = "empty"]

@@ -14,7 +14,7 @@
 TARGET_ARCH='x86'
 ```
 
-* 2.对于XP，如果OpenGL渲染不正常。可以使用AGGE(或BGFX)试试。
+* 2.对于XP，如果OpenGL渲染不正常。可以使用AGGE试试。
 
 将：
 

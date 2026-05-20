@@ -80,7 +80,6 @@ if is_raspberrypi():
   NANOVG_BACKEND='GLES2'
 
 NANOVG_BACKEND = compile_helper.get_value('NANOVG_BACKEND', NANOVG_BACKEND)
-#NANOVG_BACKEND='BGFX'
 
 FRAME_BUFFER_FORMAT = ''
 if VGCANVAS == 'CAIRO':
@@ -216,16 +215,11 @@ else:
         joinPath(TK_3RD_ROOT, 'nanovg'),
         joinPath(TK_3RD_ROOT, 'nanovg/gl'),
         joinPath(TK_3RD_ROOT, 'nanovg/base'),
-        joinPath(TK_3RD_ROOT, 'nanovg/agge'),
-        joinPath(TK_3RD_ROOT, 'nanovg/bgfx')]
+        joinPath(TK_3RD_ROOT, 'nanovg/agge')]
     if NANOVG_BACKEND == 'AGGE':
         NANOVG_BACKEND_LIBS = ['nanovg-agge', 'nanovg', 'agge']
         NANOVG_BACKEND_PROJS += ['3rd/agge/SConscript']
         COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_AGGE '
-    elif NANOVG_BACKEND == 'BGFX':
-        NANOVG_BACKEND_LIBS = ['nanovg-bgfx', 'nanovg', 'bgfx']
-        NANOVG_BACKEND_PROJS += ['3rd/bgfx/SConscript']
-        COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_BGFX -DWITH_NANOVG_GPU '
     elif NANOVG_BACKEND == 'GLES2':
         NANOVG_BACKEND_LIBS = ['nanovg']
         COMMON_CCFLAGS = COMMON_CCFLAGS + \
@@ -299,9 +293,6 @@ CPPPATH = [TK_ROOT,
            joinPath(TK_3RD_ROOT, 'mbedtls/3rdparty/everest/include'),
            joinPath(TK_3RD_ROOT, 'pixman'),
            joinPath(TK_3RD_ROOT, 'cairo'),
-           joinPath(TK_3RD_ROOT, 'bgfx/bgfx/include'),
-           joinPath(TK_3RD_ROOT, 'bgfx/bx/include'),
-           joinPath(TK_3RD_ROOT, 'bgfx/bimg/include'),
            joinPath(TK_3RD_ROOT, 'agge'),
            joinPath(TK_3RD_ROOT, 'SDL/src'),
            joinPath(TK_3RD_ROOT, 'SDL/include'),
