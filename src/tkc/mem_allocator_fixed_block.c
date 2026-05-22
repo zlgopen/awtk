@@ -177,6 +177,7 @@ inline static ret_t mem_allocator_fixed_block_pools_push(mem_allocator_fixed_blo
   return_value_if_fail(head != NULL && pool != NULL, RET_BAD_PARAMS);
 
   pool->next = *head;
+  ENSURE(pool != *head); /* 防止形成循环链表 */
   *head = pool;
 
   return RET_OK;
@@ -206,6 +207,7 @@ inline static ret_t mem_allocator_fixed_block_pool_link(mem_allocator_fixed_bloc
   }
 
   pool->next = prev->next;
+  ENSURE(prev->next != pool); /* 防止形成循环链表 */
   prev->next = pool;
 
   return RET_OK;
@@ -258,10 +260,12 @@ inline static mem_allocator_fixed_block_node_t* mem_allocator_fixed_block_pool_a
   return_value_if_fail(pool != NULL, NULL);
   return_value_if_fail(!mem_allocator_fixed_block_pool_is_full(pool), NULL);
 
+  ENSURE(pool->unused_list != NULL);
   ret = pool->unused_list;
   pool->unused_list = pool->unused_list->next;
 
   pool->used_num++;
+  ENSURE(pool->used_num <= pool->num);
 
   info = mem_allocator_fixed_block_node_get_info(pool, ret, type_size);
   ENSURE(!info->used);
@@ -284,6 +288,7 @@ inline static ret_t mem_allocator_fixed_block_pool_deallocate(
 
   info->used = FALSE;
 
+  ENSURE(pool->used_num > 0);
   pool->used_num--;
 
   node->next = pool->unused_list;
@@ -462,6 +467,7 @@ static void* mem_allocator_fixed_block_allocate(mem_allocator_fixed_block_t* all
   return_value_if_fail(pool != NULL, NULL);
 
   node = mem_allocator_fixed_block_pool_allocate(pool, allocator->size);
+  ENSURE(node != NULL);
 
   if (!mem_allocator_fixed_block_pool_is_full(pool)) {
     mem_allocator_fixed_block_pool_move_to_top(&allocator->pools, pool, prev_pool);
@@ -520,6 +526,8 @@ static ret_t mem_allocator_fixed_block_deallocate(mem_allocator_fixed_block_t* a
 
   node = mem_allocator_fixed_block_node_find(allocator, ptr, &pool, &prev_pool);
   return_value_if_fail(node != NULL, RET_NOT_FOUND);
+
+  ENSURE(pool != NULL);
 
   return_value_if_fail(
       RET_OK == mem_allocator_fixed_block_pool_deallocate(pool, node, allocator->size), RET_FAIL);
