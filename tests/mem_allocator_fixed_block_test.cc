@@ -1,5 +1,6 @@
 ﻿#include "gtest/gtest.h"
 #include "tkc/mem_allocator_fixed_block.h"
+#include "assert_catcher.hpp"
 
 TEST(MemAllocatorFixedBlock, base) {
   int* user = NULL;
@@ -78,10 +79,6 @@ TEST(MemAllocatorFixedBlock, invalid_free) {
 
   p3 = (int*)MEM_ALLOCATOR_ALLOC(allocator, mem_allocator_fixed_block_size(allocator));
 
-  // 测试重复释放
-  mem_allocator_free(allocator, p2);
-  mem_allocator_free(allocator, p2);
-
   // 测试无效指针释放
   ASSERT_EQ(
       MEM_ALLOCATOR_REALLOC(allocator, &dummy, mem_allocator_fixed_block_size(allocator)) == NULL,
@@ -90,9 +87,13 @@ TEST(MemAllocatorFixedBlock, invalid_free) {
                                   mem_allocator_fixed_block_size(allocator)) == NULL,
             TRUE);
 
-  ASSERT_EQ(mem_allocator_destroy(allocator), RET_OK);
+  // 测试重复释放
+  mem_allocator_free(allocator, p2);
+  ASSERT_CATCH(mem_allocator_free(allocator, p2));
 
   (void)p3;
+
+  ASSERT_EQ(mem_allocator_destroy(allocator), RET_OK);
 }
 
 TEST(MemAllocatorFixedBlock, realloc) {
@@ -110,10 +111,7 @@ TEST(MemAllocatorFixedBlock, realloc) {
 }
 
 TEST(MemAllocatorFixedBlock, large_block_many_allocations) {
-  enum {
-    kAllocCount = 24,
-    kBlockSize = 40
-  };
+  enum { kAllocCount = 24, kBlockSize = 40 };
   void* blocks[kAllocCount] = {0};
   mem_allocator_t* allocator = mem_allocator_fixed_block_create(kBlockSize, 5);
   ASSERT_EQ(allocator != NULL, TRUE);

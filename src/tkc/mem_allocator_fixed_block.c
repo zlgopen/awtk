@@ -279,6 +279,7 @@ inline static ret_t mem_allocator_fixed_block_pool_deallocate(
   return_value_if_fail(!mem_allocator_fixed_block_pool_is_empty(pool), RET_FAIL);
 
   info = mem_allocator_fixed_block_node_get_info(pool, node, type_size);
+  ENSURE(info->used);
   return_value_if_fail(info->used, RET_FAIL);
 
   info->used = FALSE;
