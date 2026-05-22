@@ -1,6 +1,8 @@
 # 最新动态
+
 2026/5/22
   * mem_allocator_fixed_block 重复释放增加断言(感谢兆坤提供补丁)
+  * mem_allocator_fixed_block 补充断言(感谢兆坤提供补丁)
 
 2026/5/20
   * 移除 BGFX 后端（NANOVG_BACKEND=BGFX 及 3rd/bgfx 集成已删除）
