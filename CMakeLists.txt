@@ -57,7 +57,9 @@ set_target_properties(awtk PROPERTIES OUTPUT_NAME "awtk" LINKER_LANGUAGE CXX)
 target_include_directories(awtk PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ext_widgets>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/awtk>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/awtk/ext_widgets>
 )
 
 add_dependencies(awtk awtk_idl_codegen)
@@ -170,7 +172,7 @@ install(TARGETS ${_awtk_export_install_targets} EXPORT awtkTargets
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/"
   DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/awtk"
-  FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+  FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp" PATTERN "*.inc"
 )
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/3rd/fribidi/"
