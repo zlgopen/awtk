@@ -1,5 +1,7 @@
 @PACKAGE_INIT@
 
+include("${CMAKE_CURRENT_LIST_DIR}/AwtkConfigSdlGtk.cmake")
+
 include("${CMAKE_CURRENT_LIST_DIR}/awtkTargets.cmake")
 
 set(awtk_FOUND TRUE)

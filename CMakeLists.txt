@@ -206,6 +206,23 @@ install(EXPORT awtkTargets
   DESTINATION "${AWTK_INSTALL_CMAKEDIR}"
 )
 
+if(AWTK_OS_LINUX AND AWTK_SDL_VERSION STREQUAL "2")
+  set(AWTK_CONFIG_NEED_SDL2_GTK TRUE)
+else()
+  set(AWTK_CONFIG_NEED_SDL2_GTK FALSE)
+endif()
+
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/AwtkConfigSdlGtk.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/export/AwtkConfigSdlGtk.cmake"
+  @ONLY
+)
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/AwtkConfigSdlGtk.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/AwtkConfigSdlGtk.cmake"
+  @ONLY
+)
+
 configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake/AwtkConfig.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/export/awtkConfig.cmake"
@@ -220,6 +237,7 @@ write_basic_package_version_file(
 
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/export/awtkConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/export/AwtkConfigSdlGtk.cmake"
   "${CMAKE_CURRENT_BINARY_DIR}/awtkConfigVersion.cmake"
   DESTINATION "${AWTK_INSTALL_CMAKEDIR}"
 )

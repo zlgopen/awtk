@@ -1,0 +1,8 @@
+# Bundled SDL2 on Linux links gtk+-3.0 for X11 DPI (see cmake/third_party_libs.cmake).
+# Exported awtk::SDL2 references PkgConfig::_awtk_sdl_gtk; ensure it exists for consumers.
+if(@AWTK_CONFIG_NEED_SDL2_GTK@)
+  find_package(PkgConfig REQUIRED)
+  if(NOT TARGET PkgConfig::_awtk_sdl_gtk)
+    pkg_check_modules(_awtk_sdl_gtk REQUIRED IMPORTED_TARGET gtk+-3.0)
+  endif()
+endif()
