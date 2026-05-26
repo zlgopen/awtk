@@ -387,13 +387,13 @@ ret_t dlist_remove_all(dlist_t* dlist) {
   if (dlist->first != NULL) {
     dlist_node_t* iter = dlist->first;
 
+    dlist->first = NULL;
     while (iter != NULL) {
       dlist_node_t* next = iter->next;
       dlist_destroy_node(dlist, iter);
 
       iter = next;
     }
-    dlist->first = NULL;
     dlist->last = NULL;
     dlist->size = 0;
   }

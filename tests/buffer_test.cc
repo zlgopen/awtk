@@ -479,7 +479,7 @@ TEST(Buffer, read_from_hexstr) {
   uint16_t v16;
   uint8_t v8;
 
-  const char* uuids[] = {"12345678-90ab-1def-befc-fe9d70b60000", "12345678  90ab:1def:befc-fe9d70b60000",
+  char* uuids[] = {"12345678-90ab-1def-befc-fe9d70b60000", "12345678  90ab:1def:befc-fe9d70b60000",
                    "12345678 90ab 1defbefcfe9d70b60000"};
   for (int i = 0; i < sizeof(uuids) / sizeof(uuids[0]); i++) {
     rbuffer_init(&rbuffer, uuids[i], strlen(uuids[i]));

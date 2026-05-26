@@ -343,13 +343,13 @@ ret_t slist_remove_all(slist_t* slist) {
   if (slist->first != NULL) {
     slist_node_t* iter = slist->first;
 
+    slist->first = NULL;
     while (iter != NULL) {
       slist_node_t* next = iter->next;
       slist_destroy_node(slist, iter);
 
       iter = next;
     }
-    slist->first = NULL;
     slist->last = NULL;
     slist->size = 0;
   }

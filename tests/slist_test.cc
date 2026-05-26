@@ -1,5 +1,6 @@
 ﻿#include "tkc/utils.h"
 #include "tkc/slist.h"
+#include "tkc/mem.h"
 #include "tkc/mem_allocator_fixed_block.h"
 #include "gtest/gtest.h"
 
@@ -358,6 +359,60 @@ TEST(SList, reverse) {
   ASSERT_EQ(slist.last->data, TO_POINTER(1));
 
   slist_deinit(&slist);
+}
+
+typedef struct _slist_reentrant_item_t {
+  slist_t* owner;
+  int id;
+} slist_reentrant_item_t;
+
+static int32_t s_slist_reentrant_foreach_count[16];
+static void* s_slist_reentrant_find_result[16];
+
+static ret_t slist_reentrant_count_visit(void* ctx, const void* data) {
+  int32_t* count = (int32_t*)ctx;
+  (void)data;
+  (*count)++;
+  return RET_OK;
+}
+
+static ret_t slist_reentrant_destroy(void* data) {
+  slist_reentrant_item_t* item = (slist_reentrant_item_t*)data;
+  int32_t count = 0;
+
+  slist_foreach(item->owner, slist_reentrant_count_visit, &count);
+  s_slist_reentrant_foreach_count[item->id] = count;
+  s_slist_reentrant_find_result[item->id] = slist_find(item->owner, data);
+  TKMEM_FREE(item);
+
+  return RET_OK;
+}
+
+TEST(SList, remove_all_reentrant) {
+  slist_t slist;
+  slist_reentrant_item_t* items[3];
+  uint32_t i = 0;
+
+  memset(s_slist_reentrant_foreach_count, 0x00, sizeof(s_slist_reentrant_foreach_count));
+  memset(s_slist_reentrant_find_result, 0x00, sizeof(s_slist_reentrant_find_result));
+
+  slist_init(&slist, slist_reentrant_destroy, NULL);
+  for (i = 0; i < 3; i++) {
+    items[i] = TKMEM_ZALLOC(slist_reentrant_item_t);
+    items[i]->owner = &slist;
+    items[i]->id = (int)i;
+    slist_append(&slist, items[i]);
+  }
+
+  ASSERT_EQ(slist_remove_all(&slist), RET_OK);
+  ASSERT_EQ(slist_size(&slist), 0u);
+  ASSERT_EQ(slist.first, (slist_node_t*)NULL);
+  ASSERT_EQ(slist.last, (slist_node_t*)NULL);
+
+  for (i = 0; i < 3; i++) {
+    ASSERT_EQ(s_slist_reentrant_foreach_count[i], 0);
+    ASSERT_EQ(s_slist_reentrant_find_result[i], (void*)NULL);
+  }
 }
 
 TEST(SList, get) {

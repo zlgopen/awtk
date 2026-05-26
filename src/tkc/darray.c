@@ -110,18 +110,19 @@ ret_t darray_remove_index(darray_t* darray, uint32_t index) {
   int32_t i = 0;
   int32_t size = 0;
   void** elms = NULL;
+  void* iter = NULL;
   return_value_if_fail(darray != NULL && index < darray->size, RET_BAD_PARAMS);
 
   elms = darray->elms;
-  darray->destroy(elms[index]);
-  elms[index] = NULL;
+  iter = elms[index];
 
   for (size = darray->size - 1, i = index; i < size; i++) {
     elms[i] = elms[i + 1];
   }
 
-  elms[i] = NULL;
+  elms[darray->size - 1] = NULL;
   darray->size--;
+  darray->destroy(iter);
 
   return RET_OK;
 }
@@ -133,23 +134,28 @@ ret_t darray_remove_range(darray_t* darray, uint32_t start, uint32_t end) {
     uint32_t i = 0;
     uint32_t range_size = end - start;
     void** elms = darray->elms;
+    void** removed = TKMEM_ALLOC(range_size * sizeof(void*));
 
-    /* 首先销毁要删除范围内的元素 */
+    return_value_if_fail(removed != NULL, RET_OOM);
+
     for (i = start; i < end; i++) {
-      darray->destroy(elms[i]);
+      removed[i - start] = elms[i];
     }
 
-    /* 将end之后的元素向前移动 */
     for (i = start; i + range_size < darray->size; i++) {
       elms[i] = elms[i + range_size];
     }
 
-    /* 清空尾部的元素指针 */
     for (i = darray->size - range_size; i < darray->size; i++) {
       elms[i] = NULL;
     }
 
     darray->size -= range_size;
+
+    for (i = 0; i < range_size; i++) {
+      darray->destroy(removed[i]);
+    }
+    TKMEM_FREE(removed);
   }
 
   return RET_OK;
@@ -176,17 +182,32 @@ ret_t darray_remove_all(darray_t* darray, tk_compare_t cmp, void* ctx) {
   int32_t k = 0;
   int32_t size = 0;
   void** elms = NULL;
+  void** removed = NULL;
+  uint32_t remove_count = 0;
+  uint32_t n = 0;
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
 
   elms = darray->elms;
   size = darray->size;
   cmp = cmp != NULL ? cmp : darray->compare;
 
-  for (i = 0, k = 0; i < size; i++) {
+  for (i = 0; i < size; i++) {
+    void* iter = elms[i];
+    if (cmp(iter, ctx) == 0 && iter != NULL) {
+      remove_count++;
+    }
+  }
+
+  if (remove_count > 0) {
+    removed = TKMEM_ALLOC(remove_count * sizeof(void*));
+    return_value_if_fail(removed != NULL, RET_OOM);
+  }
+
+  for (i = 0, k = 0, n = 0; i < size; i++) {
     void* iter = elms[i];
     if (cmp(iter, ctx) == 0) {
       if (iter != NULL) {
-        darray->destroy(iter);
+        removed[n++] = iter;
       }
       elms[i] = NULL;
     } else {
@@ -197,6 +218,11 @@ ret_t darray_remove_all(darray_t* darray, tk_compare_t cmp, void* ctx) {
     }
   }
   darray->size = k;
+
+  for (i = 0; i < remove_count; i++) {
+    darray->destroy(removed[i]);
+  }
+  TKMEM_FREE(removed);
 
   return RET_OK;
 }
@@ -372,6 +398,7 @@ ret_t darray_clear(darray_t* darray) {
 
     for (i = 0; i < darray->size; i++) {
       void* iter = elms[i];
+      elms[i] = NULL;
       darray->destroy(iter);
     }
 

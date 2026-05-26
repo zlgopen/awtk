@@ -987,6 +987,116 @@ TEST(DArrayTest, null_params) {
   ASSERT_EQ(darray_bsearch_index_ex(NULL, NULL, NULL, NULL), -1);
 }
 
+typedef struct _darray_reentrant_item_t {
+  darray_t* owner;
+  int id;
+} darray_reentrant_item_t;
+
+static bool_t s_darray_reentrant_found_self[16];
+static ret_t s_darray_reentrant_remove_ret[16];
+
+static ret_t darray_reentrant_destroy(void* data) {
+  darray_reentrant_item_t* item = (darray_reentrant_item_t*)data;
+  int id = item->id;
+
+  s_darray_reentrant_found_self[id] = (darray_find(item->owner, item) != NULL);
+  s_darray_reentrant_remove_ret[id] = darray_remove(item->owner, item);
+  TKMEM_FREE(item);
+
+  return RET_OK;
+}
+
+TEST(DArrayTest, clear_reentrant) {
+  darray_t darray;
+  darray_reentrant_item_t* items[3];
+  uint32_t i = 0;
+
+  memset(s_darray_reentrant_found_self, 0x00, sizeof(s_darray_reentrant_found_self));
+  memset(s_darray_reentrant_remove_ret, 0x00, sizeof(s_darray_reentrant_remove_ret));
+
+  darray_init(&darray, 4, darray_reentrant_destroy, NULL);
+  for (i = 0; i < 3; i++) {
+    items[i] = TKMEM_ZALLOC(darray_reentrant_item_t);
+    items[i]->owner = &darray;
+    items[i]->id = (int)i;
+    darray_push(&darray, items[i]);
+  }
+
+  ASSERT_EQ(darray_clear(&darray), RET_OK);
+  ASSERT_EQ(darray.size, 0u);
+
+  for (i = 0; i < 3; i++) {
+    ASSERT_EQ(s_darray_reentrant_found_self[i], FALSE);
+    ASSERT_EQ(s_darray_reentrant_remove_ret[i], RET_NOT_FOUND);
+  }
+}
+
+typedef struct _darray_prop_item_t {
+  darray_t* owner;
+  int id;
+  char name[TK_NAME_LEN + 1];
+} darray_prop_item_t;
+
+static int32_t darray_prop_find_index_by_name(darray_t* darray, const char* name) {
+  uint32_t i = 0;
+  for (i = 0; i < darray->size; i++) {
+    darray_prop_item_t* iter = (darray_prop_item_t*)darray->elms[i];
+    if (iter != NULL && tk_str_eq(iter->name, name)) {
+      return (int32_t)i;
+    }
+  }
+  return -1;
+}
+
+static ret_t s_darray_prop_remove_ret[16];
+
+static ret_t darray_prop_item_destroy(void* data) {
+  darray_prop_item_t* item = (darray_prop_item_t*)data;
+  int32_t index = darray_prop_find_index_by_name(item->owner, item->name);
+
+  if (index >= 0) {
+    s_darray_prop_remove_ret[item->id] = darray_remove_index(item->owner, (uint32_t)index);
+  } else {
+    s_darray_prop_remove_ret[item->id] = RET_NOT_FOUND;
+  }
+
+  TKMEM_FREE(item);
+  return RET_OK;
+}
+
+TEST(DArrayTest, remove_index_reentrant) {
+  darray_t darray;
+  darray_prop_item_t* main_item = NULL;
+  darray_prop_item_t* other_item = NULL;
+
+  memset(s_darray_prop_remove_ret, 0x00, sizeof(s_darray_prop_remove_ret));
+
+  darray_init(&darray, 4, darray_prop_item_destroy, NULL);
+
+  other_item = TKMEM_ZALLOC(darray_prop_item_t);
+  main_item = TKMEM_ZALLOC(darray_prop_item_t);
+  other_item->owner = &darray;
+  other_item->id = 0;
+  tk_strcpy(other_item->name, "OTHER");
+  main_item->owner = &darray;
+  main_item->id = 1;
+  tk_strcpy(main_item->name, "MAIN");
+
+  darray_push(&darray, other_item);
+  darray_push(&darray, main_item);
+
+  ASSERT_EQ(darray_remove_index(&darray, 1), RET_OK);
+  ASSERT_EQ(darray.size, 1u);
+  ASSERT_EQ(s_darray_prop_remove_ret[1], RET_NOT_FOUND);
+  ASSERT_STREQ(((darray_prop_item_t*)darray.elms[0])->name, "OTHER");
+
+  ASSERT_EQ(darray_remove_index(&darray, 0), RET_OK);
+  ASSERT_EQ(darray.size, 0u);
+  ASSERT_EQ(s_darray_prop_remove_ret[0], RET_NOT_FOUND);
+
+  darray_deinit(&darray);
+}
+
 TEST(DArrayTest, reverse) {
   darray_t darray;
   darray_init(&darray, 5, NULL, NULL);
