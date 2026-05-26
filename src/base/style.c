@@ -53,13 +53,19 @@ ret_t style_update_state(style_t* s, theme_t* theme, const char* widget_type,
 }
 
 uint32_t style_get_uint(style_t* s, const char* name, uint32_t defval) {
-  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get_int != NULL, defval);
+  if (NULL == s) {
+    return defval;
+  }
+  return_value_if_fail(s->vt != NULL && s->vt->get_uint != NULL, defval);
 
   return s->vt->get_uint(s, name, defval);
 }
 
 int32_t style_get_int(style_t* s, const char* name, int32_t defval) {
-  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get_int != NULL, defval);
+  if (NULL == s) {
+    return defval;
+  }
+  return_value_if_fail(s->vt != NULL && s->vt->get_int != NULL, defval);
 
   return s->vt->get_int(s, name, defval);
 }
@@ -75,7 +81,10 @@ bool_t style_is_valid(style_t* s) {
 color_t style_get_color(style_t* s, const char* name, color_t defval) {
   gradient_t agradient;
   gradient_t* gradient = NULL;
-  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get_color != NULL, defval);
+  if (NULL == s) {
+    return defval;
+  }
+  return_value_if_fail(s->vt != NULL && s->vt->get_color != NULL, defval);
 
   gradient = style_get_gradient(s, name, &agradient);
   if (gradient != NULL) {
@@ -86,13 +95,19 @@ color_t style_get_color(style_t* s, const char* name, color_t defval) {
 }
 
 gradient_t* style_get_gradient(style_t* s, const char* name, gradient_t* gradient) {
-  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get_gradient != NULL, NULL);
+  if (NULL == s) {
+    return NULL;
+  }
+  return_value_if_fail(s->vt != NULL && s->vt->get_gradient != NULL, NULL);
 
   return s->vt->get_gradient(s, name, gradient);
 }
 
 const char* style_get_str(style_t* s, const char* name, const char* defval) {
-  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get_str != NULL, defval);
+  if (NULL == s) {
+    return defval;
+  }
+  return_value_if_fail(s->vt != NULL && s->vt->get_str != NULL, defval);
 
   return s->vt->get_str(s, name, defval);
 }
