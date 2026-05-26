@@ -376,7 +376,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         ids->last_y = evt->y;
         ids->last_pointer_down_time = e->time;
         input_device_status_init_pointer_event(ids, evt);
-        if (RET_STOP != window_manager_dispatch_input_event_global(wm, e)) {
+        if (RET_STOP != window_manager_dispatch_input_event_global(WIDGET(wm), e)) {
           widget_on_pointer_down(widget, evt);
         }
       }
@@ -392,7 +392,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
           ids->last_y = evt->y;
 
           input_device_status_init_pointer_event(ids, evt);
-          if (RET_STOP != window_manager_dispatch_input_event_global(wm, e)) {
+          if (RET_STOP != window_manager_dispatch_input_event_global(WIDGET(wm), e)) {
             widget_on_pointer_move(widget, evt);
           }
         }
@@ -410,7 +410,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
 
         ids->in_pointer_up = TRUE;
         input_device_status_init_pointer_event(ids, evt);
-        if (RET_STOP == window_manager_dispatch_input_event_global(wm, e)) {
+        if (RET_STOP == window_manager_dispatch_input_event_global(WIDGET(wm), e)) {
           break;
         }
 
@@ -441,7 +441,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         pointer_event_rotate(evt, system_info());
 
         input_device_status_init_pointer_event(ids, evt);
-        if (RET_STOP != window_manager_dispatch_input_event_global(wm, e)) {
+        if (RET_STOP != window_manager_dispatch_input_event_global(WIDGET(wm), e)) {
           widget_on_context_menu(widget, evt);
         }
       }
@@ -454,7 +454,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         pointer_event_rotate(evt, system_info());
 
         input_device_status_init_pointer_event(ids, evt);
-        if (RET_STOP == window_manager_dispatch_input_event_global(wm, e)) {
+        if (RET_STOP == window_manager_dispatch_input_event_global(WIDGET(wm), e)) {
           break;
         }
 
@@ -485,7 +485,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         info = input_device_status_find_press_info(ids, evt->key);
 
         input_device_status_init_key_event(ids, evt);
-        if (RET_STOP == window_manager_dispatch_input_event_global(wm, e)) {
+        if (RET_STOP == window_manager_dispatch_input_event_global(WIDGET(wm), e)) {
           break;
         }
 
@@ -512,7 +512,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
 
       if (dispatch || info != NULL) {
         input_device_status_init_key_event(ids, evt);
-        if (RET_STOP == window_manager_dispatch_input_event_global(wm, e)) {
+        if (RET_STOP == window_manager_dispatch_input_event_global(WIDGET(wm), e)) {
           break;
         }
 
@@ -533,7 +533,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         wheel_event_t* evt = (wheel_event_t*)e;
 
         input_device_status_init_wheel_event(ids, evt);
-        if (RET_STOP != window_manager_dispatch_input_event_global(wm, e)) {
+        if (RET_STOP != window_manager_dispatch_input_event_global(WIDGET(wm), e)) {
           widget_on_wheel(widget, evt);
         }
       }
@@ -542,7 +542,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
     case EVT_MULTI_GESTURE: {
       if (dispatch) {
         multi_gesture_event_t* evt = (multi_gesture_event_t*)e;
-        if (RET_STOP != window_manager_dispatch_input_event_global(wm, e)) {
+        if (RET_STOP != window_manager_dispatch_input_event_global(WIDGET(wm), e)) {
           widget_on_multi_gesture(widget, evt);
         }
       }
@@ -550,7 +550,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
     }
     default: {
       if (dispatch) {
-        window_manager_dispatch_input_event_global(wm, e);
+        window_manager_dispatch_input_event_global(WIDGET(wm), e);
       }
       break;
     }

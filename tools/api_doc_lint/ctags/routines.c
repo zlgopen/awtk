@@ -848,10 +848,16 @@ extern FILE *tempFile (const char *const mode, char **const pName)
 		error (FATAL | PERROR, "cannot allocate temporary file name");
 	fd = open (name, O_RDWR | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR);
 #else
-	name = xMalloc (L_tmpnam, char);
-	if (tmpnam (name) != name)
-		error (FATAL | PERROR, "cannot assign temporary file name");
-	fd = open (name, O_RDWR | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR);
+	const char *const pattern = "tags.XXXXXX";
+	const char *tmpdir = NULL;
+	fileStatus *file = eStat (ExecutableProgram);
+	if (! file->isSetuid)
+		tmpdir = getenv ("TMPDIR");
+	if (tmpdir == NULL)
+		tmpdir = TMPDIR;
+	name = xMalloc (strlen (tmpdir) + 1 + strlen (pattern) + 1, char);
+	sprintf (name, "%s%c%s", tmpdir, OUTPUT_PATH_SEPARATOR, pattern);
+	fd = mkstemp (name);
 #endif
 	if (fd == -1)
 		error (FATAL | PERROR, "cannot open temporary file");

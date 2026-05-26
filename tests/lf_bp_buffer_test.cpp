@@ -37,7 +37,6 @@ static void* thread_entry(void* args) {
   tk_atomic_t* stop = (tk_atomic_t*)args;
   uint64_t offset = 0;
   value_t v;
-  uint64_t thread_id = tk_thread_self();
   bool_t failed_times = 0;
 
   while (offset < TEST_BUF_SIZE) {
@@ -86,7 +85,6 @@ int main(int argc, char* argv[]) {
   tk_thread_start(thread);
 
   bool_t failed_times = 0;
-  uint64_t thread_id = tk_thread_self();
   do {
     uint64_t available = 0;
     uint8_t* read_ptr = tk_lf_bp_buffer_read_acquire(&s_buffer, &available);
