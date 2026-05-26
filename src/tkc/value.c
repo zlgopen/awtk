@@ -35,7 +35,7 @@ bool_t value_bool(const value_t* v) {
 
   switch (v->type) {
     case VALUE_TYPE_BOOL: {
-      return v->value.b;
+      return (v->value.u8 != 0) ? TRUE : FALSE;
     }
     case VALUE_TYPE_STRING: {
       return tk_atob(v->value.str);
@@ -2110,13 +2110,21 @@ ret_t value_sub(value_t* v, value_t* other, value_t* result) {
       break;
     }
     case VALUE_TYPE_INT32: {
-      int32_t vv = value_int32(v) - value_int32(other);
-      value_set_int32(result, vv);
+      int64_t vv = (int64_t)value_int32(v) - (int64_t)value_int32(other);
+      if (vv >= INT32_MIN && vv <= INT32_MAX) {
+        value_set_int32(result, vv);
+      } else {
+        value_set_int64(result, vv);
+      }
       break;
     }
     case VALUE_TYPE_UINT32: {
-      uint32_t vv = value_uint32(v) - value_uint32(other);
-      value_set_uint32(result, vv);
+      int64_t vv = (int64_t)value_uint32(v) - (int64_t)value_uint32(other);
+      if (vv >= 0 && vv <= UINT32_MAX) {
+        value_set_uint32(result, vv);
+      } else {
+        value_set_int64(result, vv);
+      }
       break;
     }
     case VALUE_TYPE_INT64: {

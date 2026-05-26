@@ -1,4 +1,6 @@
 # 最新动态
+2026/5/26
+  * 完善value_bool和value_sub(感谢雨欣提供补丁)
 
 2026/5/22
   * mem_allocator_fixed_block 重复释放增加断言(感谢兆坤提供补丁)

@@ -1878,3 +1878,71 @@ TEST(value, bool_pointer_ex) {
   ASSERT_EQ(value_bool(&v), TRUE);
   value_reset(&v);
 }
+
+TEST(value, bool_normalize) {
+  value_t v;
+
+  value_set_bool(&v, FALSE);
+  v.value.u8 = 2;
+  ASSERT_EQ(value_bool(&v), TRUE);
+
+  v.value.u8 = 0xff;
+  ASSERT_EQ(value_bool(&v), TRUE);
+
+  v.value.u8 = 0;
+  ASSERT_EQ(value_bool(&v), FALSE);
+}
+
+TEST(value, sub_int32_overflow) {
+  value_t v1;
+  value_t v2;
+  value_t o;
+
+  value_set_int32(&v1, INT32_MIN);
+  value_set_int32(&v2, 1);
+  ASSERT_EQ(value_sub(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type, VALUE_TYPE_INT64);
+  ASSERT_EQ(value_int64(&o), (int64_t)INT32_MIN - 1);
+
+  value_set_int32(&v1, INT32_MAX);
+  value_set_int32(&v2, INT32_MIN);
+  ASSERT_EQ(value_sub(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type, VALUE_TYPE_INT64);
+  ASSERT_EQ(value_int64(&o), (int64_t)INT32_MAX - (int64_t)INT32_MIN);
+
+  value_set_int32(&v1, -10);
+  value_set_int32(&v2, 5);
+  ASSERT_EQ(value_sub(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type, VALUE_TYPE_INT32);
+  ASSERT_EQ(value_int32(&o), -15);
+}
+
+TEST(value, sub_uint32_underflow) {
+  value_t v1;
+  value_t v2;
+  value_t o;
+
+  value_set_uint32(&v1, 0);
+  value_set_uint32(&v2, 1);
+  ASSERT_EQ(value_sub(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type, VALUE_TYPE_INT64);
+  ASSERT_EQ(value_int64(&o), -1);
+
+  value_set_uint32(&v1, 10);
+  value_set_uint32(&v2, 20);
+  ASSERT_EQ(value_sub(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type, VALUE_TYPE_INT64);
+  ASSERT_EQ(value_int64(&o), -10);
+
+  value_set_uint32(&v1, 20);
+  value_set_uint32(&v2, 10);
+  ASSERT_EQ(value_sub(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type, VALUE_TYPE_UINT32);
+  ASSERT_EQ(value_uint32(&o), 10u);
+
+  value_set_uint32(&v1, UINT32_MAX);
+  value_set_uint32(&v2, UINT32_MAX);
+  ASSERT_EQ(value_sub(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type, VALUE_TYPE_UINT32);
+  ASSERT_EQ(value_uint32(&o), 0u);
+}
