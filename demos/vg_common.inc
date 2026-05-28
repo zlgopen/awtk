@@ -384,83 +384,88 @@ static ret_t build_dashed_line_path(vgcanvas_t* vg, point_t p1, point_t p2, uint
 static void stroke_lines(vgcanvas_t* vg) {
   vgcanvas_save(vg);
 
-  vgcanvas_set_stroke_color(vg, color_init(0, 0, 0xff, 0xff));
-  vgcanvas_move_to(vg, 0, 0);
-  vgcanvas_line_to(vg, 40, 40);
+  {
+    vgcanvas_set_stroke_color(vg, color_init(0, 0, 0xff, 0xff));
+    vgcanvas_move_to(vg, 0, 0);
+    vgcanvas_line_to(vg, 40, 40);
 
-  vgcanvas_translate(vg, 40, 0);
-  vgcanvas_move_to(vg, 0, 0);
-  vgcanvas_quad_to(vg, 40, 0, 40, 40);
+    vgcanvas_translate(vg, 40, 0);
+    vgcanvas_move_to(vg, 0, 0);
+    vgcanvas_quad_to(vg, 40, 0, 40, 40);
 
-  vgcanvas_translate(vg, 40, 0);
-  vgcanvas_move_to(vg, 0, 0);
-  vgcanvas_bezier_to(vg, 20, 0, 20, 40, 40, 40);
+    vgcanvas_translate(vg, 40, 0);
+    vgcanvas_move_to(vg, 0, 0);
+    vgcanvas_bezier_to(vg, 20, 0, 20, 40, 40, 40);
 
-  vgcanvas_stroke(vg);
+    vgcanvas_stroke(vg);
 
-  vgcanvas_translate(vg, 40, 0);
-  vgcanvas_begin_path(vg);
-  vgcanvas_arc(vg, 20, 20, 20, 0, 3.14, TRUE);
-  vgcanvas_stroke(vg);
+    vgcanvas_translate(vg, 40, 0);
+    vgcanvas_begin_path(vg);
+    vgcanvas_arc(vg, 20, 20, 20, 0, 3.14, TRUE);
+    vgcanvas_stroke(vg);
 
-  vgcanvas_translate(vg, 40, 0);
-  vgcanvas_set_line_width(vg, 2);
-  vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_ROUND);
-  vgcanvas_begin_path(vg);
-  vgcanvas_arc(vg, 20, 20, 20, 0, 3.14 / 2, FALSE);
-  vgcanvas_stroke(vg);
+    vgcanvas_translate(vg, 40, 0);
+    vgcanvas_set_line_width(vg, 2);
+    vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_ROUND);
+    vgcanvas_begin_path(vg);
+    vgcanvas_arc(vg, 20, 20, 20, 0, 3.14 / 2, FALSE);
+    vgcanvas_stroke(vg);
 
-  vgcanvas_stroke(vg);
-
-  /*************************************************/
-  vgcanvas_translate(vg, 50, 0);
-  vgcanvas_save(vg);
-  vgcanvas_set_line_width(vg, 2);
-  vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_BUTT);
-
-  point_t points[] = {
-      {0, 20}, {8, 20}, {8, 20}, {8 * 2, 20}, {8 * 3, 20}, {8 * 4, 20}, {8 * 4, 20}, {8 * 5, 20},
-  };
-
-  vgcanvas_begin_path(vg);
-  for (size_t start = 1, i = start; i < ARRAY_SIZE(points); i++) {
-    if (i == start) {
-      vgcanvas_move_to(vg, points[i].x, points[i].y);
-    } else {
-      vgcanvas_line_to(vg, points[i].x, points[i].y);
-    }
+    vgcanvas_stroke(vg);
   }
-  vgcanvas_stroke(vg);
 
-  vgcanvas_begin_path(vg);
-  vgcanvas_move_to(vg, points[0].x, points[0].y);
-  vgcanvas_line_to(vg, points[1].x, points[1].y);
-  vgcanvas_stroke(vg);
-  vgcanvas_restore(vg);
-  /*************************************************/
-  const uint32_t dashed_on = 2;
-  const uint32_t dashed_off = 2;
-  vgcanvas_translate(vg, 50, 0);
-  vgcanvas_save(vg);
-  vgcanvas_set_stroke_color(vg, color_parse("violet"));
+  {
+    point_t points[] = {
+        {0, 20}, {8, 20}, {8, 20}, {8 * 2, 20}, {8 * 3, 20}, {8 * 4, 20}, {8 * 4, 20}, {8 * 5, 20},
+    };
+    int32_t i = 0;
 
-  vgcanvas_begin_path(vg);
+    vgcanvas_translate(vg, 50, 0);
+    vgcanvas_save(vg);
+    vgcanvas_set_line_width(vg, 2);
+    vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_BUTT);
 
-  vgcanvas_move_to(vg, 0, 0);
+    vgcanvas_begin_path(vg);
+    for (i = 1; i < ARRAY_SIZE(points); i++) {
+      if (i == 1) {
+        vgcanvas_move_to(vg, points[i].x, points[i].y);
+      } else {
+        vgcanvas_line_to(vg, points[i].x, points[i].y);
+      }
+    }
+    vgcanvas_stroke(vg);
 
-  build_dashed_line_path(vg, point_init(0, 0), point_init(50, 0), dashed_on, dashed_off);
+    vgcanvas_begin_path(vg);
+    vgcanvas_move_to(vg, points[0].x, points[0].y);
+    vgcanvas_line_to(vg, points[1].x, points[1].y);
+    vgcanvas_stroke(vg);
+    vgcanvas_restore(vg);
+  }
 
-  build_dashed_line_path(vg, point_init(0, 0), point_init(0, 50), dashed_on, dashed_off);
+  {
+    const uint32_t dashed_on = 2;
+    const uint32_t dashed_off = 2;
+    vgcanvas_translate(vg, 50, 0);
+    vgcanvas_save(vg);
+    vgcanvas_set_stroke_color(vg, color_parse("violet"));
 
-  build_dashed_line_path(vg, point_init(0, 0), point_init(50, 50), dashed_on, dashed_off);
+    vgcanvas_begin_path(vg);
 
-  build_dashed_line_path(vg, point_init(0, 0), point_init(50, 10), dashed_on, dashed_off);
+    vgcanvas_move_to(vg, 0, 0);
 
-  build_dashed_line_path(vg, point_init(0, 0), point_init(25, 50), dashed_on, dashed_off);
+    build_dashed_line_path(vg, point_init(0, 0), point_init(50, 0), dashed_on, dashed_off);
 
-  vgcanvas_stroke(vg);
-  vgcanvas_restore(vg);
-  /*************************************************/
+    build_dashed_line_path(vg, point_init(0, 0), point_init(0, 50), dashed_on, dashed_off);
+
+    build_dashed_line_path(vg, point_init(0, 0), point_init(50, 50), dashed_on, dashed_off);
+
+    build_dashed_line_path(vg, point_init(0, 0), point_init(50, 10), dashed_on, dashed_off);
+
+    build_dashed_line_path(vg, point_init(0, 0), point_init(25, 50), dashed_on, dashed_off);
+
+    vgcanvas_stroke(vg);
+    vgcanvas_restore(vg);
+  }
 
   vgcanvas_restore(vg);
 }
@@ -695,9 +700,11 @@ static inline ret_t on_paint_vg_simple(void* ctx, event_t* e) {
   canvas_set_fill_color(c, color_init(0x11, 0x22, 0x33, 0xff));
   canvas_fill_rect(c, 0, 0, 10, 10);
 
-  rect_t s = rect_init(0, 0, img.w, img.h);
-  rect_t r = rect_init(10, 10, img.w, img.h);
-  canvas_draw_image(c, &img, &s, &r);
+  {
+    rect_t s = rect_init(0, 0, img.w, img.h);
+    rect_t r = rect_init(10, 10, img.w, img.h);
+    canvas_draw_image(c, &img, &s, &r);
+  }
 
   vgcanvas_save(vg);
   vgcanvas_translate(vg, 0, 100);
