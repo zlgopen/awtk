@@ -2,6 +2,7 @@
 2026/5/28
   * 修复 keil 编译出错的问题(感谢兆坤提供补丁)
   * 增加 edit_ex_set_suggest_words_popup_on_updated 函数(感谢兆坤提供补丁)
+  * 修复keil编译出错的问题(感谢智明提供补丁)
 
 2026/5/27
   * 修复 darray/dlist/slist 销毁时重入的问题。

@@ -1618,7 +1618,9 @@ static ret_t wm_on_ime_stop(void* ctx, event_t* evt) {
 ret_t application_init() {
   char path[MAX_PATH + 1];
   widget_t* wm = window_manager();
+#ifdef WITH_SOCKET
   tk_socket_init();
+#endif /*WITH_SOCKET*/
   image_manager_set_max_mem_size_of_cached_images(image_manager(), 8 * 1024 * 1024);
 
   /*enable screen saver*/
@@ -1656,7 +1658,9 @@ ret_t application_init() {
 
 ret_t application_exit() {
   log_debug("application_exit\n");
+#ifdef WITH_SOCKET
   tk_socket_deinit();
+#endif /*WITH_SOCKET*/
   return RET_OK;
 }
 
