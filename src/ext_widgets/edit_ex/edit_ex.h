@@ -26,6 +26,9 @@
 
 BEGIN_C_DECLS
 
+typedef ret_t (*edit_ex_suggest_words_popup_on_updated_t)(widget_t* widget, widget_t* popup,
+                                                          void* ctx);
+
 /**
  * @class edit_ex_t
  * @parent edit_t
@@ -66,10 +69,14 @@ typedef struct _edit_ex_t {
   bool_t is_select_suggest_word;
 
   /* private */
-  tk_object_t* suggest_words_ui_props;
-  widget_t* suggest_words_popup;
-  darray_t* suggest_words_model_items;
   bool_t key_downing : 1;
+
+  widget_t* suggest_words_popup;
+  tk_object_t* suggest_words_ui_props;
+  darray_t* suggest_words_model_items;
+
+  edit_ex_suggest_words_popup_on_updated_t suggest_words_popup_on_updated;
+  void* suggest_words_popup_on_updated_ctx;
 } edit_ex_t;
 
 /**
@@ -131,6 +138,19 @@ ret_t edit_ex_set_suggest_words_input_name(widget_t* widget, const char* name);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_ex_update_suggest_words_popup(widget_t* widget);
+
+/**
+ * @method edit_ex_set_suggest_words_popup_on_updated
+ * 设置建议词窗口刷新后的回调函数。
+ * @param {widget_t*} widget edit_ex对象。
+ * @param {edit_ex_suggest_words_popup_on_updated_t} callback 回调函数。
+ * @param {void*} ctx 回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_ex_set_suggest_words_popup_on_updated(widget_t* widget,
+                                                 edit_ex_suggest_words_popup_on_updated_t callback,
+                                                 void* ctx);
 
 /**
  * @method edit_ex_cast

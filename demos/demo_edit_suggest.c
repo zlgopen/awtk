@@ -20,6 +20,7 @@
  */
 
 #include "awtk.h"
+#include "ext_widgets/edit_ex/edit_ex.h"
 
 #define APP_TYPE APP_DESKTOP
 
@@ -151,6 +152,16 @@ static ret_t search_on_keydown(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t edit_ex_suggest_words_popup_on_updated(widget_t* widget, widget_t* popup, void* ctx) {
+  (void)ctx, (void)widget;
+  if (popup != NULL) {
+    log_info("%s: suggest_words_popup update.\n", __FUNCTION__);
+  } else {
+    log_info("%s: suggest_words_popup close.\n", __FUNCTION__);
+  }
+  return RET_OK;
+}
+
 /**
  * 子控件初始化(主要是设置click回调、初始显示信息)
  */
@@ -168,6 +179,8 @@ static ret_t init_widget(void* ctx, const void* iter) {
       edit_ex_t* edit_ex = EDIT_EX(widget);
       if (TK_STR_IS_NOT_EMPTY(edit_ex->suggest_words_item_formats)) {
         edit_ex_set_suggest_words(widget, s_suggest_words_list);
+        edit_ex_set_suggest_words_popup_on_updated(widget, edit_ex_suggest_words_popup_on_updated,
+                                                   NULL);
       } else {
         edit_ex_set_suggest_words(widget, s_suggest_words);
       }

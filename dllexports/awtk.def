@@ -3679,6 +3679,7 @@ EXPORTS
     edit_ex_set_suggest_words_item_formats
     edit_ex_set_suggest_words_input_name
     edit_ex_update_suggest_words_popup
+    edit_ex_set_suggest_words_popup_on_updated
     edit_ex_cast
     edit_ex_get_widget_vtable
     gif_image_create

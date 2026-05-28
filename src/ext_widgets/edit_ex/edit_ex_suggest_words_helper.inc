@@ -75,6 +75,11 @@ inline static void edit_ex_deinit_suggest_words_popup(edit_ex_t* edit_ex) {
     widget_off_by_ctx(edit_ex->suggest_words_popup, edit_ex);
 
     edit_ex->suggest_words_popup = NULL;
+
+    if (edit_ex->suggest_words_popup_on_updated != NULL) {
+      edit_ex->suggest_words_popup_on_updated(WIDGET(edit_ex), NULL,
+                                              edit_ex->suggest_words_popup_on_updated_ctx);
+    }
   }
 }
 
@@ -771,6 +776,11 @@ static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
   widget_layout(edit_ex->suggest_words_popup);
 
   edit_ex_suggest_words_popup_fix_position(edit_ex);
+
+  if (edit_ex->suggest_words_popup_on_updated != NULL) {
+    edit_ex->suggest_words_popup_on_updated(widget, edit_ex->suggest_words_popup,
+                                            edit_ex->suggest_words_popup_on_updated_ctx);
+  }
 
   return ret;
 }

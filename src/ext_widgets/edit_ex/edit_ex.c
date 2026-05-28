@@ -109,6 +109,18 @@ ret_t edit_ex_set_suggest_words_input_name(widget_t* widget, const char* name) {
   return RET_OK;
 }
 
+ret_t edit_ex_set_suggest_words_popup_on_updated(widget_t* widget,
+                                                 edit_ex_suggest_words_popup_on_updated_t callback,
+                                                 void* ctx) {
+  edit_ex_t* edit_ex = EDIT_EX(widget);
+  return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
+
+  edit_ex->suggest_words_popup_on_updated = callback;
+  edit_ex->suggest_words_popup_on_updated_ctx = ctx;
+
+  return RET_OK;
+}
+
 static ret_t edit_ex_set_prop(widget_t* widget, const char* name, const value_t* v) {
   edit_ex_t* edit_ex = EDIT_EX(widget);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
