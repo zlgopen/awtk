@@ -291,7 +291,6 @@ static widget_t* edit_ex_create_suggest_words_popup(widget_t* widget) {
     // create list view
     list_view = list_view_create(win, 0, 0, 0, 0);
     widget_set_prop_int(list_view, WIDGET_PROP_ITEM_HEIGHT, item_height);
-    widget_set_prop_bool(list_view, WIDGET_PROP_AUTO_HIDE_SCROLL_BAR, TRUE);
 
     tk_snprintf(param, sizeof(param) - 1, "default(x=%d,y=%d,w=%d,h=%d)",
                 EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MARGIN, EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MARGIN,

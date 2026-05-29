@@ -24,5 +24,6 @@
   <edit_ex min="0" max="1024" step="1" name="edit2" x="c" y="37.5%" w="200" h="28" tips="Please enter your text" auto_fix="true"
    suggest_words_ui_props.list_view.item_odd_style="odd"
    suggest_words_ui_props.list_view.item_even_style="even"
+   suggest_words_ui_props.list_view.auto_hide_scroll_bar="true"
    suggest_words_ui_props.vbar.animatable="false"/>
 </window>
