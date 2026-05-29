@@ -202,7 +202,7 @@ inline static ret_t edit_ex_create_suggest_words_vbar_init(edit_ex_t* edit_ex, w
   char param[128] = {'\0'};
   widget_t* hbar = widget_lookup(popup, EDIT_EX_SUGGEST_WORDS_UI_NAME_HBAR, TRUE);
 
-  if (hbar != NULL) {
+  if (hbar != NULL && !scroll_bar_is_mobile(hbar)) {
     int32_t hbar_h = widget_get_prop_int(hbar, WIDGET_PROP_LAYOUT_H, hbar->h);
     widget_resize(vbar, hbar_h, -hbar_h);
     tk_snprintf(param, sizeof(param) - 1, "default(x=r,y=0,w=%d,h=%d)", vbar->w, vbar->h);
@@ -227,7 +227,9 @@ inline static ret_t edit_ex_create_suggest_words_scroll_view_init(edit_ex_t* edi
   widget_t* vbar = widget_lookup(popup, EDIT_EX_SUGGEST_WORDS_UI_NAME_VBAR, TRUE);
   int32_t vbar_w = widget_get_prop_int(vbar, WIDGET_PROP_LAYOUT_W, vbar->w);
 
-  if (hbar != NULL) {
+  widget_restack(scroll_view, 0);
+
+  if (hbar != NULL && !scroll_bar_is_mobile(hbar)) {
     int32_t hbar_h = widget_get_prop_int(hbar, WIDGET_PROP_LAYOUT_H, hbar->h);
     widget_resize(scroll_view, -vbar_w, -hbar_h);
     tk_snprintf(param, sizeof(param) - 1, "default(x=0,y=0,w=%d,h=%d)", scroll_view->w,
@@ -660,7 +662,7 @@ static ret_t edit_ex_layout_suggest_words_popup(widget_t* widget) {
       h = EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MAXNR * item_height +
           2 * EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MARGIN;
     }
-    if (hbar != NULL) {
+    if (hbar != NULL && !scroll_bar_is_mobile(hbar)) {
       h += widget_get_prop_int(hbar, WIDGET_PROP_LAYOUT_H, hbar->h);
     }
     widget_resize(edit_ex->suggest_words_popup, w, h);
