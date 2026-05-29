@@ -371,12 +371,12 @@ static ret_t confirm_file_data_window(str_t* file_data) {
 static ret_t filename_to_res_name(const char* filename, const char* base_dir, char* res_name,
                                   uint32_t size) {
   ret_t ret = RET_OK;
-  char normalized_base_dir[MAX_PATH] = {0};
-  char normalized_filename[MAX_PATH] = {0};
+  char normalized_base_dir[MAX_PATH + 1] = {0};
+  char normalized_filename[MAX_PATH + 1] = {0};
 
-  path_normalize(base_dir, normalized_base_dir, MAX_PATH);
+  path_normalize(base_dir, normalized_base_dir, MAX_PATH + 1);
   path_remove_last_slash(normalized_base_dir);
-  path_normalize(filename, normalized_filename, MAX_PATH);
+  path_normalize(filename, normalized_filename, MAX_PATH + 1);
   path_remove_last_slash(normalized_filename);
 
   if (strstr(normalized_filename, normalized_base_dir) != NULL) {
@@ -395,8 +395,13 @@ static ret_t filename_to_res_name(const char* filename, const char* base_dir, ch
 }
 
 static ret_t try_get_ui_dir_path(const char* filename, char* ui_dir, uint32_t size) {
+  char normalized_filename[MAX_PATH + 1] = {0};
+  char normalized_ui_dir[MAX_PATH + 1] = {0};
+
   path_build(ui_dir, size, s_res_root, s_theme, "ui", NULL);
-  if (strstr(filename, ui_dir) == NULL || s_theme == NULL) {
+  path_normalize(ui_dir, normalized_ui_dir, MAX_PATH + 1);
+  path_normalize(filename, normalized_filename, MAX_PATH + 1);
+  if (strstr(normalized_filename, normalized_ui_dir) == NULL || s_theme == NULL) {
     memset(ui_dir, 0, size);
     path_build(ui_dir, size, s_res_root, "default", "ui", NULL);
   }
@@ -409,8 +414,8 @@ static widget_t* preview_ui(const char* filename) {
   str_t file_data;
   uint32_t size = 0;
   widget_t* root = NULL;
-  char name[TK_NAME_LEN + 1];
-  char b_name[MAX_PATH + 1];
+  char name[TK_NAME_LEN + 1] = {0};
+  char b_name[MAX_PATH + 1] = {0};
   char* ext = NULL;
   ui_builder_t* builder = NULL;
   uint8_t* content = NULL;
@@ -435,7 +440,7 @@ static widget_t* preview_ui(const char* filename) {
   try_get_ui_dir_path(filename, ui_dir, MAX_PATH);
   filename_to_res_name(filename, ui_dir, name, TK_NAME_LEN);
   ext = strrchr(filename, '.');
-  tk_str_append(b_name, MAX_PATH, name);
+  memcpy(b_name, name, tk_strlen(name) + 1);
   tk_str_append(b_name, MAX_PATH, ext);
   builder = ui_builder_default_create(b_name);
   printf("preview %s\n", filename);
