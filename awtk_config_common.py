@@ -115,7 +115,7 @@ if OS_NAME == 'Darwin':
     TOOLS_NAME = ''
     OS_FLAGS = '-Wall -Wno-unused-function -fPIC -DWITHOUT_GLAD=1 '
     OS_LIBS = ['stdc++', 'iconv', 'pthread', 'm', 'dl']
-    OS_LINKFLAGS = '-framework IOKit -framework Cocoa -framework QuartzCore -framework OpenGL'
+    OS_LINKFLAGS = '-framework IOKit -framework Cocoa -framework QuartzCore -framework OpenGL -Wl,-rpath,@loader_path/'
     OS_FLAGS = OS_FLAGS + ' -DHAS_SEM_OPEN '
     OS_FLAGS = OS_FLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS '
     OS_FLAGS = OS_FLAGS + ' -D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS '
