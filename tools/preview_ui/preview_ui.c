@@ -341,6 +341,97 @@ static ret_t find_first_tag(str_t* s, char* tag) {
   return RET_OK;
 }
 
+static const char* find_xml_pi_start(const char* p) {
+  while (*p != '\0') {
+    if (*p != '<') {
+      p++;
+      continue;
+    }
+    p++;
+    while (*p != '\0' && tk_isspace(*p)) p++;
+    if (*p != '?') continue;
+    p++;
+    while (*p != '\0' && tk_isspace(*p)) p++;
+    if (tk_strncmp(p, "xml", 3) == 0) return p + 3;
+  }
+  return NULL;
+}
+
+static const char* find_xml_pi_end(const char* p) {
+  const char* q = NULL;
+  while (*p != '\0') {
+    if (*p != '?') {
+      p++;
+      continue;
+    }
+    q = p + 1;
+    while (*q != '\0' && tk_isspace(*q)) q++;
+    if (*q == '>') return p;
+    p++;
+  }
+  return NULL;
+}
+
+static ret_t parse_additional_xml_attr_value(str_t* file_data, const char* attr_name, char* value,
+                                             uint32_t size) {
+  const char* p = NULL;
+  const char* pi_start = NULL;
+  const char* pi_end = NULL;
+  const char* eq = NULL;
+  const char* val_start = NULL;
+  const char* val_end = NULL;
+  uint32_t attr_name_len = 0;
+  uint32_t val_len = 0;
+  return_value_if_fail(file_data != NULL && attr_name != NULL && value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(file_data->str != NULL && file_data->size > 0, RET_FAIL);
+
+  attr_name_len = tk_strlen(attr_name);
+  memset(value, 0x00, size);
+
+  pi_start = find_xml_pi_start(file_data->str);
+  return_value_if_fail(pi_start != NULL, RET_FAIL);
+
+  pi_end = find_xml_pi_end(pi_start);
+  return_value_if_fail(pi_end != NULL, RET_FAIL);
+
+  p = pi_start;
+  while (p < pi_end) {
+    p = strstr(p, attr_name);
+    if (p == NULL || p >= pi_end) return RET_FAIL;
+
+    if (!tk_isspace(*(p - 1))) {
+      p += attr_name_len;
+      continue;
+    }
+
+    eq = p + attr_name_len;
+    while (eq < pi_end && tk_isspace(*eq)) eq++;
+    if (*eq != '=' || eq >= pi_end) {
+      p += attr_name_len;
+      continue;
+    }
+    eq++;
+
+    while (eq < pi_end && tk_isspace(*eq)) eq++;
+    if ((*eq != '"' && *eq != '\'') || eq >= pi_end) {
+      p += attr_name_len;
+      continue;
+    }
+
+    val_start = eq + 1;
+    val_end = strchr(val_start, *eq);
+    if (val_end == NULL || val_end >= pi_end) return RET_FAIL;
+
+    val_len = (uint32_t)(val_end - val_start);
+    if (val_len == 0 || val_len >= size) return RET_FAIL;
+    tk_strncpy(value, val_start, val_len);
+    value[val_len] = '\0';
+    return RET_OK;
+  }
+
+  return RET_FAIL;
+}
+
 // 检测当前xml是否为窗口
 static ret_t confirm_file_data_window(str_t* file_data) {
   str_t temp;
@@ -358,9 +449,9 @@ static ret_t confirm_file_data_window(str_t* file_data) {
   }
 
   if (!with_window) {
-    str_set(&temp, "<window>");
+    str_set(&temp, "<view w=\"100%%\" h=\"100%%\">");
     str_append(&temp, file_data->str);
-    str_append(&temp, "</window>");
+    str_append(&temp, "</view>");
     str_set(file_data, temp.str);
   }
   str_reset(&temp);
@@ -453,8 +544,13 @@ static widget_t* preview_ui(const char* filename) {
   }
 
   if (builder->root != NULL && !(builder->root->vt->is_window)) {
+    char theme[TK_NAME_LEN + 1] = {0};
     widget_t* win = window_create(NULL, 0, 0, 0, 0);
+
     widget_add_child(win, builder->root);
+    if (RET_OK == parse_additional_xml_attr_value(&file_data, "theme", theme, TK_NAME_LEN + 1)) {
+      widget_set_prop_str(win, "theme", theme);
+    }
     widget_layout(win);
 
     timer_add(refresh_in_timer, builder->root, 1000);
