@@ -24,8 +24,8 @@
 #endif
 
 #include "awtk.h"
+#include "conf_io/conf_utils.h"
 #include "base/locale_info_xml.h"
-
 #include "ui_loader/ui_loader_xml.h"
 #include "ui_loader/ui_loader_default.h"
 #include "ui_loader/ui_builder_default.h"
@@ -372,8 +372,8 @@ static const char* find_xml_pi_end(const char* p) {
   return NULL;
 }
 
-static ret_t parse_additional_xml_attr_value(str_t* file_data, const char* attr_name, char* value,
-                                             uint32_t size) {
+static ret_t parse_additional_xml_attr_value(const char* raw_data, const char* attr_name,
+                                             str_t* value) {
   const char* p = NULL;
   const char* pi_start = NULL;
   const char* pi_end = NULL;
@@ -382,13 +382,13 @@ static ret_t parse_additional_xml_attr_value(str_t* file_data, const char* attr_
   const char* val_end = NULL;
   uint32_t attr_name_len = 0;
   uint32_t val_len = 0;
-  return_value_if_fail(file_data != NULL && attr_name != NULL && value != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(file_data->str != NULL && file_data->size > 0, RET_FAIL);
+  str_t raw_value;
+  return_value_if_fail(raw_data != NULL && attr_name != NULL && value != NULL, RET_BAD_PARAMS);
 
   attr_name_len = tk_strlen(attr_name);
-  memset(value, 0x00, size);
+  str_clear(value);
 
-  pi_start = find_xml_pi_start(file_data->str);
+  pi_start = find_xml_pi_start(raw_data);
   return_value_if_fail(pi_start != NULL, RET_FAIL);
 
   pi_end = find_xml_pi_end(pi_start);
@@ -423,9 +423,12 @@ static ret_t parse_additional_xml_attr_value(str_t* file_data, const char* attr_
     if (val_end == NULL || val_end >= pi_end) return RET_FAIL;
 
     val_len = (uint32_t)(val_end - val_start);
-    if (val_len == 0 || val_len >= size) return RET_FAIL;
-    tk_strncpy(value, val_start, val_len);
-    value[val_len] = '\0';
+    if (val_len == 0) return RET_FAIL;
+
+    str_init(&raw_value, val_len + 1);
+    str_set_with_len(&raw_value, val_start, val_len);
+    str_decode_xml_entity(value, raw_value.str);
+    str_reset(&raw_value);
     return RET_OK;
   }
 
@@ -526,10 +529,11 @@ static widget_t* preview_ui(const char* filename) {
     size = s.size;
   }
   str_set(&file_data, (const char*)content);
-  confirm_file_data_window(&file_data);
 
+  confirm_file_data_window(&file_data);
   try_get_ui_dir_path(filename, ui_dir, MAX_PATH);
   filename_to_res_name(filename, ui_dir, name, TK_NAME_LEN);
+
   ext = strrchr(filename, '.');
   memcpy(b_name, name, tk_strlen(name) + 1);
   tk_str_append(b_name, MAX_PATH, ext);
@@ -544,15 +548,26 @@ static widget_t* preview_ui(const char* filename) {
   }
 
   if (builder->root != NULL && !(builder->root->vt->is_window)) {
-    char theme[TK_NAME_LEN + 1] = {0};
+    str_t attr_value;
+    tk_object_t* features = object_default_create();
     widget_t* win = window_create(NULL, 0, 0, 0, 0);
 
+    str_init(&attr_value, 0);
     widget_add_child(win, builder->root);
-    if (RET_OK == parse_additional_xml_attr_value(&file_data, "theme", theme, TK_NAME_LEN + 1)) {
-      widget_set_prop_str(win, "theme", theme);
+    if (RET_OK == parse_additional_xml_attr_value(file_data.str, "theme", &attr_value)) {
+      widget_set_prop_str(win, "theme", attr_value.str);
+    } else if (RET_OK == parse_additional_xml_attr_value(file_data.str, "parent", &attr_value)) {
+      if (RET_OK == object_from_json(features, attr_value.str)) {
+        const char* theme_from_parent = tk_object_get_prop_str(features, "theme");
+        if (theme_from_parent != NULL) {
+          widget_set_prop_str(win, "theme", theme_from_parent);
+        }
+      }
     }
     widget_layout(win);
 
+    TK_OBJECT_UNREF(features);
+    str_reset(&attr_value);
     timer_add(refresh_in_timer, builder->root, 1000);
   }
 
