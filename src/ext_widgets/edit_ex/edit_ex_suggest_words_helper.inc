@@ -387,7 +387,7 @@ static ret_t edit_ex_suggest_words_popup_on_item_click(void* ctx, event_t* e) {
   return edit_ex_suggest_words_popup_confirm(widget, item);
 }
 
-inline static bool_t edit_ex_suggest_words_popup_is_opend(edit_ex_t* edit_ex) {
+inline static bool_t edit_ex_suggest_words_popup_is_opened(edit_ex_t* edit_ex) {
   if (edit_ex->suggest_words_popup != NULL) {
     window_base_t* popup = WINDOW_BASE(edit_ex->suggest_words_popup);
     if (popup != NULL && WINDOW_STAGE_OPENED == popup->stage) {
@@ -400,7 +400,7 @@ inline static bool_t edit_ex_suggest_words_popup_is_opend(edit_ex_t* edit_ex) {
 inline static ret_t edit_ex_suggest_words_enable_focus(widget_t* widget, bool_t enable) {
   edit_ex_t* edit_ex = EDIT_EX(widget);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
-  if (edit_ex_suggest_words_popup_is_opend(edit_ex)) {
+  if (edit_ex_suggest_words_popup_is_opened(edit_ex)) {
     widget_set_sensitive(edit_ex->suggest_words_popup, enable);
   }
   edit_ex->key_downing = !enable;
@@ -413,7 +413,7 @@ static ret_t edit_ex_suggest_words_focus_by_key(widget_t* widget, uint32_t key) 
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
   if (key_code_is_down(key)) {
-    if (edit_ex_suggest_words_popup_is_opend(edit_ex)) {
+    if (edit_ex_suggest_words_popup_is_opened(edit_ex)) {
       ret = widget_focus_first(edit_ex->suggest_words_popup);
       if (RET_OK == ret) {
         widget_set_sensitive(edit_ex->suggest_words_popup, TRUE);
