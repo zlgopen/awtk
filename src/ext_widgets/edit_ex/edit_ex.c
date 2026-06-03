@@ -195,10 +195,6 @@ static ret_t edit_ex_on_event(widget_t* widget, event_t* e) {
         edit_ex_update_suggest_words_popup(widget);
       }
     } break;
-    case EVT_BLUR: {
-      ENSURE(NULL == edit_ex->suggest_words_popup &&
-             "suggest_words_popup exists, edit_ex should not lose focus!");
-    } break;
     case EVT_FOCUS: {
       ret = widget_vtable_on_event_by_parent(widget, e, WIDGET_VTABLE_GET_VTABLE(edit_ex));
       edit_ex_update_suggest_words_popup(widget);
