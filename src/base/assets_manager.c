@@ -329,6 +329,8 @@ static uint16_t subtype_from_extname(const char* extname) {
     subtype = ASSET_TYPE_IMAGE_JPG;
   } else if (tk_str_ieq(extname, ".ttf")) {
     subtype = ASSET_TYPE_FONT_TTF;
+  } else if (tk_str_ieq(extname, ".otf")) {
+    subtype = ASSET_TYPE_FONT_TTF;
   } else {
     log_debug("not supported %s\n", extname);
   }
@@ -377,6 +379,9 @@ static asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_
     case ASSET_TYPE_FONT: {
       if (subtype == 0 || (subtype != 0 && subtype == ASSET_TYPE_FONT_TTF)) {
         if ((info = try_load_assets(am, theme, name, ".ttf", type, ASSET_TYPE_FONT_TTF)) != NULL) {
+          break;
+        } else if ((info = try_load_assets(am, theme, name, ".otf", type, ASSET_TYPE_FONT_TTF)) !=
+                   NULL) {
           break;
         }
       }

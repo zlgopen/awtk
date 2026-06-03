@@ -35,6 +35,10 @@ static ret_t gen_one(const char* in_filename, const char* out_filename, const ch
       str_replace(res_name, ".ttf", "");
       output_res_c_source_ex(out_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, input_buff,
                              size, res_name->str);
+    } else if (case_end_with(in_filename, ".otf")) {
+      str_replace(res_name, ".otf", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, input_buff,
+                             size, res_name->str);
     } else if (case_end_with(in_filename, ".png")) {
       str_replace(res_name, ".png", "");
       output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG,

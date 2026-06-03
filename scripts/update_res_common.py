@@ -717,9 +717,10 @@ def get_origin_font(design_dir, fontname, theme):
 
     dirs = [storage_fonts_dir, fonts_dir, default_storage_fonts_dir, default_fonts_dir]
     for dir in dirs:
-        origin_font = join_path(dir, fontname + '.ttf')
-        if os.path.exists(origin_font):
-            return origin_font
+        for ext in ['.ttf', '.otf']:
+            origin_font = join_path(dir, fontname + ext)
+            if os.path.exists(origin_font):
+                return origin_font
     return None
 
 
@@ -747,14 +748,15 @@ def gen_res_all_font():
                         make_dirs(out_folder)
                     copy_file(in_file, out_file)
             else:
-                for f in get_appint_folder(in_folder, '.ttf', False):
-                    out_files = f[0].replace(INPUT_DIR, join_path(OUTPUT_DIR, 'raw'))
-                    out_folder = os.path.dirname(out_files)
-                    if 'origin' in out_folder:
-                        continue
-                    if not os.path.exists(out_folder):
-                        make_dirs(out_folder)
-                    copy_file(f[0], out_files)
+                for ext in ['.ttf', '.otf']:
+                    for f in get_appint_folder(in_folder, ext, False):
+                        out_files = f[0].replace(INPUT_DIR, join_path(OUTPUT_DIR, 'raw'))
+                        out_folder = os.path.dirname(out_files)
+                        if 'origin' in out_folder:
+                            continue
+                        if not os.path.exists(out_folder):
+                            make_dirs(out_folder)
+                        copy_file(f[0], out_files)
 
     if IS_GENERATE_INC_RES or IS_GENERATE_INC_BITMAP:
         inc_dir = join_path(OUTPUT_DIR, 'inc/fonts')
@@ -781,8 +783,13 @@ def gen_res_all_font():
             if os.path.exists('scripts/update_res_common.py'):
                 IS_AWTK_DEMO = True
 
-            raw = join_path(INPUT_DIR, 'fonts/default_full.ttf')
-            if IS_AWTK_DEMO and os.path.exists(raw):
+            raw = None
+            for ext in ['.ttf', '.otf']:
+                candidate = join_path(INPUT_DIR, 'fonts/default_full' + ext)
+                if os.path.exists(candidate):
+                    raw = candidate
+                    break
+            if IS_AWTK_DEMO and raw:
                 text = join_path(INPUT_DIR, 'fonts/text.txt')
                 if os.path.exists(text):
                     fontsizes = [16, 18, 20, 24, 32, 96]
@@ -805,14 +812,15 @@ def gen_res_all_font():
                         make_dirs(out_folder)
                     resgen(in_file, out_file, THEME, '.res')
             else:
-                for f in get_appint_folder(in_folder, ".ttf", False):
-                    filename, extname = os.path.splitext(f[0])
-                    raw = f[0]
-                    filename = filename.replace(INPUT_DIR, join_path(OUTPUT_DIR, 'inc'))
-                    inc = filename + '.res'
-                    if "origin" in inc:
-                        continue
-                    resgen(raw, inc, THEME, '.res')
+                for ext in ['.ttf', '.otf']:
+                    for f in get_appint_folder(in_folder, ext, False):
+                        filename, extname = os.path.splitext(f[0])
+                        raw = f[0]
+                        filename = filename.replace(INPUT_DIR, join_path(OUTPUT_DIR, 'inc'))
+                        inc = filename + '.res'
+                        if "origin" in inc:
+                            continue
+                        resgen(raw, inc, THEME, '.res')
     emit_generate_res_after('font')
 
 
@@ -1189,7 +1197,7 @@ def gen_res_json():
     result += gen_res_json_all_theme("xml", 'xml/*.xml')
     result += gen_res_json_all_theme("data", 'data/*.*')
     result += gen_res_json_all_theme("script", 'scripts/*.*')
-    result += gen_res_json_all_theme("font", 'fonts/*.ttf')
+    result += gen_res_json_all_theme("font", 'fonts/*.[ot]tf')
     result += '\n};\n'
 
     write_file(ASSET_C.replace('.c', '_web.js'), result)
