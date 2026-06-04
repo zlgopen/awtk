@@ -923,6 +923,7 @@ EXPORTS
     timer_manager_all_remove_by_ctx_and_type
     timer_manager_add_with_type
     timer_manager_add_with_type_and_id
+    timer_manager_get_time
     tokenizer_init
     tokenizer_init_ex
     tokenizer_has_more

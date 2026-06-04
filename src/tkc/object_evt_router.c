@@ -25,6 +25,7 @@
 #include "tkc/object_hash.h"
 #include "tkc/darray.h"
 #include "tkc/named_value.h"
+#include "tkc/timer_manager.h"
 
 typedef struct _object_evt_router_register_info_t {
   tk_object_t* publisher;
@@ -242,16 +243,18 @@ static ret_t object_evt_router_dispatch_log(object_evt_router_t* evt_router, tk_
   va_list args, args_copy;
   return_value_if_fail(evt_router != NULL && format != NULL, RET_BAD_PARAMS);
 
+  if (level < log_get_log_level()) {
+    return RET_SKIP;
+  }
+
   /* 防止无限递归导致栈溢出 */
   if (evt_router->log_recursion_depth >= 2) {
     if (e != NULL) {
       if (EVT_LOG_MESSAGE == e->type && e->target == evt_router) {
         log_message_event_t* log_evt = log_message_event_cast(e);
-        if (log_evt->level == level) {
-          log_warn("%s: log recursion detected, skip log message: %s\n", __FUNCTION__,
-                   log_evt->message);
-          return RET_SKIP;
-        }
+        log_warn("%s: log recursion detected, skip log message: %s\n", __FUNCTION__,
+                 log_evt->message);
+        return RET_SKIP;
       }
     }
   }
@@ -436,10 +439,14 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
       .evt_router = evt_router,
       .e = e,
   };
-  uint32_t i = 0;
-  ret_t result = RET_OK;
+  object_evt_router_register_info_t log_reg_info = {0};
   object_evt_router_subscribe_info_t* sub_info = NULL;
-  return_value_if_fail(evt_router != NULL, RET_BAD_PARAMS);
+  ret_t result = RET_OK;
+  uint64_t time = 0;
+  uint32_t i = 0;
+  return_value_if_fail(evt_router != NULL && e != NULL, RET_BAD_PARAMS);
+
+  time = timer_manager_get_time(timer_manager());
 
   if (NULL == evt_router->matched_subscribe_infos) {
     evt_router->matched_subscribe_infos =
@@ -475,6 +482,14 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
         OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(sub_info, "Publish stopped."),
         OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info));
   }
+
+  time = timer_manager_get_time(timer_manager()) - time;
+  log_reg_info = (object_evt_router_register_info_t){.publisher = e->target, .evt_type = e->type};
+  object_evt_router_dispatch_log(evt_router, LOG_LEVEL_DEBUG, e,
+                                 OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(
+                                     &log_reg_info, "Published: evt_type: %d, cost time: %llu ms."),
+                                 OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&log_reg_info), e->type,
+                                 time);
 
   return RET_OK;
 }

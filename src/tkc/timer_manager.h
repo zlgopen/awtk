@@ -254,6 +254,15 @@ uint32_t timer_manager_add_with_type_and_id(timer_manager_t* timer_manager, uint
                                             timer_func_t on_timer, void* ctx, uint32_t duration,
                                             uint16_t timer_info_type, bool_t is_check_id);
 
+/**
+ * @method timer_manager_get_time
+ * 获取当前时间。
+ * @param {timer_manager_t*} timer_manager 定时器管理器对象。
+ *
+ * @return {uint64_t} 返回当前时间。
+ */
+uint64_t timer_manager_get_time(timer_manager_t* timer_manager);
+
 END_C_DECLS
 
 #endif /*TK_TIMER_MANAGER_H*/

@@ -249,3 +249,8 @@ uint64_t timer_manager_next_time(timer_manager_t* timer_manager) {
 
   return t;
 }
+
+uint64_t timer_manager_get_time(timer_manager_t* timer_manager) {
+  return_value_if_fail(timer_manager != NULL && timer_manager->get_time != NULL, 0);
+  return timer_manager->get_time();
+}
