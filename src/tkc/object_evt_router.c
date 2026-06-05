@@ -234,12 +234,26 @@ struct _object_evt_router_t {
   bool_t publishing : 1;
 };
 
+inline static ret_t object_evt_router_dispatch_log_message(object_evt_router_t* evt_router,
+                                                           tk_log_level_t level, const char* msg) {
+  ret_t ret = RET_OK;
+  log_message_event_t evt;
+
+  evt_router->log_recursion_depth++;
+
+  log_message_event_init(&evt, level, msg);
+  ret = emitter_dispatch(EMITTER(evt_router), &evt.e);
+
+  evt_router->log_recursion_depth--;
+
+  return ret;
+}
+
 static ret_t object_evt_router_dispatch_log(object_evt_router_t* evt_router, tk_log_level_t level,
                                             event_t* e, const char* format, ...) {
   char empty[1];
   int size = 0;
   ret_t ret = RET_OK;
-  log_message_event_t evt;
   va_list args, args_copy;
   return_value_if_fail(evt_router != NULL && format != NULL, RET_BAD_PARAMS);
 
@@ -261,7 +275,10 @@ static ret_t object_evt_router_dispatch_log(object_evt_router_t* evt_router, tk_
 
   if (NULL == evt_router->log) {
     evt_router->log = str_create(0);
-    return_value_if_fail(evt_router->log != NULL, RET_OOM);
+    return_value_if_fail(evt_router->log != NULL,
+                         (object_evt_router_dispatch_log_message(evt_router, LOG_LEVEL_ERROR,
+                                                                 "Failed to allocate log!\n"),
+                          RET_OOM));
   }
 
   va_start(args, format);
@@ -272,14 +289,11 @@ static ret_t object_evt_router_dispatch_log(object_evt_router_t* evt_router, tk_
   str_clear(evt_router->log);
   ret = str_append_vformat(evt_router->log, size + 1, format, args);
   va_end(args);
-  return_value_if_fail(RET_OK == ret, ret);
+  return_value_if_fail(RET_OK == ret, (object_evt_router_dispatch_log_message(
+                                           evt_router, LOG_LEVEL_ERROR, "Failed to format log!\n"),
+                                       ret));
 
-  evt_router->log_recursion_depth++;
-
-  log_message_event_init(&evt, level, evt_router->log->str);
-  ret = emitter_dispatch(EMITTER(evt_router), &evt.e);
-
-  evt_router->log_recursion_depth--;
+  ret = object_evt_router_dispatch_log_message(evt_router, level, evt_router->log->str);
 
   return ret;
 }
@@ -439,19 +453,30 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
       .evt_router = evt_router,
       .e = e,
   };
-  object_evt_router_register_info_t log_reg_info = {0};
+  object_evt_router_register_info_t tmp;
   object_evt_router_subscribe_info_t* sub_info = NULL;
   ret_t result = RET_OK;
   uint64_t time = 0;
   uint32_t i = 0;
   return_value_if_fail(evt_router != NULL && e != NULL, RET_BAD_PARAMS);
 
+  tmp = (object_evt_router_register_info_t){
+      .publisher = e->target,
+      .evt_type = e->type,
+  };
   time = timer_manager_get_time(timer_manager());
 
   if (NULL == evt_router->matched_subscribe_infos) {
     evt_router->matched_subscribe_infos =
         darray_create(4, NULL, (tk_compare_t)object_evt_router_subscribe_info_cmp);
-    return_value_if_fail(evt_router->matched_subscribe_infos != NULL, RET_OOM);
+    return_value_if_fail(
+        evt_router->matched_subscribe_infos != NULL,
+        (object_evt_router_dispatch_log(
+             evt_router, LOG_LEVEL_ERROR, e,
+             OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(
+                 &tmp, "Failed to allocate matched_subscribe_infos! (evt_type: %d)."),
+             OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), e->type, time),
+         RET_OOM));
   }
 
   darray_clear(evt_router->matched_subscribe_infos);
@@ -484,12 +509,10 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
   }
 
   time = timer_manager_get_time(timer_manager()) - time;
-  log_reg_info = (object_evt_router_register_info_t){.publisher = e->target, .evt_type = e->type};
   object_evt_router_dispatch_log(evt_router, LOG_LEVEL_DEBUG, e,
                                  OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(
-                                     &log_reg_info, "Published: evt_type: %d, cost time: %llu ms."),
-                                 OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&log_reg_info), e->type,
-                                 time);
+                                     &tmp, "Published: evt_type: %d, cost time: %llu ms."),
+                                 OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), e->type, time);
 
   return RET_OK;
 }
@@ -499,22 +522,41 @@ ret_t object_evt_router_register(tk_object_t* obj, const char* topic, tk_object_
   ret_t ret = RET_OK;
   darray_t* infos = NULL;
   object_evt_router_register_info_t* info = NULL;
+  object_evt_router_register_info_t tmp;
   object_evt_router_t* evt_router = OBJECT_EVT_ROUTER(obj);
   return_value_if_fail(evt_router != NULL && TK_STR_IS_NOT_EMPTY(topic) && publisher != NULL,
                        RET_BAD_PARAMS);
 
+  tmp = (object_evt_router_register_info_t){
+      .publisher = publisher,
+      .evt_type = evt_type,
+      .opt = opt != NULL ? *opt : (object_evt_router_register_opt_t){0},
+  };
+
   infos = (darray_t*)tk_object_get_prop_pointer(evt_router->register_infos_group, topic);
 
   if (infos != NULL) {
-    object_evt_router_register_info_t tmp = {
-        .publisher = publisher,
-        .evt_type = evt_type,
-        .opt = opt != NULL ? *opt : (object_evt_router_register_opt_t){0},
-    };
-    return_value_if_fail(darray_find_index(infos, &tmp) < 0, RET_FAIL);
+    return_value_if_fail(
+        darray_find_index(infos, &tmp) < 0,
+        (object_evt_router_dispatch_log(evt_router, LOG_LEVEL_WARN, NULL,
+                                        OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(
+                                            &tmp,
+                                            "Duplicate register rejected. "
+                                            "(topic: \"%s\", evt_type: %d, filter: %p)."),
+                                        OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), topic,
+                                        tmp.evt_type, tmp.opt.evt_filter),
+         RET_FAIL));
   } else {
     infos = object_evt_router_register_infos_create();
-    return_value_if_fail(infos != NULL, RET_OOM);
+    return_value_if_fail(infos != NULL, (object_evt_router_dispatch_log(
+                                             evt_router, LOG_LEVEL_ERROR, NULL,
+                                             OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(
+                                                 &tmp,
+                                                 "Register failed to allocate register_infos! "
+                                                 "(topic: \"%s\", evt_type: %d, filter: %p)."),
+                                             OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), topic,
+                                             tmp.evt_type, tmp.opt.evt_filter),
+                                         RET_OOM));
 
     ret = tk_object_set_prop_pointer_ex(evt_router->register_infos_group, topic, infos,
                                         (tk_destroy_t)object_evt_router_register_infos_destroy);
@@ -525,7 +567,15 @@ ret_t object_evt_router_register(tk_object_t* obj, const char* topic, tk_object_
   }
 
   info = object_evt_router_register_info_create(publisher, evt_type, opt);
-  return_value_if_fail(info != NULL, RET_OOM);
+  return_value_if_fail(
+      info != NULL,
+      (object_evt_router_dispatch_log(
+           evt_router, LOG_LEVEL_ERROR, NULL,
+           OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(&tmp,
+                                                      "Register failed to allocate register_info! "
+                                                      "(topic: \"%s\", evt_type: %d, filter: %p)."),
+           OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), topic, tmp.evt_type, tmp.opt.evt_filter),
+       RET_OOM));
 
   ret = darray_push(infos, info);
   if (RET_OK != ret) {
@@ -643,23 +693,40 @@ ret_t object_evt_router_subscribe(tk_object_t* obj, const char* topic,
   ret_t ret = RET_OK;
   darray_t* infos = NULL;
   object_evt_router_subscribe_info_t* info = NULL;
+  object_evt_router_subscribe_info_t tmp;
   object_evt_router_t* evt_router = OBJECT_EVT_ROUTER(obj);
   return_value_if_fail(evt_router != NULL && callback != NULL, RET_BAD_PARAMS);
   if (NULL == topic) {
     topic = "";
   }
 
+  tmp = (object_evt_router_subscribe_info_t){
+      .callback = callback,
+      .opt = opt != NULL ? *opt : (object_evt_router_subscribe_opt_t){0},
+  };
+
   infos = (darray_t*)tk_object_get_prop_pointer(evt_router->subscribe_infos_group, topic);
 
   if (infos != NULL) {
-    object_evt_router_subscribe_info_t tmp = {
-        .callback = callback,
-        .opt = opt != NULL ? *opt : (object_evt_router_subscribe_opt_t){0},
-    };
-    return_value_if_fail(darray_find_index(infos, &tmp) < 0, RET_FAIL);
+    return_value_if_fail(
+        darray_find_index(infos, &tmp) < 0,
+        (object_evt_router_dispatch_log(
+             evt_router, LOG_LEVEL_WARN, NULL,
+             OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(
+                 &tmp, "Duplicate subscribe rejected. (topic: \"%s\", priority: %d)."),
+             OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(&tmp), topic, tmp.opt.priority),
+         RET_FAIL));
   } else {
     infos = object_evt_router_subscribe_infos_create();
-    return_value_if_fail(infos != NULL, RET_OOM);
+    return_value_if_fail(
+        infos != NULL,
+        (object_evt_router_dispatch_log(
+             evt_router, LOG_LEVEL_ERROR, NULL,
+             OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(
+                 &tmp,
+                 "Subscribe failed to allocate subscribe_infos! (topic: \"%s\", priority: %d)."),
+             OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(&tmp), topic, tmp.opt.priority),
+         RET_OOM));
 
     ret = tk_object_set_prop_pointer_ex(evt_router->subscribe_infos_group, topic, infos,
                                         (tk_destroy_t)object_evt_router_subscribe_infos_destroy);
@@ -670,7 +737,14 @@ ret_t object_evt_router_subscribe(tk_object_t* obj, const char* topic,
   }
 
   info = object_evt_router_subscribe_info_create(callback, opt);
-  return_value_if_fail(info != NULL, RET_OOM);
+  return_value_if_fail(
+      info != NULL,
+      (object_evt_router_dispatch_log(
+           evt_router, LOG_LEVEL_ERROR, NULL,
+           OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(
+               &tmp, "Subscribe failed to allocate subscribe_info! (topic: \"%s\", priority: %d)."),
+           OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(&tmp), topic, tmp.opt.priority),
+       RET_OOM));
 
   ret = darray_push(infos, info);
   if (RET_OK != ret) {
@@ -691,18 +765,20 @@ ret_t object_evt_router_unsubscribe(tk_object_t* obj, const char* topic,
                                     const object_evt_router_subscribe_opt_t* opt) {
   ret_t ret = RET_NOT_FOUND;
   darray_t* infos = NULL;
+  object_evt_router_subscribe_info_t tmp;
   object_evt_router_t* evt_router = OBJECT_EVT_ROUTER(obj);
   return_value_if_fail(evt_router != NULL && callback != NULL, RET_BAD_PARAMS);
   if (NULL == topic) {
     topic = "";
   }
 
+  tmp = (object_evt_router_subscribe_info_t){
+      .callback = callback,
+      .opt = (opt != NULL) ? *opt : (object_evt_router_subscribe_opt_t){0},
+  };
+
   infos = (darray_t*)tk_object_get_prop_pointer(evt_router->subscribe_infos_group, topic);
   if (infos != NULL) {
-    object_evt_router_subscribe_info_t tmp = {
-        .callback = callback,
-        .opt = (opt != NULL) ? *opt : (object_evt_router_subscribe_opt_t){0},
-    };
     if (evt_router->publishing) {
       object_evt_router_subscribe_info_t* info =
           (object_evt_router_subscribe_info_t*)darray_find(infos, &tmp);
@@ -721,10 +797,6 @@ ret_t object_evt_router_unsubscribe(tk_object_t* obj, const char* topic,
   }
 
   if (RET_OK == ret) {
-    object_evt_router_subscribe_info_t tmp = {
-        .callback = callback,
-        .opt = (opt != NULL) ? *opt : (object_evt_router_subscribe_opt_t){0},
-    };
     object_evt_router_dispatch_log(
         evt_router, LOG_LEVEL_INFO, NULL,
         OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(&tmp, "Unsubscribe topic: \"%s\"."),
