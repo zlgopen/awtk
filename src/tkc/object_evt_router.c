@@ -436,11 +436,24 @@ static ret_t object_evt_router_on_publish_on_visit(void* ctx, const void* data) 
     const object_evt_router_register_info_t* info =
         (const object_evt_router_register_info_t*)darray_get(infos, i);
     if (info->evt_type == actx->e->type && info->publisher == actx->e->target) {
-      if (NULL == info->opt.evt_filter ||
-          info->opt.evt_filter(info->publisher, actx->e, info->opt.evt_filter_ctx)) {
-        object_evt_router_publish_topic_to_matched(actx->evt_router, nv->name);
-        break;
+      if (NULL != info->opt.evt_filter &&
+          !info->opt.evt_filter(info->publisher, actx->e, info->opt.evt_filter_ctx)) {
+        object_evt_router_dispatch_log(
+            actx->evt_router, LOG_LEVEL_DEBUG, actx->e,
+            OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(
+                info, "Filter blocked: topic: \"%s\", evt_type: %d, filter: %p."),
+            OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(info), nv->name, info->evt_type,
+            info->opt.evt_filter);
+        continue;
       }
+      object_evt_router_publish_topic_to_matched(actx->evt_router, nv->name);
+      object_evt_router_dispatch_log(
+          actx->evt_router, LOG_LEVEL_DEBUG, actx->e,
+          OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(
+              info, "Filter passed: topic: \"%s\", evt_type: %d, filter: %p."),
+          OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(info), nv->name, info->evt_type,
+          info->opt.evt_filter);
+      break;
     }
   }
 
@@ -456,7 +469,7 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
   object_evt_router_register_info_t tmp;
   object_evt_router_subscribe_info_t* sub_info = NULL;
   ret_t result = RET_OK;
-  uint64_t time = 0;
+  uint64_t total_time = 0;
   uint32_t i = 0;
   return_value_if_fail(evt_router != NULL && e != NULL, RET_BAD_PARAMS);
 
@@ -464,7 +477,11 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
       .publisher = e->target,
       .evt_type = e->type,
   };
-  time = timer_manager_get_time(timer_manager());
+
+  object_evt_router_dispatch_log(
+      evt_router, LOG_LEVEL_DEBUG, e,
+      OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(&tmp, "Publish start: evt_type: %d."),
+      OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), e->type);
 
   if (NULL == evt_router->matched_subscribe_infos) {
     evt_router->matched_subscribe_infos =
@@ -486,12 +503,31 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
   darray_sort(evt_router->matched_subscribe_infos,
               (tk_compare_t)object_evt_router_subscribe_info_cmp_by_priority);
 
-  for (i = 0; i < evt_router->matched_subscribe_infos->size; i++) {
+  for (i = 0; i < evt_router->matched_subscribe_infos->size;) {
+    uint64_t time = 0;
     sub_info =
         (object_evt_router_subscribe_info_t*)darray_get(evt_router->matched_subscribe_infos, i);
+
     evt_router->publishing = TRUE;
+    object_evt_router_dispatch_log(
+        evt_router, LOG_LEVEL_DEBUG, e,
+        OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(sub_info, "Subscribe start: priority: %d."),
+        OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info), sub_info->opt.priority);
+
+    time = timer_manager_get_time(timer_manager());
     result = sub_info->callback(sub_info->opt.subscriber, e, sub_info->opt.callback_ctx);
+    time = timer_manager_get_time(timer_manager()) - time;
+    total_time += time;
+
     evt_router->publishing = FALSE;
+    object_evt_router_dispatch_log(evt_router, LOG_LEVEL_DEBUG, e,
+                                   OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(
+                                       sub_info, "Subscribe end: result: %d, cost time: %llu ms."),
+                                   OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info), result,
+                                   time);
+
+    i++;
+
     TK_FOREACH_VISIT_RESULT_PROCESSING(
         result,
         (sub_info->unsubscribed = TRUE,
@@ -508,11 +544,11 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
         OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info));
   }
 
-  time = timer_manager_get_time(timer_manager()) - time;
-  object_evt_router_dispatch_log(evt_router, LOG_LEVEL_DEBUG, e,
-                                 OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(
-                                     &tmp, "Published: evt_type: %d, cost time: %llu ms."),
-                                 OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), e->type, time);
+  object_evt_router_dispatch_log(
+      evt_router, LOG_LEVEL_DEBUG, e,
+      OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(
+          &tmp, "Publish end: subscriber count: %d, total cost time: %llu ms."),
+      OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), i, total_time);
 
   return RET_OK;
 }
