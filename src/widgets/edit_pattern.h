@@ -7,10 +7,23 @@ typedef uint32_t (*pattern_part_get_max_len_t)(uint32_t index);
 typedef bool_t (*pattern_part_len_is_valid_t)(uint32_t index, uint32_t len);
 typedef bool_t (*pattern_part_value_is_valid_t)(uint32_t index, int32_t value);
 typedef wchar_t* (*pattern_part_fix_t)(uint32_t index, int32_t value, wchar_t* start, wchar_t* end);
+typedef bool_t (*pattern_part_value_is_valid_ctx_t)(uint32_t index, int32_t value, void* ctx);
+typedef wchar_t* (*pattern_part_fix_ctx_t)(uint32_t index, int32_t value, wchar_t* start, wchar_t* end, void* ctx);
 
-static bool_t edit_pattern_is_valid(widget_t* widget, wchar_t sep, uint32_t sep_nr,
-                                    pattern_part_len_is_valid_t is_valid_len,
-                                    pattern_part_value_is_valid_t is_valid_value) {
+static bool_t edit_pattern_is_valid_value_adapter(uint32_t index, int32_t value, void* ctx) {
+  pattern_part_value_is_valid_t fn = (pattern_part_value_is_valid_t)ctx;
+  return fn(index, value);
+}
+
+static wchar_t* edit_pattern_fix_adapter(uint32_t index, int32_t value, wchar_t* start, wchar_t* end, void* ctx) {
+  pattern_part_fix_t fn = (pattern_part_fix_t)ctx;
+  return fn(index, value, start, end);
+}
+
+static bool_t edit_pattern_is_valid_ctx(widget_t* widget, wchar_t sep, uint32_t sep_nr,
+                                       pattern_part_len_is_valid_t is_valid_len,
+                                       pattern_part_value_is_valid_ctx_t is_valid_value,
+                                       void* ctx) {
   uint32_t i = 0;
   const wchar_t* ps = NULL;
   const wchar_t* pe = NULL;
@@ -31,7 +44,7 @@ static bool_t edit_pattern_is_valid(widget_t* widget, wchar_t sep, uint32_t sep_
     }
 
     v = tk_watoi_n(ps, pe - ps);
-    if (!(is_valid_value(i, v))) {
+    if (!(is_valid_value(i, v, ctx))) {
       return FALSE;
     }
 
@@ -50,9 +63,9 @@ static bool_t edit_pattern_is_valid(widget_t* widget, wchar_t sep, uint32_t sep_
   return TRUE;
 }
 
-static ret_t edit_pattern_fix_ex(widget_t* widget, bool_t strict, const char* defval, wchar_t sep,
+static ret_t edit_pattern_fix_ctx(widget_t* widget, bool_t strict, const char* defval, wchar_t sep,
                                  uint32_t sep_nr, pattern_part_get_max_len_t get_part_max_len,
-                                 pattern_part_fix_t fix) {
+                                 pattern_part_fix_ctx_t fix, void* ctx) {
   uint32_t i = 0;
   wchar_t str[32];
   wchar_t* p = str;
@@ -80,7 +93,7 @@ static ret_t edit_pattern_fix_ex(widget_t* widget, bool_t strict, const char* de
 
     if (strict) {
       v = tk_watoi_n(pd, p - pd);
-      p = fix(i, v, pd, p);
+      p = fix(i, v, pd, p, ctx);
     }
 
     if (i == sep_nr) {
@@ -102,6 +115,20 @@ static ret_t edit_pattern_fix_ex(widget_t* widget, bool_t strict, const char* de
   widget_set_text(widget, str);
 
   return RET_OK;
+}
+
+static bool_t edit_pattern_is_valid(widget_t* widget, wchar_t sep, uint32_t sep_nr,
+                                    pattern_part_len_is_valid_t is_valid_len,
+                                    pattern_part_value_is_valid_t is_valid_value) {
+  return edit_pattern_is_valid_ctx(widget, sep, sep_nr, is_valid_len,
+                                  edit_pattern_is_valid_value_adapter, (void*)is_valid_value);
+}
+
+static ret_t edit_pattern_fix_ex(widget_t* widget, bool_t strict, const char* defval, wchar_t sep,
+                                 uint32_t sep_nr, pattern_part_get_max_len_t get_part_max_len,
+                                 pattern_part_fix_t fix) {
+  return edit_pattern_fix_ctx(widget, strict, defval, sep, sep_nr, get_part_max_len,
+                              edit_pattern_fix_adapter, (void*)fix);
 }
 
 static bool_t edit_pattern_is_valid_char(widget_t* widget, wchar_t c, wchar_t sep,

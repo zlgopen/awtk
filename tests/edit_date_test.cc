@@ -35,6 +35,36 @@ TEST(Edit, date_is_valid) {
   widget_set_text_utf8(w, "2020/00/01");
   ASSERT_EQ(edit_date_is_valid(w), FALSE);
 
+  widget_set_text_utf8(w, "2020/02/29");
+  ASSERT_EQ(edit_date_is_valid(w), TRUE);
+
+  widget_set_text_utf8(w, "2021/02/29");
+  ASSERT_EQ(edit_date_is_valid(w), FALSE);
+
+  widget_set_text_utf8(w, "2000/02/29");
+  ASSERT_EQ(edit_date_is_valid(w), TRUE);
+
+  widget_set_text_utf8(w, "1900/02/29");
+  ASSERT_EQ(edit_date_is_valid(w), FALSE);
+
+  widget_set_text_utf8(w, "2020/04/31");
+  ASSERT_EQ(edit_date_is_valid(w), FALSE);
+
+  widget_set_text_utf8(w, "2020/06/31");
+  ASSERT_EQ(edit_date_is_valid(w), FALSE);
+
+  widget_set_text_utf8(w, "2020/09/31");
+  ASSERT_EQ(edit_date_is_valid(w), FALSE);
+
+  widget_set_text_utf8(w, "2020/11/31");
+  ASSERT_EQ(edit_date_is_valid(w), FALSE);
+
+  widget_set_text_utf8(w, "2020/04/30");
+  ASSERT_EQ(edit_date_is_valid(w), TRUE);
+
+  widget_set_text_utf8(w, "2020/02/30");
+  ASSERT_EQ(edit_date_is_valid(w), FALSE);
+
   widget_destroy(w);
 }
 
@@ -56,6 +86,34 @@ TEST(Edit, date_fix) {
   widget_set_text_utf8(w, "20200/21/03");
   ASSERT_EQ(edit_date_fix(w), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"2020/01/03"), 0);
+
+  widget_set_text_utf8(w, "2021/02/0");
+  ASSERT_EQ(edit_date_fix_ex(w, TRUE), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"2021/02/01"), 0);
+
+  widget_set_text_utf8(w, "2021/02/29");
+  ASSERT_EQ(edit_date_fix_ex(w, TRUE), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"2021/02/01"), 0);
+
+  widget_set_text_utf8(w, "1900/02/29");
+  ASSERT_EQ(edit_date_fix_ex(w, TRUE), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"1900/02/01"), 0);
+
+  widget_set_text_utf8(w, "2020/02/29");
+  ASSERT_EQ(edit_date_fix_ex(w, TRUE), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"2020/02/29"), 0);
+
+  widget_set_text_utf8(w, "2020/04/31");
+  ASSERT_EQ(edit_date_fix_ex(w, TRUE), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"2020/04/01"), 0);
+
+  widget_set_text_utf8(w, "2020/16/31");
+  ASSERT_EQ(edit_date_fix_ex(w, TRUE), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"2020/01/31"), 0);
+
+  widget_set_text_utf8(w, "2020/02/30");
+  ASSERT_EQ(edit_date_fix_ex(w, TRUE), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"2020/02/01"), 0);
 
   widget_destroy(w);
 }
