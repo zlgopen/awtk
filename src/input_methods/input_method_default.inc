@@ -477,10 +477,12 @@ static ret_t on_timer_close_keyboard(const timer_info_t* timer) {
     input_method_default_restore_win_position(im);
     input_method_default_restore_win_size(im);
     window_close(keyboard);
+    im->busy = FALSE;
     input_method_set_target_widget(im, NULL);
   } else if (im->widget == NULL) {
     window_close_force(info->keyboard);
     im->keyboard = NULL;
+    im->busy = FALSE;
     input_method_set_target_widget(im, NULL);
   }
   im->timer_close_id = TK_INVALID_ID;
@@ -519,6 +521,10 @@ static ret_t input_method_default_on_keyboard_close(void* ctx, event_t* e) {
     im->win = NULL;
     im->keyboard = NULL;
     input_method_set_target_widget(im, NULL);
+  }
+
+  if (im->keyboard == NULL) {
+   im->busy = FALSE;
   }
 
   if (im->timer_close_id != TK_INVALID_ID) {
@@ -561,6 +567,7 @@ static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e) {
       input_method_default_remove_timer_close(im);
       window_close(im->keyboard);
       im->keyboard = NULL;
+      im->busy = FALSE;
     }
     im->win = NULL;
     input_method_set_target_widget(im, NULL);
