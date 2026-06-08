@@ -25,7 +25,7 @@
 #include "tkc/object_hash.h"
 #include "tkc/darray.h"
 #include "tkc/named_value.h"
-#include "tkc/timer_manager.h"
+#include "tkc/time_now.h"
 
 typedef struct _object_evt_router_register_info_t {
   tk_object_t* publisher;
@@ -492,7 +492,7 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
       .evt_type = e->type,
   };
 
-  darray_init(&matched_subscribe_infos, 4, NULL,
+  darray_init(&matched_subscribe_infos, 8, NULL,
               (tk_compare_t)object_evt_router_subscribe_info_cmp);
 
   object_evt_router_dispatch_log(
@@ -515,20 +515,21 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
     uint64_t time = 0;
     sub_info = (object_evt_router_subscribe_info_t*)darray_get(&matched_subscribe_infos, i);
 
-    evt_router->publishing = TRUE;
-    object_evt_router_dispatch_log(
-        evt_router, LOG_LEVEL_DEBUG, e,
-        OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(sub_info, "Subscribe start: priority: %d."),
-        OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info), sub_info->opt.priority);
-
-    time = timer_manager_get_time(timer_manager());
-    result = sub_info->callback(sub_info->opt.subscriber, e, sub_info->opt.callback_ctx);
-    time = timer_manager_get_time(timer_manager()) - time;
-    total_time += time;
-
-    evt_router->publishing = FALSE;
     {
       char buf[TK_NUM_MAX_LEN + 1];
+      bool_t publishing = evt_router->publishing;
+      evt_router->publishing = TRUE;
+      object_evt_router_dispatch_log(
+          evt_router, LOG_LEVEL_DEBUG, e,
+          OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(sub_info, "Subscribe start: priority: %d."),
+          OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info), sub_info->opt.priority);
+
+      time = time_now_ms();
+      result = sub_info->callback(sub_info->opt.subscriber, e, sub_info->opt.callback_ctx);
+      time = time_now_ms() - time;
+      total_time += time;
+
+      evt_router->publishing = publishing;
       object_evt_router_dispatch_log(
           evt_router, LOG_LEVEL_DEBUG, e,
           OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(

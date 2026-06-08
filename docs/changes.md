@@ -5,6 +5,7 @@
     - 完善错误日志
     - 优化没有订阅者订阅日志事件时的效率
   * 增加 tk_ret_to_str (感谢兆坤提供补丁)
+  * 完善 object_evt_router(感谢兆坤提供补丁)
 
 2026/6/5
   * 完善 assert_catcher.hpp (感谢兆坤提供补丁)
