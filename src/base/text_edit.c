@@ -1781,8 +1781,13 @@ ret_t text_edit_click(text_edit_t* text_edit, xy_t x, xy_t y) {
     text_edit_update_caret_pos(text_edit);
   }
 
-  input_method_request(input_method(), NULL);
-  input_method_request(input_method(), text_edit->widget);
+  input_method_t* im = input_method();
+  if (im != NULL && im->is_native && im->keyboard == NULL &&
+      !widget_get_prop_bool(text_edit->widget, WIDGET_PROP_READONLY, FALSE)) {
+    input_method_request(im, NULL);
+    input_method_request(im, text_edit->widget);
+  }
+
   text_edit_update_input_rect(text_edit);
 
   return RET_OK;
