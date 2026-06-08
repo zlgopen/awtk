@@ -476,55 +476,24 @@ static ret_t fscript_parse_statements(fscript_parser_t* parser, fscript_func_cal
 static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, const char* name,
                                                      uint32_t size);
 
-static const int_str_t s_ret_enums[] = {{RET_OK, "OK"},
-                                        {RET_OOM, "OOM"},
-                                        {RET_FAIL, "FAIL"},
-                                        {RET_NOT_IMPL, "NOT_IMPL"},
-                                        {RET_QUIT, "QUIT"},
-                                        {RET_FOUND, "FOUND"},
-                                        {RET_BUSY, "BUSY"},
-                                        {RET_REMOVE, "REMOVE"},
-                                        {RET_REPEAT, "REPEAT"},
-                                        {RET_NOT_FOUND, "NOT_FOUND"},
-                                        {RET_DONE, "DONE"},
-                                        {RET_STOP, "STOP"},
-                                        {RET_SKIP, "SKIP"},
-                                        {RET_CONTINUE, "CONTINUE"},
-                                        {RET_OBJECT_CHANGED, "OBJECT_CHANGED"},
-                                        {RET_ITEMS_CHANGED, "ITEMS_CHANGED"},
-                                        {RET_BAD_PARAMS, "BAD_PARAMS"},
-                                        {RET_TIMEOUT, "TIMEOUT"},
-                                        {RET_CRC, "CRC"},
-                                        {RET_IO, "IO"},
-                                        {RET_EOS, "EOS"},
-                                        {RET_NOT_MODIFIED, "NOT_MODIFIED"}};
-
 static ret_t ret_name_to_value(const char* name, value_t* v) {
-  uint32_t i = 0;
-
-  for (i = 0; i < ARRAY_SIZE(s_ret_enums); i++) {
-    const int_str_t* iter = s_ret_enums + i;
-    if (tk_str_eq(iter->value, name)) {
-      value_set_int32(v, iter->name);
-      return RET_OK;
-    }
+  bool_t valid = FALSE;
+  ret_t ret = tk_ret_from_str(name, &valid);
+  if (valid) {
+    value_set_int32(v, ret);
+    return RET_OK;
   }
   value_set_int32(v, RET_FAIL);
-
   return RET_NOT_FOUND;
 }
 
 static ret_t ret_name_from_value(ret_t value, const char** name) {
-  uint32_t i = 0;
-
-  for (i = 0; i < ARRAY_SIZE(s_ret_enums); i++) {
-    const int_str_t* iter = s_ret_enums + i;
-    if (iter->name == value) {
-      *name = iter->value;
-      return RET_OK;
-    }
+  char buf[TK_NUM_MAX_LEN + 1];
+  const char* ret_str = tk_ret_to_str(value, buf);
+  if (ret_str != buf) {
+    *name = ret_str;
+    return RET_OK;
   }
-
   return RET_NOT_FOUND;
 }
 

@@ -527,11 +527,14 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
     total_time += time;
 
     evt_router->publishing = FALSE;
-    object_evt_router_dispatch_log(evt_router, LOG_LEVEL_DEBUG, e,
-                                   OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(
-                                       sub_info, "Subscribe end: result: %d, cost time: %llu ms."),
-                                   OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info), result,
-                                   time);
+    {
+      char buf[TK_NUM_MAX_LEN + 1];
+      object_evt_router_dispatch_log(
+          evt_router, LOG_LEVEL_DEBUG, e,
+          OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(
+              sub_info, "Subscribe end: result: %s, cost time: %llu ms."),
+          OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info), tk_ret_to_str(result, buf), time);
+    }
 
     i++;
 

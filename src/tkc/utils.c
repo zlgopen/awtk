@@ -2950,3 +2950,55 @@ int tk_days_in_month(int32_t year, int32_t month) {
 
   return days;
 }
+
+static const char* s_ret_strs[] = {
+    [RET_OK] = "OK",
+    [RET_OOM] = "OOM",
+    [RET_FAIL] = "FAIL",
+    [RET_NOT_IMPL] = "NOT_IMPL",
+    [RET_QUIT] = "QUIT",
+    [RET_FOUND] = "FOUND",
+    [RET_BUSY] = "BUSY",
+    [RET_REMOVE] = "REMOVE",
+    [RET_REPEAT] = "REPEAT",
+    [RET_NOT_FOUND] = "NOT_FOUND",
+    [RET_DONE] = "DONE",
+    [RET_STOP] = "STOP",
+    [RET_SKIP] = "SKIP",
+    [RET_CONTINUE] = "CONTINUE",
+    [RET_OBJECT_CHANGED] = "OBJECT_CHANGED",
+    [RET_ITEMS_CHANGED] = "ITEMS_CHANGED",
+    [RET_BAD_PARAMS] = "BAD_PARAMS",
+    [RET_TIMEOUT] = "TIMEOUT",
+    [RET_CRC] = "CRC",
+    [RET_IO] = "IO",
+    [RET_EOS] = "EOS",
+    [RET_NOT_MODIFIED] = "NOT_MODIFIED",
+    [RET_NO_PERMISSION] = "NO_PERMISSION",
+    [RET_INVALID_ADDR] = "INVALID_ADDR",
+    [RET_EXCEED_RANGE] = "EXCEED_RANGE",
+};
+TK_STATIC_ASSERT(RET_MAX_NR == ARRAY_SIZE(s_ret_strs));
+
+const char* tk_ret_to_str(ret_t ret, char buf[TK_NUM_MAX_LEN + 1]) {
+  if (RET_OK <= ret && ret < RET_MAX_NR) {
+    return s_ret_strs[ret];
+  }
+  return tk_lltoa(buf, TK_NUM_MAX_LEN + 1, ret);
+}
+
+ret_t tk_ret_from_str(const char* str, bool_t* valid) {
+  ret_t ret = RET_OK;
+  for (; ret < RET_MAX_NR; ret++) {
+    if (tk_str_eq(s_ret_strs[ret], str)) {
+      if (valid != NULL) {
+        *valid = TRUE;
+      }
+      return ret;
+    }
+  }
+  if (valid != NULL) {
+    *valid = FALSE;
+  }
+  return (ret_t)tk_atol(str);
+}
