@@ -43,7 +43,7 @@ emitter_t* emitter_init(emitter_t* emitter) {
   return_value_if_fail(emitter, NULL);
 
   memset(emitter, 0x00, sizeof(emitter_t));
-  emitter->disable = FALSE;
+  emitter->disable = 0;
   emitter->next_id = TK_INVALID_ID + 1;
 
   return emitter;
@@ -180,6 +180,24 @@ bool_t emitter_exist(emitter_t* emitter, uint32_t etype, event_func_t handler, v
 
     while (iter != NULL) {
       if (iter->handler == handler && iter->type == etype && iter->ctx == ctx) {
+        return TRUE;
+      }
+
+      iter = iter->next;
+    }
+  }
+
+  return FALSE;
+}
+
+bool_t emitter_exist_by_etype(emitter_t* emitter, uint32_t etype) {
+  return_value_if_fail(emitter != NULL, FALSE);
+
+  if (emitter->items) {
+    emitter_item_t* iter = emitter->items;
+
+    while (iter != NULL) {
+      if (iter->type == etype) {
         return TRUE;
       }
 
@@ -335,6 +353,7 @@ ret_t emitter_off_by_ctx(emitter_t* emitter, void* ctx) {
 
 ret_t emitter_enable(emitter_t* emitter) {
   return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(emitter->disable > 0, RET_FAIL);
   emitter->disable--;
 
   return RET_OK;

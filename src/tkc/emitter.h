@@ -325,6 +325,9 @@ ret_t emitter_forward_retarget(void* ctx, event_t* e);
 ret_t emitter_remove_item(emitter_t* emitter, emitter_item_t* item);
 emitter_item_t* emitter_get_item(emitter_t* emitter, uint32_t index);
 
+/* private */
+bool_t emitter_exist_by_etype(emitter_t* emitter, uint32_t etype);
+
 END_C_DECLS
 
 #endif /*TK_EMITTER_H*/
