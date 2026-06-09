@@ -214,7 +214,7 @@ ret_t tk_run_in_ui_thread(tk_callback_t func, void* ctx, bool_t wait_until_done)
  * 后台线程在UI线程执行指定的函数（确保推送队列成功，避免队列爆满时idle请求丢失的问题）。
  *
  * @param {tk_callback_t} func 函数。
- * @param {void*} ctx  回调函数的上下文。
+ * @param {void*} ctx 回调函数的上下文。
  * @param {bool_t} wait_until_done 是否等待完成。
  * @param {uint32_t} timeout_ms 队列爆满时尝试重新推送请求的超时时间。
  *
@@ -228,7 +228,7 @@ ret_t tk_run_in_ui_thread_ensure_queue(tk_callback_t func, void* ctx, bool_t wai
  * 后台线程在UI线程执行指定的函数（确保推送队列成功，避免队列爆满时idle请求丢失的问题）。
  *
  * @param {tk_callback_t} func 函数。
- * @param {void*} ctx  回调函数的上下文。
+ * @param {void*} ctx 回调函数的上下文。
  * @param {tk_destroy_t} on_destroy 销毁回调函数。
  * @param {void*} on_destroy_ctx 销毁回调函数的上下文。
  * @param {bool_t} wait_until_done 是否等待完成。
@@ -239,6 +239,49 @@ ret_t tk_run_in_ui_thread_ensure_queue(tk_callback_t func, void* ctx, bool_t wai
 ret_t tk_run_in_ui_thread_ensure_queue_ex(tk_callback_t func, void* ctx, tk_destroy_t on_destroy,
                                           void* on_destroy_ctx, bool_t wait_until_done,
                                           uint32_t timeout_ms);
+
+/**
+ * @struct tk_run_in_ui_thread_ensure_queue_opt_t
+ * 后台线程在UI线程执行指定的函数的选项。
+ */
+typedef struct _tk_run_in_ui_thread_ensure_queue_opt_t {
+  /**
+   * @property {tk_destroy_t} on_destroy
+   * 销毁回调函数。
+   */
+  tk_destroy_t on_destroy;
+  /**
+   * @property {void*} on_destroy_ctx
+   * 销毁回调函数的上下文。
+   */
+  void* on_destroy_ctx;
+  /**
+   * @property {tk_callback_t} on_retry
+   * 重试回调函数。
+   */
+  tk_callback_t on_retry;
+  /**
+   * @property {void*} on_retry_ctx
+   * 重试回调函数的上下文。
+   */
+  void* on_retry_ctx;
+} tk_run_in_ui_thread_ensure_queue_opt_t;
+
+/**
+ * @method tk_run_in_ui_thread_ensure_queue_with_opt
+ * 后台线程在UI线程执行指定的函数（确保推送队列成功，避免队列爆满时idle请求丢失的问题）。
+ *
+ * @param {tk_callback_t} func 函数。
+ * @param {void*} ctx 回调函数的上下文。
+ * @param {bool_t} wait_until_done 是否等待完成。
+ * @param {uint32_t} timeout_ms 队列爆满时尝试重新推送请求的超时时间。
+ * @param {const tk_run_in_ui_thread_ensure_queue_opt_t*} opt 选项。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_run_in_ui_thread_ensure_queue_with_opt(tk_callback_t func, void* ctx,
+                                                bool_t wait_until_done, uint32_t timeout_ms,
+                                                const tk_run_in_ui_thread_ensure_queue_opt_t* opt);
 
 #ifdef USE_GUI_MAIN
 int gui_app_start(int lcd_w, int lcd_h);

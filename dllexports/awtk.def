@@ -262,6 +262,7 @@ EXPORTS
     tk_run_in_ui_thread
     tk_run_in_ui_thread_ensure_queue
     tk_run_in_ui_thread_ensure_queue_ex
+    tk_run_in_ui_thread_ensure_queue_with_opt
     asset_loader_default_create
     asset_loader_zip_create
     asset_loader_zip_create_with_reader

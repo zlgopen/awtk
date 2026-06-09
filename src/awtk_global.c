@@ -703,40 +703,61 @@ ret_t tk_run_in_ui_thread(tk_callback_t func, void* ctx, bool_t wait_until_done)
 
 ret_t tk_run_in_ui_thread_ensure_queue(tk_callback_t func, void* ctx, bool_t wait_until_done,
                                        uint32_t timeout_ms) {
-  return tk_run_in_ui_thread_ensure_queue_ex(func, ctx, NULL, NULL, wait_until_done, timeout_ms);
+  return tk_run_in_ui_thread_ensure_queue_with_opt(func, ctx, wait_until_done, timeout_ms, NULL);
 }
 
 ret_t tk_run_in_ui_thread_ensure_queue_ex(tk_callback_t func, void* ctx, tk_destroy_t on_destroy,
                                           void* on_destroy_ctx, bool_t wait_until_done,
                                           uint32_t timeout_ms) {
+  return tk_run_in_ui_thread_ensure_queue_with_opt(func, ctx, wait_until_done, timeout_ms,
+                                                   &(tk_run_in_ui_thread_ensure_queue_opt_t){
+                                                       .on_destroy = on_destroy,
+                                                       .on_destroy_ctx = on_destroy_ctx,
+                                                   });
+}
+
+ret_t tk_run_in_ui_thread_ensure_queue_with_opt(tk_callback_t func, void* ctx,
+                                                bool_t wait_until_done, uint32_t timeout_ms,
+                                                const tk_run_in_ui_thread_ensure_queue_opt_t* opt) {
+  tk_run_in_ui_thread_ensure_queue_opt_t _opt;
   return_value_if_fail(func != NULL, RET_BAD_PARAMS);
+
+  if (NULL == opt) {
+    memset(&_opt, 0, sizeof(_opt));
+    opt = &_opt;
+  }
 
   if (tk_is_ui_thread()) {
     ret_t ret = func(ctx);
 
-    if (on_destroy != NULL) {
-      on_destroy(on_destroy_ctx);
+    if (opt->on_destroy != NULL) {
+      opt->on_destroy(opt->on_destroy_ctx);
     }
     return ret;
   } else {
     idle_func_queue_ret_t ret =
-        idle_func_queue(func, ctx, on_destroy, on_destroy_ctx, wait_until_done, FALSE);
+        idle_func_queue(func, ctx, opt->on_destroy, opt->on_destroy_ctx, wait_until_done, FALSE);
     if (ret.queue_ret == RET_OK) {
       return ret.func_ret;
     } else {
       uint32_t retry_count = 0;
       while (retry_count * IDLE_QUEUE_RETRY_INTERVAL_MS < timeout_ms) {
+        if (opt->on_retry != NULL) {
+          opt->on_retry(opt->on_retry_ctx);
+        }
+
         sleep_ms(IDLE_QUEUE_RETRY_INTERVAL_MS);
         retry_count++;
 
-        ret = idle_func_queue(func, ctx, on_destroy, on_destroy_ctx, wait_until_done, FALSE);
+        ret = idle_func_queue(func, ctx, opt->on_destroy, opt->on_destroy_ctx, wait_until_done,
+                              FALSE);
         if (ret.queue_ret == RET_OK) {
           return ret.func_ret;
         }
       }
 
-      if (on_destroy != NULL) {
-        on_destroy(on_destroy_ctx);
+      if (opt->on_destroy != NULL) {
+        opt->on_destroy(opt->on_destroy_ctx);
       }
       return RET_TIMEOUT;
     }
