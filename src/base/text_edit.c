@@ -2744,8 +2744,9 @@ ret_t text_edit_show_context_menu(text_edit_t* text_edit, int32_t x, int32_t y) 
         widget_set_enable(copy, FALSE);
       }
     }
+    bool_t is_readonly = widget_get_prop_bool(text_edit->widget, WIDGET_PROP_READONLY, FALSE);
     if (cut != NULL) {
-      if (impl->state.select_start != impl->state.select_end) {
+      if (!is_readonly && impl->state.select_start != impl->state.select_end) {
         widget_on(cut, EVT_CLICK, text_edit_on_cut, text_edit);
       } else {
         widget_set_enable(cut, FALSE);
@@ -2753,7 +2754,7 @@ ret_t text_edit_show_context_menu(text_edit_t* text_edit, int32_t x, int32_t y) 
     }
 
     if (paste != NULL) {
-      if (clip_board_get_text() != NULL) {
+      if (!is_readonly && clip_board_get_text() != NULL) {
         widget_on(paste, EVT_CLICK, text_edit_on_paste, text_edit);
       } else {
         widget_set_enable(paste, FALSE);
