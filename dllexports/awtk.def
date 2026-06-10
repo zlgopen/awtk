@@ -395,6 +395,7 @@ EXPORTS
     dialog_highlighter_system_bar_bottom_append_clip_rect
     dialog_highlighter_get_alpha
     dialog_highlighter_draw
+    dialog_highlighter_draw_ex
     dialog_highlighter_draw_mask
     dialog_highlighter_is_dynamic
     dialog_highlighter_destroy

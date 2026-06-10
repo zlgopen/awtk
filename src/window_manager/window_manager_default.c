@@ -1325,7 +1325,7 @@ static ret_t window_manager_default_on_paint_children(widget_t* widget, canvas_t
   WIDGET_FOR_EACH_CHILD_END()
 
   if (!cover_highlighter && wm->dialog_highlighter != NULL) {
-    dialog_highlighter_draw(wm->dialog_highlighter, 1);
+    dialog_highlighter_draw_ex(wm->dialog_highlighter, 1, c);
   } else {
     /*paint normal windows*/
     WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)

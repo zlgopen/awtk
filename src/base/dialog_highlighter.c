@@ -131,14 +131,24 @@ uint8_t dialog_highlighter_get_alpha(dialog_highlighter_t* h, float_t percent) {
   return 0x0;
 }
 
-ret_t dialog_highlighter_draw(dialog_highlighter_t* h, float_t percent) {
+ret_t dialog_highlighter_draw_ex(dialog_highlighter_t* h, float_t percent, canvas_t* c) {
+  ret_t ret = RET_NOT_IMPL;
+  canvas_t* orig_canvas = NULL;
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
-
+  
   if (h->vt->draw != NULL) {
-    return h->vt->draw(h, percent);
+    orig_canvas = h->canvas;
+    h->canvas = c;
+    ret = h->vt->draw(h, percent);
+    h->canvas = orig_canvas;
   }
+  
+  return ret;
+}
 
-  return RET_NOT_IMPL;
+ret_t dialog_highlighter_draw(dialog_highlighter_t* h, float_t percent) {
+  return_value_if_fail(h != NULL, RET_BAD_PARAMS);
+  return dialog_highlighter_draw_ex(h, percent, h->canvas);
 }
 
 ret_t dialog_highlighter_draw_mask(dialog_highlighter_t* h, canvas_t* c, float_t percent) {

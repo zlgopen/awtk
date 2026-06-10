@@ -234,6 +234,17 @@ uint8_t dialog_highlighter_get_alpha(dialog_highlighter_t* h, float_t percent);
 ret_t dialog_highlighter_draw(dialog_highlighter_t* h, float_t percent);
 
 /**
+ * @method dialog_highlighter_draw_ex
+ * 绘制背景。
+ * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
+ * @param {float_t} percent 动画进度(0-1)，1表示打开已经完成。
+ * @param {canvas_t*} c 画布。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dialog_highlighter_draw_ex(dialog_highlighter_t* h, float_t percent, canvas_t* c);
+
+/**
  * @method dialog_highlighter_draw_mask
  * 绘制背景高亮部分。
  * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
