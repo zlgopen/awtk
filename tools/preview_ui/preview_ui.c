@@ -548,6 +548,7 @@ static widget_t* preview_ui(const char* filename) {
   }
 
   if (builder->root != NULL && !(builder->root->vt->is_window)) {
+    const char* theme = name;
     str_t attr_value;
     tk_object_t* features = object_default_create();
     widget_t* win = window_create(NULL, 0, 0, 0, 0);
@@ -555,15 +556,17 @@ static widget_t* preview_ui(const char* filename) {
     str_init(&attr_value, 0);
     widget_add_child(win, builder->root);
     if (RET_OK == parse_additional_xml_attr_value(file_data.str, "theme", &attr_value)) {
-      widget_set_prop_str(win, "theme", attr_value.str);
+      theme = attr_value.str;
     } else if (RET_OK == parse_additional_xml_attr_value(file_data.str, "parent", &attr_value)) {
       if (RET_OK == object_from_json(features, attr_value.str)) {
         const char* theme_from_parent = tk_object_get_prop_str(features, "theme");
         if (theme_from_parent != NULL) {
-          widget_set_prop_str(win, "theme", theme_from_parent);
+          theme = theme_from_parent;
         }
       }
     }
+
+    widget_set_prop_str(win, "theme", theme);
     widget_layout(win);
 
     TK_OBJECT_UNREF(features);
