@@ -1,4 +1,8 @@
 # 最新动态
+
+2026/6/10
+  * 完善 object_evt_router(感谢兆坤提供补丁)
+
 2026/6/9
   * 修复了只读编辑器可通过右键菜单(剪切/粘贴)被修改的问题(感谢雪飞提供补丁)
   * add tk_run_in_ui_thread_ensure_queue_with_opt(感谢兆坤提供补丁)

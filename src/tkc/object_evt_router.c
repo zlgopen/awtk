@@ -31,6 +31,7 @@ typedef struct _object_evt_router_register_info_t {
   tk_object_t* publisher;
   int32_t evt_type;
   object_evt_router_register_opt_t opt;
+  bool_t unregistered : 1;
 } object_evt_router_register_info_t;
 
 static ret_t object_evt_router_register_info_destroy(object_evt_router_register_info_t* info) {
@@ -391,7 +392,11 @@ static ret_t object_evt_router_publish_topic_to_matched_on_visit(void* ctx, cons
       (object_evt_router_publish_topic_to_matched_on_visit_ctx_t*)(ctx);
   int32_t exist_sub_info_index = -1;
   if (sub_info->unsubscribed) {
-    return RET_REMOVE;
+    if (1 == actx->evt_router->recursion_depth) {
+      return RET_REMOVE;
+    } else {
+      return RET_OK;
+    }
   }
   exist_sub_info_index = darray_find_index_ex(
       actx->matched_subscribe_infos, (tk_compare_t)object_evt_router_subscribe_info_cmp, sub_info);
@@ -435,15 +440,29 @@ typedef struct _object_evt_router_on_publish_on_visit_ctx_t {
   darray_t* matched_subscribe_infos;
 } object_evt_router_on_publish_on_visit_ctx_t;
 
+static int object_evt_router_register_info_unregistered(const void* iter, const void* ctx) {
+  const object_evt_router_register_info_t* info = (const object_evt_router_register_info_t*)(iter);
+  return info->unregistered ? 0 : 1;
+}
+
 static ret_t object_evt_router_on_publish_on_visit(void* ctx, const void* data) {
   object_evt_router_on_publish_on_visit_ctx_t* actx =
       (object_evt_router_on_publish_on_visit_ctx_t*)(ctx);
   const named_value_t* nv = (const named_value_t*)(data);
   darray_t* infos = (darray_t*)value_pointer(&nv->value);
   uint32_t i = 0;
+  if (1 == actx->evt_router->recursion_depth) {
+    darray_remove_all(infos, object_evt_router_register_info_unregistered, NULL);
+    if (0 == infos->size) {
+      return RET_REMOVE;
+    }
+  }
   for (i = 0; i < infos->size; i++) {
     const object_evt_router_register_info_t* info =
         (const object_evt_router_register_info_t*)darray_get(infos, i);
+    if (info->unregistered) {
+      continue;
+    }
     if (info->evt_type == actx->e->type && info->publisher == actx->e->target) {
       if (NULL != info->opt.evt_filter &&
           !info->opt.evt_filter(info->publisher, actx->e, info->opt.evt_filter_ctx)) {
@@ -483,6 +502,7 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
   ret_t result = RET_OK;
   uint64_t total_time = 0;
   uint32_t i = 0;
+  bool_t publishing = FALSE;
   return_value_if_fail(evt_router != NULL && e != NULL, RET_BAD_PARAMS);
 
   evt_router->recursion_depth++;
@@ -494,6 +514,9 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
 
   darray_init(&matched_subscribe_infos, 8, NULL,
               (tk_compare_t)object_evt_router_subscribe_info_cmp);
+
+  publishing = evt_router->publishing;
+  evt_router->publishing = TRUE;
 
   object_evt_router_dispatch_log(
       evt_router, LOG_LEVEL_DEBUG, e,
@@ -512,30 +535,25 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
               (tk_compare_t)object_evt_router_subscribe_info_cmp_by_priority);
 
   for (i = 0; i < matched_subscribe_infos.size;) {
+    char buf[TK_NUM_MAX_LEN + 1];
     uint64_t time = 0;
     sub_info = (object_evt_router_subscribe_info_t*)darray_get(&matched_subscribe_infos, i);
 
-    {
-      char buf[TK_NUM_MAX_LEN + 1];
-      bool_t publishing = evt_router->publishing;
-      evt_router->publishing = TRUE;
-      object_evt_router_dispatch_log(
-          evt_router, LOG_LEVEL_DEBUG, e,
-          OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(sub_info, "Subscribe start: priority: %d."),
-          OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info), sub_info->opt.priority);
+    object_evt_router_dispatch_log(
+        evt_router, LOG_LEVEL_DEBUG, e,
+        OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(sub_info, "Subscribe start: priority: %d."),
+        OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info), sub_info->opt.priority);
 
-      time = time_now_ms();
-      result = sub_info->callback(sub_info->opt.subscriber, e, sub_info->opt.callback_ctx);
-      time = time_now_ms() - time;
-      total_time += time;
+    time = time_now_ms();
+    result = sub_info->callback(sub_info->opt.subscriber, e, sub_info->opt.callback_ctx);
+    time = time_now_ms() - time;
+    total_time += time;
 
-      evt_router->publishing = publishing;
-      object_evt_router_dispatch_log(
-          evt_router, LOG_LEVEL_DEBUG, e,
-          OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(
-              sub_info, "Subscribe end: result: %s, cost time: %llu ms."),
-          OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info), tk_ret_to_str(result, buf), time);
-    }
+    object_evt_router_dispatch_log(evt_router, LOG_LEVEL_DEBUG, e,
+                                   OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(
+                                       sub_info, "Subscribe end: result: %s, cost time: %llu ms."),
+                                   OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info),
+                                   tk_ret_to_str(result, buf), time);
 
     i++;
 
@@ -554,6 +572,8 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
         OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(sub_info, "Publish stopped."),
         OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(sub_info));
   }
+
+  evt_router->publishing = publishing;
 
   object_evt_router_dispatch_log(
       evt_router, LOG_LEVEL_DEBUG, e,
@@ -666,7 +686,11 @@ ret_t object_evt_router_register(tk_object_t* obj, const char* topic, tk_object_
 static int object_evt_router_unregister_cmp(const void* data, const void* ctx) {
   const object_evt_router_register_info_t* info = (const object_evt_router_register_info_t*)data;
   const object_evt_router_register_info_t* target = (const object_evt_router_register_info_t*)ctx;
-  int ret = info->evt_type - target->evt_type;
+  int ret = 0;
+  if (info->unregistered) {
+    return -1;
+  }
+  ret = info->evt_type - target->evt_type;
   if (0 != ret) {
     return ret;
   }
@@ -696,7 +720,7 @@ static int object_evt_router_unregister_group_cmp(const void* data, const void* 
 static ret_t object_evt_router_unregister_on_visit(void* ctx, const void* data) {
   object_evt_router_unregister_group_cmp_ctx_t* actx =
       (object_evt_router_unregister_group_cmp_ctx_t*)ctx;
-  const object_evt_router_register_info_t* info = (const object_evt_router_register_info_t*)(data);
+  object_evt_router_register_info_t* info = (object_evt_router_register_info_t*)(data);
   if (actx->publisher == info->publisher) {
     actx->target = info;
     if (NULL == tk_object_find_prop(actx->evt_router->register_infos_group,
@@ -705,7 +729,13 @@ static ret_t object_evt_router_unregister_on_visit(void* ctx, const void* data) 
                           actx->evt_router);
     }
     actx->target = NULL;
-    return RET_REMOVE;
+
+    if (actx->evt_router->publishing) {
+      info->unregistered = TRUE;
+      return RET_OK;
+    } else {
+      return RET_REMOVE;
+    }
   }
   return RET_OK;
 }
