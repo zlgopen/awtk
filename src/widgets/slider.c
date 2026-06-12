@@ -123,7 +123,13 @@ static ret_t slider_on_invalidate(widget_t* widget, const rect_t* rect) {
   parent = widget->parent;
   r = slider_get_dirty_rect(widget);
   if (parent != NULL && !parent->destroying) {
-    return widget_invalidate_force(parent, &r);
+    ret_t ret = RET_OK;
+    if (parent->vt && parent->vt->invalidate) {
+      ret = parent->vt->invalidate(parent, &r);
+    } else {
+      ret = widget_invalidate_default(parent, &r);
+    }
+    return ret;
   } else {
     return RET_OK;
   }
