@@ -566,12 +566,21 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
   bool_t publishing = FALSE;
   return_value_if_fail(evt_router != NULL && e != NULL, RET_BAD_PARAMS);
 
-  evt_router->recursion_depth++;
-
   tmp = (object_evt_router_register_info_t){
       .publisher = e->target,
       .evt_type = e->type,
   };
+
+  return_value_if_fail(
+      evt_router->recursion_depth < INT8_MAX,
+      (object_evt_router_dispatch_log(
+           evt_router, LOG_LEVEL_ERROR, e,
+           OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(
+               &tmp, "Recursion depth (" TK_STRINGIZE(INT8_MAX) ") overflow! (evt_type: %d)."),
+           OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), e->type),
+       ENSURE(!"Recursion depth (" TK_STRINGIZE(INT8_MAX) ") overflow!"), RET_FAIL));
+
+  evt_router->recursion_depth++;
 
   darray_init(&matched_subscribe_infos, 8, NULL,
               (tk_compare_t)object_evt_router_subscribe_info_cmp);

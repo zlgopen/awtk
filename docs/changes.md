@@ -2,6 +2,7 @@
 2026/6/12
   * 修复了 slider 作为 scroll_view 的子控件时，重绘 slider 时其重绘区域未随页面滚动而更新的问题(感谢雪飞提供补丁)
   * 修复 scroll_view 在页面未填充满时进行鼠标向上拖动操作时，页面会出现跳变的问题(感谢雪飞提供补丁)
+  * 完善 object_evt_router avoid callstack overflow(感谢兆坤提供补丁)
 
 2026/6/11
   * 完善 object_evt_router(感谢兆坤提供补丁)
