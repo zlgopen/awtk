@@ -311,7 +311,7 @@ static ret_t scroll_view_on_pointer_down_abort(scroll_view_t* scroll_view, point
   widget_t* widget = WIDGET(scroll_view);
   (void)e;
 
-  if (scroll_view->xslidable || scroll_view->yslidable) {
+  if (scroll_view->pressed && (scroll_view->xslidable || scroll_view->yslidable)) {
     scroll_view_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end,
                           TK_ANIMATING_TIME);
   }

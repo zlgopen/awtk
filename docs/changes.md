@@ -4,6 +4,7 @@
   * 修复 scroll_view 在页面未填充满时进行鼠标向上拖动操作时，页面会出现跳变的问题(感谢雪飞提供补丁)
   * 完善 object_evt_router avoid callstack overflow(感谢兆坤提供补丁)
   * 增加了 str_replace_ex 函数，支持设置起始位置以及增加了对应的测试用例(感谢智明提供补丁)
+  * 修复了在使用 mobile 风格滚动条的 list_view 中，滚轮滚动页面后再拖动 slider 时，页面会回滚至上一次拖拽结束或动画结束时的位置的问题(感谢雪飞提供补丁)
 
 2026/6/11
   * 完善 object_evt_router(感谢兆坤提供补丁)
