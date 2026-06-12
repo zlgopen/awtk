@@ -1,4 +1,4 @@
-﻿#include "tkc/str.h"
+#include "tkc/str.h"
 #include "tkc/utils.h"
 #include "tkc/object_default.h"
 #include "gtest/gtest.h"
@@ -1095,6 +1095,59 @@ TEST(Str, replace2) {
   ASSERT_EQ(s->size < s->capacity, TRUE);
 
   str_reset(s);
+}
+
+TEST(Str, replace_ex) {
+  str_t str;
+  str_t* s = str_init(&str, 0);
+  ASSERT_EQ(s != NULL, true);
+
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace_ex(s, 3, "abc", "x"), RET_OK);
+  ASSERT_STREQ(s->str, "abcx123");
+
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace_ex(s, 0, "abc", "x"), RET_OK);
+  ASSERT_STREQ(s->str, "xx123");
+
+  str_set(s, "abcabc");
+  ASSERT_EQ(str_replace_ex(s, 1, "bc", "x"), RET_OK);
+  ASSERT_STREQ(s->str, "axax");
+
+  str_set(s, "abc");
+  ASSERT_EQ(str_replace_ex(s, 100, "a", "b"), RET_BAD_PARAMS);
+
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace_ex(s, 3, "abc", "a"), RET_OK);
+  ASSERT_STREQ(s->str, "abca123");
+
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace_ex(s, 6, "abc", "x"), RET_OK);
+  ASSERT_STREQ(s->str, "abcabc123");
+
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace_ex(s, 3, "abc", "abcabc"), RET_OK);
+  ASSERT_STREQ(s->str, "abcabcabc123");
+
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace_ex(s, 0, "abc", "abcabc"), RET_OK);
+  ASSERT_STREQ(s->str, "abcabcabcabc123");
+
+  str_reset(s);
+}
+
+TEST(Str, replace_ex_not_extendable) {
+  str_t str;
+  char buff[10];
+  str_t* s = str_attach(&str, buff, sizeof(buff));
+  ASSERT_EQ(s != NULL, true);
+
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace_ex(s, 3, "abc", "a"), RET_OK);
+  ASSERT_STREQ(buff, "abca123");
+
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace_ex(s, 3, "abc", "abcabc"), RET_FAIL);
 }
 
 TEST(Str, escape_unescape) {

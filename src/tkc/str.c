@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   str.c
  * Author: AWTK Develop Team
  * Brief:  string
@@ -702,8 +702,8 @@ ret_t str_trim(str_t* str, const char* text) {
   return str_trim_right(str, text);
 }
 
-static uint32_t str_count_sub_str(str_t* s, const char* str) {
-  char* p = s->str;
+static uint32_t str_count_sub_str(str_t* s, const char* str, uint32_t start_pos) {
+  char* p = s->str + start_pos;
   uint32_t count = 0;
   uint32_t size = tk_strlen(str);
 
@@ -722,11 +722,16 @@ static uint32_t str_count_sub_str(str_t* s, const char* str) {
   return count;
 }
 
-static uint32_t str_replace_impl(char* dst, char* src, const char* text, const char* new_text) {
+static uint32_t str_replace_impl(char* dst, char* src, uint32_t start_pos,
+                                  const char* text, const char* new_text) {
   char* d = dst;
   char* s = src;
   uint32_t text_len = tk_strlen(text);
   uint32_t new_text_len = tk_strlen(new_text);
+
+  memcpy(d, s, start_pos);
+  d += start_pos;
+  s += start_pos;
 
   while (*s) {
     if (memcmp(s, text, text_len) == 0) {
@@ -742,27 +747,29 @@ static uint32_t str_replace_impl(char* dst, char* src, const char* text, const c
   return d - dst;
 }
 
-ret_t str_replace(str_t* str, const char* text, const char* new_text) {
+ret_t str_replace_ex(str_t* str, uint32_t pos, const char* text,
+                     const char* new_text) {
   uint32_t count = 0;
   uint32_t text_len = 0;
   uint32_t new_text_len = 0;
   return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
   return_value_if_fail(text != NULL && new_text != NULL, RET_BAD_PARAMS);
   return_value_if_fail(*text, RET_BAD_PARAMS);
+  return_value_if_fail(pos < str->size, RET_BAD_PARAMS);
 
   text_len = tk_strlen(text);
   new_text_len = tk_strlen(new_text);
-  count = str_count_sub_str(str, text);
+  count = str_count_sub_str(str, text, pos);
   if (count > 0) {
     int32_t delta_len = new_text_len - text_len;
     uint32_t capacity = str->size + count * delta_len + 1;
 
     if (delta_len <= 0) {
-      uint32_t size = str_replace_impl(str->str, str->str, text, new_text);
+      uint32_t size = str_replace_impl(str->str, str->str, pos, text, new_text);
       str->size = size;
     } else if (str->extendable) {
       char* temp_str = (char*)TKMEM_ALLOC(capacity);
-      uint32_t size = str_replace_impl(temp_str, str->str, text, new_text);
+      uint32_t size = str_replace_impl(temp_str, str->str, pos, text, new_text);
       TKMEM_FREE(str->str);
       str->str = temp_str;
       str->size = size;
@@ -773,6 +780,10 @@ ret_t str_replace(str_t* str, const char* text, const char* new_text) {
   }
 
   return RET_OK;
+}
+
+ret_t str_replace(str_t* str, const char* text, const char* new_text) {
+  return str_replace_ex(str, 0, text, new_text);
 }
 
 ret_t str_to_lower(str_t* s) {
@@ -1086,7 +1097,7 @@ ret_t str_reverse(str_t* str) {
 uint32_t str_count(str_t* str, const char* substr) {
   return_value_if_fail(str != NULL && substr != NULL, 0);
 
-  return str_count_sub_str(str, substr);
+  return str_count_sub_str(str, substr, 0);
 }
 
 ret_t str_format(str_t* str, uint32_t size, const char* format, ...) {

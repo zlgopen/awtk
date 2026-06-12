@@ -874,6 +874,7 @@ EXPORTS
     str_trim
     str_trim_left
     str_trim_right
+    str_replace_ex
     str_replace
     str_to_lower
     str_to_upper

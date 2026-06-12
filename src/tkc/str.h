@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   str.h
  * Author: AWTK Develop Team
  * Brief:  string
@@ -743,6 +743,18 @@ ret_t str_trim_left(str_t* str, const char* text);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_trim_right(str_t* str, const char* text);
+
+/**
+ * @method str_replace_ex
+ * 字符串替换(从指定位置开始替换)。
+ * @param {str_t*} str str对象。
+ * @param {uint32_t} pos 起始替换位置。
+ * @param {const char*} text 待替换的子串。
+ * @param {const char*} new_text 将替换成的子串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_replace_ex(str_t* str, uint32_t pos, const char* text, const char* new_text);
 
 /**
  * @method str_replace
