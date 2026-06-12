@@ -389,7 +389,7 @@ static ret_t scroll_view_notify_scrolled(scroll_view_t* scroll_view) {
   return RET_OK;
 }
 
-static int32_t scroll_view_calc_bight_offset(scroll_view_t* scroll_view, int32_t offset,
+static int32_t scroll_view_calc_hight_offset(scroll_view_t* scroll_view, int32_t offset,
                                              bool_t vertical) {
   float_t r = 0;
   float_t temp = 0;
@@ -415,6 +415,7 @@ static int32_t scroll_view_calc_bight_offset(scroll_view_t* scroll_view, int32_t
   translate = r - max_d;
 
   /* Calculation formula: (offset - translate)^2 + (ret + translate)^2 = r^2 */
+  virtual_size = tk_max(virtual_size, size);
   if (offset < 0) {
     offset = tk_min(tk_abs(offset), (int32_t)translate);
     temp = powf(r, 2.0) - powf((float_t)offset - translate, 2.0);
@@ -441,12 +442,12 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
 
   if (scroll_view->wa == NULL) {
     if (scroll_view->xslidable && dx) {
-      offset = scroll_view_calc_bight_offset(scroll_view, scroll_view->xoffset_save - dx, FALSE);
+      offset = scroll_view_calc_hight_offset(scroll_view, scroll_view->xoffset_save - dx, FALSE);
       scroll_view_set_xoffset(scroll_view, offset);
     }
 
     if (scroll_view->yslidable && dy) {
-      offset = scroll_view_calc_bight_offset(scroll_view, scroll_view->yoffset_save - dy, TRUE);
+      offset = scroll_view_calc_hight_offset(scroll_view, scroll_view->yoffset_save - dy, TRUE);
       scroll_view_set_yoffset(scroll_view, offset);
     }
 

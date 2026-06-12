@@ -18,6 +18,7 @@
             <button name="open:list_view_check_button" text="Check Button"/>
             <button name="open:scroll_view_ym" text="Test Scroll View ym"/>
             <button name="open:scroll_view_wheel_scroll" text="Test Wheel Scroll"/>
+            <button name="open:scroll_view_mouse_drag" text="Test Mouse Drag"/>
             <button name="close" text="Close"/>
         </scroll_view>
         <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" animator_time="0" value="0"/>

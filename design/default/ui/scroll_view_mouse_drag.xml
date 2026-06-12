@@ -1,0 +1,14 @@
+<window name="scroll_view_mouse_drag">
+  <list_view name="list_view" x="center" y="20" w="90%" h="250" default_item_height="50" style:normal:border_color="red">
+    <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" slide_limit_ratio="0.5">
+      <button name="clone_self" text="Clone Self"/>
+    </scroll_view>
+    <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
+  </list_view>
+  <list_view_h name="list_view_h" x="center" y="300" w="90%" h="100" item_width="50" style:normal:border_color="red">
+    <scroll_view name="scroll_view" w="100%" h="100%" slide_limit_ratio="0.5">
+      <button focusable="true" name="clone_self" text="Clone"/>
+    </scroll_view>
+  </list_view_h>
+  <button focusable="true" name="close" x="center" y="bottom:10" w="50%" text="close"/>
+</window>

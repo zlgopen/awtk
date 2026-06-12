@@ -116,6 +116,7 @@
 #include "assets/default/inc/ui/drop_file.data"
 #include "assets/default/inc/ui/calibration_win.data"
 #include "assets/default/inc/ui/memtest.data"
+#include "assets/default/inc/ui/scroll_view_mouse_drag.data"
 #include "assets/default/inc/ui/list_view_sync.data"
 #include "assets/default/inc/ui/slide_view_h2.data"
 #include "assets/default/inc/ui/slide_view_h3.data"
@@ -1064,6 +1065,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_drop_file_default);
   assets_manager_add(am, ui_calibration_win_default);
   assets_manager_add(am, ui_memtest_default);
+  assets_manager_add(am, ui_scroll_view_mouse_drag_default);
   assets_manager_add(am, ui_list_view_sync_default);
   assets_manager_add(am, ui_slide_view_h2_default);
   assets_manager_add(am, ui_slide_view_h3_default);
