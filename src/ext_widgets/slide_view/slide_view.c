@@ -174,7 +174,7 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
     active = widget_index_of(slide_view->prev);
     active = active < 0 ? 0 : active;
     if (slide_view->check_last) {
-      active = active == slide_view->last_active ? active : slide_view->last_active;
+      active = slide_view->last_active;
     }
     if (slide_view->remove_when_anim_done) {
       widget_destroy(slide_view->next);
@@ -186,7 +186,7 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
     active = widget_index_of(slide_view->next);
     active = active < 0 ? 0 : active;
     if (slide_view->check_last) {
-      active = active == slide_view->last_active ? active : slide_view->last_active;
+      active = slide_view->last_active;
     }
     if (slide_view->remove_when_anim_done) {
       /* because of array, so do not need move item */
@@ -218,6 +218,13 @@ static ret_t slide_view_animate_to(slide_view_t* slide_view, int32_t xoffset, in
   widget_animator_t* a = NULL;
   a = widget_animator_scroll_create(widget, slide_view->animating_time, 0, EASING_SIN_INOUT);
   return_value_if_fail(a != NULL, RET_OOM);
+
+  pointer_event_t abort;
+  pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, 0, 0);
+  widget_dispatch_event_to_target_recursive(widget, &abort);
+  if (slide_view->pressed) {
+    widget_dispatch(widget, &abort);
+  }
 
   widget_animator_scroll_set_params(a, xoffset, yoffset, xoffset_end, yoffset_end);
   widget_animator_on(a, EVT_ANIM_END, slide_view_on_scroll_done, slide_view);
