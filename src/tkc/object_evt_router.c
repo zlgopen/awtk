@@ -585,9 +585,6 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
   darray_init(&matched_subscribe_infos, 8, NULL,
               (tk_compare_t)object_evt_router_subscribe_info_cmp);
 
-  object_evt_router_clear_unregistered(evt_router);
-  object_evt_router_clear_unsubscribed(evt_router);
-
   publishing = evt_router->publishing;
   evt_router->publishing = TRUE;
 
@@ -654,6 +651,9 @@ static ret_t object_evt_router_on_publish(void* ctx, event_t* e) {
           &tmp, "Publish end: subscriber count: %d, total cost time: %llu ms."),
       OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), i, total_time);
 
+  object_evt_router_clear_unregistered(evt_router);
+  object_evt_router_clear_unsubscribed(evt_router);
+
   darray_deinit(&matched_subscribe_infos);
 
   evt_router->recursion_depth--;
@@ -677,11 +677,7 @@ ret_t object_evt_router_register(tk_object_t* obj, const char* topic, tk_object_
       .opt = opt != NULL ? *opt : (object_evt_router_register_opt_t){0},
   };
 
-  tk_object_ref(publisher);
-  object_evt_router_clear_unregistered(evt_router);
-
   infos = (darray_t*)tk_object_get_prop_pointer(evt_router->register_infos_group, topic);
-
   if (infos != NULL) {
     goto_error_if_fail_ex(
         darray_find_index(infos, &tmp) < 0,
@@ -761,8 +757,6 @@ ret_t object_evt_router_register(tk_object_t* obj, const char* topic, tk_object_
                                  info->evt_type, info->opt.evt_filter);
 
 error:
-  tk_object_unref(publisher);
-
   return ret;
 }
 
@@ -829,23 +823,21 @@ static ret_t object_evt_router_unregister_on_visit(void* ctx, const void* data) 
 }
 
 ret_t object_evt_router_unregister(tk_object_t* obj, const char* topic, tk_object_t* publisher) {
-  darray_t* infos = NULL;
   ret_t ret = RET_NOT_FOUND;
+  darray_t* infos = NULL;
   object_evt_router_t* evt_router = OBJECT_EVT_ROUTER(obj);
   return_value_if_fail(evt_router != NULL && TK_STR_IS_NOT_EMPTY(topic) && publisher != NULL,
                        RET_BAD_PARAMS);
 
-  tk_object_ref(publisher);
-  object_evt_router_clear_unregistered(evt_router);
-
   infos = (darray_t*)tk_object_get_prop_pointer(evt_router->register_infos_group, topic);
-
   if (infos != NULL) {
     object_evt_router_unregister_group_cmp_ctx_t ctx = {
         .evt_router = evt_router,
         .publisher = publisher,
         .infos = infos,
     };
+    tk_object_ref(publisher);
+
     ret = darray_foreach(infos, object_evt_router_unregister_on_visit, &ctx);
     if (RET_OK == ret) {
       object_evt_router_register_info_t tmp = {
@@ -860,9 +852,9 @@ ret_t object_evt_router_unregister(tk_object_t* obj, const char* topic, tk_objec
         tk_object_remove_prop(evt_router->register_infos_group, topic);
       }
     }
-  }
 
-  tk_object_unref(publisher);
+    tk_object_unref(publisher);
+  }
 
   return ret;
 }
@@ -874,7 +866,6 @@ ret_t object_evt_router_subscribe(tk_object_t* obj, const char* topic,
                                   const object_evt_router_subscribe_opt_t* opt) {
   ret_t ret = RET_OK;
   darray_t* infos = NULL;
-  tk_object_t* subscriber = NULL;
   object_evt_router_subscribe_info_t* info = NULL;
   object_evt_router_subscribe_info_t tmp;
   object_evt_router_t* evt_router = OBJECT_EVT_ROUTER(obj);
@@ -889,13 +880,7 @@ ret_t object_evt_router_subscribe(tk_object_t* obj, const char* topic,
       .opt = opt != NULL ? *opt : (object_evt_router_subscribe_opt_t){0},
   };
 
-  if (opt != NULL && opt->subscriber != NULL) {
-    subscriber = TK_OBJECT_REF(opt->subscriber);
-  }
-  object_evt_router_clear_unsubscribed(evt_router);
-
   infos = (darray_t*)tk_object_get_prop_pointer(evt_router->subscribe_infos_group, topic);
-
   if (infos != NULL) {
     goto_error_if_fail_ex(
         darray_find_index(infos, &tmp) < 0,
@@ -955,8 +940,6 @@ ret_t object_evt_router_subscribe(tk_object_t* obj, const char* topic,
       OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(info), topic, info->opt.priority);
 
 error:
-  TK_OBJECT_UNREF(subscriber);
-
   return ret;
 }
 
@@ -965,8 +948,6 @@ ret_t object_evt_router_unsubscribe(tk_object_t* obj, const char* topic,
                                     const object_evt_router_subscribe_opt_t* opt) {
   ret_t ret = RET_NOT_FOUND;
   darray_t* infos = NULL;
-  tk_object_t* subscriber = NULL;
-  object_evt_router_subscribe_info_t tmp;
   object_evt_router_t* evt_router = OBJECT_EVT_ROUTER(obj);
   return_value_if_fail(evt_router != NULL && callback != NULL, RET_BAD_PARAMS);
 
@@ -974,18 +955,18 @@ ret_t object_evt_router_unsubscribe(tk_object_t* obj, const char* topic,
     topic = "";
   }
 
-  tmp = (object_evt_router_subscribe_info_t){
-      .callback = callback,
-      .opt = (opt != NULL) ? *opt : (object_evt_router_subscribe_opt_t){0},
-  };
-
-  if (opt != NULL && opt->subscriber != NULL) {
-    subscriber = TK_OBJECT_REF(opt->subscriber);
-  }
-  object_evt_router_clear_unsubscribed(evt_router);
-
   infos = (darray_t*)tk_object_get_prop_pointer(evt_router->subscribe_infos_group, topic);
   if (infos != NULL) {
+    object_evt_router_subscribe_info_t tmp = {
+        .callback = callback,
+        .opt = (opt != NULL) ? *opt : (object_evt_router_subscribe_opt_t){0},
+    };
+    tk_object_t* subscriber = NULL;
+
+    if (opt != NULL && opt->subscriber != NULL) {
+      subscriber = TK_OBJECT_REF(opt->subscriber);
+    }
+
     if (evt_router->publishing) {
       object_evt_router_subscribe_info_t* info =
           (object_evt_router_subscribe_info_t*)darray_find(infos, &tmp);
@@ -1001,16 +982,16 @@ ret_t object_evt_router_unsubscribe(tk_object_t* obj, const char* topic,
         }
       }
     }
-  }
 
-  if (RET_OK == ret) {
-    object_evt_router_dispatch_log(
-        evt_router, LOG_LEVEL_INFO, NULL,
-        OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(&tmp, "Unsubscribe topic: \"%s\"."),
-        OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(&tmp), topic);
-  }
+    if (RET_OK == ret) {
+      object_evt_router_dispatch_log(
+          evt_router, LOG_LEVEL_INFO, NULL,
+          OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(&tmp, "Unsubscribe topic: \"%s\"."),
+          OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(&tmp), topic);
+    }
 
-  TK_OBJECT_UNREF(subscriber);
+    TK_OBJECT_UNREF(subscriber);
+  }
 
   return ret;
 }
