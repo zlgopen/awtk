@@ -69,10 +69,9 @@ static pointf_t slide_indicator_eval_anchor(widget_t* widget) {
     widget_t* target = slide_indicator->indicated_widget;
     return_value_if_fail(target != NULL, anchor);
 
-    widget_to_screen(target, &p);
-    p.x += target->w / 2;
-    p.y += target->h / 2;
-    widget_to_local(widget, &p);
+    // slide_indicator 与 slide_indicator->indicated_widget 始终是兄弟控件
+    p.x = target->x + target->w / 2 - widget->x;
+    p.y = target->y + target->h / 2 - widget->y;
   }
 
   if (TK_STR_IS_EMPTY(anchor_x)) {
