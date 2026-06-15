@@ -1,6 +1,8 @@
 # 最新动态
+
 2026/6/15
   * improve object_evt_router clear_unregistered and unsubscribed(感谢兆坤提供补丁) 
+  * 修复darray_clear函数在释放的过程重入数组查找的问题导致报错的问题（第二版）(感谢智明提供补丁)
 
 2026/6/12
   * 修复了 slider 作为 scroll_view 的子控件时，重绘 slider 时其重绘区域未随页面滚动而更新的问题(感谢雪飞提供补丁)

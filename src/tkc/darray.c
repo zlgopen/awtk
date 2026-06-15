@@ -393,12 +393,14 @@ ret_t darray_clear(darray_t* darray) {
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
 
   if (darray->elms != NULL) {
-    uint32_t i = 0;
+    int32_t i = 0;
     void** elms = darray->elms;
+    uint32_t count = darray->size;
 
-    for (i = 0; i < darray->size; i++) {
+    for (i = count - 1; i >= 0; i--) {
       void* iter = elms[i];
       elms[i] = NULL;
+      darray->size--;
       darray->destroy(iter);
     }
 
