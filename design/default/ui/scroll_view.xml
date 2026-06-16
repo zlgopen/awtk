@@ -36,15 +36,23 @@
       <view x="200" y="400" w="30" h="30" style.normal.border_color="#0000ff">
         <image image="earth" name="earth4" x="60" y="60" w="24" h="24" style.normal.bg_color="red"/>
       </view>
+      <view x="40" y="30" w="300" h="30" style.normal.border_color="#0000ff">
+        <image image="earth" name="earth5" x="0" y="0" w="100%" h="100%" style.normal.bg_color="red"/>
+      </view>
+      <view x="150" y="80" w="30" h="300" style.normal.border_color="#0000ff">
+        <image image="earth" name="earth6" x="0" y="0" w="100%" h="100%" style.normal.bg_color="red"/>
+      </view>
     </scroll_view>
     <scroll_bar_d name="bar_h" x="10%" y="b" w="80%" h="10%" value="0"/>
     <scroll_bar_d name="bar_v" x="r" y="10%" w="10%" h="80%" value="0"/>
   </view>
-  <view style:border_color="red" x="0" y="60%" w="100%" h="15%" children_layout="default(c=2,r=2,m=5,s=5)" >
+  <view style:border_color="red" x="0" y="60%" w="100%" h="15%" children_layout="default(c=3,r=2,m=5,s=5)" >
     <button name="focused:earth1" text="earth1" />
     <button name="focused:earth2" text="earth2" />
     <button name="focused:earth3" text="earth3" />
     <button name="focused:earth4" text="earth4" />
+    <button name="focused:earth5" text="earth5" />
+    <button name="focused:earth6" text="earth6" />
   </view>
   <view style:border_color="red" x="0" y="75%" w="100%" h="25%" children_layout="default(c=2,r=3,m=5,s=5)" >
     <button name="set_prop:default" text="default" />

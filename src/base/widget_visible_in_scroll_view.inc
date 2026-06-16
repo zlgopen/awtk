@@ -32,7 +32,7 @@
 typedef ret_t (*widget_visible_reveal_in_scroll_func_t)(const rect_t* r, xy_t ox, xy_t oy, wh_t scroll_w, wh_t scroll_h, xy_t* new_ox, xy_t* new_oy);
 
 /**
- * 调整到最近的可视位置，即块已在可视区域内，如果显示区域比滚动区域还要大，则不做任何操作，否则选择最短的路径移到到可视区域。
+ * 调整到最近的可视位置，即使块已在可视区域内，如果显示区域比滚动区域还要大，则不做任何操作，否则选择最短的路径移到可视区域。
  */
 static ret_t widget_visible_reveal_in_scroll_by_default(const rect_t* r, xy_t ox, xy_t oy, wh_t scroll_w, wh_t scroll_h, xy_t* new_ox, xy_t* new_oy) {
   wh_t r_bottom, r_right, s_bottom, s_right;
@@ -43,20 +43,18 @@ static ret_t widget_visible_reveal_in_scroll_by_default(const rect_t* r, xy_t ox
   r_bottom = r->y + r->h;
   s_bottom = oy + scroll_h;
 
-  if (!(oy > r->y && r_bottom > s_bottom)) {
+  if (!(oy >= r->y && r_bottom >= s_bottom)) {
     if (oy > r->y) {
-      oy = r->y;
-    }
-    if (r_bottom > s_bottom) {
-      oy = r_bottom - scroll_h;
+      oy -= tk_min(oy - r->y, s_bottom - r_bottom);
+    } else if (r_bottom > s_bottom) {
+      oy += tk_min(r->y - oy, r_bottom - s_bottom);
     }
   }
-  if (!(ox > r->x && r_right > s_right)) {
+  if (!(ox >= r->x && r_right >= s_right)) {
     if (ox > r->x) {
-      ox = r->x;
-    }
-    if (r_right > s_right) {
-      ox = r_right - scroll_w;
+      ox -= tk_min(ox - r->x, s_right - r_right);
+    } else if (r_right > s_right) {
+      ox += tk_min(r->x - ox, r_right - s_right);
     }
   }
 
