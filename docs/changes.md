@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/6/16
+  * 修复了 edit/mledit 作为初始焦点控件时，首次输入无法显示微软拼音预输入内容的问题(感谢雪飞提供补丁)。
+
 2026/6/15
   * improve object_evt_router clear_unregistered and unsubscribed(感谢兆坤提供补丁) 
   * 修复darray_clear函数在释放的过程重入数组查找的问题导致报错的问题（第二版）(感谢智明提供补丁)

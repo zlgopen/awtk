@@ -1312,15 +1312,13 @@ ret_t text_edit_paint(text_edit_t* text_edit, canvas_t* c) {
   style_t* style = text_edit->widget->astyle;
 
   if (impl->is_first_time_layout) {
-    text_edit_layout(text_edit);
-    impl->is_first_time_layout = FALSE;
-
     impl->font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
     impl->font_name = system_info_fix_font_name(style_get_str(style, STYLE_ID_FONT_NAME, NULL));
-  } else {
-    if (text_edit_is_need_layout(text_edit)) {
-      text_edit_layout(text_edit);
-    }
+
+    text_edit_layout(text_edit);
+    impl->is_first_time_layout = FALSE;
+  } else if (text_edit_is_need_layout(text_edit)) {
+    text_edit_layout(text_edit);
   }
 
   canvas_get_clip_rect(c, &save_r);
