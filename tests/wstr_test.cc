@@ -177,6 +177,27 @@ TEST(WStr, int64) {
   ASSERT_EQ(wstr_reset(&str), RET_OK);
 }
 
+TEST(WStr, uint64) {
+  wstr_t str;
+  char sutf8[256];
+  uint64_t v2 = 0;
+  uint64_t v1 = 123567890123;
+  ASSERT_EQ(wstr_init(&str, 100), &str);
+  ASSERT_EQ(str.capacity, 100u);
+
+  ASSERT_EQ(wstr_from_uint64(&str, v1), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&str, sutf8, sizeof(sutf8)), RET_OK);
+  v2 = tk_atoul(sutf8);
+  ASSERT_EQ(v1, v2);
+
+  ASSERT_EQ(wstr_from_uint64(&str, 0x1122334455667788ull), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&str, sutf8, sizeof(sutf8)), RET_OK);
+  v2 = tk_atoul(sutf8);
+  ASSERT_EQ(v2, 0x1122334455667788ull);
+
+  ASSERT_EQ(wstr_reset(&str), RET_OK);
+}
+
 TEST(WStr, double) {
   wstr_t str;
   double v1 = 123;
@@ -243,6 +264,9 @@ TEST(WStr, value) {
   wstr_t str;
   value_t v1;
   int32_t vi;
+  int64_t vi64;
+  uint64_t vu64;
+  char sutf8[256];
   double vf;
   ASSERT_EQ(wstr_init(&str, 0), &str);
   ASSERT_EQ(str.capacity, 0u);
@@ -251,6 +275,23 @@ TEST(WStr, value) {
   ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
   ASSERT_EQ(wstr_to_int(&str, &vi), RET_OK);
   ASSERT_EQ(value_int(&v1), vi);
+
+  value_set_int64(&v1, 0x0000000100000000);
+  ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
+  ASSERT_EQ(wstr_to_int64(&str, &vi64), RET_OK);
+  ASSERT_EQ(value_int64(&v1), vi64);
+
+  value_set_uint64(&v1, 123567890123);
+  ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&str, sutf8, sizeof(sutf8)), RET_OK);
+  vu64 = tk_atoul(sutf8);
+  ASSERT_EQ(value_uint64(&v1), vu64);
+
+  value_set_uint32(&v1, 0xffffffff);
+  ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&str, sutf8, sizeof(sutf8)), RET_OK);
+  vu64 = tk_atoul(sutf8);
+  ASSERT_EQ(value_uint32(&v1), (uint32_t)vu64);
 
   value_set_float(&v1, 1234);
   ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);

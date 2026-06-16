@@ -363,6 +363,16 @@ ret_t wstr_from_int(wstr_t* str, int32_t v);
 ret_t wstr_from_int64(wstr_t* str, int64_t v);
 
 /**
+ * @method wstr_from_uint64
+ * 用整数初始化字符串。
+ * @param {wstr_t*} str str对象。
+ * @param {uint64_t} v 整数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_from_uint64(wstr_t* str, uint64_t v);
+
+/**
  * @method wstr_append_int
  * 追加整数到字符串。
  * @param {wstr_t*} str str对象。

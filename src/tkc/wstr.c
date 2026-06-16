@@ -331,6 +331,13 @@ ret_t wstr_from_int64(wstr_t* str, int64_t v) {
   return wstr_set_utf8(str, tk_lltoa(buff, sizeof(buff), v));
 }
 
+ret_t wstr_from_uint64(wstr_t* str, uint64_t v) {
+  char buff[TK_NUM_MAX_LEN + 1];
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+
+  return wstr_set_utf8(str, tk_ulltoa(buff, sizeof(buff), v));
+}
+
 ret_t wstr_from_float(wstr_t* str, double v) {
   char buff[TK_NUM_MAX_LEN + 1];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
@@ -348,6 +355,12 @@ ret_t wstr_from_value(wstr_t* str, const value_t* v) {
   } else if (v->type == VALUE_TYPE_FLOAT || v->type == VALUE_TYPE_FLOAT32 ||
              v->type == VALUE_TYPE_DOUBLE) {
     return wstr_from_float(str, value_float(v));
+  } else if (v->type == VALUE_TYPE_UINT64) {
+    return wstr_from_uint64(str, value_uint64(v));
+  } else if (v->type == VALUE_TYPE_UINT32) {
+    return wstr_from_uint64(str, value_uint32(v));
+  } else if (v->type == VALUE_TYPE_INT64) {
+    return wstr_from_int64(str, value_int64(v));
   } else {
     return wstr_from_int(str, value_int(v));
   }

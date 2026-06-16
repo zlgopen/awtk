@@ -2625,6 +2625,7 @@ EXPORTS
     wstr_equal
     wstr_from_int
     wstr_from_int64
+    wstr_from_uint64
     wstr_append_int
     wstr_from_float
     wstr_from_value
