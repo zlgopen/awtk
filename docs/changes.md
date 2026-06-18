@@ -2,6 +2,9 @@
 
 2026/6/18
   * 完善update_res_common.py，避免 sys.stdout.encoding 为 None 时脚本异常(感谢朝泽提供补丁)
+  * 完善输入法(感谢雪飞提供补丁)  
+    - 修复单行编辑器高度偏大、字号偏小时，弹出软键盘可能导致编辑器被额外抬升的问题
+    - 修复打开两个高度不一样的 mledit 会导致第二个 mledit 高度异常的问题
 
 2026/6/16
   * 修复value类型为 int64、uint64 和 uint32 时 wstr_from_value 的结果错误的问题(感谢朝泽提供补丁)

@@ -175,6 +175,7 @@ static ret_t input_method_default_restore_win_size(input_method_t* im) {
 
   if (widget != NULL && im->mledit_old_h > 0 && tk_str_eq(widget->vt->type, WIDGET_TYPE_MLEDIT)) {
     widget_resize(widget, widget->w, im->mledit_old_h);
+    im->mledit_old_h = 0;
   }
 
   return RET_OK;
@@ -290,7 +291,8 @@ static int32_t input_method_default_get_edit_caret_bottom(widget_t* widget, widg
   widget_to_screen(widget, &p);
 
   if (tk_str_eq(widget->vt->type, WIDGET_TYPE_EDIT)) {
-    caret_y += widget->h;
+    // 单行编辑器时，确保整个控件不被键盘遮挡就行
+    caret_y = widget->h;
   } else {
     int32_t delta = (p.y + widget->h) - keyboard->y;
     if (delta > 0 && delta < p.y) {
