@@ -381,7 +381,8 @@ def exec_cmd(cmd):
         exe_name = cmd.split(' ', 1)[0]
         out_str = p.communicate()[0]
         if out_str != None:
-            out_str = out_str.decode(sys.stdout.encoding, errors='ignore')
+            encoding = sys.stdout.encoding or 'utf-8'
+            out_str = out_str.decode(encoding, errors='ignore')
         # 将输出信息重新打印到控制台
         print(out_str)
         sys.stdout.flush()
