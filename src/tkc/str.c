@@ -1137,6 +1137,18 @@ ret_t str_append_vformat(str_t* str, uint32_t size, const char* format, va_list 
   return RET_OK;
 }
 
+ret_t str_append_vformat_simple(str_t* str, const char* format, va_list ap) {
+  int size = 0;
+  char empty[1];
+  va_list ap_copy;
+
+  va_copy(ap_copy, ap);
+  size = tk_vsnprintf(empty, sizeof(empty), format, ap_copy);
+  va_end(ap_copy);
+
+  return str_append_vformat(str, size + 1, format, ap);
+}
+
 ret_t str_append_format_padding(str_t* str, uint32_t size, const char* format, ...) {
   va_list va;
   int32_t ret = 0;

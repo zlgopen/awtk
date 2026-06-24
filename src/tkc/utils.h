@@ -24,6 +24,7 @@
 
 #include "tkc/str.h"
 #include "tkc/rect.h"
+#include "tkc/emitter.h"
 #include "tkc/types_def.h"
 
 BEGIN_C_DECLS
@@ -1524,6 +1525,30 @@ bool_t tk_str_is_float(const char* str);
  * @return {int} 返回天数。
  */
 int tk_days_in_month(int32_t year, int32_t month);
+
+/**
+ * @method emitter_dispatch_log
+ * 分发log事件。
+ * @param {emitter_t*} emitter emitter对象。
+ * @param {tk_log_level_t} level 级别。
+ * @param {const char*} format 格式。
+ *
+ * @return {ret_t} 如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
+ */
+ret_t emitter_dispatch_log(emitter_t* emitter, tk_log_level_t level, const char* format, ...);
+
+/**
+ * @method emitter_dispatch_vlog
+ * 分发log事件。
+ * @param {emitter_t*} emitter emitter对象。
+ * @param {tk_log_level_t} level 级别。
+ * @param {const char*} format 格式。
+ * @param {va_list} ap 可变参数。
+ *
+ * @return {ret_t} 如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
+ */
+ret_t emitter_dispatch_vlog(emitter_t* emitter, tk_log_level_t level, const char* format,
+                            va_list ap);
 
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL

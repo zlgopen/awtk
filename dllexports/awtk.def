@@ -2336,6 +2336,7 @@ EXPORTS
     str_format
     str_append_format
     str_append_vformat
+    str_append_vformat_simple
     str_append_format_padding
     str_append_json_pair
     str_dequote
@@ -2580,6 +2581,8 @@ EXPORTS
     tk_str_is_int
     tk_str_is_float
     tk_days_in_month
+    emitter_dispatch_log
+    emitter_dispatch_vlog
     waitable_action_darray_create
     waitable_action_darray_recv
     waitable_action_darray_send

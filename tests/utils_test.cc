@@ -1,6 +1,8 @@
 #include <string>
+#include <climits>
 #include "tkc/mem.h"
 #include "tkc/utils.h"
+#include "tkc/event.h"
 #include "tkc/object_default.h"
 #include "tkc/object_array.h"
 #include "gtest/gtest.h"
@@ -2514,4 +2516,137 @@ TEST(Utils, tk_days_in_month) {
   ASSERT_EQ(tk_days_in_month(2024, 10), 31);
   ASSERT_EQ(tk_days_in_month(2024, 11), 30);
   ASSERT_EQ(tk_days_in_month(2024, 12), 31);
+}
+
+typedef struct _dispatch_log_test_ctx_t {
+  str_t messages;
+  uint32_t count;
+  bool_t nested;
+} dispatch_log_test_ctx_t;
+
+static ret_t dispatch_log_test_on_log(void* ctx, event_t* e) {
+  log_message_event_t* log_evt = log_message_event_cast(e);
+  dispatch_log_test_ctx_t* actx = (dispatch_log_test_ctx_t*)ctx;
+  return_value_if_fail(log_evt != NULL && actx != NULL, RET_BAD_PARAMS);
+
+  str_append_more(&actx->messages, log_evt->message, ";", NULL);
+  actx->count++;
+
+  if (actx->nested) {
+    actx->nested = FALSE;
+    emitter_dispatch_log((emitter_t*)e->target, log_evt->level, "nested %d", 1);
+  }
+
+  return RET_OK;
+}
+
+static ret_t test_str_append_vformat_simple(str_t* str, const char* format, ...) {
+  va_list ap;
+  ret_t ret = RET_OK;
+
+  va_start(ap, format);
+  ret = str_append_vformat_simple(str, format, ap);
+  va_end(ap);
+
+  return ret;
+}
+
+TEST(Utils, str_append_vformat_simple) {
+  str_t s;
+
+  str_init(&s, 0);
+  ASSERT_EQ(test_str_append_vformat_simple(&s, "hello %s %d", "world", 42), RET_OK);
+  ASSERT_STREQ(s.str, "hello world 42");
+  str_reset(&s);
+}
+
+TEST(Utils, emitter_dispatch_log_basic) {
+  emitter_t emitter;
+  dispatch_log_test_ctx_t ctx = {0};
+
+  emitter_init(&emitter);
+  str_init(&ctx.messages, 0);
+  emitter_on(&emitter, EVT_LOG_MESSAGE, dispatch_log_test_on_log, &ctx);
+
+  ASSERT_EQ(emitter_dispatch_log(&emitter, LOG_LEVEL_INFO, "value=%d", 100), RET_OK);
+  ASSERT_EQ(ctx.count, 1u);
+  ASSERT_STREQ(ctx.messages.str, "value=100;");
+
+  str_reset(&ctx.messages);
+  emitter_deinit(&emitter);
+}
+
+TEST(Utils, emitter_dispatch_log_no_listener) {
+  emitter_t emitter;
+
+  emitter_init(&emitter);
+  ASSERT_EQ(emitter_dispatch_log(&emitter, LOG_LEVEL_INFO, "skip me %d", 1), RET_OK);
+  emitter_deinit(&emitter);
+}
+
+TEST(Utils, emitter_dispatch_log_disabled) {
+  emitter_t emitter;
+  dispatch_log_test_ctx_t ctx = {0};
+
+  emitter_init(&emitter);
+  str_init(&ctx.messages, 0);
+  emitter_on(&emitter, EVT_LOG_MESSAGE, dispatch_log_test_on_log, &ctx);
+  emitter_disable(&emitter);
+
+  ASSERT_EQ(emitter_dispatch_log(&emitter, LOG_LEVEL_INFO, "disabled %d", 1), RET_OK);
+  ASSERT_EQ(ctx.count, 0u);
+
+  str_reset(&ctx.messages);
+  emitter_deinit(&emitter);
+}
+
+TEST(Utils, emitter_dispatch_log_level_skip) {
+  emitter_t emitter;
+  dispatch_log_test_ctx_t ctx = {0};
+  tk_log_level_t old_level = log_get_log_level();
+
+  emitter_init(&emitter);
+  str_init(&ctx.messages, 0);
+  emitter_on(&emitter, EVT_LOG_MESSAGE, dispatch_log_test_on_log, &ctx);
+  log_set_log_level(LOG_LEVEL_WARN);
+
+  ASSERT_EQ(emitter_dispatch_log(&emitter, LOG_LEVEL_DEBUG, "debug %d", 1), RET_SKIP);
+  ASSERT_EQ(ctx.count, 0u);
+
+  log_set_log_level(old_level);
+  str_reset(&ctx.messages);
+  emitter_deinit(&emitter);
+}
+
+TEST(Utils, emitter_dispatch_log_nested) {
+  emitter_t emitter;
+  dispatch_log_test_ctx_t ctx = {0};
+
+  emitter_init(&emitter);
+  str_init(&ctx.messages, 0);
+  ctx.nested = TRUE;
+  emitter_on(&emitter, EVT_LOG_MESSAGE, dispatch_log_test_on_log, &ctx);
+
+  ASSERT_EQ(emitter_dispatch_log(&emitter, LOG_LEVEL_INFO, "outer %d", 1), RET_OK);
+  ASSERT_EQ(ctx.count, 2u);
+  ASSERT_STREQ(ctx.messages.str, "outer 1;nested 1;");
+
+  str_reset(&ctx.messages);
+  emitter_deinit(&emitter);
+}
+
+TEST(Utils, emitter_dispatch_log_format_fail) {
+  emitter_t emitter;
+  dispatch_log_test_ctx_t ctx = {0};
+
+  emitter_init(&emitter);
+  str_init(&ctx.messages, 0);
+  emitter_on(&emitter, EVT_LOG_MESSAGE, dispatch_log_test_on_log, &ctx);
+
+  ASSERT_NE(emitter_dispatch_log(&emitter, LOG_LEVEL_INFO, "%*s", INT_MIN, "x"), RET_OK);
+  ASSERT_EQ(ctx.count, 1u);
+  ASSERT_STREQ(ctx.messages.str, "Failed to format log!\n;");
+
+  str_reset(&ctx.messages);
+  emitter_deinit(&emitter);
 }

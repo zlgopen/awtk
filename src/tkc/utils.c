@@ -3002,3 +3002,63 @@ ret_t tk_ret_from_str(const char* str, bool_t* valid) {
   }
   return (ret_t)tk_atol(str);
 }
+
+inline static bool_t emitter_dispatch_log_filter(emitter_t* emitter, tk_log_level_t level,
+                                                 ret_t* result) {
+  return_value_if_fail(emitter != NULL && result != NULL, FALSE);
+  if (level < log_get_log_level()) {
+    *result = RET_SKIP;
+    return FALSE;
+  }
+  if (emitter->disable || !emitter_exist_by_etype(emitter, EVT_LOG_MESSAGE)) {
+    *result = RET_OK;
+    return FALSE;
+  }
+  return TRUE;
+}
+
+static ret_t emitter_dispatch_vlog_impl(emitter_t* emitter, tk_log_level_t level,
+                                        const char* format, va_list ap) {
+  str_t log;
+  ret_t ret = RET_OK;
+  log_message_event_t evt;
+  return_value_if_fail(emitter != NULL && format != NULL, RET_BAD_PARAMS);
+
+  str_init(&log, 0);
+  goto_error_if_fail(RET_OK == (ret = str_append_vformat_simple(&log, format, ap)));
+
+  log_message_event_init(&evt, level, log.str);
+  ret = emitter_dispatch(emitter, &evt.e);
+  str_reset(&log);
+  return ret;
+error:
+  str_reset(&log);
+  log_message_event_init(&evt, LOG_LEVEL_ERROR, "Failed to format log!\n");
+  emitter_dispatch(emitter, &evt.e);
+  return ret;
+}
+
+ret_t emitter_dispatch_vlog(emitter_t* emitter, tk_log_level_t level, const char* format,
+                            va_list ap) {
+  ret_t ret = RET_OK;
+  if (!emitter_dispatch_log_filter(emitter, level, &ret)) {
+    return ret;
+  }
+  return emitter_dispatch_vlog_impl(emitter, level, format, ap);
+}
+
+ret_t emitter_dispatch_log(emitter_t* emitter, tk_log_level_t level, const char* format, ...) {
+  va_list args;
+  ret_t ret = RET_OK;
+  return_value_if_fail(emitter != NULL && format != NULL, RET_BAD_PARAMS);
+
+  if (!emitter_dispatch_log_filter(emitter, level, &ret)) {
+    return ret;
+  }
+
+  va_start(args, format);
+  ret = emitter_dispatch_vlog_impl(emitter, level, format, args);
+  va_end(args);
+
+  return ret;
+}

@@ -1,4 +1,6 @@
 # 最新动态
+2026/6/24
+  * add emitter_dispatch_log and str_append_vformat_simple (感谢兆坤提供补丁)
 
 2026/6/18
   * 完善update_res_common.py，避免 sys.stdout.encoding 为 None 时脚本异常(感谢朝泽提供补丁)

@@ -251,38 +251,15 @@ struct _object_evt_router_t {
   bool_t publishing : 1;
 };
 
-inline static ret_t object_evt_router_dispatch_log_message(object_evt_router_t* evt_router,
-                                                           tk_log_level_t level, const char* msg) {
-  ret_t ret = RET_OK;
-  log_message_event_t evt;
-
-  evt_router->log_recursion_depth++;
-
-  log_message_event_init(&evt, level, msg);
-  ret = emitter_dispatch(EMITTER(evt_router), &evt.e);
-
-  evt_router->log_recursion_depth--;
-
-  return ret;
-}
-
 static ret_t object_evt_router_dispatch_log(object_evt_router_t* evt_router, tk_log_level_t level,
                                             event_t* e, const char* format, ...) {
-  char empty[1];
-  int size = 0;
+  va_list args;
   ret_t ret = RET_OK;
-  va_list args, args_copy;
   bool_t detected = FALSE;
-  str_t log;
   return_value_if_fail(evt_router != NULL && format != NULL, RET_BAD_PARAMS);
 
   if (level < log_get_log_level()) {
     return RET_SKIP;
-  }
-
-  if (EMITTER(evt_router)->disable ||
-      !emitter_exist_by_etype(EMITTER(evt_router), EVT_LOG_MESSAGE)) {
-    return RET_OK;
   }
 
   /* 防止无限递归导致栈溢出 */
@@ -298,29 +275,31 @@ static ret_t object_evt_router_dispatch_log(object_evt_router_t* evt_router, tk_
   }
 
   va_start(args, format);
-
-  va_copy(args_copy, args);
-  size = tk_vsnprintf(empty, sizeof(empty), format, args_copy);
-  va_end(args_copy);
-
-  str_init(&log, 0);
-  ret = str_append_vformat(&log, size + 1, format, args);
-
-  va_end(args);
-  return_value_if_fail(RET_OK == ret, (str_reset(&log),
-                                       object_evt_router_dispatch_log_message(
-                                           evt_router, LOG_LEVEL_ERROR, "Failed to format log!\n"),
-                                       ret));
-
   if (detected) {
+    str_t log;
+    str_init(&log, 0);
+    goto_error_if_fail_ex(RET_OK == (ret = str_append_vformat_simple(&log, format, args)),
+                          str_reset(&log));
     log_warn("%s: log recursion detected, skip log message: %s\n", __FUNCTION__, log.str);
+    str_reset(&log);
     ret = RET_STOP;
   } else {
-    ret = object_evt_router_dispatch_log_message(evt_router, level, log.str);
+    evt_router->log_recursion_depth++;
+    ret = emitter_dispatch_vlog(EMITTER(evt_router), level, format, args);
+    evt_router->log_recursion_depth--;
   }
 
-  str_reset(&log);
-
+  va_end(args);
+  return ret;
+error:
+  va_end(args);
+  {
+    log_message_event_t evt;
+    log_message_event_init(&evt, LOG_LEVEL_ERROR, "Failed to format log!\n");
+    evt_router->log_recursion_depth++;
+    emitter_dispatch(EMITTER(evt_router), &evt.e);
+    evt_router->log_recursion_depth--;
+  }
   return ret;
 }
 
