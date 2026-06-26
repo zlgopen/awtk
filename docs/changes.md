@@ -1,4 +1,7 @@
 # 最新动态
+2026/6/25
+  * 完善文档(感谢俊杰提供补丁)
+
 2026/6/24
   * add emitter_dispatch_log and str_append_vformat_simple (感谢兆坤提供补丁)
 
