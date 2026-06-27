@@ -1946,3 +1946,368 @@ TEST(value, sub_uint32_underflow) {
   ASSERT_EQ(o.type, VALUE_TYPE_UINT32);
   ASSERT_EQ(value_uint32(&o), 0u);
 }
+
+static int s_pointer_destroy_count = 0;
+
+static ret_t test_pointer_destroy(void* data) {
+  (void)data;
+  s_pointer_destroy_count++;
+  return RET_OK;
+}
+
+TEST(value, is_null) {
+  value_t v;
+  memset(&v, 0, sizeof(v));
+
+  ASSERT_EQ(value_is_null(NULL), TRUE);
+  ASSERT_EQ(value_is_null(&v), TRUE);
+
+  value_set_int32(&v, 1);
+  ASSERT_EQ(value_is_null(&v), FALSE);
+}
+
+TEST(value, create_destroy) {
+  value_t* v = value_create();
+  ASSERT_NE(v, (value_t*)NULL);
+  ASSERT_EQ(v->type, VALUE_TYPE_INVALID);
+  ASSERT_EQ(value_destroy(v), RET_OK);
+}
+
+TEST(value, cast) {
+  value_t v;
+  value_set_int32(&v, 7);
+  ASSERT_EQ(value_cast(&v), &v);
+  ASSERT_EQ(value_int32(value_cast(&v)), 7);
+}
+
+TEST(value, type_meta) {
+  ASSERT_STREQ(value_type_name(VALUE_TYPE_BOOL), "bool");
+  ASSERT_STREQ(value_type_name(VALUE_TYPE_INT32), "int32");
+  ASSERT_STREQ(value_type_name(VALUE_TYPE_STRING), "char*");
+  ASSERT_STREQ(value_type_name(VALUE_TYPE_OBJECT), "object");
+
+  ASSERT_EQ(value_type_size(VALUE_TYPE_BOOL), sizeof(bool_t));
+  ASSERT_EQ(value_type_size(VALUE_TYPE_INT32), sizeof(int32_t));
+  ASSERT_EQ(value_type_size(VALUE_TYPE_DOUBLE), sizeof(double));
+  ASSERT_EQ(value_type_size(VALUE_TYPE_STRING), sizeof(void*));
+  ASSERT_EQ(value_type_size(VALUE_TYPE_BINARY), sizeof(binary_data_t));
+}
+
+TEST(value, str_ex) {
+  value_t v;
+  char buf[128];
+
+  value_set_int32(&v, 42);
+  ASSERT_STREQ(value_str_ex(&v, buf, sizeof(buf)), "42");
+
+  value_set_bool(&v, TRUE);
+  ASSERT_STREQ(value_str_ex(&v, buf, sizeof(buf)), "true");
+
+  value_set_bool(&v, FALSE);
+  ASSERT_STREQ(value_str_ex(&v, buf, sizeof(buf)), "false");
+
+  value_set_str(&v, "hello");
+  ASSERT_STREQ(value_str_ex(&v, buf, sizeof(buf)), "hello");
+
+  value_set_wstr(&v, L"hi");
+  ASSERT_STREQ(value_str_ex(&v, buf, sizeof(buf)), "hi");
+
+  value_set_uint64(&v, 123456789ULL);
+  ASSERT_STREQ(value_str_ex(&v, buf, sizeof(buf)), "123456789");
+
+  value_reset(&v);
+  memset(buf, 0, sizeof(buf));
+  ASSERT_STREQ(value_str_ex(&v, buf, sizeof(buf)), TK_VALUE_UNDEFINED);
+}
+
+TEST(value, dup_str_with_len) {
+  value_t v;
+
+  ASSERT_EQ(value_dup_str_with_len(&v, "hello", 3), &v);
+  ASSERT_STREQ(value_str(&v), "hel");
+  ASSERT_EQ(v.free_handle, TRUE);
+  value_reset(&v);
+}
+
+TEST(value, dup_binary_data) {
+  value_t v;
+  const char data[] = "abcd";
+  binary_data_t* bin = NULL;
+
+  ASSERT_EQ(value_dup_binary_data(&v, data, sizeof(data)), &v);
+  bin = value_binary_data(&v);
+  ASSERT_NE(bin, (binary_data_t*)NULL);
+  ASSERT_EQ(bin->size, sizeof(data));
+  ASSERT_EQ(memcmp(bin->data, data, sizeof(data)), 0);
+  ASSERT_NE(bin->data, (void*)data);
+  ASSERT_EQ(v.free_handle, TRUE);
+  value_reset(&v);
+}
+
+TEST(value, func_def) {
+  value_t v;
+  int x = 99;
+
+  ASSERT_EQ(value_set_func_def(&v, &x), &v);
+  ASSERT_EQ(value_func_def(&v), &x);
+}
+
+TEST(value, compare_type_mismatch) {
+  value_t v1;
+  value_t v2;
+
+  value_set_int32(&v1, 1);
+  value_set_int64(&v2, 1);
+  ASSERT_EQ(value_compare(&v1, &v2), -1);
+  ASSERT_EQ(value_equal(&v1, &v2), FALSE);
+}
+
+TEST(value, bool_from_string) {
+  value_t v;
+
+  value_set_str(&v, "true");
+  ASSERT_EQ(value_bool(&v), TRUE);
+
+  value_set_str(&v, "false");
+  ASSERT_EQ(value_bool(&v), FALSE);
+
+  value_set_str(&v, "0");
+  ASSERT_EQ(value_bool(&v), FALSE);
+
+  value_set_wstr(&v, L"1");
+  ASSERT_EQ(value_bool(&v), TRUE);
+}
+
+TEST(value, pointer_ref_refcount) {
+  value_t v1;
+  value_t v2;
+  int data = 123;
+
+  s_pointer_destroy_count = 0;
+  value_set_pointer_ex(&v1, &data, test_pointer_destroy);
+  ASSERT_EQ(value_deep_copy(&v2, &v1), RET_OK);
+  ASSERT_EQ(value_pointer(&v1), &data);
+  ASSERT_EQ(value_pointer(&v2), &data);
+
+  value_reset(&v1);
+  ASSERT_EQ(value_pointer(&v2), &data);
+  ASSERT_EQ(s_pointer_destroy_count, 0);
+
+  value_reset(&v2);
+  ASSERT_EQ(s_pointer_destroy_count, 1);
+}
+
+TEST(value, copy_self) {
+  value_t v;
+  value_set_int32(&v, 100);
+  ASSERT_EQ(value_copy(&v, &v), RET_OK);
+  ASSERT_EQ(value_int32(&v), 100);
+}
+
+TEST(value, deepcopy_object) {
+  value_t v1;
+  value_t v2;
+  tk_object_t* o = object_default_create();
+
+  value_set_object(&v1, o);
+  ASSERT_EQ(value_deep_copy(&v2, &v1), RET_OK);
+  ASSERT_EQ(value_object(&v2), o);
+  ASSERT_EQ(v2.free_handle, TRUE);
+
+  value_reset(&v1);
+  ASSERT_EQ(value_object(&v2), o);
+
+  value_reset(&v2);
+  tk_object_unref(o);
+}
+
+TEST(value, compare_pointer) {
+  value_t v1;
+  value_t v2;
+  int arr[2] = {1, 2};
+
+  value_set_pointer(&v1, &arr[0]);
+  value_set_pointer(&v2, &arr[1]);
+  ASSERT_LT(value_compare(&v1, &v2), 0);
+
+  value_set_pointer(&v2, &arr[0]);
+  ASSERT_EQ(value_compare(&v1, &v2), 0);
+}
+
+TEST(value, expt_edge) {
+  value_t base;
+  value_t exp;
+  value_t out;
+
+  value_set_double(&base, 0);
+  value_set_int32(&exp, 5);
+  ASSERT_EQ(value_expt(&base, &exp, &out), RET_OK);
+  ASSERT_EQ(value_double(&out), 0.0);
+
+  value_set_double(&base, 7);
+  value_set_int32(&exp, 0);
+  ASSERT_EQ(value_expt(&base, &exp, &out), RET_OK);
+  ASSERT_EQ(value_double(&out), 1.0);
+}
+
+TEST(value, int_unsupported) {
+  value_t v;
+  tk_object_t* o = object_default_create();
+  char data[] = "x";
+
+  value_set_object(&v, o);
+  ASSERT_EQ(value_int(&v), 0);
+
+  value_set_pointer(&v, &v);
+  ASSERT_EQ(value_int(&v), 0);
+
+  value_set_token(&v, 123);
+  ASSERT_EQ(value_int(&v), 0);
+
+  value_set_binary_data(&v, data, sizeof(data));
+  ASSERT_EQ(value_int(&v), 0);
+
+  TK_OBJECT_UNREF(o);
+}
+
+TEST(value, div_by_zero_int) {
+  value_t v1;
+  value_t v2;
+  value_t o;
+
+  value_set_int32(&v1, 10);
+  value_set_int32(&v2, 0);
+  ASSERT_EQ(value_div(&v1, &v2, &o), RET_BAD_PARAMS);
+  ASSERT_EQ(value_mod(&v1, &v2, &o), RET_BAD_PARAMS);
+
+  value_set_int8(&v1, 10);
+  value_set_int8(&v2, 0);
+  ASSERT_EQ(value_div(&v1, &v2, &o), RET_BAD_PARAMS);
+
+  value_set_bool(&v1, TRUE);
+  value_set_bool(&v2, FALSE);
+  ASSERT_EQ(value_div(&v1, &v2, &o), RET_BAD_PARAMS);
+}
+
+TEST(value, div_by_zero_float) {
+  value_t v1;
+  value_t v2;
+  value_t o;
+
+  value_set_double(&v1, 1.0);
+  value_set_double(&v2, 0.0);
+  ASSERT_EQ(value_div(&v1, &v2, &o), RET_OK);
+  ASSERT_TRUE(isinf(value_double(&o)));
+
+  value_set_float(&v1, -2.0f);
+  value_set_float(&v2, 0.0f);
+  ASSERT_EQ(value_div(&v1, &v2, &o), RET_OK);
+  ASSERT_TRUE(isinf(value_double(&o)));
+}
+
+TEST(value, str_ex_complex) {
+  value_t v;
+  char buf[128];
+  tk_object_t* o = object_default_create();
+  const char bin[] = "data";
+
+  value_set_id(&v, "widget.name", 11);
+  ASSERT_STREQ(value_str_ex(&v, buf, sizeof(buf)), "widget.name");
+  value_reset(&v);
+
+  value_set_binary_data(&v, (void*)bin, 4);
+  ASSERT_NE(strstr(value_str_ex(&v, buf, sizeof(buf)), "binary("), (char*)NULL);
+  ASSERT_NE(strstr(buf, ":4)"), (char*)NULL);
+  value_reset(&v);
+
+  value_set_func(&v, (void*)0x1);
+  ASSERT_STREQ(value_str_ex(&v, buf, sizeof(buf)), "func");
+  value_reset(&v);
+
+  value_set_func_def(&v, (void*)0x2);
+  ASSERT_STREQ(value_str_ex(&v, buf, sizeof(buf)), "func_def");
+  value_reset(&v);
+
+  value_set_object(&v, o);
+  ASSERT_NE(strstr(value_str_ex(&v, buf, sizeof(buf)), "object("), (char*)NULL);
+  ASSERT_NE(strstr(buf, "object_default"), (char*)NULL);
+  value_reset(&v);
+
+  value_set_pointer(&v, (void*)0x1234);
+  ASSERT_NE(strstr(value_str_ex(&v, buf, sizeof(buf)), "1234"), (char*)NULL);
+
+  TK_OBJECT_UNREF(o);
+}
+
+TEST(value, compare_object) {
+  value_t v1;
+  value_t v2;
+  tk_object_t* o1 = object_default_create();
+  tk_object_t* o2 = object_default_create();
+
+  value_set_object(&v1, o1);
+  value_set_object(&v2, o1);
+  ASSERT_EQ(value_compare(&v1, &v2), 0);
+
+  value_set_object(&v2, o2);
+  ASSERT_NE(value_compare(&v1, &v2), 0);
+
+  TK_OBJECT_UNREF(o1);
+  TK_OBJECT_UNREF(o2);
+}
+
+TEST(value, min_max_wstr) {
+  value_t arr[3];
+  value_t out;
+
+  value_set_wstr(&arr[0], L"apple");
+  value_set_wstr(&arr[1], L"banana");
+  value_set_wstr(&arr[2], L"cherry");
+
+  ASSERT_EQ(value_min(arr, 3, &out), RET_OK);
+  ASSERT_EQ(out.type, VALUE_TYPE_WSTRING);
+  ASSERT_EQ(tk_wstrcmp(value_wstr(&out), L"apple"), 0);
+
+  ASSERT_EQ(value_max(arr, 3, &out), RET_OK);
+  ASSERT_EQ(out.type, VALUE_TYPE_WSTRING);
+  ASSERT_EQ(tk_wstrcmp(value_wstr(&out), L"cherry"), 0);
+}
+
+TEST(value, deepcopy_pointer_ref_twice) {
+  value_t v1;
+  value_t v2;
+  value_t v3;
+  int data = 7;
+
+  s_pointer_destroy_count = 0;
+  value_set_pointer_ex(&v1, &data, test_pointer_destroy);
+  ASSERT_EQ(value_deep_copy(&v2, &v1), RET_OK);
+  ASSERT_EQ(value_deep_copy(&v3, &v1), RET_OK);
+
+  value_reset(&v1);
+  value_reset(&v2);
+  ASSERT_EQ(value_pointer(&v3), &data);
+  ASSERT_EQ(s_pointer_destroy_count, 0);
+
+  value_reset(&v3);
+  ASSERT_EQ(s_pointer_destroy_count, 1);
+}
+
+TEST(value, dup_str_with_len_null) {
+  value_t v;
+
+  ASSERT_EQ(value_dup_str_with_len(&v, NULL, 0), &v);
+  ASSERT_EQ(value_str(&v), (const char*)NULL);
+  ASSERT_EQ(v.free_handle, FALSE);
+  value_reset(&v);
+}
+
+TEST(value, value_reset_id) {
+  value_t v;
+
+  value_set_id(&v, "test.id", 7);
+  ASSERT_EQ(v.free_handle, TRUE);
+  ASSERT_STREQ(value_id(&v), "test.id");
+  value_reset(&v);
+  ASSERT_EQ(value_is_null(&v), TRUE);
+}

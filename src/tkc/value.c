@@ -467,8 +467,13 @@ value_t* value_dup_str_with_len(value_t* v, const char* value, uint32_t len) {
   return_value_if_fail(v != NULL, NULL);
 
   value_init(v, VALUE_TYPE_STRING);
-  v->value.str = tk_strndup(value, len);
-  v->free_handle = TRUE;
+  if (value != NULL) {
+    v->value.str = tk_strndup(value, len);
+    v->free_handle = v->value.str != NULL;
+  } else {
+    v->value.str = NULL;
+    v->free_handle = FALSE;
+  }
 
   return v;
 }
@@ -746,11 +751,36 @@ int value_int(const value_t* v) {
       return tk_watoi(v->value.wstr);
     }
     default: {
-      assert(!"not supported type");
+      return 0;
     }
   }
+}
 
-  return 0;
+static bool_t value_divisor_is_zero(const value_t* other, uint32_t type) {
+  switch (type) {
+    case VALUE_TYPE_BOOL:
+      return !value_bool(other);
+    case VALUE_TYPE_INT8:
+      return value_int8(other) == 0;
+    case VALUE_TYPE_UINT8:
+      return value_uint8(other) == 0;
+    case VALUE_TYPE_INT16:
+      return value_int16(other) == 0;
+    case VALUE_TYPE_UINT16:
+      return value_uint16(other) == 0;
+    case VALUE_TYPE_INT32:
+      return value_int32(other) == 0;
+    case VALUE_TYPE_UINT32:
+      return value_uint32(other) == 0;
+    case VALUE_TYPE_INT64:
+      return value_int64(other) == 0;
+    case VALUE_TYPE_UINT64:
+      return value_uint64(other) == 0;
+    default:
+      break;
+  }
+
+  return FALSE;
 }
 
 int value_compare(const value_t* v, const value_t* other) {
@@ -2255,6 +2285,9 @@ ret_t value_div(value_t* v, value_t* other, value_t* result) {
   return_value_if_fail(v != NULL && other != NULL, RET_BAD_PARAMS);
 
   type = tk_max_int((int)(v->type), (int)(other->type));
+  if (type <= VALUE_TYPE_UINT64 && value_divisor_is_zero(other, type)) {
+    return RET_BAD_PARAMS;
+  }
   switch (type) {
     case VALUE_TYPE_BOOL: {
       int8_t vv = value_bool(v) / value_bool(other);
@@ -2329,6 +2362,9 @@ ret_t value_mod(value_t* v, value_t* other, value_t* result) {
   return_value_if_fail(v != NULL && other != NULL, RET_BAD_PARAMS);
 
   type = tk_max_int((int)(v->type), (int)(other->type));
+  if (type <= VALUE_TYPE_UINT64 && value_divisor_is_zero(other, type)) {
+    return RET_BAD_PARAMS;
+  }
   switch (type) {
     case VALUE_TYPE_BOOL: {
       int8_t vv = value_bool(v) % value_bool(other);

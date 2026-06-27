@@ -865,6 +865,8 @@ ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char*
 
 bool_t tk_is_valid_name(const char* name) {
   const char* p = name;
+  return_value_if_fail(name != NULL, FALSE);
+
   while (*p) {
     if ((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') ||
         *p == '_') {
