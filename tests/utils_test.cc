@@ -2650,3 +2650,162 @@ TEST(Utils, emitter_dispatch_log_format_fail) {
   str_reset(&ctx.messages);
   emitter_deinit(&emitter);
 }
+
+TEST(Utils, tk_is_valid_name) {
+  ASSERT_EQ(tk_is_valid_name("abc"), TRUE);
+  ASSERT_EQ(tk_is_valid_name("abc_123"), TRUE);
+  ASSERT_EQ(tk_is_valid_name("_a"), TRUE);
+  ASSERT_EQ(tk_is_valid_name("Abc_0"), TRUE);
+  ASSERT_EQ(tk_is_valid_name(""), TRUE);
+  ASSERT_EQ(tk_is_valid_name("abc-def"), FALSE);
+  ASSERT_EQ(tk_is_valid_name("a.b"), FALSE);
+  ASSERT_EQ(tk_is_valid_name("a b"), FALSE);
+}
+
+TEST(Utils, tk_strlen_strnlen) {
+  ASSERT_EQ(tk_strlen(NULL), 0u);
+  ASSERT_EQ(tk_strlen(""), 0u);
+  ASSERT_EQ(tk_strlen("abc"), 3u);
+  ASSERT_EQ(tk_strnlen("hello", 3), 3u);
+  ASSERT_EQ(tk_strnlen("hello", 10), 5u);
+  ASSERT_EQ(tk_strnlen("", 5), 0u);
+}
+
+TEST(Utils, strcmp_null) {
+  ASSERT_EQ(tk_strcmp(NULL, "a"), -1);
+  ASSERT_EQ(tk_strcmp("a", NULL), 1);
+  ASSERT_EQ(tk_strncmp(NULL, "a", 1), -1);
+  ASSERT_EQ(tk_strncmp("a", NULL, 1), 1);
+  ASSERT_EQ(tk_stricmp(NULL, "a"), -1);
+  ASSERT_EQ(tk_stricmp("a", NULL), 1);
+  ASSERT_EQ(tk_strnicmp(NULL, "a", 1), -1);
+  ASSERT_EQ(tk_strnicmp("a", NULL, 1), 1);
+}
+
+TEST(Utils, tk_wstrcmp) {
+  ASSERT_EQ(tk_wstrcmp(L"abc", L"abc"), 0);
+  ASSERT_LT(tk_wstrcmp(L"abc", L"abd"), 0);
+  ASSERT_EQ(tk_wstrcmp(NULL, L"a"), -1);
+  ASSERT_EQ(tk_wstrcmp(L"a", NULL), 1);
+  ASSERT_EQ(tk_wstricmp(L"abc", L"ABC"), 0);
+  ASSERT_LT(tk_wstricmp(L"abc", L"XYZ"), 0);
+}
+
+static int qsort_str_cmp(const void* a, const void* b) {
+  return tk_strcmp((const char*)a, (const char*)b);
+}
+
+TEST(Utils, tk_qsort) {
+  const char* s3 = "cherry";
+  const char* s1 = "apple";
+  const char* s2 = "banana";
+  void* arr[] = {(void*)s3, (void*)s1, (void*)s2};
+
+  ASSERT_EQ(tk_qsort(arr, 3, qsort_str_cmp), RET_OK);
+  ASSERT_STREQ((const char*)arr[0], "apple");
+  ASSERT_STREQ((const char*)arr[1], "banana");
+  ASSERT_STREQ((const char*)arr[2], "cherry");
+
+  ASSERT_EQ(tk_qsort(arr, 1, qsort_str_cmp), RET_OK);
+  ASSERT_STREQ((const char*)arr[0], "apple");
+}
+
+TEST(Utils, pointer_helpers) {
+  char buffer[8];
+
+  ASSERT_LT(pointer_compare(buffer, buffer + 4), 0);
+  ASSERT_GT(pointer_compare(buffer + 4, buffer), 0);
+  ASSERT_EQ(compare_always_equal(buffer, buffer + 4), 0);
+  ASSERT_EQ(dummy_destroy(buffer), RET_OK);
+
+  int* p = (int*)TKMEM_ALLOC(sizeof(int));
+  *p = 42;
+  ASSERT_EQ(default_destroy(p), RET_OK);
+}
+
+TEST(Utils, tk_pointer_roundtrip) {
+  ASSERT_EQ(tk_pointer_to_int(tk_pointer_from_int(42)), 42);
+  ASSERT_EQ(tk_pointer_to_int(tk_pointer_from_int(-1)), -1);
+  ASSERT_EQ(tk_pointer_to_long(tk_pointer_from_long(12345)), 12345ULL);
+}
+
+TEST(Utils, tk_bits_to_bytes) {
+  ASSERT_EQ(tk_bits_to_bytes(0), 0u);
+  ASSERT_EQ(tk_bits_to_bytes(1), 1u);
+  ASSERT_EQ(tk_bits_to_bytes(8), 1u);
+  ASSERT_EQ(tk_bits_to_bytes(9), 2u);
+  ASSERT_EQ(tk_bits_to_bytes(16), 2u);
+}
+
+TEST(Utils, tk_pixel_copy) {
+  uint16_t src16[] = {0x1111, 0x2222, 0x3333, 0x4444};
+  uint16_t dst16[4] = {0};
+  uint32_t src32[] = {0x11111111, 0x22222222};
+  uint32_t dst32[2] = {0};
+
+  tk_pixel_copy(dst16, src16, 4, 2);
+  ASSERT_EQ(memcmp(dst16, src16, sizeof(src16)), 0);
+
+  tk_pixel_copy(dst32, src32, 2, 4);
+  ASSERT_EQ(memcmp(dst32, src32, sizeof(src32)), 0);
+}
+
+TEST(Utils, tk_ftoa) {
+  char buf[64];
+
+  memset(buf, 0, sizeof(buf));
+  tk_ftoa(buf, sizeof(buf), 3.14);
+  ASSERT_NEAR(atof(buf), 3.14, 0.001);
+
+  memset(buf, 0, sizeof(buf));
+  tk_ftoa(buf, sizeof(buf), -0.5);
+  ASSERT_NEAR(atof(buf), -0.5, 0.001);
+}
+
+TEST(Utils, tk_ret_to_str_from_str) {
+  char buf[TK_NUM_MAX_LEN + 1];
+  bool_t valid = FALSE;
+
+  ASSERT_STREQ(tk_ret_to_str(RET_OK, buf), "OK");
+  ASSERT_STREQ(tk_ret_to_str(RET_FAIL, buf), "FAIL");
+  ASSERT_STREQ(tk_ret_to_str(RET_BAD_PARAMS, buf), "BAD_PARAMS");
+
+  ASSERT_EQ(tk_ret_from_str("OK", &valid), RET_OK);
+  ASSERT_EQ(valid, TRUE);
+  ASSERT_EQ(tk_ret_from_str("FAIL", &valid), RET_FAIL);
+  ASSERT_EQ(valid, TRUE);
+  ASSERT_EQ(tk_ret_from_str("NOT_FOUND", &valid), RET_NOT_FOUND);
+  ASSERT_EQ(valid, TRUE);
+
+  ASSERT_EQ(tk_ret_from_str("999", &valid), (ret_t)999);
+  ASSERT_EQ(valid, FALSE);
+}
+
+TEST(Utils, tk_strtoi_clamp) {
+  const char* end = NULL;
+
+  ASSERT_EQ(tk_strtoi("2147483647", &end, 10), INT32_MAX);
+  ASSERT_EQ(tk_strtoi("2147483648", &end, 10), INT32_MAX);
+  ASSERT_EQ(tk_strtoi("-2147483648", &end, 10), INT32_MIN);
+  ASSERT_EQ(tk_strtoi("-2147483649", &end, 10), INT32_MIN);
+}
+
+TEST(Utils, utf8_wstr_dup) {
+  wchar_t* w = tk_wstr_dup_utf8("hello");
+  char* u = tk_utf8_dup_wstr(w);
+
+  ASSERT_NE(w, (wchar_t*)NULL);
+  ASSERT_NE(u, (char*)NULL);
+  ASSERT_EQ(wcscmp(w, L"hello"), 0);
+  ASSERT_STREQ(u, "hello");
+
+  TKMEM_FREE(w);
+  TKMEM_FREE(u);
+}
+
+TEST(Utils, tk_snprintf) {
+  char buf[32];
+
+  ASSERT_EQ(tk_snprintf(buf, sizeof(buf), "n=%d s=%s", 42, "awtk"), 11);
+  ASSERT_STREQ(buf, "n=42 s=awtk");
+}
