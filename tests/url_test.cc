@@ -272,13 +272,96 @@ TEST(URL, file6) {
   url_destroy(url);
 }
 
-TEST(URL, file7) {
-  url_t* url = url_create("/abc");
-  ASSERT_STREQ(url->schema, "file");
-  ASSERT_EQ(url->host == NULL, true);
-  ASSERT_EQ(url->params == NULL, true);
-  ASSERT_STREQ(url->path, "/abc");
+TEST(URL, https) {
+  url_t* url = url_create("https://www.zlg.cn");
+  ASSERT_STREQ(url->schema, "https");
+  ASSERT_STREQ(url->host, "www.zlg.cn");
+  ASSERT_EQ(url->port, 443);
+  ASSERT_EQ(url->fixed_port, TRUE);
+  ASSERT_STREQ(url_to_string(url), "https://www.zlg.cn");
+  url_destroy(url);
+}
 
+TEST(URL, https_port) {
+  url_t* url = url_create("https://www.zlg.cn:8443/path");
+  ASSERT_STREQ(url->schema, "https");
+  ASSERT_STREQ(url->host, "www.zlg.cn");
+  ASSERT_STREQ(url->path, "path");
+  ASSERT_EQ(url->port, 8443);
+  ASSERT_EQ(url->fixed_port, FALSE);
+  ASSERT_STREQ(url_to_string(url), "https://www.zlg.cn:8443path");
+  url_destroy(url);
+}
+
+TEST(URL, ftp) {
+  url_t* url = url_create("ftp://files.example.com/data");
+  ASSERT_STREQ(url->schema, "ftp");
+  ASSERT_STREQ(url->host, "files.example.com");
+  ASSERT_STREQ(url->path, "/data");
+  ASSERT_EQ(url->port, 21);
+  ASSERT_EQ(url->fixed_port, TRUE);
+  ASSERT_STREQ(url_to_string(url), "ftp://files.example.com/data");
+  url_destroy(url);
+}
+
+TEST(URL, path_slash) {
+  url_t* url = url_create("http://www.zlg.cn/");
+  ASSERT_STREQ(url->path, "/");
+  ASSERT_STREQ(url_to_string(url), "http://www.zlg.cn/");
+  url_destroy(url);
+}
+
+TEST(URL, query_flag) {
+  url_t* url = url_create("http://www.zlg.cn?flag");
+  ASSERT_STREQ(url_get_param(url, "flag"), "");
+  ASSERT_STREQ(url_to_string(url), "http://www.zlg.cn?flag=");
+  url_destroy(url);
+}
+
+TEST(URL, query_empty_value) {
+  url_t* url = url_create("http://www.zlg.cn?key=");
+  ASSERT_STREQ(url_get_param(url, "key"), "");
+  ASSERT_STREQ(url_to_string(url), "http://www.zlg.cn?key=");
+  url_destroy(url);
+}
+
+TEST(URL, get_param_default) {
+  url_t* url = url_create("http://www.zlg.cn");
+  ASSERT_EQ(url_get_param(url, "missing"), (const char*)NULL);
+  ASSERT_EQ(url_get_param_int32(url, "missing", 42), 42);
+  ASSERT_EQ(url_get_param_bool(url, "missing", TRUE), TRUE);
+  ASSERT_EQ(url_get_param_bool(url, "missing", FALSE), FALSE);
+  url_destroy(url);
+}
+
+TEST(URL, get_param_bool) {
+  url_t* url = url_create("http://www.zlg.cn?yes=true&no=false&num=1");
+  ASSERT_EQ(url_get_param_bool(url, "yes", FALSE), TRUE);
+  ASSERT_EQ(url_get_param_bool(url, "no", TRUE), FALSE);
+  ASSERT_EQ(url_get_param_bool(url, "num", FALSE), TRUE);
+  url_destroy(url);
+}
+
+TEST(URL, setters) {
+  url_t* url = url_create(NULL);
+  ASSERT_EQ(url_set_schema(url, "http"), RET_OK);
+  ASSERT_EQ(url_set_host(url, "localhost"), RET_OK);
+  ASSERT_EQ(url_set_port(url, 9090), RET_OK);
+  ASSERT_EQ(url_set_path(url, "/api"), RET_OK);
+  ASSERT_EQ(url_set_user_name(url, "user"), RET_OK);
+  ASSERT_EQ(url_set_password(url, "pass"), RET_OK);
+  ASSERT_EQ(url_set_param(url, "q", "1"), RET_OK);
+  ASSERT_STREQ(url_to_string(url), "http://user:pass@localhost:9090/api?q=1");
+  url_destroy(url);
+}
+
+TEST(URL, file_to_string) {
+  url_t* url = url_create("/abc");
+  ASSERT_STREQ(url_to_string(url), "file:///abc");
+  url_destroy(url);
+
+  url = url_create("file:///abc");
+  ASSERT_STREQ(url_to_string(url), "file:///abc");
   url_destroy(url);
 }
 

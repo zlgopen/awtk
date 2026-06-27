@@ -211,8 +211,14 @@ static url_t* url_parse(url_t* url, const char* surl) {
       case STATE_KEY: {
         if (*p == '=' || *p == '\0') {
           goto_error_if_fail(str_set_with_len(&str, start, p - start) == RET_OK);
-          state = STATE_VALUE;
-          start = p + 1;
+          if (*p == '\0') {
+            if (str.size > 0) {
+              goto_error_if_fail(url_set_param(url, str.str, "") == RET_OK);
+            }
+          } else {
+            state = STATE_VALUE;
+            start = p + 1;
+          }
         }
         break;
       }
