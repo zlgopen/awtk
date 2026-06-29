@@ -170,7 +170,7 @@ static ret_t window_manager_simple_close_window(widget_t* widget, widget_t* wind
     widget_t* prev_win = window_manager_find_prev_window(WIDGET(wm));
     if (prev_win != NULL) {
       if (!widget_is_keyboard(window)) {
-        window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
+        window_manager_dispatch_window_foreground_events(window, NULL, prev_win);
       }
     }
     widget_remove_child(widget, window);

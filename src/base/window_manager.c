@@ -437,10 +437,9 @@ ret_t window_manager_switch_to(widget_t* widget, widget_t* curr_win, widget_t* t
     widget_restack(target_win, 0xffffff);
     if (close) {
       window_manager_close_window_force(widget, curr_win);
-    } else {
-      window_manager_dispatch_window_event(curr_win, EVT_WINDOW_TO_BACKGROUND);
     }
-    window_manager_dispatch_window_event(target_win, EVT_WINDOW_TO_FOREGROUND);
+    window_manager_dispatch_window_foreground_events(target_win, close ? NULL : curr_win,
+                                                     target_win);
     return RET_OK;
   }
 }
@@ -751,6 +750,25 @@ ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type) 
   }
 
   return widget_dispatch(window->parent, (event_t*)&(evt));
+}
+
+ret_t window_manager_dispatch_window_foreground_events(widget_t* trigger_win,
+                                                       widget_t* to_background,
+                                                       widget_t* to_foreground) {
+  return_value_if_fail(trigger_win != NULL, RET_BAD_PARAMS);
+
+  if (!widget_should_dispatch_window_foreground_event(trigger_win)) {
+    return RET_OK;
+  }
+
+  if (to_background != NULL && widget_can_receive_window_foreground_event(to_background)) {
+    window_manager_dispatch_window_event(to_background, EVT_WINDOW_TO_BACKGROUND);
+  }
+  if (to_foreground != NULL && widget_can_receive_window_foreground_event(to_foreground)) {
+    window_manager_dispatch_window_event(to_foreground, EVT_WINDOW_TO_FOREGROUND);
+  }
+
+  return RET_OK;
 }
 
 ret_t window_manager_begin_wait_pointer_cursor(widget_t* widget, bool_t ignore_user_input) {

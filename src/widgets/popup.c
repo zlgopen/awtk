@@ -198,11 +198,8 @@ static ret_t popup_on_destroy(widget_t* widget) {
   if (popup->active_window_by_parent_widget != NULL) {
     widget_t* foreground_win = window_manager_get_foreground_window(window_manager());
     if (foreground_win != popup->active_window_by_parent_widget) {
-      if (foreground_win != NULL) {
-        window_manager_dispatch_window_event(foreground_win, EVT_WINDOW_TO_BACKGROUND);
-      }
-      window_manager_dispatch_window_event(popup->active_window_by_parent_widget,
-                                           EVT_WINDOW_TO_FOREGROUND);
+      window_manager_dispatch_window_foreground_events(widget, foreground_win,
+                                                       popup->active_window_by_parent_widget);
     }
 
     popup_set_parent_widget_by_create(widget, NULL);

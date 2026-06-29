@@ -2294,6 +2294,35 @@ bool_t widget_is_fullscreen_window(widget_t* widget);
 bool_t widget_is_dialog(widget_t* widget);
 
 /**
+ * @method widget_is_toast_dialog
+ * 检查控件是否是 toast 对话框（由 dialog_toast 创建）。
+ *
+ * @param {widget_t*} widget widget对象。
+ * @return {bool_t} 返回 TRUE 表示是 toast 对话框，否则表示不是。
+ */
+bool_t widget_is_toast_dialog(widget_t* widget);
+
+/**
+ * @method widget_can_receive_window_foreground_event
+ * 检查控件作为接收方时，是否可收到 EVT_WINDOW_TO_FOREGROUND/EVT_WINDOW_TO_BACKGROUND。
+ * 仅 normal_window 和普通 dialog 可接收（popup、overlay、toast dialog 等不接收）。
+ *
+ * @param {widget_t*} widget widget对象。
+ * @return {bool_t} 返回 TRUE 表示可接收，否则表示不接收。
+ */
+bool_t widget_can_receive_window_foreground_event(widget_t* widget);
+
+/**
+ * @method widget_should_dispatch_window_foreground_event
+ * 检查控件作为触发方时，是否应派发 EVT_WINDOW_TO_FOREGROUND/EVT_WINDOW_TO_BACKGROUND。
+ * 仅 normal_window 和普通 dialog 会触发（popup、overlay、toast dialog 等不触发）。
+ *
+ * @param {widget_t*} widget widget对象。
+ * @return {bool_t} 返回 TRUE 表示应派发，否则表示不派发。
+ */
+bool_t widget_should_dispatch_window_foreground_event(widget_t* widget);
+
+/**
  * @method widget_is_popup
  * 检查控件是否是弹出窗口类型。
  *

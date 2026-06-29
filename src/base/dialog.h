@@ -26,6 +26,9 @@
 
 BEGIN_C_DECLS
 
+#define DIALOG_TOAST_WIDGET_NAME "toast"
+#define DIALOG_TOAST_THEME_NAME "dialog_toast"
+
 /**
  * @enum dialog_quit_code_t
  * @annotation ["scriptable"]

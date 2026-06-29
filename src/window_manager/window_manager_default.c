@@ -625,11 +625,7 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
   wm->ready_animator = FALSE;
   if (window_manager_create_animator(wm, curr_win, TRUE) != RET_OK) {
     widget_t* foreground_window = window_manager_get_foreground_window(WIDGET(wm));
-    if (foreground_window != NULL) {
-      if (!widget_is_keyboard(curr_win) && !widget_is_overlay(curr_win)) {
-        window_manager_dispatch_window_event(foreground_window, EVT_WINDOW_TO_BACKGROUND);
-      }
-    }
+    window_manager_dispatch_window_foreground_events(curr_win, foreground_window, NULL);
     window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
     widget_add_timer(curr_win, on_idle_invalidate, 100);
   }
@@ -660,8 +656,7 @@ static ret_t window_manager_default_switch_to(widget_t* widget, widget_t* curr_w
   }
 
   if (window_manager_create_animator(wm, target_win, TRUE) != RET_OK) {
-    window_manager_dispatch_window_event(curr_win, EVT_WINDOW_TO_BACKGROUND);
-    window_manager_dispatch_window_event(target_win, EVT_WINDOW_TO_FOREGROUND);
+    window_manager_dispatch_window_foreground_events(target_win, curr_win, target_win);
     widget_invalidate_force(target_win, NULL);
   }
 
@@ -867,7 +862,7 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
         widget_t* widget_highlighter = prev_win;
 
         wm->curr_win = prev_win;
-        window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
+        window_manager_dispatch_window_foreground_events(window, NULL, prev_win);
 
         WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
         if (widget_is_normal_window(iter)) {
@@ -921,7 +916,7 @@ static ret_t window_manager_default_close_window_force(widget_t* widget, widget_
   if (close_window) {
     widget_t* prev_win = window_manager_find_prev_window(widget);
     if (prev_win != NULL) {
-      window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
+      window_manager_dispatch_window_foreground_events(window, NULL, prev_win);
     }
     window_manager_prepare_close_window(widget, window);
     window_manager_dispatch_window_event(window, EVT_WINDOW_CLOSE);
@@ -1094,7 +1089,7 @@ static ret_t window_manager_animate_done_set_window_foreground(widget_t* widget,
   }
 
   if (is_set && (widget_is_normal_window(iter) || i + 1 == widget->children->size)) {
-    window_manager_dispatch_window_event(iter, EVT_WINDOW_TO_FOREGROUND);
+    window_manager_dispatch_window_foreground_events(curr_win, NULL, iter);
   }
   WIDGET_FOR_EACH_CHILD_END()
 
@@ -1163,16 +1158,17 @@ static ret_t window_manager_animate_done(widget_t* widget) {
       widget_t* foreground_window = window_manager_get_foreground_window(WIDGET(wm));
       /* 结束打开窗口动画后 */
       if (!curr_win_is_keyboard && foreground_window != curr_win && foreground_window != NULL) {
-        window_manager_dispatch_window_event(foreground_window, EVT_WINDOW_TO_BACKGROUND);
+        if (widget_is_window_opened(curr_win)) {
+          window_manager_dispatch_window_foreground_events(curr_win, foreground_window, curr_win);
+        } else {
+          window_manager_dispatch_window_foreground_events(curr_win, foreground_window, NULL);
+        }
       }
       if (!curr_win_is_normal_window) {
         top_dialog_highlight = window_manager_default_find_top_dialog_highlighter(
             widget, prev_win, curr_win_is_keyboard ? curr_win : NULL);
       }
-      if (widget_is_window_opened(curr_win)) {
-        //for switch to
-        window_manager_dispatch_window_event(curr_win, EVT_WINDOW_TO_FOREGROUND);
-      } else {
+      if (!widget_is_window_opened(curr_win)) {
         window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
       }
     } else {

@@ -577,6 +577,9 @@ widget_t* window_manager_find_target(widget_t* widget, void* native_win, xy_t x,
 ret_t window_manager_on_theme_changed(widget_t* widget);
 ret_t window_manager_dispatch_top_window_changed(widget_t* widget);
 ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type);
+ret_t window_manager_dispatch_window_foreground_events(widget_t* trigger_win,
+                                                       widget_t* to_background,
+                                                       widget_t* to_foreground);
 uint32_t window_manager_get_curr_expected_sleep_time(widget_t* widget);
 ret_t window_manager_set_curr_expected_sleep_time(widget_t* widget,
                                                   uint32_t curr_expected_sleep_time);

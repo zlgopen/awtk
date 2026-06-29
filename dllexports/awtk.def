@@ -1068,6 +1068,9 @@ EXPORTS
     widget_is_normal_window
     widget_is_fullscreen_window
     widget_is_dialog
+    widget_is_toast_dialog
+    widget_can_receive_window_foreground_event
+    widget_should_dispatch_window_foreground_event
     widget_is_popup
     widget_is_overlay
     widget_is_always_on_top

@@ -45,6 +45,7 @@
 #include "base/widget_animator_manager.h"
 #include "base/widget_animator_factory.h"
 #include "base/window_base.h"
+#include "base/dialog.h"
 #include "base/assets_manager.h"
 #include "blend/image_g2d.h"
 #include "base/style_const.h"
@@ -3331,15 +3332,6 @@ ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
     if (!(widget_is_keyboard(target))) {
       if (widget_is_focusable(target) || !widget_is_strongly_focus(widget)) {
         if (!target->focused) {
-          if (widget_is_window(target)) {
-            widget_t* foreground_win = window_manager_get_foreground_window(window_manager());
-            if (foreground_win != NULL && target != foreground_win) {
-              if (widget_is_overlay(foreground_win) || widget_is_overlay(target)) {
-                window_manager_dispatch_window_event(target, EVT_WINDOW_TO_FOREGROUND);
-                window_manager_dispatch_window_event(foreground_win, EVT_WINDOW_TO_BACKGROUND);
-              }
-            }
-          }
           widget_set_focused_internal(target, TRUE);
         } else {
           widget->key_target = target;
@@ -5067,6 +5059,40 @@ bool_t widget_is_dialog(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
 
   return widget->vt->is_window && tk_str_eq(widget->vt->type, WIDGET_TYPE_DIALOG);
+}
+
+bool_t widget_is_toast_dialog(widget_t* widget) {
+  const char* theme = NULL;
+  return_value_if_fail(widget != NULL, FALSE);
+
+  if (!widget_is_dialog(widget)) {
+    return FALSE;
+  }
+
+  if (tk_str_eq(widget->name, DIALOG_TOAST_WIDGET_NAME)) {
+    return TRUE;
+  }
+
+  theme = widget_get_prop_str(widget, WIDGET_PROP_THEME, NULL);
+  return theme != NULL && tk_str_eq(theme, DIALOG_TOAST_THEME_NAME);
+}
+
+static bool_t widget_is_foreground_event_eligible(widget_t* widget) {
+  return_value_if_fail(widget != NULL, FALSE);
+
+  if (widget_is_toast_dialog(widget)) {
+    return FALSE;
+  }
+
+  return widget_is_normal_window(widget) || widget_is_dialog(widget);
+}
+
+bool_t widget_can_receive_window_foreground_event(widget_t* widget) {
+  return widget_is_foreground_event_eligible(widget);
+}
+
+bool_t widget_should_dispatch_window_foreground_event(widget_t* widget) {
+  return widget_is_foreground_event_eligible(widget);
 }
 
 bool_t widget_is_popup(widget_t* widget) {
