@@ -786,12 +786,12 @@ static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr,
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
 
-    if (chr == '\r' || chr == '\n') {
+    if (chr == L'\r' || chr == L'\n') {
       if ((i + 1) == nr) {
         break;
       }
 
-      if (chr == '\r' && str[i + 1] == '\n') {
+      if (chr == L'\r' && str[i + 1] == L'\n') {
         i++;
       }
 
@@ -800,7 +800,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr,
         x = left;
         continue;
       } else {
-        chr = ' ';
+        chr = L' ';
       }
     }
 
@@ -2040,7 +2040,7 @@ static ret_t canvas_draw_text_in_rect_ellipses(canvas_t* c, const wchar_t* str, 
   uint32_t i = 0;
   rect_t r = *r_in;
   float_t text_w = 0;
-  float_t ellipses_w = canvas_measure_text(c, STR_ELLIPSES, wcslen(STR_ELLIPSES));
+  float_t ellipses_w = canvas_measure_text(c, STR_ELLIPSES, ARRAY_SIZE(STR_ELLIPSES) - 1);
 
   for (i = 0; i < nr; i++) {
     float_t char_w = canvas_measure_text(c, str + i, 1);
@@ -2055,7 +2055,7 @@ static ret_t canvas_draw_text_in_rect_ellipses(canvas_t* c, const wchar_t* str, 
   canvas_draw_text_in_rect(c, str, i, &r);
   r.x += text_w;
   r.w = ellipses_w;
-  canvas_draw_text_in_rect(c, STR_ELLIPSES, wcslen(STR_ELLIPSES), &r);
+  canvas_draw_text_in_rect(c, STR_ELLIPSES, ARRAY_SIZE(STR_ELLIPSES) - 1, &r);
 
   return RET_OK;
 }
