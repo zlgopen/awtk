@@ -2846,6 +2846,8 @@ EXPORTS
     widget_factory_destroy
     window_base_on_destroy
     window_base_on_event
+    window_base_on_window_to_foreground
+    window_base_on_window_to_background
     window_base_invalidate
     window_base_on_paint_begin
     window_base_on_paint_end

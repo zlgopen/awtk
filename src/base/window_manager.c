@@ -22,6 +22,7 @@
 #include "base/widget.h"
 #include "base/canvas.h"
 #include "base/dialog.h"
+#include "base/window_base.h"
 #include "base/window.h"
 #include "base/layout.h"
 #include "base/dialog_highlighter.h"
@@ -752,6 +753,17 @@ ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type) 
   return widget_dispatch(window->parent, (event_t*)&(evt));
 }
 
+static ret_t window_manager_apply_window_to_foreground_wm_state(widget_t* window) {
+  return_value_if_fail(window != NULL && window->parent != NULL, RET_BAD_PARAMS);
+
+  window->parent->target = window;
+  if (window->sensitive) {
+    window->parent->key_target = window;
+  }
+
+  return RET_OK;
+}
+
 ret_t window_manager_dispatch_window_foreground_events(widget_t* trigger_win,
                                                        widget_t* to_background,
                                                        widget_t* to_foreground) {
@@ -761,11 +773,20 @@ ret_t window_manager_dispatch_window_foreground_events(widget_t* trigger_win,
     return RET_OK;
   }
 
-  if (to_background != NULL && widget_can_receive_window_foreground_event(to_background)) {
-    window_manager_dispatch_window_event(to_background, EVT_WINDOW_TO_BACKGROUND);
+  if (to_background != NULL) {
+    if (widget_can_receive_window_foreground_event(to_background)) {
+      window_manager_dispatch_window_event(to_background, EVT_WINDOW_TO_BACKGROUND);
+    } else {
+      window_base_on_window_to_background(to_background);
+    }
   }
-  if (to_foreground != NULL && widget_can_receive_window_foreground_event(to_foreground)) {
-    window_manager_dispatch_window_event(to_foreground, EVT_WINDOW_TO_FOREGROUND);
+  if (to_foreground != NULL) {
+    if (widget_can_receive_window_foreground_event(to_foreground)) {
+      window_manager_dispatch_window_event(to_foreground, EVT_WINDOW_TO_FOREGROUND);
+    } else {
+      window_base_on_window_to_foreground(to_foreground);
+      window_manager_apply_window_to_foreground_wm_state(to_foreground);
+    }
   }
 
   return RET_OK;

@@ -120,6 +120,36 @@ TEST(WindowForegroundEvent, dispatch_helper) {
   drain_idle();
 }
 
+TEST(WindowForegroundEvent, dispatch_helper_fallback_for_ineligible_receiver) {
+  widget_t* normal_win = window_create(NULL, 0, 0, 100, 100);
+  widget_t* dialog_win = dialog_create(NULL, 0, 0, 100, 100);
+  widget_t* overlay_win = overlay_create(NULL, 0, 0, 100, 100);
+  fg_bg_counter_t overlay_counter = {0, 0};
+
+  widget_set_prop_int(overlay_win, WIDGET_PROP_STAGE, WINDOW_STAGE_OPENED);
+  fg_bg_counter_attach(overlay_win, &overlay_counter);
+
+  ASSERT_EQ(window_manager_dispatch_window_foreground_events(dialog_win, overlay_win, dialog_win),
+            RET_OK);
+  ASSERT_EQ(overlay_counter.to_background, 0u);
+  ASSERT_EQ(overlay_counter.to_foreground, 0u);
+  ASSERT_EQ(widget_get_prop_int(overlay_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_SUSPEND);
+
+  widget_set_prop_int(overlay_win, WIDGET_PROP_STAGE, WINDOW_STAGE_SUSPEND);
+  fg_bg_counter_reset(&overlay_counter);
+  ASSERT_EQ(window_manager_dispatch_window_foreground_events(normal_win, dialog_win, overlay_win),
+            RET_OK);
+  ASSERT_EQ(overlay_counter.to_foreground, 0u);
+  ASSERT_EQ(widget_get_prop_int(overlay_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_OPENED);
+
+  window_close_force(overlay_win);
+  window_close_force(dialog_win);
+  window_close_force(normal_win);
+  drain_idle();
+}
+
 TEST(WindowForegroundEvent, open_popup) {
   fg_bg_counter_t counter = {0, 0};
   widget_t* main_win = NULL;

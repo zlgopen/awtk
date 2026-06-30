@@ -915,7 +915,7 @@ static ret_t window_manager_default_close_window_force(widget_t* widget, widget_
 
   if (close_window) {
     widget_t* prev_win = window_manager_find_prev_window(widget);
-    if (prev_win != NULL) {
+    if (prev_win != NULL && window != prev_win) {
       window_manager_dispatch_window_foreground_events(window, NULL, prev_win);
     }
     window_manager_prepare_close_window(widget, window);
