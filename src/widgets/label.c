@@ -89,7 +89,7 @@ static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str,
                                         label->line_wrap, label->word_wrap) == RET_OK,
                        RET_BAD_PARAMS);
 
-  if (p.total_lines > 1) {
+  if (p.total_lines > 1 && !label->ellipses) {
     ret = label_paint_text_mlines(widget, c, &p, r.x, r.y, r.w, r.h);
   } else {
     wstr_t str = widget->text;

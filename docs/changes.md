@@ -4,6 +4,7 @@
   * 重构 window_base，拆分事件处理函数。
   * 完善 window_manager_dispatch_window_foreground_events 修复 edit_ex 输入问题
   * improve canvas_draw_text_in_rect_ellipses (感谢兆坤提供补丁)
+  * fix label ellipses(感谢兆坤提供补丁)
 
 2026/6/29
   * 完善 EVT_WINDOW_TO_XXX 事件分发。
