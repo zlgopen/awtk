@@ -326,8 +326,9 @@ extern char* strstr (const char *str, const char *substr)
 
 extern char* eStrdup (const char* str)
 {
-	char* result = xMalloc (strlen (str) + 1, char);
-	strcpy (result, str);
+	const size_t length = strlen (str) + 1;
+	char* result = xMalloc (length, char);
+	memcpy (result, str, length);
 	return result;
 }
 
@@ -385,7 +386,7 @@ extern void setCurrentDirectory (void)
 	if (CurrentDirectory == NULL)
 		CurrentDirectory = xMalloc ((size_t) (PATH_MAX + 1), char);
 #ifdef AMIGA
-	strcpy (CurrentDirectory, ".");
+	memcpy (CurrentDirectory, ".", 2);
 #else
 	buf = getcwd (CurrentDirectory, PATH_MAX);
 	if (buf == NULL)
@@ -394,8 +395,7 @@ extern void setCurrentDirectory (void)
 	if (CurrentDirectory [strlen (CurrentDirectory) - (size_t) 1] !=
 			PATH_SEPARATOR)
 	{
-		sprintf (CurrentDirectory + strlen (CurrentDirectory), "%c",
-				OUTPUT_PATH_SEPARATOR);
+		{ size_t clen = strlen (CurrentDirectory); CurrentDirectory [clen] = OUTPUT_PATH_SEPARATOR; CurrentDirectory [clen + 1] = '\0'; }
 	}
 }
 
@@ -678,9 +678,9 @@ static char* concat (const char *s1, const char *s2, const char *s3)
   int len1 = strlen (s1), len2 = strlen (s2), len3 = strlen (s3);
   char *result = xMalloc (len1 + len2 + len3 + 1, char);
 
-  strcpy (result, s1);
-  strcpy (result + len1, s2);
-  strcpy (result + len1 + len2, s3);
+  memcpy (result, s1, len1);
+  memcpy (result + len1, s2, len2);
+  memcpy (result + len1 + len2, s3, len3);
   result [len1 + len2 + len3] = '\0';
 
   return result;
@@ -702,7 +702,7 @@ extern char* absoluteFilename (const char *file)
 		else
 		{
 			char drive [3];
-			sprintf (drive, "%c:", currentdrive ());
+			snprintf (drive, sizeof (drive), "%c:", currentdrive ());
 			res = concat (drive, file, "");
 		}
 #else
@@ -735,13 +735,13 @@ extern char* absoluteFilename (const char *file)
 				else if (cp [0] != PATH_SEPARATOR)
 					cp = slashp;
 #endif
-				strcpy (cp, slashp + 3);
+				memmove (cp, slashp + 3, strlen (slashp + 3) + 1);
 				slashp = cp;
 				continue;
 			}
 			else if (slashp [2] == PATH_SEPARATOR  ||  slashp [2] == '\0')
 			{
-				strcpy (slashp, slashp + 2);
+				memmove (slashp, slashp + 2, strlen (slashp + 2) + 1);
 				continue;
 			}
 		}
@@ -815,12 +815,9 @@ extern char* relativeFilename (const char *file, const char *dir)
 	while ((dp = strchr (dp + 1, PATH_SEPARATOR)) != NULL)
 		i += 1;
 	res = xMalloc (3 * i + strlen (fp + 1) + 1, char);
-	res [0] = '\0';
-	while (i-- > 0)
-		strcat (res, "../");
-
-	/* Add the file name relative to the common root of file and dir. */
-	strcat (res, fp + 1);
+	{ size_t pos = 0;
+	  while (i-- > 0) { memcpy (res + pos, "../", 3); pos += 3; }
+	  memcpy (res + pos, fp + 1, strlen (fp + 1) + 1); }
 	free (absdir);
 
 	return res;
@@ -840,7 +837,7 @@ extern FILE *tempFile (const char *const mode, char **const pName)
 	if (tmpdir == NULL)
 		tmpdir = TMPDIR;
 	name = xMalloc (strlen (tmpdir) + 1 + strlen (pattern) + 1, char);
-	sprintf (name, "%s%c%s", tmpdir, OUTPUT_PATH_SEPARATOR, pattern);
+	snprintf (name, strlen (tmpdir) + 1 + strlen (pattern) + 1, "%s%c%s", tmpdir, OUTPUT_PATH_SEPARATOR, pattern);
 	fd = mkstemp (name);
 #elif defined(HAVE_TEMPNAM)
 	name = tempnam (TMPDIR, "tags");
@@ -856,7 +853,7 @@ extern FILE *tempFile (const char *const mode, char **const pName)
 	if (tmpdir == NULL)
 		tmpdir = TMPDIR;
 	name = xMalloc (strlen (tmpdir) + 1 + strlen (pattern) + 1, char);
-	sprintf (name, "%s%c%s", tmpdir, OUTPUT_PATH_SEPARATOR, pattern);
+	snprintf (name, strlen (tmpdir) + 1 + strlen (pattern) + 1, "%s%c%s", tmpdir, OUTPUT_PATH_SEPARATOR, pattern);
 	fd = mkstemp (name);
 #endif
 	if (fd == -1)
