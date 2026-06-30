@@ -5,6 +5,7 @@
   * 完善 window_manager_dispatch_window_foreground_events 修复 edit_ex 输入问题
   * improve canvas_draw_text_in_rect_ellipses (感谢兆坤提供补丁)
   * fix label ellipses(感谢兆坤提供补丁)
+  * 修复 edit 编辑多行文本时的异常情况，统一将换行符当作空格处理（与 绘制一致）(感谢兆坤提供补丁)
 
 2026/6/29
   * 完善 EVT_WINDOW_TO_XXX 事件分发。
