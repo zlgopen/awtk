@@ -603,110 +603,164 @@ ret_t window_set_auto_scale_children(widget_t* widget, uint32_t design_w, uint32
   return window_base_auto_scale_children(widget);
 }
 
+static ret_t window_base_on_event_window_will_open(widget_t* widget, window_base_t* win) {
+  win->stage = WINDOW_STAGE_CREATED;
+  window_base_load_theme_obj(widget);
+  widget_update_style_recursive(widget);
+  widget_layout(widget);
+  if (widget->sensitive) {
+    widget_set_focused_internal(widget, TRUE);
+  }
+  window_base_set_accept_button(widget, win->accept_button);
+  window_base_set_cancel_button(widget, win->cancel_button);
+
+  return RET_OK;
+}
+
+static ret_t window_base_on_event_window_open(widget_t* widget, window_base_t* win) {
+  win->stage = WINDOW_STAGE_OPENED;
+  if (widget->sensitive) {
+    widget_set_focused_internal(widget, TRUE);
+  }
+
+  return RET_OK;
+}
+
+static ret_t window_base_on_event_window_load(widget_t* widget, window_base_t* win) {
+  win->stage = WINDOW_STAGE_LOADED;
+  window_base_load_theme_obj(widget);
+  widget_layout(widget);
+
+  if (win->design_w && win->design_h) {
+    if (win->auto_scale_children_x || win->auto_scale_children_y || win->auto_scale_children_w ||
+        win->auto_scale_children_h) {
+      window_base_auto_scale_children(widget);
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t window_base_on_event_window_close(widget_t* widget, window_base_t* win) {
+  win->stage = WINDOW_STAGE_CLOSED;
+  widget_off_by_ctx(window_manager(), widget);
+
+  return RET_OK;
+}
+
+static ret_t window_base_on_event_request_close_window(widget_t* widget, window_base_t* win) {
+  log_debug("EVT_REQUEST_CLOSE_WINDOW\n");
+  if (win->closable == WINDOW_CLOSABLE_YES) {
+    window_close(widget);
+  }
+
+  if (win->closable != WINDOW_CLOSABLE_CONFIRM) {
+    return RET_STOP;
+  }
+
+  return RET_OK;
+}
+
+static ret_t window_base_on_event_blur(widget_t* widget, window_base_t* win) {
+  widget_t* save_focus_widget = NULL;
+
+  if (win->save_focus_widget) {
+    widget_unref(win->save_focus_widget);
+    win->save_focus_widget = NULL;
+  }
+  save_focus_widget = window_base_get_key_target_leaf(widget);
+  if (save_focus_widget != widget) {
+    win->save_focus_widget = save_focus_widget;
+    if (win->save_focus_widget) {
+      widget_ref(win->save_focus_widget);
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t window_base_on_window_to_foreground(widget_t* widget) {
+  pointer_event_t enter;
+  window_base_t* win = WINDOW_BASE(widget);
+  widget_t* wm = widget_get_window_manager(widget);
+  return_value_if_fail(widget != NULL && win != NULL, RET_BAD_PARAMS);
+
+  win->stage = WINDOW_STAGE_OPENED;
+  if (widget->parent != NULL) {
+    widget->parent->grab_widget_count = widget->grab_widget_count + win->grab_count_when_to_foreground;
+    if (widget->parent->grab_widget_count) {
+      widget->parent->grab_widget = widget;
+    }
+  }
+  if (wm != NULL && wm->target != widget) {
+    pointer_event_init(&enter, EVT_POINTER_ENTER, widget, 0, 0);
+    widget_dispatch_enter_event(widget, &enter);
+  }
+  if (win->save_focus_widget) {
+    widget_set_focused_internal(win->save_focus_widget, TRUE);
+    widget_unref(win->save_focus_widget);
+    win->save_focus_widget = NULL;
+  } else if (widget->parent != NULL && widget_is_window_manager(widget->parent)) {
+    if (widget->sensitive) {
+      widget_set_focused_internal(widget, TRUE);
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t window_base_on_window_to_background(widget_t* widget) {
+  pointer_event_t leave;
+  window_base_t* win = WINDOW_BASE(widget);
+  widget_t* wm = widget_get_window_manager(widget);
+  return_value_if_fail(widget != NULL && win != NULL, RET_BAD_PARAMS);
+
+  win->stage = WINDOW_STAGE_SUSPEND;
+  if (wm != NULL && wm->target == widget) {
+    pointer_event_init(&leave, EVT_POINTER_LEAVE, widget, 0, 0);
+    widget_dispatch_leave_event(widget, &leave);
+  }
+  if (win->pressed) {
+    pointer_event_t abort;
+    pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, 0, 0);
+    widget_on_pointer_up(widget, &abort);
+  }
+
+  if (widget->parent != NULL && widget->parent->grab_widget == widget) {
+    win->grab_count_when_to_foreground =
+        widget->parent->grab_widget_count - widget->grab_widget_count;
+    widget->parent->grab_widget_count = 0;
+    widget->parent->grab_widget = NULL;
+  } else {
+    win->grab_count_when_to_foreground = 0;
+  }
+
+  return RET_OK;
+}
+
 ret_t window_base_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   window_base_t* win = WINDOW_BASE(widget);
-  return_value_if_fail(widget != NULL && win != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && win != NULL && e != NULL, RET_BAD_PARAMS);
 
   if (e->type == EVT_WINDOW_WILL_OPEN) {
-    win->stage = WINDOW_STAGE_CREATED;
-    window_base_load_theme_obj(widget);
-    widget_update_style_recursive(widget);
-    widget_layout(widget);
-    if (widget->sensitive) {
-      widget_set_focused_internal(widget, TRUE);
-    }
-    window_base_set_accept_button(widget, win->accept_button);
-    window_base_set_cancel_button(widget, win->cancel_button);
+    return window_base_on_event_window_will_open(widget, win);
   } else if (e->type == EVT_WINDOW_OPEN) {
-    win->stage = WINDOW_STAGE_OPENED;
-    if (widget->sensitive) {
-      widget_set_focused_internal(widget, TRUE);
-    }
+    return window_base_on_event_window_open(widget, win);
   } else if (e->type == EVT_WINDOW_LOAD) {
-    win->stage = WINDOW_STAGE_LOADED;
-    window_base_load_theme_obj(widget);
-    widget_layout(widget);
-
-    if (win->design_w && win->design_h) {
-      if (win->auto_scale_children_x || win->auto_scale_children_y || win->auto_scale_children_w ||
-          win->auto_scale_children_h) {
-        window_base_auto_scale_children(widget);
-      }
-    }
+    return window_base_on_event_window_load(widget, win);
   } else if (e->type == EVT_WINDOW_CLOSE) {
-    win->stage = WINDOW_STAGE_CLOSED;
-    widget_off_by_ctx(window_manager(), widget);
+    return window_base_on_event_window_close(widget, win);
   } else if (e->type == EVT_THEME_CHANGED) {
     window_base_reload_theme_obj(widget);
   } else if (e->type == EVT_REQUEST_CLOSE_WINDOW) {
-    log_debug("EVT_REQUEST_CLOSE_WINDOW\n");
-    if (win->closable == WINDOW_CLOSABLE_YES) {
-      window_close(widget);
-    }
-
-    if (win->closable != WINDOW_CLOSABLE_CONFIRM) {
-      ret = RET_STOP;
-    }
+    ret = window_base_on_event_request_close_window(widget, win);
   } else if (e->type == EVT_WINDOW_TO_FOREGROUND) {
-    pointer_event_t enter;
-    widget_t* wm = widget_get_window_manager(widget);
-    win->stage = WINDOW_STAGE_OPENED;
-    if (widget->parent != NULL) {
-      widget->parent->grab_widget_count =
-          widget->grab_widget_count + win->grab_count_when_to_foreground;
-      if (widget->parent->grab_widget_count) {
-        widget->parent->grab_widget = widget;
-      }
-    }
-    if (wm->target != widget) {
-      pointer_event_init(&enter, EVT_POINTER_ENTER, widget, 0, 0);
-      widget_dispatch_enter_event(widget, &enter);
-    }
-    if (win->save_focus_widget) {
-      widget_set_focused_internal(win->save_focus_widget, TRUE);
-      widget_unref(win->save_focus_widget);
-      win->save_focus_widget = NULL;
-    } else if (widget->parent != NULL && widget_is_window_manager(widget->parent)) {
-      if (widget->sensitive) {
-        widget_set_focused_internal(widget, TRUE);
-      }
-    }
+    return window_base_on_window_to_foreground(widget);
   } else if (e->type == EVT_WINDOW_TO_BACKGROUND) {
-    pointer_event_t leave;
-    widget_t* wm = widget_get_window_manager(widget);
-    win->stage = WINDOW_STAGE_SUSPEND;
-    if (wm->target == widget) {
-      pointer_event_init(&leave, EVT_POINTER_LEAVE, widget, 0, 0);
-      widget_dispatch_leave_event(widget, &leave);
-    }
-    if (win->pressed) {
-      pointer_event_t abort;
-      pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, 0, 0);
-      widget_on_pointer_up(widget, &abort);
-    }
-
-    if (widget->parent != NULL && widget->parent->grab_widget == widget) {
-      win->grab_count_when_to_foreground =
-          widget->parent->grab_widget_count - widget->grab_widget_count;
-      widget->parent->grab_widget_count = 0;
-      widget->parent->grab_widget = NULL;
-    } else {
-      win->grab_count_when_to_foreground = 0;
-    }
+    return window_base_on_window_to_background(widget);
   } else if (e->type == EVT_BLUR) {
-    widget_t* save_focus_widget = NULL;
-    if (win->save_focus_widget) {
-      widget_unref(win->save_focus_widget);
-      win->save_focus_widget = NULL;
-    }
-    save_focus_widget = window_base_get_key_target_leaf(widget);
-    if (save_focus_widget != widget) {
-      win->save_focus_widget = save_focus_widget;
-      if (win->save_focus_widget) {
-        widget_ref(win->save_focus_widget);
-      }
-    }
+    return window_base_on_event_blur(widget, win);
   } else if (e->type == EVT_POINTER_DOWN) {
     win->pressed = TRUE;
   } else if (e->type == EVT_POINTER_UP) {

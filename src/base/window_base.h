@@ -360,6 +360,24 @@ ret_t window_base_on_destroy(widget_t* widget);
 ret_t window_base_on_event(widget_t* widget, event_t* e);
 
 /**
+ * @method window_base_on_window_to_foreground
+ * 窗口切换到前台时的缺省处理。
+ * @param {widget_t*} widget window_base对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_base_on_window_to_foreground(widget_t* widget);
+
+/**
+ * @method window_base_on_window_to_background
+ * 窗口切换到后台时的缺省处理。
+ * @param {widget_t*} widget window_base对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_base_on_window_to_background(widget_t* widget);
+
+/**
  * @method window_base_invalidate
  * 窗口on_invalidate函数的缺省实现。
  * @param {widget_t*} widget window_base对象。
