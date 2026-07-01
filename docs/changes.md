@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/7/1
+  * 修复 text_selector 根据 selected_index 同步 yoffset 时没有停止当前动画导致 yoffset 错误的问题(感谢朝泽提供补丁)
+
 2026/6/30
   * 重构 window_base，拆分事件处理函数。
   * 完善 window_manager_dispatch_window_foreground_events 修复 edit_ex 输入问题

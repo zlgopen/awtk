@@ -589,13 +589,16 @@ static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* tex
   widget_t* widget = WIDGET(text_selector);
   int32_t mid_index = text_selector->visible_nr / 2;
   int32_t item_height = text_selector->draw_widget_h / text_selector->visible_nr;
+
+  if (text_selector->wa != NULL) {
+    widget_animator_destroy(text_selector->wa);
+    text_selector->wa = NULL;
+  }
+
   if (is_anim && !widget->loading) {
     int32_t yoffset =
         text_selector_get_yoffset_for_selected_index(text_selector, mid_index, item_height);
-    if (text_selector->wa != NULL) {
-      widget_animator_destroy(text_selector->wa);
-      text_selector->wa = NULL;
-    }
+
     return text_selector_scroll_to(widget, yoffset);
   } else {
     text_selector->yoffset = (text_selector->selected_index - mid_index) * item_height;
