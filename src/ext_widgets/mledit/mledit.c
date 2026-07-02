@@ -24,6 +24,7 @@
 #include "tkc/utils.h"
 #include "tkc/time_now.h"
 #include "base/events.h"
+#include "base/layout.h"
 #include "mledit/mledit.h"
 #include "mledit/line_number.h"
 #include "base/input_method.h"
@@ -220,6 +221,40 @@ ret_t mledit_set_max_chars(widget_t* widget, uint32_t max_chars) {
   return RET_OK;
 }
 
+static ret_t mledit_auto_adjust_height(mledit_t* mledit) {
+  ret_t ret = RET_OK;
+
+  if (mledit->auto_adjust_height) {
+    wh_t h = 0;
+    const uint32_t max_line = 5;
+    widget_t* widget = WIDGET(mledit);
+    int32_t margin = style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);
+    int32_t margin_top = style_get_int(widget->astyle, STYLE_ID_MARGIN_TOP, margin);
+    int32_t margin_bottom = style_get_int(widget->astyle, STYLE_ID_MARGIN_BOTTOM, margin);
+    text_edit_state_t state = {0};
+    text_edit_get_state(mledit->model, &state);
+    h = margin_top + margin_bottom +
+        tk_clamp(state.last_line_number + 1, 1, max_line) * state.line_height;
+    ret = widget_set_prop_int(widget, WIDGET_PROP_H, h);
+    if (RET_OK == ret) {
+      widget_layout_self(widget);
+      text_edit_layout(mledit->model);
+    }
+  }
+
+  return ret;
+}
+
+static ret_t mledit_set_auto_adjust_height(widget_t* widget, bool_t auto_adjust_height) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+
+  mledit->auto_adjust_height = auto_adjust_height;
+  mledit_auto_adjust_height(mledit);
+
+  return RET_OK;
+}
+
 static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -240,6 +275,9 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_MAX_CHARS)) {
     value_set_int(v, mledit->max_chars);
+    return RET_OK;
+  } else if (tk_str_eq(name, MLEDIT_PROP_AUTO_ADJUST_HEIGHT)) {
+    value_set_bool(v, mledit->auto_adjust_height);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     uint32_t margin = 0;
@@ -390,6 +428,8 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
   } else if (tk_str_eq(name, MLEDIT_PROP_MAX_CHARS)) {
     mledit_set_max_chars(widget, value_int(v));
     return RET_OK;
+  } else if (tk_str_eq(name, MLEDIT_PROP_AUTO_ADJUST_HEIGHT)) {
+    return mledit_set_auto_adjust_height(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_OPEN_IM_WHEN_FOCUSED)) {
     mledit->open_im_when_focused = value_bool(v);
     return RET_OK;
@@ -946,8 +986,13 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       widget_invalidate(widget, NULL);
       break;
     }
+    case EVT_VALUE_CHANGED: {
+      mledit_auto_adjust_height(mledit);
+      break;
+    }
     case EVT_VALUE_CHANGING: {
       mledit_update_status(widget);
+      mledit_auto_adjust_height(mledit);
       widget_invalidate(widget, NULL);
       break;
     }

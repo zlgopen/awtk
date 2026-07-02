@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/7/2
+  * mledit support auto_adjust_height(感谢兆坤提供补丁)
+
 2026/7/1
   * 修复 text_selector 根据 selected_index 同步 yoffset 时没有停止当前动画导致 yoffset 错误的问题(感谢朝泽提供补丁)
 

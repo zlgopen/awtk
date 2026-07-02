@@ -149,6 +149,12 @@ typedef struct _mledit_t {
    *
    */
   bool_t accept_tab;
+  /**
+   * @property {bool_t} auto_adjust_height
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否根据文本自动调整控件自身高度。
+   */
+  bool_t auto_adjust_height;
   /*private*/
   bool_t lock_scrollbar_value;
   uint8_t margin;
@@ -523,6 +529,8 @@ widget_t* mledit_cast(widget_t* widget);
 #define MLEDIT_PROP_MAX_CHARS "max_chars"
 #define MLEDIT_PROP_WRAP_WORD "wrap_word"
 #define MLEDIT_PROP_OVERWRITE "overwrite"
+#define MLEDIT_PROP_AUTO_ADJUST_HEIGHT "auto_adjust_height"
+
 #define MLEDIT(widget) ((mledit_t*)(mledit_cast(WIDGET(widget))))
 
 /*for compatability*/
