@@ -117,9 +117,9 @@ typedef struct _text_edit_impl_t {
   /*for single line edit*/
   wchar_t mask_char;
   bool_t mask;
-  wstr_t tips;
-  bool_t is_mlines;
 
+  wstr_t tips;
+  bool_t tips_is_mlines;
   bool_t is_first_time_layout;
   int32_t font_size;
   const char* font_name;
@@ -570,7 +570,6 @@ static ret_t text_edit_layout_fragment(text_edit_t* text_edit, uint32_t start, u
   uint32_t offset = start;
   DECL_IMPL(text_edit);
   wstr_t* text = &(text_edit->widget->text);
-  canvas_t* c = GET_CANVAS(text_edit);
   line_info_t* last_line = NULL;
   uint32_t last_breakable_i = 0;
   uint32_t last_breakable_x = 0;
@@ -1078,7 +1077,7 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
   const char* bidi_type = widget_get_prop_str(widget, WIDGET_PROP_BIDI, NULL);
 
   if (text->size > 0) {
-    if (impl->is_mlines) {
+    if (impl->tips_is_mlines) {
       line_parser_t p;
       line_parser_init(&p, c, (const wchar_t*)(text->str), text->size, c->font_size, layout_info->w,
                        TRUE, TRUE);
@@ -1359,7 +1358,7 @@ static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, STB_TEXTEDIT_CHARTY
   *chr = *iter;
   DECL_IMPL(str);
 
-  if (!impl->is_mlines) {
+  if (impl->single_line) {
     if (*chr == STB_TEXTEDIT_NEWLINE) {
       *chr = ' ';
     } else if (*chr == STB_TEXTEDIT_NEWLINER && iter[1] == STB_TEXTEDIT_NEWLINE) {
@@ -1371,10 +1370,10 @@ static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, STB_TEXTEDIT_CHARTY
 }
 
 static int text_edit_get_char_width(STB_TEXTEDIT_STRING* str, int pos, int offset) {
-  STB_TEXTEDIT_CHARTYPE* iter = &str->widget->text.str[offset];
+  STB_TEXTEDIT_CHARTYPE* iter = &str->widget->text.str[pos + offset];
   DECL_IMPL(str);
 
-  if (impl->is_mlines) {
+  if (!impl->single_line) {
     if (*iter == STB_TEXTEDIT_NEWLINE) {
       return STB_TEXTEDIT_GETWIDTH_NEWLINE;
     }
@@ -1386,7 +1385,7 @@ static int text_edit_get_char_width(STB_TEXTEDIT_STRING* str, int pos, int offse
 static STB_TEXTEDIT_CHARTYPE text_edit_get_char(STB_TEXTEDIT_STRING* str, int offset) {
   STB_TEXTEDIT_CHARTYPE chr = str->widget->text.str[offset];
   DECL_IMPL(str);
-  if (!impl->is_mlines) {
+  if (impl->single_line) {
     if (chr == STB_TEXTEDIT_NEWLINE) {
       return ' ';
     }
@@ -2421,7 +2420,7 @@ ret_t text_edit_set_tips(text_edit_t* text_edit, const char* tips, bool_t mlines
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
 
-  impl->is_mlines = mlines;
+  impl->tips_is_mlines = mlines;
   if (TK_STR_IS_EMPTY(tips)) {
     wstr_clear(&(impl->tips));
   } else {
