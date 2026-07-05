@@ -367,6 +367,45 @@ TEST(ComboBox, remove_option_by_index) {
   widget_destroy(w);
 }
 
+TEST(ComboBox, wheel) {
+  wheel_event_t evt;
+  const char* options = "1:red;2:green;3:blue";
+  widget_t* w = combo_box_create(NULL, 0, 0, 100, 30);
+  combo_box_t* combo_box = COMBO_BOX(w);
+
+  combo_box_set_options(w, options);
+  combo_box_set_selected_index(w, 0);
+  widget_set_prop_bool(w, WIDGET_PROP_READONLY, TRUE);
+
+  wheel_event_init(&evt, EVT_WHEEL, w, 1);
+  widget_dispatch(w, (event_t*)&evt);
+  ASSERT_EQ(combo_box->selected_index, 1);
+
+  wheel_event_init(&evt, EVT_WHEEL, w, -1);
+  widget_dispatch(w, (event_t*)&evt);
+  ASSERT_EQ(combo_box->selected_index, 0);
+
+  combo_box_set_selected_index(w, 2);
+  wheel_event_init(&evt, EVT_WHEEL, w, 1);
+  widget_dispatch(w, (event_t*)&evt);
+  ASSERT_EQ(combo_box->selected_index, 0);
+
+  combo_box->combobox_popup = w;
+  combo_box_set_selected_index(w, 1);
+  wheel_event_init(&evt, EVT_WHEEL, w, 1);
+  widget_dispatch(w, (event_t*)&evt);
+  ASSERT_EQ(combo_box->selected_index, 1);
+  combo_box->combobox_popup = NULL;
+
+  combo_box_set_selected_index(w, 0);
+  widget_set_prop_bool(w, WIDGET_PROP_READONLY, FALSE);
+  wheel_event_init(&evt, EVT_WHEEL, w, 1);
+  widget_dispatch(w, (event_t*)&evt);
+  ASSERT_EQ(combo_box->selected_index, 1);
+
+  widget_destroy(w);
+}
+
 TEST(ComboBox, remove_option) {
   widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
 

@@ -537,6 +537,16 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
     case EVT_BLUR:
       combo_box_update_status(widget);
       break;
+    case EVT_WHEEL: {
+      wheel_event_t* evt = (wheel_event_t*)e;
+      if (combo_box->combobox_popup == NULL && widget->enable && widget->sensitive &&
+          evt->dy != 0) {
+        int32_t delta = evt->dy > 0 ? 1 : -1;
+        combo_box_add_selected_index(widget, delta);
+        return RET_STOP;
+      }
+      break;
+    }
     default:
       break;
   }
