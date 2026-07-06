@@ -305,7 +305,113 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     cols = layout->cols;
   }
 
-  if (rows == 1 && cols == 0) { /*hbox*/
+  if (layout->rows_is_height && rows >= 1 && cols == 0) { /* hflow */
+    wh_t item_h = layout->rows;
+    int32_t available_w = layout_w - 2 * x_margin;
+    int32_t y_pos = y_margin;
+
+    /* 第一遍: 统一 h=item_h, 并跑 self_layout 确定每个子控件的宽度(flex/百分比/像素) */
+    area = rect_init(x_margin, y_margin, available_w, item_h);
+    for (i = 0; i < n; i++) {
+      widget_move_resize_ex(children[i], children[i]->x, children[i]->y, children[i]->w, item_h,
+                            FALSE);
+      if (children[i]->self_layout != NULL) {
+        self_layouter_layout(children[i]->self_layout, children[i], &area);
+      }
+    }
+
+    /* 第二遍: 按宽度换行 + align_h 偏移 + 定位(覆盖 self_layout 的 x/y, 保留其 w) */
+    i = 0;
+    while (i < n) {
+      uint32_t j = 0;
+      int32_t px = 0;
+      int32_t x_rel = 0;
+      int32_t row_w = 0;
+      int32_t xoffset = 0;
+      uint32_t row_start = 0;
+      if (y_pos + item_h > layout_h) {
+        for (; i < n; i++) {
+          widget_move_resize_ex(children[i], 0, 0, 0, 0, FALSE);
+        }
+        break;
+      }
+      row_start = i;
+      while (i < n) {
+        wh_t cw = children[i]->w;
+        if (i > row_start && x_rel + spacing + cw > available_w) {
+          break;
+        }
+        x_rel = (i == row_start) ? cw : (x_rel + spacing + cw);
+        i++;
+      }
+      row_w = x_rel;
+      xoffset = 0;
+      if (layout->align_h == ALIGN_H_CENTER) {
+        xoffset = (available_w - row_w) / 2;
+      } else if (layout->align_h == ALIGN_H_RIGHT) {
+        xoffset = available_w - row_w;
+      }
+      px = x_margin + xoffset;
+      for (j = row_start; j < i; j++) {
+        widget_move_resize_ex(children[j], px, y_pos, children[j]->w, item_h, FALSE);
+        px += children[j]->w + spacing;
+      }
+      y_pos += item_h + spacing;
+    }
+
+    for (i = 0; i < n; i++) {
+      widget_layout_children(children[i]);
+    }
+  } else if (layout->cols_is_width && cols >= 1 && rows == 0) { /* vflow */
+    wh_t item_w = layout->cols;
+    int32_t available_h = layout_h - 2 * y_margin;
+    int32_t x_pos = x_margin;
+
+    /* 第一遍: 统一 w=item_w, 并跑 self_layout 确定每个子控件的高度(flex/百分比/像素) */
+    area = rect_init(x_margin, y_margin, item_w, available_h);
+    for (i = 0; i < n; i++) {
+      widget_move_resize_ex(children[i], children[i]->x, children[i]->y, item_w, children[i]->h,
+                            FALSE);
+      if (children[i]->self_layout != NULL) {
+        self_layouter_layout(children[i]->self_layout, children[i], &area);
+      }
+    }
+
+    /* 第二遍: 按高度换列 + 顶端对齐 + 定位(覆盖 self_layout 的 x/y, 保留其 h) */
+    i = 0;
+    while (i < n) {
+      uint32_t j = 0;
+      int32_t py = 0;
+      int32_t y_rel = 0;
+      uint32_t col_start = 0;
+      if (x_pos + item_w > layout_w) {
+        for (; i < n; i++) {
+          widget_move_resize_ex(children[i], 0, 0, 0, 0, FALSE);
+        }
+        break;
+      }
+      col_start = i;
+      y_rel = 0;
+      while (i < n) {
+        wh_t ch = children[i]->h;
+        if (i > col_start && y_rel + spacing + ch > available_h) {
+          break;
+        }
+        y_rel = (i == col_start) ? ch : (y_rel + spacing + ch);
+        i++;
+      }
+      py = y_margin;
+      for (j = col_start; j < i; j++) {
+        widget_move_resize_ex(children[j], x_pos, py, item_w, children[j]->h, FALSE);
+        py += children[j]->h + spacing;
+      }
+      x_pos += item_w + spacing;
+    }
+
+    for (i = 0; i < n; i++) {
+      widget_layout_children(children[i]);
+    }
+  } else if (rows == 1 && cols == 0) { /*hbox*/
     int32_t xoffset = x;
     int32_t children_w = 0;
     h = layout_h - 2 * y_margin;

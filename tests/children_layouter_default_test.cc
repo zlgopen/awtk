@@ -1,6 +1,7 @@
 ﻿#include <string>
 #include "gtest/gtest.h"
 #include "widgets/button.h"
+#include "widgets/view.h"
 #include "base/window.h"
 #include "layouters/children_layouter_default.h"
 #include "base/children_layouter_factory.h"
@@ -340,4 +341,146 @@ TEST(ChildrenLayoutDefault, self) {
 
   children_layouter_destroy(layouter);
   widget_destroy(w);
+}
+
+
+TEST(ChildrenLayoutDefault, hflow) {
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  widget_t* b3 = button_create(w, 0, 0, 0, 0);
+  widget_t* b4 = button_create(w, 0, 0, 0, 0);
+  widget_move_resize(w, 0, 0, 400, 300);
+  widget_move_resize(b1, 0, 0, 100, 0);
+  widget_move_resize(b2, 0, 0, 150, 0);
+  widget_move_resize(b3, 0, 0, 200, 0);
+  widget_move_resize(b4, 0, 0, 50, 0);
+
+  /* left: row1=b1(100)+b2(150), b3 换行; row2=b3(200)+b4(50) */
+  children_layouter_t* l = children_layouter_create("default(h=30, s=0)");
+  ASSERT_EQ(children_layouter_layout(l, w), RET_OK);
+  ASSERT_EQ(b1->x, 0);
+  ASSERT_EQ(b2->x, 100);
+  ASSERT_EQ(b3->x, 0);
+  ASSERT_EQ(b3->y, 30);
+  ASSERT_EQ(b4->x, 200);
+  ASSERT_EQ(b1->h, 30);
+  children_layouter_destroy(l);
+
+  /* center: 每行 row_w=250, xoffset=(400-250)/2=75 */
+  l = children_layouter_create("default(h=30, s=0, align_h=center)");
+  ASSERT_EQ(children_layouter_layout(l, w), RET_OK);
+  ASSERT_EQ(b1->x, 75);
+  ASSERT_EQ(b2->x, 175);
+  ASSERT_EQ(b3->x, 75);
+  ASSERT_EQ(b4->x, 275);
+  children_layouter_destroy(l);
+
+  /* right: xoffset=400-250=150 */
+  l = children_layouter_create("default(h=30, s=0, align_h=right)");
+  ASSERT_EQ(children_layouter_layout(l, w), RET_OK);
+  ASSERT_EQ(b1->x, 150);
+  ASSERT_EQ(b2->x, 250);
+  ASSERT_EQ(b3->x, 150);
+  ASSERT_EQ(b4->x, 350);
+  children_layouter_destroy(l);
+
+  /* spacing+margins: avail=400-10=390; row1=b1+b2(260), b3 换行到 y=45 */
+  l = children_layouter_create("default(h=30, s=10, x=5, y=5)");
+  ASSERT_EQ(children_layouter_layout(l, w), RET_OK);
+  ASSERT_EQ(b1->x, 5);
+  ASSERT_EQ(b1->y, 5);
+  ASSERT_EQ(b2->x, 115);
+  ASSERT_EQ(b3->x, 5);
+  ASSERT_EQ(b3->y, 45);
+  children_layouter_destroy(l);
+
+  widget_destroy(w);
+}
+
+TEST(ChildrenLayoutDefault, hflow_overflow) {
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  widget_t* b3 = button_create(w, 0, 0, 0, 0);
+  widget_t* b4 = button_create(w, 0, 0, 0, 0);
+  children_layouter_t* l = children_layouter_create("default(h=30, s=0)");
+  widget_move_resize(w, 0, 0, 400, 90);
+  widget_move_resize(b1, 0, 0, 400, 0);
+  widget_move_resize(b2, 0, 0, 400, 0);
+  widget_move_resize(b3, 0, 0, 400, 0);
+  widget_move_resize(b4, 0, 0, 400, 0);
+  ASSERT_EQ(children_layouter_layout(l, w), RET_OK);
+  /* layout_h=90, item_h=30 -> 3 行放下(y=0/30/60), 第4行溢出隐藏 */
+  ASSERT_EQ(b1->y, 0);
+  ASSERT_EQ(b2->y, 30);
+  ASSERT_EQ(b3->y, 60);
+  ASSERT_EQ(b4->w, 0);
+  ASSERT_EQ(b4->h, 0);
+  children_layouter_destroy(l);
+  widget_destroy(w);
+}
+
+TEST(ChildrenLayoutDefault, vflow) {
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  widget_t* b3 = button_create(w, 0, 0, 0, 0);
+  widget_t* b4 = button_create(w, 0, 0, 0, 0);
+  widget_move_resize(w, 0, 0, 300, 400);
+  widget_move_resize(b1, 0, 0, 0, 100);
+  widget_move_resize(b2, 0, 0, 0, 150);
+  widget_move_resize(b3, 0, 0, 0, 200);
+  widget_move_resize(b4, 0, 0, 0, 50);
+
+  /* wrap: col1=b1(100)+b2(150), b3 换列; col2=b3(200)+b4(50) */
+  children_layouter_t* l = children_layouter_create("default(w=60, s=0)");
+  ASSERT_EQ(children_layouter_layout(l, w), RET_OK);
+  ASSERT_EQ(b1->x, 0);
+  ASSERT_EQ(b2->y, 100);
+  ASSERT_EQ(b1->w, 60);
+  ASSERT_EQ(b3->x, 60);
+  ASSERT_EQ(b4->y, 200);
+  children_layouter_destroy(l);
+
+  /* overflow: layout_w=90, item_w=30 -> 3 列放下, 第4列隐藏 */
+  widget_move_resize(w, 0, 0, 90, 400);
+  widget_move_resize(b1, 0, 0, 0, 400);
+  widget_move_resize(b2, 0, 0, 0, 400);
+  widget_move_resize(b3, 0, 0, 0, 400);
+  widget_move_resize(b4, 0, 0, 0, 400);
+  l = children_layouter_create("default(w=30, s=0)");
+  ASSERT_EQ(children_layouter_layout(l, w), RET_OK);
+  ASSERT_EQ(b1->x, 0);
+  ASSERT_EQ(b2->x, 30);
+  ASSERT_EQ(b3->x, 60);
+  ASSERT_EQ(b4->w, 0);
+  ASSERT_EQ(b4->h, 0);
+  children_layouter_destroy(l);
+
+  widget_destroy(w);
+}
+
+TEST(ChildrenLayoutDefault, hflow_self_layout) {
+  /* 模拟 page_mledit.xml: hflow 容器 + flex(w=flex) 自适应宽度的子控件。
+   * 子控件宽度由其自身 flex self_layout 决定, hflow 必须先跑 self_layout 拿到宽度再换行定位。 */
+  widget_t* win = window_create(NULL, 0, 0, 800, 480);
+  widget_t* view = view_create(win, 0, 0, 800, 38);
+  widget_t* c1 = view_create(view, 0, 0, 0, 0);
+  widget_t* c2 = view_create(view, 0, 0, 0, 0);
+  button_create(c1, 0, 0, 50, 30);
+  button_create(c2, 0, 0, 60, 30);
+  widget_set_children_layout(view, "default(h=38, c=0, xm=4, s=4)");
+  widget_set_self_layout(view, "flex(h=flex)");
+  widget_set_self_layout(c1, "flex(w=flex)");
+  widget_set_self_layout(c2, "flex(w=flex)");
+  ASSERT_EQ(widget_layout(view), RET_OK);
+  /* c1 宽=50(其按钮), c2 宽=60(其按钮); hflow 排开: c1@4, c2@4+50+4=58, 不重叠 */
+  ASSERT_EQ(c1->w, 50);
+  ASSERT_EQ(c2->w, 60);
+  ASSERT_EQ(c1->x, 4);
+  ASSERT_EQ(c2->x, 58);
+  ASSERT_EQ(c1->h, 38);
+  ASSERT_EQ(c2->h, 38);
+  widget_destroy(win);
 }

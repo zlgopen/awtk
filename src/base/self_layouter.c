@@ -21,6 +21,7 @@
 
 #include "base/widget.h"
 #include "base/widget_vtable.h"
+#include "base/window_manager.h"
 #include "base/self_layouter.h"
 
 const char* self_layouter_to_string(self_layouter_t* layouter) {
@@ -31,6 +32,23 @@ const char* self_layouter_to_string(self_layouter_t* layouter) {
   return_value_if_fail(layouter->vt != NULL && layouter->vt->to_string != NULL, NULL);
 
   return layouter->vt->to_string(layouter);
+}
+
+bool_t self_layouter_is_laid_out(self_layouter_t* layouter) {
+  if (layouter != NULL) {
+    const window_manager_t* wm = (const window_manager_t*)window_manager();
+    if (wm != NULL && wm->layout_count == layouter->count) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+inline static void self_layouter_count_sync(self_layouter_t* layouter) {
+  const window_manager_t* wm = (const window_manager_t*)window_manager();
+  if (wm != NULL) {
+    layouter->count = wm->layout_count;
+  }
 }
 
 ret_t self_layouter_layout(self_layouter_t* layouter, widget_t* widget, rect_t* area) {
@@ -44,6 +62,8 @@ ret_t self_layouter_layout(self_layouter_t* layouter, widget_t* widget, rect_t* 
 
   return_value_if_fail(widget != NULL && area != NULL, RET_FAIL);
   return_value_if_fail(layouter->vt != NULL && layouter->vt->layout != NULL, RET_FAIL);
+
+  self_layouter_count_sync(layouter);
 
   return layouter->vt->layout(layouter, widget, area);
 }

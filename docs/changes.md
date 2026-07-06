@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/7/6
+  * add self_layouter_flex fill and children_layout_default flow (感谢兆坤提供补丁)
+
 2026/7/5
   * 完善 Combo Box 支持用鼠标滚轮修改选项
 

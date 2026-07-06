@@ -1,11 +1,11 @@
 <?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_mledit&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
 <view x="0" y="0" w="100%" h="100%" children_layout="default(r=0,c=1,x=0,y=0,s=0)" name="mledit_view">
-  <scroll_view h="38" xslidable="true" children_layout="default(r=1,c=0,xm=4,s=4)">
-    <view name="view_font" children_layout="default(r=1,c=0,ym=4,s=4)" self_layout="flex(w=flex,h=100%)">
+  <view children_layout="default(h=38,c=0,xm=4,s=4,flexible=true)" self_layout="flex(h=flex)">
+    <view name="view_font" children_layout="default(r=1,c=0,ym=4,s=4)" self_layout="flex(w=flex)">
       <combo_box_ex name="cb_font" w="124" item_height="30" auto_fix="true" readonly="true" theme_of_popup="uiex" options="Song;Arial" selected_index="0"/>
       <combo_box_ex name="cb_font_size" w="88" item_height="30" auto_fix="true" readonly="true" theme_of_popup="uiex" options="5;5.5;6.5;7.5;8;9;10;10.5;11;12;14;16;18;20" selected_index="0"/>
     </view>
-    <view name="view_btn" children_layout="default(r=1,c=0,ym=7,s=4)" self_layout="flex(w=flex,h=100%)" style="toolbar">
+    <view name="view_btn" children_layout="default(r=1,c=0,ym=7,s=4)" self_layout="flex(w=flex)" style="toolbar">
       <button name="btn_text_color" style="text_color" w="24">
         <label name="label" y="b:3" w="60%" h="1" style:normal:bg_color="#FFC000" x="c"/>
       </button>
@@ -17,19 +17,19 @@
       <check_button name="cb_underline" style="underscore" w="24"/>
       <view name="nop" w="1"/>
     </view>
-    <view name="view_btn" children_layout="default(r=1,c=0,ym=7,s=4)" self_layout="flex(w=flex,h=100%)" style="toolbar">
+    <view name="view_btn" children_layout="default(r=1,c=0,ym=7,s=4)" self_layout="flex(w=flex)" style="toolbar">
       <radio_button name="rb_aligned_l" style="align_left" w="26"/>
       <radio_button name="rb_aligned_m" style="align_middle" w="26"/>
       <radio_button name="rb_aligned_r" style="align_right" w="26"/>
       <radio_button name="rb_aligned_b" style="align_both" w="26" value="true"/>
       <view name="nop" w="1"/>
     </view>
-    <view name="view_btn" children_layout="default(r=1,c=0,ym=7,s=4)" self_layout="flex(w=flex,h=100%)">
+    <view name="view_btn" children_layout="default(r=1,c=0,ym=7,s=4)" self_layout="flex(w=flex)">
       <button name="btn_picture" style="picture" w="24"/>
       <view name="nop" w="1"/>
     </view>
-  </scroll_view>
-  <mledit name="mledit" max_lines="100" wrap_word="true" scroll_line="10" h="-38" keyboard="uiex/kb_default">
+  </view>
+  <mledit name="mledit" max_lines="100" wrap_word="true" scroll_line="10" self_layout="flex(h=fill)" keyboard="uiex/kb_default">
     <line_number name="line_number" x="0" y="0" w="32" h="100%"/>
     <scroll_bar_d name="bar" x="r" y="0" w="16" h="100%" value="0"/>
   </mledit>

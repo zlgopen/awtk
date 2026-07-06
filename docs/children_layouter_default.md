@@ -23,15 +23,15 @@ PARAM_LIST => PARAM | PARAM ',' PARAM_LIST
 | -------------- | :---: | :--------------------------------------------------------- |
 | rows           |   r   | 行数                                                       |
 | cols           |   c   | 列数                                                       |
-| width          |   w   | 子控件的宽度，可以用来计算列数，与 cols 互斥               |
-| height         |   h   | 子控件的高度，可以用来计算行数，与 rows 互斥               |
+| width          |   w   | 子控件的宽度，可以用来计算列数（grid），或作为 vflow 的列宽（与 cols 互斥） |
+| height         |   h   | 子控件的高度，可以用来计算行数（grid），或作为 hflow 的行高（与 rows 互斥） |
 | x\_margin      |  xm   | 水平方向的边距                                             |
 | y\_margin      |  ym   | 垂直方向的边距                                             |
 | spacing        |   s   | 子控件之间的间距                                           |
 | flexible       |   f   | 一行或一列放不下时，是否再另起一行或一列（缺省否）         |
 | keep_invisible |  ki   | 是否给不可见的控件留位置（缺省否）                         |
 | keep_disable   |  kd   | 是否给不用的控件留位置（缺省是）                           |
-| align_h        |   a   | 用于 hbox 的情况 (col=0,row=1), 子控件整体水平对齐的方式。 |
+| align_h        |   a   | 用于 hbox 和 hflow，子控件整体水平对齐的方式。             |
 
 在代码中，可以通过 widget\_set\_children\_layout 函数启用子控件布局器：
 
@@ -194,7 +194,60 @@ bin\preview_ui.exe t.xml
 
 ![网格布局](images/layout_grid.png)
 
-### 5. floating 浮动布局
+### 5. hflow 水平流式布局
+
+当 height=item_h、cols=0 时，子控件在水平方向逐行排列，高度统一为 item_h，宽度由子控件自身决定，一行放不下时自动换到下一行。子控件的参数：
+
+* x 从左到右排列，由布局参数计算而出（按 align_h 对齐）。
+* y 为该行的起始 y。
+* w 由子控件自身宽度决定，布局器据此换行。
+* h 为 item_h。
+
+> 子控件需自行决定宽度（w 属性，或 self_layout 的 flex/百分比/像素）。
+> 布局器先跑子控件的 self_layout 确定其宽度（百分比相对行宽），再按宽度换行定位；self_layout 的 x/y/h 不生效（由布局器决定），仅 w 生效。
+> align_h 参数控制每行整体水平对齐方式。
+> 一行放不下的子控件换到下一行；垂直方向放不下的子控件被隐藏。
+
+示例：
+
+```
+<window>
+  <view x="c" y="m" w="300" h="100" children_layout="default(h=30, s=5, align_h=center)">
+      <button text="1" w="80"/>
+      <button text="2" w="100"/>
+      <button text="3" w="80"/>
+      <button text="4" w="100"/>
+  </view>
+</window>
+```
+
+### 6. vflow 垂直流式布局
+
+当 width=item_w、rows=0 时，子控件在垂直方向逐列排列，宽度统一为 item_w，高度由子控件自身决定，一列放不下时自动换到下一列。子控件的参数：
+
+* x 为该列的起始 x。
+* y 从上到下排列，由布局参数计算而出（顶端对齐）。
+* w 为 item_w。
+* h 由子控件自身高度决定，布局器据此换列。
+
+> 子控件需自行决定高度（h 属性，或 self_layout 的 flex/百分比/像素）。
+> 布局器先跑子控件的 self_layout 确定其高度（百分比相对列高），再按高度换列定位；self_layout 的 x/y/w 不生效（由布局器决定），仅 h 生效。
+> 一列放不下的子控件换到下一列；水平方向放不下的子控件被隐藏。
+
+示例：
+
+```
+<window>
+  <view x="c" y="m" w="100" h="300" children_layout="default(w=30, s=5)">
+      <button text="1" h="80"/>
+      <button text="2" h="100"/>
+      <button text="3" h="80"/>
+      <button text="4" h="100"/>
+  </view>
+</window>
+```
+
+### 7. floating 浮动布局
 
 如果子控件的 floating 属性设置为 true，其不受 children\_layout 的限制：
 

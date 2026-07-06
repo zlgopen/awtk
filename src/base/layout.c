@@ -97,6 +97,15 @@ ret_t widget_layout_self(widget_t* widget) {
   return self_layouter_layout(widget->self_layout, widget, &r);
 }
 
+ret_t widget_ensure_layout_self(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (self_layouter_is_laid_out(widget->self_layout)) {
+    return RET_OK;
+  }
+  return widget_layout_self(widget);
+}
+
 ret_t widget_layout_self_reinit(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->self_layout != NULL, RET_BAD_PARAMS);
   self_layouter_reinit(widget->self_layout);

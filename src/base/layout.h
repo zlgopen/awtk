@@ -83,6 +83,7 @@ ret_t widget_get_children_for_layout(widget_t* widget, darray_t* result, bool_t 
 
 /* private */
 ret_t widget_auto_adjust_size(widget_t* widget);
+ret_t widget_ensure_layout_self(widget_t* widget);
 
 END_C_DECLS
 

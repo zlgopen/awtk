@@ -63,6 +63,7 @@ typedef struct _self_layouter_vtable_t {
  */
 struct _self_layouter_t {
   str_t params;
+  uint32_t count;
   const self_layouter_vtable_t* vt;
 };
 
@@ -177,6 +178,9 @@ self_layouter_t* self_layouter_create(const char* params);
  * @return {self_layouter_t*} 返回layouter对象。
  */
 self_layouter_t* self_layouter_clone(self_layouter_t* layouter);
+
+/* private */
+bool_t self_layouter_is_laid_out(self_layouter_t* layouter);
 
 END_C_DECLS
 
