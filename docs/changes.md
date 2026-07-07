@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/7/7
+  * text_edit_measure_char用传进来的canvas而不是text_edit的canvas。修复打开对话框后，背景的mledit或edit字符间距不正常的问题(感谢兆坤提供补丁)
+
 2026/7/6
   * add self_layouter_flex fill and children_layout_default flow (感谢兆坤提供补丁)
 

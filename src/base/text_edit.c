@@ -139,8 +139,8 @@ static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter);
 static ret_t text_edit_update_caret_pos(text_edit_t* text_edit);
 static ret_t text_edit_select_word_impl(text_edit_t* text_edit, uint32_t cursor, int32_t* start,
                                         int32_t* end);
-static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, STB_TEXTEDIT_CHARTYPE* iter,
-                                   STB_TEXTEDIT_CHARTYPE* chr);
+static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, canvas_t* c,
+                                   STB_TEXTEDIT_CHARTYPE* iter, STB_TEXTEDIT_CHARTYPE* chr);
 
 #ifdef WITH_SDL
 #include "base/awtk_sdl_api.h"
@@ -356,7 +356,7 @@ static uint32_t text_edit_measure_text_on_canvas(text_edit_t* text_edit, wchar_t
     bool_t preedit = text_edit_is_preedit_char(text_edit, i);
     bool_t briefly_show = text_edit_is_briefly_show_char(text_edit, i);
     wchar_t* chr = (mask_char && (!preedit && !briefly_show)) ? &mask_char : &str[i];
-    w += text_edit_measure_char(text_edit, chr, NULL);
+    w += text_edit_measure_char(text_edit, c, chr, NULL);
   }
 
   return w;
@@ -442,7 +442,7 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
     wchar_t* p = text->str + i;
     break_type_t word_break = LINE_BREAK_NO;
     break_type_t line_break = LINE_BREAK_NO;
-    uint32_t char_w = text_edit_measure_char(text_edit, p, &last_char);
+    uint32_t char_w = text_edit_measure_char(text_edit, c, p, &last_char);
 
     if (i == state->cursor) {
       caret.x = x;
@@ -478,7 +478,7 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
         }
 
         p = text->str + i;
-        char_w = text_edit_measure_char(text_edit, p, NULL);
+        char_w = text_edit_measure_char(text_edit, c, p, NULL);
 
         x = char_w;
         y += line_height;
@@ -569,6 +569,7 @@ static ret_t text_edit_layout_fragment(text_edit_t* text_edit, uint32_t start, u
   uint32_t offset0 = start;
   uint32_t offset = start;
   DECL_IMPL(text_edit);
+  canvas_t* c = GET_CANVAS(text_edit);
   wstr_t* text = &(text_edit->widget->text);
   line_info_t* last_line = NULL;
   uint32_t last_breakable_i = 0;
@@ -581,7 +582,7 @@ static ret_t text_edit_layout_fragment(text_edit_t* text_edit, uint32_t start, u
     wchar_t* p = text->str + i;
     break_type_t word_break = LINE_BREAK_NO;
     break_type_t line_break = LINE_BREAK_NO;
-    uint32_t char_w = text_edit_measure_char(text_edit, p, NULL);
+    uint32_t char_w = text_edit_measure_char(text_edit, c, p, NULL);
     line_break = line_break_check(*p, p[1]);
     if (line_break == LINE_BREAK_MUST || i == end - 1) {
       last_line = (line_info_t*)darray_get(&row->info, row->line_num - 1);
@@ -630,7 +631,7 @@ static ret_t text_edit_layout_fragment(text_edit_t* text_edit, uint32_t start, u
         }
 
         p = text->str + i;
-        char_w = text_edit_measure_char(text_edit, p, NULL);
+        char_w = text_edit_measure_char(text_edit, c, p, NULL);
         x = char_w;
         offset0 = i;
         (*line_index)++;
@@ -947,7 +948,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   widget_prepare_text_style(text_edit->widget, c);
   impl->line_height = c->font_size * FONT_BASELINE;
   widget_get_text_layout_info(text_edit->widget, layout_info);
-  char_w = text_edit_measure_char(text_edit, text->str, NULL);
+  char_w = text_edit_measure_char(text_edit, c, text->str, NULL);
 
   if (layout_info->w < char_w) {
     return RET_OK;
@@ -1171,7 +1172,7 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
     bool_t briefly_show = text_edit_is_briefly_show_char(text_edit, offset);
     wchar_t* chr = (impl->mask && (!preedit && !briefly_show)) ? &impl->mask_char : &b.vis_str[k];
     wchar_t show_chr = *chr;
-    uint32_t char_w = text_edit_measure_char(text_edit, chr, &show_chr);
+    uint32_t char_w = text_edit_measure_char(text_edit, c, chr, &show_chr);
     if (0 == char_w) {
       continue;
     }
@@ -1349,14 +1350,17 @@ static int text_edit_remove(STB_TEXTEDIT_STRING* str, int pos, int num) {
   return TRUE;
 }
 
-static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, STB_TEXTEDIT_CHARTYPE* iter,
-                                   STB_TEXTEDIT_CHARTYPE* chr) {
+static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, canvas_t* c,
+                                   STB_TEXTEDIT_CHARTYPE* iter, STB_TEXTEDIT_CHARTYPE* chr) {
   STB_TEXTEDIT_CHARTYPE _chr;
   if (NULL == chr) {
     chr = &_chr;
   }
   *chr = *iter;
   DECL_IMPL(str);
+  if (NULL == c) {
+    c = GET_CANVAS(str);
+  }
 
   if (impl->single_line) {
     if (*chr == STB_TEXTEDIT_NEWLINE) {
@@ -1366,7 +1370,7 @@ static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, STB_TEXTEDIT_CHARTY
     }
   }
 
-  return canvas_measure_text(GET_CANVAS(str), chr, 1) + CHAR_SPACING;
+  return canvas_measure_text(c, chr, 1) + CHAR_SPACING;
 }
 
 static int text_edit_get_char_width(STB_TEXTEDIT_STRING* str, int pos, int offset) {
@@ -1379,7 +1383,7 @@ static int text_edit_get_char_width(STB_TEXTEDIT_STRING* str, int pos, int offse
     }
   }
 
-  return text_edit_measure_char(str, iter, NULL);
+  return text_edit_measure_char(str, NULL, iter, NULL);
 }
 
 static STB_TEXTEDIT_CHARTYPE text_edit_get_char(STB_TEXTEDIT_STRING* str, int offset) {
@@ -1780,7 +1784,7 @@ static ret_t text_edit_update_caret_pos(text_edit_t* text_edit) {
           if (offset == k) {
             break;
           }
-          x += text_edit_measure_char(text_edit, p, &last_char);
+          x += text_edit_measure_char(text_edit, c, p, &last_char);
         }
         is_setting = TRUE;
         if (last_char == STB_TEXTEDIT_NEWLINE) {
