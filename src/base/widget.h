@@ -2685,7 +2685,7 @@ ret_t widget_destroy_async(widget_t* widget);
 /**
  * @method widget_ref
  * 增加控件的引用计数。
- * 
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {widget_t*} 返回控件对象。
@@ -2695,7 +2695,6 @@ widget_t* widget_ref(widget_t* widget);
 /**
  * @method widget_unref
  * 减少控件的引用计数。引用计数为0时销毁控件。
- *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
