@@ -3572,6 +3572,203 @@ ret_t fscript_register_event(const char* name, uint32_t etype) {
   return tk_object_set_prop_uint32(s_custom_events, name, etype);
 }
 
+static ret_t fscript_collect_var(fscript_t* fscript, const value_t* v, darray_t* result,
+                                 uint32_t filter, bool_t in_func_body, tk_object_t* local_var_map) {
+  const char* name = value_id(v);
+  bool_t is_system = FALSE;
+  bool_t is_local = FALSE;
+  bool_t is_global = FALSE;
+  bool_t is_dotted = FALSE;
+
+  if (name == NULL || name[0] == '.') return RET_OK;
+
+  /* Strip $ prefix - the runtime also strips $ so we store without it */
+  if (name[0] == '$') {
+    name++;
+  }
+  if (name == NULL || name[0] == '\0' || name[0] == '.') return RET_OK;
+
+  is_system = (strncmp(name, FSCRIPT_STR_GLOBAL_PREFIX, FSCRIPT_GLOBAL_PREFIX_LEN) == 0);
+
+  if (!is_system) {
+    /* For dotted names (like item.name), check if the base part is local. */
+    const char* dot = strchr(name, '.');
+    is_dotted = (dot != NULL);
+
+    if (is_dotted) {
+      /* Check if the base part (before first '.') is a local variable */
+      str_set_with_len(&(fscript->str), name, dot - name);
+      const char* base_name = fscript->str.str;
+
+      if (in_func_body) {
+        is_local = (value_id_index(v) >= 0);
+        if (!is_local && fscript != NULL && fscript->symbols != NULL) {
+          is_local = (darray_find_index(fscript->symbols, (void*)base_name) >= 0);
+        }
+        if (!is_local && local_var_map != NULL) {
+          is_local = (tk_object_get_prop(local_var_map, base_name, NULL) == RET_OK);
+        }
+      } else {
+        is_local = (fscript != NULL && fscript->symbols != NULL &&
+                    darray_find_index(fscript->symbols, (void*)base_name) >= 0);
+      }
+
+      if (is_local && (filter & FSCRIPT_VAR_FILTER_LOCAL)) {
+        char* dup = tk_strdup(name);
+        if (dup != NULL && darray_push_unique(result, dup) != RET_OK) {
+          TKMEM_FREE(dup);
+        }
+      }
+
+      if (is_local && (filter & FSCRIPT_VAR_FILTER_GLOBAL) && local_var_map != NULL) {
+        const char* src = tk_object_get_prop_str(local_var_map, base_name);
+        if (src != NULL) {
+          str_t resolved;
+          str_init(&resolved, 0);
+          if (str_set(&resolved, src) == RET_OK && str_append(&resolved, dot) == RET_OK) {
+            char* dup = tk_strdup(resolved.str);
+            if (dup != NULL && darray_push_unique(result, dup) != RET_OK) {
+              TKMEM_FREE(dup);
+            }
+          }
+          str_reset(&resolved);
+        }
+      }
+
+      is_global = !is_local;
+
+      if (is_global && (filter & FSCRIPT_VAR_FILTER_GLOBAL)) {
+        char* dup = tk_strdup(name);
+        if (dup != NULL && darray_push_unique(result, dup) != RET_OK) {
+          TKMEM_FREE(dup);
+        }
+      }
+
+      return RET_OK;
+    } else {
+      if (in_func_body) {
+        is_local = (value_id_index(v) >= 0);
+      } else {
+        is_local = (fscript != NULL && fscript->symbols != NULL &&
+                    darray_find_index(fscript->symbols, (void*)name) >= 0);
+      }
+      is_global = !is_local;
+    }
+  }
+
+  if (is_system && (filter & FSCRIPT_VAR_FILTER_SYSTEM)) {
+    char* dup = tk_strdup(name);
+    if (dup != NULL && darray_push_unique(result, dup) != RET_OK) {
+      TKMEM_FREE(dup);
+    }
+  } else if (is_local && (filter & FSCRIPT_VAR_FILTER_LOCAL)) {
+    char* dup = tk_strdup(name);
+    if (dup != NULL && darray_push_unique(result, dup) != RET_OK) {
+      TKMEM_FREE(dup);
+    }
+  } else if (is_global && (filter & FSCRIPT_VAR_FILTER_GLOBAL)) {
+    char* dup = tk_strdup(name);
+    if (dup != NULL && darray_push_unique(result, dup) != RET_OK) {
+      TKMEM_FREE(dup);
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t fscript_get_vars_from_func_call(fscript_t* fscript, fscript_func_call_t* iter,
+                                             darray_t* result, uint32_t filter, bool_t in_func_body,
+                                             tk_object_t* local_var_map) {
+  return_value_if_fail(result != NULL, RET_BAD_PARAMS);
+
+  while (iter != NULL) {
+    uint32_t i = 0;
+
+    /* Track set_local assignments to resolve local-to-global paths */
+    if (iter->func == func_set_local && iter->args.size >= 2 && local_var_map != NULL) {
+      value_t* name_arg = iter->args.args;
+      value_t* val_arg = iter->args.args + 1;
+      if (name_arg->type == VALUE_TYPE_FSCRIPT_ID && val_arg->type == VALUE_TYPE_FSCRIPT_ID) {
+        const char* local_name = value_id(name_arg);
+        const char* src_name = value_id(val_arg);
+        if (local_name != NULL && src_name != NULL && strchr(src_name, '.') != NULL &&
+            strncmp(src_name, FSCRIPT_STR_GLOBAL_PREFIX, FSCRIPT_GLOBAL_PREFIX_LEN) != 0) {
+          tk_object_set_prop_str(local_var_map, local_name, src_name);
+        }
+      }
+    }
+
+    if (iter->func == func_function_def && iter->ctx != NULL) {
+      fscript_function_def_t* def = (fscript_function_def_t*)(iter->ctx);
+      if (def->body != NULL) {
+        fscript_get_vars_from_func_call(fscript, def->body, result, filter, TRUE, local_var_map);
+      }
+    }
+
+    for (i = 0; i < iter->args.size; i++) {
+      value_t* v = iter->args.args + i;
+
+      if (v->type == VALUE_TYPE_FSCRIPT_ID) {
+        fscript_collect_var(fscript, v, result, filter, in_func_body, local_var_map);
+      } else if (v->type == VALUE_TYPE_FSCRIPT_FUNC) {
+        fscript_func_call_t* sub = value_func(v);
+        fscript_get_vars_from_func_call(fscript, sub, result, filter, in_func_body, local_var_map);
+      }
+    }
+
+    iter = iter->next;
+  }
+
+  return RET_OK;
+}
+
+typedef struct _fscript_get_vars_ctx_t {
+  darray_t* result;
+  uint32_t filter;
+  tk_object_t* local_var_map;
+  fscript_t* fscript;
+} fscript_get_vars_ctx_t;
+
+static ret_t foreach_func_def_get_vars(void* ctx, const void* data) {
+  fscript_get_vars_ctx_t* info = (fscript_get_vars_ctx_t*)ctx;
+  tk_object_t* local_var_map = info->local_var_map;
+  named_value_t* nv = (named_value_t*)(data);
+  fscript_function_def_t* def = (fscript_function_def_t*)value_func_def(&(nv->value));
+
+  if (def != NULL && def->body != NULL) {
+    fscript_get_vars_from_func_call(info->fscript, def->body, info->result, info->filter, TRUE,
+                                    local_var_map);
+  }
+
+  return RET_OK;
+}
+
+ret_t fscript_get_vars(fscript_t* fscript, uint32_t filter, darray_t* result) {
+  fscript_get_vars_ctx_t ctx = {0};
+  tk_object_t* local_var_map = object_default_create();
+  return_value_if_fail(fscript != NULL && result != NULL, RET_BAD_PARAMS);
+
+  if (filter == 0) filter = FSCRIPT_VAR_FILTER_ALL;
+
+  if (fscript->first != NULL) {
+    fscript_get_vars_from_func_call(fscript, fscript->first, result, filter, FALSE, local_var_map);
+  }
+
+  if (fscript->funcs_def != NULL) {
+    ctx.result = result;
+    ctx.filter = filter;
+    ctx.fscript = fscript;
+    ctx.local_var_map = local_var_map;
+    tk_object_foreach_prop(fscript->funcs_def, foreach_func_def_get_vars, &ctx);
+  }
+
+  if (local_var_map != NULL) {
+    TK_OBJECT_UNREF(local_var_map);
+  }
+
+  return RET_OK;
+}
+
 double tk_expr_eval(const char* expr) {
   value_t v;
   tk_object_t* obj = NULL;

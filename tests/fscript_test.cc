@@ -1,4 +1,4 @@
-﻿#include "tkc/utf8.h"
+#include "tkc/utf8.h"
 #include "tkc/fscript.h"
 #include "tkc/object_default.h"
 #include "gtest/gtest.h"
@@ -3688,7 +3688,7 @@ TEST(FScript, prop_exist) {
   fscript_eval(obj, "str_b?str_b:str_a", &v);
   ASSERT_STREQ(value_str(&v), "ABC");
   value_reset(&v);
-  
+
   fscript_eval(obj, "var_exists('str_b')?str_b:str_a", &v);
   ASSERT_STREQ(value_str(&v), "ABC");
   value_reset(&v);
@@ -3697,6 +3697,1069 @@ TEST(FScript, prop_exist) {
   fscript_eval(obj, "var_exists('str_b')?str_b:str_a", &v);
   ASSERT_STREQ(value_str(&v), "abc");
   value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+static void assert_vars_contains(darray_t* vars, const char* name) {
+  bool_t found = FALSE;
+  uint32_t i = 0;
+  for (i = 0; i < vars->size; i++) {
+    if (tk_str_eq((const char*)(vars->elms[i]), name)) {
+      found = TRUE;
+      break;
+    }
+  }
+  ASSERT_TRUE(found);
+}
+
+static void assert_vars_not_contains(darray_t* vars, const char* name) {
+  bool_t found = FALSE;
+  uint32_t i = 0;
+  for (i = 0; i < vars->size; i++) {
+    if (tk_str_eq((const char*)(vars->elms[i]), name)) {
+      found = TRUE;
+      break;
+    }
+  }
+  ASSERT_FALSE(found);
+}
+
+static void assert_vars_size(darray_t* vars, uint32_t expected) {
+  ASSERT_EQ(vars->size, expected);
+}
+
+/* 简单标识符变量 */
+TEST(FScriptGetVars, simple_id) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a + b");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 点号分隔的属性路径 */
+TEST(FScriptGetVars, dotted_path) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a + b * obj.prop");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 3);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "obj.prop");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 多层嵌套属性路径 */
+TEST(FScriptGetVars, multi_level_path) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "AAA.BBB + item.CC");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "AAA.BBB");
+  assert_vars_contains(&vars, "item.CC");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 数字常量不应作为变量 */
+TEST(FScriptGetVars, number_literal) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "1 + 2.5");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 0);
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 字符串常量不应作为变量 */
+TEST(FScriptGetVars, string_literal) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "'hello' + \"world\"");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 0);
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* true/false 不应作为变量 */
+TEST(FScriptGetVars, bool_literal) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "true + false");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 0);
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 函数调用不应提取为变量（函数名不算变量） */
+TEST(FScriptGetVars, func_call) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "sum(1, 2)");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  /* sum 是函数调用，不是变量；1,2 是数字也不是变量 */
+  assert_vars_size(&vars, 0);
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 函数参数中的变量 */
+TEST(FScriptGetVars, func_call_with_vars) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "sum(a, b)");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 嵌套函数调用 */
+TEST(FScriptGetVars, nested_func_call) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "sub(sum(a, b), c)");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 3);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "c");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 赋值表达式 */
+TEST(FScriptGetVars, assign) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a = b + 1");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* var 局部变量声明 */
+TEST(FScriptGetVars, var_decl) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "var a = 1; var b = 2; var c = a + b; c");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 3);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "c");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* set/get/unset */
+TEST(FScriptGetVars, set_get_unset) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "set(a, 3); get(a); unset(a)");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 1);
+  assert_vars_contains(&vars, "a");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 运算符表达式 */
+TEST(FScriptGetVars, operators) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a + b - c * d / e % f");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 6);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "c");
+  assert_vars_contains(&vars, "d");
+  assert_vars_contains(&vars, "e");
+  assert_vars_contains(&vars, "f");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 比较运算符 */
+TEST(FScriptGetVars, compare) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a < b && c > d || e == f");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 6);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "c");
+  assert_vars_contains(&vars, "d");
+  assert_vars_contains(&vars, "e");
+  assert_vars_contains(&vars, "f");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 三目运算符 */
+TEST(FScriptGetVars, ternary) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a ? b : c");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 3);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "c");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* if 语句 */
+TEST(FScriptGetVars, if_statement) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "if(a > 0) { b } else { c }");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 3);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "c");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* if-elif-else 语句 */
+TEST(FScriptGetVars, if_elif_else) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "if(a > 0) { b } else if(c > 0) { d } else { e }");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "c");
+  assert_vars_contains(&vars, "d");
+  assert_vars_contains(&vars, "e");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* while 循环 */
+TEST(FScriptGetVars, while_loop) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "while(a < 100) { a = a + 1 }; a");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_contains(&vars, "a");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* until 循环 */
+TEST(FScriptGetVars, until_loop) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "until(a >= 100) { a = a + 1 }; a");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_contains(&vars, "a");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* repeat 循环 */
+TEST(FScriptGetVars, repeat_loop) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "repeat(i, 0, 100, 1) { a = a + 1 }; a");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_contains(&vars, "i");
+  assert_vars_contains(&vars, "a");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* repeat_times 循环 */
+TEST(FScriptGetVars, repeat_times_loop) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "repeat_times(100) { a = a + 1 }; a");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_contains(&vars, "a");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* for_in 循环 */
+TEST(FScriptGetVars, for_in_loop) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "for_in(i, arr) { a = a + i }; a");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_contains(&vars, "i");
+  assert_vars_contains(&vars, "arr");
+  assert_vars_contains(&vars, "a");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* function 定义 */
+TEST(FScriptGetVars, function_def) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "function add(x, y) { return x + y }; add(a, b)");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_contains(&vars, "x");
+  assert_vars_contains(&vars, "y");
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* return 语句 */
+TEST(FScriptGetVars, return_stmt) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "if(a > 0) { return a }; b");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* global. 前缀的变量 */
+TEST(FScriptGetVars, global_prefix) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "global.a + b");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  /* global.a 在解析时 value_id 存储的是 "global.a" */
+  assert_vars_contains(&vars, "global.a");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* $ 前缀变量 */
+TEST(FScriptGetVars, dollar_prefix) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "$aaa + b");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  /* $aaa 在 token_to_value 中 value_id 存储时不包含 $（fscript_get_var 自动去掉 $） */
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "aaa");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 混合表达式：变量、函数、数字、字符串 */
+TEST(FScriptGetVars, mixed) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a + sum(b, c) * 2 - 'hello'");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 3);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "c");
+  assert_vars_not_contains(&vars, "sum");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* print 函数中的变量 */
+TEST(FScriptGetVars, print_func) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "print(a + b)");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 重复变量只出现一次 */
+TEST(FScriptGetVars, duplicate) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a + a * a");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 1);
+  assert_vars_contains(&vars, "a");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 注释中的内容不影响变量提取 */
+TEST(FScriptGetVars, comments) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "// this is comment\na + b /* block comment */");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 仅数字和字符串，无变量 */
+TEST(FScriptGetVars, no_vars) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "sum(1, 2) + 'hello'");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 0);
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 多语句 */
+TEST(FScriptGetVars, multi_statement) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "set(a, 1); set(b, 2); a + b");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 复合赋值 + 属性路径 */
+TEST(FScriptGetVars, complex_assign) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "obj.value = a + obj.other");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_contains(&vars, "obj.value");
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "obj.other");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 位运算中的变量 */
+TEST(FScriptGetVars, bitwise) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a & b | c ^ d");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 4);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "c");
+  assert_vars_contains(&vars, "d");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 逻辑运算 */
+TEST(FScriptGetVars, logical) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a && b || !c");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "c");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 条件表达式中的属性路径 */
+TEST(FScriptGetVars, ternary_path) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "obj.enabled ? obj.name : 'default'");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "obj.enabled");
+  assert_vars_contains(&vars, "obj.name");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* ===== fscript_get_vars filter 测试 ===== */
+
+/* ---- SYSTEM filter ---- */
+
+/* 简单系统变量 */
+TEST(FScriptGetVarsFilter, system_simple) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "global.a + global.b");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_SYSTEM, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "global.a");
+  assert_vars_contains(&vars, "global.b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 系统变量带属性路径，保留 global. 前缀 */
+TEST(FScriptGetVarsFilter, system_dotted_path) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "global.obj.prop + global.config.database.host");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_SYSTEM, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "global.obj.prop");
+  assert_vars_contains(&vars, "global.config.database.host");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 系统变量与全局/局部变量混合，只提取系统变量 */
+TEST(FScriptGetVarsFilter, system_mixed) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "global.a + b * obj.prop");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_SYSTEM, &vars);
+  assert_vars_size(&vars, 1);
+  assert_vars_contains(&vars, "global.a");
+  assert_vars_not_contains(&vars, "b");
+  assert_vars_not_contains(&vars, "obj.prop");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 无系统变量 */
+TEST(FScriptGetVarsFilter, system_no_system_vars) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a + b * 2");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_SYSTEM, &vars);
+  assert_vars_size(&vars, 0);
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 系统变量在函数调用参数中 */
+TEST(FScriptGetVarsFilter, system_in_func_args) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "sum(global.x, global.y)");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_SYSTEM, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "global.x");
+  assert_vars_contains(&vars, "global.y");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 系统变量在 if 语句中 */
+TEST(FScriptGetVarsFilter, system_in_if) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "if(global.flag) { global.result } else { c }");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_SYSTEM, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "global.flag");
+  assert_vars_contains(&vars, "global.result");
+  assert_vars_not_contains(&vars, "c");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 系统变量在 function 定义中 */
+TEST(FScriptGetVarsFilter, system_in_func_def) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "function add(x, y) { return global.base + x + y }; add(a, b)");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_SYSTEM, &vars);
+  assert_vars_size(&vars, 1);
+  assert_vars_contains(&vars, "global.base");
+  assert_vars_not_contains(&vars, "x");
+  assert_vars_not_contains(&vars, "y");
+  assert_vars_not_contains(&vars, "a");
+  assert_vars_not_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* ---- LOCAL filter ---- */
+
+/* 简单局部变量 */
+TEST(FScriptGetVarsFilter, local_simple) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "var x = 1; var y = 2; x + y");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_LOCAL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "x");
+  assert_vars_contains(&vars, "y");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 无局部变量 */
+TEST(FScriptGetVarsFilter, local_no_local_vars) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a + b * 2");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_LOCAL, &vars);
+  assert_vars_size(&vars, 0);
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 局部变量与全局变量混合 */
+TEST(FScriptGetVarsFilter, local_mixed) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "var x = a + b; x * c");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_LOCAL, &vars);
+  assert_vars_size(&vars, 1);
+  assert_vars_contains(&vars, "x");
+  assert_vars_not_contains(&vars, "a");
+  assert_vars_not_contains(&vars, "b");
+  assert_vars_not_contains(&vars, "c");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 局部变量带属性路径 */
+TEST(FScriptGetVarsFilter, local_dotted_path) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "var item = obj.prop; item.name");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_LOCAL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "item");
+  assert_vars_contains(&vars, "item.name");
+  assert_vars_not_contains(&vars, "obj.prop");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* ---- GLOBAL (上下文) filter ---- */
+
+/* 简单全局(上下文)变量 */
+TEST(FScriptGetVarsFilter, global_simple) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "a + b * 2");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_GLOBAL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 全局(上下文)变量带属性路径 */
+TEST(FScriptGetVarsFilter, global_dotted_path) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "obj.prop + item.name");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_GLOBAL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "obj.prop");
+  assert_vars_contains(&vars, "item.name");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 无全局(上下文)变量（只有系统变量和局部变量） */
+TEST(FScriptGetVarsFilter, global_no_global_vars) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "var x = 1; global.a + x");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_GLOBAL, &vars);
+  assert_vars_size(&vars, 0);
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 全局(上下文)变量在 function 定义中 */
+TEST(FScriptGetVarsFilter, global_in_func_def) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "function add(x, y) { return base + x + y }; add(a, b)");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_GLOBAL, &vars);
+  assert_vars_size(&vars, 3);
+  assert_vars_contains(&vars, "base");
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_not_contains(&vars, "x");
+  assert_vars_not_contains(&vars, "y");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 全局(上下文)对象赋值给局部变量后，解析局部变量的带属性路径，拼凑出对应的全局(上下文)对象 */
+TEST(FScriptGetVarsFilter, global_dotted_path_from_local) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "var item = obj.prop; item.name");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_GLOBAL, &vars);
+  assert_vars_size(&vars, 2);
+  assert_vars_contains(&vars, "obj.prop");
+  assert_vars_contains(&vars, "obj.prop.name");
+  assert_vars_not_contains(&vars, "item");
+  assert_vars_not_contains(&vars, "item.name");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* ---- 组合 filter ---- */
+
+/* SYSTEM | GLOBAL 组合 */
+TEST(FScriptGetVarsFilter, system_and_global) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "global.a + b * global.c.name");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_SYSTEM | FSCRIPT_VAR_FILTER_GLOBAL, &vars);
+  assert_vars_size(&vars, 3);
+  assert_vars_contains(&vars, "global.a");
+  assert_vars_contains(&vars, "global.c.name");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* LOCAL | GLOBAL 组合 */
+TEST(FScriptGetVarsFilter, local_and_global) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "var x = 1; a + b * x");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_LOCAL | FSCRIPT_VAR_FILTER_GLOBAL, &vars);
+  assert_vars_size(&vars, 3);
+  assert_vars_contains(&vars, "x");
+  assert_vars_contains(&vars, "a");
+  assert_vars_contains(&vars, "b");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* FSCRIPT_VAR_FILTER_ALL 全部变量 */
+TEST(FScriptGetVarsFilter, all_filter) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "var x = 1; global.a + b * obj.prop + x");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 4);
+  assert_vars_contains(&vars, "x");
+  assert_vars_contains(&vars, "global.a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "obj.prop");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* ---- 特殊场景 ---- */
+
+/* 同一表达式分别用不同 filter 查询，验证分离 */
+TEST(FScriptGetVarsFilter, filter_separation) {
+  darray_t sys_vars;
+  darray_t local_vars;
+  darray_t ctx_vars;
+  darray_t all_vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&sys_vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+  darray_init(&local_vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+  darray_init(&ctx_vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+  darray_init(&all_vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "var temp = global.base + ctx.data + temp");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_SYSTEM, &sys_vars);
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_LOCAL, &local_vars);
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_GLOBAL, &ctx_vars);
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &all_vars);
+
+  assert_vars_size(&sys_vars, 1);
+  assert_vars_contains(&sys_vars, "global.base");
+
+  assert_vars_size(&local_vars, 1);
+  assert_vars_contains(&local_vars, "temp");
+
+  assert_vars_size(&ctx_vars, 1);
+  assert_vars_contains(&ctx_vars, "ctx.data");
+
+  assert_vars_size(&all_vars, 3);
+  assert_vars_contains(&all_vars, "global.base");
+  assert_vars_contains(&all_vars, "temp");
+  assert_vars_contains(&all_vars, "ctx.data");
+
+  darray_deinit(&sys_vars);
+  darray_deinit(&local_vars);
+  darray_deinit(&ctx_vars);
+  darray_deinit(&all_vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* filter=0 默认返回全部变量 */
+TEST(FScriptGetVarsFilter, filter_zero_default_all) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "var x = 1; global.a + b * obj.prop + x");
+  fscript_get_vars(fscript, 0, &vars);
+  assert_vars_size(&vars, 4);
+  assert_vars_contains(&vars, "x");
+  assert_vars_contains(&vars, "global.a");
+  assert_vars_contains(&vars, "b");
+  assert_vars_contains(&vars, "obj.prop");
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+/* 纯字面量表达式，任何 filter 都返回空 */
+TEST(FScriptGetVarsFilter, no_vars_any_filter) {
+  darray_t vars;
+  tk_object_t* obj = object_default_create();
+  darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
+
+  fscript_t* fscript = fscript_create(obj, "1 + 2 + 'hello'");
+  fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_ALL, &vars);
+  assert_vars_size(&vars, 0);
+  darray_deinit(&vars);
+  fscript_destroy(fscript);
 
   TK_OBJECT_UNREF(obj);
 }

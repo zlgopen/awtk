@@ -118,6 +118,34 @@ typedef ret_t (*fscript_on_error_t)(void* ctx, fscript_t* fscript);
 typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_t* v);
 
 /**
+ * @enum fscript_var_filter_t
+ * @prefix FSCRIPT_VAR_FILTER_
+ * fscript 变量类型过滤器（位掩码，可组合使用）。
+ */
+typedef enum _fscript_var_filter_t {
+  /**
+   * @const FSCRIPT_VAR_FILTER_SYSTEM
+   * 系统变量：以 global. 为前缀，保存在应用全局对象中，程序初始化时创建，退出时销毁。
+   */
+  FSCRIPT_VAR_FILTER_SYSTEM = 0x01,
+  /**
+   * @const FSCRIPT_VAR_FILTER_GLOBAL
+   * 全局变量：保存在脚本执行的上下文对象中，通常由外部控制生命周期。
+   */
+  FSCRIPT_VAR_FILTER_GLOBAL = 0x02,
+  /**
+   * @const FSCRIPT_VAR_FILTER_LOCAL
+   * 局部变量：由 var 关键字声明，脚本程序执行完毕或函数调用完成就销毁。
+   */
+  FSCRIPT_VAR_FILTER_LOCAL = 0x04,
+  /**
+   * @const FSCRIPT_VAR_FILTER_ALL
+   * 所有类型变量。
+   */
+  FSCRIPT_VAR_FILTER_ALL = 0x07,
+} fscript_var_filter_t;
+
+/**
  * @class fscript_t
  * @annotation ["fake"]
  * 
@@ -620,6 +648,22 @@ uint32_t fscript_find_event(const char* name);
  * @return {char*} 返回code_id，有调用者释放返回的字符串。
  */
 char* fscript_get_code_id(const char* str);
+
+/**
+ * @method fscript_get_vars
+ * 获取脚本中引用的变量名称列表。
+ *
+ * 遍历已解析的函数调用链表，根据 filter 提取 VALUE_TYPE_FSCRIPT_ID 类型的参数作为变量名。
+ * 变量名保留完整路径（如 obj.prop），不截断点号分隔的部分。
+ * 系统变量（以 global. 为前缀）保留完整名称（如 global.config.host）。
+ *
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ * @param {uint32_t} filter 变量类型过滤器，FSCRIPT_VAR_FILTER_SYSTEM|FSCRIPT_VAR_FILTER_GLOBAL|FSCRIPT_VAR_FILTER_LOCAL 的组合。
+ * @param {darray_t*} result 变量名列表，元素类型为 char*（需调用者逐一释放）。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_get_vars(fscript_t* fscript, uint32_t filter, darray_t* result);
 
 /**
  * @class fscript_function_def_t
