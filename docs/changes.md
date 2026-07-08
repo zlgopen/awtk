@@ -3,6 +3,8 @@
 2026/7/8
   * 完善注释(感谢兆坤提供补丁)
   * 新增 fscript_get_vars 获取脚本中的变量名称(感谢朝泽提供补丁)
+  * 完善 XML 解析器中的报错处理(感谢朝泽提供补丁)
+  * 修复 str_gen 由于 xml builder 没正确初始化导致可能访问野指针的问题(感谢朝泽提供补丁)
 
 2026/7/7
   * text_edit_measure_char用传进来的canvas而不是text_edit的canvas。修复打开对话框后，背景的mledit或edit字符间距不正常的问题(感谢兆坤提供补丁)

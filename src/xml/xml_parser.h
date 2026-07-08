@@ -101,6 +101,42 @@ void xml_parser_parse(XmlParser* parser, const char* xml, int length);
 void xml_parser_parse_file(XmlParser* parser, const char* filename);
 
 /**
+ * @method xml_parser_set_report_error_mode
+ *
+ * 设置报错的模式。
+ *
+ * @param {XmlParser*} parser parser对象。
+ * @param {const char*} mode never表示永不报告错误，once表示只报告第一个错误，always表示遇到错误总是报告。默认为always。
+ *
+ * @return {void} 返回无。
+ */
+void xml_parser_set_report_error_mode(XmlParser* parser, const char* mode);
+
+/**
+ * @method xml_parser_report_error
+ *
+ * 报告错误。
+ *
+ * @param {XmlParser*} parser parser对象。
+ * @param {const char*} message 错误信息。
+ *
+ * @return {void} 返回无。
+ */
+void xml_parser_report_error(XmlParser* parser, const char* message);
+
+/**
+ * @method xml_parser_report_error_more
+ *
+ * 报告错误。
+ *
+ * @param {XmlParser*} parser parser对象。
+ * @param {const char*} format 格式化字符串。
+ *
+ * @return {void} 返回无。
+ */
+void xml_parser_report_error_more(XmlParser* parser, const char* format, ...);
+
+    /**
  * @method xml_parser_destroy
  *
  * 销毁parser对象。
@@ -109,7 +145,7 @@ void xml_parser_parse_file(XmlParser* parser, const char* filename);
  *
  * @return {void} 返回无。
  */
-void xml_parser_destroy(XmlParser* parser);
+    void xml_parser_destroy(XmlParser* parser);
 
 END_C_DECLS
 

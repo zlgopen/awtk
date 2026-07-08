@@ -2019,6 +2019,7 @@ EXPORTS
     fscript_find_func
     fscript_find_event
     fscript_get_code_id
+    fscript_get_vars
     func_call_parser_init
     func_call_parser_parse
     func_call_parser_deinit
@@ -2726,6 +2727,9 @@ EXPORTS
     xml_parser_set_trim_text
     xml_parser_parse
     xml_parser_parse_file
+    xml_parser_set_report_error_mode
+    xml_parser_report_error
+    xml_parser_report_error_more
     xml_parser_destroy
     assets_manager
     assets_manager_set

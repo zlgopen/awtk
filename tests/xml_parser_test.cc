@@ -52,6 +52,8 @@ static void xml_gen_destroy(XmlBuilder* thiz) {
 }
 
 static XmlBuilder* builder_init(XmlBuilder& b) {
+  memset(&b, 0x00, sizeof(XmlBuilder));
+
   b.on_start = xml_gen_on_start;
   b.on_end = xml_gen_on_end;
   b.on_text = xml_gen_on_text;
