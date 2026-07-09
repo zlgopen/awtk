@@ -5,6 +5,7 @@
   * 完善了overlay的切换(感谢雪飞提供补丁) 
     - 修复在list_view中打开一个overlay, 再通过按下页面中的按钮打开dialog后，移动鼠标能拖动页面，导致关闭dialog后页面yoffset异常的问题
     - 修复无法切换两个overlay前后顺序的问题
+  * widget_foreach support remove(感谢兆坤提供补丁)
 
 2026/7/8
   * 完善注释(感谢兆坤提供补丁)

@@ -3671,7 +3671,7 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child) {
   return RET_OK;
 }
 
-ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {
+static ret_t widget_foreach_impl(widget_t* widget, tk_visit_t visit, void* ctx) {
   ret_t ret = RET_OK;
   bool_t pass = FALSE;
   bool_t is_skip = FALSE;
@@ -3682,8 +3682,7 @@ ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {
   is_skip = (RET_SKIP == ret);
 
   do {
-    TK_FOREACH_VISIT_RESULT_PROCESSING(
-        ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
+    TK_FOREACH_VISIT_RESULT_PROCESSING(ret, widget_destroy(widget); break);
     pass = TRUE;
   } while (0);
 
@@ -3692,11 +3691,23 @@ ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {
   }
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  ret = widget_foreach(iter, visit, ctx);
+  ret = widget_foreach_impl(iter, visit, ctx);
 
-  TK_FOREACH_VISIT_RESULT_PROCESSING(
-      ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
+  TK_FOREACH_VISIT_RESULT_PROCESSING(ret, i--);
   WIDGET_FOR_EACH_CHILD_END()
+
+  return ret;
+}
+
+ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && visit != NULL, RET_BAD_PARAMS);
+
+  ret = widget_foreach_impl(widget, visit, ctx);
+
+  do {
+    TK_FOREACH_VISIT_RESULT_PROCESSING(ret, ;);
+  } while (0);
 
   return ret;
 }

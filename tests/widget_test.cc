@@ -975,6 +975,8 @@ static ret_t on_visit_count(void* ctx, const void* data) {
     return RET_OK;
   } else if (tk_str_eq(type, WIDGET_TYPE_LABEL)) {
     return RET_STOP;
+  } else if (tk_str_eq(type, WIDGET_TYPE_GROUP_BOX)) {
+    return RET_REMOVE;
   }
 
   return RET_OK;
@@ -1021,6 +1023,29 @@ TEST(Widget, foreach_skip) {
 
   ASSERT_EQ(widget_foreach(w, on_visit_count, &count), RET_OK);
   ASSERT_EQ(count, 2);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, foreach_remove) {
+  int32_t count = 0;
+  widget_t* w = view_create(NULL, 0, 0, 400, 300);
+  button_create(w, 0, 0, 0, 0);
+  widget_t* gb = group_box_create(w, 0, 0, 0, 0);
+  button_create(gb, 0, 0, 0, 0);
+  widget_t* v = view_create(w, 0, 0, 0, 0);
+  button_create(v, 0, 0, 0, 0);
+  group_box_create(v, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+
+  ASSERT_EQ(widget_foreach(w, on_visit_count, &count), RET_OK);
+  ASSERT_EQ(count, 3);
+
+  ASSERT_TRUE(NULL == widget_lookup_by_type(w, WIDGET_TYPE_GROUP_BOX, TRUE));
+
+  count = 0;
+  gb = group_box_create(NULL, 0, 0, 0, 0);
+  ASSERT_EQ(widget_foreach(gb, on_visit_count, &count), RET_OK);
 
   widget_destroy(w);
 }
