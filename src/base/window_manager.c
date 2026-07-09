@@ -773,8 +773,12 @@ ret_t window_manager_dispatch_window_foreground_events(widget_t* trigger_win,
                                                        widget_t* to_foreground) {
   return_value_if_fail(trigger_win != NULL, RET_BAD_PARAMS);
 
+  if (widget_is_keyboard(trigger_win)) {
+    return RET_OK;
+  }
+
   if (to_background != NULL) {
-    if (widget_can_receive_window_foreground_event(to_background) 
+    if (widget_can_receive_window_foreground_event(to_background)
       && widget_should_dispatch_window_foreground_event(trigger_win)) {
       window_manager_dispatch_window_event(to_background, EVT_WINDOW_TO_BACKGROUND);
     } else {
@@ -782,7 +786,7 @@ ret_t window_manager_dispatch_window_foreground_events(widget_t* trigger_win,
     }
   }
   if (to_foreground != NULL) {
-    if (widget_can_receive_window_foreground_event(to_foreground) 
+    if (widget_can_receive_window_foreground_event(to_foreground)
       && widget_should_dispatch_window_foreground_event(trigger_win)) {
       window_manager_dispatch_window_event(to_foreground, EVT_WINDOW_TO_FOREGROUND);
     } else {

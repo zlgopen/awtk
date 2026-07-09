@@ -7,6 +7,7 @@
 #include "widgets/combo_box.h"
 #include "widgets/overlay.h"
 #include "widgets/popup.h"
+#include "ext_widgets/keyboard/keyboard.h"
 
 typedef struct _fg_bg_counter_t {
   uint32_t to_foreground;
@@ -52,6 +53,7 @@ TEST(WindowForegroundEvent, should_dispatch) {
   widget_t* toast_win = dialog_create(NULL, 0, 0, 100, 100);
   widget_t* popup_win = popup_create(NULL, 0, 0, 100, 100);
   widget_t* overlay_win = overlay_create(NULL, 0, 0, 100, 100);
+  widget_t* kb_win = keyboard_create(NULL, 0, 0, 100, 100);
 
   widget_set_name(toast_win, DIALOG_TOAST_WIDGET_NAME);
   widget_set_prop_str(toast_win, WIDGET_PROP_THEME, DIALOG_TOAST_THEME_NAME);
@@ -62,14 +64,17 @@ TEST(WindowForegroundEvent, should_dispatch) {
   ASSERT_EQ(widget_should_dispatch_window_foreground_event(toast_win), FALSE);
   ASSERT_EQ(widget_should_dispatch_window_foreground_event(popup_win), FALSE);
   ASSERT_EQ(widget_should_dispatch_window_foreground_event(overlay_win), FALSE);
+  ASSERT_EQ(widget_should_dispatch_window_foreground_event(kb_win), FALSE);
   ASSERT_EQ(widget_can_receive_window_foreground_event(normal_win), TRUE);
   ASSERT_EQ(widget_can_receive_window_foreground_event(dialog_win), TRUE);
   ASSERT_EQ(widget_can_receive_window_foreground_event(toast_win), FALSE);
   ASSERT_EQ(widget_can_receive_window_foreground_event(popup_win), FALSE);
   ASSERT_EQ(widget_can_receive_window_foreground_event(overlay_win), FALSE);
+  ASSERT_EQ(widget_can_receive_window_foreground_event(kb_win), FALSE);
   ASSERT_EQ(widget_should_dispatch_window_foreground_event(NULL), FALSE);
   ASSERT_EQ(widget_can_receive_window_foreground_event(NULL), FALSE);
 
+  window_close_force(kb_win);
   window_close_force(normal_win);
   window_close_force(dialog_win);
   window_close_force(toast_win);
@@ -97,11 +102,19 @@ TEST(WindowForegroundEvent, dispatch_helper) {
   ASSERT_EQ(normal_counter.to_foreground, 0u);
   ASSERT_EQ(dialog_counter.to_background, 0u);
   ASSERT_EQ(dialog_counter.to_foreground, 0u);
+  ASSERT_EQ(widget_get_prop_int(normal_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_SUSPEND);
+  ASSERT_EQ(widget_get_prop_int(dialog_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_OPENED);
 
   ASSERT_EQ(window_manager_dispatch_window_foreground_events(normal_win, dialog_win, normal_win),
             RET_OK);
   ASSERT_EQ(dialog_counter.to_background, 1u);
   ASSERT_EQ(normal_counter.to_foreground, 1u);
+  ASSERT_EQ(widget_get_prop_int(normal_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_OPENED);
+  ASSERT_EQ(widget_get_prop_int(dialog_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_SUSPEND);
 
   fg_bg_counter_reset(&overlay_counter);
   {
@@ -111,6 +124,10 @@ TEST(WindowForegroundEvent, dispatch_helper) {
     ASSERT_EQ(overlay_counter.to_background, 0u);
     ASSERT_EQ(overlay_counter.to_foreground, 0u);
     ASSERT_EQ(dialog_counter.to_foreground, dialog_fg_before + 1);
+    ASSERT_EQ(widget_get_prop_int(overlay_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+              WINDOW_STAGE_SUSPEND);
+    ASSERT_EQ(widget_get_prop_int(dialog_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+              WINDOW_STAGE_OPENED);
   }
 
   window_close_force(popup_win);
@@ -135,6 +152,8 @@ TEST(WindowForegroundEvent, dispatch_helper_fallback_for_ineligible_receiver) {
   ASSERT_EQ(overlay_counter.to_foreground, 0u);
   ASSERT_EQ(widget_get_prop_int(overlay_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
             WINDOW_STAGE_SUSPEND);
+  ASSERT_EQ(widget_get_prop_int(dialog_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_OPENED);
 
   widget_set_prop_int(overlay_win, WIDGET_PROP_STAGE, WINDOW_STAGE_SUSPEND);
   fg_bg_counter_reset(&overlay_counter);
@@ -143,6 +162,8 @@ TEST(WindowForegroundEvent, dispatch_helper_fallback_for_ineligible_receiver) {
   ASSERT_EQ(overlay_counter.to_foreground, 0u);
   ASSERT_EQ(widget_get_prop_int(overlay_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
             WINDOW_STAGE_OPENED);
+  ASSERT_EQ(widget_get_prop_int(dialog_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_SUSPEND);
 
   window_close_force(overlay_win);
   window_close_force(dialog_win);
@@ -165,12 +186,16 @@ TEST(WindowForegroundEvent, open_popup) {
 
   ASSERT_EQ(counter.to_background, 0u);
   ASSERT_EQ(counter.to_foreground, 0u);
+  ASSERT_EQ(widget_get_prop_int(main_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_SUSPEND);
 
   window_close_force(popup_win);
   drain_idle();
 
   ASSERT_EQ(counter.to_background, 0u);
   ASSERT_EQ(counter.to_foreground, 0u);
+  ASSERT_EQ(widget_get_prop_int(main_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_OPENED);
 
   window_close_force(main_win);
   drain_idle();
@@ -191,6 +216,8 @@ TEST(WindowForegroundEvent, open_dialog) {
 
   ASSERT_EQ(counter.to_background, 1u);
   ASSERT_EQ(counter.to_foreground, 0u);
+  ASSERT_EQ(widget_get_prop_int(main_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_SUSPEND);
 
   fg_bg_counter_reset(&counter);
   window_close_force(dialog_win);
@@ -198,6 +225,8 @@ TEST(WindowForegroundEvent, open_dialog) {
 
   ASSERT_EQ(counter.to_background, 0u);
   ASSERT_EQ(counter.to_foreground, 1u);
+  ASSERT_EQ(widget_get_prop_int(main_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_OPENED);
 
   window_close_force(main_win);
   drain_idle();
@@ -223,6 +252,8 @@ TEST(WindowForegroundEvent, combo_box_popup) {
 
   ASSERT_EQ(counter.to_background, 0u);
   ASSERT_EQ(counter.to_foreground, 0u);
+  ASSERT_EQ(widget_get_prop_int(main_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_SUSPEND);
   ASSERT_NE(COMBO_BOX(combo)->combobox_popup, (widget_t*)NULL);
 
   window_close_force(COMBO_BOX(combo)->combobox_popup);
@@ -230,6 +261,8 @@ TEST(WindowForegroundEvent, combo_box_popup) {
 
   ASSERT_EQ(counter.to_background, 0u);
   ASSERT_EQ(counter.to_foreground, 0u);
+  ASSERT_EQ(widget_get_prop_int(main_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_OPENED);
 
   window_close_force(main_win);
   drain_idle();
@@ -252,12 +285,46 @@ TEST(WindowForegroundEvent, open_toast) {
 
   ASSERT_EQ(counter.to_background, 0u);
   ASSERT_EQ(counter.to_foreground, 0u);
+  ASSERT_EQ(widget_get_prop_int(main_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_SUSPEND);
 
   window_close_force(toast_win);
   drain_idle();
 
   ASSERT_EQ(counter.to_background, 0u);
   ASSERT_EQ(counter.to_foreground, 0u);
+  ASSERT_EQ(widget_get_prop_int(main_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_OPENED);
+
+  window_close_force(main_win);
+  drain_idle();
+}
+
+TEST(WindowForegroundEvent, open_keyboard) {
+  fg_bg_counter_t counter = {0, 0};
+  widget_t* main_win = NULL;
+  widget_t* kb_win = NULL;
+
+  close_all_windows();
+  main_win = window_create(NULL, 0, 0, 400, 300);
+  drain_idle();
+  fg_bg_counter_attach(main_win, &counter);
+
+  kb_win = keyboard_create(NULL, 0, 0, 400, 200);
+  drain_idle();
+
+  ASSERT_EQ(counter.to_background, 0u);
+  ASSERT_EQ(counter.to_foreground, 0u);
+  ASSERT_EQ(widget_get_prop_int(main_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_OPENED);
+
+  window_close_force(kb_win);
+  drain_idle();
+
+  ASSERT_EQ(counter.to_background, 0u);
+  ASSERT_EQ(counter.to_foreground, 0u);
+  ASSERT_EQ(widget_get_prop_int(main_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_OPENED);
 
   window_close_force(main_win);
   drain_idle();
@@ -284,6 +351,10 @@ TEST(WindowForegroundEvent, open_dialog_over_overlay) {
   ASSERT_EQ(overlay_counter.to_background, 0u);
   ASSERT_EQ(overlay_counter.to_foreground, 0u);
   ASSERT_EQ(main_counter.to_background, 0u);
+  ASSERT_EQ(widget_get_prop_int(main_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_SUSPEND);
+  ASSERT_EQ(widget_get_prop_int(overlay_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE),
+            WINDOW_STAGE_SUSPEND);
 
   window_close_force(dialog_win);
   drain_idle();
