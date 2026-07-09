@@ -3324,6 +3324,32 @@ static ret_t widget_on_pointer_down_before_children(widget_t* widget, pointer_ev
   return widget_on_event_before_children(widget, (event_t*)e);
 }
 
+/**
+ * 用途：
+ * 1.切换两个overlay的前后顺序；
+ * 2.overlay为前景时将非overlay的target切到前景、overlay切到背景，使target作为前景正常响应后续窗口切换。
+ * 如在窗口A中打开overlayB后，点击窗口A中的按钮(overlay做前景是能点击到的)打开dialogC，
+ * 若不先切换则会导致overlayB与dialogC之间进行切换，导致窗口A的鼠标事件无法完全被打断
+ * （如果有按下鼠标的话切换到后台时会发送打断鼠标操作的事件），
+ * 出现例如能在dialogC打开的情况下拖动窗口A中的scroll_view。
+ */
+static ret_t widget_handle_overlay_foreground_switch(widget_t* target) {
+  if (widget_is_window(target)) {
+    widget_t* foreground_win = window_manager_get_foreground_window(window_manager());
+    if (foreground_win != NULL && target != foreground_win) {
+      if (widget_is_overlay(foreground_win) || widget_is_overlay(target)) {
+        /**
+         * window_manager_dispatch_window_foreground_events 内部先设背景再设前景，若先设背景会导致前景设焦点时
+         * 无法让背景失焦，切换两个overlay时会使切到背景的overlayA仍有焦点，下次点击A时因已有焦点而不会改变overlay渲染顺序。
+         */
+        window_manager_dispatch_window_foreground_events(target, NULL, target);
+        window_manager_dispatch_window_foreground_events(target, foreground_win, NULL);
+      }
+    }
+  }
+  return RET_OK;
+}
+
 ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
   widget_t* target = widget_find_target(widget, e->x, e->y);
@@ -3332,7 +3358,10 @@ ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
     if (!(widget_is_keyboard(target))) {
       if (widget_is_focusable(target) || !widget_is_strongly_focus(widget)) {
         if (!target->focused) {
-          widget_set_focused_internal(target, TRUE);
+          widget_handle_overlay_foreground_switch(target);
+          if (!target->focused) {
+            widget_set_focused_internal(target, TRUE);
+          }
         } else {
           widget->key_target = target;
         }
