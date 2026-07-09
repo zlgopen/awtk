@@ -1,7 +1,7 @@
 /**
  * File:   edit_ex_multiline_helper.inc
  * Author: AWTK Develop Team
- * Brief:  edit_ex¶àÐÐ±à¼­°ïÖúº¯Êý
+ * Brief: edit_exå¤šè¡Œç¼–è¾‘å¸®åŠ©å‡½æ•° 
  *
  * Copyright (c) 2026 - 2026 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
