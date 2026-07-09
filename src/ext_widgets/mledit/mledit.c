@@ -983,6 +983,8 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         mledit_scroll_to_offset(widget, saved_offset);
       }
 
+      mledit_auto_adjust_height(mledit);
+
       widget_invalidate(widget, NULL);
       break;
     }

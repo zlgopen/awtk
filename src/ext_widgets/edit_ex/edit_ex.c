@@ -22,6 +22,7 @@
 #include "tkc/object_default.h"
 #include "base/widget_vtable.h"
 #include "ext_widgets/edit_ex/edit_ex.h"
+#include "ext_widgets/edit_ex/edit_ex_multiline_helper.inc"
 #include "ext_widgets/edit_ex/edit_ex_suggest_words_helper.inc"
 #include "ext_widgets/edit_ex/edit_ex_suggest_words_item_formats_parse.inc"
 
@@ -31,12 +32,27 @@ static const char* const s_suggest_words_ui_prop_names[] = {
     EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW,
 };
 
+ret_t edit_ex_set_multiline(widget_t* widget, bool_t multiline) {
+  edit_ex_t* edit_ex = EDIT_EX(widget);
+  return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
+
+  edit_ex->multiline = multiline;
+  if (!multiline) {
+    edit_ex_close_multiline_popup(edit_ex);
+  } else {
+    return_value_if_fail(NULL == edit_ex->suggest_words, RET_FAIL);
+  }
+
+  return RET_OK;
+}
+
 ret_t edit_ex_set_suggest_words(widget_t* widget, tk_object_t* suggest_words) {
   edit_ex_t* edit_ex = EDIT_EX(widget);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
   TK_OBJECT_UNREF(edit_ex->suggest_words);
   if (suggest_words != NULL) {
+    return_value_if_fail(!edit_ex->multiline, RET_FAIL);
     edit_ex->suggest_words = TK_OBJECT_REF(suggest_words);
   }
 
@@ -125,7 +141,9 @@ static ret_t edit_ex_set_prop(widget_t* widget, const char* name, const value_t*
   edit_ex_t* edit_ex = EDIT_EX(widget);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS)) {
+  if (tk_str_eq(name, EDIT_EX_PROP_MULTILINE)) {
+    return edit_ex_set_multiline(widget, value_bool(v));
+  } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS)) {
     return edit_ex_set_suggest_words(widget, value_object(v));
   } else if (tk_str_start_with(name, EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS)) {
     const char* sub_name = name + sizeof(EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS_PREFIX) - 1;
@@ -146,7 +164,10 @@ static ret_t edit_ex_get_prop(widget_t* widget, const char* name, value_t* v) {
   edit_ex_t* edit_ex = EDIT_EX(widget);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS)) {
+  if (tk_str_eq(name, EDIT_EX_PROP_MULTILINE)) {
+    value_set_bool(v, edit_ex->multiline);
+    return RET_OK;
+  } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS)) {
     value_set_object(v, edit_ex->suggest_words);
     return RET_OK;
   } else if (tk_str_start_with(name, EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS)) {
@@ -197,6 +218,7 @@ static ret_t edit_ex_on_event(widget_t* widget, event_t* e) {
     } break;
     case EVT_FOCUS: {
       ret = widget_vtable_on_event_by_parent(widget, e, WIDGET_VTABLE_GET_VTABLE(edit_ex));
+      edit_ex_open_multiline_popup(edit_ex);
       edit_ex_update_suggest_words_popup(widget);
       return ret;
     } break;
@@ -297,6 +319,7 @@ static ret_t edit_ex_on_destroy(widget_t* widget) {
   edit_ex_t* edit_ex = EDIT_EX(widget);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
+  edit_ex_close_multiline_popup(edit_ex);
   edit_ex_close_suggest_words_popup(edit_ex);
 
   edit_ex_set_suggest_words_item_formats(widget, NULL);

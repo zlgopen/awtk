@@ -35,6 +35,7 @@ typedef ret_t (*edit_ex_suggest_words_popup_on_updated_t)(widget_t* widget, widg
  * @annotation ["scriptable","design","widget"]
  * 扩展edit控件。支持以下功能：
  * * 支持搜索建议功能。
+ * * 支持多行编辑功能。
  */
 typedef struct _edit_ex_t {
   edit_t edit;
@@ -68,9 +69,19 @@ typedef struct _edit_ex_t {
    */
   bool_t is_select_suggest_word;
 
+  /**
+   * @property {bool_t} multiline
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 多行编辑。
+   * > 与搜索建议功能互斥。
+   */
+  bool_t multiline;
+
   /* private */
   bool_t key_downing : 1;
 
+  widget_t* multiline_popup;
+  
   widget_t* suggest_words_popup;
   tk_object_t* suggest_words_ui_props;
   darray_t* suggest_words_model_items;
@@ -92,6 +103,18 @@ typedef struct _edit_ex_t {
  * @return {widget_t*} 对象。
  */
 widget_t* edit_ex_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
+ * @method edit_ex_set_multiline
+ * 设置多行编辑。
+ * > 与搜索建议功能互斥。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget edit_ex对象。
+ * @param {bool_t} multiline 是否多行编辑。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_ex_set_multiline(widget_t* widget, bool_t multiline);
 
 /**
  * @method edit_ex_set_suggest_words
@@ -168,6 +191,12 @@ widget_t* edit_ex_cast(widget_t* widget);
  * @prefix EDIT_EX_PROP_
  * 属性。
  */
+
+/**
+ * @const EDIT_EX_PROP_MULTILINE
+ * 多行编辑。
+ */
+#define EDIT_EX_PROP_MULTILINE "multiline"
 
 /**
  * @const EDIT_EX_PROP_SUGGEST_WORDS
