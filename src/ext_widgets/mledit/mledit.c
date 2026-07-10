@@ -681,7 +681,7 @@ static ret_t mledit_focus_request_input_method(const idle_info_t* info) {
   mledit_t* mledit = MLEDIT(info->ctx);
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
 
-  if (mledit->open_im_when_focused) {
+  if (mledit->widget.focused && mledit->open_im_when_focused && mledit->widget.target == NULL) {
     mledit_request_input_method(WIDGET(mledit));
   }
 
