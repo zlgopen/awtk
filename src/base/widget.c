@@ -3874,12 +3874,29 @@ static ret_t widget_set_parent_not_dirty(widget_t* widget) {
   return RET_OK;
 }
 
+static bool_t widget_self_and_ancestors_visible(widget_t* widget) {
+  widget_t* iter = widget;
+
+  while (iter != NULL) {
+    if (!iter->visible) {
+      return FALSE;
+    }
+    iter = iter->parent;
+  }
+
+  return TRUE;
+}
+
 ret_t widget_invalidate(widget_t* widget, const rect_t* r) {
   ret_t ret;
   rect_t rself;
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
   if (widget->dirty) {
+    return RET_OK;
+  }
+
+  if (!widget_self_and_ancestors_visible(widget)) {
     return RET_OK;
   }
 

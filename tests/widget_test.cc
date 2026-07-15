@@ -397,6 +397,33 @@ TEST(Widget, dirty) {
   widget_destroy(w);
 }
 
+TEST(Widget, invalidate_invisible) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* parent = view_create(w, 0, 0, 200, 200);
+  widget_t* child = button_create(parent, 0, 0, 100, 100);
+
+  /* issue #996: 控件本身隐藏时不应提交脏区 */
+  widget_set_visible_only(child, FALSE);
+  child->dirty = FALSE;
+  ASSERT_EQ(widget_invalidate(child, NULL), RET_OK);
+  ASSERT_EQ(child->dirty, FALSE);
+
+  /* issue #996: 父控件隐藏时子控件也不应提交脏区 */
+  widget_set_visible_only(child, TRUE);
+  widget_set_visible_only(parent, FALSE);
+  child->dirty = FALSE;
+  ASSERT_EQ(widget_invalidate(child, NULL), RET_OK);
+  ASSERT_EQ(child->dirty, FALSE);
+
+  /* 全部可见时应正常提交脏区 */
+  widget_set_visible_only(parent, TRUE);
+  child->dirty = FALSE;
+  ASSERT_EQ(widget_invalidate(child, NULL), RET_OK);
+  ASSERT_EQ(child->dirty, TRUE);
+
+  widget_destroy(w);
+}
+
 TEST(Widget, grab) {
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
   widget_t* b1 = button_create(w, 0, 0, 100, 100);
