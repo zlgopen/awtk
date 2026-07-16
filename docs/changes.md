@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/7/16
+  * window_manager.layout_count move to main_loop.step_count(感谢兆坤提供补丁)
+
 2026/7/15
   * 优化 invalidate，控件及父控件不可见时直接返回。
 

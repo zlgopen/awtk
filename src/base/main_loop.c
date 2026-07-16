@@ -116,6 +116,8 @@ ret_t main_loop_sleep(main_loop_t* l) {
 ret_t main_loop_step(main_loop_t* l) {
   return_value_if_fail(l != NULL, RET_BAD_PARAMS);
 
+  ++l->step_count;
+
   if (l->step != NULL) {
     return l->step(l);
   }

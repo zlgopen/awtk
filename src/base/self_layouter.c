@@ -21,8 +21,8 @@
 
 #include "base/widget.h"
 #include "base/widget_vtable.h"
-#include "base/window_manager.h"
 #include "base/self_layouter.h"
+#include "base/main_loop.h"
 
 const char* self_layouter_to_string(self_layouter_t* layouter) {
   if (layouter == NULL) {
@@ -36,8 +36,8 @@ const char* self_layouter_to_string(self_layouter_t* layouter) {
 
 bool_t self_layouter_is_laid_out(self_layouter_t* layouter) {
   if (layouter != NULL) {
-    const window_manager_t* wm = (const window_manager_t*)window_manager();
-    if (wm != NULL && wm->layout_count == layouter->count) {
+    const main_loop_t* loop = main_loop();
+    if (loop != NULL && loop->step_count == layouter->count) {
       return TRUE;
     }
   }
@@ -45,9 +45,9 @@ bool_t self_layouter_is_laid_out(self_layouter_t* layouter) {
 }
 
 inline static void self_layouter_count_sync(self_layouter_t* layouter) {
-  const window_manager_t* wm = (const window_manager_t*)window_manager();
-  if (wm != NULL) {
-    layouter->count = wm->layout_count;
+  const main_loop_t* loop = main_loop();
+  if (loop != NULL) {
+    layouter->count = loop->step_count;
   }
 }
 

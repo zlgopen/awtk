@@ -115,7 +115,6 @@ typedef struct _window_manager_t {
   const window_manager_vtable_t* vt;
   input_device_status_t input_device_status;
   uint32_t curr_expected_sleep_time;
-  uint32_t layout_count;
 
   native_window_create_t create_native_window;
 } window_manager_t;

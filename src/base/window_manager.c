@@ -285,7 +285,6 @@ ret_t window_manager_check_and_layout(widget_t* widget) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 
-  wm->layout_count++;
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (WINDOW_BASE(iter)->need_relayout) {
     widget_layout(iter);
