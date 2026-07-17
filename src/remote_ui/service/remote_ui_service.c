@@ -74,6 +74,10 @@ tk_service_t* remote_ui_service_create(tk_iostream_t* io, void* args) {
     if (service_args->fallback_on_event != NULL) {
       ui->fallback_on_event = service_args->fallback_on_event;
     }
+
+    if (service_args->fallback_on_dispatch != NULL) {
+      ui->fallback_on_dispatch = service_args->fallback_on_dispatch;
+    }
   }
 
   return (tk_service_t*)ui;
@@ -673,6 +677,14 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
   rbuffer_init(&rb, wb->data, wb->cursor);
 
   resp.type = req->type;
+
+  if (ui->fallback_on_dispatch != NULL) {
+    ret_t fb_ret = ui->fallback_on_dispatch(ui, req, &resp, wb);
+    if (fb_ret == RET_OK) {
+      return tk_service_send_resp(&(ui->service), resp.type, resp.data_type, resp.resp_code, wb);
+    }
+  }
+
   switch (req->type) {
     case MSG_CODE_LOGIN: {
       const char* username = NULL;
@@ -1091,6 +1103,15 @@ ret_t remote_ui_service_set_fallback_on_event(remote_ui_service_t* ui,
   return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
 
   ui->fallback_on_event = fallback_on_event;
+
+  return RET_OK;
+}
+
+ret_t remote_ui_service_set_fallback_on_dispatch(remote_ui_service_t* ui,
+                                                 remote_ui_service_on_dispatch_func_t fallback_on_dispatch) {
+  return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
+
+  ui->fallback_on_dispatch = fallback_on_dispatch;
 
   return RET_OK;
 }

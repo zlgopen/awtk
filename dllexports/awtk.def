@@ -1630,6 +1630,7 @@ EXPORTS
     remote_ui_service_start_with_uart
     remote_ui_service_hook_log
     remote_ui_service_set_fallback_on_event
+    remote_ui_service_set_fallback_on_dispatch
     romfs_init
     romfs_deinit
     romfs_get

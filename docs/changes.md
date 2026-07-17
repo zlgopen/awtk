@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/7/17
+  * 添加remote_ui_service的分发回调函数(感谢福明提供补丁)
+
 2026/7/16
   * window_manager.layout_count move to main_loop.step_count(感谢兆坤提供补丁)
 

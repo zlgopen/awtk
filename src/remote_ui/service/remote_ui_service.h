@@ -38,6 +38,8 @@ typedef struct _remote_ui_service_t remote_ui_service_t;
 typedef tk_object_t* (*remote_ui_service_find_target_t)(tk_service_t* service, const char* target);
 typedef ret_t (*remote_ui_service_on_event_func_t)(remote_ui_service_t* ui, wbuffer_t* wb,
                                                    event_t* evt);
+typedef ret_t (*remote_ui_service_on_dispatch_func_t)(remote_ui_service_t* ui, tk_msg_header_t* req,
+                                                      tk_msg_header_t* resp, wbuffer_t* wb);
 
 /**
  * @class remote_ui_service_args_t
@@ -71,6 +73,13 @@ typedef struct _remote_ui_service_args_t {
    * 事件回调函数。
    */
   remote_ui_service_on_event_func_t fallback_on_event;
+
+  /**
+   * @property {remote_ui_service_on_dispatch_func_t} fallback_on_dispatch
+   * @annotation ["readable"]
+   * 分发回调函数。
+   */
+  remote_ui_service_on_dispatch_func_t fallback_on_dispatch;
 } remote_ui_service_args_t;
 
 /**
@@ -89,6 +98,7 @@ typedef struct _remote_ui_service_t {
   tk_service_logout_t logout;
   remote_ui_service_find_target_t find_target;
   remote_ui_service_on_event_func_t fallback_on_event;
+  remote_ui_service_on_dispatch_func_t fallback_on_dispatch;
   bool_t dispatching;
 } remote_ui_service_t;
 
@@ -133,6 +143,16 @@ ret_t remote_ui_service_hook_log(remote_ui_service_t* ui, bool_t hook);
  */
 ret_t remote_ui_service_set_fallback_on_event(remote_ui_service_t* ui,
                                               remote_ui_service_on_event_func_t fallback_on_event);
+
+/**
+ * @method remote_ui_service_set_fallback_on_dispatch
+ * 设置fallback_on_dispatch。
+ * @param {remote_ui_service_t*} ui remote ui服务端。
+ * @param {remote_ui_service_on_dispatch_func_t} fallback_on_dispatch 回调函数。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_service_set_fallback_on_dispatch(remote_ui_service_t* ui,
+                                                 remote_ui_service_on_dispatch_func_t fallback_on_dispatch);
 
 END_C_DECLS
 
