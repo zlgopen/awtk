@@ -628,6 +628,7 @@ static bool_t window_manager_is_win_valid_target(widget_t* iter, void* win) {
 
 widget_t* window_manager_find_target(widget_t* widget, void* win, xy_t x, xy_t y) {
   point_t p = {x, y};
+  bool_t passed_suspend_dialog_or_popup = FALSE;
   return_value_if_fail(widget != NULL, NULL);
 
   if (widget->grab_widget != NULL) {
@@ -648,6 +649,16 @@ widget_t* window_manager_find_target(widget_t* widget, void* win, xy_t x, xy_t y
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
   if (!window_manager_is_win_valid_target(iter, win)) {
     continue;
+  }
+
+  // SUSPEND dialog/popup 会阻挡 non-system-bar windows
+  if (passed_suspend_dialog_or_popup && !widget_is_system_bar(iter)) {
+    continue;
+  }
+
+  if ((widget_is_dialog(iter) && widget_is_suspend_dialog(iter)) ||
+      (widget_is_popup(iter) && widget_is_suspend_popup(iter))) {
+    passed_suspend_dialog_or_popup = TRUE;
   }
 
   if (widget_is_point_in(iter, x, y, FALSE)) {

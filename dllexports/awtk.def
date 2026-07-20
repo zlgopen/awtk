@@ -1074,6 +1074,8 @@ EXPORTS
     widget_is_popup
     widget_is_overlay
     widget_is_always_on_top
+    widget_is_suspend_dialog
+    widget_is_suspend_popup
     widget_is_opened_dialog
     widget_is_opened_popup
     widget_is_keyboard

@@ -5184,6 +5184,16 @@ bool_t widget_is_always_on_top(widget_t* widget) {
   return widget->vt->is_window && widget_get_prop_bool(widget, WIDGET_PROP_ALWAYS_ON_TOP, FALSE);
 }
 
+bool_t widget_is_suspend_dialog(widget_t* widget) {
+  int32_t stage = widget_get_prop_int(widget, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+  return tk_str_eq(widget->vt->type, WIDGET_TYPE_DIALOG) && stage == WINDOW_STAGE_SUSPEND;
+}
+
+bool_t widget_is_suspend_popup(widget_t* widget) {
+  int32_t stage = widget_get_prop_int(widget, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+  return tk_str_eq(widget->vt->type, WIDGET_TYPE_POPUP) && stage == WINDOW_STAGE_SUSPEND;
+}
+
 bool_t widget_is_opened_dialog(widget_t* widget) {
   int32_t stage = widget_get_prop_int(widget, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
   return tk_str_eq(widget->vt->type, WIDGET_TYPE_DIALOG) && stage == WINDOW_STAGE_OPENED;
