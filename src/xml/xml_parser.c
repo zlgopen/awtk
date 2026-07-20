@@ -413,7 +413,13 @@ static void xml_parser_parse_attrs(XmlParser* parser, char end_char) {
             state = STAT_PRE_VALUE;
           } else if (c == end_char || c == '>') {
             /* 属性没有值 */
-            xml_parser_report_error(parser, "attribute missing value");
+            char* name = key_len > 0 ? tk_strndup(key_start, key_len) : NULL;
+            if (name != NULL) {
+              xml_parser_report_error_more(parser, "attribute missing value: '%s'", name);
+              TKMEM_FREE(name);
+            } else {
+              xml_parser_report_error(parser, "attribute missing value");
+            }
 
             state = STAT_END;
           } else {
@@ -598,10 +604,10 @@ static void xml_parser_parse_end_tag(XmlParser* parser) {
       /* 验证标签名称 */
       if (!xml_parser_is_valid_tag_name(tag_name, strlen(tag_name))) {
         xml_parser_report_error_more(parser, "invalid end tag name: '%s'", tag_name);
-      } else {
-        /* 检查标签栈匹配 */
-        xml_parser_pop_tag(parser, tag_name);
       }
+
+      /* 检查标签栈匹配 */
+      xml_parser_pop_tag(parser, tag_name);
 
       xml_builder_on_end(parser->builder, tag_name);
       break;
