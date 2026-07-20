@@ -994,7 +994,7 @@ static ret_t on_menu_bar_open(void* ctx, event_t* e) {
   if (!(top_win == win || widget_is_overlay(top_win))) {
     if (widget_is_dialog(top_win) && dialog_is_modal(top_win)) {
       dialog_quit(top_win, DIALOG_QUIT_CANCEL);
-    } else {
+    } else if (widget_is_window_opened(top_win)) {
       window_close(top_win);
     }
   }

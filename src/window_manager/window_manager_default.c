@@ -612,6 +612,23 @@ static ret_t window_manager_default_will_do_open_window_but_destroy(void* ctx, e
   return RET_OK;
 }
 
+static ret_t window_manager_default_push_prev_windows_to_background(widget_t* wm_widget,
+                                                                    widget_t* new_win) {
+  return_value_if_fail(wm_widget != NULL && new_win != NULL, RET_BAD_PARAMS);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(wm_widget, iter, i)
+  if (iter == new_win) {
+    break;
+  }
+  int32_t stage = widget_get_prop_int(iter, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+  if (stage == WINDOW_STAGE_OPENED) {
+    window_manager_dispatch_window_foreground_events(new_win, iter, NULL);
+  }
+  WIDGET_FOR_EACH_CHILD_END()
+
+  return RET_OK;
+}
+
 static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info) {
   widget_t* curr_win = WIDGET(info->ctx);
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(curr_win->parent);
@@ -624,8 +641,18 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
   window_manager_dispatch_window_event(curr_win, EVT_WINDOW_WILL_OPEN);
   wm->ready_animator = FALSE;
   if (window_manager_create_animator(wm, curr_win, TRUE) != RET_OK) {
-    widget_t* foreground_window = window_manager_get_foreground_window(WIDGET(wm));
-    window_manager_dispatch_window_foreground_events(curr_win, foreground_window, NULL);
+    /*
+    dialog 打开时将所有其之前的窗口全部切到后台，以避免在多个 OPENED 状态的窗口中打开 dialog 时
+    导致部分 OPENED 窗口无法正常结束鼠标事件（dialog 会劫持事件循环），例如: 一个 OPENED 普通窗口
+    上叠一个 OPENED overlay，此时点击普通窗口上的按钮来打开 dialog 时，普通窗口中部分控件无法完整结束鼠标事件。
+    例如普通窗口中的 scroll_view 此时鼠标可能还是按下状态，导致 dialog 打开后还能拖动该 scroll_view。
+    */
+    if (widget_is_dialog(curr_win)) {
+      window_manager_default_push_prev_windows_to_background(WIDGET(wm), curr_win);
+    } else {
+      widget_t* foreground_window = window_manager_get_foreground_window(WIDGET(wm));
+      window_manager_dispatch_window_foreground_events(curr_win, foreground_window, NULL);
+    }
     window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
     widget_add_timer(curr_win, on_idle_invalidate, 100);
   }
@@ -1155,13 +1182,27 @@ static ret_t window_manager_animate_done(widget_t* widget) {
 
     if (is_open && !close_window_when_open_animate) {
       /*此时前一个窗口并非是真正的前一个窗口，而是前一个normal窗口，所以这里重新找真正的前一个窗口*/
-      widget_t* foreground_window = window_manager_get_foreground_window(WIDGET(wm));
       /* 结束打开窗口动画后 */
-      if (foreground_window != curr_win && foreground_window != NULL) {
+
+      /*
+      dialog 打开时将所有其之前的窗口全部切到后台，以避免在多个 OPENED 状态的窗口中打开 dialog 时
+      导致部分 OPENED 窗口无法正常结束鼠标事件（dialog 会劫持事件循环），例如: 一个 OPENED 普通窗口
+      上叠一个 OPENED overlay，此时点击普通窗口上的按钮来打开 dialog 时，普通窗口中部分控件无法完整结束鼠标事件。
+      例如普通窗口中的 scroll_view 此时鼠标可能还是按下状态，导致 dialog 打开后还能拖动该 scroll_view。
+      */
+      if (widget_is_dialog(curr_win)) {
+        window_manager_default_push_prev_windows_to_background(widget, curr_win);
         if (widget_is_window_opened(curr_win)) {
-          window_manager_dispatch_window_foreground_events(curr_win, foreground_window, curr_win);
-        } else {
-          window_manager_dispatch_window_foreground_events(curr_win, foreground_window, NULL);
+          window_manager_dispatch_window_foreground_events(curr_win, NULL, curr_win);
+        }
+      } else {
+        widget_t* foreground_window = window_manager_get_foreground_window(WIDGET(wm));
+        if (foreground_window != curr_win && foreground_window != NULL) {
+          if (widget_is_window_opened(curr_win)) {
+            window_manager_dispatch_window_foreground_events(curr_win, foreground_window, curr_win);
+          } else {
+            window_manager_dispatch_window_foreground_events(curr_win, foreground_window, NULL);
+          }
         }
       }
       if (!curr_win_is_normal_window) {
