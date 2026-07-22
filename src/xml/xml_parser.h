@@ -127,7 +127,7 @@ void xml_parser_report_error(XmlParser* parser, const char* message);
 /**
  * @method xml_parser_report_error_more
  *
- * 报告错误。
+ * 报告错误。（使用当前解析到的行号和列号）
  *
  * @param {XmlParser*} parser parser对象。
  * @param {const char*} format 格式化字符串。
@@ -136,7 +136,21 @@ void xml_parser_report_error(XmlParser* parser, const char* message);
  */
 void xml_parser_report_error_more(XmlParser* parser, const char* format, ...);
 
-    /**
+/**
+ * @method xml_parser_report_error_more_ex
+ *
+ * 报告错误。（使用指定的行号和列号）
+ *
+ * @param {XmlParser*} parser parser对象。
+ * @param {int} line 行号。
+ * @param {int} col 列号。
+ * @param {const char*} format 格式化字符串。
+ *
+ * @return {void} 返回无。
+ */
+void xml_parser_report_error_more_ex(XmlParser* parser, int line, int col, const char* format, ...);
+
+/**
  * @method xml_parser_destroy
  *
  * 销毁parser对象。
@@ -145,7 +159,7 @@ void xml_parser_report_error_more(XmlParser* parser, const char* format, ...);
  *
  * @return {void} 返回无。
  */
-    void xml_parser_destroy(XmlParser* parser);
+void xml_parser_destroy(XmlParser* parser);
 
 END_C_DECLS
 

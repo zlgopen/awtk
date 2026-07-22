@@ -57,7 +57,7 @@ struct _XmlParser {
   /* 错误追踪相关字段 */
   int line;              /* 当前行号(从1开始) */
   int col;               /* 当前列号(从1开始) */
-  int last_line_start;   /* 上次换行时的位置偏移 */
+  int last_line_start;   /* 当前行第一个字符相对 start 的偏移 */
   bool_t has_error;      /* 是否已遇到错误 */
   int report_error_mode; /* 遇到错误时报错的模式 */
   darray_t* tag_stack;   /* 标签名称栈，用于检测未闭合标签*/
@@ -79,7 +79,7 @@ static bool_t xml_parser_is_valid_attr_name(const char* name, int length);
 static void xml_parser_push_tag(XmlParser* parser, const char* tag);
 static void xml_parser_pop_tag(XmlParser* parser, const char* tag);
 static void xml_parser_check_unclosed_tags(XmlParser* parser);
-static void xml_parser_check_duplicate_attrs(XmlParser* parser);
+static void xml_parser_check_duplicate_attrs(XmlParser* parser, const char* name, int len);
 
 XmlParser* xml_parser_create(void) {
   XmlParser* parser = TKMEM_ZALLOC(XmlParser);
@@ -399,13 +399,17 @@ static void xml_parser_parse_attrs(XmlParser* parser, char end_char) {
           key_len = parser->read_ptr - key_start;
 
           /* 验证属性名称，非法属性名称不添加到属性列表 */
-          if (key_len > 0 && !xml_parser_is_valid_attr_name(key_start, key_len)) {
-            char* name = tk_strndup(key_start, key_len);
-            if (name != NULL) {
-              xml_parser_report_error_more(parser, "invalid attribute name: '%s'", name);
-              TKMEM_FREE(name);
+          if (key_len > 0) {
+            if (!xml_parser_is_valid_attr_name(key_start, key_len)) {
+              char* name = tk_strndup(key_start, key_len);
+              if (name != NULL) {
+                xml_parser_report_error_more(parser, "invalid attribute name: '%s'", name);
+                TKMEM_FREE(name);
+              } else {
+                xml_parser_report_error(parser, "invalid attribute name");
+              }
             } else {
-              xml_parser_report_error(parser, "invalid attribute name");
+              xml_parser_check_duplicate_attrs(parser, key_start, key_len);
             }
           }
 
@@ -541,9 +545,6 @@ static void xml_parser_parse_start_tag(XmlParser* parser) {
   if (!xml_parser_is_valid_tag_name(tag_name, strlen(tag_name))) {
     xml_parser_report_error_more(parser, "invalid tag name: '%s'", tag_name);
   }
-
-  /* 检查重复属性 */
-  xml_parser_check_duplicate_attrs(parser);
 
   xml_builder_on_start(parser->builder, tag_name, (const char**)parser->attrs);
 
@@ -969,7 +970,8 @@ static void xml_parser_handle_newline(XmlParser* parser) {
   }
 
   parser->line++;
-  parser->last_line_start = (int)(parser->read_ptr - parser->start);
+  /* +1 使其指向新行第一个字符(而非换行符本身)，保证 update_position 的列号正确 */
+  parser->last_line_start = (int)(parser->read_ptr - parser->start) + 1;
   parser->col = 1;
 }
 
@@ -999,6 +1001,25 @@ void xml_parser_report_error_more(XmlParser* parser, const char* format, ...) {
 
     parser->has_error = TRUE;
     xml_builder_on_error(parser->builder, parser->line, parser->col, message);
+  }
+}
+
+void xml_parser_report_error_more_ex(XmlParser* parser, int line, int col, const char* format,
+                                     ...) {
+  if (parser == NULL || parser->builder == NULL || format == NULL) {
+    return;
+  }
+
+  if (xml_parser_should_report_error(parser)) {
+    char message[128] = {0};
+    va_list va;
+
+    va_start(va, format);
+    tk_vsnprintf(message, sizeof(message), format, va);
+    va_end(va);
+
+    parser->has_error = TRUE;
+    xml_builder_on_error(parser->builder, line, col, message);
   }
 }
 
@@ -1094,22 +1115,21 @@ static void xml_parser_check_unclosed_tags(XmlParser* parser) {
   }
 }
 
-/**
- * 检查是否有重复属性
- */
-static void xml_parser_check_duplicate_attrs(XmlParser* parser) {
-  int i, j;
+static void xml_parser_check_duplicate_attrs(XmlParser* parser, const char* key_start, int len) {
+  int i;
 
   if (parser == NULL || parser->attrs_nr <= 0) {
     return;
   }
 
   for (i = 0; i < parser->attrs_nr; i += 2) {
-    for (j = i + 2; j < parser->attrs_nr; j += 2) {
-      if (tk_str_eq(parser->attrs[i], parser->attrs[j])) {
-        xml_parser_report_error_more(parser, "duplicate attribute: '%s'", parser->attrs[i]);
-        return;
-      }
+    const char* stored = parser->buffer + tk_pointer_to_int(parser->attrs[i]);
+    if (strlen(stored) == (size_t)len && tk_str_eq_with_len(stored, key_start, len)) {
+      const char* p = parser->start + parser->last_line_start;
+      /* 计算 key_start 的列号 */
+      int col = (int)(key_start - p) + 1;
+      xml_parser_report_error_more_ex(parser, parser->line, col, "duplicate attribute: '%s'", stored);
+      return;
     }
   }
 
