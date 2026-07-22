@@ -1208,6 +1208,7 @@ EXPORTS
     xml_parser_set_report_error_mode
     xml_parser_report_error
     xml_parser_report_error_more
+    xml_parser_report_error_more_ex
     xml_parser_destroy
     encoding_convert
     encoding_utf8_to_gbk

@@ -221,9 +221,9 @@ static ret_t slide_view_animate_to(slide_view_t* slide_view, int32_t xoffset, in
 
   pointer_event_t abort;
   pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, 0, 0);
-  widget_dispatch_event_to_target_recursive(widget, &abort);
+  widget_dispatch_event_to_target_recursive(widget, (event_t*)&abort);
   if (slide_view->pressed) {
-    widget_dispatch(widget, &abort);
+    widget_dispatch(widget, (event_t*)&abort);
   }
 
   widget_animator_scroll_set_params(a, xoffset, yoffset, xoffset_end, yoffset_end);
