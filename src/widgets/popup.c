@@ -111,6 +111,13 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_WINDOW_OPEN: {
+      widget_t* active_win = popup->active_window_by_parent_widget;
+      if (active_win != NULL) {
+        int32_t stage = widget_get_prop_int(active_win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+        if (stage == WINDOW_STAGE_OPENED) {
+          window_manager_dispatch_window_foreground_events(widget, active_win, NULL);
+        }
+      }
       widget_grab(widget->parent, widget);
       break;
     }
