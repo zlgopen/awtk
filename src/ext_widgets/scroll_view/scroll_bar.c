@@ -991,6 +991,9 @@ ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, i
 ret_t scroll_bar_show_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
+
+  widget_set_visible_only(widget, TRUE);
+
   if (scroll_bar->wa_opacity != NULL) {
     widget_animator_destroy(scroll_bar->wa_opacity);
     scroll_bar->wa_opacity = NULL;
