@@ -308,3 +308,10 @@ ret_t popup_set_parent_widget_by_create(widget_t* widget, widget_t* parent_widge
 
   return RET_OK;
 }
+
+widget_t* popup_get_active_window_by_parent_widget(widget_t* widget) {
+  popup_t* popup = POPUP(widget);
+  return_value_if_fail(popup != NULL, NULL);
+
+  return popup->active_window_by_parent_widget;
+}

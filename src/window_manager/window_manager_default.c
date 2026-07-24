@@ -27,6 +27,7 @@
 #include "base/layout.h"
 #include "tkc/time_now.h"
 #include "base/dialog.h"
+#include "widgets/popup.h"
 #include "base/locale_info.h"
 #include "base/system_info.h"
 #include "base/input_method.h"
@@ -882,6 +883,19 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
         }
       }
     }
+
+    /*
+    popup 关闭时直接切回父亲控件的窗口，避免在 overlay 叠加的情况下对 overlay 反复切换前后台。
+    例如: 如果 overlay 的 save_focus_widget 是 edit, 则会导致 edit 在短时间内打开并关闭键盘，
+    由于键盘还在播打开动画中，所以关闭键盘会失败，导致最终打开了一个无输入对象的键盘。
+    */
+    if (widget_is_popup(window)) {
+      widget_t* active_win = popup_get_active_window_by_parent_widget(window);
+      if (active_win != NULL) {
+        prev_win = active_win;
+      }
+    }
+
     if (prev_win != NULL) {
       if (!widget_is_keyboard(window)) {
         bool_t is_create = TRUE;
@@ -942,6 +956,19 @@ static ret_t window_manager_default_close_window_force(widget_t* widget, widget_
 
   if (close_window) {
     widget_t* prev_win = window_manager_find_prev_window(widget);
+
+    /*
+    popup 关闭时直接切回父亲控件的窗口，避免在 overlay 叠加的情况下对 overlay 反复切换前后台。
+    例如: 如果 overlay 的 save_focus_widget 是 edit, 则会导致 edit 在短时间内打开并关闭键盘，
+    由于键盘还在播打开动画中，所以关闭键盘会失败，导致最终打开了一个无输入对象的键盘。
+    */
+    if (widget_is_popup(window)) {
+      widget_t* active_win = popup_get_active_window_by_parent_widget(window);
+      if (active_win != NULL) {
+        prev_win = active_win;
+      }
+    }
+
     if (prev_win != NULL && window != prev_win) {
       window_manager_dispatch_window_foreground_events(window, NULL, prev_win);
     }

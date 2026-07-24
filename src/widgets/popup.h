@@ -181,6 +181,17 @@ ret_t popup_set_close_when_timeout(widget_t* widget, uint32_t close_when_timeout
  */
 ret_t popup_set_parent_widget_by_create(widget_t* widget, widget_t* parent_widget);
 
+/**
+ * @method popup_get_active_window_by_parent_widget
+ * 获取创建 popup 的控件所在的活动窗口。
+ * 备注：用于在关闭 popup 时直接切换到创建 popup 的控件所在的活动窗口
+ * @export none
+ * @param {widget_t*} widget popup 对象。
+ *
+ * @return {widget_t*} 返回创建 popup 的控件所在的活动窗口。
+ */
+widget_t* popup_get_active_window_by_parent_widget(widget_t* widget);
+
 #define POPUP(widget) ((popup_t*)(popup_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
