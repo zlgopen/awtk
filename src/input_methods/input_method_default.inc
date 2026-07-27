@@ -181,6 +181,29 @@ static ret_t input_method_default_restore_win_size(input_method_t* im) {
   return RET_OK;
 }
 
+/**
+ * 主要用于解决窗口顺序变化的情况，例如打开键盘的情况下从一个 overlay 切换到另一个 overlay
+ */
+static ret_t input_method_default_update_keyboard_close_anim_hint(input_method_t* im,
+                                                                  widget_t* keyboard) {
+  if (im->win != NULL && im->win_delta_y > 0 && !widget_is_normal_window(im->win)) {
+    value_t v;
+    char anim_hint[64] = {0};
+    int32_t cur_index = widget_index_of(im->win);
+
+    if (cur_index >= 0) {
+      tk_snprintf(anim_hint, sizeof(anim_hint),
+          "vtranslate(" WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_Y_RANGE
+          "=%d," WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_INDEX "=%d)",
+          im->win_delta_y, cur_index);
+      value_set_str(&v, anim_hint);
+      widget_set_prop(keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t input_method_default_restore_win_position(input_method_t* im) {
   if (im->last_widget != NULL) {
     im->last_win_delta_y = im->win_delta_y;
@@ -477,6 +500,7 @@ static ret_t on_timer_close_keyboard(const timer_info_t* timer) {
   if (im->keyboard == info->keyboard && im->widget == info->widget) {
     widget_t* keyboard = im->keyboard;
     im->keyboard = NULL;
+    input_method_default_update_keyboard_close_anim_hint(im, keyboard);
     input_method_default_restore_win_position(im);
     input_method_default_restore_win_size(im);
     window_close(keyboard);
@@ -565,6 +589,7 @@ static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e) {
 
   if (im->widget == widget) {
     if (im->keyboard != NULL) {
+      input_method_default_update_keyboard_close_anim_hint(im, im->keyboard);
       input_method_default_restore_win_position(im);
       input_method_default_restore_win_size(im);
       input_method_default_remove_timer_close(im);
