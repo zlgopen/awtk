@@ -205,12 +205,6 @@ static ret_t input_method_default_update_keyboard_close_anim_hint(input_method_t
 }
 
 static ret_t input_method_default_restore_win_position(input_method_t* im) {
-  if (im->last_widget != NULL) {
-    im->last_win_delta_y = im->win_delta_y;
-  } else {
-    im->last_win_delta_y = 0;
-  }
-
   if (im->win != NULL) {
     widget_move(im->win, im->win->x, im->win_old_y);
     im->win_delta_y = 0;
@@ -224,11 +218,13 @@ static ret_t input_method_default_restore_win_position(input_method_t* im) {
 static ret_t input_method_set_target_widget(input_method_t* im, widget_t* widget) {
   if (widget != NULL) {
     im->last_widget = im->widget;
+    im->last_win_delta_y = im->win_delta_y;
     im->widget = widget;
     input_method_default_restore_win_size(im);
   } else {
     im->widget = NULL;
     im->last_widget = NULL;
+    im->last_win_delta_y = 0;
   }
   return RET_OK;
 }
