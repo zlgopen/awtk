@@ -33,6 +33,8 @@ static ret_t image_value_draw_images(widget_t* widget, canvas_t* c,
   int32_t h = 0;
   float scale_w = 1;
   float scale_h = 1;
+  rect_t clip_r;
+  rect_t save_clip_r;
   float_t ratio = c->lcd->ratio;
   style_t* style = widget->astyle;
   rect_t content_r = widget_get_content_area(widget);
@@ -113,6 +115,12 @@ static ret_t image_value_draw_images(widget_t* widget, canvas_t* c,
     }
   }
 
+  canvas_save(c);
+  clip_r = rect_init(c->ox, c->oy, widget->w, widget->h);
+  canvas_get_clip_rect(c, &save_clip_r);
+  clip_r = rect_intersect(&clip_r, &save_clip_r);
+  canvas_set_clip_rect(c, &clip_r);
+
   for (i = 0; i < nr; i++) {
     bitmap_t b;
     return_value_if_fail(widget_load_image(widget, bitmap_name[i], &b) == RET_OK, RET_BAD_PARAMS);
@@ -123,6 +131,9 @@ static ret_t image_value_draw_images(widget_t* widget, canvas_t* c,
 
     x += d.w;
   }
+
+  canvas_set_clip_rect(c, &save_clip_r);
+  canvas_restore(c);
 
   return RET_OK;
 }

@@ -271,6 +271,10 @@ ret_t image_transform(widget_t* widget, canvas_t* c) {
   float_t anchor_y = 0;
   image_base_t* image_base = IMAGE_BASE(widget);
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
+  rectf_t r = rectf_init(c->ox, c->oy, widget->w, widget->h);
+  rectf_t r_vg = *vgcanvas_get_clip_rect(vg);
+  r = rectf_intersect(&r, &r_vg);
+  vgcanvas_clip_rect(vg, r.x, r.y, r.w, r.h);
 
   return_value_if_fail(image_base != NULL && vg != NULL, RET_BAD_PARAMS);
 

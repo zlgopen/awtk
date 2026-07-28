@@ -251,7 +251,7 @@ TEST(ImageValue, paint) {
   widget_set_style_str(w, "fg_image_draw_type", "scale_w");
   widget_on_paint_self(w, &c);
   ASSERT_EQ(lcd_log_get_commands(lcd),
-            "dg(0,5,30,42,2,0,65,92);dg(0,5,30,42,67,0,65,92);dg(0,5,30,42,132,0,65,92);");
+            "dg(0,5,30,36,2,0,65,80);dg(0,5,30,36,67,0,65,80);dg(0,5,30,36,132,0,65,80);");
   lcd_log_reset(lcd);
 
   widget_set_style_str(w, "fg_image_draw_type", "scale_h");
