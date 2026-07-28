@@ -10,6 +10,8 @@ def joinPath(root, subdir):
   return os.path.normpath(os.path.join(root, subdir))
 
 # XXX: make sure no no ascii chars in the path name.
+# NOTE: local patches in vendor agge:
+# - agge/nanovg_alpha_blender.h (AWTK vgcanvas soft text alpha texture blender)
 
 SRC_ROOT_DIR=joinPath(os.getcwd(), '../../../3rd/agge/');
 DST_ROOT_DIR=os.getcwd();

@@ -23,6 +23,7 @@
 #include "tkc/utf8.h"
 #include "tkc/mem.h"
 #include "base/vgcanvas.h"
+#include "base/font.h"
 #include "base/image_manager.h"
 
 #ifdef WITH_VGCANVAS
@@ -34,10 +35,14 @@
 typedef struct _vgcanvas_nanovg_t {
   vgcanvas_t base;
 
+  struct _vgcanvas_nanovg_soft_text_cache_item_t* text_cache_items;
   int font_id;
   NVGcontext* vg;
   uint32_t text_align_v;
   uint32_t text_align_h;
+  font_t* awtk_font;
+  font_t* awtk_fallback_font;
+  font_size_t awtk_font_size;
 } vgcanvas_nanovg_t;
 
 #include "vgcanvas_nanovg_soft.inc"

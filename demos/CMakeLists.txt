@@ -44,3 +44,39 @@ if(AWTK_BUILD_SHARED AND AWTK_OS_WINDOWS)
     )
   endif()
 endif()
+
+# demo_vg_text: dedicated vg text rendering showcase.
+add_executable(awtk_demo_vg_text "${CMAKE_SOURCE_DIR}/demos/demo_vg_text_app.c")
+target_include_directories(awtk_demo_vg_text PRIVATE ${AWTK_SRC_INCLUDES})
+awtk_apply_platform_compile_options(awtk_demo_vg_text)
+awtk_apply_common_compile_definitions(awtk_demo_vg_text)
+target_link_libraries(awtk_demo_vg_text PRIVATE awtk)
+set_target_properties(awtk_demo_vg_text PROPERTIES OUTPUT_NAME demo_vg_text LINKER_LANGUAGE CXX)
+add_dependencies(awtk_demo_vg_text awtk)
+
+if(AWTK_WINDOWS_MSVC)
+  set_target_properties(awtk_demo_vg_text PROPERTIES WIN32_EXECUTABLE TRUE)
+endif()
+
+if(AWTK_BUILD_SHARED AND (AWTK_OS_LINUX OR AWTK_OS_DARWIN))
+  set_target_properties(awtk_demo_vg_text PROPERTIES BUILD_RPATH "$<TARGET_FILE_DIR:awtk>")
+endif()
+
+if(AWTK_BUILD_SHARED AND AWTK_OS_WINDOWS)
+  add_custom_command(
+    TARGET awtk_demo_vg_text POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "$<TARGET_FILE:awtk>"
+      "$<TARGET_FILE_DIR:awtk_demo_vg_text>"
+    VERBATIM
+  )
+  if(SDL_SHARED AND TARGET SDL2)
+    add_custom_command(
+      TARGET awtk_demo_vg_text POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "$<TARGET_FILE:SDL2>"
+        "$<TARGET_FILE_DIR:awtk_demo_vg_text>"
+      VERBATIM
+    )
+  endif()
+endif()

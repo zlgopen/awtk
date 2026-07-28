@@ -24,6 +24,8 @@
 #include "tkc/darray.h"
 #include "cairo/cairo.h"
 #include "base/vgcanvas.h"
+#include "base/font.h"
+#include "base/font_manager.h"
 #include "base/system_info.h"
 #include "base/image_manager.h"
 #include "cairo/cairo-private.h"
@@ -44,9 +46,128 @@ typedef struct _vgcanvas_cairo_t {
 
   cairo_source_type_t stroke_source_type;
   cairo_source_type_t fill_source_type;
+  uint8_t text_align_h;
+  uint8_t text_align_v;
+  font_t* awtk_font;
+  font_t* awtk_fallback_font;
+  font_size_t awtk_font_size;
 
   darray_t images;
 } vgcanvas_cairo_t;
+
+typedef struct _vgcanvas_cairo_text_run_t {
+  glyph_t glyph;
+  int32_t pen_x;
+} vgcanvas_cairo_text_run_t;
+
+enum {
+  CAIRO_TEXT_ALIGN_LEFT = 0,
+  CAIRO_TEXT_ALIGN_CENTER = 1,
+  CAIRO_TEXT_ALIGN_RIGHT = 2
+};
+
+enum {
+  CAIRO_TEXT_BASELINE_TOP = 0,
+  CAIRO_TEXT_BASELINE_MIDDLE = 1,
+  CAIRO_TEXT_BASELINE_BOTTOM = 2
+};
+
+static font_size_t vgcanvas_cairo_text_to_font_size(float_t size) {
+  int32_t font_size = tk_roundi(size);
+  if (font_size <= 0) {
+    font_size = TK_DEFAULT_FONT_SIZE;
+  }
+  return (font_size_t)font_size;
+}
+
+static ret_t vgcanvas_cairo_text_ensure_font(vgcanvas_cairo_t* canvas, const char* name_hint) {
+  font_manager_t* fm = font_manager();
+  return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
+
+  if (canvas->awtk_font_size == 0) {
+    canvas->awtk_font_size = vgcanvas_cairo_text_to_font_size(canvas->base.font_size);
+  }
+
+  if (canvas->awtk_font == NULL) {
+    canvas->awtk_font = font_manager_get_font(fm, name_hint, canvas->awtk_font_size);
+    canvas->awtk_fallback_font = font_manager_get_font(fm, NULL, canvas->awtk_font_size);
+  }
+
+  return_value_if_fail(canvas->awtk_font != NULL || canvas->awtk_fallback_font != NULL, RET_FAIL);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_cairo_text_get_glyph(vgcanvas_cairo_t* canvas, wchar_t chr, glyph_t* glyph) {
+  ret_t ret = RET_FAIL;
+  font_t* font = canvas->awtk_font;
+
+  if (font != NULL) {
+    ret = font_get_glyph(font, chr, canvas->awtk_font_size, glyph);
+    if (ret == RET_OK && glyph->data != NULL) {
+      return RET_OK;
+    }
+  }
+
+  if (canvas->awtk_fallback_font != NULL && canvas->awtk_fallback_font != font) {
+    ret = font_get_glyph(canvas->awtk_fallback_font, chr, canvas->awtk_font_size, glyph);
+    if (ret == RET_OK && glyph->data != NULL) {
+      return RET_OK;
+    }
+  }
+
+  return RET_FAIL;
+}
+
+static uint32_t vgcanvas_cairo_text_get_row_pitch(const glyph_t* glyph) {
+  if (glyph->pitch > 0) {
+    return glyph->pitch;
+  }
+
+  switch (glyph->format) {
+    case GLYPH_FMT_ALPHA:
+      return glyph->w;
+    case GLYPH_FMT_MONO:
+      return (glyph->w + 7) >> 3;
+    case GLYPH_FMT_ALPHA2:
+      return (glyph->w + 3) >> 2;
+    case GLYPH_FMT_ALPHA4:
+      return (glyph->w + 1) >> 1;
+    case GLYPH_FMT_RGBA:
+      return glyph->w * 4;
+    default:
+      return glyph->w;
+  }
+}
+
+static uint8_t vgcanvas_cairo_text_alpha_from_glyph(const glyph_t* glyph, int32_t x, int32_t y) {
+  uint32_t row_pitch = vgcanvas_cairo_text_get_row_pitch(glyph);
+  const uint8_t* row = glyph->data + y * row_pitch;
+
+  switch (glyph->format) {
+    case GLYPH_FMT_ALPHA:
+      return row[x];
+    case GLYPH_FMT_MONO: {
+      uint8_t v = row[x >> 3];
+      uint8_t shift = 7 - (x & 0x7);
+      return ((v >> shift) & 0x1) ? 0xFF : 0;
+    }
+    case GLYPH_FMT_ALPHA2: {
+      uint8_t v = row[x >> 2];
+      uint8_t shift = (uint8_t)((3 - (x & 0x3)) * 2);
+      return (uint8_t)(((v >> shift) & 0x3) * 85);
+    }
+    case GLYPH_FMT_ALPHA4: {
+      uint8_t v = row[x >> 1];
+      uint8_t shift = (uint8_t)((1 - (x & 0x1)) * 4);
+      return (uint8_t)(((v >> shift) & 0xF) * 17);
+    }
+    case GLYPH_FMT_RGBA:
+      return row[x * 4 + 3];
+    default:
+      return 0;
+  }
+}
 
 ret_t vgcanvas_cairo_set_sreen_orientation(cairo_t* canvas) {
 #ifdef WITH_FAST_LCD_PORTRAIT
@@ -450,54 +571,282 @@ static ret_t vgcanvas_cairo_stroke(vgcanvas_t* vgcanvas) {
 }
 
 static ret_t vgcanvas_cairo_set_font_size(vgcanvas_t* vgcanvas, float_t size) {
-  cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
-  cairo_set_font_size(vg, size);
+  vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
+  canvas->awtk_font_size = vgcanvas_cairo_text_to_font_size(size);
+
+  if (canvas->awtk_font != NULL || canvas->awtk_fallback_font != NULL) {
+    font_manager_t* fm = font_manager();
+    const char* name = vgcanvas->font;
+    if (fm != NULL) {
+      canvas->awtk_font = font_manager_get_font(fm, name, canvas->awtk_font_size);
+      canvas->awtk_fallback_font = font_manager_get_font(fm, NULL, canvas->awtk_font_size);
+    }
+  }
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_cairo_set_font(vgcanvas_t* vgcanvas, const char* name) {
-  cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
-  (void)canvas;
-  cairo_select_font_face(vg, name, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+  font_manager_t* fm = font_manager();
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
+
+  if (canvas->awtk_font_size == 0) {
+    canvas->awtk_font_size = vgcanvas_cairo_text_to_font_size(vgcanvas->font_size);
+  }
+
+  canvas->awtk_font = font_manager_get_font(fm, name, canvas->awtk_font_size);
+  canvas->awtk_fallback_font = font_manager_get_font(fm, NULL, canvas->awtk_font_size);
+
+  return_value_if_fail(canvas->awtk_font != NULL || canvas->awtk_fallback_font != NULL, RET_FAIL);
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_cairo_set_text_align(vgcanvas_t* vgcanvas, const char* text_align) {
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
-  (void)canvas;
+
+  if (text_align[0] == 'r') {
+    canvas->text_align_h = CAIRO_TEXT_ALIGN_RIGHT;
+  } else if (text_align[0] == 'c') {
+    canvas->text_align_h = CAIRO_TEXT_ALIGN_CENTER;
+  } else {
+    canvas->text_align_h = CAIRO_TEXT_ALIGN_LEFT;
+  }
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_cairo_set_text_baseline(vgcanvas_t* vgcanvas, const char* text_baseline) {
-  (void)text_baseline;
-  (void)vgcanvas;
-  /*TODO*/
+  vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
+
+  if (text_baseline[0] == 'b') {
+    canvas->text_align_v = CAIRO_TEXT_BASELINE_BOTTOM;
+  } else if (text_baseline[0] == 'm') {
+    canvas->text_align_v = CAIRO_TEXT_BASELINE_MIDDLE;
+  } else {
+    canvas->text_align_v = CAIRO_TEXT_BASELINE_TOP;
+  }
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_cairo_fill_text(vgcanvas_t* vgcanvas, const char* text, float_t x, float_t y,
                                       float_t max_width) {
-  (void)vgcanvas;
-  (void)text;
-  (void)x;
-  (void)y;
+  int32_t pen_x = 0;
+  int32_t min_x = 0;
+  int32_t min_y = 0;
+  int32_t max_x = 0;
+  int32_t max_y = 0;
+  int32_t base_x = 0;
+  int32_t base_y = 0;
+  uint32_t text_len = 0;
+  uint32_t i = 0;
+  uint32_t run_nr = 0;
+  uint8_t* mask_data = NULL;
+  wchar_t* ws = NULL;
+  vgcanvas_cairo_text_run_t* runs = NULL;
+  color_t c = vgcanvas->fill_color;
+  vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
+  cairo_t* vg = canvas->vg;
+  cairo_surface_t* mask_surface = NULL;
+  int32_t mask_w = 0;
+  int32_t mask_h = 0;
+  int32_t mask_stride = 0;
+  ret_t result = RET_OK;
   (void)max_width;
+  ret_t ret = vgcanvas_cairo_text_ensure_font(canvas, vgcanvas->font);
+  return_value_if_fail(ret == RET_OK && text != NULL, RET_BAD_PARAMS);
+  if (*text == '\0') {
+    return RET_OK;
+  }
 
-  /*TODO*/
-  return RET_OK;
+  text_len = (uint32_t)strlen(text);
+  ws = (wchar_t*)TKMEM_ZALLOCN(wchar_t, text_len + 1);
+  runs = (vgcanvas_cairo_text_run_t*)TKMEM_ZALLOCN(vgcanvas_cairo_text_run_t, text_len + 1);
+  if (ws == NULL || runs == NULL) {
+    result = RET_OOM;
+    goto done;
+  }
+
+  tk_utf8_to_utf16(text, ws, text_len + 1);
+  for (i = 0; ws[i] != 0; i++) {
+    glyph_t glyph;
+    memset(&glyph, 0x00, sizeof(glyph));
+    if (vgcanvas_cairo_text_get_glyph(canvas, ws[i], &glyph) != RET_OK) {
+      continue;
+    }
+
+    runs[run_nr].glyph = glyph;
+    runs[run_nr].pen_x = pen_x;
+    if (run_nr == 0) {
+      min_x = pen_x + glyph.x;
+      min_y = glyph.y;
+      max_x = pen_x + glyph.x + glyph.w;
+      max_y = glyph.y + glyph.h;
+    } else {
+      min_x = tk_min(min_x, pen_x + glyph.x);
+      min_y = tk_min(min_y, (int32_t)glyph.y);
+      max_x = tk_max(max_x, pen_x + glyph.x + glyph.w);
+      max_y = tk_max(max_y, (int32_t)(glyph.y + glyph.h));
+    }
+    pen_x += glyph.advance;
+    run_nr++;
+  }
+
+  if (run_nr == 0 || max_x <= min_x || max_y <= min_y) {
+    TKMEM_FREE(ws);
+    TKMEM_FREE(runs);
+    return RET_OK;
+  }
+
+  base_x = tk_roundi(x);
+  base_y = tk_roundi(y);
+  if (canvas->text_align_h == CAIRO_TEXT_ALIGN_CENTER) {
+    base_x -= (min_x + max_x) / 2;
+  } else if (canvas->text_align_h == CAIRO_TEXT_ALIGN_RIGHT) {
+    base_x -= max_x;
+  } else {
+    base_x -= min_x;
+  }
+
+  if (canvas->text_align_v == CAIRO_TEXT_BASELINE_MIDDLE) {
+    base_y -= (min_y + max_y) / 2;
+  } else if (canvas->text_align_v == CAIRO_TEXT_BASELINE_BOTTOM) {
+    base_y -= max_y;
+  } else {
+    base_y -= min_y;
+  }
+
+  mask_w = max_x - min_x;
+  mask_h = max_y - min_y;
+  mask_stride = cairo_format_stride_for_width(CAIRO_FORMAT_A8, mask_w);
+  if (mask_stride <= 0) {
+    result = RET_FAIL;
+    goto done;
+  }
+  mask_data = (uint8_t*)TKMEM_ZALLOCN(uint8_t, (uint32_t)mask_stride * (uint32_t)mask_h);
+  if (mask_data == NULL) {
+    result = RET_OOM;
+    goto done;
+  }
+
+  for (i = 0; i < run_nr; i++) {
+    const glyph_t* glyph = &(runs[i].glyph);
+    int32_t glyph_x = runs[i].pen_x + glyph->x - min_x;
+    int32_t glyph_y = glyph->y - min_y;
+    int32_t gx = 0;
+    int32_t gy = 0;
+
+    if (glyph->data == NULL || glyph->w == 0 || glyph->h == 0) {
+      continue;
+    }
+
+    for (gy = 0; gy < glyph->h; gy++) {
+      int32_t dst_y = glyph_y + gy;
+      if (dst_y < 0 || dst_y >= mask_h) {
+        continue;
+      }
+      for (gx = 0; gx < glyph->w; gx++) {
+        int32_t dst_x = glyph_x + gx;
+        uint8_t value = 0;
+        if (dst_x < 0 || dst_x >= mask_w) {
+          continue;
+        }
+        value = vgcanvas_cairo_text_alpha_from_glyph(glyph, gx, gy);
+        if (value > 0) {
+          uint8_t* pixel = mask_data + dst_y * mask_stride + dst_x;
+          if (value > *pixel) {
+            *pixel = value;
+          }
+        }
+      }
+    }
+  }
+
+  mask_surface =
+      cairo_image_surface_create_for_data(mask_data, CAIRO_FORMAT_A8, mask_w, mask_h, mask_stride);
+  if (mask_surface == NULL || cairo_surface_status(mask_surface) != CAIRO_STATUS_SUCCESS) {
+    result = RET_FAIL;
+    goto done;
+  }
+
+  cairo_save(vg);
+  if (canvas->fill_source_type == CAIRO_SOURCE_GRADIENT) {
+    cairo_set_source(vg, canvas->fill_gradient);
+  } else {
+    c.rgba.a = c.rgba.a * vgcanvas->global_alpha;
+    cairo_set_source_color(vg, c);
+  }
+  cairo_mask_surface(vg, mask_surface, base_x + min_x, base_y + min_y);
+  cairo_restore(vg);
+
+done:
+  if (mask_surface != NULL) {
+    cairo_surface_destroy(mask_surface);
+  }
+  TKMEM_FREE(mask_data);
+  TKMEM_FREE(ws);
+  TKMEM_FREE(runs);
+
+  return result;
 }
 
 static float_t vgcanvas_cairo_measure_text(vgcanvas_t* vgcanvas, const char* text) {
-  (void)vgcanvas;
-  (void)text;
-  /*TODO*/
+  uint32_t i = 0;
+  int32_t width = 0;
+  uint32_t text_len = 0;
+  wchar_t* ws = NULL;
+  vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
+  ret_t ret = vgcanvas_cairo_text_ensure_font(canvas, vgcanvas->font);
+  return_value_if_fail(ret == RET_OK && text != NULL, 0);
 
-  return 0;
+  return_value_if_fail(text != NULL, 0);
+  if (*text == '\0') {
+    return 0;
+  }
+
+  text_len = (uint32_t)strlen(text);
+  ws = (wchar_t*)TKMEM_ZALLOCN(wchar_t, text_len + 1);
+  return_value_if_fail(ws != NULL, 0);
+
+  tk_utf8_to_utf16(text, ws, text_len + 1);
+  for (i = 0; ws[i] != 0; i++) {
+    glyph_t glyph;
+    memset(&glyph, 0x00, sizeof(glyph));
+    if (vgcanvas_cairo_text_get_glyph(canvas, ws[i], &glyph) == RET_OK) {
+      width += glyph.advance;
+    }
+  }
+  TKMEM_FREE(ws);
+
+  return (float_t)width;
+}
+
+static ret_t vgcanvas_cairo_get_text_metrics(vgcanvas_t* vgcanvas, float_t* ascent,
+                                             float_t* descent, float_t* line_hight) {
+  vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
+  font_vmetrics_t metrics;
+  font_t* metric_font = NULL;
+  ret_t ret = vgcanvas_cairo_text_ensure_font(canvas, vgcanvas->font);
+  return_value_if_fail(ret == RET_OK, RET_FAIL);
+
+  metric_font = canvas->awtk_font != NULL ? canvas->awtk_font : canvas->awtk_fallback_font;
+  return_value_if_fail(metric_font != NULL, RET_FAIL);
+
+  metrics = font_get_vmetrics(metric_font, canvas->awtk_font_size);
+  if (ascent != NULL) {
+    *ascent = (float_t)metrics.ascent;
+  }
+  if (descent != NULL) {
+    *descent = (float_t)metrics.descent;
+  }
+  if (line_hight != NULL) {
+    *line_hight = (float_t)(metrics.ascent - metrics.descent + metrics.line_gap);
+  }
+
+  return RET_OK;
 }
 
 static cairo_surface_t* create_surface(uint32_t w, uint32_t h, bitmap_format_t format,
@@ -967,6 +1316,7 @@ static const vgcanvas_vtable_t vt = {
     .set_text_baseline = vgcanvas_cairo_set_text_baseline,
     .fill_text = vgcanvas_cairo_fill_text,
     .measure_text = vgcanvas_cairo_measure_text,
+    .get_text_metrics = vgcanvas_cairo_get_text_metrics,
     .draw_image = vgcanvas_cairo_draw_image,
     .set_antialias = vgcanvas_cairo_set_antialias,
     .set_global_alpha = vgcanvas_cairo_set_global_alpha,
@@ -1024,6 +1374,8 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
 
   cairo->vg = cairo_create(surface);
   return_value_if_fail(cairo->vg, NULL);
+  cairo->text_align_h = CAIRO_TEXT_ALIGN_LEFT;
+  cairo->text_align_v = CAIRO_TEXT_BASELINE_TOP;
   darray_init(&(cairo->images), 10, (tk_destroy_t)bitmap_destroy, (tk_compare_t)cairo_bitmap_cmp);
   vgcanvas_set_global_alpha((vgcanvas_t*)cairo, 1);
   cairo_surface_destroy(surface);

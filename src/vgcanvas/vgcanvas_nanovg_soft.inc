@@ -1,6 +1,7 @@
 #include "tkc/utils.h"
 #include "base/types_def.h"
 #include "vgcanvas_nanovg.inc" 
+#include "vgcanvas_nanovg_soft_text.inc"
 #include "base/vgcanvas_asset_manager.h"
 
 static ret_t vgcanvas_asset_manager_nanovg_font_destroy(void* vg, const char* font_name, void* specific) {
@@ -133,6 +134,7 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   NVGcontext* vg = canvas->vg;
 
   nvgEndFrame(vg);
+  vgcanvas_nanovg_soft_text_on_frame_end(vgcanvas);
 
   return RET_OK;
 }
@@ -249,6 +251,7 @@ static ret_t vgcanvas_nanovg_soft_close_asset_manager(vgcanvas_t* vg) {
 
 static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+  vgcanvas_nanovg_soft_text_deinit(vgcanvas);
   vgcanvas_nanovg_soft_close_asset_manager(vgcanvas);
   vgcanvas_nanovg_deinit(vgcanvas);
   nvgDeleteInternal(canvas->vg);

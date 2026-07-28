@@ -1,6 +1,8 @@
 # 最新动态
 
 2026/7/28
+  * 完善 AGGE 软件渲染 vgcanvas 文本路径：接入 AWTK 字体字形渲染（含点阵字形格式与字体回退）并补充相关单元测试。
+  * 让 cairo 后端支持 vgcanvas draw text：复用 AWTK font_manager 字形管线（含字体回退/点阵字形格式展开），并补齐 fill_text/measure_text/get_text_metrics 与对齐基线语义及回归测试。
   * 修复图片能绘制到控件外面的问题(感谢雪飞提供补丁)
 
 2026/7/27

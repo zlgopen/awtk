@@ -17,6 +17,7 @@
 #include <agge/blenders_generic.h>
 #include <agge/vector_rasterizer.h>
 #include <agge/nanovg_image_blender.h>
+#include <agge/nanovg_alpha_blender.h>
 #include <agge/blender_linear_gradient.h>
 #include <agge/blender_radial_gradient.h>
 
@@ -322,6 +323,15 @@ void renderPaint(AGGENVGcontext* agge, NVGpaint* paint, enum NVGFillMode fillMod
     nvgTransformInverse(invxform, paint->xform);
 
     switch (tex->type) {
+      case NVG_TEXTURE_ALPHA: {
+        typedef agge::bitmap<agge::pixel8, agge::raw_bitmap> alpha_bitmap_t;
+        alpha_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, tex->orientation,
+                           (uint8_t*)(tex->data));
+        agge::nanovg_alpha_blender<PixelT, alpha_bitmap_t> color(&src, (float*)invxform,
+                                                                  paint->innerColor);
+        ren(surface, 0, ras, color, agge::winding<>());
+        break;
+      }
       case NVG_TEXTURE_RGBA: {
         typedef agge::bitmap<agge::pixel32_rgba, agge::raw_bitmap> rgba_bitmap_t;
         rgba_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, tex->orientation, (uint8_t*)(tex->data));

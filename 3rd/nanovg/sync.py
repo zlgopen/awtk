@@ -10,6 +10,8 @@ def joinPath(root, subdir):
   return os.path.normpath(os.path.join(root, subdir))
 
 # XXX: make sure no no ascii chars in the path name.
+# NOTE: local patches in vendor nanovg/agge backend:
+# - agge/nanovg_agge.cpp (add NVG_TEXTURE_ALPHA render path for soft text)
 
 SRC_ROOT_DIR=joinPath(os.getcwd(), '../../../3rd/nanovg/');
 DST_ROOT_DIR=os.getcwd();
