@@ -26,6 +26,8 @@
 #include "base/window_manager.h"
 #include "base/input_device_status.h"
 
+static uint32_t input_device_status_get_shift_key_code(input_device_status_t* ids, uint32_t key);
+
 static key_long_press_info_t* key_long_press_info_create(uint32_t key, uint32_t time) {
   key_long_press_info_t* info = TKMEM_ZALLOC(key_long_press_info_t);
   return_value_if_fail(info != NULL, NULL);
@@ -144,12 +146,13 @@ static ret_t input_device_status_dispatch_long_press(input_device_status_t* ids)
     key_pressed_info_t* iter = ids->pressed_info + i;
     if (iter->key && !iter->emitted && !iter->should_abort) {
       uint64_t t = now - iter->time;
-      key_long_press_info_t* info = input_device_status_find_key_long_press_info(ids, iter->key);
+      uint32_t shifted_key = input_device_status_get_shift_key_code(ids, iter->key);
+      key_long_press_info_t* info = input_device_status_find_key_long_press_info(ids, shifted_key);
       uint32_t long_press_time = info ? info->time : TK_KEY_LONG_PRESS_TIME;
 
       if (t >= long_press_time) {
         window_manager_t* wm = WINDOW_MANAGER(window_manager());
-        event_t* e = key_event_init(&evt, EVT_KEY_LONG_PRESS, wm->global_emitter, iter->key);
+        event_t* e = key_event_init(&evt, EVT_KEY_LONG_PRESS, wm->global_emitter, shifted_key);
 
         input_device_status_init_key_event(ids, &evt);
         if (emitter_dispatch(wm->global_emitter, e) != RET_STOP) {
@@ -157,7 +160,7 @@ static ret_t input_device_status_dispatch_long_press(input_device_status_t* ids)
           widget_on_keydown(widget, &evt);
         }
 
-        log_debug("long press:%d long_press_time=%d\n", iter->key, long_press_time);
+        log_debug("long press:%d long_press_time=%d\n", shifted_key, long_press_time);
         iter->emitted = TRUE;
       }
     }
@@ -474,15 +477,16 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
       if (dispatch) {
         key_event_t* evt = (key_event_t*)e;
         key_pressed_info_t* info = NULL;
+        uint32_t orig_key = evt->key;
         input_device_status_update_key_status(ids, evt->key, evt, TRUE);
         input_device_status_shift_key(ids, evt);
         if (evt->key == TK_KEY_UNKNOWN) {
           break;
         }
 
-        input_device_status_update_key_press_info(ids, evt->key, TRUE);
+        input_device_status_update_key_press_info(ids, orig_key, TRUE);
 
-        info = input_device_status_find_press_info(ids, evt->key);
+        info = input_device_status_find_press_info(ids, orig_key);
 
         input_device_status_init_key_event(ids, evt);
         if (RET_STOP == window_manager_dispatch_input_event_global(WIDGET(wm), e)) {
@@ -502,13 +506,14 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
     case EVT_KEY_UP: {
       key_event_t* evt = (key_event_t*)e;
       key_pressed_info_t* info = NULL;
+      uint32_t orig_key = evt->key;
       input_device_status_shift_key(ids, evt);
       input_device_status_update_key_status(ids, evt->key, evt, FALSE);
       if (evt->key == TK_KEY_UNKNOWN) {
         break;
       }
 
-      info = input_device_status_find_press_info(ids, evt->key);
+      info = input_device_status_find_press_info(ids, orig_key);
 
       if (dispatch || info != NULL) {
         input_device_status_init_key_event(ids, evt);
@@ -524,7 +529,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
           }
         }
 
-        input_device_status_update_key_press_info(ids, evt->key, FALSE);
+        input_device_status_update_key_press_info(ids, orig_key, FALSE);
       }
       break;
     }

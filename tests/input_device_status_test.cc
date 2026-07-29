@@ -9,6 +9,18 @@ using std::string;
 #define TK_TRUE 1u
 #define TK_FALSE 0u
 
+static bool_t input_device_status_has_pressed_key(input_device_status_t* ids) {
+  uint32_t i = 0;
+  for (i = 0; i < MAX_PRESSED_KEYS_NR; i++) {
+    key_pressed_info_t* iter = ids->pressed_info + i;
+    if (iter->key) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
 TEST(InputDeviceStatus, basic) {
   input_device_status_t input_device_status;
   input_device_status_t* ids = input_device_status_init(&input_device_status);
@@ -28,6 +40,8 @@ static ret_t on_event(void* ctx, event_t* e) {
     s_log = "keydown";
   } else if (e->type == EVT_KEY_UP) {
     s_log = "keyup";
+  } else if (e->type == EVT_KEY_LONG_PRESS) {
+    s_log = "long_press:" + std::to_string(((key_event_t*)e)->key);
   } else if (e->type == EVT_POINTER_DOWN) {
     s_log = "pointerdown";
   } else if (e->type == EVT_POINTER_MOVE) {
@@ -251,9 +265,12 @@ TEST(InputDeviceStatus, should_abort) {
 }
 
 TEST(InputDeviceStatus, long_press) {
+  key_event_t e;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
   key_long_press_info_t* info = NULL;
   input_device_status_t input_device_status;
   input_device_status_t* ids = input_device_status_init(&input_device_status);
+  widget_on(w, EVT_KEY_LONG_PRESS, on_event, w);
 
   ASSERT_EQ(input_device_status_set_key_long_press_time(ids, TK_KEY_0, 2000), RET_OK);
   info = input_device_status_find_key_long_press_info(ids, TK_KEY_0);
@@ -265,10 +282,84 @@ TEST(InputDeviceStatus, long_press) {
   ASSERT_EQ(info->key, TK_KEY_1);
   ASSERT_EQ(info->time, 3000u);
 
-  ASSERT_EQ(input_device_status_set_key_long_press_time(ids, TK_KEY_2, 4000), RET_OK);
+  ASSERT_EQ(input_device_status_set_key_long_press_time(ids, TK_KEY_2, 1100), RET_OK);
   info = input_device_status_find_key_long_press_info(ids, TK_KEY_2);
   ASSERT_EQ(info->key, TK_KEY_2);
-  ASSERT_EQ(info->time, 4000u);
+  ASSERT_EQ(info->time, 1100u);
 
+  ASSERT_EQ(input_device_status_set_key_long_press_time(ids, TK_KEY_AT,1200), RET_OK);
+  info = input_device_status_find_key_long_press_info(ids, TK_KEY_AT);
+  ASSERT_EQ(info->key, TK_KEY_AT);
+  ASSERT_EQ(info->time, 1200u);
+
+  // ====== 长按 2 ======
+  s_log = "";
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_2);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+
+  sleep_ms(1100);
+  timer_dispatch();
+  ASSERT_EQ(s_log, "long_press:" + std::to_string(TK_KEY_2));
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_2);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+
+  // ====== 长按 @ ======
+  s_log = "";
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_LSHIFT);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->shift, TK_TRUE);
+
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_2);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+
+  sleep_ms(1200);
+  timer_dispatch();
+  ASSERT_EQ(s_log, "long_press:" + std::to_string(TK_KEY_AT));
+
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_2);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_LSHIFT);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+
+  ASSERT_FALSE(input_device_status_has_pressed_key(ids));
+
+  widget_destroy(w);
+  input_device_status_deinit(ids);
+}
+
+TEST(InputDeviceStatus, shift_key_release_shift_first) {
+  key_event_t e;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+  input_device_status_t input_device_status;
+  input_device_status_t* ids = input_device_status_init(&input_device_status);
+
+  widget_on(w, EVT_KEY_DOWN, on_event, w);
+  widget_on(w, EVT_KEY_UP, on_event, w);
+
+  // 按下 Shift
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_LSHIFT);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->shift, TK_TRUE);
+  ASSERT_EQ(s_log, "keydown");
+
+  // 按下 '2'
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_2);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(s_log, "keydown");
+
+  // 先松开 Shift
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_LSHIFT);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->shift, TK_FALSE);
+  ASSERT_EQ(s_log, "keyup");
+
+  // 再松开 '2'
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_2);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(s_log, "keyup");
+
+  ASSERT_FALSE(input_device_status_has_pressed_key(ids));
+
+  widget_destroy(w);
   input_device_status_deinit(ids);
 }
