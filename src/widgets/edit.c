@@ -714,7 +714,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
 
     if (edit_is_number(widget) || edit->inc_value != NULL) {
       edit_dec(edit);
-    } else {
+    } else if (edit->focus_next_when_enter) {
       widget_focus_next(widget);
     }
     return RET_STOP;
@@ -726,7 +726,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
 
     if (edit_is_number(widget) || edit->inc_value != NULL) {
       edit_inc(edit);
-    } else {
+    } else if (edit->focus_next_when_enter) {
       widget_focus_prev(widget);
     }
     return RET_STOP;
