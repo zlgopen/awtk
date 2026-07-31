@@ -306,7 +306,7 @@ static ret_t window_manager_default_snap_prev_window_system_bar_bottom_push_clip
 
 #endif
 
-ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img) {
+static ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img) {
 #ifndef WITHOUT_WINDOW_ANIMATORS
   rect_t r = {0};
   uint8_t alpha = 0xFF;
@@ -358,28 +358,27 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
     for (; start <= end; ++start) {
       widget_t* iter = children[start];
       if (widget_is_system_bar(iter) || !iter->visible || widget_is_always_on_top(iter)) continue;
-      /* 过滤 curr_win 的对象 */
-      if (iter != wm->curr_win) {
-        rect_t iter_rect = rect_init(iter->x, iter->y, iter->w, iter->h);
-        /* 给前面的高亮对话框叠加黑色色块 */
-        if (widget_is_support_highlighter(iter)) {
-          uint8_t a = 0x0;
-          if (window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(
-                  iter, canvas, &a) == RET_OK) {
-            /* 计算最终叠加后的透明度值 */
-            alpha = alpha * (1 - a / 255.0f);
-          }
+      if (iter == wm->curr_win) break;
+
+      rect_t iter_rect = rect_init(iter->x, iter->y, iter->w, iter->h);
+      /* 给前面的高亮对话框叠加黑色色块 */
+      if (widget_is_support_highlighter(iter)) {
+        uint8_t a = 0x0;
+        if (window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(
+                iter, canvas, &a) == RET_OK) {
+          /* 计算最终叠加后的透明度值 */
+          alpha = alpha * (1 - a / 255.0f);
         }
-        /* 如果不是全屏的话，就削减 system_bar 的显示裁剪区 */
-        if (!is_fullscreen_window && !widget_is_normal_window(iter)) {
-          window_manager_default_snap_prev_window_get_system_bar_rect_diff(
-              &system_bar_top_rect_list, &iter_rect);
-          window_manager_default_snap_prev_window_get_system_bar_rect_diff(
-              &system_bar_bottom_rect_list, &iter_rect);
-        }
-        rect_merge(&r, &iter_rect);
-        ENSURE(widget_paint(iter, canvas) == RET_OK);
       }
+      /* 如果不是全屏的话，就削减 system_bar 的显示裁剪区 */
+      if (!is_fullscreen_window && !widget_is_normal_window(iter)) {
+        window_manager_default_snap_prev_window_get_system_bar_rect_diff(
+            &system_bar_top_rect_list, &iter_rect);
+        window_manager_default_snap_prev_window_get_system_bar_rect_diff(
+            &system_bar_bottom_rect_list, &iter_rect);
+      }
+      rect_merge(&r, &iter_rect);
+      ENSURE(widget_paint(iter, canvas) == RET_OK);
     }
     /* 检查是否还有 system_bar 的显示区域，如果有则让其绘图 */
     wm->is_animator_paint_system_bar_top =
