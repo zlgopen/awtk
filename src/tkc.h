@@ -122,5 +122,7 @@
 #include "tkc/sha256.h"
 #include "tkc/named_value_hash.h"
 #include "tkc/object_hash.h"
+#include "tkc/object_fifo.h"
+#include "tkc/object_fifo_default.h"
 
 #endif /*TK_TKC_ONLY_H*/

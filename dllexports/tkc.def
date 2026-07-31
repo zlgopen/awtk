@@ -1572,6 +1572,45 @@ EXPORTS
     named_value_icompare
     named_value_icompare_by_name
     named_value_destroy
+    object_fifo_set_event_cast
+    object_fifo_set_event_init
+    object_fifo_push_event_cast
+    object_fifo_push_event_init
+    object_fifo_push_head_event_cast
+    object_fifo_push_head_event_init
+    object_fifo_pop_event_cast
+    object_fifo_pop_event_init
+    object_fifo_pop_tail_event_cast
+    object_fifo_pop_tail_event_init
+    object_fifo_value_change_event_cast
+    object_fifo_value_change_event_init
+    object_fifo_part_clone
+    object_fifo_get
+    object_fifo_sort
+    object_fifo_set
+    object_fifo_set_reverse
+    object_fifo_compare
+    object_fifo_find
+    object_fifo_find_index
+    object_fifo_bsearch_index
+    object_fifo_bsearch_index_ex
+    object_fifo_bsearch
+    object_fifo_push
+    object_fifo_pop
+    object_fifo_npush
+    object_fifo_push_head
+    object_fifo_npush_head
+    object_fifo_npop
+    object_fifo_pop_tail
+    object_fifo_npop_tail
+    object_fifo_clear
+    object_fifo_set_capacity
+    object_fifo_set_block_event
+    object_fifo_get_capacity
+    object_fifo_get_size
+    object_fifo_get_cursor
+    object_fifo_get_unit_size
+    object_fifo_get_buffer
     segment_tree_node_is_ancestor
     segment_tree_update_range_by_order
     debugger_log_event_init
@@ -1678,6 +1717,7 @@ EXPORTS
     object_evt_router_subscribe
     object_evt_router_unsubscribe
     object_evt_router_cast
+    object_fifo_default_create
     object_hash_create
     object_hash_create_ex
     object_hash_set_keep_prop_type
