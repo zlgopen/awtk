@@ -357,7 +357,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
     }
     for (; start <= end; ++start) {
       widget_t* iter = children[start];
-      if (widget_is_system_bar(iter) || !iter->visible) continue;
+      if (widget_is_system_bar(iter) || !iter->visible || widget_is_always_on_top(iter)) continue;
       /* 过滤 curr_win 的对象 */
       if (iter != wm->curr_win) {
         rect_t iter_rect = rect_init(iter->x, iter->y, iter->w, iter->h);
