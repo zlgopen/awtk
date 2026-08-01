@@ -345,6 +345,8 @@ npm install -g glob
 
 * [扩展控件实例：控件代码生成器](https://github.com/zlgopen/awtk-widget-generator)
 
+* [扩展控件实例: Plot3D](https://github.com/zlgopen/awtk-widget-plot3d)
+
 * [扩展控件实例：二维码](https://github.com/zlgopen/awtk-widget-qr)
 
 * [扩展控件实例：TinyGL](https://github.com/zlgopen/awtk-widget-glview)

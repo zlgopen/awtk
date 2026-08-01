@@ -341,6 +341,8 @@ npm install -g glob
 
 * [Examples for Custom Widgets: Widget Generator](https://github.com/zlgopen/awtk-widget-generator)
 
+* [Examples for Custom Widgets: Plot3D](https://github.com/zlgopen/awtk-widget-plot3d)
+
 * [Examples for Custom Widgets: QR code](https://github.com/zlgopen/awtk-widget-qr)
 
 * [Examples for Custom Widgets: TinyGL](https://github.com/zlgopen/awtk-widget-glview)
