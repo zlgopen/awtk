@@ -71,7 +71,7 @@ static ret_t window_animator_vtranslate_draw_prev(window_animator_t* wa) {
         canvas_untranslate(c, 0, -y);
         continue;
       }
-      if (start) {
+      if (start && !widget_get_prop_bool(iter, WIDGET_PROP_ALWAYS_ON_TOP, FALSE)) {
         widget_paint(iter, c);
       }
       WIDGET_FOR_EACH_CHILD_END()
@@ -98,7 +98,7 @@ static ret_t window_animator_vtranslate_draw_prev(window_animator_t* wa) {
       canvas_untranslate(c, 0, -y);
       continue;
     }
-    if (start) {
+    if (start && !widget_get_prop_bool(iter, WIDGET_PROP_ALWAYS_ON_TOP, FALSE)) {
       widget_paint(iter, c);
       if (widget_is_normal_window(iter)) {
         /* 限制普通窗口不能覆盖在 system_bar 上面 */

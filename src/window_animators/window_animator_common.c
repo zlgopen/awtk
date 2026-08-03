@@ -325,7 +325,7 @@ ret_t window_animator_overlap_default_draw_prev(window_animator_t* wa) {
   if (iter == wa->prev_win) {
     start = TRUE;
   }
-  if (start) {
+  if (start && !widget_get_prop_bool(iter, WIDGET_PROP_ALWAYS_ON_TOP, FALSE)) {
     widget_paint(iter, c);
   }
   WIDGET_FOR_EACH_CHILD_END()
