@@ -2133,6 +2133,9 @@ EXPORTS
     plugin_manager_reload
     plugin_manager_dump
     plugin_manager_exist
+    plugin_manager_plugin_count
+    plugin_manager_get_func_by_index
+    plugin_manager_get_lib_name_by_index
     plugin_manager_destroy
     qaction_create
     qaction_set_on_event
@@ -3887,6 +3890,10 @@ EXPORTS
     object_hash_cast
     object_locker_create
     object_locker_cast
+    object_orchestrator_create
+    object_orchestrator_add_cmd
+    object_orchestrator_set_workflow
+    object_orchestrator_cast
     object_override_create
     object_override_set_base_obj
     object_override_cast
