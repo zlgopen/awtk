@@ -1237,6 +1237,18 @@ int32_t tk_object_compare_name_without_nullptr(tk_object_t* obj, tk_object_t* ot
 #define TK_OBJECT_CMD_EDIT "edit"
 
 /**
+ * @const TK_OBJECT_CMD_EXEC
+ * 执行
+ */
+#define TK_OBJECT_CMD_EXEC "exec"
+
+/**
+ * @const TK_OBJECT_CMD_UNDO
+ * 撤销
+ */
+#define TK_OBJECT_CMD_UNDO "undo"
+
+/**
  * @enum object_prop_t
  * @annotation ["scriptable", "string"]
  * @prefix OBJECT_PROP_

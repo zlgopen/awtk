@@ -2,6 +2,7 @@
 
 2026/8/3
   * 增加函数 tk_service_start_ex
+  * 增加 object_orchestrator(感谢兆坤提供补丁)
 
 2026/7/31
   * 修复高亮残留 dialog 下面的 always_on_top 窗口的问题(感谢雪飞提供补丁)
