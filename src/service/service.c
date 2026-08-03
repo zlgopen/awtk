@@ -141,12 +141,16 @@ static ret_t on_source_destroy(void* ctx, event_t* e) {
 }
 
 static ret_t tk_service_start_tcp(event_source_manager_t* esm, const char* url,
-                                  tk_service_create_t create, void* args) {
+                                  tk_service_create_t create, void* args,
+                                  event_source_t** source) {
   int port = 0;
   int listen_sock = -1;
   const char* ip = NULL;
-  event_source_t* source = NULL;
+  event_source_t* tcp_source = NULL;
   url_t* aurl = url_create(url);
+  if (source != NULL) {
+    *source = NULL;
+  }
   return_value_if_fail(esm != NULL && aurl != NULL && create != NULL, RET_BAD_PARAMS);
 
   port = aurl->port;
@@ -160,13 +164,16 @@ static ret_t tk_service_start_tcp(event_source_manager_t* esm, const char* url,
 
   log_debug("listen on %d listen_sock=%d\n", port, listen_sock);
 
-  source = event_source_fd_create(listen_sock, tk_service_tcp_on_client, create);
-  return_value_if_fail(source != NULL, RET_OOM);
-  EVENT_SOURCE_FD(source)->ctx2 = args;
-  event_source_manager_add(esm, source);
-  emitter_on(EMITTER(source), EVT_DESTROY, on_source_destroy, tk_pointer_from_int(port));
+  tcp_source = event_source_fd_create(listen_sock, tk_service_tcp_on_client, create);
+  return_value_if_fail(tcp_source != NULL, RET_OOM);
+  EVENT_SOURCE_FD(tcp_source)->ctx2 = args;
+  event_source_manager_add(esm, tcp_source);
+  emitter_on(EMITTER(tcp_source), EVT_DESTROY, on_source_destroy, tk_pointer_from_int(port));
 
-  TK_OBJECT_UNREF(source);
+  if (source != NULL) {
+    *source = tcp_source;
+  }
+  TK_OBJECT_UNREF(tcp_source);
   log_debug("service start: %s\n", url);
 
   return RET_OK;
@@ -175,9 +182,14 @@ static ret_t tk_service_start_tcp(event_source_manager_t* esm, const char* url,
 #endif /*WITH_SOCKET*/
 
 static ret_t tk_service_start_serial(event_source_manager_t* esm, const char* url,
-                                     tk_service_create_t create, void* args) {
+                                     tk_service_create_t create, void* args,
+                                     event_source_t** source) {
   tk_iostream_t* io = NULL;
   tk_service_t* service = NULL;
+  event_source_t* client_source = NULL;
+  if (source != NULL) {
+    *source = NULL;
+  }
   return_value_if_fail(esm != NULL && create != NULL, RET_BAD_PARAMS);
 
   io = tk_iostream_serial_create_ex(url);
@@ -186,9 +198,12 @@ static ret_t tk_service_start_serial(event_source_manager_t* esm, const char* ur
   service = create(io, args);
   if (service != NULL) {
     int fd = tk_object_get_prop_int(TK_OBJECT(io), TK_STREAM_PROP_FD, -1);
-    event_source_t* client_source = event_source_fd_create(fd, tk_service_on_data, service);
+    client_source = event_source_fd_create(fd, tk_service_on_data, service);
     event_source_manager_add(esm, client_source);
     emitter_on(EMITTER(client_source), EVT_DESTROY, tk_service_on_destory, client_source);
+    if (source != NULL) {
+      *source = client_source;
+    }
     TK_OBJECT_UNREF(client_source);
     log_debug("service start: %s\n", url);
   } else {
@@ -198,20 +213,28 @@ static ret_t tk_service_start_serial(event_source_manager_t* esm, const char* ur
   return RET_OK;
 }
 
-ret_t tk_service_start(event_source_manager_t* esm, const char* url, tk_service_create_t create,
-                       void* args) {
+ret_t tk_service_start_ex(event_source_manager_t* esm, const char* url, tk_service_create_t create,
+                          void* args, event_source_t** source) {
   return_value_if_fail(esm != NULL && create != NULL, RET_BAD_PARAMS);
+  if (source != NULL) {
+    *source = NULL;
+  }
 #ifdef WITH_SOCKET
   if (tk_str_start_with(url, STR_SCHEMA_TCP)) {
-    return tk_service_start_tcp(esm, url, create, args);
+    return tk_service_start_tcp(esm, url, create, args, source);
   } else
 #endif /*WITH_SOCKET*/
     if (tk_str_start_with(url, STR_SCHEMA_SERIAL)) {
-      return tk_service_start_serial(esm, url, create, args);
+      return tk_service_start_serial(esm, url, create, args, source);
     } else {
       log_debug("not supported: %s\n", url);
       return RET_NOT_IMPL;
     }
+}
+
+ret_t tk_service_start(event_source_manager_t* esm, const char* url, tk_service_create_t create,
+                       void* args) {
+  return tk_service_start_ex(esm, url, create, args, NULL);
 }
 
 static ret_t tk_service_confirm_packet(tk_service_t* service, bool_t valid) {

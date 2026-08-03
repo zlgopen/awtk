@@ -127,6 +127,21 @@ ret_t tk_service_start(event_source_manager_t* esm, const char* url, tk_service_
                        void* args);
 
 /**
+ * @method tk_service_start_ex
+ * 启动服务，并返回创建的事件源。
+ *
+ * @param {event_source_manager_t*} esm 事件源管理器。
+ * @param {const char*} url 服务地址。
+ * @param {tk_service_create_t} create 创建服务对象的函数。
+ * @param {void*} args 参数(对于TCP服务，该参数必须持续有效，使用全局或静态变量)。
+ * @param {event_source_t**} source 返回事件源(可为NULL)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_service_start_ex(event_source_manager_t* esm, const char* url, tk_service_create_t create,
+                          void* args, event_source_t** source);
+
+/**
  * @method tk_service_read_req
  * 服务端读取请求。
  * @param {tk_service_t*} service service对象。

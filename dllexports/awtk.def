@@ -1652,6 +1652,7 @@ EXPORTS
     tk_service_dispatch
     tk_service_destroy
     tk_service_start
+    tk_service_start_ex
     tk_service_read_req
     tk_service_send_resp
     tk_service_upload_file
