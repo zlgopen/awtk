@@ -50,6 +50,8 @@ static ret_t window_manager_default_get_client_r(widget_t* widget, rect_t* r);
 static ret_t window_manager_default_do_open_window(widget_t* wm, widget_t* window);
 static ret_t window_manager_default_layout_child(widget_t* widget, widget_t* window);
 static ret_t window_manager_default_paint_always_on_top(widget_t* widget, canvas_t* c);
+static ret_t window_manager_default_paint_children_after_target(widget_t* widget, canvas_t* c,
+                                                                widget_t* target);
 static ret_t window_manager_default_layout_system_bar(widget_t* widget, widget_t* window);
 static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget, widget_t* curr_win);
 static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widget_t* window,
@@ -1287,6 +1289,7 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   widget_dispatch(widget, paint_event_init(&e, EVT_BEFORE_PAINT, widget, c));
 
   ret_t ret = window_animator_update(wm->animator, start_time);
+  window_manager_default_paint_children_after_target(widget, c, wm->animator->curr_win);
   window_manager_default_paint_always_on_top(widget, c);
 
   widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
@@ -1363,6 +1366,29 @@ static ret_t window_manager_default_paint_always_on_top(widget_t* widget, canvas
     if (widget_get_prop_bool(iter, WIDGET_PROP_ALWAYS_ON_TOP, FALSE)) {
       widget_paint(iter, c);
     }
+  }
+  WIDGET_FOR_EACH_CHILD_END()
+
+  return RET_OK;
+}
+
+/**
+ * 绘制 window_manager 的窗口列表中在 target 窗口之后的所有窗口
+ */
+static ret_t window_manager_default_paint_children_after_target(widget_t* widget, canvas_t* c,
+                                                                widget_t* target) {
+  bool_t start = FALSE;
+  return_value_if_fail(target != NULL, RET_BAD_PARAMS);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (iter == target) {
+    start = TRUE;
+    continue;
+  }
+
+  if (start && iter->visible &&
+      !widget_get_prop_bool(iter, WIDGET_PROP_ALWAYS_ON_TOP, FALSE)) {
+    widget_paint(iter, c);
   }
   WIDGET_FOR_EACH_CHILD_END()
 

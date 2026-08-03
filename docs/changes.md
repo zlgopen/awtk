@@ -4,6 +4,7 @@
   * 增加函数 tk_service_start_ex
   * 增加 object_orchestrator(感谢兆坤提供补丁)
   * 增加插件管理的获取函数接口和获取个数的接口(感谢智明提供补丁)
+  * 修复 dialog 关闭动画过程中，dialog 上面的窗口会消失的问题(感谢雪飞提供补丁)
 
 2026/7/31
   * 修复高亮残留 dialog 下面的 always_on_top 窗口的问题(感谢雪飞提供补丁)
