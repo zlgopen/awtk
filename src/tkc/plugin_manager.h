@@ -96,6 +96,39 @@ ret_t plugin_manager_dump(plugin_manager_t* plugin_manager);
 bool_t plugin_manager_exist(plugin_manager_t* plugin_manager, const char* lib_name);
 
 /**
+ * @method plugin_manager_plugin_count
+ * 获取插件数量。
+ *
+ * @param {plugin_manager_t*} plugin_manager plugin_manager对象。
+ *
+ * @return {uint32_t} 返回插件数量。
+ */
+uint32_t plugin_manager_plugin_count(plugin_manager_t* plugin_manager);
+
+/**
+ * @method plugin_manager_get_func_by_index
+ * 根据索引获取插件的指定函数。
+ *
+ * @param {plugin_manager_t*} plugin_manager plugin_manager对象。
+ * @param {uint32_t} index 索引。
+ * @param {const char*} func_name 函数名。
+ *
+ * @return {void*} 返回函数指针，如果失败返回NULL。
+ */
+void* plugin_manager_get_func_by_index(plugin_manager_t* plugin_manager, uint32_t index, const char* func_name);
+
+/**
+ * @method plugin_manager_get_lib_name_by_index
+ * 根据索引获取插件的类库名字。
+ *
+ * @param {plugin_manager_t*} plugin_manager plugin_manager对象。
+ * @param {uint32_t} index 索引。
+ *
+ * @return {const char*} 返回类库名字，如果失败返回NULL。
+ */
+const char* plugin_manager_get_lib_name_by_index(plugin_manager_t* plugin_manager, uint32_t index);
+
+/**
  * @method plugin_manager_destroy
  * 卸载全部插件，并销毁插件管理器对象。
  * @param {plugin_manager_t*}    plugin_manager plugin_manager对象。

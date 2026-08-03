@@ -171,6 +171,30 @@ bool_t plugin_manager_exist(plugin_manager_t* plugin_manager, const char* lib_na
   return darray_find(&(plugin_manager->plugins), (void*)lib_name) != NULL;
 }
 
+uint32_t plugin_manager_plugin_count(plugin_manager_t* plugin_manager) {
+  return plugin_manager->plugins.size;
+}
+
+void* plugin_manager_get_func_by_index(plugin_manager_t* plugin_manager, uint32_t index, const char* func_name) {
+  if (index < plugin_manager->plugins.size) {
+    plugin_t* plugin = (plugin_t*)darray_get(&(plugin_manager->plugins), index);
+    if (plugin != NULL) {
+      return tk_dl_sym(plugin->handle, func_name);
+    }
+  }
+  return NULL;
+}
+
+const char* plugin_manager_get_lib_name_by_index(plugin_manager_t* plugin_manager, uint32_t index) {
+  if (index < plugin_manager->plugins.size) {
+    plugin_t* plugin = (plugin_t*)darray_get(&(plugin_manager->plugins), index);
+    if (plugin != NULL) {
+      return plugin->lib_name;
+    }
+  }
+  return NULL;
+}
+
 ret_t plugin_manager_refresh(plugin_manager_t* plugin_manager) {
   fs_item_t item;
   fs_dir_t* dir = NULL;
