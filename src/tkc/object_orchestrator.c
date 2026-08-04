@@ -29,6 +29,7 @@ struct _object_orchestrator_t {
   tk_object_t* cmds;
   object_orchestrator_exec_workflow_t exec_workflow;
   void* workflow_ctx;
+  bool_t busy : 1;
 };
 
 static ret_t object_orchestrator_on_destroy(tk_object_t* obj) {
@@ -47,9 +48,9 @@ static bool_t object_orchestrator_can_exec(tk_object_t* obj, const char* name, c
 
   if (tk_str_eq(TK_OBJECT_CMD_EXEC, name)) {
     uint32_t cmds_size = tk_object_get_prop_uint32(orchestrator->cmds, TK_OBJECT_PROP_SIZE, 0);
-    return orchestrator->undo_stack.size == 0 && cmds_size > 0;
+    return !orchestrator->busy && orchestrator->undo_stack.size == 0 && cmds_size > 0;
   } else if (tk_str_eq(TK_OBJECT_CMD_UNDO, name)) {
-    return orchestrator->undo_stack.size > 0;
+    return !orchestrator->busy && orchestrator->undo_stack.size > 0;
   }
 
   return FALSE;
@@ -62,15 +63,16 @@ static ret_t object_orchestrator_cmd_on_execed(void* ctx, event_t* e) {
   object_orchestrator_t* orchestrator = (object_orchestrator_t*)(ctx);
   return_value_if_fail(orchestrator != NULL && evt != NULL, RET_BAD_PARAMS);
 
-  if (RET_OK != evt->result) {
+  if (RET_OK != evt->result || !tk_str_eq(evt->name, TK_OBJECT_CMD_EXEC)) {
     return RET_SKIP;
   }
 
   cmd = TK_OBJECT(evt->e.target);
   ret = darray_push(&orchestrator->undo_stack, cmd);
-  if (RET_OK == ret) {
-    tk_object_ref(cmd);
-  }
+  return_value_if_fail(RET_OK == ret, ret);
+
+  tk_object_ref(cmd);
+
   return ret;
 }
 
@@ -85,7 +87,10 @@ static ret_t object_orchestrator_exec_init_on_visit(void* ctx, const void* data)
 
   if (!emitter_exist(EMITTER(cmd), EVT_CMD_EXECED, object_orchestrator_cmd_on_execed,
                      orchestrator)) {
-    emitter_on(EMITTER(cmd), EVT_CMD_EXECED, object_orchestrator_cmd_on_execed, orchestrator);
+    return_value_if_fail(
+        TK_INVALID_ID != emitter_on(EMITTER(cmd), EVT_CMD_EXECED, object_orchestrator_cmd_on_execed,
+                                    orchestrator),
+        RET_OOM);
   }
 
   return RET_OK;
@@ -107,8 +112,9 @@ static ret_t object_orchestrator_exec_deinit_on_visit(void* ctx, const void* dat
 }
 
 static ret_t object_orchestrator_exec_workflow_default_on_visit(void* ctx, const void* data) {
-  const value_t* v = (const value_t*)(data);
+  ret_t ret = RET_OK;
   tk_object_t* cmd = NULL;
+  const value_t* v = (const value_t*)(data);
   const char* args = (const char*)(ctx);
   return_value_if_fail(v != NULL, RET_BAD_PARAMS);
 
@@ -119,7 +125,14 @@ static ret_t object_orchestrator_exec_workflow_default_on_visit(void* ctx, const
     return RET_STOP;
   }
 
-  return tk_object_exec(cmd, TK_OBJECT_CMD_EXEC, args);
+  ret = tk_object_exec(cmd, TK_OBJECT_CMD_EXEC, args);
+
+  do {
+    TK_FOREACH_VISIT_RESULT_PROCESSING(
+        ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
+  } while (0);
+
+  return ret;
 }
 
 static ret_t object_orchestrator_exec_workflow_default(tk_object_t* cmds, const char* args,
@@ -131,10 +144,26 @@ static ret_t object_orchestrator_exec_workflow_default(tk_object_t* cmds, const 
                                 (void*)args);
 }
 
-inline static object_orchestrator_exec_workflow_t object_orchestrator_exec_workflow(
-    object_orchestrator_t* orchestrator) {
-  return orchestrator->exec_workflow != NULL ? orchestrator->exec_workflow
-                                             : object_orchestrator_exec_workflow_default;
+static ret_t object_orchestrator_workflow_exec(object_orchestrator_t* orchestrator,
+                                               const char* args, bool_t* execed) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(orchestrator != NULL && execed != NULL, RET_BAD_PARAMS);
+
+  *execed = FALSE;
+  ret = tk_object_foreach_prop(orchestrator->cmds, object_orchestrator_exec_init_on_visit,
+                               orchestrator);
+  goto_error_if_fail(ret == RET_OK);
+  {
+    object_orchestrator_exec_workflow_t exec_workflow =
+        orchestrator->exec_workflow != NULL ? orchestrator->exec_workflow
+                                            : object_orchestrator_exec_workflow_default;
+    ret = exec_workflow(orchestrator->cmds, args, orchestrator->workflow_ctx);
+    *execed = TRUE;
+  }
+error:
+  tk_object_foreach_prop(orchestrator->cmds, object_orchestrator_exec_deinit_on_visit,
+                         orchestrator);
+  return ret;
 }
 
 static ret_t object_orchestrator_exec(tk_object_t* obj, const char* name, const char* args) {
@@ -143,29 +172,37 @@ static ret_t object_orchestrator_exec(tk_object_t* obj, const char* name, const 
 
   if (tk_str_eq(TK_OBJECT_CMD_EXEC, name)) {
     ret_t ret = RET_OK;
+    bool_t execed = FALSE;
+    return_value_if_fail(!orchestrator->busy, RET_BUSY);
+
+    orchestrator->busy = TRUE;
     darray_clear(&orchestrator->undo_stack);
-    tk_object_foreach_prop(orchestrator->cmds, object_orchestrator_exec_init_on_visit,
-                           orchestrator);
-    ret = object_orchestrator_exec_workflow(orchestrator)(orchestrator->cmds, args,
-                                                          orchestrator->workflow_ctx);
-    tk_object_foreach_prop(orchestrator->cmds, object_orchestrator_exec_deinit_on_visit,
-                           orchestrator);
+    ret = object_orchestrator_workflow_exec(orchestrator, args, &execed);
+    orchestrator->busy = FALSE;
+
+    if (execed && RET_OK != ret) { /* 执行失败，回滚之前已经执行的命令 */
+      return_value_if_fail(RET_OK == tk_object_exec(obj, TK_OBJECT_CMD_UNDO, args), ret);
+    }
+
     return ret;
   } else if (tk_str_eq(TK_OBJECT_CMD_UNDO, name)) {
     ret_t ret = RET_OK;
-    tk_object_t* cmd = NULL;
-    while ((cmd = TK_OBJECT(darray_pop(&orchestrator->undo_stack))) != NULL) {
-      if (tk_object_can_exec(cmd, TK_OBJECT_CMD_UNDO, args)) {
-        ret = tk_object_exec(cmd, TK_OBJECT_CMD_UNDO, args);
-      } else {
-        ret = RET_STOP;
-      }
-      if (orchestrator->undo_stack.destroy != NULL) {
-        orchestrator->undo_stack.destroy(cmd);
+    return_value_if_fail(!orchestrator->busy, RET_BUSY);
+
+    orchestrator->busy = TRUE;
+    while (orchestrator->undo_stack.size > 0) {
+      tk_object_t* cmd = TK_OBJECT(darray_tail(&orchestrator->undo_stack));
+      ret = tk_object_exec(cmd, TK_OBJECT_CMD_UNDO, args);
+      if (RET_NOT_FOUND == ret) {
+        ret = RET_OK;
       }
       TK_FOREACH_VISIT_RESULT_PROCESSING(
-          ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
+          ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__);
+          darray_remove_index(&orchestrator->undo_stack, orchestrator->undo_stack.size - 1));
+      darray_remove_index(&orchestrator->undo_stack, orchestrator->undo_stack.size - 1);
     }
+    orchestrator->busy = FALSE;
+
     return ret;
   }
 
