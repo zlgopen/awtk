@@ -194,16 +194,127 @@ ret_t tk_cond_wait(tk_cond_t* cond, tk_mutex_t* mutex) {
 
 /********************************************************/
 
-#ifdef IOS
-#include <sys/semaphore.h>
-#else
-#include <semaphore.h>
-#include "tkc/semaphore.h"
-#endif
-
 #if defined(APPLE) || defined(__APPLE__) || defined(IOS) || defined(MACOS)
-#undef HAVE_SEM_TIMEDWAIT
+/*
+ * macOS/iOS: unnamed sem_init is unsupported; named sem_open may fail with
+ * ENOSPC when the system semaphore namespace is exhausted. Use pthread instead.
+ */
+struct _tk_semaphore_t {
+  uint32_t count;
+  pthread_mutex_t mutex;
+  pthread_cond_t cond;
+};
+
+tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
+  tk_semaphore_t* semaphore = TKMEM_ZALLOC(tk_semaphore_t);
+  return_value_if_fail(semaphore != NULL, NULL);
+  (void)name;
+
+  if (pthread_mutex_init(&(semaphore->mutex), NULL) != 0) {
+    TKMEM_FREE(semaphore);
+    return NULL;
+  }
+
+  if (pthread_cond_init(&(semaphore->cond), NULL) != 0) {
+    pthread_mutex_destroy(&(semaphore->mutex));
+    TKMEM_FREE(semaphore);
+    return NULL;
+  }
+
+  semaphore->count = value;
+
+  return semaphore;
+}
+
+ret_t tk_semaphore_wait(tk_semaphore_t* semaphore, uint32_t timeout_ms) {
+  ret_t ret = RET_OK;
+#ifndef HAVE_CLOCK_GETTIME
+  struct timeval delta;
+#endif
+  struct timespec abstime;
+  return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
+
+  if (pthread_mutex_lock(&(semaphore->mutex)) != 0) {
+    return RET_FAIL;
+  }
+
+  if (timeout_ms == (uint32_t)-1) {
+    while (semaphore->count == 0) {
+      if (pthread_cond_wait(&(semaphore->cond), &(semaphore->mutex)) != 0) {
+        ret = RET_FAIL;
+        break;
+      }
+    }
+  } else {
+#ifdef HAVE_CLOCK_GETTIME
+    clock_gettime(CLOCK_REALTIME, &abstime);
+    abstime.tv_nsec += (timeout_ms % 1000) * 1000000;
+    abstime.tv_sec += timeout_ms / 1000;
 #else
+    gettimeofday(&delta, NULL);
+    abstime.tv_sec = delta.tv_sec + (timeout_ms / 1000);
+    abstime.tv_nsec = (delta.tv_usec + (timeout_ms % 1000) * 1000) * 1000;
+#endif
+    if (abstime.tv_nsec >= 1000000000) {
+      abstime.tv_sec += 1;
+      abstime.tv_nsec -= 1000000000;
+    }
+
+    while (semaphore->count == 0) {
+      int code = pthread_cond_timedwait(&(semaphore->cond), &(semaphore->mutex), &abstime);
+      if (code == 0) {
+        continue;
+      } else if (code == EINTR) {
+        continue;
+      } else if (code == ETIMEDOUT) {
+        ret = RET_TIMEOUT;
+        break;
+      } else {
+        ret = RET_FAIL;
+        break;
+      }
+    }
+  }
+
+  if (ret == RET_OK) {
+    semaphore->count--;
+  }
+
+  pthread_mutex_unlock(&(semaphore->mutex));
+
+  return ret;
+}
+
+ret_t tk_semaphore_post(tk_semaphore_t* semaphore) {
+  return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
+
+  if (pthread_mutex_lock(&(semaphore->mutex)) != 0) {
+    return RET_FAIL;
+  }
+
+  semaphore->count++;
+  pthread_cond_signal(&(semaphore->cond));
+  pthread_mutex_unlock(&(semaphore->mutex));
+
+  return RET_OK;
+}
+
+ret_t tk_semaphore_destroy(tk_semaphore_t* semaphore) {
+  return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
+
+  pthread_cond_destroy(&(semaphore->cond));
+  pthread_mutex_destroy(&(semaphore->mutex));
+  memset(semaphore, 0x00, sizeof(tk_semaphore_t));
+  TKMEM_FREE(semaphore);
+
+  return RET_OK;
+}
+
+#else /* !APPLE */
+
+#include <semaphore.h>
+
+#ifndef HAVE_SEM_TIMEDWAIT
 #define HAVE_SEM_TIMEDWAIT
 #endif
 
@@ -225,12 +336,19 @@ tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
 #ifdef HAS_SEM_OPEN
   sem_unlink(semaphore->name);
   semaphore->sem = sem_open(semaphore->name, O_CREAT, S_IRUSR | S_IWUSR, value);
+  if (semaphore->sem == SEM_FAILED) {
+    semaphore->sem = NULL;
+  }
 #else
   semaphore->sem = TKMEM_ZALLOC(sem_t);
-  sem_init(semaphore->sem, 0, value);
+  if (semaphore->sem != NULL && sem_init(semaphore->sem, 0, value) != 0) {
+    TKMEM_FREE(semaphore->sem);
+    semaphore->sem = NULL;
+  }
 #endif
   if (semaphore->sem == NULL) {
     TKMEM_FREE(semaphore);
+    return NULL;
   }
 
   return semaphore;
@@ -282,7 +400,7 @@ tryagain:
     }
     return RET_FAIL;
   }
-#else   // HAVE_SEM_TIMEDWAIT
+#else  /*HAVE_SEM_TIMEDWAIT*/
 
   uint32_t start = time_now_ms();
   return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
@@ -300,7 +418,7 @@ tryagain:
   } while (TRUE);
 
   return RET_FAIL;
-#endif  // HAVE_SEM_TIMEDWAIT
+#endif /*HAVE_SEM_TIMEDWAIT*/
 }
 
 ret_t tk_semaphore_post(tk_semaphore_t* semaphore) {
@@ -326,6 +444,8 @@ ret_t tk_semaphore_destroy(tk_semaphore_t* semaphore) {
 
   return RET_OK;
 }
+
+#endif /*APPLE*/
 
 /********************************************************/
 #include <sched.h>
