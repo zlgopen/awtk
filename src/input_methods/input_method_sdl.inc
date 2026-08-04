@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/awtk_sdl_api.h"
+#include "platforms/pc/sdl_api.h"
 #include "tkc/mem.h"
 #include "base/input_method.h"
 #include "base/native_window.h"

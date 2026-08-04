@@ -46,7 +46,7 @@ static asset_info_t* load_asset_with_mmap(uint16_t type, uint16_t subtype, const
 }
 
 #ifdef WITH_SDL
-#include "base/awtk_sdl_api.h"
+#include "platforms/pc/sdl_api.h"
 static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* path,
                                 const char* name) {
   asset_info_t* info = load_asset_with_mmap(type, subtype, path, name);

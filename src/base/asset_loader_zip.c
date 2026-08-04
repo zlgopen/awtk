@@ -39,7 +39,7 @@ typedef struct _asset_loader_zip_t {
 } asset_loader_zip_t;
 
 #ifdef WITH_SDL
-#include "base/awtk_sdl_api.h"
+#include "platforms/pc/sdl_api.h"
 static void* load_asset(const char* filename, uint32_t* data_size) {
 #ifdef AWTK_SDL3
   SDL_IOStream* io = SDL_IOFromFile(filename, "rb");

@@ -30,7 +30,7 @@
 #include "tkc/cond.h"
 #include "tkc/semaphore.h"
 
-#include "base/awtk_sdl_api.h"
+#include "platforms/pc/sdl_api.h"
 
 struct _tk_mutex_t {
   SDL_mutex* mutex;

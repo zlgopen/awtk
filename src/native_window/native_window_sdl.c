@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/awtk_sdl_api.h"
+#include "platforms/pc/sdl_api.h"
 #include "base/system_info.h"
 #include "base/window_manager.h"
 

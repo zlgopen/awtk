@@ -29,7 +29,7 @@
 #include "base/events.h"
 #include "base/timer.h"
 #include "base/system_info.h"
-#include "base/awtk_sdl_api.h"
+#include "platforms/pc/sdl_api.h"
 
 #ifdef AWTK_SDL3
 #define AWTK_TF_TOUCH_ID(ev) ((ev)->touchID)

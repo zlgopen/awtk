@@ -143,7 +143,7 @@ static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, canvas_t* c,
                                    STB_TEXTEDIT_CHARTYPE* iter, STB_TEXTEDIT_CHARTYPE* chr);
 
 #ifdef WITH_SDL
-#include "base/awtk_sdl_api.h"
+#include "platforms/pc/sdl_api.h"
 #include "base/native_window.h"
 #include "base/window_manager.h"
 
