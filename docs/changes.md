@@ -3,6 +3,7 @@
 2026/8/4
   * 修复 mledit 有 margin 时 line number 与文本对不齐的问题(感谢雪飞提供补丁)
   * 修复 macOS 上信号量因命名信号量资源耗尽而失败的问题
+  * 修复 demos/CMakeLists.txt (感谢均权提供补丁)
 
 2026/8/3
   * 增加函数 tk_service_start_ex
