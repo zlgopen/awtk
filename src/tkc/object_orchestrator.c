@@ -30,17 +30,8 @@ struct _object_orchestrator_t {
   object_orchestrator_exec_workflow_t exec_workflow;
   void* workflow_ctx;
   bool_t busy : 1;
+  bool_t workflow_execing : 1;
 };
-
-static ret_t object_orchestrator_on_destroy(tk_object_t* obj) {
-  object_orchestrator_t* orchestrator = OBJECT_ORCHESTRATOR(obj);
-  return_value_if_fail(orchestrator != NULL, RET_BAD_PARAMS);
-
-  darray_deinit(&orchestrator->undo_stack);
-  TK_OBJECT_UNREF(orchestrator->cmds);
-
-  return RET_OK;
-}
 
 static bool_t object_orchestrator_can_exec(tk_object_t* obj, const char* name, const char* args) {
   object_orchestrator_t* orchestrator = OBJECT_ORCHESTRATOR(obj);
@@ -63,7 +54,8 @@ static ret_t object_orchestrator_cmd_on_execed(void* ctx, event_t* e) {
   object_orchestrator_t* orchestrator = (object_orchestrator_t*)(ctx);
   return_value_if_fail(orchestrator != NULL && evt != NULL, RET_BAD_PARAMS);
 
-  if (RET_OK != evt->result || !tk_str_eq(evt->name, TK_OBJECT_CMD_EXEC)) {
+  if (!orchestrator->workflow_execing ||
+      (RET_OK != evt->result || !tk_str_eq(evt->name, TK_OBJECT_CMD_EXEC))) {
     return RET_SKIP;
   }
 
@@ -74,41 +66,6 @@ static ret_t object_orchestrator_cmd_on_execed(void* ctx, event_t* e) {
   tk_object_ref(cmd);
 
   return ret;
-}
-
-static ret_t object_orchestrator_exec_init_on_visit(void* ctx, const void* data) {
-  object_orchestrator_t* orchestrator = (object_orchestrator_t*)(ctx);
-  const value_t* v = (const value_t*)(data);
-  tk_object_t* cmd = NULL;
-  return_value_if_fail(orchestrator != NULL && v != NULL, RET_BAD_PARAMS);
-
-  cmd = value_object(v);
-  return_value_if_fail(cmd != NULL, RET_BAD_PARAMS);
-
-  if (!emitter_exist(EMITTER(cmd), EVT_CMD_EXECED, object_orchestrator_cmd_on_execed,
-                     orchestrator)) {
-    return_value_if_fail(
-        TK_INVALID_ID != emitter_on(EMITTER(cmd), EVT_CMD_EXECED, object_orchestrator_cmd_on_execed,
-                                    orchestrator),
-        RET_OOM);
-  }
-
-  return RET_OK;
-}
-
-static ret_t object_orchestrator_exec_deinit_on_visit(void* ctx, const void* data) {
-  object_orchestrator_t* orchestrator = (object_orchestrator_t*)(ctx);
-  const value_t* v = (const value_t*)(data);
-  tk_object_t* cmd = NULL;
-  return_value_if_fail(orchestrator != NULL && v != NULL, RET_BAD_PARAMS);
-
-  cmd = value_object(v);
-  return_value_if_fail(cmd != NULL, RET_BAD_PARAMS);
-
-  emitter_off_by_func(EMITTER(cmd), EVT_CMD_EXECED, object_orchestrator_cmd_on_execed,
-                      orchestrator);
-
-  return RET_OK;
 }
 
 static ret_t object_orchestrator_exec_workflow_default_on_visit(void* ctx, const void* data) {
@@ -144,35 +101,27 @@ static ret_t object_orchestrator_exec_workflow_default(tk_object_t* cmds, const 
                                 (void*)args);
 }
 
-static ret_t object_orchestrator_workflow_exec(object_orchestrator_t* orchestrator,
-                                               const char* args, bool_t* execed) {
+inline static ret_t object_orchestrator_workflow_exec(object_orchestrator_t* orchestrator,
+                                                      const char* args) {
   ret_t ret = RET_OK;
-  return_value_if_fail(orchestrator != NULL && execed != NULL, RET_BAD_PARAMS);
+  object_orchestrator_exec_workflow_t exec_workflow = NULL;
+  return_value_if_fail(orchestrator != NULL, RET_BAD_PARAMS);
 
-  *execed = FALSE;
-  ret = tk_object_foreach_prop(orchestrator->cmds, object_orchestrator_exec_init_on_visit,
-                               orchestrator);
-  goto_error_if_fail(ret == RET_OK);
-  {
-    object_orchestrator_exec_workflow_t exec_workflow =
-        orchestrator->exec_workflow != NULL ? orchestrator->exec_workflow
-                                            : object_orchestrator_exec_workflow_default;
-    ret = exec_workflow(orchestrator->cmds, args, orchestrator->workflow_ctx);
-    *execed = TRUE;
-  }
-error:
-  tk_object_foreach_prop(orchestrator->cmds, object_orchestrator_exec_deinit_on_visit,
-                         orchestrator);
+  orchestrator->workflow_execing = TRUE;
+  exec_workflow = orchestrator->exec_workflow != NULL ? orchestrator->exec_workflow
+                                                      : object_orchestrator_exec_workflow_default;
+  ret = exec_workflow(orchestrator->cmds, args, orchestrator->workflow_ctx);
+  orchestrator->workflow_execing = FALSE;
+
   return ret;
 }
 
 static ret_t object_orchestrator_exec(tk_object_t* obj, const char* name, const char* args) {
   object_orchestrator_t* orchestrator = OBJECT_ORCHESTRATOR(obj);
-  return_value_if_fail(orchestrator != NULL, FALSE);
+  return_value_if_fail(orchestrator != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(TK_OBJECT_CMD_EXEC, name)) {
     ret_t ret = RET_OK;
-    bool_t execed = FALSE;
     uint32_t cmds_size = 0;
     return_value_if_fail(!orchestrator->busy, RET_BUSY);
 
@@ -183,10 +132,10 @@ static ret_t object_orchestrator_exec(tk_object_t* obj, const char* name, const 
     return_value_if_fail(RET_OK == ret, ret);
 
     orchestrator->busy = TRUE;
-    ret = object_orchestrator_workflow_exec(orchestrator, args, &execed);
+    ret = object_orchestrator_workflow_exec(orchestrator, args);
     orchestrator->busy = FALSE;
 
-    if (execed && RET_OK != ret) { /* 执行失败，回滚之前已经执行的命令 */
+    if (RET_OK != ret) { /* 执行失败，回滚之前已经执行的命令 */
       if (tk_object_can_exec(obj, TK_OBJECT_CMD_UNDO, args)) {
         return_value_if_fail(RET_OK == tk_object_exec(obj, TK_OBJECT_CMD_UNDO, args), ret);
       }
@@ -215,6 +164,34 @@ static ret_t object_orchestrator_exec(tk_object_t* obj, const char* name, const 
   }
 
   return RET_NOT_FOUND;
+}
+
+static ret_t object_orchestrator_exec_deinit_on_visit(void* ctx, const void* data) {
+  object_orchestrator_t* orchestrator = (object_orchestrator_t*)(ctx);
+  const value_t* v = (const value_t*)(data);
+  tk_object_t* cmd = NULL;
+  return_value_if_fail(orchestrator != NULL && v != NULL, RET_BAD_PARAMS);
+
+  cmd = value_object(v);
+  return_value_if_fail(cmd != NULL, RET_BAD_PARAMS);
+
+  emitter_off_by_func(EMITTER(cmd), EVT_CMD_EXECED, object_orchestrator_cmd_on_execed,
+                      orchestrator);
+
+  return RET_OK;
+}
+
+static ret_t object_orchestrator_on_destroy(tk_object_t* obj) {
+  object_orchestrator_t* orchestrator = OBJECT_ORCHESTRATOR(obj);
+  return_value_if_fail(orchestrator != NULL, RET_BAD_PARAMS);
+
+  darray_deinit(&orchestrator->undo_stack);
+
+  tk_object_foreach_prop(orchestrator->cmds, object_orchestrator_exec_deinit_on_visit,
+                         orchestrator);
+  TK_OBJECT_UNREF(orchestrator->cmds);
+
+  return RET_OK;
 }
 
 static const object_vtable_t s_object_orchestrator_vtable = {
@@ -250,11 +227,28 @@ object_orchestrator_t* object_orchestrator_cast(tk_object_t* obj) {
 }
 
 ret_t object_orchestrator_add_cmd(tk_object_t* obj, const char* name, tk_object_t* cmd) {
+  ret_t ret = RET_OK;
   object_orchestrator_t* orchestrator = OBJECT_ORCHESTRATOR(obj);
   return_value_if_fail(orchestrator != NULL && TK_STR_IS_NOT_EMPTY(name) && cmd != NULL,
                        RET_BAD_PARAMS);
+  return_value_if_fail(!tk_object_has_prop(orchestrator->cmds, name), RET_FAIL);
 
-  return tk_object_set_prop_object(orchestrator->cmds, name, cmd);
+  ret = tk_object_set_prop_object(orchestrator->cmds, name, cmd);
+
+  if (RET_OK == ret) {
+    if (!emitter_exist(EMITTER(cmd), EVT_CMD_EXECED, object_orchestrator_cmd_on_execed,
+                       orchestrator)) {
+      goto_error_if_fail_ex(
+          TK_INVALID_ID != emitter_on(EMITTER(cmd), EVT_CMD_EXECED,
+                                      object_orchestrator_cmd_on_execed, orchestrator),
+          ret = RET_OOM);
+    }
+  }
+
+  return ret;
+error:
+  tk_object_remove_prop(orchestrator->cmds, name);
+  return ret;
 }
 
 ret_t object_orchestrator_set_workflow(tk_object_t* obj,
