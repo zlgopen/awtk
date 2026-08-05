@@ -110,6 +110,16 @@ darray_t* darray_init(darray_t* darray, uint32_t capacity, tk_destroy_t destroy,
                       tk_compare_t compare);
 
 /**
+ * @method darray_extend
+ * 扩展数组到指定的容量。
+ * @param {darray_t*} darray 数组对象。
+ * @param {uint32_t} capacity 新的容量。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t darray_extend(darray_t* darray, uint32_t capacity);
+
+/**
  * @method darray_find
  * 查找第一个满足条件的元素。
  * @param {darray_t*} darray 数组对象。

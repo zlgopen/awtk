@@ -355,6 +355,7 @@ EXPORTS
     tk_crc32_file
     darray_create
     darray_init
+    darray_extend
     darray_find
     darray_find_ex
     darray_bsearch_index

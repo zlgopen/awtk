@@ -173,15 +173,23 @@ static ret_t object_orchestrator_exec(tk_object_t* obj, const char* name, const 
   if (tk_str_eq(TK_OBJECT_CMD_EXEC, name)) {
     ret_t ret = RET_OK;
     bool_t execed = FALSE;
+    uint32_t cmds_size = 0;
     return_value_if_fail(!orchestrator->busy, RET_BUSY);
 
-    orchestrator->busy = TRUE;
     darray_clear(&orchestrator->undo_stack);
+
+    cmds_size = tk_object_get_prop_uint32(orchestrator->cmds, TK_OBJECT_PROP_SIZE, 0);
+    ret = darray_extend(&orchestrator->undo_stack, cmds_size);
+    return_value_if_fail(RET_OK == ret, ret);
+
+    orchestrator->busy = TRUE;
     ret = object_orchestrator_workflow_exec(orchestrator, args, &execed);
     orchestrator->busy = FALSE;
 
     if (execed && RET_OK != ret) { /* 执行失败，回滚之前已经执行的命令 */
-      return_value_if_fail(RET_OK == tk_object_exec(obj, TK_OBJECT_CMD_UNDO, args), ret);
+      if (tk_object_can_exec(obj, TK_OBJECT_CMD_UNDO, args)) {
+        return_value_if_fail(RET_OK == tk_object_exec(obj, TK_OBJECT_CMD_UNDO, args), ret);
+      }
     }
 
     return ret;
@@ -228,7 +236,7 @@ tk_object_t* object_orchestrator_create(void) {
   goto_error_if_fail(ret->cmds != NULL);
   object_hash_set_keep_props_order(ret->cmds, TRUE);
 
-  goto_error_if_fail(darray_init(&ret->undo_stack, 8, (tk_destroy_t)tk_object_unref, NULL) != NULL);
+  goto_error_if_fail(darray_init(&ret->undo_stack, 0, (tk_destroy_t)tk_object_unref, NULL) != NULL);
 
   return TK_OBJECT(ret);
 error:

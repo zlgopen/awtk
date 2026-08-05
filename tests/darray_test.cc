@@ -36,6 +36,34 @@ TEST(DArrayTest, init0) {
   darray_deinit(&darray);
 }
 
+TEST(DArrayTest, extend) {
+  darray_t darray;
+  darray_init(&darray, 0, NULL, NULL);
+
+  ASSERT_EQ(darray.size, 0u);
+  ASSERT_EQ(darray.capacity, 0u);
+  ASSERT_TRUE(darray.elms == NULL);
+
+  ASSERT_EQ(darray_extend(&darray, 0), RET_OK);
+  ASSERT_EQ(darray.size, 0u);
+  ASSERT_EQ(darray.capacity, 0u);
+
+  ASSERT_EQ(darray_extend(&darray, 10), RET_OK);
+  ASSERT_EQ(darray.size, 0u);
+  ASSERT_EQ(darray.capacity, 10u);
+  ASSERT_TRUE(darray.elms != NULL);
+
+  ASSERT_EQ(darray_extend(&darray, 5), RET_OK);
+  ASSERT_EQ(darray.size, 0u);
+  ASSERT_EQ(darray.capacity, 10u);
+
+  ASSERT_EQ(darray_extend(&darray, 20), RET_OK);
+  ASSERT_EQ(darray.size, 0u);
+  ASSERT_EQ(darray.capacity, 20u);
+
+  darray_deinit(&darray);
+}
+
 TEST(DArrayTest, insert) {
   darray_t darray;
   darray_init(&darray, 2, NULL, NULL);

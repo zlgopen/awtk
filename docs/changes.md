@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/8/5
+  * improve object_orchestrator and add darray_extend(感谢兆坤提供补丁)
+
 2026/8/4
   * 修复 mledit 有 margin 时 line number 与文本对不齐的问题(感谢雪飞提供补丁)
   * 修复 macOS 上信号量因命名信号量资源耗尽而失败的问题

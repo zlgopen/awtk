@@ -55,15 +55,14 @@ darray_t* darray_init(darray_t* darray, uint32_t capacity, tk_destroy_t destroy,
   return darray;
 }
 
-static bool_t darray_extend(darray_t* darray) {
-  if (darray->elms != NULL && darray->size < darray->capacity) {
-    return TRUE;
-  } else {
-    void* elms = NULL;
-    uint32_t old_capacity = darray->capacity;
-    uint32_t capacity = (darray->capacity >> 1) + darray->capacity + 1;
+ret_t darray_extend(darray_t* darray, uint32_t capacity) {
+  return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
 
-    elms = TKMEM_REALLOCT(void*, darray->elms, capacity);
+  if (0 == capacity || (darray->elms != NULL && capacity <= darray->capacity)) {
+    return RET_OK;
+  } else {
+    uint32_t old_capacity = darray->capacity;
+    void* elms = TKMEM_REALLOCT(void*, darray->elms, capacity);
     if (elms) {
       darray->elms = elms;
       darray->capacity = capacity;
@@ -73,10 +72,19 @@ static bool_t darray_extend(darray_t* darray) {
         memset(darray->elms + old_capacity, 0, (capacity - old_capacity) * sizeof(void*));
       }
 
-      return TRUE;
+      return RET_OK;
     } else {
-      return FALSE;
+      return RET_FAIL;
     }
+  }
+}
+
+inline static bool_t darray_auto_extend(darray_t* darray) {
+  if (darray->elms != NULL && darray->size < darray->capacity) {
+    return TRUE;
+  } else {
+    uint32_t capacity = (darray->capacity >> 1) + darray->capacity + 1;
+    return (RET_OK == darray_extend(darray, capacity));
   }
 }
 
@@ -292,7 +300,7 @@ ret_t darray_insert(darray_t* darray, uint32_t index, void* data) {
   void** p = NULL;
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
   index = tk_min(index, darray->size);
-  return_value_if_fail(darray_extend(darray), RET_OOM);
+  return_value_if_fail(darray_auto_extend(darray), RET_OOM);
 
   p = darray->elms + index;
   d = darray->elms + darray->size;
