@@ -3885,6 +3885,7 @@ EXPORTS
     object_fifo_default_create
     object_hash_create
     object_hash_create_ex
+    object_hash_create_with_opt
     object_hash_set_keep_prop_type
     object_hash_set_name_case_insensitive
     object_hash_set_keep_props_order
@@ -3892,7 +3893,6 @@ EXPORTS
     object_locker_create
     object_locker_cast
     object_orchestrator_create
-    object_orchestrator_add_cmd
     object_orchestrator_set_workflow
     object_orchestrator_cast
     object_override_create
