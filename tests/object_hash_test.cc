@@ -356,7 +356,12 @@ TEST(ObjectHash, expr_str) {
 TEST(ObjectHash, clone) {
   value_t v;
   tk_object_t* clone = NULL;
-  tk_object_t* obj = object_hash_create();
+  object_hash_create_opt_t opt = {};
+  opt.enable_path = TRUE;
+  opt.extra_data_size = sizeof(const char*);
+  tk_object_t* obj = object_hash_create_with_opt(&opt);
+  object_hash_t* o = OBJECT_HASH(obj);
+  *(const char**)(o + 1) = "hello";
 
   ASSERT_EQ(tk_object_set_prop_str(obj, "aa", "123"), RET_OK);
   ASSERT_EQ(tk_object_set_prop_str(obj, "bb", "abc"), RET_OK);
@@ -364,6 +369,9 @@ TEST(ObjectHash, clone) {
   clone = tk_object_clone(obj);
   ASSERT_EQ(tk_object_eval(clone, "$aa+$bb", &v), RET_OK);
   ASSERT_EQ(string(value_str(&v)), string("123abc"));
+
+  object_hash_t* clone_o = OBJECT_HASH(clone);
+  ASSERT_STREQ(*(const char**)(clone_o + 1), "hello");
 
   value_reset(&v);
   tk_object_unref(obj);

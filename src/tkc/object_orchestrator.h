@@ -26,8 +26,7 @@
 
 BEGIN_C_DECLS
 
-typedef ret_t (*object_orchestrator_exec_workflow_t)(tk_object_t* cmds, const char* args,
-                                                     void* ctx);
+typedef ret_t (*object_orchestrator_exec_workflow_t)(tk_object_t* obj, const char* args, void* ctx);
 
 /**
  * @class object_orchestrator_t
@@ -47,18 +46,6 @@ typedef struct _object_orchestrator_t object_orchestrator_t;
 tk_object_t* object_orchestrator_create(void);
 
 /**
- * @method object_orchestrator_add_cmd
- * 添加指令对象。
- * @annotation ["scriptable"]
- * @param {tk_object_t*} obj orchestrator对象。
- * @param {const char*} name 指令名称。
- * @param {tk_object_t*} cmd 指令对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t object_orchestrator_add_cmd(tk_object_t* obj, const char* name, tk_object_t* cmd);
-
-/**
  * @method object_orchestrator_set_workflow
  * 设置工作流。
  * @param {tk_object_t*} obj orchestrator对象。
@@ -73,9 +60,7 @@ ret_t object_orchestrator_set_workflow(tk_object_t* obj,
 
 /**
  * @method object_orchestrator_cast
- *
  * 转换为object_orchestrator对象。
- *
  * @annotation ["cast"]
  * @param {tk_object_t*} obj object_orchestrator对象。
  *

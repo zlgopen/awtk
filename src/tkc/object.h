@@ -1135,6 +1135,7 @@ tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path, cons
 bool_t tk_object_is_instance_of(const tk_object_t* obj, const char* type);
 
 /* private */
+ret_t tk_object_copy_props_default(tk_object_t* obj, tk_object_t* src, bool_t overwrite);
 
 /**
  * @method tk_object_compare_name_without_nullptr

@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/8/6
+  * improve object_orchestrator and object_hash(感谢兆坤提供补丁)
+
 2026/8/5
   * improve object_orchestrator and add darray_extend(感谢兆坤提供补丁)
   * 优化object_orchestrator效率(感谢兆坤提供补丁)

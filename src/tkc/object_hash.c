@@ -299,15 +299,17 @@ static tk_object_t* object_hash_clone(object_hash_t* o) {
   object_hash_t* dupo = NULL;
   return_value_if_fail(o != NULL, NULL);
 
-  dup = object_hash_create();
+  dup = object_hash_create_with_opt(&(object_hash_create_opt_t){
+      .enable_path = o->enable_path,
+      .keep_prop_type = o->keep_prop_type,
+      .name_case_insensitive = o->name_case_insensitive,
+      .keep_props_order = o->keep_props_order,
+      .extra_data_size = o->extra_data_size,
+  });
   return_value_if_fail(dup != NULL, NULL);
 
   dupo = OBJECT_HASH(dup);
-
-  dupo->enable_path = o->enable_path;
-  dupo->keep_prop_type = o->keep_prop_type;
-  dupo->name_case_insensitive = o->name_case_insensitive;
-  dupo->keep_props_order = o->keep_props_order;
+  memcpy(dupo + 1, o + 1, dupo->extra_data_size);
 
   for (i = 0; i < o->props.size; i++) {
     named_value_hash_t* iter = (named_value_hash_t*)(o->props.elms[i]);
@@ -340,17 +342,31 @@ static const object_vtable_t s_object_hash_vtable = {
     .find_prop = object_hash_find_prop,
 };
 
-tk_object_t* object_hash_create_ex(bool_t enable_path) {
-  tk_object_t* obj = tk_object_create(&s_object_hash_vtable);
+tk_object_t* object_hash_create_with_opt(const object_hash_create_opt_t* opt) {
+  object_hash_create_opt_t _opt;
+  if (NULL == opt) {
+    memset(&_opt, 0x00, sizeof(_opt));
+    opt = &_opt;
+  }
+  tk_object_t* obj = tk_object_create_ex(&s_object_hash_vtable, opt->extra_data_size);
   object_hash_t* o = OBJECT_HASH(obj);
   ENSURE(o);
   return_value_if_fail(obj != NULL, NULL);
 
-  o->enable_path = enable_path;
+  o->enable_path = opt->enable_path;
+  o->keep_prop_type = opt->keep_prop_type;
+  o->name_case_insensitive = opt->name_case_insensitive;
+  o->keep_props_order = opt->keep_props_order;
+  o->extra_data_size = opt->extra_data_size;
+
   darray_init(&(o->props), 8, (tk_destroy_t)named_value_hash_destroy,
               (tk_compare_t)named_value_hash_compare);
 
   return obj;
+}
+
+tk_object_t* object_hash_create_ex(bool_t enable_path) {
+  return object_hash_create_with_opt(&(object_hash_create_opt_t){.enable_path = enable_path});
 }
 
 tk_object_t* object_hash_create(void) {

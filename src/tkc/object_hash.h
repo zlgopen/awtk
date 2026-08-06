@@ -28,6 +28,23 @@
 BEGIN_C_DECLS
 
 /**
+ * @struct object_hash_create_opt_t
+ * object_hash_create 配置选项。
+ */
+typedef struct _object_hash_create_opt_t {
+  /*是否支持按路径访问属性*/
+  bool_t enable_path : 1;
+  /*设置属性值不改变属性的类型*/
+  bool_t keep_prop_type : 1;
+  /*属性名称大小写不敏感*/
+  bool_t name_case_insensitive : 1;
+  /*保持属性间的顺序*/
+  bool_t keep_props_order : 1;
+  /* 额外的内存大小 */
+  uint32_t extra_data_size;
+} object_hash_create_opt_t;
+
+/**
  * @class object_hash_t
  * @parent tk_object_t
  * @annotation ["scriptable"]
@@ -72,6 +89,8 @@ typedef struct _object_hash_t {
   bool_t name_case_insensitive : 1;
   /*保持属性间的顺序*/
   bool_t keep_props_order : 1;
+  /* 额外的内存大小 */
+  uint32_t extra_data_size;
 } object_hash_t;
 
 /**
@@ -97,6 +116,16 @@ tk_object_t* object_hash_create(void);
  *
  */
 tk_object_t* object_hash_create_ex(bool_t enable_path);
+
+/**
+ * @method object_hash_create_with_opt
+ * 创建对象。
+ * @annotation ["constructor", "gc"]
+ * @param {const object_hash_create_opt_t*} opt 配置选项。
+ *
+ * @return {tk_object_t*} 返回object对象。
+ */
+tk_object_t* object_hash_create_with_opt(const object_hash_create_opt_t* opt);
 
 /**
  * @method object_hash_set_keep_prop_type

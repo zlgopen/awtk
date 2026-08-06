@@ -563,8 +563,7 @@ static ret_t on_copy_on_prop(void* ctx, const void* data) {
   return RET_OK;
 }
 
-static inline ret_t tk_object_copy_props_default(tk_object_t* obj, tk_object_t* src,
-                                                 bool_t overwrite) {
+ret_t tk_object_copy_props_default(tk_object_t* obj, tk_object_t* src, bool_t overwrite) {
   copy_ctx_t ctx = {overwrite, obj};
   return tk_object_foreach_prop(src, on_copy_on_prop, &ctx);
 }
