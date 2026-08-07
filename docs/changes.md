@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/8/7
+  * 支持生成导出tkc_config的配置宏文件和增加HAS_TKC_CONFIG宏(感谢智明提供补丁)
+
 2026/8/6
   * improve object_orchestrator and object_hash(感谢兆坤提供补丁)
 

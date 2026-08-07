@@ -62,6 +62,8 @@
 
 #if defined(HAS_AWTK_CONFIG) || defined(CONFIG_HAS_AWTK_CONFIG)
 #include "awtk_config.h"
+#elif defined(HAS_TKC_CONFIG)
+#include "tkc_config.h"
 #endif /*HAS_AWTK_CONFIG*/
 
 #if defined(WIN32) || defined(LINUX) || defined(MACOS) || defined(ANDROID) || defined(IOS)

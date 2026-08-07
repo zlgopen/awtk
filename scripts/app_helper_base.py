@@ -112,6 +112,10 @@ class AppHelperBase:
         self.APP_CXXFLAGS = APP_CXXFLAGS
         return self
 
+    def set_export_tkc_config_h_path(self, path):
+        self.EXPORT_TKC_CONFIG_H_PAHT = path
+        return self
+
     def add_deps(self, DEPENDS_LIBS):
         self.DEPENDS_LIBS += DEPENDS_LIBS
         return self
@@ -689,6 +693,8 @@ class AppHelperBase:
                 LIBPATH += [join_path(iter['root'], self.LIB_DIR)]
         LIBS = self.APP_LIBS + LIBS
 
+        self.gen_tkc_config_h(self.AWTK_CCFLAGS)
+
         if hasattr(awtk, 'CC'):
             if self.DEBUG :
                 CCFLAGS += ' -g -O0 '
@@ -765,3 +771,50 @@ class AppHelperBase:
             self.cleanAwtkSharedLib()
 
         return env
+
+    def gen_tkc_config_h(self, CCFLAGS):
+        if not hasattr(self, 'EXPORT_TKC_CONFIG_H_PAHT') or self.EXPORT_TKC_CONFIG_H_PAHT == None or self.EXPORT_TKC_CONFIG_H_PAHT == '':
+            return
+        else :
+            mkdir_if_not_exist(os.path.dirname(self.EXPORT_TKC_CONFIG_H_PAHT))
+        import re
+        TKC_CONFIG_MACROS = [
+            'HAS_STDIO',
+            'WITH_DATA_READER_WRITER',
+            'WITH_FS_RES',
+            'HAS_GET_TIME_US64',
+            'HAS_STD_MALLOC',
+            'TK_MAX_MEM_BLOCK_NR',
+            'LINUX',
+            'HAS_PTHREAD',
+            ]
+        TKC_CONFIG_MACRO_RE = re.compile(r'[-/]D([A-Za-z_][A-Za-z0-9_]*)(?:=([^\s]*))?')
+        flags = CCFLAGS
+        defined = {}
+        for m in TKC_CONFIG_MACRO_RE.finditer(flags):
+            name = m.group(1)
+            if name in TKC_CONFIG_MACROS:
+                defined[name] = m.group(2)
+        out_file = self.EXPORT_TKC_CONFIG_H_PAHT
+        lines = []
+        lines.append('#ifndef TKC_CONFIG_H')
+        lines.append('#define TKC_CONFIG_H')
+        lines.append('')
+        for name in TKC_CONFIG_MACROS:
+            if name in defined:
+                val = defined[name]
+                if val is None:
+                    lines.append('#define ' + name + ' 1')
+                else:
+                    lines.append('#define ' + name + ' ' + val)
+        lines.append('')
+        lines.append('#endif /*TKC_CONFIG_H*/')
+        content = '\n'.join(lines) + '\n'
+        old = ''
+        if os.path.isfile(out_file):
+            with open(out_file, 'r') as f:
+                old = f.read()
+        if old != content:
+            with open(out_file, 'w') as f:
+                f.write(content)
+                print('Generate ' + out_file)
