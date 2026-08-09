@@ -3892,9 +3892,6 @@ EXPORTS
     object_hash_cast
     object_locker_create
     object_locker_cast
-    object_orchestrator_create
-    object_orchestrator_set_workflow
-    object_orchestrator_cast
     object_override_create
     object_override_set_base_obj
     object_override_cast
@@ -3905,6 +3902,9 @@ EXPORTS
     object_wbuffer_create
     object_wbuffer_create_extendable
     object_wbuffer_cast
+    object_workflow_cmd_create
+    object_workflow_cmd_set_runner
+    object_workflow_cmd_cast
     tk_ostream_write
     tk_ostream_seek
     tk_ostream_tell
