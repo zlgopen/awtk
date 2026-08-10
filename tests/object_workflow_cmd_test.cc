@@ -13,6 +13,8 @@
  *   - 撤销期间的重入互斥（undo 不得重复撤销同一 cmd）
  *   - 自定义工作流执行期间动态创建/加入/执行指令并纳入撤销簿记（新委托设计）
  *   - copy_props 经 cmds_set_prop override 订阅 EXECED 观察者（修复旁路回归）
+ *   - clone 语义：子命令按 ref 共享（非深 clone）、EVT_CMD_EXECED 订阅以新对象为 ctx
+ *     重建、undo_stack 独立、外部观察契约不偷渡到克隆体
  */
 
 #include "gtest/gtest.h"
@@ -739,6 +741,61 @@ TEST(ObjectWorkflowCmd, ObjectHashCloneExtraDataNotCorrupted) {
 
   TK_OBJECT_UNREF(clone);
   TK_OBJECT_UNREF(hash);
+}
+
+/* clone 语义锁定：object_workflow_cmd_clone（src/tkc/object_workflow_cmd.c:245）
+ *   (1) 子命令按 ref 共享（非深 clone）：两端 get_prop_object 同指针；
+ *       fake_cmd 无 clone 槽——若深 clone 会返回 NULL、prop 丢失，反证不深拷。
+ *   (2) undo_stack 独立：原 EXEC 不使 clone 可 UNDO（未继承历史）。
+ *   (3) EVT_CMD_EXECED 订阅以新对象为 ctx 重建：clone 自身 EXEC 后 c1 的
+ *       EXECED 回调入 clone 栈（can_exec UNDO→TRUE），不误入原对象栈。
+ *   (4) clone EXEC 不波及原对象 undo 栈：各自 UNDO 各撤销一次。
+ *   (5) 新对象自身 emitter 为空：原对象上的外部观察者不被偷渡到克隆体。 */
+static ret_t clone_test_external_observer(void* ctx, event_t* e) {
+  (void)e;
+  (*(int*)ctx)++;
+  return RET_OK;
+}
+
+TEST(ObjectWorkflowCmd, CloneSharesCmdsRebuildsSubscriptionIndependentUndoStack) {
+  vector<string> log;
+  tk_object_t* wfc = object_workflow_cmd_create();
+  tk_object_t* c1 = fake_cmd_create("c1", &log);
+  ASSERT_TRUE(wfc != NULL && c1 != NULL);
+  ASSERT_EQ(tk_object_set_prop_object(wfc, "c1", c1), RET_OK);
+
+  /* 克隆（fake_cmd 无 clone 槽：反证 workflow clone 不深拷子命令） */
+  tk_object_t* clone = tk_object_clone(wfc);
+  ASSERT_TRUE(clone != NULL);
+
+  /* (1) 子命令按 ref 共享：两端取到同一指针（非深 clone） */
+  ASSERT_EQ(tk_object_get_prop_object(clone, "c1"), c1);
+
+  /* (5) 外部观察契约不偷渡：wfc 上挂观察者，后续对 clone EXEC 不触发它 */
+  int ext_count = 0;
+  emitter_on(EMITTER(wfc), EVT_CMD_EXECED, clone_test_external_observer, &ext_count);
+
+  /* (2) undo_stack 独立：原 EXEC 后 wfc 可 UNDO，clone 仍不可 */
+  ASSERT_EQ(tk_object_exec(wfc, TK_OBJECT_CMD_EXEC, NULL), RET_OK);
+  ASSERT_EQ(tk_object_can_exec(wfc, TK_OBJECT_CMD_UNDO, NULL), TRUE);
+  ASSERT_EQ(tk_object_can_exec(clone, TK_OBJECT_CMD_UNDO, NULL), FALSE);
+  ASSERT_EQ(ext_count, 1);  /* wfc 被 EXEC → 触发其上的外部观察者 */
+
+  /* (3) 订阅以新对象为 ctx 重建：clone 自身 EXEC 后 c1 EXECED 入 clone 栈，
+   *     且只 emit 到 clone 的空 emitter，不触发 wfc 上的外部观察者。 */
+  ASSERT_EQ(tk_object_exec(clone, TK_OBJECT_CMD_EXEC, NULL), RET_OK);
+  ASSERT_EQ(tk_object_can_exec(clone, TK_OBJECT_CMD_UNDO, NULL), TRUE);
+  ASSERT_EQ(ext_count, 1);  /* clone EXECED 未偷渡到 wfc 的外部观察者 */
+  ASSERT_EQ(FAKE_CMD(c1)->exec_count, 2);  /* wfc 1 + clone 1 */
+
+  /* (4) 各自 UNDO 一次，互不波及：c1 共被撤销两次 */
+  ASSERT_EQ(tk_object_exec(clone, TK_OBJECT_CMD_UNDO, NULL), RET_OK);
+  ASSERT_EQ(tk_object_exec(wfc, TK_OBJECT_CMD_UNDO, NULL), RET_OK);
+  ASSERT_EQ(FAKE_CMD(c1)->undo_count, 2);
+
+  TK_OBJECT_UNREF(clone);
+  TK_OBJECT_UNREF(wfc);
+  TK_OBJECT_UNREF(c1);
 }
 
 /* ===== 已知残余（框架级，非 object_workflow_cmd.c 可修）=====

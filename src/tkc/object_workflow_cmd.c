@@ -242,6 +242,26 @@ static ret_t object_workflow_cmd_find_props(tk_object_t* obj, tk_compare_t cmp, 
   return tk_object_find_props(workflow_cmd->cmds, cmp, ctx, matched);
 }
 
+static tk_object_t* object_workflow_cmd_clone(tk_object_t* obj) {
+  object_workflow_cmd_t* ret = NULL;
+  object_workflow_cmd_t* workflow_cmd = OBJECT_WORKFLOW_CMD(obj);
+  return_value_if_fail(workflow_cmd != NULL, NULL);
+
+  ret = (object_workflow_cmd_t*)object_workflow_cmd_create();
+  return_value_if_fail(ret != NULL, NULL);
+
+  goto_error_if_fail(RET_OK == object_workflow_cmd_set_runner(TK_OBJECT(ret), workflow_cmd->runner,
+                                                              workflow_cmd->runner_ctx));
+  goto_error_if_fail(RET_OK == tk_object_copy_props(ret->cmds, workflow_cmd->cmds, TRUE) &&
+                     tk_object_get_prop_uint32(ret->cmds, TK_OBJECT_PROP_SIZE, 0) ==
+                         tk_object_get_prop_uint32(workflow_cmd->cmds, TK_OBJECT_PROP_SIZE, 0));
+
+  return TK_OBJECT(ret);
+error:
+  TK_OBJECT_UNREF(ret);
+  return NULL;
+}
+
 static const object_vtable_t s_object_workflow_cmd_vtable = {
     .type = OBJECT_WORKFLOW_CMD_TYPE,
     .desc = OBJECT_WORKFLOW_CMD_TYPE,
@@ -257,6 +277,7 @@ static const object_vtable_t s_object_workflow_cmd_vtable = {
     .clear_props = object_workflow_cmd_clear_props,
     .find_prop = object_workflow_cmd_find_prop,
     .find_props = object_workflow_cmd_find_props,
+    .clone = object_workflow_cmd_clone,
     .compare = tk_object_compare_name_without_nullptr,
 };
 
