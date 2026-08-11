@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/8/11
+  * 控件弹出popup时不丢失焦点(感谢雨欣提供补丁)
+
 2026/8/10
   * object_workflow_cmd support clone(感谢兆坤提供补丁)
 
