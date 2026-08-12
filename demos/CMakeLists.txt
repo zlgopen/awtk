@@ -43,6 +43,13 @@ if(AWTK_BUILD_SHARED AND AWTK_OS_WINDOWS)
       VERBATIM
     )
   endif()
+  add_custom_command(
+    TARGET awtk_demo_ui POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+      "${CMAKE_SOURCE_DIR}/res/assets"
+      "$<TARGET_FILE_DIR:awtk_demo_ui>/res/assets"
+    VERBATIM
+  )
 endif()
 
 # demo_vg_text: dedicated vg text rendering showcase.
@@ -79,4 +86,11 @@ if(AWTK_BUILD_SHARED AND AWTK_OS_WINDOWS)
       VERBATIM
     )
   endif()
+  add_custom_command(
+    TARGET awtk_demo_vg_text POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+      "${CMAKE_SOURCE_DIR}/res/assets"
+      "$<TARGET_FILE_DIR:awtk_demo_vg_text>/res/assets"
+    VERBATIM
+  )
 endif()
