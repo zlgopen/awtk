@@ -232,6 +232,7 @@ void awtk_ios_log(const char* message, ...);
   } while (0)
 #elif defined(WIN32)
 #include <windows.h>
+#include <stdio.h>
 #if defined(__GNUC__)
 /*MINGW*/
 #define log_debug(format, args...)                 \

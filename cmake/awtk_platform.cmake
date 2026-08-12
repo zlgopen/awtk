@@ -29,7 +29,7 @@ function(awtk_apply_platform_compile_options _target)
   elseif(AWTK_OS_LINUX)
     target_compile_options(${_target} PRIVATE
       -Wall -Wno-unused-function -fPIC
-      -std=gnu99
+      $<$<COMPILE_LANGUAGE:C>:-std=gnu99>
       -DLINUX -DHAS_PTHREAD
     )
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
@@ -53,7 +53,7 @@ function(awtk_apply_platform_compile_options _target)
     endif()
   elseif(AWTK_WINDOWS_MINGW)
     target_compile_options(${_target} PRIVATE
-      -DWIN32 -DMINGW -DWINDOWS -D_CONSOLE -Wall -std=gnu99
+      -DWIN32 -DMINGW -DWINDOWS -D_CONSOLE -Wall $<$<COMPILE_LANGUAGE:C>:-std=gnu99>
       -U__FLT_EVAL_METHOD__ -D__FLT_EVAL_METHOD__=0 -DDECLSPEC=
       -D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS
       -D_HAS_EXCEPTIONS=0 -D_HAS_ITERATOR_DEBUGGING=0 -D_ITERATOR_DEBUG_LEVEL=0 -D_SCL_SECURE=0

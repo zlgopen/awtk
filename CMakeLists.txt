@@ -54,6 +54,9 @@ else()
 endif()
 
 set_target_properties(awtk PROPERTIES OUTPUT_NAME "awtk" LINKER_LANGUAGE CXX)
+if(AWTK_WINDOWS_MINGW)
+  set_target_properties(awtk PROPERTIES PREFIX "")
+endif()
 target_include_directories(awtk PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
