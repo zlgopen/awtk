@@ -200,15 +200,12 @@ static ret_t edit_ex_on_event(widget_t* widget, event_t* e) {
   }
 
   switch (type) {
-    case EVT_KEY_DOWN: {
-      key_event_t* evt = key_event_cast(e);
-      if (RET_OK == edit_ex_suggest_words_focus_by_key(widget, evt->key)) {
-        return RET_STOP;
-      }
-      edit_ex_suggest_words_enable_focus(widget, FALSE);
-    } break;
+    case EVT_KEY_DOWN:
     case EVT_KEY_UP: {
-      edit_ex_suggest_words_enable_focus(widget, TRUE);
+      if (edit_ex_suggest_words_popup_on_key_event(edit_ex, e, &ret)) {
+        return ret;
+      }
+      edit_ex_suggest_words_enable_focus(widget, EVT_KEY_UP == type);
     } break;
     case EVT_POINTER_UP: {
       pointer_event_t* evt = pointer_event_cast(e);

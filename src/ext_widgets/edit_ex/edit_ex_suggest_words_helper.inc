@@ -109,50 +109,6 @@ static ret_t edit_ex_suggest_words_popup_on_close(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t edit_ex_suggest_words_popup_on_key_down_before_children(void* ctx, event_t* e) {
-  edit_ex_t* edit_ex = EDIT_EX(ctx);
-  key_event_t* evt = key_event_cast(e);
-  widget_t* popup = NULL;
-  return_value_if_fail(edit_ex != NULL && evt != NULL, RET_BAD_PARAMS);
-  popup = WIDGET(e->target);
-  return_value_if_fail(popup != NULL, RET_BAD_PARAMS);
-
-  if (/* 选中item */ key_code_is_up(evt->key) || key_code_is_down(evt->key)) {
-    return RET_OK;
-  } else if (/* 选择item */ key_code_is_enter(evt->key) &&
-             widget_has_focused_widget_in_window(popup)) {
-    return RET_OK;
-  } else {
-    /* 转抛给 edit_ex */
-    key_event_t clone_evt = *evt;
-    clone_evt.e.target = NULL;
-
-    clone_evt.e.type = EVT_KEY_DOWN;
-    widget_dispatch(WIDGET(edit_ex), &clone_evt.e);
-
-    clone_evt.e.type = EVT_KEY_UP;
-    widget_dispatch(WIDGET(edit_ex), &clone_evt.e);
-
-    return RET_STOP;
-  }
-}
-
-static ret_t edit_ex_suggest_words_popup_on_pointer_event(void* ctx, event_t* e) {
-  edit_ex_t* edit_ex = EDIT_EX(ctx);
-  pointer_event_t* evt = pointer_event_cast(e);
-  return_value_if_fail(edit_ex != NULL && evt != NULL, RET_BAD_PARAMS);
-
-  if (widget_is_point_in(WIDGET(edit_ex), evt->x, evt->y, FALSE)) {
-    /* 转抛给 edit_ex */
-    pointer_event_t clone_evt = *evt;
-    clone_evt.e.target = NULL;
-
-    return widget_dispatch(WIDGET(edit_ex), &clone_evt.e);
-  }
-
-  return RET_OK;
-}
-
 inline static bool_t edit_ex_widget_set_prop_is_support(const char* name) {
   static const char* s_not_support_props[] = {
       WIDGET_PROP_NAME,
@@ -328,6 +284,15 @@ static widget_t* edit_ex_create_suggest_words_popup(widget_t* widget) {
   return win;
 }
 
+inline static void edit_ex_simulated_confirm(widget_t* widget) {
+  key_event_t evt;
+  key_event_init(&evt, EVT_KEY_DOWN, NULL, TK_KEY_RETURN);
+  widget_on_keydown(widget, &evt);
+
+  evt.e.type = EVT_KEY_UP;
+  widget_on_keyup(widget, &evt);
+}
+
 static ret_t edit_ex_suggest_words_popup_confirm(widget_t* widget, widget_t* item) {
   /* base on combo_box_on_item_click() */
   ret_t ret = RET_OK;
@@ -360,16 +325,10 @@ static ret_t edit_ex_suggest_words_popup_confirm(widget_t* widget, widget_t* ite
         ret = widget_set_text(widget, text);
       }
       if (RET_OK == ret) {
-        key_event_t evt;
         edit_set_cursor(widget, -1);
 
         edit_ex_set_is_select_suggest_word(edit_ex, TRUE);
-
-        key_event_init(&evt, EVT_KEY_DOWN, NULL, TK_KEY_RETURN);
-        widget_dispatch(widget, &evt.e);
-        evt.e.type = EVT_KEY_UP;
-        widget_dispatch(WIDGET(edit_ex), &evt.e);
-
+        edit_ex_simulated_confirm(widget);
         edit_ex_set_is_select_suggest_word(edit_ex, FALSE);
       }
     } while (0);
@@ -411,24 +370,32 @@ inline static ret_t edit_ex_suggest_words_enable_focus(widget_t* widget, bool_t 
   return RET_OK;
 }
 
-static ret_t edit_ex_suggest_words_focus_by_key(widget_t* widget, uint32_t key) {
-  ret_t ret = RET_SKIP;
-  edit_ex_t* edit_ex = EDIT_EX(widget);
-  return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
+static bool_t edit_ex_suggest_words_popup_on_key_event(edit_ex_t* edit_ex, event_t* e,
+                                                       ret_t* result) {
+  if (edit_ex->suggest_words_popup != NULL) {
+    key_event_t* evt = key_event_cast(e);
+    return_value_if_fail(evt != NULL && result != NULL, FALSE);
 
-  if (key_code_is_down(key)) {
-    if (edit_ex_suggest_words_popup_is_opened(edit_ex)) {
-      ret = widget_focus_first(edit_ex->suggest_words_popup);
-      if (RET_OK == ret) {
-        widget_set_sensitive(edit_ex->suggest_words_popup, TRUE);
-      }
+    if (key_code_is_down(evt->key) || key_code_is_up(evt->key) || key_code_is_enter(evt->key)) {
+      do {
+        key_event_t clone_evt = *evt;
+        clone_evt.e.target = NULL;
+        if (EVT_KEY_DOWN == e->type) {
+          if (!edit_ex->is_select_suggest_word) {
+            *result = widget_on_keydown(edit_ex->suggest_words_popup, &clone_evt);
+          }
+        } else if (EVT_KEY_UP == e->type) {
+          if (!edit_ex->is_select_suggest_word) {
+            *result = widget_on_keyup(edit_ex->suggest_words_popup, &clone_evt);
+          }
+        } else {
+          break;
+        }
+        return TRUE;
+      } while (0);
     }
-  } else if (key_code_is_enter(key)) {
-    edit_ex_close_suggest_words_popup(edit_ex);
-    ret = RET_CONTINUE;
   }
-
-  return ret;
+  return FALSE;
 }
 
 typedef struct _edit_ex_update_suggest_words_popup_ctx_t {
@@ -748,22 +715,6 @@ static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
   }
 
   if (edit_ex->suggest_words_popup == NULL) {
-    static const event_type_t s_pointer_event_types[] = {
-        EVT_POINTER_DOWN,
-        EVT_POINTER_DOWN_BEFORE_CHILDREN,
-        EVT_POINTER_MOVE,
-        EVT_POINTER_MOVE_BEFORE_CHILDREN,
-        EVT_POINTER_UP,
-        EVT_POINTER_UP_BEFORE_CHILDREN,
-        EVT_POINTER_DOWN_ABORT,
-        // EVT_CONTEXT_MENU,  //todo: 目前右键菜单弹出后会关掉建议词弹框，暂时不需要
-        EVT_POINTER_ENTER,
-        EVT_POINTER_LEAVE,
-        EVT_LONG_PRESS,
-        EVT_CLICK,
-        EVT_DOUBLE_CLICK,
-    };
-    uint32_t i = 0;
     edit_ex->suggest_words_popup = edit_ex_create_suggest_words_popup(widget);
     return_value_if_fail(edit_ex->suggest_words_popup != NULL, RET_FAIL);
 
@@ -774,14 +725,6 @@ static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
 
     widget_on(edit_ex->suggest_words_popup, EVT_WINDOW_CLOSE, edit_ex_suggest_words_popup_on_close,
               widget);
-
-    widget_on(edit_ex->suggest_words_popup, EVT_KEY_DOWN_BEFORE_CHILDREN,
-              edit_ex_suggest_words_popup_on_key_down_before_children, widget);
-
-    for (i = 0; i < ARRAY_SIZE(s_pointer_event_types); i++) {
-      widget_on(edit_ex->suggest_words_popup, s_pointer_event_types[i],
-                edit_ex_suggest_words_popup_on_pointer_event, widget);
-    }
 
     widget_on(window_manager(), EVT_RESIZE, edit_ex_close_suggest_words_popup_on_screen_resize,
               widget);
