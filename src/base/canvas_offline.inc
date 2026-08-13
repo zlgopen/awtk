@@ -500,6 +500,10 @@ ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitma
   if (bitmap_flag_is_lcd_orientation(canvas_bitmap)) {
     bitmap->flags |= BITMAP_FLAG_LCD_ORIENTATION;
   }
+#ifdef WITH_GPU
+  bitmap_set_dirty(bitmap, FALSE);
+  graphic_buffer_attach(bitmap->buffer, NULL, bitmap_get_physical_width(bitmap), bitmap_get_physical_height(bitmap));
+#endif
   bitmap->flags |= BITMAP_FLAG_IMMUTABLE;
   ((canvas_offline_t*)canvas)->bitmap = NULL;
 
@@ -538,6 +542,7 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas) {
 
     graphic_buffer_attach(bitmap->buffer, data, bitmap_get_physical_width(bitmap), bitmap_get_physical_height(bitmap));
     vgcanvas_fbo_to_bitmap(vg, fbo, bitmap, &r);
+    bitmap_set_dirty(bitmap, FALSE);
   }
 #endif
   return RET_OK;

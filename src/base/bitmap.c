@@ -805,7 +805,8 @@ static bool_t bitmap_rgba8888_save_png(bitmap_t* bitmap, const char* filename) {
   bitmap_t* t = bitmap;
   uint8_t* tdata = NULL;
   unsigned char* png_data = NULL;
-  tdata = bitmap_lock_buffer_for_write(t);
+  tdata = bitmap_lock_buffer_for_read(t);
+  return_value_if_fail(tdata != NULL, FALSE);
   png_data = stbi_write_png_to_mem(tdata, t->w * 4, t->w, t->h, 4, &len);
   bitmap_unlock_buffer(t);
 
