@@ -85,7 +85,7 @@ static ret_t ubjson_reader_read_optimized_array(ubjson_reader_t* reader, uint8_t
   str->str[len] = '\0';
 
   if (type == UBJSON_MARKER_INT16) {
-		int i = 0;
+    int i = 0;
     int16_t* p = (int16_t*)str->str;
     for (i = 0; i < count; i++) {
       int16_t vp = uint16_from_big_endian(p[i]);
@@ -93,28 +93,28 @@ static ret_t ubjson_reader_read_optimized_array(ubjson_reader_t* reader, uint8_t
     }
 
   } else if (type == UBJSON_MARKER_INT32) {
-		int i = 0;
+    int i = 0;
     int32_t* p = (int32_t*)str->str;
     for (i = 0; i < count; i++) {
       int32_t vp = int32_from_big_endian(p[i]);
       p[i] = vp;
     }
   } else if (type == UBJSON_MARKER_INT64) {
-		int i = 0;
+    int i = 0;
     int64_t* p = (int64_t*)str->str;
     for (i = 0; i < count; i++) {
       int64_t vp = int64_from_big_endian(p[i]);
       p[i] = vp;
     }
   } else if (type == UBJSON_MARKER_FLOAT32) {
-		int i = 0;
+    int i = 0;
     float* p = (float*)str->str;
     for (i = 0; i < count; i++) {
       float vp = float_from_big_endian(p[i]);
       p[i] = vp;
     }
   } else if (type == UBJSON_MARKER_FLOAT64) {
-		int i = 0;
+    int i = 0;
     double* p = (double*)str->str;
     for (i = 0; i < count; i++) {
       double vp = double_from_big_endian(p[i]);

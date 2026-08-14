@@ -523,7 +523,7 @@ static ret_t ubjson_writer_write_optimized_array(ubjson_writer_t* writer, char t
 
   } else if (type == UBJSON_MARKER_INT16) {
     uint32_t i = 0;
-		int16_t* p = (int16_t*)array;
+    int16_t* p = (int16_t*)array;
 
     for (i = 0; i < count; i++) {
       int16_t val = p[i];
@@ -534,7 +534,7 @@ static ret_t ubjson_writer_write_optimized_array(ubjson_writer_t* writer, char t
 
   } else if (type == UBJSON_MARKER_INT32) {
     uint32_t i = 0;
-		int32_t* p = (int32_t*)array;
+    int32_t* p = (int32_t*)array;
 
     for (i = 0; i < count; i++) {
       int32_t val = p[i];
@@ -545,7 +545,7 @@ static ret_t ubjson_writer_write_optimized_array(ubjson_writer_t* writer, char t
 
   } else if (type == UBJSON_MARKER_INT64) {
     uint32_t i = 0;
-		int64_t* p = (int64_t*)array;
+    int64_t* p = (int64_t*)array;
 
     for (i = 0; i < count; i++) {
       int64_t val = p[i];
@@ -556,7 +556,7 @@ static ret_t ubjson_writer_write_optimized_array(ubjson_writer_t* writer, char t
 
   } else if (type == UBJSON_MARKER_FLOAT32) {
     uint32_t i = 0;
-		float* p = (float*)array;
+    float* p = (float*)array;
 
     for (i = 0; i < count; i++) {
       float val = p[i];
@@ -566,7 +566,7 @@ static ret_t ubjson_writer_write_optimized_array(ubjson_writer_t* writer, char t
     }
   } else if (type == UBJSON_MARKER_FLOAT64) {
     uint32_t i = 0;
-		double* p = (double*)array;
+    double* p = (double*)array;
 
     for (i = 0; i < count; i++) {
       double val = p[i];
