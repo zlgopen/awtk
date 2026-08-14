@@ -445,8 +445,8 @@ static ret_t native_window_sdl_cursor_from_bitmap(native_window_t* win, bitmap_t
 #ifdef AWTK_SDL3
   sdl->cursor_surface = SDL_CreateSurfaceFrom(
       (int)w, (int)h,
-      img->format == BITMAP_FMT_BGRA8888 ? SDL_PIXELFORMAT_ARGB8888 : SDL_PIXELFORMAT_RGBA8888, data,
-      (int)pitch);
+      img->format == BITMAP_FMT_BGRA8888 ? SDL_PIXELFORMAT_ARGB8888 : SDL_PIXELFORMAT_RGBA8888,
+      data, (int)pitch);
 #else
   sdl->cursor_surface =
       SDL_CreateRGBSurfaceFrom(data, w, h, depth, pitch, rmask, gmask, bmask, amask);

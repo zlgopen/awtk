@@ -54,10 +54,15 @@ static const char* s_log_level = NULL;
 static const char* s_fps = NULL;
 static bool_t s_enable_std_font = FALSE;
 static locale_info_t* s_old_locale_info = NULL;
-const char window_tag[][TK_NAME_LEN] = {WIDGET_TYPE_NORMAL_WINDOW, WIDGET_TYPE_OVERLAY, WIDGET_TYPE_TOOL_BAR,
-                                        WIDGET_TYPE_DIALOG, WIDGET_TYPE_POPUP, WIDGET_TYPE_SYSTEM_BAR,
-                                        WIDGET_TYPE_SYSTEM_BAR_BOTTOM, WIDGET_TYPE_SPRITE, WIDGET_TYPE_KEYBOARD};
-
+const char window_tag[][TK_NAME_LEN] = {WIDGET_TYPE_NORMAL_WINDOW,
+                                        WIDGET_TYPE_OVERLAY,
+                                        WIDGET_TYPE_TOOL_BAR,
+                                        WIDGET_TYPE_DIALOG,
+                                        WIDGET_TYPE_POPUP,
+                                        WIDGET_TYPE_SYSTEM_BAR,
+                                        WIDGET_TYPE_SYSTEM_BAR_BOTTOM,
+                                        WIDGET_TYPE_SPRITE,
+                                        WIDGET_TYPE_KEYBOARD};
 
 #undef APP_RES_ROOT  // 以便可以通过命令行参数指定res目录
 

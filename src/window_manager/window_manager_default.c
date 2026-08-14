@@ -1406,7 +1406,8 @@ static ret_t window_manager_default_paint_children_after_target(widget_t* widget
     continue;
   }
 
-  if (start && iter->visible && window_is_opened(iter) && !widget_get_prop_bool(iter, WIDGET_PROP_ALWAYS_ON_TOP, FALSE)) {
+  if (start && iter->visible && window_is_opened(iter) &&
+      !widget_get_prop_bool(iter, WIDGET_PROP_ALWAYS_ON_TOP, FALSE)) {
     widget_paint(iter, c);
   }
   WIDGET_FOR_EACH_CHILD_END()

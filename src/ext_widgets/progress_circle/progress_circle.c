@@ -84,7 +84,8 @@ static rect_t progress_circle_calc_text_dirty_rect(widget_t* widget) {
     wstr_t* text = &(widget->text);
     widget_prepare_text_style(widget, c);
 
-    float_t last_text_width = (text->str)? (canvas_measure_text(c, text->str, text->size) + 10) : 10;
+    float_t last_text_width =
+        (text->str) ? (canvas_measure_text(c, text->str, text->size) + 10) : 10;
     progress_circle_update_text(widget);
 
     r.w = canvas_measure_text(c, text->str, text->size) + 10;
@@ -162,25 +163,25 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
     int32_t i = 0;
     float_t step = angle_diff / 8; /* 采样8个点 */
     point_t p = {0, 0};
-    
+
     /* 初始化边界框为起点和终点 */
     min_x = tk_min(start_p.x, end_p.x) - line_width;
     max_x = tk_max(start_p.x, end_p.x) + line_width;
     min_y = tk_min(start_p.y, end_p.y) - line_width;
     max_y = tk_max(start_p.y, end_p.y) + line_width;
-    
+
     /* 采样弧段上的关键点 */
     for (i = 1; i < 8; i++) {
       float_t angle = start_angle + step * i;
       p.x = tk_roundi(r * cos(angle));
       p.y = tk_roundi(r * sin(angle));
-      
+
       min_x = tk_min_int(min_x, p.x - line_width);
       max_x = tk_max_int(max_x, p.x + line_width);
       min_y = tk_min_int(min_y, p.y - line_width);
       max_y = tk_max_int(max_y, p.y + line_width);
     }
-    
+
     /* 检查是否跨越象限边界，如果是则需要扩展边界框 */
     if (angle_diff >= M_PI / 2) {
       /* 检查是否经过右边界（x最大） */
@@ -189,8 +190,7 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
         max_x = tk_max_int(r_int, max_x);
       }
       /* 检查是否经过上边界（y最大） */
-      if ((start_angle < M_PI && end_angle > M_PI) ||
-          (start_angle < -M_PI && end_angle > -M_PI)) {
+      if ((start_angle < M_PI && end_angle > M_PI) || (start_angle < -M_PI && end_angle > -M_PI)) {
         max_y = tk_max_int(r_int, max_y);
       }
       /* 检查是否经过左边界（x最小） */
@@ -199,8 +199,7 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
         min_x = tk_min_int(-r_int, min_x);
       }
       /* 检查是否经过下边界（y最小） */
-      if ((start_angle < 2 * M_PI && end_angle > 2 * M_PI) ||
-          (start_angle < 0 && end_angle > 0)) {
+      if ((start_angle < 2 * M_PI && end_angle > 2 * M_PI) || (start_angle < 0 && end_angle > 0)) {
         min_y = tk_min_int(-r_int, min_y);
       }
     }
@@ -211,7 +210,7 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
   rect = rect_init(min_x, min_y, max_x - min_x, max_y - min_y);
   rect.x += cx;
   rect.y += cy;
-  
+
   /* 重置 is_redraw 标志 */
   progress_circle->is_redraw = FALSE;
 

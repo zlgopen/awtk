@@ -532,7 +532,7 @@ static ret_t hscroll_label_on_event(widget_t* widget, event_t* e) {
     case EVT_MOVE_RESIZE: {
       range = hscroll_label_get_range(widget, hscroll_label->stop_at_begin);
 
-      if(range > 0 && !hscroll_label_is_running(widget)) {
+      if (range > 0 && !hscroll_label_is_running(widget)) {
         hscroll_label_check_and_start(widget);
       }
       break;

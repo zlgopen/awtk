@@ -26,7 +26,7 @@
 #ifdef WITH_WASM
 
 BEGIN_C_DECLS
-void* realloc(void *ptr, size_t size);
+void* realloc(void* ptr, size_t size);
 END_C_DECLS
 
 #define TKMEM_ALLOC(size) malloc(size)

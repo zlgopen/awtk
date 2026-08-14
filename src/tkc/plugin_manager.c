@@ -175,7 +175,8 @@ uint32_t plugin_manager_plugin_count(plugin_manager_t* plugin_manager) {
   return plugin_manager->plugins.size;
 }
 
-void* plugin_manager_get_func_by_index(plugin_manager_t* plugin_manager, uint32_t index, const char* func_name) {
+void* plugin_manager_get_func_by_index(plugin_manager_t* plugin_manager, uint32_t index,
+                                       const char* func_name) {
   if (index < plugin_manager->plugins.size) {
     plugin_t* plugin = (plugin_t*)darray_get(&(plugin_manager->plugins), index);
     if (plugin != NULL) {

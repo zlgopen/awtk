@@ -69,7 +69,7 @@ static widget_t* open_window(const char* name) {
 
 ret_t application_init() {
   ENSURE(RET_OK == system_info_set_keyboard_type(system_info(), KEYBOARD_5KEYS) ||
-        !"MUST DEFINE MACRO WITH_STATE_ACTIVATED TO USE 5KEY");
+         !"MUST DEFINE MACRO WITH_STATE_ACTIVATED TO USE 5KEY");
 
   open_window("5key_main");
   return RET_OK;

@@ -15,9 +15,8 @@ typedef struct _test_font_t {
   bool_t is_fallback;
 } test_font_t;
 
-static const uint8_t s_alpha_glyph_data[16] = {
-    0x00, 0x60, 0x60, 0x00, 0x60, 0xFF, 0xFF, 0x60,
-    0x60, 0xFF, 0xFF, 0x60, 0x00, 0x60, 0x60, 0x00};
+static const uint8_t s_alpha_glyph_data[16] = {0x00, 0x60, 0x60, 0x00, 0x60, 0xFF, 0xFF, 0x60,
+                                               0x60, 0xFF, 0xFF, 0x60, 0x00, 0x60, 0x60, 0x00};
 static const uint8_t s_mono_glyph_data[4] = {0xF0, 0x90, 0x90, 0xF0};
 static const uint8_t s_alpha2_glyph_data[4] = {0x1B, 0x6C, 0xC6, 0xE4};
 static const uint8_t s_alpha4_glyph_data[8] = {0x0F, 0xF0, 0x4F, 0xF4, 0x8F, 0xF8, 0xFF, 0xFF};
@@ -85,7 +84,8 @@ static ret_t test_font_destroy(font_t* f) {
   return RET_OK;
 }
 
-static font_t* test_font_init(test_font_t* font, const char* name, font_size_t size, bool_t fallback) {
+static font_t* test_font_init(test_font_t* font, const char* name, font_size_t size,
+                              bool_t fallback) {
   memset(font, 0x00, sizeof(test_font_t));
   tk_strncpy(font->base.name, name, TK_NAME_LEN);
   font->size = size;

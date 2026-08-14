@@ -75,9 +75,15 @@ typedef struct _xml_builder_t {
 } xml_builder_t;
 
 static XmlBuilder* builder_init(xml_builder_t* b, ui_builder_t* ui_builder);
-const char window_tag[][TK_NAME_LEN] = {WIDGET_TYPE_NORMAL_WINDOW, WIDGET_TYPE_OVERLAY, WIDGET_TYPE_TOOL_BAR,
-                                        WIDGET_TYPE_DIALOG, WIDGET_TYPE_POPUP, WIDGET_TYPE_SYSTEM_BAR,
-                                        WIDGET_TYPE_SYSTEM_BAR_BOTTOM, WIDGET_TYPE_SPRITE, WIDGET_TYPE_KEYBOARD};
+const char window_tag[][TK_NAME_LEN] = {WIDGET_TYPE_NORMAL_WINDOW,
+                                        WIDGET_TYPE_OVERLAY,
+                                        WIDGET_TYPE_TOOL_BAR,
+                                        WIDGET_TYPE_DIALOG,
+                                        WIDGET_TYPE_POPUP,
+                                        WIDGET_TYPE_SYSTEM_BAR,
+                                        WIDGET_TYPE_SYSTEM_BAR_BOTTOM,
+                                        WIDGET_TYPE_SPRITE,
+                                        WIDGET_TYPE_KEYBOARD};
 
 /*FIXME: it is not a good solution to hardcode*/
 static bool_t is_precedence_prop(const char* tag, const char* prop) {
@@ -149,8 +155,7 @@ static char* xml_loader_strdup(XmlBuilder* thiz, const char* start, int length) 
       if (buffer != old_buffer && old_buffer != NULL) {
         ptrdiff_t delta = buffer - old_buffer;
         for (k = 0; k < b->attrs_nr; k++) {
-          if (b->attrs[k] != NULL &&
-              b->attrs[k] >= old_buffer &&
+          if (b->attrs[k] != NULL && b->attrs[k] >= old_buffer &&
               b->attrs[k] < old_buffer + b->buffer_used) {
             b->attrs[k] += delta;
           }
@@ -597,10 +602,11 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
     if (filename != NULL) {
       // 替换路径名
       if (b->is_include) {
-        path_replace_basename(subfilename, MAX_PATH, b->include_name[b->include_count - 1], filename);
+        path_replace_basename(subfilename, MAX_PATH, b->include_name[b->include_count - 1],
+                              filename);
       } else {
         if (!path_is_abs(bname_normalize)) {
-          if (am!= NULL) {
+          if (am != NULL) {
             res_root = assets_manager_get_res_root(am);
             theme_name = assets_manager_get_theme_name(am);
             if (res_root != NULL) {
@@ -630,7 +636,7 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
       }
 
       if (include_name_loop == FALSE) {
-        data = (char* )file_read(absfilename, &size);
+        data = (char*)file_read(absfilename, &size);
         str_set_with_len(&xml_data, data, size);
         TKMEM_FREE(data);
       } else {
@@ -639,7 +645,8 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
           return;
         } else {
           if (b->include_count > 0) {
-            log_warn("!!!File name = %s error include file %s\n", b->include_name[b->include_count - 1], filename);
+            log_warn("!!!File name = %s error include file %s\n",
+                     b->include_name[b->include_count - 1], filename);
           } else {
             log_warn("!!!File name = %s error include file %s\n", bname_normalize, filename);
           }
@@ -693,9 +700,10 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
         // 判断被包含的路径是否为非组件文件
         if (am == NULL && b_include.format_error) {
           if (b_include.include_count > 1) {
-            log_warn("!!!File name = %s error include file %s\n", b->include_name[b->include_count - 1], filename);  
+            log_warn("!!!File name = %s error include file %s\n",
+                     b->include_name[b->include_count - 1], filename);
           } else {
-            log_warn("!!!File name = %s error include file %s\n", bname_normalize, filename);  
+            log_warn("!!!File name = %s error include file %s\n", bname_normalize, filename);
           }
           EXIT(EXIT_FAILURE);
         }

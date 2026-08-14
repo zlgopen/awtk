@@ -503,5 +503,4 @@ TEST(Buffer, read_from_hexstr) {
 
     ASSERT_EQ(rbuffer_has_more(&rbuffer), FALSE);
   }
-
 }

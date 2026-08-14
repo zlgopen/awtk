@@ -1064,7 +1064,8 @@ static ret_t mledit_sync_line_number(widget_t* widget, text_edit_state_t* state)
     line_number_set_yoffset(line_number, state->oy);
     line_number_set_line_height(line_number, state->line_height);
     line_number_set_top_margin(line_number, widget_get_prop_int(widget, WIDGET_PROP_TOP_MARGIN, 0));
-    line_number_set_bottom_margin(line_number, widget_get_prop_int(widget, WIDGET_PROP_BOTTOM_MARGIN, 0));
+    line_number_set_bottom_margin(line_number,
+                                  widget_get_prop_int(widget, WIDGET_PROP_BOTTOM_MARGIN, 0));
 
     widget_invalidate_force(line_number, NULL);
   }

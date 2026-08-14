@@ -54,8 +54,8 @@ static pixel_bbox_t get_non_zero_bbox(const std::vector<uint8_t>& buffer, int32_
   return bbox;
 }
 
-static pixel_bbox_t draw_text_and_get_bbox(const char* text_align, const char* text_baseline, int32_t x,
-                                           int32_t y) {
+static pixel_bbox_t draw_text_and_get_bbox(const char* text_align, const char* text_baseline,
+                                           int32_t x, int32_t y) {
   const int32_t w = 320;
   const int32_t h = 120;
   std::vector<uint8_t> buffer((size_t)w * (size_t)h * 4, 0);
@@ -90,9 +90,10 @@ static pixel_bbox_t draw_text_and_get_bbox(const char* text_align, const char* t
   return bbox;
 }
 
-static pixel_bbox_t draw_text_with_rotation_and_get_bbox(const char* text_align, const char* text_baseline,
-                                                          int32_t anchor_x, int32_t anchor_y,
-                                                          float_t angle_rad) {
+static pixel_bbox_t draw_text_with_rotation_and_get_bbox(const char* text_align,
+                                                         const char* text_baseline,
+                                                         int32_t anchor_x, int32_t anchor_y,
+                                                         float_t angle_rad) {
   const int32_t w = 320;
   const int32_t h = 120;
   std::vector<uint8_t> buffer((size_t)w * (size_t)h * 4, 0);
@@ -190,8 +191,8 @@ TEST(VgcanvasCairoText, center_middle_anchor_with_rotation) {
   const int32_t anchor_x = 160;
   const int32_t anchor_y = 60;
   pixel_bbox_t no_rotation = draw_text_and_get_bbox("center", "middle", anchor_x, anchor_y);
-  pixel_bbox_t rotated = draw_text_with_rotation_and_get_bbox("center", "middle", anchor_x, anchor_y,
-                                                               0.5235987756f /* 30deg */);
+  pixel_bbox_t rotated = draw_text_with_rotation_and_get_bbox("center", "middle", anchor_x,
+                                                              anchor_y, 0.5235987756f /* 30deg */);
 
   ASSERT_TRUE(no_rotation.has_pixel);
   ASSERT_TRUE(rotated.has_pixel);

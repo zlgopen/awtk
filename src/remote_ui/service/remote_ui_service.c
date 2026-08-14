@@ -1107,8 +1107,8 @@ ret_t remote_ui_service_set_fallback_on_event(remote_ui_service_t* ui,
   return RET_OK;
 }
 
-ret_t remote_ui_service_set_fallback_on_dispatch(remote_ui_service_t* ui,
-                                                 remote_ui_service_on_dispatch_func_t fallback_on_dispatch) {
+ret_t remote_ui_service_set_fallback_on_dispatch(
+    remote_ui_service_t* ui, remote_ui_service_on_dispatch_func_t fallback_on_dispatch) {
   return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
 
   ui->fallback_on_dispatch = fallback_on_dispatch;

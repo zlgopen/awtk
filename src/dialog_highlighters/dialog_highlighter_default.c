@@ -233,7 +233,7 @@ static ret_t dialog_highlighter_default_draw(dialog_highlighter_t* h, float_t pe
   bitmap_t* img;
   bool_t is_window_animator = FALSE;
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
-  
+
   c = h->canvas;
   if (percent == 1 && dh->update_background) {
     /* if window is open, update prev win image */

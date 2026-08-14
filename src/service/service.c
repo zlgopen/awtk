@@ -141,8 +141,7 @@ static ret_t on_source_destroy(void* ctx, event_t* e) {
 }
 
 static ret_t tk_service_start_tcp(event_source_manager_t* esm, const char* url,
-                                  tk_service_create_t create, void* args,
-                                  event_source_t** source) {
+                                  tk_service_create_t create, void* args, event_source_t** source) {
   int port = 0;
   int listen_sock = -1;
   const char* ip = NULL;

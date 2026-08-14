@@ -100,8 +100,8 @@ tk_iostream_t* tk_iostream_tcp_create_client_ex(const char* host, int port, int 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_iostream_tcp_set_tcp_keep_info(tk_iostream_t* stream, int keep_idle, int keep_interval, int keep_count);
-
+ret_t tk_iostream_tcp_set_tcp_keep_info(tk_iostream_t* stream, int keep_idle, int keep_interval,
+                                        int keep_count);
 
 #define TK_IOSTREAM_TCP(obj) ((tk_iostream_tcp_t*)(obj))
 

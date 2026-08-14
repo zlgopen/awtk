@@ -91,9 +91,9 @@ ret_t process_destroy(process_handle_t handle) {
     CloseHandle(handle->h_std_in_wr);
     handle->h_std_in_wr = NULL;
   }
-  if (handle->h_std_in_rd_child!= NULL) {
+  if (handle->h_std_in_rd_child != NULL) {
     CloseHandle(handle->h_std_in_rd_child);
-    handle->h_std_in_rd_child = NULL; 
+    handle->h_std_in_rd_child = NULL;
   }
 
   if (handle->rthread != NULL) {

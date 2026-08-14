@@ -27,8 +27,8 @@
 #include "base/lcd_orientation_helper.h"
 
 #ifdef AWTK_SDL3
-static bool awtk_sdl_render_copy(SDL_Renderer* renderer, SDL_Texture* texture, const SDL_Rect* srcrect,
-                                 const SDL_Rect* dstrect) {
+static bool awtk_sdl_render_copy(SDL_Renderer* renderer, SDL_Texture* texture,
+                                 const SDL_Rect* srcrect, const SDL_Rect* dstrect) {
   SDL_FRect srcf, dstf;
   const SDL_FRect* ps = NULL;
   const SDL_FRect* pd = NULL;

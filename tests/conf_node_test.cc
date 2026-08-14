@@ -448,7 +448,7 @@ static ret_t on_foreach_path(void* ctx, const char* path, value_t* v) {
 
 TEST(ConfNode, foreach_path) {
   conf_doc_t* doc = conf_doc_create(100);
-  str_t *str = str_create(1024);
+  str_t* str = str_create(1024);
   tk_object_t* data = object_default_create();
 
   tk_object_set_prop_str(data, "client.ip", "192.168.8.101");
@@ -483,5 +483,4 @@ TEST(ConfNode, foreach_path) {
   conf_doc_destroy(doc);
   TK_OBJECT_UNREF(data);
   str_destroy(str);
-
 }

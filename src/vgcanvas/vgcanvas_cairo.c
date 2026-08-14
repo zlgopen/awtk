@@ -60,11 +60,7 @@ typedef struct _vgcanvas_cairo_text_run_t {
   int32_t pen_x;
 } vgcanvas_cairo_text_run_t;
 
-enum {
-  CAIRO_TEXT_ALIGN_LEFT = 0,
-  CAIRO_TEXT_ALIGN_CENTER = 1,
-  CAIRO_TEXT_ALIGN_RIGHT = 2
-};
+enum { CAIRO_TEXT_ALIGN_LEFT = 0, CAIRO_TEXT_ALIGN_CENTER = 1, CAIRO_TEXT_ALIGN_RIGHT = 2 };
 
 enum {
   CAIRO_TEXT_BASELINE_TOP = 0,
@@ -726,7 +722,7 @@ static ret_t vgcanvas_cairo_fill_text(vgcanvas_t* vgcanvas, const char* text, fl
     result = RET_FAIL;
     goto done;
   }
-  mask_data = (uint8_t*)TKMEM_ZALLOCN(uint8_t, (uint32_t)mask_stride * (uint32_t)mask_h);
+  mask_data = (uint8_t*)TKMEM_ZALLOCN(uint8_t, (uint32_t)mask_stride*(uint32_t)mask_h);
   if (mask_data == NULL) {
     result = RET_OOM;
     goto done;

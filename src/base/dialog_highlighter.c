@@ -135,14 +135,14 @@ ret_t dialog_highlighter_draw_ex(dialog_highlighter_t* h, float_t percent, canva
   ret_t ret = RET_NOT_IMPL;
   canvas_t* orig_canvas = NULL;
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
-  
+
   if (h->vt->draw != NULL) {
     orig_canvas = h->canvas;
     h->canvas = c;
     ret = h->vt->draw(h, percent);
     h->canvas = orig_canvas;
   }
-  
+
   return ret;
 }
 

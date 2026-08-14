@@ -343,7 +343,6 @@ TEST(ChildrenLayoutDefault, self) {
   widget_destroy(w);
 }
 
-
 TEST(ChildrenLayoutDefault, hflow) {
   widget_t* w = window_create(NULL, 0, 0, 0, 0);
   widget_t* b1 = button_create(w, 0, 0, 0, 0);

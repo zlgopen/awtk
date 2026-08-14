@@ -981,7 +981,7 @@ TEST(Utils, str_ieq_with_len) {
 
   /* 空字符串测试 */
   ASSERT_EQ(tk_str_ieq_with_len("", "", 0), TRUE);
-  ASSERT_EQ(tk_str_ieq_with_len("a", "", 0), TRUE);  /* 长度为0时总是相等 */
+  ASSERT_EQ(tk_str_ieq_with_len("a", "", 0), TRUE); /* 长度为0时总是相等 */
 }
 
 TEST(Utils, wstr_eq) {

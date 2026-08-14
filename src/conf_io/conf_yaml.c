@@ -131,7 +131,8 @@ static void yaml_parser_skip_spaces(const char** p) {
   }
 }
 
-static const char* yaml_parser_parse_quoted_string_internal(yaml_parser_t* parser, char quote_char, bool_t skip_trailing) {
+static const char* yaml_parser_parse_quoted_string_internal(yaml_parser_t* parser, char quote_char,
+                                                            bool_t skip_trailing) {
   char c = '\0';
   uint32_t n = 0;
   str_t* s = &(parser->str);
@@ -142,7 +143,7 @@ static const char* yaml_parser_parse_quoted_string_internal(yaml_parser_t* parse
 
   str_clear(s);
   p++; /* 跳过开始的引号 */
-  
+
   while (*p != '\0') {
     if (is_single_quote) {
       /* 单引号字符串：不进行转义处理，只有 '' 表示一个单引号 */
@@ -225,19 +226,19 @@ static const char* yaml_parser_parse_quoted_string_internal(yaml_parser_t* parse
   }
 
   parser->cursor = p;
-  
+
   /* 检查引号字符串是否正常闭合 */
   if (!closed && *p == '\0') {
     log_warn("yaml quoted string not closed before end of input\n");
   }
-  
+
   if (skip_trailing) {
     /* 跳过行尾的空白和换行（用于值解析） */
     yaml_parser_skip_spaces(&parser->cursor);
     /* 跳过到行尾（包括注释） */
     yaml_parser_skip_to_line_end(parser);
   }
-  
+
   return s->str;
 }
 
@@ -323,15 +324,15 @@ static const char* yaml_parser_parse_multiline_string(yaml_parser_t* parser, cha
   const char* p = parser->cursor;
   str_t* s = &(parser->str);
   bool_t literal = (block_char == '|'); /* true=字面量块, false=折叠块 */
-  bool_t keep_trailing = FALSE; /* + 修饰符：保留末尾换行 */
-  bool_t strip_trailing = FALSE; /* - 修饰符：去除末尾换行 */
-  int32_t indent = -1; /* 数字修饰符：指定缩进级别 */
-  
+  bool_t keep_trailing = FALSE;         /* + 修饰符：保留末尾换行 */
+  bool_t strip_trailing = FALSE;        /* - 修饰符：去除末尾换行 */
+  int32_t indent = -1;                  /* 数字修饰符：指定缩进级别 */
+
   if (*p != '|' && *p != '>') {
     return NULL;
   }
   p++; /* 跳过 | 或 > */
-  
+
   /* 解析修饰符 */
   if (*p == '+') {
     keep_trailing = TRUE;
@@ -346,7 +347,7 @@ static const char* yaml_parser_parse_multiline_string(yaml_parser_t* parser, cha
       p++;
     }
   }
-  
+
   /* 跳过空格和注释，移动到下一行 */
   yaml_parser_skip_spaces(&p);
   if (*p == YAML_COMMENT_CHAR) {
@@ -357,33 +358,33 @@ static const char* yaml_parser_parse_multiline_string(yaml_parser_t* parser, cha
   }
   if (*p == '\r' || *p == '\n') {
     p++;
-    if (*p == '\n' && *(p-1) == '\r') {
+    if (*p == '\n' && *(p - 1) == '\r') {
       p++;
     }
   }
-  
+
   parser->cursor = p;
-  
+
   /* 确定块的缩进级别（第一行非空内容的缩进） */
   uint32_t block_indent = 0;
   bool_t found_indent = FALSE;
-  
+
   /* 读取多行内容 */
   str_clear(s);
   bool_t first_line = TRUE;
   bool_t last_was_newline = FALSE;
-  
+
   while (*p != '\0') {
     /* 检查是否是空行（表示块结束） */
     const char* line_check = p;
     uint32_t line_indent = 0;
-    
+
     /* 计算当前行的缩进 */
     while (*line_check == ' ') {
       line_indent++;
       line_check++;
     }
-    
+
     /* 空行或注释行 */
     if (*line_check == '\r' || *line_check == '\n' || *line_check == '\0') {
       /* 空行：在字面量块中保留，在折叠块中转换为换行，但块继续 */
@@ -406,7 +407,7 @@ static const char* yaml_parser_parse_multiline_string(yaml_parser_t* parser, cha
           }
           last_was_newline = TRUE;
         }
-        
+
         /* 跳过空行 */
         while (*p == '\r' || *p == '\n') {
           if (*p == '\r' && p[1] == '\n') {
@@ -462,24 +463,24 @@ static const char* yaml_parser_parse_multiline_string(yaml_parser_t* parser, cha
         continue;
       }
     }
-    
+
     /* 检查缩进是否小于块的缩进（表示块结束） */
     if (found_indent && line_indent < block_indent) {
       break;
     }
-    
+
     /* 确定块的缩进（第一行非空内容） */
     if (!found_indent && line_indent > 0) {
       block_indent = line_indent;
       found_indent = TRUE;
     }
-    
+
     /* 如果指定了缩进，使用指定的缩进 */
     if (indent >= 0 && !found_indent) {
       block_indent = indent;
       found_indent = TRUE;
     }
-    
+
     /* 读取当前行内容 */
     if (!first_line) {
       if (literal) {
@@ -501,7 +502,7 @@ static const char* yaml_parser_parse_multiline_string(yaml_parser_t* parser, cha
         last_was_newline = FALSE; /* 将在读取内容后更新 */
       }
     }
-    
+
     /* 跳过行的缩进（去除块缩进） */
     uint32_t skip_indent = found_indent ? block_indent : 0;
     uint32_t skipped = 0;
@@ -509,7 +510,7 @@ static const char* yaml_parser_parse_multiline_string(yaml_parser_t* parser, cha
       p++;
       skipped++;
     }
-    
+
     /* 读取行内容到换行 */
     bool_t line_has_content = FALSE;
     while (*p != '\r' && *p != '\n' && *p != '\0') {
@@ -524,16 +525,16 @@ static const char* yaml_parser_parse_multiline_string(yaml_parser_t* parser, cha
       }
       p++;
     }
-    
+
     if (line_has_content) {
       last_was_newline = FALSE;
     } else {
       /* 空行内容已经在前面处理过了，这里不需要再处理 */
       last_was_newline = TRUE;
     }
-    
+
     first_line = FALSE;
-    
+
     /* 跳过换行符 */
     if (*p == '\r') {
       p++;
@@ -544,9 +545,9 @@ static const char* yaml_parser_parse_multiline_string(yaml_parser_t* parser, cha
       p++;
     }
   }
-  
+
   parser->cursor = p;
-  
+
   /* 处理末尾换行 */
   if (keep_trailing) {
     /* + 修饰符：保留末尾换行 */
@@ -563,12 +564,12 @@ static const char* yaml_parser_parse_multiline_string(yaml_parser_t* parser, cha
       s->str[s->size] = '\0';
     }
   }
-  
+
   /* 去除末尾空格（折叠块） */
   if (!literal && s->size > 0) {
     str_trim_right(s, " \t");
   }
-  
+
   return s->str;
 }
 
@@ -614,7 +615,7 @@ static ret_t yaml_parser_parse_flow_value(yaml_parser_t* parser, conf_node_t* no
     /* 普通值：解析到逗号、] 或 } 为止 */
     str_t* s = &(parser->str);
     str_clear(s);
-    
+
     while (*p && *p != ',' && *p != ']' && *p != '}' && *p != '\r' && *p != '\n') {
       if (*p == '\\') {
         p++;
@@ -633,10 +634,10 @@ static ret_t yaml_parser_parse_flow_value(yaml_parser_t* parser, conf_node_t* no
         p++;
       }
     }
-    
+
     parser->cursor = p;
     str_trim(s, " \t");
-    
+
     value = s->str;
     if (value == NULL || *value == '\0') {
       /* 空值 */
@@ -651,7 +652,7 @@ static ret_t yaml_parser_parse_flow_value(yaml_parser_t* parser, conf_node_t* no
       /* 字符串值 */
       value_set_str(&v, value);
     }
-    
+
     conf_node_set_value(node, &v);
     return RET_OK;
   }
@@ -999,7 +1000,7 @@ static ret_t yaml_parser_parse_line(yaml_parser_t* parser) {
     } else {
       value_t v;
       bool_t bool_val = FALSE;
-      
+
       /* 检查是否是 null 值 */
       if (yaml_is_null_value(value)) {
         value_set_str(&v, NULL);
@@ -1103,9 +1104,9 @@ static bool_t yaml_need_quote_internal(const char* str, bool_t include_quotes) {
   /* 检查是否包含需要引号的字符 */
   while (*p != '\0') {
     char c = *p;
-    if (c == ' ' || c == '\t' || c == ':' || c == '#' || c == '\n' || c == '\r' || 
-        c == '[' || c == ']' || c == '{' || c == '}' || c == ',' || c == '&' || 
-        c == '*' || c == '!' || c == '|' || c == '>' || c == '@' || c == '`') {
+    if (c == ' ' || c == '\t' || c == ':' || c == '#' || c == '\n' || c == '\r' || c == '[' ||
+        c == ']' || c == '{' || c == '}' || c == ',' || c == '&' || c == '*' || c == '!' ||
+        c == '|' || c == '>' || c == '@' || c == '`') {
       return TRUE;
     }
     /* 键名包含点号需要引号，避免被解析为嵌套结构 */
@@ -1133,7 +1134,7 @@ static bool_t yaml_need_quote_value(const char* value) {
 static ret_t yaml_save_quoted_string(str_t* str, const char* value, char quote_char) {
   const char* p = value;
   return_value_if_fail(str_append_char(str, quote_char) == RET_OK, RET_OOM);
-  
+
   while (*p != '\0') {
     if (*p == quote_char) {
       /* 转义引号 */
@@ -1149,7 +1150,7 @@ static ret_t yaml_save_quoted_string(str_t* str, const char* value, char quote_c
     }
     p++;
   }
-  
+
   return_value_if_fail(str_append_char(str, quote_char) == RET_OK, RET_OOM);
   return RET_OK;
 }
@@ -1188,7 +1189,7 @@ static ret_t yaml_save_value_with_quote(str_t* str, const value_t* v, char comme
     str_reset(&s);
     return ret;
   }
-  
+
   return conf_node_save_value(str, v, comment_char);
 }
 
@@ -1220,11 +1221,13 @@ static ret_t conf_doc_save_yaml_node_name_value(conf_node_t* node, str_t* str, u
     /* 如果是空字符串，不添加空格和值 */
     if (p != NULL && *p != '\0') {
       return_value_if_fail(str_append(str, " ") == RET_OK, RET_OOM);
-      return_value_if_fail(yaml_save_value_with_quote(str, &v, YAML_COMMENT_CHAR) == RET_OK, RET_OOM);
+      return_value_if_fail(yaml_save_value_with_quote(str, &v, YAML_COMMENT_CHAR) == RET_OK,
+                           RET_OOM);
     } else if (p == NULL) {
       /* NULL 值，添加空格和 null */
       return_value_if_fail(str_append(str, " ") == RET_OK, RET_OOM);
-      return_value_if_fail(yaml_save_value_with_quote(str, &v, YAML_COMMENT_CHAR) == RET_OK, RET_OOM);
+      return_value_if_fail(yaml_save_value_with_quote(str, &v, YAML_COMMENT_CHAR) == RET_OK,
+                           RET_OOM);
     }
     /* 空字符串不添加任何内容 */
   }

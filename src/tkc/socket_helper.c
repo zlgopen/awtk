@@ -109,11 +109,11 @@ ret_t tk_socket_set_tcp_keep_info(int sock, int keep_idle, int keep_interval, in
   return_value_if_fail(sock >= 0, RET_BAD_PARAMS);
 
   keepalive.onoff = 1;
-  keepalive.keepalivetime = keep_idle * 1000;    // 转换为毫秒
-  keepalive.keepaliveinterval = keep_interval * 1000; // 转换为毫秒
+  keepalive.keepalivetime = keep_idle * 1000;          // 转换为毫秒
+  keepalive.keepaliveinterval = keep_interval * 1000;  // 转换为毫秒
 
-  if (WSAIoctl(sock, SIO_KEEPALIVE_VALS, &keepalive, sizeof(keepalive),
-               NULL, 0, &bytesReturned, NULL, NULL) != 0) {
+  if (WSAIoctl(sock, SIO_KEEPALIVE_VALS, &keepalive, sizeof(keepalive), NULL, 0, &bytesReturned,
+               NULL, NULL) != 0) {
     return RET_FAIL;
   }
 

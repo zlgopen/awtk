@@ -62,8 +62,9 @@ static ret_t on_button_click(void* ctx, event_t* e) {
     /* 直接设置第一个进度条的值 */
     if (s_progress_circle1 != NULL) {
       float_t value = (float_t)(random() % 100);
-      log_info("Button clicked: Set progress_circle1 value to %.2f using progress_circle_set_value\n",
-               value);
+      log_info(
+          "Button clicked: Set progress_circle1 value to %.2f using progress_circle_set_value\n",
+          value);
       progress_circle_set_value(s_progress_circle1, value);
       s_value1 = value;
     }

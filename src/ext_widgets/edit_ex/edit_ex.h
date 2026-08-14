@@ -81,7 +81,7 @@ typedef struct _edit_ex_t {
   bool_t key_downing : 1;
 
   widget_t* multiline_popup;
-  
+
   widget_t* suggest_words_popup;
   tk_object_t* suggest_words_ui_props;
   darray_t* suggest_words_model_items;

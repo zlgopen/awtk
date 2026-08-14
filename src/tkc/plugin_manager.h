@@ -115,7 +115,8 @@ uint32_t plugin_manager_plugin_count(plugin_manager_t* plugin_manager);
  *
  * @return {void*} 返回函数指针，如果失败返回NULL。
  */
-void* plugin_manager_get_func_by_index(plugin_manager_t* plugin_manager, uint32_t index, const char* func_name);
+void* plugin_manager_get_func_by_index(plugin_manager_t* plugin_manager, uint32_t index,
+                                       const char* func_name);
 
 /**
  * @method plugin_manager_get_lib_name_by_index

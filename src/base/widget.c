@@ -3333,7 +3333,7 @@ static ret_t widget_handle_window_foreground_switch(widget_t* target) {
   if (widget_is_window(target)) {
     widget_t* foreground_win = window_manager_get_foreground_window(window_manager());
     if (foreground_win != NULL && target != foreground_win) {
-        window_manager_dispatch_window_foreground_events(target, NULL, target);
+      window_manager_dispatch_window_foreground_events(target, NULL, target);
     }
   }
   return RET_OK;

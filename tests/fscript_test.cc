@@ -4455,7 +4455,8 @@ TEST(FScriptGetVarsFilter, system_in_func_def) {
   tk_object_t* obj = object_default_create();
   darray_init(&vars, 8, (tk_destroy_t)default_destroy, (tk_compare_t)tk_str_cmp);
 
-  fscript_t* fscript = fscript_create(obj, "function add(x, y) { return global.base + x + y }; add(a, b)");
+  fscript_t* fscript =
+      fscript_create(obj, "function add(x, y) { return global.base + x + y }; add(a, b)");
   fscript_get_vars(fscript, FSCRIPT_VAR_FILTER_SYSTEM, &vars);
   assert_vars_size(&vars, 1);
   assert_vars_contains(&vars, "global.base");

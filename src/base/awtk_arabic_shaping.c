@@ -35,7 +35,7 @@
 #define AWTK_MASK_LIGATURED 0x20u
 
 #define AWTK_SET_BITS(x, mask) ((x) |= (mask))
-#define AWTK_UNSET_BITS(x, mask) ((x) &= (uint8_t) ~(mask))
+#define AWTK_UNSET_BITS(x, mask) ((x) &= (uint8_t)~(mask))
 #define AWTK_TEST_BITS(x, mask) (((x) & (mask)) != 0)
 
 #define AWTK_LEVEL_IS_RTL(lev) (((lev) & 1) != 0)
@@ -218,13 +218,13 @@ static int awtk_ar_pair_liga_cmp(const void* a, const void* b) {
 static uint32_t awtk_ar_find_mandatory_liga(uint32_t first, uint32_t second) {
   awtk_ar_pair_liga_t key = {first, second, 0};
   const awtk_ar_pair_liga_t* m = (const awtk_ar_pair_liga_t*)bsearch(
-      &key, g_awtk_ar_mandatory_liga, ARRAY_SIZE(g_awtk_ar_mandatory_liga), sizeof(g_awtk_ar_mandatory_liga[0]),
-      awtk_ar_pair_liga_cmp);
+      &key, g_awtk_ar_mandatory_liga, ARRAY_SIZE(g_awtk_ar_mandatory_liga),
+      sizeof(g_awtk_ar_mandatory_liga[0]), awtk_ar_pair_liga_cmp);
   return m != NULL ? m->out_cp : 0u;
 }
 
-static void awtk_shape_arabic_mandatory_liga(const int8_t* embedding_levels, uint32_t len, uint8_t* ar_props,
-                                             wchar_t* str) {
+static void awtk_shape_arabic_mandatory_liga(const int8_t* embedding_levels, uint32_t len,
+                                             uint8_t* ar_props, wchar_t* str) {
   uint32_t i;
   for (i = 0; i + 1 < len; i++) {
     uint32_t out_cp;
@@ -251,7 +251,8 @@ ret_t awtk_arabic_shape_logical(const wchar_t* str, uint32_t size, const uint8_t
   int8_t levels_stack[AWTK_AR_SCRATCH_CAP];
   uint32_t i;
 
-  return_value_if_fail(str != NULL && embedding_levels != NULL && shaped != NULL && size > 0, RET_BAD_PARAMS);
+  return_value_if_fail(str != NULL && embedding_levels != NULL && shaped != NULL && size > 0,
+                       RET_BAD_PARAMS);
 
   if (size < AWTK_AR_SCRATCH_CAP) {
     ar_props = ar_props_stack;

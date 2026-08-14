@@ -172,8 +172,9 @@ static ret_t bidi_log2vis_fribidi(bidi_t* bidi, const wchar_t* str, uint32_t siz
   }
 
   type = bidi_type_to_fribidi_par_type(bidi->request_type);
-  level = fribidi_log2vis((const FriBidiChar*)str, (FriBidiStrIndex)size, &type, (FriBidiChar*)bidi->vis_str,
-                           (FriBidiStrIndex*)bidi->positions_L_to_V, (FriBidiStrIndex*)bidi->positions_V_to_L, NULL);
+  level = fribidi_log2vis((const FriBidiChar*)str, (FriBidiStrIndex)size, &type,
+                          (FriBidiChar*)bidi->vis_str, (FriBidiStrIndex*)bidi->positions_L_to_V,
+                          (FriBidiStrIndex*)bidi->positions_V_to_L, NULL);
   bidi->resolved_type = bidi_type_from_fribidi_par_type(type);
   (void)level;
 

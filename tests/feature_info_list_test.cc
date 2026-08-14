@@ -136,7 +136,7 @@ TEST(FeatureInfoList, alignment_three_features) {
   feature_info_list_t* list = feature_info_list_create();
   ASSERT_NE(list, nullptr);
   ASSERT_EQ(feature_info_list_append(list, &s_feature_a_info), RET_OK); /* 3 -> align 4 */
-  ASSERT_EQ(feature_info_list_append(list, &s_feature_b_info), RET_OK);  /* 5 -> align 8 */
+  ASSERT_EQ(feature_info_list_append(list, &s_feature_b_info), RET_OK); /* 5 -> align 8 */
   ASSERT_EQ(feature_info_list_append(list, &s_feature_c_info), RET_OK); /* 8 -> align 8 */
 
   void* owner = TKMEM_ALLOC(256);

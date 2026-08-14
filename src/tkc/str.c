@@ -722,8 +722,8 @@ static uint32_t str_count_sub_str(str_t* s, const char* str, uint32_t start_pos)
   return count;
 }
 
-static uint32_t str_replace_impl(char* dst, char* src, uint32_t start_pos,
-                                  const char* text, const char* new_text) {
+static uint32_t str_replace_impl(char* dst, char* src, uint32_t start_pos, const char* text,
+                                 const char* new_text) {
   char* d = dst;
   char* s = src;
   uint32_t text_len = tk_strlen(text);
@@ -747,8 +747,7 @@ static uint32_t str_replace_impl(char* dst, char* src, uint32_t start_pos,
   return d - dst;
 }
 
-ret_t str_replace_ex(str_t* str, uint32_t pos, const char* text,
-                     const char* new_text) {
+ret_t str_replace_ex(str_t* str, uint32_t pos, const char* text, const char* new_text) {
   uint32_t count = 0;
   uint32_t text_len = 0;
   uint32_t new_text_len = 0;

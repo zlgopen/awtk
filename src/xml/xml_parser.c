@@ -1128,7 +1128,8 @@ static void xml_parser_check_duplicate_attrs(XmlParser* parser, const char* key_
       const char* p = parser->start + parser->last_line_start;
       /* 计算 key_start 的列号 */
       int col = (int)(key_start - p) + 1;
-      xml_parser_report_error_more_ex(parser, parser->line, col, "duplicate attribute: '%s'", stored);
+      xml_parser_report_error_more_ex(parser, parser->line, col, "duplicate attribute: '%s'",
+                                      stored);
       return;
     }
   }

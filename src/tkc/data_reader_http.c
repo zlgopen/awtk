@@ -90,7 +90,7 @@ static ret_t data_reader_http_decode_chuncked_data(data_reader_http_t* http, wbu
   src = wb->data;
   dst = http->data;
   dst_end = http->data + wb->cursor;
-  
+
   while ((src = data_reader_http_get_chunked_data(src, &size)) != NULL) {
     /* 检查边界：确保不会超出分配的内存 */
     if (dst + size > dst_end) {
@@ -99,7 +99,7 @@ static ret_t data_reader_http_decode_chuncked_data(data_reader_http_t* http, wbu
       http->data = NULL;
       return RET_FAIL;
     }
-    
+
     memcpy(dst, src, size);
     dst += size;
     total_size += size;
@@ -150,7 +150,7 @@ static ret_t data_reader_http_get(data_reader_http_t* http, const char* url) {
       int64_t content_length = tk_atoi(p);
       goto_error_if_fail(content_length > 0);
       goto_error_if_fail(content_length <= HTTP_MAX_CONTENT_LENGTH);
-      
+
       http->size = (uint64_t)content_length;
 
       http->data = TKMEM_ALLOC(http->size + 1);
@@ -170,7 +170,8 @@ static ret_t data_reader_http_get(data_reader_http_t* http, const char* url) {
 
       if (http->size > (uint64_t)nr) {
         uint64_t remaining = http->size - nr;
-        int32_t read_nr = tk_iostream_read_len(io, http->data + nr, (uint32_t)remaining, TK_ISTREAM_DEFAULT_TIMEOUT);
+        int32_t read_nr = tk_iostream_read_len(io, http->data + nr, (uint32_t)remaining,
+                                               TK_ISTREAM_DEFAULT_TIMEOUT);
         goto_error_if_fail(read_nr > 0);
         /* 确保读取的字节数不超过预期 */
         if ((uint64_t)read_nr > remaining) {

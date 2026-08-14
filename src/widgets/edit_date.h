@@ -60,7 +60,8 @@ static bool_t edit_date_part_len_is_valid(uint32_t index, uint32_t len) {
   }
 }
 
-static wchar_t* edit_date_fix_part_ctx(uint32_t index, int32_t v, wchar_t* start, wchar_t* end, void* ctx) {
+static wchar_t* edit_date_fix_part_ctx(uint32_t index, int32_t v, wchar_t* start, wchar_t* end,
+                                       void* ctx) {
   edit_date_ctx_t* date_ctx = (edit_date_ctx_t*)ctx;
   uint32_t len = end - start;
   const wchar_t* fix_value = NULL;
@@ -121,8 +122,9 @@ static bool_t edit_date_is_valid_char(widget_t* widget, wchar_t c) {
 
 static bool_t edit_date_is_valid(widget_t* widget) {
   edit_date_ctx_t date_ctx = {2020, 1};
-  return edit_pattern_is_valid_ctx(widget, EDIT_DATE_SEP, EDIT_DATE_SEP_NR, edit_date_part_len_is_valid,
-                                   edit_date_part_value_is_valid_ctx, &date_ctx);
+  return edit_pattern_is_valid_ctx(widget, EDIT_DATE_SEP, EDIT_DATE_SEP_NR,
+                                   edit_date_part_len_is_valid, edit_date_part_value_is_valid_ctx,
+                                   &date_ctx);
 }
 
 static ret_t edit_date_fix(widget_t* widget) {

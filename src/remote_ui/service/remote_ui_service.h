@@ -151,8 +151,8 @@ ret_t remote_ui_service_set_fallback_on_event(remote_ui_service_t* ui,
  * @param {remote_ui_service_on_dispatch_func_t} fallback_on_dispatch 回调函数。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_service_set_fallback_on_dispatch(remote_ui_service_t* ui,
-                                                 remote_ui_service_on_dispatch_func_t fallback_on_dispatch);
+ret_t remote_ui_service_set_fallback_on_dispatch(
+    remote_ui_service_t* ui, remote_ui_service_on_dispatch_func_t fallback_on_dispatch);
 
 END_C_DECLS
 

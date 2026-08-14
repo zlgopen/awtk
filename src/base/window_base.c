@@ -687,7 +687,8 @@ ret_t window_base_on_window_to_foreground(widget_t* widget) {
 
   win->stage = WINDOW_STAGE_OPENED;
   if (widget->parent != NULL) {
-    widget->parent->grab_widget_count = widget->grab_widget_count + win->grab_count_when_to_foreground;
+    widget->parent->grab_widget_count =
+        widget->grab_widget_count + win->grab_count_when_to_foreground;
     if (widget->parent->grab_widget_count) {
       widget->parent->grab_widget = widget;
     }
