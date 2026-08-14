@@ -4,7 +4,8 @@
   * format code (感谢兆坤提供补丁)
   * improve api (感谢兆坤提供补丁)
   * add debug_window_snap_save(感谢兆坤提供补丁)
-  * improve edit(感谢雪飞提供补丁)
+  *  edit 控件添加丢失焦点后，可以选择停留在当前位置，或者跳回开头的功能(感谢雪飞提供补丁)
+  * 修复 demoui 中在打开软键盘的情况下打开 menu_bar 会出现 menu_bar 动画闪烁的问题(感谢雪飞提供补丁)
 
 2026/8/13
   * improve edit_ex(感谢兆坤提供补丁)
