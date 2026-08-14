@@ -224,11 +224,19 @@ typedef struct _edit_t {
   /**
    * @property {bool_t} focus_next_when_enter
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 
+   *
    * 输入回车后是否跳到下一个控件中。
    *
    */
   bool_t focus_next_when_enter;
+  /**
+   * @property {bool_t} scroll_to_begin_on_blur
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   *
+   * 失去焦点时是否滚动回开头(默认 FALSE)
+   *
+   */
+  bool_t scroll_to_begin_on_blur;
   /*private*/
   uint8_t margin;
   uint8_t top_margin;
@@ -699,6 +707,17 @@ char* edit_get_selected_text(widget_t* widget);
  */
 ret_t edit_set_focus_next_when_enter(widget_t* widget, bool_t focus_next_when_enter);
 
+/**
+ * @method edit_set_scroll_to_begin_on_blur
+ * 设置编辑器是否在失去焦点时滚动回开头。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} scroll_to_begin_on_blur 是否在失去焦点时滚动回开头。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_scroll_to_begin_on_blur(widget_t* widget, bool_t scroll_to_begin_on_blur);
+
 #define EDIT(widget) ((edit_t*)(edit_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
@@ -735,6 +754,7 @@ ret_t edit_set_text_impl(widget_t* widget, const value_t* v, bool_t changing);
 #define STR_EDIT_CLEAR_NAME "clear"
 #define STR_EDIT_VISIBLE_NAME "visible"
 #define EDIT_PROP_FOCUS_NEXT_WHEN_ENTER "focus_next_when_enter"
+#define EDIT_PROP_SCROLL_TO_BEGIN_ON_BLUR "scroll_to_begin_on_blur"
 
 #define TK_EDIT_PROPS                                                                            \
   WIDGET_PROP_MIN, WIDGET_PROP_MAX, WIDGET_PROP_STEP, WIDGET_PROP_INPUT_TYPE,                    \

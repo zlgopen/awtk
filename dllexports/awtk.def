@@ -3542,6 +3542,7 @@ EXPORTS
     edit_set_select
     edit_get_selected_text
     edit_set_focus_next_when_enter
+    edit_set_scroll_to_begin_on_blur
     edit_get_widget_vtable
     grid_item_create
     grid_item_cast

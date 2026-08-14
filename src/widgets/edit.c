@@ -622,6 +622,10 @@ static ret_t edit_on_blur(widget_t* widget) {
   text_edit_unselect(edit->model);
   edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
   edit_commit_text(widget);
+
+  if (edit->scroll_to_begin_on_blur) {
+    text_edit_set_cursor(edit->model, 0);
+  }
   return RET_OK;
 }
 
@@ -1501,6 +1505,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, EDIT_PROP_FOCUS_NEXT_WHEN_ENTER)) {
     value_set_bool(v, edit->focus_next_when_enter);
     return RET_OK;
+  } else if (tk_str_eq(name, EDIT_PROP_SCROLL_TO_BEGIN_ON_BLUR)) {
+    value_set_bool(v, edit->scroll_to_begin_on_blur);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -1646,6 +1653,8 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, EDIT_PROP_FOCUS_NEXT_WHEN_ENTER)) {
     return edit_set_focus_next_when_enter(widget, value_bool(v));
+  } else if (tk_str_eq(name, EDIT_PROP_SCROLL_TO_BEGIN_ON_BLUR)) {
+    return edit_set_scroll_to_begin_on_blur(widget, value_bool(v));
   }
 
   edit_update_status(widget);
@@ -2126,6 +2135,7 @@ static ret_t edit_init(widget_t* widget) {
   edit->close_im_when_blured = TRUE;
   edit->open_im_when_focused = TRUE;
   edit->focus_next_when_enter = FALSE;
+  edit->scroll_to_begin_on_blur = FALSE;
   edit_set_text_limit(widget, 0, 1024);
 
   edit_update_status(widget);
@@ -2471,5 +2481,12 @@ ret_t edit_set_focus_next_when_enter(widget_t* widget, bool_t focus_next_when_en
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   edit->focus_next_when_enter = focus_next_when_enter;
+  return RET_OK;
+}
+
+ret_t edit_set_scroll_to_begin_on_blur(widget_t* widget, bool_t scroll_to_begin_on_blur) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+  edit->scroll_to_begin_on_blur = scroll_to_begin_on_blur;
   return RET_OK;
 }
