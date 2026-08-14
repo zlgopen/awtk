@@ -57,6 +57,19 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget, 
 static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widget_t* window,
                                                           rect_t client_r);
 
+#if FALSE
+inline static void debug_window_snap_save(widget_t* window, canvas_t* canvas, const char* name) {
+  char buff[TK_NAME_LEN * 2 + TK_NUM_MAX_LEN + 1] = {0};
+  tk_snprintf(buff, sizeof(buff), "snap_window_%llu_%s(%s).png",
+              timer_manager_get_time(timer_manager()), name,
+              window->name != NULL ? window->name : "");
+  canvas_offline_flush_bitmap(canvas);
+  bitmap_save_png(canvas_offline_get_bitmap(canvas), buff);
+}
+#else
+#define debug_window_snap_save(window, canvas, name)
+#endif
+
 static bool_t window_is_opened(widget_t* widget) {
   int32_t stage = widget_get_prop_int(widget, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
 
@@ -180,6 +193,9 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   ENSURE(widget_on_paint_background(widget, canvas) == RET_OK);
   ENSURE(widget_paint(curr_win, canvas) == RET_OK);
   canvas_offline_end_draw(canvas);
+
+  debug_window_snap_save(curr_win, canvas, "curr");
+
   ENSURE(canvas_offline_bitmap_move_to_new_bitmap(canvas, img) == RET_OK);
   ENSURE(canvas_offline_destroy(canvas) == RET_OK);
   window_manager_default_set_paint_system_bar_by_window_animator(widget, &r);
@@ -410,6 +426,9 @@ static ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t*
     }
   }
   canvas_offline_end_draw(canvas);
+
+  debug_window_snap_save(prev_win, canvas, "prev");
+
   ENSURE(canvas_offline_bitmap_move_to_new_bitmap(canvas, img) == RET_OK);
   ENSURE(canvas_offline_destroy(canvas) == RET_OK);
   img->flags |= BITMAP_FLAG_OPAQUE;
