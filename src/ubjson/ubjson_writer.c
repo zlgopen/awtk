@@ -522,9 +522,10 @@ static ret_t ubjson_writer_write_optimized_array(ubjson_writer_t* writer, char t
     return_value_if_fail(ret == RET_OK, RET_OOM);
 
   } else if (type == UBJSON_MARKER_INT16) {
-    int16_t* p = (int16_t*)array;
+    uint32_t i = 0;
+		int16_t* p = (int16_t*)array;
 
-    for (uint32_t i = 0; i < count; i++) {
+    for (i = 0; i < count; i++) {
       int16_t val = p[i];
       val = int16_to_big_endian(val);
       ret = ubjson_writer_write_data(writer, &val, sizeof(val));
@@ -532,9 +533,10 @@ static ret_t ubjson_writer_write_optimized_array(ubjson_writer_t* writer, char t
     }
 
   } else if (type == UBJSON_MARKER_INT32) {
-    int32_t* p = (int32_t*)array;
+    uint32_t i = 0;
+		int32_t* p = (int32_t*)array;
 
-    for (uint32_t i = 0; i < count; i++) {
+    for (i = 0; i < count; i++) {
       int32_t val = p[i];
       val = int32_to_big_endian(val);
       ret = ubjson_writer_write_data(writer, &val, sizeof(val));
@@ -542,9 +544,10 @@ static ret_t ubjson_writer_write_optimized_array(ubjson_writer_t* writer, char t
     }
 
   } else if (type == UBJSON_MARKER_INT64) {
-    int64_t* p = (int64_t*)array;
+    uint32_t i = 0;
+		int64_t* p = (int64_t*)array;
 
-    for (uint32_t i = 0; i < count; i++) {
+    for (i = 0; i < count; i++) {
       int64_t val = p[i];
       val = int64_to_big_endian(val);
       ret = ubjson_writer_write_data(writer, &val, sizeof(val));
@@ -552,18 +555,20 @@ static ret_t ubjson_writer_write_optimized_array(ubjson_writer_t* writer, char t
     }
 
   } else if (type == UBJSON_MARKER_FLOAT32) {
-    float* p = (float*)array;
+    uint32_t i = 0;
+		float* p = (float*)array;
 
-    for (uint32_t i = 0; i < count; i++) {
+    for (i = 0; i < count; i++) {
       float val = p[i];
       val = float_to_big_endian(val);
       ret = ubjson_writer_write_data(writer, &val, sizeof(val));
       return_value_if_fail(ret == RET_OK, RET_OOM);
     }
   } else if (type == UBJSON_MARKER_FLOAT64) {
-    double* p = (double*)array;
+    uint32_t i = 0;
+		double* p = (double*)array;
 
-    for (uint32_t i = 0; i < count; i++) {
+    for (i = 0; i < count; i++) {
       double val = p[i];
       val = double_to_big_endian(val);
       ret = ubjson_writer_write_data(writer, &val, sizeof(val));
