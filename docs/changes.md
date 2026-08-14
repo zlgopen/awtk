@@ -1,7 +1,8 @@
 # 最新动态
 
 2026/8/14
-  * format code (感谢兆坤提供补丁) 
+  * format code (感谢兆坤提供补丁)
+  * improve api(感谢兆坤提供补丁)
 
 2026/8/13
   * improve edit_ex(感谢兆坤提供补丁)

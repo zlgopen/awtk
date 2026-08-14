@@ -386,9 +386,6 @@ ret_t bitmap_set_dirty(bitmap_t* bitmap, bool_t dirty);
  */
 bool_t bitmap_is_dirty(bitmap_t* bitmap);
 
-#if defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)
-/*for helping debug drawing bugs*/
-
 /**
  * @method bitmap_save_png
  * 把bitmap保存为png。
@@ -399,8 +396,6 @@ bool_t bitmap_is_dirty(bitmap_t* bitmap);
  * @return {bool_t} 返回TRUE表示成功，FALSE表示失败。
  */
 bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename);
-
-#endif /*defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)*/
 
 /**
  * @method bitmap_mono_dump
