@@ -308,7 +308,8 @@ static ret_t window_manager_default_snap_prev_window_system_bar_bottom_push_clip
 
 #endif
 
-static ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img) {
+static ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_win,
+                                                     bitmap_t* img) {
 #ifndef WITHOUT_WINDOW_ANIMATORS
   rect_t r = {0};
   uint8_t alpha = 0xFF;
@@ -374,8 +375,8 @@ static ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t*
       }
       /* 如果不是全屏的话，就削减 system_bar 的显示裁剪区 */
       if (!is_fullscreen_window && !widget_is_normal_window(iter)) {
-        window_manager_default_snap_prev_window_get_system_bar_rect_diff(
-            &system_bar_top_rect_list, &iter_rect);
+        window_manager_default_snap_prev_window_get_system_bar_rect_diff(&system_bar_top_rect_list,
+                                                                         &iter_rect);
         window_manager_default_snap_prev_window_get_system_bar_rect_diff(
             &system_bar_bottom_rect_list, &iter_rect);
       }
@@ -771,11 +772,11 @@ static ret_t window_manager_default_open_window(widget_t* widget, widget_t* wind
   pointer_x = window_manager_get_pointer_x(widget);
   pointer_y = window_manager_get_pointer_y(widget);
 
-  if (!(widget_is_keyboard(window) || widget_is_overlay(window))
-      && (!widget_is_point_in(window, pointer_x, pointer_y, FALSE))) {
-    pointer_event_init(&event, EVT_POINTER_LEAVE, widget->target, 0 , 0);
+  if (!(widget_is_keyboard(window) || widget_is_overlay(window)) &&
+      (!widget_is_point_in(window, pointer_x, pointer_y, FALSE))) {
+    pointer_event_init(&event, EVT_POINTER_LEAVE, widget->target, 0, 0);
     widget_dispatch_leave_event(widget->target, &event);
-    pointer_event_init(&event, EVT_POINTER_ENTER, window, 0 , 0);
+    pointer_event_init(&event, EVT_POINTER_ENTER, window, 0, 0);
     widget_dispatch_enter_event(window, &event);
   }
 
@@ -1386,8 +1387,7 @@ static ret_t window_manager_default_paint_children_after_target(widget_t* widget
     continue;
   }
 
-  if (start && iter->visible &&
-      !widget_get_prop_bool(iter, WIDGET_PROP_ALWAYS_ON_TOP, FALSE)) {
+  if (start && iter->visible && !widget_get_prop_bool(iter, WIDGET_PROP_ALWAYS_ON_TOP, FALSE)) {
     widget_paint(iter, c);
   }
   WIDGET_FOR_EACH_CHILD_END()
