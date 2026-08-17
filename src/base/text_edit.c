@@ -367,12 +367,35 @@ static uint32_t text_edit_measure_text(text_edit_t* text_edit, wchar_t* str, wch
   return text_edit_measure_text_on_canvas(text_edit, str, mask_char, size, GET_CANVAS(text_edit));
 }
 
+static void text_edit_adjust_hscroll(text_layout_info_t* layout_info, uint32_t text_w,
+                                     uint32_t caret_x, uint32_t font_size) {
+  if (layout_info->ox + font_size > caret_x) {
+    if (layout_info->ox < font_size) {
+      layout_info->ox = 0;
+    } else {
+      layout_info->ox -= font_size;
+    }
+  } else if (caret_x + font_size > layout_info->ox + layout_info->w) {
+    // 超出可视区域右边缘的文本宽度
+    int32_t text_outside_right_w = text_w - layout_info->ox - layout_info->w;
+    text_outside_right_w = tk_max(text_outside_right_w, 0);
+    layout_info->ox += tk_min(text_outside_right_w, font_size);
+  }
+
+  {
+    // 文本结束位置到可视区域右边缘的空白宽度
+    int32_t blank_inside_right_w = layout_info->w - (text_w - layout_info->ox);
+    if (blank_inside_right_w > 0) {
+      layout_info->ox -= blank_inside_right_w;
+      layout_info->ox = tk_max(0, layout_info->ox);
+    }
+  }
+}
+
 static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uint32_t row_num,
                                                      uint32_t line_index, uint32_t offset) {
   uint32_t y = 0;
   uint32_t caret_x = 0;
-  uint32_t view_left = 0;
-  uint32_t caret_left = 0;
   DECL_IMPL(text_edit);
   canvas_t* c = GET_CANVAS(text_edit);
   wstr_t* text = &(text_edit->widget->text);
@@ -398,16 +421,17 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
   layout_info->virtual_h = tk_max(y, layout_info->widget_h);
 
   caret_x = caret_text_w;
-  caret_left = layout_info->margin_l + caret_x;
-  view_left = layout_info->ox + layout_info->margin_l;
-  if ((text_w < layout_info->w) ||
-      (view_left + c->font_size >= caret_left && state->cursor == text->size)) {
+  if (text_w < layout_info->w) {
     layout_info->ox = 0;
     if (align_h == ALIGN_H_RIGHT) {
       caret_x = layout_info->w - (text_w - caret_text_w);
     } else if (align_h == ALIGN_H_CENTER) {
       caret_x = (layout_info->w - text_w) / 2 + caret_text_w;
     }
+  }
+
+  if (impl->state.select_start == impl->state.select_end) {
+    text_edit_adjust_hscroll(layout_info, text_w, caret_x, c->font_size);
   }
 
   y += (layout_info->h - c->font_size) / 2;
