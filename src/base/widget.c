@@ -3330,7 +3330,7 @@ static ret_t widget_on_pointer_down_before_children(widget_t* widget, pointer_ev
  * 部的控件无法获取到焦点，例如导致 system_bar 里的 edit 无法正常输入。
  */
 static ret_t widget_handle_window_foreground_switch(widget_t* target) {
-  if (widget_is_window(target)) {
+  if (widget_is_window(target) && widget_is_window_manager(target->parent)) {
     widget_t* foreground_win = window_manager_get_foreground_window(window_manager());
     if (foreground_win != NULL && target != foreground_win) {
       window_manager_dispatch_window_foreground_events(target, NULL, target);
