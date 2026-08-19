@@ -1,40 +1,40 @@
-## TCP/UDP 客户端扩展函数
+# TCP/UDP 客户端扩展函数
 
-### 1.iostream\_tcp\_create
+## iostream\_tcp\_create
 
 > 创建 TCP 客户端输入输出流对象。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 iostream_tcp_create(host, port) => object
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = iostream_tcp_create("localhost", 1234);
 ```
 
-### 2.iostream\_udp\_create
+## iostream\_udp\_create
 
 > 创建 UDP 客户端输入输出流对象。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 iostream_udp_create(host, port) => object
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = iostream_udp_create("localhost", 4000);
 ```
 
-### 完整示例
+## 完整示例
 
 ```js
 //

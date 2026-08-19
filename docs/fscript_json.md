@@ -1,11 +1,11 @@
-## JSON 扩展函数
+# JSON 扩展函数
 
-### 1.json\_load
+## json\_load
 
 > 加载 json 数据。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 json_load(str) => object
@@ -13,85 +13,85 @@ json_load(binary) => object
 json_load(data, size) => object
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = json_load('{"name": "fscript", "age": 100}');
 ```
 
-### 2.json\_save
+## json\_save
 
 > 将对象保存为 json 数据。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 json_save(obj) => binary 
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = json_load('{"name": "fscript", "age": 100}');
 json_save(a);
 ```
 
-### 3.json\_save\_to\_string
+## json\_save\_to\_string
 
 > 将对象保存为字符串数据。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 json_save_to_string(obj) => string 
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = json_load('{"name": "fscript", "age": 100}');
 print(json_save_to_string(a));
 ```
 
-### 4.ubjson\_load
+## ubjson\_load
 
 > 加载 ubjson 数据。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 ubjson_load(binary) => object
 ubjson_load(data, size) => object
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = ubjson_load(file_read_binary("test.ubjson"));
 ```
 
-### 5.ubjson\_save
+## ubjson\_save
 
 > 将对象保存为 ubjson 数据。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 ubjson_save(obj) => binary
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = json_load('{"name": "fscript", "age": 100}');
 var b = ubjson_save(a);
 ```
 
-### 完整示例
+## 完整示例
 
 ```js
 //load from string

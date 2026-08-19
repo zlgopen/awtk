@@ -1,11 +1,11 @@
-## 串口扩展函数 
+# 串口扩展函数
 
-### 1.iostream\_serial\_create
+## iostream\_serial\_create
 
 > 创建串口输入输出流对象。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 iostream_serial_create(device) => object
@@ -21,14 +21,14 @@ iostream_serial_create(device, baudrate, bytesize, parity, stopbits, flowcontrol
 
 > 备注：其中 device 为必填参数，其他均为可选参数。
 
-#### 示例
+### 示例
 
 ```js
 var a = iostream_serial_create("COM4");
 var b = iostream_serial_create("COM5", 115200, 8, "none", 1, "none");
 ```
 
-### 完整示例
+## 完整示例
 
 ```js
 //

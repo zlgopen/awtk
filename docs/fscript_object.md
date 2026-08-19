@@ -1,32 +1,32 @@
-## object 扩展函数
+# object 扩展函数
 
 object 适用于 app\_conf、typed\_array 和 array 等各种对象。
 
-### 1. object\_create
+## object\_create
 
 > 创建缺省的 object 对象，可以当一个 map 使用。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 object_create() => object
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = object_create()
 ```
 
-### 2. object\_get
+## object\_get
 
 > 获取对象的属性。
 ----------------------------
 
 可以通过 value\_is\_valid 来判断返回值是否有效。
 
-#### 原型
+### 原型
 
 ```js
 object_get(o, key) => value
@@ -39,82 +39,82 @@ object_get(o, key, defval) => value
 print(o.key)
 ```
 
-#### 示例
+### 示例
 
 ```js
 print(object_get(a, "age"))
 print(a.age)
 ```
 
-### 3. object\_set
+## object\_set
 
 > 设置对象的属性。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 object_set(obj, key, value) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 object_set(a, "age", 123);
 ```
 
-### 4. object\_remove
+## object\_remove
 
 > 删除对象的属性。 
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 object_remove(obj, key) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 object_remove(a, "age")
 ```
 
-### 5. object\_ref
+## object\_ref
 
 > 引用计数加1。 
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 object_ref(obj) => object
 ```
 
-#### 示例
+### 示例
 
 ```js
 object_ref(a)
 ```
 
-### 5. object\_unref
+## object\_unref
 
 > 引用计数减1。引用计数为0时，销毁对象。 
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 object_unref(obj)
 ```
 
-#### 示例
+### 示例
 
 ```js
 object_ref(a)
 ```
 
-### 6. object\_forward\_events
+## object\_forward\_events
 
 > 将源对象的事件转发目标对象。 
 ----------------------------
@@ -125,13 +125,13 @@ object_ref(a)
 * EVT_PROPS_CHANGED：对象中的属性改变事件。
 * EVT_ITEMS_CHANGED：集合对象中的项目改变事件
 
-#### 原型
+### 原型
 
 ```js
 object_forward_events(src_obj, dst_obj)
 ```
 
-#### 示例
+### 示例
 
 ```js
 global = object_create()
@@ -139,7 +139,7 @@ global.arr = array_create()
 object_forward_events(global.arr, global)
 ```
 
-### 完整示例
+## 完整示例
 
 ```js
 var a = object_create()
@@ -170,19 +170,19 @@ g.arr = array_create()
 object_forward_events(g.arr, g)
 ```
 
-#### 7 object\_can\_exec
+### object\_can\_exec
 
 > 判断 object 里的一个命令是否可执行。
 
 ----------------------------
 
-##### 原型
+#### 原型
 
 ```js
 object_can_exec(obj, cmd, arg) => bool
 ```
 
-##### 示例
+#### 示例
 
 ```js
 if (object_can_exec(obj, "clear", "all")) {
@@ -192,19 +192,19 @@ if (object_can_exec(obj, "clear", "all")) {
 
 > 具体功能与 object 的实现有关。
 
-#### 8 object\_exec
+### object\_exec
 
 > 执行 object 里的一个命令。
 
 ----------------------------
 
-##### 原型
+#### 原型
 
 ```js
 object_exec(obj, cmd, arg) => bool
 ```
 
-##### 示例
+#### 示例
 
 ```js
 object_exec(obj, "clear", "all")
@@ -212,19 +212,19 @@ object_exec(obj, "clear", "all")
 
 > 具体功能与 object 的实现有关。
 
-#### 9 object\_exec\_ex
+### object\_exec\_ex
 
 > 执行 object 里的一个命令。
 
 ----------------------------
 
-##### 原型
+#### 原型
 
 ```js
 object_exec_ex(obj, cmd, arg) => value
 ```
 
-##### 示例
+#### 示例
 
 ```js
 a = object_exec_ex(obj, "clear", "all")

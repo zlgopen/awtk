@@ -1,42 +1,42 @@
-## app_conf 扩展函数
+# app_conf 扩展函数
 
 获取 app\_conf 对象后，可以直接用 [object](fscript_object.md) 的接口访问 app\_conf。
 
-### 1. app_conf
+## app_conf
 
 > 获取 app_conf 对象
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 app_conf() => object
 ```
 
-#### 示例
+### 示例
 
 ```js
 assert(object_set(app_conf(), "timeout", 100))
 ```
 
-### 2. app\_conf\_save
+## app\_conf\_save
 
 > 保存修改。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 app_conf_save() => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 assert(app_conf_save())
 ```
 
-### 完整示例
+## 完整示例
 
 ```js
 assert(object_set(app_conf(), "timeout", 100))

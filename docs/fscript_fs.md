@@ -1,45 +1,45 @@
-## 文件系统扩展函数
+# 文件系统扩展函数
 
-### 1.file\_read\_text
+## file\_read\_text
 
 > 读取文本文件。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 file_read_text(filename) => str
 ```
 
-#### 示例
+### 示例
 
 ```js
 file_read_text("test.txt");
 ```
 
-### 2.file\_read\_binary
+## file\_read\_binary
 
 > 读取二进制文件。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 file_read_binary(filename) => binary
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = file_read_binary("test.bin");
 ```
 
-### 3.file\_write
+## file\_write
 
 > 写入文件。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 file_write(filename, str) => bool
@@ -47,18 +47,18 @@ file_write(filename, binary) => bool
 file_write(filename, data, size) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 file_write("test.txt", "write str");
 ```
 
-### 4.file\_write\_append
+## file\_write\_append
 
 > 写入文件尾部（追加内容）。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 file_write_append(filename, str) => bool
@@ -66,103 +66,103 @@ file_write_append(filename, binary) => bool
 file_write_append(filename, data, size) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 file_write_append("test.txt", "append str");
 ```
 
-### 5.file\_exist
+## file\_exist
 
 > 检查文件是否存在。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 file_exist(filename) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 print(file_exist("test.txt"));
 ```
 
-### 6.file\_get\_size
+## file\_get\_size
 
 > 获取文件大小。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 file_get_size(filename) => int32_t
 ```
 
-#### 示例
+### 示例
 
 ```js
 print(file_get_size("test.txt"));
 ```
 
-### 7.file\_remove
+## file\_remove
 
 > 删除指定的文件。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 file_remove(filename) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 file_remove("test.txt");
 ```
 
-### 8.file\_rename
+## file\_rename
 
 > 文件重命名。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 file_rename(filename, new_name) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 file_rename("test.txt","rename.txt");
 ```
 
-### 9.file\_copy
+## file\_copy
 
 > 文件拷贝。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 file_copy(filename, dst_name) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 file_copy("rename.txt","copy.txt");
 ```
 
-### 10.file\_stat
+## file\_stat
 
 > 获取文件信息。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 file_stat(filename) => object
@@ -187,7 +187,7 @@ file_stat(filename) => object
 | is_link     | bool_t   | 是否为链接             |
 | is_reg_file | bool_t   | 是否为普通文件         |
 
-#### 示例
+### 示例
 
 ```js
 var a = file_stat("rename.txt");
@@ -206,80 +206,80 @@ print(join(": ","is_link",a.is_link));
 print(join(": ","is_reg_file",a.is_reg_file));
 ```
 
-### 11.path\_create
+## path\_create
 
 > 创建目录(递归创建不存在的父目录)。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 path_create(path) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 path_create("a/b/c");
 ```
 
-### 12.path\_remove
+## path\_remove
 
 > 删除目录(递归创建子目录和文件)。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 path_remove(path) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 path_remove("a/b/c");
 ```
 
-### 13.path\_exist
+## path\_exist
 
 > 检查指定的目录是否存在。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 path_exist(path) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 print(path_exist("a/b/c"));
 ```
 
-### 14.path\_rename
+## path\_rename
 
 > 目录重命名。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 path_rename(path, new_path) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 path_rename("a/b","a/bbb");
 ```
 
-### 15.path\_list
+## path\_list
 
 > 获取指定目录下的子目录/文件列表。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 path_list(path) => array
@@ -294,7 +294,7 @@ path_list(path) => array
 | is_reg_file | bool_t   | 是否是普通文件 |
 | name        | str      | 文件名称       |
 
-#### 示例
+### 示例
 
 ```js
 var a = path_list("a/b");
@@ -305,97 +305,97 @@ print(object_get(b.is_reg_file));
 print(object_get(b.name));
 ```
 
-### 16.path\_get\_exe
+## path\_get\_exe
 
 > 获取可执行文件所在目录。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 path_get_exe() => str
 ```
 
-#### 示例
+### 示例
 
 ```js
 print(path_get_exe());
 ```
 
-### 17.path\_get\_cwd
+## path\_get\_cwd
 
 > 获取当前所在目录。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 path_get_cwd() => str
 ```
 
-#### 示例
+### 示例
 
 ```js
 print(path_get_cwd());
 ```
 
-### 18.path\_get\_temp
+## path\_get\_temp
 
 > 获取临时目录的路径。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 path_get_temp() => str
 ```
 
-#### 示例
+### 示例
 
 ```js
 print(path_get_temp());
 ```
 
-### 19.path\_get\_app\_root
+## path\_get\_app\_root
 
 > 获取应用程序根目录的路径。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 path_get_app_root() => str
 ```
 
-#### 示例
+### 示例
 
 ```js
 print(path_get_app_root());
 ```
 
-### 20.path\_get\_user\_storage\_root
+## path\_get\_user\_storage\_root
 
 > 获取用户目录或用户可以存储数据的目录的路径。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 path_get_user_storage_root() => str
 ```
 
-#### 示例
+### 示例
 
 ```js
 print(path_get_user_storage_root());
 ```
 
-### 21.fs\_get\_disk\_info
+## fs\_get\_disk\_info
 
 > 获取文件系统信息。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 fs_get_disk_info(path) => object
@@ -416,7 +416,7 @@ print(join(": ","free_kb",a.free_kb));
 print(join(": ","total_kb",a.total_kb));
 ```
 
-### 更多示例
+## 更多示例
 
 ```js
 assert(file_write("test.txt", "hello"))
@@ -490,4 +490,3 @@ unset(a)
 unset(b)
 unset(c)
 ```
-

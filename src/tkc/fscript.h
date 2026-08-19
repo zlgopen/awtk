@@ -150,7 +150,7 @@ typedef enum _fscript_var_filter_t {
  * @annotation ["fake"]
  * 
  * 一个简易的函数式脚本引擎。
- * 用法请参考：https://github.com/zlgopen/awtk/blob/master/docs/fscript.md
+ * 用法请参考：https://github.com/zlgopen/awtk/blob/master/docs/fscript/fscript.md
  *
  */
 struct _fscript_t {

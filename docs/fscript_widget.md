@@ -1,6 +1,6 @@
 # FScript 的 widget 扩展函数
 
-## 1. 介绍
+## 介绍
 
 [FScript](fscript.md) 的 widget 扩展函数只能在 widget 的事件处理函数中使用，包括传统的 AWTK 应用程序和 AWTK-MVVM 应用程序的事件处理函数。
 
@@ -58,7 +58,7 @@ FScript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 
 * 5. 不需要重新编译代码。如果资源文件是在文件系统中，直接更新资源即可，而无需编译和下载固件。
 
-## 2. 事件处理函数
+## 事件处理函数
 
 添加事件处理函数，实际上是增加一些自定义的属性，属性名以 on: 开头，紧跟事件名称。如：
 
@@ -85,7 +85,7 @@ FScript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 
 > 如果处理逻辑太复杂，请不要用 FScript 实现，否则不好调试。要善用 FScript 的优点而回避它的缺点。
 
-## 3. 目前支持的事件
+## 目前支持的事件
 
 * global\_key\_up
 * global\_key\_down
@@ -163,7 +163,7 @@ FScript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 
 > 获取控件动画触发事件，animator_name 为触发的动画名字，动画名字有可能为空，例子：
 
-~~~xml
+```xml
 <property name="on:widget_animator_end">
   print("animator_name:", animator_name);
 </property>
@@ -173,7 +173,7 @@ FScript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 <property name="on:widget_animator_once">
   print("animator_name:", animator_name);
 </property>
-~~~
+```
 
 * window\_close
 * window\_open
@@ -214,7 +214,7 @@ FScript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 
 > 在 MVVM 中，除了支持以上方式编写 FScript，也可以通过 v-on: 和 v-data: 的方式使用 FScript，请参考 MVVM 的文档。
 
-## 4. 事件的返回值
+## 事件的返回值
 
 通过 return 返回 RET\_XXX 常量，示例:
 
@@ -225,9 +225,9 @@ return RET_STOP;
 return RET_REMOVE;
 ```
 
-## 5. widget 相关的扩展函数
+## widget 相关的扩展函数
 
-### 5.1 open
+### open
 
 > 打开窗口。
 > 相关函数：window_open、window_close_and_open。
@@ -254,7 +254,7 @@ window_close_and_open(name, close_current) => obj_widget;
 <button text="Switch TO" focusable="true" on:click="open('test_fscript', false, true)"/>
 ```
 
-### 5.2 close
+### close
 
 > 关闭窗口。
 > 相关函数：window_close。
@@ -275,7 +275,7 @@ window_close(name)=> bool
 <button focusable="true" on:click="close()" text="Close" />
 ```
 
-### 5.3 back
+### back
 
 > 退到前一个窗口
 > 相关函数：window_back。
@@ -294,7 +294,7 @@ window_back()
 <button focusable="true" on:click="back()" text="back" />
 ```
 
-### 5.4 back\_to\_home
+### back\_to\_home
 
 > 退到主窗口
 > 相关函数：window_back_to_home。
@@ -313,7 +313,7 @@ window_back_to_home()
 <button focusable="true" on:click="back_to_home()" text="home" />
 ```
 
-### 5.5 quit
+### quit
 
 > 退出应用程序
 > 相关函数：window_quit。
@@ -332,7 +332,7 @@ window_quit()
 <button focusable="true" on:click="quit()" text="quit" />
 ```
 
-### 5.6 tr
+### tr
 
 > 翻译指定字符串
 > 相关函数：widget_tr。
@@ -357,7 +357,7 @@ widget_tr(before_tr_str) => after_tr_str
 <button focusable="true" on:click="print(tr('OK'))" text="tr" />
 ```
 
-### 5.7 widget_lookup
+### widget_lookup
 
 > 查找指定的控件
 ----------------------------
@@ -398,7 +398,7 @@ var a = widget_lookup('self', 'bar', true)
 var a = widget_lookup('self', 'bar', true)
 ```
 
-### 5.8 widget_layout
+### widget_layout
 
 > 控件马上布局
 ----------------------------
@@ -426,7 +426,8 @@ if(!value_is_null(a)) {
 widget_layout('self.bar')
 widget_layout('window.view.bar')
 ```
-### 5.9 widget_request_relayout
+
+### widget_request_relayout
 
 > 控件下一帧布局
 ----------------------------
@@ -455,7 +456,8 @@ widget_request_relayout('self.bar')
 widget_request_relayout('window.view.bar')
 ```
 
-### 5.10 widget_get
+### widget_get
+
 > 获取控件的属性
 ----------------------------
 
@@ -518,7 +520,8 @@ if(a.value <= 90) {
 }
 ```
 
-### 5.11 widget_set
+### widget_set
+
 > 设置控件的属性
 ----------------------------
 
@@ -574,7 +577,7 @@ if(a.value <= 90) {
 }
 ```
 
-### 5.12 widget_create
+### widget_create
 
 > 创建控件
 ----------------------------
@@ -606,7 +609,7 @@ if(value_is_null(a)) {
 }
 ```
 
-### 5.13 widget_destroy
+### widget_destroy
 
 > 销毁控件
 ----------------------------
@@ -635,7 +638,7 @@ widget_destroy('self.bar')
 widget_destroy('window.view.bar')
 ```
 
-### 5.14 start_timer
+### start_timer
 
 > 开启一个定时器
 ----------------------------
@@ -673,7 +676,7 @@ start_timer(widget, duration) => uint32_t
 </button>
 ```
 
-### 5.15 stop_timer
+### stop_timer
 
 > 停止指定控件的定时器
 ----------------------------
@@ -694,7 +697,7 @@ stop_timer(widget) => bool
 stop_timer('parent.timer')
 ```
 
-### 5.16 reset_timer
+### reset_timer
 
 > 重置指定的timer，重置之后定时器重新开始计时。
 ----------------------------
@@ -715,7 +718,7 @@ reset_timer(widget) => bool
 reset_timer('parent.timer')
 ```
 
-### 5.17 modify_timer
+### modify_timer
 
 > 修改指定的timer的duration，修改之后定时器重新开始计时。
 ----------------------------
@@ -737,7 +740,7 @@ modify_timer(widget, duration) => bool
 modify_timer('parent.timer')
 ```
 
-### 5.18 suspend_timer
+### suspend_timer
 
 > 挂起指定的timer，一般用于不断循环触发的计时器。
 ----------------------------
@@ -758,7 +761,7 @@ suspend_timer(widget) => bool
 suspend_timer('parent.timer')
 ```
 
-### 5.19 resume_timer
+### resume_timer
 
 > 唤醒挂起指定的timer，并且重置定时器重新开始计时。
 ----------------------------
@@ -779,7 +782,7 @@ resume_timer(widget) => bool
 resume_timer('parent.timer')
 ```
 
-### 5.20 send_key
+### send_key
 
 > 向指定控件发生按键事件
 > 相关函数：widget_send_key。
@@ -801,12 +804,13 @@ widget_send_key(widget, key_name) => bool
  <button text="Char" on:click="send_key('window.edit', 'a')"/>
 ```
 
-### 5.21 widget\_eval
+### widget\_eval
 
 > 有时，几个事件处理函数的代码是重复的，我们可以把代码放到控件的属性中，通过widget\_eval来执行。
 ----------------------------
 
 #### 原型
+
 ```js
 widget_eval(path.prop)
 widget_eval(widget, prop)
@@ -860,7 +864,7 @@ widget_eval(widget, path.prop)
 </row>
 ```
 
-### 5.22 locale\_get
+### locale\_get
 
 > 获取本地化信息(国家和语言)
 > 相关函数：widget_locale_get。
@@ -905,7 +909,7 @@ print(object_get(obj, 'language'))
 
 获取当前控件的父控件或当前窗口的本地化信息用法类似，此处不多赘述。
 
-### 5.23 locale\_set
+### locale\_set
 
 > 设置本地化信息(国家和语言)
 > 相关函数：widget_locale_set。
@@ -939,7 +943,7 @@ locale_set('window_manager', 'en', 'US')
 
 设置当前控件的父控件或当前窗口的本地化信息用法类似，此处不多赘述。
 
-### 5.24 theme\_get
+### theme\_get
 
 > 获取当前主题
 > 相关函数：widget_theme_get。
@@ -973,7 +977,7 @@ print(theme_get('window_manager'))
 
 获取当前控件的父控件或当前窗口的主题用法类似，此处不多赘述。
 
-### 5.25 theme\_set
+### theme\_set
 
 > 设置本地化信息(国家和语言)
 > 相关函数：widget_theme_set。
@@ -1007,7 +1011,7 @@ theme_set('window_manager', 'dark')
 
 设置当前控件的父控件或当前窗口的主题用法类似，此处不多赘述。
 
-### 5.26 dialog_info
+### dialog_info
 
 > 显示info提示对话框。
 ----------------------------
@@ -1027,7 +1031,7 @@ dialog_info(title, content) => bool
 dialog_info('info', 'Done');
 ```
 
-### 5.27 dialog_warn
+### dialog_warn
 
 > 显示warn提示对话框。
 ----------------------------
@@ -1047,7 +1051,7 @@ dialog_warn(title, content) => bool
 dialog_warn('info', 'Done');
 ```
 
-### 5.28 dialog_confirm
+### dialog_confirm
 
 > 显示confirm提示对话框。
 ----------------------------
@@ -1067,7 +1071,7 @@ dialog_confirm(title, content) => bool
 dialog_confirm('info', 'Are you sure?');
 ```
 
-### 5.29 dialog_toast
+### dialog_toast
 
 > 显示toast提示对话框。
 ----------------------------
@@ -1087,7 +1091,7 @@ dialog_toast(content, time) => bool
 dialog_toast('done', 3000);
 ```
 
-### 5.30 choose_files
+### choose_files
 
 > 显示选择文件对话框。
 ----------------------------
@@ -1109,7 +1113,7 @@ var files = choose_files('.png.jpg.gif', './')
 print(files.size)
 ```
 
-### 5.31 choose_file
+### choose_file
 
 > 显示选择文件对话框。
 ----------------------------
@@ -1131,7 +1135,7 @@ var filename = choose_files('.png.jpg.gif', './')
 print(filename)
 ```
 
-### 5.32 choose_folder
+### choose_folder
 
 > 显示选择目录对话框。
 ----------------------------
@@ -1152,7 +1156,7 @@ var foldername = choose_folder('./')
 print(foldername)
 ```
 
-### 5.33 choose\_file\_for\_save
+### choose\_file\_for\_save
 
 > 选择保存文件对话框。
 ----------------------------
@@ -1174,7 +1178,7 @@ var filename = choose_file_for_save('.png.jpg.gif', './')
 print(filename)
 ```
 
-### 5.34 widget_clone
+### widget_clone
 
 > 克隆控件
 ----------------------------
@@ -1204,7 +1208,7 @@ var a = widget_clone('self.bar')
 var b = widget_clone('window.view.bar')
 ```
 
-### 5.35 widget\_destroy\_children
+### widget\_destroy\_children
 
 > 销毁控件的全部子控件。
 ----------------------------
@@ -1233,7 +1237,7 @@ widget_destroy_children('self.bar')
 widget_destroy_children('window.view.bar')
 ```
 
-### 5.36 widget\_add\_value
+### widget\_add\_value
 
 > 增加控件的值。
 ----------------------------
@@ -1253,7 +1257,7 @@ widget_add_value(widget, value) => bool
 widget_add_value('self', 30)
 ```
 
-### 5.37 notify\_model\_changed
+### notify\_model\_changed
 
 > 通知模型改变。
 ----------------------------
@@ -1275,7 +1279,7 @@ notify_model_changed("model_name", "update", obj_model)
 notify_model_changed("model_name", "update", "global")
 ```
 
-### 5.38 show\_fps
+### show\_fps
 
 > 设置是否显示FPS。
 ----------------------------
@@ -1293,7 +1297,7 @@ show_fps(true)
 show_fps(false)
 ```
 
-### 5.39 widget_get_child
+### widget_get_child
 
 > 获取指定索引的子控件
 ----------------------------
@@ -1314,7 +1318,7 @@ widget_get_child(widget, index) => obj_widget
 var a = widget_get_child('self', 0)
 ```
 
-### 5.40 widget_count_children
+### widget_count_children
 
 > 获取子控件的个数
 ----------------------------
@@ -1337,7 +1341,7 @@ for (var a = 0; a < size; a = a + 1) {
 }
 ```
 
-### 5.41 widget_unload_image
+### widget_unload_image
 
 > 卸载图片
 ----------------------------

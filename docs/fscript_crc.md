@@ -1,13 +1,13 @@
-## CRC 函数
+# CRC 函数
 
 Cyclic redundancy check
 
-### 1.crc16 
+## crc16
 
 > crc16 函数。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 crc16(str) => uint16_t
@@ -15,18 +15,18 @@ crc16(data, size) => uint16_t
 crc16(binary) => uint16_t
 ```
 
-#### 示例
+### 示例
 
 ```js
 crc16("hello")
 ```
 
-### 2.crc32
+## crc32
 
 > crc32 函数。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 crc32(str) => uint32_t
@@ -34,18 +34,18 @@ crc32(data, size) => uint32_t
 crc32(binary) => uint32_t
 ```
 
-#### 示例
+### 示例
 
 ```js
 crc32("hello")
 ```
 
-### 3.cksum
+## cksum
 
 > cksum 函数。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 cksum(str) => uint16_t
@@ -53,13 +53,13 @@ cksum(data, size) => uint16_t
 cksum(binary) => uint16_t
 ```
 
-#### 示例
+### 示例
 
 ```js
 cksum("hello")
 ```
 
-### 更多示例
+## 更多示例
 
 ```js
 //test string

@@ -1,11 +1,11 @@
-## 日期时间扩展函数
+# 日期时间扩展函数
 
-### 1.date\_time\_create
+## date\_time\_create
 
 > 创建日期对象。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 date_time_create() => object
@@ -21,43 +21,43 @@ date_time_create() => object
 * second 秒 （可读写）
 * wday 周几 （可只读）
 
-#### 示例
+### 示例
 
 ```js
 var dt = date_time_create();
 print(dt.year, "-", dt.month, "-", dt.day, " ", dt.hour, ":", dt.minute, ":", dt.second, "(", dt.wday, ")");
 ```
 
-### 2.date\_time\_to\_time
+## date\_time\_to\_time
 
 > 转成相对于 00:00:00 UTC on 1 January 1970 的秒数。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 date_time_to_time(dt) => uint64_t
 ```
 
-#### 示例
+### 示例
 
 ```js
 var dt = date_time_create();
 var time = date_time_to_time(dt);
 ```
 
-### 3.date\_time\_from\_time
+## date\_time\_from\_time
 
 > 将相对于 00:00:00 UTC on 1 January 1970 的秒数转成成 date time。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 date_time_from_time(dt, time) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 var dt = date_time_create();
@@ -65,12 +65,12 @@ var time = date_time_to_time(dt);
 assert(date_time_from_time(dt, time));
 ```
 
-### 4.date\_time\_set
+## date\_time\_set
 
 > 把 date time 中的时间设置为系统时间。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 date_time_set(dt) => bool
@@ -78,7 +78,7 @@ date_time_set(dt) => bool
 
 > 需要有设置系统时间的权限。
 
-#### 示例
+### 示例
 
 ```js
 var dt = date_time_create();
@@ -91,132 +91,132 @@ dt.second = 4;
 assert(date_time_set(dt));
 ```
 
-### 5.time\_now/time\_now\_s
+## time\_now/time\_now\_s
 
 > 获取当前时间戳函数 (s)。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 time_now()  => uint64_t
 time_now_s()  => uint64_t
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = time_now();
 var b = time_now_s();
 ```
 
-### 6.time\_now\_ms 
+## time\_now\_ms
 
 > 获取当前时间戳函数 (ms)。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 time_now_ms()  => uint64_t
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = time_now_ms();
 ```
 
-### 7.time\_now\_us 
+## time\_now\_us
 
 > 获取当前时间戳函数 (us)。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 time_now_us() => uint64_t
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = time_now_us();
 ```
 
-### 8.is\_leap\_year
+## is\_leap\_year
 
 > 判断指定年份是否是闰年。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 is_leap_year(year) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 var dt = date_time_create();
 print(is_leap_year(dt.year));
 ```
 
-### 9.get\_days\_of\_month
+## get\_days\_of\_month
 
 > 获取指定年月的天数。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 get_days_of_month(year, month) => uint32_t
 ```
 
-#### 示例
+### 示例
 
 ```js
 var dt = date_time_create();
 print(get_days_of_month(dt.year, dt.month));
 ```
 
-### 10.date\_time\_set\_prop
+## date\_time\_set\_prop
 
 > 设置日期对象中的属性。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 date_time_set_prop(dt, name, value) => bool
 ```
 
-#### 示例
+### 示例
 
 ```js
 var dt = date_time_create();
 date_time_set_prop(dt, "year", 2012);
 ```
 
-### 11.date\_time\_get\_prop
+## date\_time\_get\_prop
 
 > 获取日期对象中的属性。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 date_time_get_prop(dt, name) => value
 ```
 
-#### 示例
+### 示例
 
 ```js
 var dt = date_time_create();
 var year = date_time_get_prop(dt, "year");
 ```
 
-### 12.date\_time\_format
+## date\_time\_format
 
 > 格式化日期对象为字符串。
 ----------------------------
@@ -237,21 +237,21 @@ var year = date_time_get_prop(dt, "year");
  * mm 代表分(00-59)
  * ss 代表秒(00-59)
 
-#### 原型
+### 原型
 
 ```js
 date_time_format(dt, format) => str
 date_time_format(epoch_time, format) => str
 ```
 
-#### 示例
+### 示例
 
 ```js
 print(date_time_format(0, "Y-M-D h:m:s")); // => "1970-1-1 0:0:0"
 print(date_time_format(0, "YY-MM-DD hh:mm:ss")); // => "70-01-01 00:00:00"
 ```
 
-### 更多示例
+## 更多示例
 
 ```js
 var dt = date_time_create()

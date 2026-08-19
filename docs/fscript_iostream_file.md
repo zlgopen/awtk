@@ -1,40 +1,40 @@
-## 文件流扩展函数
+# 文件流扩展函数
 
-### 1.istream\_file\_create
+## istream\_file\_create
 
 > 创建文件输入流对象。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 istream_file_create(filename, mode) => object
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = istream_file_create("test.bin", "rb");
 ```
 
-### 2.ostream\_file\_create
+## ostream\_file\_create
 
 > 创建文件输出流对象。
 ----------------------------
 
-#### 原型
+### 原型
 
 ```js
 ostream_file_create(filename, mode) => object
 ```
 
-#### 示例
+### 示例
 
 ```js
 var a = ostream_file_create("test.bin", "wb+");
 ```
 
-### 完整示例
+## 完整示例
 
 ```js
 var a = ostream_file_create("test.bin", "wb+")
