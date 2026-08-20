@@ -79,6 +79,13 @@ static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32
   return RET_NOT_IMPL;
 }
 
+static ret_t vgcanvas_nanovg_create_fbo_ex(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
+                                           bool_t custom_draw_model, bool_t with_depth,
+                                           framebuffer_object_t* fbo) {
+  (void)with_depth;
+  return vgcanvas_nanovg_create_fbo(vgcanvas, w, h, custom_draw_model, fbo);
+}
+
 static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   return RET_NOT_IMPL;
 }

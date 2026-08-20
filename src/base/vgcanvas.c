@@ -16,6 +16,7 @@
  * History:
  * ================================================================
  * 2018-03-24 Li XianJing <xianjimli@hotmail.com> created
+ * 2026-08-20 Li XianJing <xianjimli@hotmail.com> add vgcanvas_create_fbo_ex with_depth
  *
  */
 
@@ -462,10 +463,23 @@ ret_t vgcanvas_end_frame(vgcanvas_t* vg) {
   }
 }
 
+ret_t vgcanvas_create_fbo_ex(vgcanvas_t* vg, uint32_t w, uint32_t h, bool_t custom_draw_model,
+                             bool_t with_depth, framebuffer_object_t* fbo) {
+  return_value_if_fail(vg != NULL && vg->vt != NULL && fbo != NULL, RET_BAD_PARAMS);
+
+  if (vg->vt->create_fbo_ex != NULL) {
+    return vg->vt->create_fbo_ex(vg, w, h, custom_draw_model, with_depth, fbo);
+  }
+  if (vg->vt->create_fbo != NULL) {
+    return vg->vt->create_fbo(vg, w, h, custom_draw_model, fbo);
+  }
+
+  return RET_NOT_IMPL;
+}
+
 ret_t vgcanvas_create_fbo(vgcanvas_t* vg, uint32_t w, uint32_t h, bool_t custom_draw_model,
                           framebuffer_object_t* fbo) {
-  return_value_if_fail(vg != NULL && vg->vt->create_fbo != NULL && fbo != NULL, RET_BAD_PARAMS);
-  return vg->vt->create_fbo(vg, w, h, custom_draw_model, fbo);
+  return vgcanvas_create_fbo_ex(vg, w, h, custom_draw_model, FALSE, fbo);
 }
 
 ret_t vgcanvas_destroy_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {

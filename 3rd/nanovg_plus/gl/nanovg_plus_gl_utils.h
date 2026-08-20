@@ -94,10 +94,33 @@ void nvgp_gl_delete_framebuffer(nvgp_gl_util_framebuffer* fb) {
 #endif
 }
 
-nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer(nvgp_context_t* ctx, int32_t w, int32_t h, int32_t imageFlags, int32_t samples) {
+static GLenum nvgp_gl_stencil_storage_format(int32_t with_depth) {
+  if (with_depth) {
+#ifdef GL_DEPTH24_STENCIL8
+    return GL_DEPTH24_STENCIL8;
+#elif defined(GL_DEPTH24_STENCIL8_OES)
+    return GL_DEPTH24_STENCIL8_OES;
+#endif
+  }
+  return GL_STENCIL_INDEX8;
+}
+
+static void nvgp_gl_attach_stencil_buffer(GLuint rbo, int32_t with_depth) {
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+  if (with_depth) {
+#ifdef GL_DEPTH_ATTACHMENT
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
+#endif
+  }
+}
+
+nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer_ex(nvgp_context_t* ctx, int32_t w, int32_t h,
+                                                        int32_t imageFlags, int32_t samples,
+                                                        int32_t with_depth) {
 #ifdef NVGP_FBO_VALID
   GLint s_nvgp_gl_default_fbo;
   GLint defaultRBO;
+  GLenum stencil_fmt = GL_STENCIL_INDEX8;
   nvgp_gl_util_framebuffer* fb = NULL;
 
   glGetIntegerv(GL_FRAMEBUFFER_BINDING, &s_nvgp_gl_default_fbo);
@@ -115,6 +138,7 @@ nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer(nvgp_context_t* ctx, int32_
   fb->texture = nvgp_gl_get_gpu_texture_id((nvgp_gl_context_t*)nvgp_get_vt_ctx(ctx), fb->image);
 
   fb->ctx = ctx;
+  stencil_fmt = nvgp_gl_stencil_storage_format(with_depth);
 
   // frame buffer object
   glGenFramebuffers(1, &fb->fbo);
@@ -130,8 +154,8 @@ nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer(nvgp_context_t* ctx, int32_
 
     glGenRenderbuffers(1, &fb->mass_stencil_rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, fb->mass_stencil_rbo);
-    glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_STENCIL_INDEX8, w, h);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, fb->mass_stencil_rbo);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, stencil_fmt, w, h);
+    nvgp_gl_attach_stencil_buffer(fb->mass_stencil_rbo, with_depth);
 
     fb->self_fbo = fb->fbo;
     // 创建中间FBO用于解析多重采样结果
@@ -143,19 +167,21 @@ nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer(nvgp_context_t* ctx, int32_
   // render buffer object
   glGenRenderbuffers(1, &fb->rbo);
   glBindRenderbuffer(GL_RENDERBUFFER, fb->rbo);
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX8, w, h);
+  glRenderbufferStorage(GL_RENDERBUFFER, stencil_fmt, w, h);
 
   // combine all
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb->texture, 0);
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, fb->rbo);
+  nvgp_gl_attach_stencil_buffer(fb->rbo, with_depth);
 
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 #ifdef GL_DEPTH24_STENCIL8
-    // If GL_STENCIL_INDEX8 is not supported, try GL_DEPTH24_STENCIL8 as a fallback.
-    // Some graphics cards require a depth buffer along with a stencil.
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb->texture, 0);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, fb->rbo);
+    if (!with_depth) {
+      // If GL_STENCIL_INDEX8 is not supported, try GL_DEPTH24_STENCIL8 as a fallback.
+      // Some graphics cards require a depth buffer along with a stencil.
+      glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h);
+      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb->texture, 0);
+      glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, fb->rbo);
+    }
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 #endif // GL_DEPTH24_STENCIL8
@@ -175,8 +201,14 @@ error:
   (void)(w);
   (void)(h);
   (void)(imageFlags);
+  (void)(samples);
+  (void)(with_depth);
   return NULL;
 #endif
+}
+
+nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer(nvgp_context_t* ctx, int32_t w, int32_t h, int32_t imageFlags, int32_t samples) {
+  return nvgp_gl_create_framebuffer_ex(ctx, w, h, imageFlags, samples, 0);
 }
 
 void nvgp_gl_bind_framebuffer(nvgp_gl_util_framebuffer* fb) {

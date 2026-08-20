@@ -4,6 +4,7 @@
   * 迁移并格式化fscript相关文档(感谢雨欣提供补丁)
   * 格式化docs中的帮助文档(感谢雨欣提供补丁)
   * 迁移howtos文档(感谢雨欣提供补丁)
+  * 增加 vgcanvas_create_fbo_ex：GPU FBO 可附带深度缓冲，widget_take_snapshot 支持 3D 控件截屏
 
 2026/8/19
   * 迁移并格式化fscript相关文档(感谢雨欣提供补丁)

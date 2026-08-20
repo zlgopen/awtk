@@ -22,6 +22,9 @@ static ret_t vgcanvas_nanovg_plus_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h,
 static ret_t vgcanvas_nanovg_plus_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects_t* dirty_rects);
 static ret_t vgcanvas_nanovg_plus_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
                                         bool_t custom_draw_model, framebuffer_object_t* fbo);
+static ret_t vgcanvas_nanovg_plus_create_fbo_ex(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
+                                           bool_t custom_draw_model, bool_t with_depth,
+                                           framebuffer_object_t* fbo);
 static ret_t vgcanvas_nanovg_plus_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo);
 static ret_t vgcanvas_nanovg_plus_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo);
 static ret_t vgcanvas_nanovg_plus_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
@@ -865,6 +868,7 @@ static const vgcanvas_vtable_t vt = {
     .restore = vgcanvas_nanovg_plus_restore,
     .end_frame = vgcanvas_nanovg_plus_end_frame,
     .create_fbo = vgcanvas_nanovg_plus_create_fbo,
+    .create_fbo_ex = vgcanvas_nanovg_plus_create_fbo_ex,
     .bind_fbo = vgcanvas_nanovg_plus_bind_fbo,
     .destroy_fbo = vgcanvas_nanovg_plus_destroy_fbo,
     .unbind_fbo = vgcanvas_nanovg_plus_unbind_fbo,

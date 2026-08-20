@@ -37,6 +37,7 @@ typedef struct NVGLUframebuffer NVGLUframebuffer;
 // Helper function to create GL frame buffer to render to.
 static void nvgluBindFramebuffer(NVGLUframebuffer* fb);
 static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, int imageFlags, int samples);
+static NVGLUframebuffer* nvgluCreateFramebufferEx(NVGcontext* ctx, int w, int h, int imageFlags, int samples, int with_depth);
 static void nvgluDeleteFramebuffer(NVGLUframebuffer* fb);
 
 #endif // NANOVG_GL_UTILS_H
@@ -66,11 +67,32 @@ static int nvgluGetCurrFramebuffer() {
 #endif
 }
 
-static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, int imageFlags, int samples)
+static GLenum nvgluStencilStorageFormat(int with_depth) {
+	if (with_depth) {
+#ifdef GL_DEPTH24_STENCIL8
+		return GL_DEPTH24_STENCIL8;
+#elif defined(GL_DEPTH24_STENCIL8_OES)
+		return GL_DEPTH24_STENCIL8_OES;
+#endif
+	}
+	return GL_STENCIL_INDEX8;
+}
+
+static void nvgluAttachStencilBuffer(GLuint rbo, int with_depth) {
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+	if (with_depth) {
+#ifdef GL_DEPTH_ATTACHMENT
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
+#endif
+	}
+}
+
+static NVGLUframebuffer* nvgluCreateFramebufferEx(NVGcontext* ctx, int w, int h, int imageFlags, int samples, int with_depth)
 {
 #ifdef NANOVG_FBO_VALID
 	GLint defaultFBO;
 	GLint defaultRBO;
+	GLenum stencilFmt = GL_STENCIL_INDEX8;
 	NVGLUframebuffer* fb = NULL;
 
 	glGetIntegerv(GL_FRAMEBUFFER_BINDING, &defaultFBO);
@@ -95,6 +117,7 @@ static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, i
 	fb->ctx = ctx;
 	fb->width = w;
 	fb->height = h;
+	stencilFmt = nvgluStencilStorageFormat(with_depth);
 	// frame buffer object
 	glGenFramebuffers(1, &fb->fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, fb->fbo);
@@ -108,8 +131,8 @@ static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, i
 
 		glGenRenderbuffers(1, &fb->mass_stencil_rbo);
 		glBindRenderbuffer(GL_RENDERBUFFER, fb->mass_stencil_rbo);
-		glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_STENCIL_INDEX8, w, h);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, fb->mass_stencil_rbo);
+		glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, stencilFmt, w, h);
+		nvgluAttachStencilBuffer(fb->mass_stencil_rbo, with_depth);
 
 		fb->self_fbo = fb->fbo;
 		// 创建中间FBO用于解析多重采样结果
@@ -120,19 +143,21 @@ static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, i
 	// render buffer object
 	glGenRenderbuffers(1, &fb->rbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, fb->rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX8, w, h);
+	glRenderbufferStorage(GL_RENDERBUFFER, stencilFmt, w, h);
 
 	// combine all
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb->texture, 0);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, fb->rbo);
+	nvgluAttachStencilBuffer(fb->rbo, with_depth);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 #ifdef GL_DEPTH24_STENCIL8
-		// If GL_STENCIL_INDEX8 is not supported, try GL_DEPTH24_STENCIL8 as a fallback.
-		// Some graphics cards require a depth buffer along with a stencil.
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb->texture, 0);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, fb->rbo);
+		if (!with_depth) {
+			// If GL_STENCIL_INDEX8 is not supported, try GL_DEPTH24_STENCIL8 as a fallback.
+			// Some graphics cards require a depth buffer along with a stencil.
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb->texture, 0);
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, fb->rbo);
+		}
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 #endif // GL_DEPTH24_STENCIL8
@@ -152,8 +177,15 @@ error:
 	NVG_NOTUSED(w);
 	NVG_NOTUSED(h);
 	NVG_NOTUSED(imageFlags);
+	NVG_NOTUSED(samples);
+	NVG_NOTUSED(with_depth);
 	return NULL;
 #endif
+}
+
+static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, int imageFlags, int samples)
+{
+	return nvgluCreateFramebufferEx(ctx, w, h, imageFlags, samples, 0);
 }
 
 static void nvgluBindFramebuffer(NVGLUframebuffer* fb)

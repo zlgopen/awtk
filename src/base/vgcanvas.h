@@ -16,6 +16,7 @@
  * History:
  * ================================================================
  * 2018-03-24 Li XianJing <xianjimli@hotmail.com> created
+ * 2026-08-20 Li XianJing <xianjimli@hotmail.com> add vgcanvas_create_fbo_ex with_depth
  *
  */
 
@@ -173,6 +174,9 @@ typedef ret_t (*vgcanvas_restore_t)(vgcanvas_t* vg);
 
 typedef ret_t (*vgcanvas_create_fbo_t)(vgcanvas_t* vg, uint32_t w, uint32_t h,
                                        bool_t custom_draw_model, framebuffer_object_t* fbo);
+typedef ret_t (*vgcanvas_create_fbo_ex_t)(vgcanvas_t* vg, uint32_t w, uint32_t h,
+                                          bool_t custom_draw_model, bool_t with_depth,
+                                          framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_destroy_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_bind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_unbind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
@@ -253,6 +257,7 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_get_width_t get_width;
   vgcanvas_get_height_t get_height;
   vgcanvas_create_fbo_t create_fbo;
+  vgcanvas_create_fbo_ex_t create_fbo_ex;
   vgcanvas_destroy_fbo_t destroy_fbo;
   vgcanvas_bind_fbo_t bind_fbo;
   vgcanvas_unbind_fbo_t unbind_fbo;
@@ -1393,6 +1398,24 @@ ret_t vgcanvas_destroy(vgcanvas_t* vg);
  */
 ret_t vgcanvas_create_fbo(vgcanvas_t* vg, uint32_t w, uint32_t h, bool_t custom_draw_model,
                           framebuffer_object_t* fbo);
+
+/**
+ * @method vgcanvas_create_fbo_ex
+ * 创建 fbo 对象，可指定是否带深度缓冲。
+ *
+ * 需要深度测试的离线绘制（例如嵌入的 OpenGL 3D 控件）应传入 with_depth=TRUE；普通 2D 离线渲染可继续用 vgcanvas_create_fbo。
+ *
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {uint32_t} w fbo 对象的宽。
+ * @param {uint32_t} h fbo 对象的高。
+ * @param {bool_t} custom_draw_model 是否脱离 awtk 默认的 OpenGL 绘图方法。
+ * @param {bool_t} with_depth TRUE 时附加 depth+stencil（GL_DEPTH24_STENCIL8）。
+ * @param {framebuffer_object_t*} fbo 需要创建 fbo 的对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_create_fbo_ex(vgcanvas_t* vg, uint32_t w, uint32_t h, bool_t custom_draw_model,
+                             bool_t with_depth, framebuffer_object_t* fbo);
 
 /**
  * @method vgcanvas_destroy_fbo

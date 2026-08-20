@@ -62,14 +62,16 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, bool_t custom_draw_model, framebuffer_object_t* fbo) {
+static ret_t vgcanvas_nanovg_create_fbo_ex(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
+                                           bool_t custom_draw_model, bool_t with_depth,
+                                           framebuffer_object_t* fbo) {
   NVGLUframebuffer* handle = NULL;
   vgcanvas_nanovg_t* nanovg = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = nanovg->vg;
   int samples = nanovg->supported_opengl_antialias_hw ? 4 : 0;
 
-  handle = nvgluCreateFramebuffer(vg, (int)(w * vgcanvas->ratio),
-                                  (int)(h * vgcanvas->ratio), 0, samples);
+  handle = nvgluCreateFramebufferEx(vg, (int)(w * vgcanvas->ratio),
+                                    (int)(h * vgcanvas->ratio), 0, samples, with_depth ? 1 : 0);
   return_value_if_fail(handle != NULL, RET_FAIL);
 
   fbo->w = w;
@@ -83,6 +85,10 @@ static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32
   fbo->online_fbo = nvgluGetCurrFramebuffer();
 
   return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, bool_t custom_draw_model, framebuffer_object_t* fbo) {
+  return vgcanvas_nanovg_create_fbo_ex(vgcanvas, w, h, custom_draw_model, FALSE, fbo);
 }
 
 static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {

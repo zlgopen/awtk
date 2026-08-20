@@ -848,6 +848,7 @@ EXPORTS
     vgcanvas_get_canvas
     vgcanvas_destroy
     vgcanvas_create_fbo
+    vgcanvas_create_fbo_ex
     vgcanvas_destroy_fbo
     vgcanvas_bind_fbo
     vgcanvas_unbind_fbo

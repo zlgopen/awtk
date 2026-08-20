@@ -16,6 +16,7 @@
  * History:
  * ================================================================
  * 2018-01-13 Li XianJing <xianjimli@hotmail.com> created
+ * 2026-08-20 Li XianJing <xianjimli@hotmail.com> snapshot GPU FBO with depth
  *
  */
 
@@ -5305,7 +5306,7 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   vg = lcd_get_vgcanvas(c->lcd);
   return_value_if_fail(c != NULL && vg != NULL, NULL);
 
-  vgcanvas_create_fbo(vg, vg->w, vg->h, FALSE, &fbo);
+  vgcanvas_create_fbo_ex(vg, vg->w, vg->h, FALSE, TRUE, &fbo);
   vgcanvas_bind_fbo(vg, &fbo);
   canvas_set_clip_rect(c, r);
   canvas_translate(c, -widget->x, -widget->y);
