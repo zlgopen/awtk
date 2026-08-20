@@ -1,6 +1,6 @@
 # AWTK 中的矢量图绘图函数
 
-### 一、工作模式
+### 工作模式
 
 强大的 Vector graphics library 对 GUI 来说至关重要，一些酷炫的效果更是离不开 Vector graphics library 的支持。最有名的 Vector graphics library 要数下面这些了：
 
@@ -22,9 +22,9 @@
 
 > 注意：agg 使用 GPL 协议开源，如果在商业软件中使用，需要作者协商一下。
 
-![](images/canvas.png)
+![](./images/canvas.png)
 
-### 二、接口函数
+### 接口函数
 
 vgcanvas 的接口如何定义呢，nanovg 和 agg 的接口差异极大，必须为 AWTK 上层提供统一的接口。AWTK 采用了 [HTML5 canvas](http://www.w3school.com.cn/tags/html_ref_canvas.asp) 类似的接口，这套接口非常好用，但由于底层的 agg 和 nanovg 的限制，在有 GPU 和无 GPU 时，效果可能不太一样，甚至不兼容，所以在使用时尽量保守一点：)
 
@@ -49,7 +49,7 @@ ret_t vgcanvas_close_path(vgcanvas_t* vg);
 
 ```
 
-### 三、使用示例
+### 使用示例
 
 ```
   vgcanvas_t* vg = canvas_get_vgcanvas(c);

@@ -1,8 +1,8 @@
-# 优化 stb\_truetype 在 mono 模式下的字体显示效果
+# 优化 stb_truetype 在 mono 模式下的字体显示效果
 
 stb\_truetype 解析 ttf 字体文件时，输出的字模为灰度图，如果需要在mono模式下使用stb\_truetype 则需要另外编写二值化算法。
 
-## 一、stb\_truetype 的二值化算法
+## stb\_truetype 的二值化算法
 
 AWTK 通过给定阈值实现 stb\_truetype 的二值化算法，代码如下：
 
@@ -42,7 +42,7 @@ static ret_t font_stb_gray_to_mono_by_threshold(const glyph_t* gray, glyph_t* mo
 }
 ```
 
-## 二、优化二值化阈值
+## 优化二值化阈值
 
 经测试发现二值化阈值与 ttf 字体文件和字号有关，因此，对 stb\_truetype 获取的灰度图字模进行二值化的阈值做了调整，在不同字号区间使用不同的阈值，代码如下：
 
@@ -69,4 +69,3 @@ static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, gly
 ```
 
 可以看出 stb\_truetype 在 mono 模式下的字体显示效果主要由阈值 threshold 决定，这些阈值是通过测试不断调整得到的，用户也可针对自己使用矢量字体文件进行调整。
-

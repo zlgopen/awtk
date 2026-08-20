@@ -1,6 +1,6 @@
 # 用 icon_at 属性设置图标位置
 
-## 1. style
+## style
 
 在 style 文件中通过 icon_at 属性设置图标位置。
 
@@ -21,9 +21,9 @@
   </style>
 ```
 
-## 2. 示例（多选按钮）
+## 示例（多选按钮）
 
-### 2.1. left 图标在左边中间
+### left 图标在左边中间
 
 * 代码
 
@@ -33,9 +33,9 @@
 
 * 效果
 
-![icon at left1](images/icon_at_left.png)
+![icon at left1](./images/icon_at_left.png)
 
-### 2.2. right 图标在右边中间
+### right 图标在右边中间
 
 * 代码
 
@@ -45,9 +45,9 @@
 
 * 效果
 
-![icon at right1](images/icon_at_right.png)
+![icon at right1](./images/icon_at_right.png)
 
-### 2.3. top 图标在上边中间
+### top 图标在上边中间
 
 * 代码
 
@@ -57,9 +57,9 @@
 
 * 效果
 
-![icon at top](images/icon_at_top.png)
+![icon at top](./images/icon_at_top.png)
 
-### 2.4. bottom 图标在下边中间
+### bottom 图标在下边中间
 
 * 代码
 
@@ -69,9 +69,9 @@
 
 * 效果
 
-![icon at bottom](images/icon_at_bottom.png)
+![icon at bottom](./images/icon_at_bottom.png)
 
-### 2.5. left_top 图标在左上角
+### left_top 图标在左上角
 
 * 代码
     
@@ -81,9 +81,9 @@
 
 * 效果
 
-![icon at left_top](images/icon_at_left_top.png)
+![icon at left_top](./images/icon_at_left_top.png)
 
-### 2.6. right_top 图标在右上角
+### right_top 图标在右上角
 
 * 代码
 
@@ -93,10 +93,10 @@
 
 * 效果
 
-![icon at right_top](images/icon_at_right_top.png)
+![icon at right_top](./images/icon_at_right_top.png)
 
 
-### 2.7. left_bottom 图标在左下角
+### left_bottom 图标在左下角
 
 * 代码
 
@@ -106,9 +106,9 @@
 
 * 效果
 
-![icon at left_bottom](images/icon_at_left_bottom.png)
+![icon at left_bottom](./images/icon_at_left_bottom.png)
 
-### 2.8. right_bottom 图标在右下角
+### right_bottom 图标在右下角
 
 * 代码
 
@@ -119,9 +119,9 @@
 
 * 效果
 
-![icon at right_bottom](images/icon_at_right_bottom.png)
+![icon at right_bottom](./images/icon_at_right_bottom.png)
 
-### 2.9. center 图标在中间
+### center 图标在中间
 
 > 注意：center 属性不要 text 属性，否则退化为 left 属性。
 
@@ -133,9 +133,4 @@
 
 * 效果
 
-![icon at center](images/icon_at_center.png)
-
-
- 
-
-
+![icon at center](./images/icon_at_center.png)

@@ -36,6 +36,7 @@ ret_t tk_mem_init_ex(void* buffer, uint32_t size, ...);
 ```
 
 示例：
+
 ```c
  tk_mem_init_ex(mem1, sizeof(mem1), mem2, sizeof(mem2), mem3, sizeof(mem3), NULL);
 ```

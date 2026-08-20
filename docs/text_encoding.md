@@ -1,6 +1,6 @@
 # AWTK 中的字符串编码
 
-## 1. 背景
+## 背景
 
 不少同学在使用 AWTK 的过程中，遇到过字符串编码的问题。这里介绍一下 AWTK 中的字符串编码，希望能让新手少走弯路。
 
@@ -17,7 +17,7 @@ AWTK 中的字符串都是 Unicode 的，但是会使用两种不同的编码：
 
 > UTF-8 的好处是能够兼容 ASCII，一般字符串操作比较方便。但是在编辑和显示文本时，需要把字符解码出来，使用不方便而且影响性能，所以 AWTK 中需要显示的字符串使用了 UTF-32 编码。
 
-## 2. 源文件的编码
+## 源文件的编码
 
 AWTK 的源文件，不管是 AWTK 本身还是应用程序，源文件一定要使用 UTF-8 BOM 格式。如果文件头有 UTF-8 BOM(Byte Order Mark) ，明确告诉编译器源文件的编码格式。否则不同的编译器可能有不同的解释，导致显示出现乱码。
 
@@ -25,7 +25,7 @@ AWTK 的源文件，不管是 AWTK 本身还是应用程序，源文件一定要
 
 > 好像也有非主流编译器不支持 UTF-8 BOM 格式的源文件。AWTK 也提供了一个工具，用来去掉 UTF-8 BOM，在这个目录下：tools/remove\_utf8\_bom。
 
-## 3. 用 UTF-8 的方式设置控件文本
+## 用 UTF-8 的方式设置控件文本
 
 用 widget\_set\_text\_utf8 设置控件文本，其函数原型如下：
 
@@ -123,7 +123,7 @@ ret_t encoding_gbk_to_utf8(const char* from_str, uint32_t from_size, char* to_st
 char* tk_utf8_trim_invalid_char(char* str);
 ```
 
-## 4. 用 UTF-8 的方式获取控件文本
+## 用 UTF-8 的方式获取控件文本
 
 用 widget\_get\_text\_utf8 可获取控件的文本，其格式为 UTF-8 格式的字符串。
 
@@ -143,7 +143,7 @@ ret_t widget_get_text_utf8(widget_t* widget, char* text, uint32_t size);
 
 这个要注意的是 text 的内存要够大，否则可能触发 assert。
 
-## 5. 用 UTF-32 的方式设置控件文本
+## 用 UTF-32 的方式设置控件文本
 
 用 widget\_set\_text 设置控件的文本，其原型如下：
 
@@ -166,7 +166,7 @@ ret_t widget_set_text(widget_t* widget, const wchar_t* text);
 widget_set_text(button, L"文本");
 ```
 
-## 6. 用 UTF-32 的方式获取控件文本
+## 用 UTF-32 的方式获取控件文本
 
 用 widget\_get\_text 获取控件文本，其原型如下：
 

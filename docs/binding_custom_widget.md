@@ -9,20 +9,20 @@
 * awtk 编译环境
 * 在 bash 中运行
 
-## 1. 获取自定义控件的源码
+## 获取自定义控件的源码
 
 ```
 git clone https://github.com/zlgopen/awtk-widget-qr.git
 ```
 
-## 2. 把自定义控件的源码拷贝到 AWTK 的 ext_widgets 目录下
+## 把自定义控件的源码拷贝到 AWTK 的 ext_widgets 目录下
 
 ```
 cp -rf awtk-widget-qr/src/qr  awtk/src/ext_widgets/qr
 cp -rf awtk-widget-qr/src/qr_register.*  awtk/src/ext_widgets/
 ```
 
-## 3. 注册控件
+## 注册控件
 
 修改 awtk/src/ext\_widgets/ext\_widgets.c
 
@@ -37,7 +37,7 @@ qr_register();
 }
 ```
 
-## 4. 编译 awtk
+## 编译 awtk
 
 ```
 cd awtk
@@ -45,7 +45,7 @@ scons -j2
 cd -
 ```
 
-## 5. 更新绑定代码
+## 更新绑定代码
 
 ```
 git clone https://github.com/zlgopen/awtk-binding
@@ -54,7 +54,7 @@ cd awtk-binding
 cd -
 ```
 
-## 6. 同步绑定代码到需要的语言
+## 同步绑定代码到需要的语言
 
 ```
 git clone https://github.com/zlgopen/awtk-jerryscript
@@ -63,7 +63,7 @@ cd awtk-jerryscript
 scons
 ```
 
-## 7. 注意
+## 注意
 
  * 开发应用程序时记得拷贝自定义控件的 style 到资源中。
  * 如果代码下载太慢，可以从 fastgit 下载。

@@ -1,8 +1,8 @@
-## 控件动画
+# 控件动画
 
 控件动画是一种很常见的动画，常用于入场动画、离场动画、装饰用户界面和吸引用户注意力等。
 
-### 一、动画类型
+## 动画类型
 
 AWTK 目前支持的动画有：
 
@@ -13,7 +13,7 @@ AWTK 目前支持的动画有：
 * rotation：通过改变控件的旋转角度形成动画效果（目前需要 vgcanvas）。
 * 其它任何数值型的属性。如 x/y/w/h 等等。
 
-### 二、主要特色
+## 主要特色
 
 * 支持逆向模式。
 * 支持停止和暂停。
@@ -26,9 +26,9 @@ AWTK 目前支持的动画有：
 * 支持时间倍率，让时间变快和变慢。
 * 支持按名称去开始、暂停、停止和销毁动画。
 
-### 三、使用方法
+## 使用方法
 
-#### 1. 方法一：通过函数 widget\_create\_animator。
+### 方法一：通过函数 widget\_create\_animator。
 
 示例：
 
@@ -151,7 +151,7 @@ ret_t widget_stop_animator(widget_t* widget, const char* name);
 ret_t widget_destroy_animator(widget_t* widget, const char* name);
 ```
 
-#### 2. 方法二：在 XML 中指定
+### 方法二：在 XML 中指定
 
 animation 参数的格式，类似与函数调用。多个参数可以用『;』分隔。如：
 
@@ -162,7 +162,7 @@ animation 参数的格式，类似与函数调用。多个参数可以用『;』
 
 > 此方法最为简单，后续可以在程序中通过动画名字，对动画进行启动和暂停等控制。
 
-#### 3. 方法三：直接使用（不再推荐）
+### 方法三：直接使用（不再推荐）
 
 使用控件动画时，一般需要创建动画、设置参数、设置模式和启动动画四个步骤。如：
 
@@ -175,9 +175,9 @@ animation 参数的格式，类似与函数调用。多个参数可以用『;』
 
 > 此方法比较麻烦，不再推荐使用。
 
-### 四、可用参数
+## 可用参数
 
-#### 1. 公共参数
+### 公共参数
 
 * name 动画名称（缺省为动画的类型如 move）。
 * delay 延迟启动时间（毫秒）。
@@ -190,39 +190,45 @@ animation 参数的格式，类似与函数调用。多个参数可以用『;』
 
 > 以下参数的缺省值为控件当前对应的值。
 
-#### 2. widget\_animator\_move 动画的参数
+### widget\_animator\_move 动画的参数
+
 * x\_from x 起始位置。
 * y\_from y 起始位置。
 * x\_to x 结束位置。
 * y\_to y 结束位置。
 
-#### 3. widget\_animator\_value 动画的参数
+### widget\_animator\_value 动画的参数
+
 * from 起始值。
 * to 结束值。
 
-#### 4. widget\_animator\_opacity 动画的参数
+### widget\_animator\_opacity 动画的参数
+
 * from 起始值 (0-255)。
 * to 结束值 (0-255)。
 
-#### 5. widget\_animator\_scale 动画的参数
+### widget\_animator\_scale 动画的参数
+
 * x\_from x 方向缩放起始值。
 * y\_from y 方向缩放起始值。
 * x\_to x 方向缩放结束值。
 * y\_to y 方向缩放结束值。
 
-#### 6. widget\_animator\_rotation 动画的参数
+### widget\_animator\_rotation 动画的参数
+
 * from 起始值（弧度）。
 * to 结束值（弧度）。
 
-#### 7. 其它数值型属性动画的参数
+### 其它数值型属性动画的参数
+
 * from 起始值。
 * to 结束值。
 
-### 五、插值算法名称 (easing)
+## 插值算法名称 (easing)
 
 请参考：[插值算法名称](easing.md)
 
-### 六、完整示例
+## 完整示例
 
 完整示例请参考：demos/demo\_animator\_app.c
 
@@ -232,7 +238,8 @@ animation 参数的格式，类似与函数调用。多个参数可以用『;』
 ./bin/demo_animator
 ```
 
-### 五、其它
+## 其它
+
  1. 动画对象一般不需主动销毁，在动画结束或控件被销毁时自动销毁。
  
  2. 如使用控件的入场动画，一般不要启用窗口动画。

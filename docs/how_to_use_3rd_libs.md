@@ -4,7 +4,7 @@
 
 > 注：这里所说的 AWTK 模板工程指 AWTK Designer 创建的常规工程，工程目录下有一个 SConstruct 文件，它是 SCons 编译脚本，遵顼 Python 语法，下文中的操作基本都通过编辑该文件实现。
 
-## 1 引用第三方库的源码文件
+## 引用第三方库的源码文件
 
 如果第三方库提供的是源码文件，那么通常我们需要做以下两件事：
 
@@ -22,7 +22,7 @@
 SConstruct
 ```
 
-### 1.1 添加头文件路径
+### 添加头文件路径
 
 在工程的 SConstruct 脚本文件中调用 helper.add_cpppath 函数添加库的头文件路径，传入参数为数组，此处的路径为：工程目录/3rd/xxx，如果有其他路径也可以在数组中添加新的元素，代码如下：
 
@@ -44,7 +44,7 @@ helper.SConscript(SConscriptFiles)
 
 > 注：在调用 helper.add_cpppath 函数后，需要调用 call 函数同步这些数据，call 函数支持链式调用，需要放到最后，且只需调用一次，更多 helper 对象中的相关函数请参考：[利用 app_helper 编写 SConstruct](https://github.com/zlgopen/awtk/blob/master/docs/app_helper_usage.md)。
 
-### 1.2 把源码文件加入工程编译
+### 把源码文件加入工程编译
 
 在工程的 src/SConscript 脚本文件中，将 3rd/xxx 目录下的源码文件添加到 sources 数组中即可把它们编译到可执行程序中，代码如下：
 
@@ -65,7 +65,7 @@ sources += Glob('../3rd/xxx/*.c')
 env.Program(os.path.join(BIN_DIR, 'demo'), sources, LIBS = env['LIBS'])
 ```
 
-### 1.3 扩展用法（添加预处理参数、链接参数）
+### 扩展用法（添加预处理参数、链接参数）
 
 在工程的 SConstruct 脚本文件中调用 helper 对象中的以下函数可以添加预处理参数、链接参数：
 
@@ -83,11 +83,11 @@ helper.add_cpppath(XXX_PATH).add_ccflags(' -DNDEBUG=1 ').call(DefaultEnvironment
 ...
 ```
 
-## 2 引用第三方库编译好的库文件
+## 引用第三方库编译好的库文件
 
 引用第三方库时，更常见的应该是直接引用编译好的库文件（动态库或静态库），此时在工程的 SConstruct 中描述依赖关系即可。具体方式为：先定义依赖描述，再调用 set_deps 将依赖描述设置到 helper 对象中。
 
-### 2.1 常规用法
+### 常规用法
 
 需要注意的是，使用本节方法引用第三方库时，默认按照 AWTK 约定的规则存放第三方库的代码文件和库文件，规则如下：
 
@@ -136,7 +136,7 @@ helper.call(DefaultEnvironment)
 
 > 注：helper.set_deps 一定要在 helper.call 之前调用，call 函数支持链式调用，需要放到最后，且只需调用一次。
 
-### 2.2 依赖描述参数
+### 依赖描述参数
 
 DEPENDS_LIBS 是一个数组，可以添加多个第三方依赖库，每个元素是一个依赖描述对象，可以指定以下参数：
 
@@ -182,6 +182,6 @@ DEPENDS_LIBS 是一个数组，可以添加多个第三方依赖库，每个元�
 - ccflags C/C++语言的预处理参数（可选）。
 
 
-### 2.3 完整示例
+### 完整示例
 
 - [awtk-mvvm-c-hello](https://github.com/zlgopen/awtk-mvvm-c-hello/blob/master/SConstruct)

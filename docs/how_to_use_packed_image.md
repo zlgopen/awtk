@@ -1,6 +1,6 @@
 # 如何使用 packed 图片
 
-## 1 介绍
+## 介绍
 
 有时我们把多张小图片打包成一张大图片，这种做法在游戏行业和串口屏经常使用。这样做有以下几个原因：
 
@@ -10,7 +10,7 @@
 
 最新的 AWTK 对 packed 图片提供了支持。本文介绍一下如何使用 packed 的图片。
 
-## 2 如何指定 packed 图片中的子图
+## 如何指定 packed 图片中的子图
 
 在 style 中指定图片名称时，用#分隔图片名称和子图区域，符号"#"之前是大图片的名称，符号"#"之后是设置子图区域的字符串。指定子图区域的方式有以下几种：
 
@@ -35,6 +35,7 @@
 ```xml
  <pressed bg_image="image_packed_fg#xywh(106,0,106,54)"/>
 ```
+
 > 注：那么子图的区域就是 (106,0,106,54) 
 
 - grid(rows,cols,row,col) 将图片划分为 rows 行 cols 列等大小的网格。row 和 col 指定使用哪一格的子图。如：
@@ -45,7 +46,7 @@
 
 > 注：如果图片大小是 80x60，那么子图的区域就是 (40,0,20,20) 
 
-## 3 示例
+## 示例
 
 此处准备两张packed图片，正常时的效果图片名称为image_packed_bg，颜色浅一点；按下时的效果图片名称为image_packed_fg，颜色深一点。
 
@@ -59,7 +60,7 @@
 
 > 注：两张图看起来有些相近，第二张是把第一张调暗后得到的，不过运行起来后按下效果很明显的。
 
-### 3.1 UI 文件
+### UI 文件
 
 ```xml
 <window>
@@ -80,7 +81,7 @@
 </window>
 ```
 
-### 3.2 Style 文件
+### Style 文件
 
 - 使用第一张图为 view 的背景图。按钮在正常情况什么都不用显示。
 - 按钮在 pressed 状态下背景用指定区域的图片。
@@ -148,17 +149,17 @@
 </view>
 ```
 
-### 3.3 运行例程
+### 运行例程
 
 ```bash
 ./bin/preview_ui ui=design/default/ui/image_packed.xml
 ```
 
-## 4. 限制
+## 限制
 
 - 目前只能在 style 中 和 image 控件使用。
 - draw\_type 只支持 default|scale|center|icon 等几种。
 
-## 5. 其它
-  * [packed image demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/packed_image.c)
+## 其它
 
+  * [packed image demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/packed_image.c)

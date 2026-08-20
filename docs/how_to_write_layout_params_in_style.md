@@ -2,7 +2,7 @@
 
 一个控件在多个界面出现，而且它的布局参数是一样的，可以把它布局参数放到 style 中，这样可以提高可维护性。
 
-## 一、在 style 中指定布局参数
+## 在 style 中指定布局参数
 
 * 控件自身布局参数使用 self_layout 属性指定。请参考 [控件布局参数文档](layout.md)
 
@@ -20,7 +20,7 @@
 
 > 完整示例请参考 [styles/button.xml](https://github.com/zlgopen/awtk/blob/master/design/default/styles/button.xml)
 
-## 二、在 UI 文件中引用
+## 在 UI 文件中引用
 
 示例：
 

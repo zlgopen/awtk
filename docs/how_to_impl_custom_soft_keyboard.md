@@ -2,7 +2,7 @@
 
 有时需要把软键盘嵌入到窗口内部（比如计算器和密码输入等），这时可以使用自定义软键盘。
 
-### 一、编辑器设置 input_type 为"custom"（它会禁止内置的软键盘）。
+### 编辑器设置 input_type 为"custom"（它会禁止内置的软键盘）。
 
 ```
 <edit x="c" y="10" w="90%" h="30" focused="true" input_type="custom" text="" />
@@ -10,7 +10,7 @@
 
 > 如果希望初始化时编辑器自动获的焦点，可以设置 focused 为 true。
 
-### 二、软键盘的按钮放入一个 view（任何容器控件均可）中，并将 view 的 is\_keyboard 设置为 true。
+### 软键盘的按钮放入一个 view（任何容器控件均可）中，并将 view 的 is\_keyboard 设置为 true。
 
 ```
   <view y="60" x="c" w="90%" h="-60" is_keyboard="true" 
@@ -30,9 +30,9 @@
   </view>
 ```
 
-### 三、处理按钮事件
+### 处理按钮事件
 
-#### 1. 处理正常按键
+#### 处理正常按键
 
 ```
 static ret_t on_send_key(void* ctx, event_t* e) {
@@ -48,7 +48,7 @@ static ret_t on_send_key(void* ctx, event_t* e) {
 
 ```
 
-#### 2. 处理删除键
+#### 处理删除键
 
 ```
 static ret_t on_backspace(void* ctx, event_t* e) {

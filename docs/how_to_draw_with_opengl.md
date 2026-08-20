@@ -2,7 +2,7 @@
 
 在有 GPU 的情况下，AWTK 使用 OpenGL 绘制图形。但是你会发现，如果自己在 paint 事件中使用 OpenGL 绘制图形，图形是无法显示的。原因是，AWTK 采用 nanovg 绘制图形，而 nanovg 并不是在绘制时立即执行的，而是在整个界面绘制完成 (EndFrame 中）集中提交给 GPU 执行的。所以，如果在 paint 事件中使用 OpenGL 绘制图形，这些图形会被 nanovg 绘制的图形覆盖掉。这里我们介绍一下，使用 OpenGL 绘制图形时的几个注意事项：
 
-## 1. 需要提交前面的缓存图形
+## 需要提交前面的缓存图形
 
 在使用 OpenGL 绘制之前，需要调用函数 vgcanvas_flush 刷新前面的缓存图形。
 
@@ -24,7 +24,7 @@ static ret_t on_paint(void* ctx, event_t* e) {
 }
 ```
 
-## 2. 需要初始化 OpenGL
+## 需要初始化 OpenGL
 
 在 Windows 平台，需要调用 opengl_init 初始化 OpenGL。
 
@@ -57,7 +57,7 @@ static ret_t glview_init(gl_info_t* info) {
 
 ```
 
-## 3. 需要链接 glad 库
+## 需要链接 glad 库
 
 ```
 env.Program(os.path.join(BIN_DIR, 'demo_opengl'), ['opengl.c', 'assets.c'], LIBS=env['LIBS'] + ['glad'])

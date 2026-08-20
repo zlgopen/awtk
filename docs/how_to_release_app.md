@@ -4,9 +4,8 @@
 
 假如当前项目是 awtk-hello，在 awtk-hello 目录中运行下面的命令：
 
-```
+```bash
 python ./scripts/release.py
 ```
 
 > 本脚本适用于 Linux、Windows、MacOS、Linux_FB，不适用于其它嵌入式系统。对于其它嵌入式系统，本脚本可以将运行时需要的资源拷贝出来，放到开发板的 T 卡上，自己删除 release/bin 目录即可。
-

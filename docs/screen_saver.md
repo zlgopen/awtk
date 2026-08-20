@@ -2,7 +2,7 @@
 
 屏保是一个普通窗口，定时切换不同的图片或者动态绘制一些图形，以到达保护屏幕的效果。
 
-## 一、设置屏保定时器时间
+## 设置屏保定时器时间
 
 用函数 window\_manager\_set\_screen\_saver\_time 设置屏保时间。
 
@@ -23,7 +23,7 @@ ret_t window_manager_set_screen_saver_time(widget_t* widget, uint32_t screen_sav
 window_manager_set_screen_saver_time(window_manager(), 180 * 1000);
 ```
 
-## 二、注册事件并打开屏保窗口
+## 注册事件并打开屏保窗口
 
 示例：
 
@@ -65,7 +65,7 @@ ret_t application_init() {
 
 > 可以在 XML 设置 window 的 fullscreen 属性，让屏保窗口进入全屏状态。
 
-## 三、扩展用法
+## 扩展用法
 
 有时需求可能是这样的：
 

@@ -4,9 +4,9 @@ AWTK 内置的控件没有使用多点触摸事件，只是把触摸事件当作
 
 AWTK 支持 [多点触摸手势事件](how_to_use_multi_gesture.md)，也支持原始的多点触摸事件。这里介绍一下如何使用原始的多点触摸事件。 
 
-![](images/multi_touch_draw.jpg)
+![](./images/multi_touch_draw.jpg)
 
-## 一、多点触摸事件的类型
+## 多点触摸事件的类型
 
 ```c
   /**
@@ -26,7 +26,7 @@ AWTK 支持 [多点触摸手势事件](how_to_use_multi_gesture.md)，也支持�
   EVT_TOUCH_UP,
 ```
 
-## 二、多点触摸事件的数据结构
+## 多点触摸事件的数据结构
 
 ```c
 /**
@@ -84,7 +84,7 @@ x/y 在 0-1 之间，表示与屏幕宽/高度的比例，这个和 SDL 传上�
   widget_on(win, EVT_TOUCH_MOVE, on_touch_move, win);
 ```
 
-## 四、支持的平台
+## 支持的平台
 
 目前支持的平台有：
 
@@ -108,7 +108,7 @@ x/y 在 0-1 之间，表示与屏幕宽/高度的比例，这个和 SDL 传上�
  */
 ret_t main_loop_post_touch_event(main_loop_t* l, event_type_t event_type, xy_t x, xy_t y);
 ```
-## 五、示例代码
+
+## 示例代码
 
 完整例子请参考 [这里](https://gitee.com/zlgopen/awtk-web/tree/master/examples/AwtkApplicationCTouchEvent)。
-

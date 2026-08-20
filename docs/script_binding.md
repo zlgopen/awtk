@@ -1,4 +1,3 @@
-
 # AWTK 脚本绑定的实现原理 - lua 绑定
 
 脚本化是 [AWTK](https://github.com/zlgopen/awtk) 的一个基本功能。[AWTK](https://github.com/zlgopen/awtk) 计划支持嵌入式系统中常用的脚本，如 lua、python 和 jerryscript。脚本绑定说简单也简单，说复杂也复杂，采用 FFI(calling external C functions) 和 SWIG 绑定一些简单的函数是很方便的，但绑定一个复杂的 GUI 系统还是很有挑战的。之所以不采用通用的工具，而是实现自己的代码产生器，主要有以下考虑：
@@ -17,7 +16,7 @@
 
 基于以上这些原因，我决定自己实现 [AWTK](https://github.com/zlgopen/awtk) 的脚本绑定机制。它的实现原理如下：用特定格式的 API 注释来描述要脚本化的 API，用一个名为 gen\_idl 的工具把注释提取出来生成 JSON 的接口描述文件，然后用不同的代码产生器生成对应语言的绑定：
 
-![1](images/api_idl_usage.svg) 
+![1](./images/api_idl_usage.svg)
 
 ### 参考
 

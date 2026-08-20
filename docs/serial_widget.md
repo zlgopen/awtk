@@ -1,8 +1,8 @@
-# 使用 serial\_widget 简化串口编程
+# 使用 serial_widget 简化串口编程
 
 把串口做成一个控件并不是一个新鲜的东西，记得在 Visual Basic 里有个通信组件，就是用来简化串口编程的。最近 AWTK 也提供了这样一个控件 serial\_widget，当串口数据到来时，它触发 EVT\_DATA 事件，在该事件中你可以读取数据，并更新界面或者回应对方。本文介绍一下它的使用方法：
 
-## 1. 基本功能
+## 基本功能
 
 我们编写一个简单的应用程序，它有两个功能：
 
@@ -10,9 +10,9 @@
 
 * 把界面输入的数据发送给对方。
 
-## 2. UI 界面描述文件
+## UI 界面描述文件
 
-![](images/serial.png)
+![](./images/serial.png)
 
 ```xml
 <window>
@@ -28,7 +28,7 @@
 </window>
 ```
 
-## 3. 接收数据
+## 接收数据
 
 * 先注册数据事件的处理函数
 
@@ -55,7 +55,7 @@ static ret_t on_data(void* ctx, event_t* e) {
 }
 ```
 
-## 4. 发送数据
+## 发送数据
 
 从界面读取数据，并发送到串口
 
@@ -79,7 +79,7 @@ static ret_t on_send(void* ctx, event_t* e) {
 ./bin/demo_serial
 ```
 
-## 5. 测试
+## 测试
 
 > 下面操作是在 Linux/MacOS 上测试的，Windows 下需要安装虚拟串口软件，具体做法有些不同，请自行调整。
 
@@ -115,7 +115,7 @@ cat /dev/ttys033
 date >/dev/ttys033
 ```
 
-## 6. 使用 fscript 进行串口编程
+## 使用 fscript 进行串口编程
 
 也可以使用 fscript 进行串口编程（配合 AWBlock 就简单了）。AWTK 里提供一个与前面功能相同的例子，总体来看要简洁不少。
 
@@ -156,13 +156,12 @@ date >/dev/ttys033
 ./bin/preview_ui design/default/ui/serial.xml
 ```
 
-## 7. 移植
+## 移植
 
 目前串口只实现了Windows, Linux, MacOS, Android 和 AWorks 等平台，其它平台需要自己移植。
 
 请参考AWorks平台的移植：src/platforms/aworkslp/serial_helper.c
 
-## 8. 注意
+## 注意
 
 * windows 平台需要调用 tk\_socket\_init 初始化 socket。
-

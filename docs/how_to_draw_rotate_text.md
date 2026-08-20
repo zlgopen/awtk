@@ -81,7 +81,7 @@ static bitmap_t* bitmap_from_str(canvas_t* canvas, wchar_t* str, color_t tc) {
   canvas_widget_draw_image_center(widget, vg, text_img);
 
   vgcanvas_restore(vg);
-  ```
+```
 
 完整代码请参考：[vgcanvas_draw_text](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/vgcanvas_draw_text.c)
 

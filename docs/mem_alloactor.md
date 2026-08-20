@@ -1,8 +1,8 @@
 # 内存分配器
 
-## 1. 介绍
+## 介绍
 
-![](images/mem_allocator.png)
+![](./images/mem_allocator.png)
 
 * mem\_allocator 定义了内存分配器的基本接口
 
@@ -58,7 +58,7 @@ static inline void mem_allocator_free(mem_allocator_t* allocator, void* ptr) ;
 static inline ret_t mem_allocator_dump(mem_allocator_t* allocator);
 ```	
 
-## 2. 基本内存分配器
+## 基本内存分配器
 
 * mem\_allocator\_std 基于标准内存管理函数 malloc/free/realloc 实现的内存分配器。在系统提供了 malloc/free/realloc 函数时，请使用本分配器。
 
@@ -66,19 +66,19 @@ static inline ret_t mem_allocator_dump(mem_allocator_t* allocator);
 
 > 通过宏 HAS\_STD\_MALLOC 来选择是否使用标准的内存分配器。一般在 PC 上修改 awtk\_config.py，在嵌入式系统一般修改 awtk\_config.h。
 
-## 3. 装饰器-加锁
+## 装饰器-加锁
 
 mem\_allocator\_lock 对现有的 allocator 进行包装，提供互斥功能。由于标准内存分配器使用的 malloc/free/realloc 本身有互斥功能，所以本装饰器主要用于 mem\_allocator\_simple 。
 
-## 4. 装饰器-防止碎片
+## 装饰器-防止碎片
 
 mem\_allocator\_pool 对现有的 allocator 进行包装，预先分配一部分内存，用于分配小块内存，可以避免内存碎片。
 
-经过测试，一般情况下，80%的情况，都是小块内存，在 pool 中分配，可以有效的防止内存碎片。
+经过测试，一般情况下，80\%的情况，都是小块内存，在 pool 中分配，可以有效的防止内存碎片。
 
 > 开发者可以跟踪 mem\_allocator\_pool 的使用情况，根据实际情况调整预先分配的块数。
 
-## 5. 装饰器-调试
+## 装饰器-调试
 
 mem\_allocator\_debug 对现有的 allocator 进行包装，记录分配的内存，用于帮助分析内存的使用和泄露。
 
@@ -106,9 +106,8 @@ mem\_allocator\_debug 对现有的 allocator 进行包装，记录分配的内�
 
 请参考 demos/demo\_ui\_app.c
 
-## 6. 装饰器-内存耗尽
+## 装饰器-内存耗尽
 	
 mem\_allocator\_oom 对现有的 allocator 进行包装，如果分配内存失败，调用预先设置的回调函数释放内存，然后再重试。
 
 给应用程序优雅退出的机会。
-

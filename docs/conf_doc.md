@@ -6,11 +6,11 @@
 
 通常，操作这些数据文件的函数各不相同，对于程序员来说即是学习负担，也是记忆负担。AWTK 提供了一套统一的接口函数，同一套接口函数，可以操作不同的格式的数据文件。
 
-## 1. 基本用法
+## 基本用法
 
 加载数据文件成功后得到一个 object 的实例，可以用 object 的函数对其进行增加、修改、删除和查询。如果熟悉 object 的用法，那就非常简单了。
 
-### 1.1 读取数据
+### 读取数据
 
 > 下面的函数可以读取任意基本类型的数据。
 
@@ -45,7 +45,7 @@ ret_t tk_object_get_prop(tk_object_t* obj, const char* name, value_t* v);
 const char* tk_object_get_prop_str(tk_object_t* obj, const char* name);
 ```
 
-### 1.2 增加/修改数据
+### 增加/修改数据
 
 > 下面的函数可以增加/修改任意基本类型的数据。
 
@@ -82,7 +82,7 @@ ret_t tk_object_set_prop(tk_object_t* obj, const char* name, const value_t* valu
 ret_t tk_object_set_prop_str(tk_object_t* obj, const char* name, const char* value);
 ```
 
-### 1.3 删除数据
+### 删除数据
 
 ```c
 /**
@@ -98,7 +98,7 @@ ret_t tk_object_set_prop_str(tk_object_t* obj, const char* name, const char* val
 ret_t tk_object_remove_prop(tk_object_t* obj, const char* name);
 ```
 
-### 1.4 path 的基本格式
+### path 的基本格式
 
 * 配置信息通常都是层次结构的，为了能访问所有数据，path 也必须是多级的，各级的名称之间用“.”分隔。
 
@@ -164,19 +164,19 @@ ret_t tk_object_remove_prop(tk_object_t* obj, const char* name);
 [server]
   port = 8080
   timeout = 1.000000
-
 ```
+
 在上面的例子中，"wifi.#index" 获取 wifi 的序数为 0，"server.#index"  获取 server 的序数为 1。
 
-## 2. 高级用法
+## 高级用法
 
 上面的函数使用简单，但是在数据量大的时候，不如直接去操作 node 效率更高，如果有此需求可以查看 src/conf_io/conf_node.h 中函数，以及单元测试中的用法，这里不再赘述。
 
-## 3. 打开和保存
+## 打开和保存
 
 >此时需要使用具体格式的函数
 
-### 3.1 JSON 格式
+### JSON 格式
 
 * 打开
 
@@ -210,7 +210,7 @@ tk_object_t* conf_json_load(const char* url, bool_t create_if_not_exist);
 ret_t conf_json_save_as(tk_object_t* obj, const char* url);
 ```
 
-### 3.2 XML 格式
+### XML 格式
 
 * 打开
 
@@ -245,7 +245,7 @@ tk_object_t* conf_xml_load(const char* url, bool_t create_if_not_exist);
 ret_t conf_xml_save_as(tk_object_t* obj, const char* url);
 ```
 
-### 3.3 INI 格式
+### INI 格式
 
 * 打开
 
@@ -278,10 +278,9 @@ tk_object_t* conf_ini_load(const char* url, bool_t create_if_not_exist);
  * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败
  */
 ret_t conf_ini_save_as(tk_object_t* obj, const char* url);
-
 ```
 
-### 3.4 UBJSON 格式
+### UBJSON 格式
 
 * 打开
 
@@ -298,6 +297,7 @@ ret_t conf_ini_save_as(tk_object_t* obj, const char* url);
  * @return {tk_object_t*} 返回配置对象。
  */
 tk_object_t* conf_ubjson_load(const char* url, bool_t create_if_not_exist);
+```
 
 * 保存
 
@@ -315,7 +315,7 @@ tk_object_t* conf_ubjson_load(const char* url, bool_t create_if_not_exist);
 ret_t conf_ubjson_save_as(tk_object_t* obj, const char* url);
 ```
 
-### 3.5 YAML 格式
+### YAML 格式
 
 * 打开
 
@@ -348,7 +348,6 @@ tk_object_t* conf_yaml_load(const char* url, bool_t create_if_not_exist);
  * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败
  */
 ret_t conf_yaml_save_as(tk_object_t* obj, const char* url);
-
 ```
 
 ## 完整示例

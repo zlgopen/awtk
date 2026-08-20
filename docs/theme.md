@@ -1,8 +1,9 @@
-## AWTK 中的窗体样式
+# AWTK 中的窗体样式
 
 设计漂亮的界面并非程序员的强项，AWTK 通过窗体样式提供这样一种机制，让设计漂亮的界面变得非常容易。通过窗体样式，可以改变控件的背景颜色、边框颜色、字体颜色、字体、字体大小、背景图片、背景图片的显示方式和图标等属性。同时 AWTK 也提供了一些窗体样式重用的机制，让窗体样式文件的开发和维护变得容易。
 
-### 一、窗体样式的结构
+## 窗体样式的结构
+
 AWTK 的窗体样式按控件进行分类，每种控件可以有多种不同的风格，每种风格下又有不同状态下的配置。比如：
 
 ```
@@ -43,9 +44,9 @@ AWTK 的窗体样式按控件进行分类，每种控件可以有多种不同的
 
 * [控件状态定义](manual/widget_state_t.md)
 
-### 二、窗体样式的属性
+## 窗体样式的属性
 
-#### 基本属性
+### 基本属性
 
 * bg\_color 背景颜色。
 * fg\_color 前景颜色。用途视具体控件而定，如进度条已完成部分的颜色使用前景颜色。
@@ -92,7 +93,7 @@ AWTK 的窗体样式按控件进行分类，每种控件可以有多种不同的
 * [AWTK 中图片的绘制方式](image_draw_type.md)
 * [如何在窗体样式文件中写控件布局参数](how_to_write_layout_params_in_style.md)
 
-#### 扩展属性
+### 扩展属性
 
 第三方扩展控件可以扩展控件特有的属性，遵循下列规则即可。
 
@@ -101,7 +102,7 @@ AWTK 的窗体样式按控件进行分类，每种控件可以有多种不同的
 * 名称带有 name/image 视为字符串格式的值。
 * 其它视为整数格式的值。
 
-### 三、编译窗体样式
+## 编译窗体样式
 
 窗体样式用 XML 文件编写，然后用 themegen 生成 C 常量数据，并加入资源管理器，才能在程序中使用。
 
@@ -122,9 +123,10 @@ AWTK 的窗体样式按控件进行分类，每种控件可以有多种不同的
 
 resource_manager_add(theme_default);
 ```
+
 > 参考 demos/resource.c
 
-### 四、为控件指定 style
+## 为控件指定 style
 
 * 在代码中，使用函数 widget\_use\_style 指定。
 
@@ -144,7 +146,7 @@ resource_manager_add(theme_default);
 </dialog>
 ```
 
-### 五、每个窗口支持独立的窗体样式
+## 每个窗口支持独立的窗体样式
 
 像微信小程序那样，AWTK 中每个窗口（包括对话框和其它窗口）可以有自己的窗体样式文件。
 
@@ -156,7 +158,7 @@ resource_manager_add(theme_default);
 
 > 参考：dialog1.xml
 
-### 六、inline style
+## inline style
 
 窗体样式数据是只读的，它的好处是速度快，占用内存少。但在一些特殊情况下，我们希望通过函数直接修改控件的 style，或者在 UI 描述的 XML 文件中直接写 style。我们把这类 style 称为 inline style，具体用法如下：
 
@@ -260,7 +262,7 @@ ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, uint3
 > inline style 会消耗更多内存，而且不方便切换窗体样式，一般应该尽量避免使用。
 > 注意，以前的版本使用:分隔，由于不合 XML 规范，改为用.分隔，仍然保持对:的兼容。
 
-#### 注意：
+### 注意：
 
 * 用 widget\_set\_style\_color 设置颜色时：
 
@@ -270,7 +272,7 @@ ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, uint3
 
 > 颜色值如果用#开头，用十六进制表示，每两个数字表示一个颜色通道，从高位到低位，依次是 RGBA 或 RGB。
 
-### 七、相关文档
+## 相关文档
 
 * [AWTK 中的颜色格式](color_format.md)
 

@@ -6,7 +6,7 @@
 
 使用方法如下：
 
-## 1. 链接动态库
+## 链接动态库
 
 > LIBS 参数使用 awtk.SHARED_LIBS 
 
@@ -25,7 +25,7 @@ DefaultEnvironment(TOOLS = APP_TOOLS,
 )
 ```
 
-## 2. 链接静态库
+## 链接静态库
 
 > LIBS 参数使用 awtk.STATIC_LIBS 
 

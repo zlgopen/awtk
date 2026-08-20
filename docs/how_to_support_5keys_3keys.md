@@ -77,7 +77,7 @@ typedef enum _keyboard_type_t {
 <button name="button" text="button" focusable="true"/>
 ```
 
-> 备注：edit及其组合控件（比如：combo_box、combo_box_ex等）默认支持焦点停留，无需设置 focusable 属性。
+> edit及其组合控件（比如：combo_box、combo_box_ex等）默认支持焦点停留，无需设置 focusable 属性。
 
 如果希望软键盘也支持按键切换焦点，步骤如下：
 

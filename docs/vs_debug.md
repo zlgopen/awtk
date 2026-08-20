@@ -1,4 +1,4 @@
-## 在 Visual Studio 中调试 AWTK
+# 在 Visual Studio 中调试 AWTK
 
 scons 编译时并没有生成 Visual Studio 的工程，如果需要个在 Visual Studio 中调试 AWTK 应用程序，可按下列步骤进行：
 

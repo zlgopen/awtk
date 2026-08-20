@@ -1,14 +1,14 @@
 # 编写跨平台的代码
 
-## 1. 尽量使用 tkc 中的函数
+## 尽量使用 tkc 中的函数
 
 tkc 中提供了编码、时间、网络、串口、线程、互斥和文件系统等各种需要跨平台接口的封装，这些接口在各个平台都有实现。
 
-## 2. 针对接口编程
+## 针对接口编程
 
 如果需要的某个功能，在各个平台都有不同的实现，先研究各个平台提供的功能，再抽象一个统一的接口，针对各个平台实现一个适配器。应用程序使用统一的接口去访问这些功能，应用程序不但能够跨平台运行，代码也更具可读性。
 
-## 3. 指定特定平台的库、头文件、预处理参数和链接参数
+## 指定特定平台的库、头文件、预处理参数和链接参数
 
 helper 提供了一组函数来处理不同平台的参数。平台名称的取值有：
 
@@ -19,7 +19,7 @@ helper 提供了一组函数来处理不同平台的参数。平台名称的取�
 > Android 和  IOS 不使用 scons 编译，故不使用这种方式。
 
 
- * 添加平台特有的库
+* 添加平台特有的库
 
 示例：
 
@@ -29,43 +29,43 @@ helper.add_platform_libs("Linux", ["pthread", "dl", "readline", "m"])
 helper.add_platform_libs("Darwin", ["pthread", "dl", "readline", "m"])
 ```
 
- * 添加平台特有的库的搜索路径
+* 添加平台特有的库的搜索路径
  
-```
- add_platform_libpath(self, platform_name, APP_LIBPATH)
+```python
+add_platform_libpath(self, platform_name, APP_LIBPATH)
 ```
 
 示例：
 
-```
+```python
 helper.add_platform_libpath("Linux", ["/usr/local/lib"])
 ```
 
 > 注意这里的 APP_LIBPATH 是数组类型。
 
- * 添加平台特有的头文件的搜索路径
+* 添加平台特有的头文件的搜索路径
 
-```
-  add_platform_cpppath(self, platform_name, APP_CPPPATH)
+```python
+add_platform_cpppath(self, platform_name, APP_CPPPATH)
 ```
 
 示例：
 
-```
+```python
 helper.add_platform_libpath("Linux", ["/usr/local/include"])
 ```
-> 注意这里的 APP_CPPPATH 是数组类型
 
+> 注意这里的 APP_CPPPATH 是数组类型
 
 * 添加平台特有的宏定义预处理参数
 
-```
- add_platform_ccflags(self, platform_name, APP_CCFLAGS)
+```python
+add_platform_ccflags(self, platform_name, APP_CCFLAGS)
 ```
 
 示例:
 
-```
+```python
 helper.add_platform_ccflags("Linux", " -DSOME_MACRO=1 ")
 ```
 
@@ -73,13 +73,13 @@ helper.add_platform_ccflags("Linux", " -DSOME_MACRO=1 ")
 
 * 添加平台特有的C++文件的预处理参数
 
-```
- add_platform_cxxflags(self, platform_name, APP_CXXFLAGS)
+```python
+add_platform_cxxflags(self, platform_name, APP_CXXFLAGS)
 ```
 
 示例:
 
-```
+```python
 helper.add_platform_cxxflags("Linux", " -DSOME_MACRO=1 ")
 ```
 
@@ -87,12 +87,13 @@ helper.add_platform_cxxflags("Linux", " -DSOME_MACRO=1 ")
 
 * 添加平台特有的链接参数
 
+```python
+add_platform_linkflags(self, platform_name, APP_LINKFLAGS)
 ```
- add_platform_linkflags(self, platform_name, APP_LINKFLAGS)
-```
+
 > linkflags 是字符串格式不是数组
 
-## 4. 区分各个平台的宏
+## 区分各个平台的宏
 
 * WIN32 或 WINDOWS Windows 平台
 * MINGW Windows 平台的 MinGW 编译。 
@@ -135,7 +136,7 @@ helper.add_platform_cxxflags("Linux", " -DSOME_MACRO=1 ")
 #endif /*__APPLE__*/
 ```
 
-## 5. 添加平台特有的文件
+## 添加平台特有的文件
 
 有些文件是特定平台才需要的，可以根据平台的名称，来决定添加哪些文件。
 

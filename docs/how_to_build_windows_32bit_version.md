@@ -34,4 +34,3 @@ NANOVG_BACKEND='AGGE'
 scripts/update_res.py clean
 scripts/update_res.py all
 ```
-

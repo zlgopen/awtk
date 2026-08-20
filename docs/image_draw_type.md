@@ -1,6 +1,6 @@
 # AWTK 中的图片显示方式
 
-## 一、显示方式
+## 显示方式
 
 AWTK 提供了多种图片显示方式：
 
@@ -18,13 +18,13 @@ AWTK 提供了多种图片显示方式：
 * 水平方向 3 宫格显示，垂直方向缩放 (patch3\_x\_scale\_y)。将图片在水平方向上分成等大小的 3 块，左右两块按原大小显示在目标矩形的左右，中间一块缩放显示在目标区域中间剩余部分。
 * 垂直方向 3 宫格显示，水平方向缩放 (patch3\_y\_scale\_x)。将图片在垂直方向上分成等大小的 3 块，上下两块按原大小显示在目标矩形的上下，中间一块缩放显示在目标区域中间剩余部分。
 
-## 二、在程序中使用（仅限于 image 控件）
+## 在程序中使用（仅限于 image 控件）
 
 ```
 image_set_draw_type(img, IMAGE_DRAW_CENTER);
 ```
 
-## 三、在 XML 界面描述文件中使用（仅限于 image 控件）
+## 在 XML 界面描述文件中使用（仅限于 image 控件）
 
 ```
 <window name="main" x="0" y="0" w="320" h="480">
@@ -33,7 +33,7 @@ image_set_draw_type(img, IMAGE_DRAW_CENTER);
 </window>
 ```
 
-## 四、在窗体样式中使用（适用于所有控件的背景）
+## 在窗体样式中使用（适用于所有控件的背景）
 
 ```
 <progress_bar>
@@ -44,7 +44,7 @@ image_set_draw_type(img, IMAGE_DRAW_CENTER);
 </progress_bar>
 ```
 
-## 五、查看实际效果
+## 查看实际效果
 
 images.xml 展示了各种绘制方式。
 

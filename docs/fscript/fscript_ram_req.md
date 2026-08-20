@@ -18,7 +18,7 @@
 * 有无调试信息：有。
 * 优化等级：-O0。
 
-> 备注：以下测试均为无 GUI 界面的结果，即只跑 fscript 脚本。
+> 以下测试均为无 GUI 界面的结果，即只跑 fscript 脚本。
 
 ## 推荐的栈堆大小
 
@@ -79,7 +79,7 @@ FScript 初始化所需的 Heap 详见下表：
 | 扩展模块 fscript_ext                                   | 约 2.4 KB | 注册 fscript 扩展模块函数的工厂和动态数组占 2 KB左右；注册 data_writer/data_reader 相关函数占 0.4 KB 左右 |
 | 执行 fscript 脚本所需的上下文（object_default_t 对象） | 144 字节  | 此处指 object 上下文对象为空，即不保存任何 fscript 变量时的情况                                           |
 
-> 备注：在 fscript 脚本中定义的全局变量都会保存到 object 上下文对象中，局部变量则会保存到 fscript 对象的 locale 属性中。
+> 在 fscript 脚本中定义的全局变量都会保存到 object 上下文对象中，局部变量则会保存到 fscript 对象的 locale 属性中。
 
 ### FScript 定义数据所需的 Heap
 

@@ -8,7 +8,7 @@
 
 由于 AWTK 本身没有提供震动和声音的接口，所以 AWTK 提供了一个 ui_feedback 接口，开发者可以设置回调函数，去播放声音或震动。
 
-## 1 反馈回调函数
+## 反馈回调函数
 
 反馈回调函数的原型和初始化函数如下：
 
@@ -43,7 +43,7 @@ ret_t ui_feedback_init(ui_on_feedback_t on_feedback, void* ctx);
 
 在回调函数中，开发者可以根据事件的类型、当前设置和控件的其它属性，来决定如何反馈。
 
-## 2 示例
+## 示例
 
 由于 AWTK 没有提供震动和播放声音的接口，所以这里通过修改文本的方式展现该功能，要实现上面的功能点很简单，其步骤如下：
 
@@ -85,4 +85,3 @@ ret_t home_page_init(widget_t* win, void* ctx) {
   return RET_OK;
 }
 ```
-

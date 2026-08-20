@@ -1,6 +1,6 @@
-## 嵌入式平台移植注意事项
+# 嵌入式平台移植注意事项
 
-### 一、配置的宏
+## 配置的宏
 
 > awtk_config.h
 
@@ -227,7 +227,7 @@
 
 > 请参考：src/base/awtk\_config\_sample.h
 
-### 二、include 路径
+## include 路径
 
 ```
 awtk/src
@@ -241,46 +241,46 @@ awtk/3rd/libunibreak
 awtk-port
 ```
 
-### 三、要加入到工程的文件
+## 要加入到工程的文件
 
-| 文件                        |      说明    | 
-|-----------------------------|:-------------|
-| src/awtk\_global.c          | 加入       
-| src/tkc                     | 全部加入
-| src/base                    | 全部加入
-| src/widgets                 | 全部加入
-| src/xml                     | 全部加入
-| src/ui\_loader              | 全部加入
-| src/svg                     | 支持 vgcanvas 时全部加入
-| src/blend                   | 使用 framebuffer 时全部加入
-| src/ext\_widgets            | 使用扩展控件时全部加入
-| src/font\_loader            | 推荐全部加入（可只加需要的）
-| src/image\_loader           | 推荐全部加入（可只加需要的）
-| src/input\_engines          | 不需要输入法时加入 input\_engine\_null.c，否则加入 input\_engine\_pinyin.cpp
-| src/input\_methods          | 加入 input\_method\_creator.c，根据宏决定启用何种输入法
-| src/lcd                     | 根据 LCD 类型 (OpenGL/FrameBuffer/Register）选择相应的文件
-| src/main\_loop              | 嵌入式系统一般使用 main\_loop\_simple.c
-| src/misc                    | 如果没有标准的内存管理函数请加入
-| src/native\_window               | 一般加入 native\_window\_raw.*
-| src/window\_manager              | 一般加入 window\_manager\_default.*
-| src/graphic\_buffer              | 一般加入 graphic\_buffer\_default.*
-| src/platforms/raw/fs\_os.c       | 如果没有文件系统请加入，否则请自行实现 fs 接口
-| src/platforms/raw/mutex\_null.c  | 如果没有 mutex 请加入，否则请自行实现 mutex 接口
-| src/platforms/raw/sys\_tick.c    | 如果需要自己实现 sys tick 中断，可以加入
-| src/vgcanvas                     | 如果需要矢量图或图片旋转（不支持 lcd\_reg）请加入 vgcanvas\_nanovg_soft.c，否则加入 vgcanvas\_null.c
-| src/widget\_animators            | 除了使用 LCD\_REG 的平台外推荐全部加入
-| src/window\_animators            | 加入全部文件，根据宏决定是否启用。
-| src/ubjson                       | 不用不加。
-| src/streams                      | 一般不加。
-| awtk/3rd/agge                    | 在 framebuffer 模式启用 vgcanvas 时加入
-| awtk/3rd/gpinyin/src             | 启用拼音输入法时加入
-| awtk/3rd/nanovg/base             | 在启用 vgcanvas 时加入
-| awtk/3rd/nanovg/agge             | 在启用 vgcanvas 时加入
-| awtk/3rd/libunibreak             | 建议加入
-| awtk-port                        | 加入各个平台自己的移植代码。
-| awtk/demos                       | 在使用 ui demos 可以加入：assets.c demo\_main.c demo\_ui\_app.c。
+| 文件                            | 说明                                                                                                 |
+| ------------------------------- | :--------------------------------------------------------------------------------------------------- |
+| src/awtk\_global.c              | 加入                                                                                                 |
+| src/tkc                         | 全部加入                                                                                             |
+| src/base                        | 全部加入                                                                                             |
+| src/widgets                     | 全部加入                                                                                             |
+| src/xml                         | 全部加入                                                                                             |
+| src/ui\_loader                  | 全部加入                                                                                             |
+| src/svg                         | 支持 vgcanvas 时全部加入                                                                             |
+| src/blend                       | 使用 framebuffer 时全部加入                                                                          |
+| src/ext\_widgets                | 使用扩展控件时全部加入                                                                               |
+| src/font\_loader                | 推荐全部加入（可只加需要的）                                                                         |
+| src/image\_loader               | 推荐全部加入（可只加需要的）                                                                         |
+| src/input\_engines              | 不需要输入法时加入 input\_engine\_null.c，否则加入 input\_engine\_pinyin.cpp                         |
+| src/input\_methods              | 加入 input\_method\_creator.c，根据宏决定启用何种输入法                                              |
+| src/lcd                         | 根据 LCD 类型 (OpenGL/FrameBuffer/Register）选择相应的文件                                           |
+| src/main\_loop                  | 嵌入式系统一般使用 main\_loop\_simple.c                                                              |
+| src/misc                        | 如果没有标准的内存管理函数请加入                                                                     |
+| src/native\_window              | 一般加入 native\_window\_raw.*                                                                       |
+| src/window\_manager             | 一般加入 window\_manager\_default.*                                                                  |
+| src/graphic\_buffer             | 一般加入 graphic\_buffer\_default.*                                                                  |
+| src/platforms/raw/fs\_os.c      | 如果没有文件系统请加入，否则请自行实现 fs 接口                                                       |
+| src/platforms/raw/mutex\_null.c | 如果没有 mutex 请加入，否则请自行实现 mutex 接口                                                     |
+| src/platforms/raw/sys\_tick.c   | 如果需要自己实现 sys tick 中断，可以加入                                                             |
+| src/vgcanvas                    | 如果需要矢量图或图片旋转（不支持 lcd\_reg）请加入 vgcanvas\_nanovg_soft.c，否则加入 vgcanvas\_null.c |
+| src/widget\_animators           | 除了使用 LCD\_REG 的平台外推荐全部加入                                                               |
+| src/window\_animators           | 加入全部文件，根据宏决定是否启用。                                                                   |
+| src/ubjson                      | 不用不加。                                                                                           |
+| src/streams                     | 一般不加。                                                                                           |
+| awtk/3rd/agge                   | 在 framebuffer 模式启用 vgcanvas 时加入                                                              |
+| awtk/3rd/gpinyin/src            | 启用拼音输入法时加入                                                                                 |
+| awtk/3rd/nanovg/base            | 在启用 vgcanvas 时加入                                                                               |
+| awtk/3rd/nanovg/agge            | 在启用 vgcanvas 时加入                                                                               |
+| awtk/3rd/libunibreak            | 建议加入                                                                                             |
+| awtk-port                       | 加入各个平台自己的移植代码。                                                                         |
+| awtk/demos                      | 在使用 ui demos 可以加入：assets.c demo\_main.c demo\_ui\_app.c。                                    |
 
-### 四、其它
+## 其它
 
 * 1. 如果要加载 png/jpg 图片格式 StackSize 不小于 32K。 
 * 2. 使用 keil 编译时，请在 C/C++ -> Misc Controls 中加上**--gnu **标志。

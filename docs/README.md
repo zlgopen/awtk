@@ -1,11 +1,13 @@
 # 文档
-### 0. 参考手册
+
+## 参考手册
 
 * [参考手册](manual.md)
 * [参考手册 (chm)](https://github.com/zlgopen/awtk-docs/tree/master/AWTK-API%E6%89%8B%E5%86%8C)
 * [开发实践](https://github.com/zlgopen/awtk-docs/blob/master/AWTK%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5)
 
-### 1. 使用文档
+## 使用文档
+
 * [避坑指南](trap_list.md)
 * [AWTK 控件的布局参数介绍](layout.md)
 * [AWTK 界面描述文件介绍](ui_desc.md)
@@ -38,19 +40,33 @@
 * [自定义控件规范](custom_widget_rules.md)
 * [动态库与静态库](shared_static.md)
 * [窗口之间如何通信](https://github.com/zlgopen/awtk-inter-win-communication)
-* [为 512K Flash 优化空间](how_to_optimize_for_512K_flash.md)
-* [如何绘制旋转文字](how_to_draw_rotate_text.md)
 * [如何修改 Windows 下应用程序的图标](how_set_app_icon.md)
 * [项目描述文件 project.json 介绍](awtk_project_description_file.md)
 * [利用 app_helper 编写 SConstruct](app_helper_usage.md)
 * [自定义控件支持脚本绑定](binding_custom_widget.md)
 * [编写跨平台的代码](cross_platform_programming.md)
 * [应用程序的类型](app_type.md)
-* [如何引用第三方库](how_to_use_3rd_libs.md)
 * [在 windows 下使用 gcc 编译 AWTK](mingw.md)
 * [AWTK 中的字符串编码](text_encoding.md)
+* [AWTK 应用程序中的资源](app_assets.md)
+* [支持可独立安装的小应用程序 (applet)](applet.md)
+* [AWTK 中支持的字体](awtk_font.md)
+* [特殊平台编译配置](build_config.md)
+* [缺省子控件的布局器](children_layouter_default.md)
+* [ListView 子控件的布局器](children_layouter_list_view.md)
+* [读写 XML/JSON/INI/YAML 和 UBJSON 等格式的数据文件](conf_doc.md)
+* [插值算法名称(easing)](easing.md)
+* [类似函数调用的参数格式](func_call_params_format.md)
+* [渐变色](gradient.md)
+* [Grid 控件用法](grid.md)
+* [缺省的控件自身布局器 (self_layouter_default) 介绍](self_layouter_default.md)
+* [弹性自身布局器 (self_layouter_flex) 介绍](self_layouter_flex.md)
+* [menu 自身布局器 (self_layouter_menu) 介绍](self_layouter_menu.md)
+* [使用 serial_widget 简化串口编程](serial_widget.md)
+* [spin_box 的几种形态](spin_box.md)
 
-### 2.HowTos
+## HowTos
+
 * [AWTK 调试技巧](debug_tips.md)
 * [AWTK 优化技巧](optimation.md)
 * [如何使用离线画布](how_to_use_canvas_offline.md)
@@ -69,10 +85,11 @@
 * [如何在窗体样式文件中写控件布局参数](how_to_write_layout_params_in_style.md)
 * [如何开启按键音](how_to_enable_key_touch_sound.md)
 * [如何更新拼音输入法数据](how_to_update_gpinyin_data.md)
+* [如何为 512K Flash 优化空间](how_to_optimize_for_512K_flash.md)
 * [如何用 valgrind 查找内存相关问题](how_to_use_valgrind_detect_memory_bugs.md)
 * [如何定制 combo_box 控件中按钮的风格和大小](how_to_customize_combo_boxox_button.md)
 * [如何访问控件的属性](how_to_access_widget_props.md)
-* [如何集成第三方库](how_to_use_3rd_libs.md)
+* [如何引用第三方库](how_to_use_3rd_libs.md)
 * [如何使用对话框](how_to_use_dialog.md)
 * [如何使用软键盘上的 action 按钮](how_to_use_action_text.md)
 * [如何存取应用程序的配置信息](how_to_use_app_conf.md)
@@ -106,32 +123,49 @@
 * [如何使用 CMake 构建 AWTK 应用](how_to_use_cmake_to_build_awtk_app.md)
 * [如何控制图标的位置](how_to_use_icon_at_to_set_icon_position.md)  
 * [如何使用 OpenGL 绘制图形](how_to_draw_with_opengl.md)
+* [如何绘制旋转文字](how_to_draw_rotate_text.md)
+* [如何让 json 文件和 object 之间相互转换](how_to_convert_between_json_file_and_object.md)
+* [如何配置窗口中的 Enter 和 Esc 按键响应机制](how_to_set_form_enter_and_esc.md)
+* [如何设置软键盘候选词可见个数](how_to_set_keyboard_visible_num.md)
+* [如何使用 stb 外部硬件 YUV 转 RGB](how_to_use_stb_hyuv_to_rgb.md)
+* [如何使用 wayland 作为 SDL 的 Video Driver](how_to_use_wayland_as_sdl_video_driver.md)
 
-### 3. 内部原理
+## 内部原理
+
 * [AWTK 脚本绑定原理](script_binding.md)
 * [AWTK 内存分配器](mem_alloactor.md)
 * [优化 freetype 解析矢量字体的显示效果](optimation_freetype_gray_font.md)
 * [优化 stb\_truetype 在 mono 模式下的字体显示效果](optimation_stb_truetype_mono_font.md)
 
-### 4. 移植文档
+## 移植文档
+
 * [嵌入式平台移植注意事项](porting_common.md)
 * [将 AWTK 移植到 STM32f103ze 裸系统](porting_to_stm32f103ze.md)
 * [将 AWTK 移植到 STM32f429igtx 裸系统](porting_to_stm32f429igtx.md)
 * [将 AWTK 移植到 AWorksOS 平台](porting_to_awtk_aworks_rt1052.md)
+* [将 AWTK 移植到 TinyOS 平台](https://github.com/zlgopen/awtk-stm32f103ze-tencentos/blob/master/docs/tos-port.md)
 * [将 AWTK 移植到 TencentOS 平台](https://github.com/zlgopen/awtk-stm32f103ze-tencentos/blob/master/docs/tos-port.md)
 * [将 AWTK 移植到 RT-Thread 平台](https://github.com/zlgopen/awtk-stm32f103ze-rtthread/blob/master/docs/rtt-port.md)
 * [将 AWTK 移植到 LPC1867 裸系统（推荐）](https://github.com/zlgopen/awtk-lpc1768-raw/blob/master/docs/lpc1768_port.md)
 * [将 AWTK 移植到 STM32H743(TencentOS) 平台（推荐）](https://github.com/zlgopen/awtk-stm32h743iitx-tencentos/blob/master/docs/stm32h743iitx_port.md)
 
-### 5. 技术笔记
+## 技术笔记
+
 * [LCD 接口的几种实现方式](lcd.md)
 * [FrameBuffer 的几种使用方式](framebuffer.md)
+* [用 picasso 实现 vgcanvas 遇到的一些问题](picasso_notes.md)
+* [SDL + OpenGL 使用笔记](sdl_opengl_notes.md)
+* [T9 输入法笔记（触屏版）](t9_notes.md)
 
-### 6. 其它
+## 其它
+
 * [常见问题解答](faq.md)
 * [修改 AWTK 的代码风格](code_style.md)
 * [AWTK 是如何保证代码质量的](qa.md)
+* [资源目录变更通知](assets_dir_changed.md)
+* [生态共建计划](awtk_ecology.md)
+* [最新动态](changes.md)
 
-### 7. 第三方文档
+## 第三方文档
 
 * [AWTK 编译与调试 环境搭建指南](https://github.com/hk-mars/Blog-Article/blob/master/IoT/AWTK%20%E7%BC%96%E8%AF%91%E4%B8%8E%E8%B0%83%E8%AF%95%20%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97.md)

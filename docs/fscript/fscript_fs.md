@@ -408,7 +408,7 @@ fs_get_disk_info(path) => object
 | free_kb  | int32_t  | 空闲空间大小(KB) |
 | total_kb | int32_t  | 总共空间大小(KB) |
 
-> 备注：该功能需适配 AWTK 通用文件系统（fs.h）中的 fs_get_disk_info 接口，目前 PC 上暂不支持。
+> 该功能需适配 AWTK 通用文件系统（fs.h）中的 fs_get_disk_info 接口，目前 PC 上暂不支持。
 
 ```js
 var a = fs_get_disk_info("/sd");

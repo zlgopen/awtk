@@ -1,6 +1,6 @@
 # 如何自定义资源加载方式？
 
-## 1 介绍
+## 介绍
 
 如果 AWTK 默认的资源加载方式无法满足需求，例如在无文件系统的嵌入式平台上使用外扩 flash 用来存储资源，可以自定义资源的加载方式，只需调用 assets_manager_set_custom_load_asset() 并注册资源加载回调函数即可，AWTK 加载资源时会优先调用用户自定义的加载方式，接口声明如下：
 
@@ -27,15 +27,15 @@ ret_t assets_manager_set_custom_load_asset(assets_manager_t* am,
                                            void* ctx);
 ```
 
-## 2 示例
+## 示例
 
 此处以 STM32F429 平台为例，上面外扩了一块 32MB 的 SPI Flash，在本例子中会使用平台封装好的 W25QXX 库函数对这块 Flash 进行读写。
 
-### 2.1 打包资源
+### 打包资源
 
 在使用 AWTK Designer 进行界面设计时，修改"项目设置"里"资源打包方式"为"文件+常量"，打包完成后可以在res/assets/default/inc 中看到打包完成的常量文件，文件一般为 .res 或者 .data 后缀，.res 后缀的文件一般为未解码的图片或者字体资源。
 
-### 2.2 写入资源
+### 写入资源
 
 在运行 AWTK 程序之前，需要先将数据写入外扩 Flash，示例代码如下：
 
@@ -55,7 +55,7 @@ W25QXX_Write((u8*)(&ui_size),0 + 256,sizeof(u32)); /* 写入资源大小用来�
 W25QXX_Write((u8*)ui_home_page,0 + 260,ui_size);   /* 写入资源数组 */
 ```
 
-### 2.3 注册自定义资源加载函数
+### 注册自定义资源加载函数
 
 接下来实现自定义资源加载函数，该函数需要在用户的 AWTK 应用程序中实现，示例代码如下：
 
@@ -104,4 +104,3 @@ static ret_t application_on_launch(void) {
   return RET_OK;
 }
 ```
-

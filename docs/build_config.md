@@ -4,7 +4,7 @@
 
 配置文件采用 JSON 格式，位置放在项目的根目录下，推荐命名为 build.json。
 
-## 一、通用选项
+## 通用选项
 
 * name 应用程序名称（不支持中文和特殊符号）。
 * vendor 开发商。
@@ -15,7 +15,7 @@
 
 > sources 虽然是通用选项，但是不同平台，包含的源文件可能并不相同，此时应该放到具体平台之下，如果两者都有，则对其进行合并。
 
-## 二、web 平台选项
+## web 平台选项
 
 web 平台选项放在 web 子键下面，目前支持以下选项：
 
@@ -70,7 +70,7 @@ http://192.168.1.117:8080/demoui/index.html?width=480&height=800&fontScale=0.8&d
 }
 ```
 
-## 三、android 平台选项
+## android 平台选项
 
 android 平台选项放在 android 子键下面，目前支持以下选项：
 
@@ -99,7 +99,7 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
   },
 ```
 
-## 四、 ios 平台选项
+## ios 平台选项
 
 * app_name 应用程序的完整名称。如：org.zlgopen.demoui
 * defines 宏定义。ios 和 android 定义方式有些不同，宏定义要放到 defines 中，而不能放到 cflags 和 cppflags。格式也有些不同，如：
@@ -121,7 +121,7 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
   }
 ```
 
-## 五、harmonyos 平台选项
+## harmonyos 平台选项
 
 harmonyos 平台选项放在 harmonyos 子键下面。
 
@@ -135,7 +135,7 @@ harmonyos 平台选项放在 harmonyos 子键下面。
   },
 ```
 
-## 六、完整示例
+## 完整示例
 
 下面是 demoui 的完整示例
 
@@ -185,7 +185,7 @@ harmonyos 平台选项放在 harmonyos 子键下面。
 }
 ```
 
-## 七、export.json 的用法
+## export.json 的用法
 
 > 为了方便引用自定义控件，自定义控件（包括无界面的库）需要提供一个 export.json 的配置文件，用于声明对外提供的源文件和编译参数。
 
@@ -225,7 +225,7 @@ harmonyos 平台选项放在 harmonyos 子键下面。
 }
 ```
 
-## 八、示例与参考
+## 示例与参考
 
 * [awtk-http-client 的配置文件](https://github.com/zlgopen/awtk-http-client/blob/master/build.json)
 
@@ -234,4 +234,3 @@ harmonyos 平台选项放在 harmonyos 子键下面。
 * [Android/IOS 插件的配置文件](https://github.com/zlgopen/awtk-mobile-plugins/blob/master/build.json)
 
 * [awtk-web-js 的配置文件](https://github.com/zlgopen/awtk-jerryscript/blob/master/build_web.json)
-

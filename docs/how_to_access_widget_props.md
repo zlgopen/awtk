@@ -1,6 +1,6 @@
 # 如何访问控件的属性
 
-## 1.修改控件的属性
+## 修改控件的属性
 
 控件所有的公开属性，都提供了相应的 set 函数，用它可以修改对应的属性。如：
 
@@ -17,7 +17,7 @@
 ret_t check_button_set_value(widget_t* widget, bool_t value);
 ```
 
-## 2.读取控件的属性
+## 读取控件的属性
 
 控件都提供了一个宏，将其由 widget 类型转换成实际的类型，然后可以直接读取它的属性。如：
 
@@ -25,7 +25,7 @@ ret_t check_button_set_value(widget_t* widget, bool_t value);
 bool_t checked = CHECK_BUTTON(button)->value;
 ```
 
-## 3.通过 widget 的函数访问控件的属性
+## 通过 widget 的函数访问控件的属性
 
 widget 提供了 widget\_get\_prop/widget\_set\_prop 系列函数，也可以用来访问控件的属性。
 
@@ -53,7 +53,7 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v);
 ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v);
 ```
 
-## 4.访问 text 属性
+## 访问 text 属性
 
 ```
 /**
@@ -103,7 +103,7 @@ ret_t widget_set_text(widget_t* widget, const wchar_t* text)
 ret_t widget_set_text_utf8(widget_t* widget, const char* text);
 ```
 
-## 5.访问 value 属性
+## 访问 value 属性
 
 > 仅使用与 int/bool 类型的属性
 

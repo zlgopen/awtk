@@ -5,7 +5,7 @@
 
 1. 编写事件处理函数。
 
-```
+```c
 static ret_t on_key_back_or_back_to_home(void* ctx, event_t* e) {
   key_event_t* evt = (key_event_t*)e;
   if (evt->key == TK_KEY_F2) {
@@ -20,14 +20,14 @@ static ret_t on_key_back_or_back_to_home(void* ctx, event_t* e) {
 
 2. 注册窗口管理器的按键事件处理函数：
 
-```
-  widget_t* wm = window_manager();
-  widget_on(wm, EVT_KEY_DOWN, on_key_back_or_back_to_home, wm);
+```c
+widget_t* wm = window_manager();
+widget_on(wm, EVT_KEY_DOWN, on_key_back_or_back_to_home, wm);
 ```
 
 3. 把主窗口设置为不可关闭：
 
-```
+```c
 widget_set_prop_str(win, WIDGET_PROP_CLOSABLE, "no");
 ```
 

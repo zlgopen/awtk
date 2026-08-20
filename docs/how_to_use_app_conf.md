@@ -1,7 +1,6 @@
-
 # 如何存取应用程序的配置信息
 
-## 1. 介绍
+## 介绍
 
 AWTK 提供了 [app_conf](https://github.com/zlgopen/awtk/blob/master/docs/manual/app_conf_t.md) 接口，用于保存或读取应用程序的配置信息。其特点有：
 
@@ -26,7 +25,7 @@ AWTK 提供了 [app_conf](https://github.com/zlgopen/awtk/blob/master/docs/manua
 
 > 为了方便软件升级时，保留用户配置，先从用户配置读取，如果配置不存在，再读取默认配置。
 
-## 2. 初始化（任意选一种格式即可）
+## 初始化（任意选一种格式即可）
 
 [app_conf](https://github.com/zlgopen/awtk/blob/master/docs/manual/app_conf_t.md) 作为可选组件，需要开发者自己初始化。
 
@@ -147,9 +146,9 @@ ret_t app_conf_init_ubjson(const char* app_name)
   ENSURE(app_conf_init_ubjson("demo") == RET_OK);
 ```
 
-## 3. 存取配置信息
+## 存取配置信息
 
-### 3.1 包含头文件：
+### 包含头文件：
 
 app\_conf 作为可选组件，需要开发者自己包含头文件。
 
@@ -157,7 +156,7 @@ app\_conf 作为可选组件，需要开发者自己包含头文件。
 #include "conf_io/app_conf.h"
 ```
 
-### 3.2 修改配置信息
+### 修改配置信息
 
 ```c
 /**
@@ -263,7 +262,7 @@ ret_t app_conf_set_str(const char* key, const char* v);
 
 使用 ubjson 格式时，实际存为二进制格式，这里不再举例。
 
-### 3.3 读取配置信息
+### 读取配置信息
 
 ```c
 /**
@@ -484,7 +483,7 @@ app_conf_on_changed(app_conf_changed, NULL);
 ret_t app_conf_reset(void);
 ```
 
-## 6. 释放配置相关资源。
+## 释放配置相关资源。
 
 ```c
 /**
@@ -508,7 +507,7 @@ ret_t application_exit() {
 }
 ```
 
-## 7. key 的规则
+## key 的规则
 
 * 配置信息通常都是层次结构的，为了能访问所有数据，key 也必须是多级的，各级的名称之间用“.”分隔。
 
@@ -578,6 +577,7 @@ ret_t application_exit() {
   timeout = 1.000000
 
 ```
+
 在上面的例子中，"[0].#name" 获取第一个分组的名称为"wifi"，"wifi.[0].#name" 获取 wifi 下第一项的名称为 "on"。
 
 ```c
@@ -596,6 +596,7 @@ ret_t application_exit() {
   timeout = 1.000000
 
 ```
+
 在上面的例子中，"wifi.#index" 获取 wifi 的序数为 0，"server.#index"  获取 server 的序数为 1。
 
 ```c
@@ -603,7 +604,7 @@ ret_t application_exit() {
   assert(app_conf_get_int("server.#index", -1) == 1);
 ```
 
-## 8. 缺省配置
+## 缺省配置
   
   * 位置。缺省配置放到资源中，位于：design/default/data
   
@@ -619,13 +620,13 @@ ret_t application_exit() {
 
 > 优先读取用户配置，如果没有读到，再读取默认配置。
 
-## 9. 注意事项
+## 注意事项
 
 * 英文的点(.) 作为 key 的分隔符，所以 key 不能包含英文的点(.)。
 
 * ini 格式不支持注释和换行。
 
-## 10. 参考示例
+## 参考示例
 
 * [conf_ini](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/conf_ini.c)
 

@@ -4,11 +4,11 @@
 
 在 AWTK 中，存放图片或者字体都有默认的目录结构，如：图片存放在 default/images/xx 目录下，字体存放在 default/fonts 目录下。如果需要加载其他目录的图片或者字体，AWTK 也提供了相应的方法，下面介绍如何在有文件系统和无文件系统时，加载外部图片和字体。
 
-## 1 有文件系统
+## 有文件系统
 
 有文件系统时，如果需要加载非 AWTK 默认目录结构中的图片或字体，可采用"file:// + 图片或字体所在路径"的形式，具体内容请看下文。
 
-### 1.1 加载外部图片
+### 加载外部图片
 
 例如，要在 home_page 页面显示 E:/designer.png 和 awtk.png（目录结构如下）两张图片。
 
@@ -37,7 +37,7 @@ widget_t* image = widget_lookup(win, "image1", TRUE);
 image_set_image(image, "file://my-res/awtk.png");
 ```
 
-### 1.2 加载外部字体
+### 加载外部字体
 
 要实现加载外部字体 E:/default.ttf，步骤如下：
 
@@ -59,11 +59,11 @@ assets_manager_preload(am, ASSET_TYPE_FONT, "file://E:/default.ttf");
 system_info_set_default_font(system_info(), "file://E:/default.ttf");
 ```
 
-## 2 无文件系统
+## 无文件系统
 
 在无文件系统中，如果需要加载非 AWTK 默认目录结构中的图片或字体，可以将图片或字体数据作为参数传给 assets_manager_add_data() 函数，该函数将这些数据添加到 AWTK 资源管理器中，然后就可以通过文件名的方式使用图片或字体了。
 
-### 2.1 相关函数
+### 相关函数
 
 assets_manager_add_data() 函数说明：
 
@@ -124,7 +124,7 @@ subtype参数图片资源子类型详见下表：
 | ASSET_TYPE_IMAGE_LZ4     | LZ4压缩的图片类型 |
 | ASSET_TYPE_IMAGE_OTHER   | 其它图片类型      |
 
-### 2.2 加载外部图片
+### 加载外部图片
 
 例如，要在 home_page 页面显示 E:/awtk.png 这张图片，实现步骤如下：
 
@@ -149,7 +149,7 @@ assets_manager_add_data(assets_manager(), "awtk",
 </window>
 ```
 
-### 2.3 加载外部字体
+### 加载外部字体
 
 例如，要将 E:/default_full.ttf 字体加载到应用程序中，代码如下，实现步骤如下：
 

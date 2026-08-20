@@ -12,11 +12,11 @@ AWTK 支持显示以下两种字体：
 | 矢量字库 | 管理方便，占用的 flash 空间小                              | 整个字库文件都需要加载到内存中，且需要消耗性能解码，同时解码时存在内存峰值 |
 | 点阵字   | 可裁剪掉 AWTK 中的字体解码模块，显示时无需解码，加载速度快 | 由于提前解码好，所以非常占用 flash 空间                                    |
 
-## 1 使用 AWTK 中的工具裁剪字体
+## 使用 AWTK 中的工具裁剪字体
 
 如果需要对矢量字库进行裁剪或者生成点阵字，可以使用 AWTK 内置的字体工具，使用方法可以查看 [font_gen](https://github.com/zlgopen/awtk/tree/master/tools/font_gen)。
 
-## 2 使用 AWTK Designer 裁剪字体
+## 使用 AWTK Designer 裁剪字体
 
 使用 AWTK Designer 创建项目后，字体文件一般存储项目目录的 `design/default/fonts` 中，其中包含以下目录或文件：
 

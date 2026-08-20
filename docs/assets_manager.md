@@ -1,6 +1,6 @@
 # AWTK 中的资源管理
 
-## 一、基本架构
+## 基本架构
 
 这里的资源管理器并非 Windows 下的文件浏览器，而是负责对各种资源，比如字体、窗体样式、图片、界面数据、字符串和其它数据的进行集中管理的组件。引入资源管理器的目的有以下几个：
 
@@ -14,11 +14,11 @@
 
 负责资源管理器和资源管理相关的组件如下图所示：
 
-![](images/assets_manager.png)
+![](./images/assets_manager.png)
 
 > 网络加载暂未实现。
 
-## 二、资源的生成
+## 资源的生成
 
 AWTK 中的资源需要进行格式转换才能使用：
 
@@ -37,7 +37,7 @@ AWTK 中的资源需要进行格式转换才能使用：
 * bin/xml\_to\_ui XML 的界面描述格式转换二进制的界面描述格式
 * ./scripts/update\_res.py 批量转换整个项目的资源
 
-## 三、资源初始化
+## 资源初始化
 
 将资源生成常量数组直接编译到代码中时，其初始化过程为：
 
@@ -72,7 +72,7 @@ assets_manager_load(rm, ASSET_TYPE_FONT, "default_ttf");
 
 > 参考：demos/assets.c
 
-## 四、资源使用方法
+## 资源使用方法
 
 * 加载图片图片
 
@@ -106,7 +106,7 @@ widget_t* win = window_open(name);
 
 一般在界面描述文件中指定 style 即可。
 
-## 五、资源的名称
+## 资源的名称
 
 资源名称一般就是资源的文件名，不带文件扩展名。比如图片名为 test.png，那资源名称就是 test，如果因为某种原因，把 test.png 换成了 test.jpg，对代码并无影响。
 
@@ -122,7 +122,7 @@ widget_t* win = window_open(name);
 
 为了应对这些情况，AWTK 提供了名称表达式：
 
-* 名称中可以带变量和表达式。变量用${xxx}表示，xxx 将被替换成实际的值。
+* 名称中可以带变量和表达式。变量用\${xxx}表示，xxx 将被替换成实际的值。
 * 可以指定多个名称，依次匹配，直到找到的为止。多个名称之间用逗号分隔。
 
 示例 1：
@@ -173,13 +173,13 @@ widget_t* win = window_open(name);
 
 > 变量名可以使用 [system\_info 中的成员变量](https://github.com/zlgopen/awtk/blob/master/docs/manual/system_info_t.md)
 
-## 六、扩展用法
+## 扩展用法
 
 有时候在嵌入式平台开发项目中会出现一种情况，项目的资源分为两部分，一部分是基本上不会修改的资源（例如字库资源等），一部分会根据开发过程中会进行修改或者更换资源（例如图片资源等）。
 
 这个时候需要把不会修改的资源烧写指定的地方（flash 或者 其他的存储设备中），然后再通过特定的方法加载到 awtk 中。
 
-### 6.1 示例：
+### 示例：
 
 ```c
 #include "base/assets_manager.h"
@@ -201,8 +201,8 @@ ret_t assets_init(void) {
 }
 ```
 
-> 备注：assets_manager_add_data 函数传入的资源 data 数组，会拷贝一份在 awtk 内部，所以如果资源 data 数组是通过 malloc 等方法创建出来的话，就需要自行释放资源 data 数组。
+> assets_manager_add_data 函数传入的资源 data 数组，会拷贝一份在 awtk 内部，所以如果资源 data 数组是通过 malloc 等方法创建出来的话，就需要自行释放资源 data 数组。
 
-## 七、相关文档
+## 相关文档
 
 * [AWTK 应用程序中的资源](./app_assets.md)

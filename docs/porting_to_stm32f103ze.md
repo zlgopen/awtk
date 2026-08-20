@@ -1,8 +1,8 @@
-## 将 AWTK 移植到 STM32f103ze 裸系统
+# 将 AWTK 移植到 STM32f103ze 裸系统
 
 AWTK 的可移植性很高，在移植时只需要实现平台初始化、lcd 和 mainloop 三个方面的东西。本文以 STM32f103ze 为例介绍移植 AWTK 到新平台的过程。
 
-### 一、平台初始化
+## 平台初始化
 
 除了基本的libc函数外，AWTK对平台没有特别要求，实现获取当前时间的函数get\_time\_ms64和sleep_ms函数即可。另外需要给GUI分配一块内存空间，并调用tk\_mem\_init。
 
@@ -65,7 +65,7 @@ void delay_ms(u16 nms) {
 
 > 参考：awtk-port/SysTick.c
 
-### 二、实现 lcd
+## 实现 lcd
 
 lcd\_t 接口提供基本的显示功能，AWTK 提供基于*寄存器*、*帧缓冲*和*片段帧缓冲*三种缺省实现，在此基础上实现自己的 lcd\_t 接口非常方便。
 
@@ -97,7 +97,7 @@ typedef uint16_t pixel_t;
 
 > 参考 awtk-port/lcd\_stm32\_raw.c
 
-### 三、实现 main\_loop
+## 实现 main\_loop
 
 main\_loop 主要负责事件分发和绘制这个不断循环的过程。main\_loop\_raw.inc 里实现了裸系统 main\_loop 的基本功能，在移植时加上输入事件的的分发即可：
 

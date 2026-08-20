@@ -1,6 +1,6 @@
 # ListView 子控件的布局器
 
-## 一、语法
+## 语法
 
 子控件布局器统一使用 children_layout 属性指定，其语法为：
 
@@ -18,7 +18,7 @@ PARAM_LIST => PARAM | PARAM ',' PARAM_LIST
   <scroll_view name="view" x="0"  y="0" w="100%" h="100%" children_layout="list_view(m=10,s=15)">
 ```
 
-## 二、参数
+## 参数
 
 ListView 子控件的布局器提供了下列参数：
 
@@ -63,4 +63,3 @@ widget_set_children_layout(w, "list_view(m=10,s=15)");
 <list_view x="0"  y="30" w="100%" h="-80" item_height="60">
   <scroll_view name="view" x="0"  y="0" w="100%" h="100%" children_layout="list_view(m=10,s=15)">
 ```
-

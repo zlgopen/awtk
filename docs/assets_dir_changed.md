@@ -36,4 +36,3 @@ common.updateRes()
 common.init(AWTK_ROOT, ASSETS_ROOT, 'default', ASSET_C);
 common.updateRes()
 ```
- 

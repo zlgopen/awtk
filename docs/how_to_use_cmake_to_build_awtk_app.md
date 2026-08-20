@@ -1,6 +1,6 @@
 # 如何使用 CMake 构建 AWTK 应用
 
-## 1. 安装 CMake
+## 安装 CMake
 
 CMake 是一个开源的跨平台的构建工具，可以用来构建 AWTK 应用。
 
@@ -12,7 +12,7 @@ CMake 是一个开源的跨平台的构建工具，可以用来构建 AWTK 应�
 sudo apt-get install cmake
 ```
 
-## 2. 创建 CMakeLists.txt
+## 创建 CMakeLists.txt
 
 * 指定 awtk 的路径
 
@@ -77,13 +77,13 @@ target_link_libraries(hello awtk)
 set_target_properties(hello PROPERTIES WIN32_EXECUTABLE TRUE)
 ```
 
-## 3. 配置
+## 配置
 
 ```bash
 cmake -S . cmake -B build
 ```
 
-## 4. 编译
+## 编译
 
 > 在 Windows 下可以用 visual studio 打开 build 目录下的工程，然后进行编译。
 
@@ -91,13 +91,13 @@ cmake -S . cmake -B build
 cmake --build build
 ```
 
-## 5. 运行
+## 运行
 
 ```bash
 ./build/hello
 ```
 
-## 6. 调试
+## 调试
 
 > 在 Windows 下可以用 visual studio 打开 build 目录下的工程，然后进行调试。
 

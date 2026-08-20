@@ -8,7 +8,7 @@ src/lcd/lcd_mono.c 提供单色 LCD 的 framebuffer（每个像素占用一个�
 
 在 awtk_config.py 中可以打开单色 LCD 的配置。
 
-```
+```py
 LCD='SDL_FB_MONO'
 ```
 
@@ -16,7 +16,7 @@ LCD='SDL_FB_MONO'
 
 字体生成工具 fontgen 支持生成单色字体，加上可选参数 mono 即可。
 
-```
+```bash
 fontgen.exe ttf_filename str_filename out_filename font_size [mono]
 ```
 
@@ -24,7 +24,7 @@ fontgen.exe ttf_filename str_filename out_filename font_size [mono]
 
 图片生成工具 imagegen 支持生成单色图片，加上可选参数 mono 即可。
 
-```
+```bash
 imagegen.exe in_filename out_filename (bgra|bgr565|mono)
 ```
 
@@ -38,7 +38,7 @@ imagegen.exe in_filename out_filename (bgra|bgr565|mono)
 
 生成资源时需要加上 mono 参数，该参数会被传递给 fontgen 和 imagegen。
 
-```
+```bash
 python scripts/update_res.py all x1 mono
 ```
 
@@ -50,7 +50,7 @@ python scripts/update_res.py all x1 mono
 
 ## 预览 mono test 查看运行效果
 
-```
+```bash
 ./bin/preview_ui ui=design/default/ui/mono_test.xml
 ```
 
@@ -58,18 +58,17 @@ python scripts/update_res.py all x1 mono
 
 * 嵌入式系统，请在 awtk\_config.h 中定义下面的宏。
 
-```
+```py
 #define WITH_LCD_MONO 1
 ```
 
 * awtk-linux-fb，请在 awtk\_config.py 中定义下面的宏。
 
-```
+```py
 COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_LCD_MONO=1 '
 ```
 
 ## 参考：
 
 * [免费像素字体](https://www.uisdc.com/25-pixel-fonts)
-
 * [Unifont 点阵黑：一款超大字符集免费商用像素字体](https://www.maoken.com/freefonts/3747.html)

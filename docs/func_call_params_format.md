@@ -14,6 +14,7 @@
 ```
 <dialog anim_hint="popup" highlight="default(start_alpha=0, end_alpha=80)"
 ```
+
 * 布局参数。如：
 
 ```
@@ -32,5 +33,3 @@ func_call => func_name  '('  params_list  ')' | func_name
 params_list => params_list  ','  param | param
 param => name  '='  value
 ```
-
-

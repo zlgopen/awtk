@@ -4,7 +4,7 @@ AWTK 项目中有 SConstruct 文件，该文件是 Scons 的编译脚本。当�
 
 为简化 SConstruct 的编写，AWTK 把一些公共功能提取到 awtk/scripts/app_helper_base.py 中，并且在项目目录下的 scripts/app_helper.py 中导入 app_helper_base.py，让开发者可直接在项目的 SConstruct 文件中调用这些函数。
 
-## 1 相关函数
+## 相关函数
 
 app_helper.py 提供了下表中的函数，具体用法请参考 awtk/docs/app_helper_usage.md。
 
@@ -27,7 +27,7 @@ app_helper.py 提供了下表中的函数，具体用法请参考 awtk/docs/app_
 
 > 上表中的函数实现在 awtk/scripts/app_helper_base.py 中。
 
-## 2 示例
+## 示例
 
 使用 app_helper.py 首先需要在SConstruct中导入它，然后调用 Helper 函数得到helper对象，最后使用 helper 对象调用上一节的函数。
 
@@ -56,7 +56,7 @@ SConscript(['src/SConscript', '3rd/sqlite3/SConscript'])
 1. 本示例中将静态链接库 sqlite3.lib 放在项目目录的 lib 文件夹下，AWTK 默认将该路径添加到库的搜索路径中。如果开发者将静态链接库放在其他路径，则还需要调用 add_libpath() 函数将该路径添加到库的搜索路径中。
 2. helper 支持链式调用，call 函数需要放到最后。
 
-## 3 特殊函数
+## 特殊函数
 
 调用 app_helper.py 提供的函数，通常只需要传入文件或目录对应的路径，但有个别函数的还需要传入其他参数，包括 add_deps 和 add_platform_ 开头的所有函数，下面举例说明。
 

@@ -1,4 +1,4 @@
-### 插值算法名称(easing)
+# 插值算法名称(easing)
 
 * linear
 * quadratic\_in
@@ -26,4 +26,3 @@
 * bounce\_inout
 
 具体效果，请参考：[tween.js](http://tweenjs.github.io/tween.js/examples/03_graphs.html)
-

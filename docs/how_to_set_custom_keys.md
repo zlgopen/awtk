@@ -2,7 +2,7 @@
 
 在实际的开发中，产品通常会有自身特有的按钮，而这些按钮的键值也不尽相同，为了用户更方便使用，故增加了设置自定义键值的功能。
 
-## 一、设置方法
+## 设置方法
 
 1. 在应用中的 main.c 定义开启自定义键值配置功能的宏 ENABLE_CUSTOM_KEYS：
 
@@ -83,7 +83,7 @@ extern ret_t application_exit(void);
 
 执行以上步骤后，自定义键值就设置完成了。
 
-## 二、简单使用示例
+## 简单使用示例
 
 在 MVVM 工程中，实现点击 CLOSE 按钮关闭 home_page 窗口。
 
@@ -108,7 +108,7 @@ extern ret_t application_exit(void);
 
 关于 MVVM 命令参数的更多资料请参阅[ AWTK-MVVM 命令绑定 ](https://github.com/zlgopen/awtk-mvvm/blob/master/docs/11.command_binding.md)。
 
-## 三、其它
+## 其它
 
 * awtk-linux-fb，请在 awtk\_config.py 中定义下面的宏。
 

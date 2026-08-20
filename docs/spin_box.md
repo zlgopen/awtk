@@ -4,20 +4,20 @@ spin_box 是一个特殊的 edit，主要用于数值编辑。它自带两个按
 
 在 AWTK 中，spin\_box 有三种形态。
 
-## 1. 传统形态
+## 传统形态
 
-![](images/spin_box_1.png)
+![](./images/spin_box_1.png)
 
-### 1.1 特点
+### 特点
 
 两个按钮均在右侧，按钮比较小，相距很近，只要移动很小距离，即可在两个按钮之间切换，适合鼠标这种比较精确的输入设备。
 
-### 1.2 按钮的 style：
+### 按钮的 style：
 
 * 增加 (inc) 按钮的 style 由 spinbox_up 决定。
 * 减小 (dec) 按钮的 style 由 spinbox_down 决定。
 
-### 1.3 示例：
+### 示例：
 
 * UI
 
@@ -41,25 +41,25 @@ spin_box 是一个特殊的 edit，主要用于数值编辑。它自带两个按
   </style>
 ```
 
-## 2. 按钮在左右两侧
+## 按钮在左右两侧
 
-![](images/spin_box_2.png)
+![](./images/spin_box_2.png)
 
-### 2.1 特点
+### 特点
 
 按钮在编辑器左右两侧，按钮比较大，不容易发生误操作。适合电容屏这种不太精确的输入设备。
 
-### 2.2 按钮的 style：
+### 按钮的 style：
 
 * 增加 (inc) 按钮的 style 由 spinbox_right 决定。
 * 减小 (dec) 按钮的 style 由 spinbox_left 决定。
 
-### 2.3 使用方法
+### 使用方法
 
 * 需要设置 easy\_touch\_mode="true" 
 * 控件的 style 中设置文本居中。
 
-### 2.4 示例：
+### 示例：
 
 * UI
 
@@ -83,26 +83,26 @@ spin_box 是一个特殊的 edit，主要用于数值编辑。它自带两个按
   </style>
 ```
 
-## 3. 按钮在上下两端
+## 按钮在上下两端
 
-![](images/spin_box_3.png)
+![](./images/spin_box_3.png)
 
-### 3.1 特点
+### 特点
 
 按钮在编辑器上下两端，按钮比较大，不容易发生误操作。适合电容屏这种不太精确的输入设备。
 
-### 3.2 按钮的 style：
+### 按钮的 style：
 
 * 增加 (inc) 按钮的 style 由 spinbox_top 决定。
 * 减小 (dec) 按钮的 style 由 spinbox_bottom 决定。
 
-### 3.3 使用方法：
+### 使用方法：
 
 * 需要设置 easy\_touch\_mode="true" 
 * 控件的 style 中设置文本居中。
 * 并保证控件的高度大于字体大小的 3 倍
 
-### 3.4 示例：
+### 示例：
 
 * UI
 

@@ -12,7 +12,6 @@
     <over       bg_color="#e0e0e0" icon="arrow_down_o"/>
   </style>
 </button>
-
 ```
 
 ## 定制 combo_box 控件中按钮的大小

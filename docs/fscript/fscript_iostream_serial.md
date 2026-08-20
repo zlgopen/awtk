@@ -19,7 +19,7 @@ iostream_serial_create(device, baudrate, bytesize, parity, stopbits, flowcontrol
 * stopbits 为停止位，缺省为1。
 * flowcontrol 为流控，缺省为none。
 
-> 备注：其中 device 为必填参数，其他均为可选参数。
+> 其中 device 为必填参数，其他均为可选参数。
 
 ### 示例
 

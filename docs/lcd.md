@@ -1,10 +1,10 @@
-## LCD 接口的四种实现方式
+# LCD 接口的四种实现方式
 
 LCD 是对显示设备的抽象，提供了基本的绘图函数。自己去实现 LCD 接口虽然不难，但是需要花费不少功夫，AWTK 提供了几种缺省的实现，利用这些缺省的实现，在移植到新的平台时，一般只需要很少的代码就行了。
 
 下面我们介绍一下几种常见的 LCD 实现方式：
 
-### 1. 基于寄存器实现的 LCD
+## 基于寄存器实现的 LCD
 
 在低端的嵌入式平台上，内存只有几十 KB，没有足够的内存使用 framebuffer，通常直接向寄存器中写入坐标和颜色数据。lcd\_reg.inc 提供了基于寄存器实现的 LCD，用它实现不同平台的 LCD 时，只需要提供两个宏即可：
 
@@ -42,15 +42,16 @@ typedef uint16_t pixel_t;
 
 > 在 AWTK 中，不再推荐此方法，基于片段帧缓冲实现的 LCD 是更好的选择。
 
-### 2. 基于片段帧缓冲实现的 LCD
+## 基于片段帧缓冲实现的 LCD
 
-#### 2.1 介绍
+### 介绍
 
 在低端的嵌入式平台上，内存只有几十 KB，没有足够的内存创建一屏的帧缓冲，而使用基于寄存器的方式屏幕容易闪烁。
 
 比较好的办法是，创建一小块帧缓冲，把屏幕分成很多小块，一次只绘制一小块。由于有脏矩形机制，除了打开新窗口时，在正常情况下，绘制速度仍然很快，可以有效的解决闪速问题。
 
-#### 2.2 方式 1
+### 方式 1
+
 lcd\_mem_fragment.inc 提供了基于片段帧缓冲实现的 LCD，用它实现不同平台的 LCD 时，只需要提供两个宏即可：
 
 * set\_window\_func 设置要写入颜色数据的区域，相对于每次设置坐标而言，可以极大提高工作效率。
@@ -82,7 +83,7 @@ typedef uint16_t pixel_t;
 
 > 完整示例请参考：https://github.com/zlgopen/awtk-stm32f103ze-raw/blob/master/awtk-port/lcd_stm32_raw.c
 
-#### 2.3 方式 2
+### 方式 2
 
 在有的情况下，也可以选择实现宏 lcd\_draw\_bitmap\_impl，它复杂把变化的部分更新到物理设备（如 SPI 屏）。看看 lcd_mem_fragment_flush 的实现，你大概就会明白如何实现 lcd\_draw\_bitmap\_impl 宏了。
 
@@ -110,9 +111,9 @@ static ret_t lcd_mem_fragment_flush(lcd_t* lcd) {
 }
 ```
 
-### 3. 基于 framebuffer 实现的 LCD
+## 基于 framebuffer 实现的 LCD
 
-#### 3.1 介绍
+### 介绍
 
 这是在嵌入式平台上最常见的方式。一般有两个 framebuffer，一个称为 online framebuffer，一个称为 offline framebuffer。online framebuffer 是当前现实的内容，offline framebuffer 是 GUI 当前正在绘制的内容。lcd\_mem\_rgb565 提供了 rgb565 格式的 LCD 实现，lcd\_mem\_rgba8888 提供了 rgba8888 格式的 LCD 实现，它们都是在 lcd\_mem.inc 基础上实现的，要增加新的格式也是很方便的。
 
@@ -143,7 +144,7 @@ lcd_t* stm32f767_create_lcd(wh_t w, wh_t h) {
 
 > 请参考： https://github.com/zlgopen/awtk-stm32f767igtx-raw/blob/master/USER/main.c
 
-#### 3.2 online framebuffer 和 offline framebuffer
+### online framebuffer 和 offline framebuffer
 
 * **online framebuffer** 相当于系统显存，一般更新 online framebuffer，图像就会显示到屏幕上。
 
@@ -161,7 +162,7 @@ lcd_t* stm32f767_create_lcd(wh_t w, wh_t h) {
 
 * 自定义 flush 的方式。有的系统没有 online framebuffer，只有 offline framebuffer。比如显示屏与 MCU 之间用 SPI 连接，那就需要重载 flush 函数，把 offline framebuffer 中的图像（脏矩形内的部分） 数据传输到显示屏。在这种情况下一般用 lcd_mem_xxx_create_single_fb 创建 lcd 对象，并重载 lcd 的 flush 函数。
 
-#### 3.3 3FB
+### 3FB
 
 在嵌入式系统中，如果希望提供显示帧率，可以使用 3 framebuffer，这 3 个 framebuffer 的角色为：
 
@@ -175,16 +176,16 @@ lcd_t* stm32f767_create_lcd(wh_t w, wh_t h) {
 
 > 请参考：https://github.com/zlgopen/awtk-stm32f429igtx-raw/blob/master/USER/main.c
 
-#### 3.4 对于不支持的 LCD 格式或者 SPI 之类的特殊 LCD
+### 对于不支持的 LCD 格式或者 SPI 之类的特殊 LCD
 
 此时可以使用 lcd\_mem\_special。在 flush 函数中把数据转成目标格式，或者提交到 SPI 屏。具体实现可以参考：https://github.com/zlgopen/awtk-linux-fb/blob/master/awtk-port/lcd_mem_others.c
 
-### 4. 基于 vgcanvas 实现的 LCD
+## 基于 vgcanvas 实现的 LCD
 
 在支持 OpenGL 3D 硬件加速的平台上（如 PC 和手机），我们使用 nanovg 把 OpenGL 封装成 vgcanvas 的接口，在 vgcanvas 基础之上实现 LCD。lcd\_vgcanvas.inc 将 vgcanvas 封装成 LCD 的接口，这里出于可移植性考虑，并没有直接基于 nanovg 的函数，而是基于 vgcanvas 的接口，所以在没有 GPU 时，如果 CPU 够强大，也是可以基于 agg/picasso 去实现的 LCD。
 
 > 这种方式实现，一般不会在嵌入平台上使用，读者不需要关注它。
 
-### 5. 总结
+## 总结
 
 以上几种实现方式，基本上涵盖了最常用的场景，所以在移植 AWTK 到新的平台时，并不需要在实现 LCD 接口上费多少功夫。

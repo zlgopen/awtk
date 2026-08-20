@@ -57,37 +57,37 @@ AWTK Designer（下面简称 Designer）创建的项目均有一个项目描述�
 }
 ```
 
-## 1. name
+## name
 
 name 是必须的，表示项目的名称。
 
 > 注意：对于自定义控件库项目，该名称必须是全小写英文字母，单词之间用下划线连接。
 
-## 2. version
+## version
 
 version 是可选的，表示项目的版本号，缺省为“1.0.0”。
 
-## 3. date
+## date
 
 date 是可选的，表示项目创建的日期。
 
-## 4. team
+## team
 
 team 是可选的，表示项目开发团队的名称。
 
-## 5. author
+## author
 
 author 是可选的，表示作者、联系方式。
 
-## 6. desc
+## desc
 
 desc 是可选的，表示项目简介或者功能描述。
 
-## 7. copyright
+## copyright
 
 copyright 是可选的，表示版权声明。
 
-## 8. type
+## type
 
 type 是可选的，表示项目类型，缺省为“PROJECT_WIDGETS_APPLICATION”。
 
@@ -101,29 +101,29 @@ type 是可选的，表示项目类型，缺省为“PROJECT_WIDGETS_APPLICATION
 
 * PROJECT_UI_SNIPPET 表示界面片段，可导入 Designer 并应用到不同的项目。
 
-## 9. subType
+## subType
 
 subType 是可选的。
 
 对于PROJECT_UI_SNIPPET类型的项目，目前有system_bar（系统栏）、keyboard（软键盘）两种。
 
-## 10. entry
+## entry
 
 entry 是必须的，表示应用程序或者示例程序的启动页面。
 
-## 11. assets
+## assets
 
 assets 是必须的，是应用程序或者示例程序的资源配置。主要参数有：
 
-#### 11.1 activedTheme
+#### activedTheme
 
 activedTheme 表示Designer当前激活的主题，也是应用程序或者示例程序的默认主题。
 
-#### 11.2 outputDir
+#### outputDir
 
 outputDir 表示资源打包时的输出目录。默认为项目的res目录。
 
-#### 11.3 loadFrom
+#### loadFrom
 
 loadFrom 表示资源的打包方式，有 2 个选项：
 
@@ -131,7 +131,8 @@ loadFrom 表示资源的打包方式，有 2 个选项：
 
 * fs 表示为仅文件，即仅生成用于文件系统的资源。
 
-#### 11.4 const
+#### const
+
 const 表示资源的常量格式，主要指字体、图片打包时生成的常量资源的格式，有 2 种格式：
 
 * resource_data 表示原始数据，即常量数组中缓存的是原始的文件数据（比如，PNG 图片的原始数据为 PNG 数据）；
@@ -140,7 +141,7 @@ const 表示资源的常量格式，主要指字体、图片打包时生成的�
 
 * all_data 表示同时生成上述两种类型的数据。
 
-#### 11.5 screenDPR
+#### screenDPR
 
 screenDPR 表示LCD的设备像素比（DPR），影响打包生成常量资源时应包含哪些图片资源，有 3 个选项：
 
@@ -150,15 +151,15 @@ screenDPR 表示LCD的设备像素比（DPR），影响打包生成常量资源�
 
 * x3 表示包含 x3、xx、svg。
 
-#### 11.6 defaultLanguage
+#### defaultLanguage
 
 defaultLanguage 表示应用程序默认使用的语言，默认为中文（zh）。
 
-#### 11.7 defaultCountry
+#### defaultCountry
 
 defaultCountry 表示应用程序默认使用的语言所属的国家或地区，默认为中国（CN）。
 
-#### 11.8 themes
+#### themes
 
 themes 表示应用程序使用的主题，主题可以有多个，缺省为default。
 
@@ -202,7 +203,7 @@ themes 表示应用程序使用的主题，主题可以有多个，缺省为defa
 > 需要注意的是，对于控件样式（比如背景颜色、文本颜色等）：
 > 由于运行时计算灰度会影响效率，因此，当 Frame Buffer 为 MONO 时，AWTK 认为颜色的 R 通道为 0 时表示黑色，否则为白色。建议 MONO 模式下，样式里的颜色均显式地设为黑色或白色。
 
-## 12. creator
+## creator
 
 creator 是必须的，表示项目的创建者，主要的参数有：
 
@@ -210,7 +211,7 @@ creator 是必须的，表示项目的创建者，主要的参数有：
 
 * version 表示创建者的版本号，比如“0.1.6”。
 
-## 13. usesSdk
+## usesSdk
 
 usesSdk 是可选的，表示项目依赖的SDK的信息。
 
@@ -225,13 +226,13 @@ usesSdk 是可选的，表示项目依赖的SDK的信息。
 > 上述版本号对应发布的 AWTK 中 component.json 文件中的 "release_id"
 > 注意：如果没有显式设置，则认为兼容所有版本。
 
-## 14. awtkRoot
+## awtkRoot
 
 对于1.0.0以上版本的Designer，awtkRoot 是必须的，用于指定项目编译时（即点击 Designer 工具栏上的编译按钮启动编译时）依赖的 AWTK 的路径。
 
-默认为 “${DesignerPath}/SDK/awtk”。
+默认为 “\${DesignerPath}/SDK/awtk”。
 
-其中， “${DesignerPath}” 表示 Designer 的安装目录。
+其中， “\${DesignerPath}” 表示 Designer 的安装目录。
 
 > 使用 scons 进行编译时，可以通过 AWTK_ROOT 参数手动设置 AWTK 的路径，比如：
 

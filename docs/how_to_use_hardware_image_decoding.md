@@ -2,7 +2,7 @@
 
 AWTK 默认采用 stb 库进行软件图像解码，全靠 CPU 计算。硬件解码是指将图像解码的工作分配给专门的硬件来处理，减轻 CPU 的计算量，从而提高图像绘制的性能。
 
-## 1 AWTK 解码图片的流程
+## AWTK 解码图片的流程
 
 不同平台的解码流程可能会有区别，在 AWTK 中，用户需要自己实现硬件解码的接口，然后调用 image_loader_register 函数注册该接口，后续 AWTK 程序在进行解码时会自动调用该接口解码图片。
 
@@ -27,7 +27,7 @@ ret_t image_loader_register(image_loader_t* loader);
 > 1. 上图中的 image_manager_get_bitimp 函数是 AWTK 提供的获取图片功能，接口详见：awtk/src/base/image_manager.c。
 > 2. 上图中的 image_loader_load_image 函数是 AWTK 提供的加载图片接口，接口详见：awtk/src/base/image_loader.h。
 
-## 2 STM32 平台案例
+## STM32 平台案例
 
 本节以 AWTK 针对 STM32F767igtx 为例，大致讲解如何将硬件解码接口集成到 AWTK 中，移植层源码可前往 [GitHub](https://guihub.com/zlgopen/awtk-stm32f767igtx-raw) 下载。
 
@@ -60,4 +60,3 @@ lcd_t* platform_create_lcd(wh_t w, wh_t h) {
   return stm32f767_create_lcd(w, h);
 }
 ```
-

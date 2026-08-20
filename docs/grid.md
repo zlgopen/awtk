@@ -8,17 +8,17 @@
 
 有了上述这些特性，我们就可以非常方便的实现表格效果。
 
-![](images/grid.png)
+![](./images/grid.png)
 
 > 由于 grid 本身不具有滚动效果，不适合显示大量数据。
 
-## 1. 用法
+## 用法
 
-### 1.1 指定行数
+### 指定行数
 
 通过属性 rows 指定行数。
 
-### 1.2 指定各列的参数
+### 指定各列的参数
 
 通过属性 columns_definition 指定各列的参数
 
@@ -44,18 +44,18 @@
   char* columns_definition;
 ```
 
-### 1.3 显示网格
+### 显示网格
 
 * 属性 show_grid 设置为 true。
 * 在 style 中指定 grid_color 的颜色
 * 在 style 中指定 border_color 的颜色
 
-### 1.4 奇偶行不同背景颜色
+### 奇偶行不同背景颜色
 
 * 在 style 中通过 even\_bg\_color 指定偶数行的背景颜色
 * 在 style 中通过 odd\_bg\_color 指定奇数行的背景颜色
 
-### 1.5 完整示例
+### 完整示例
 
 ```xml
 <window>

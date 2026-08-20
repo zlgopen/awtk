@@ -1,4 +1,4 @@
-## API 注释格式
+# API 注释格式
 
 AWTK 中的 API 注释，除了作为 API 的文档之外，还有以下用途：
 
@@ -9,7 +9,7 @@ AWTK 中的 API 注释，除了作为 API 的文档之外，还有以下用途�
 
 这里采用了类似于 [jsduck](https://github.com/senchalabs/jsduck) 的 API 注释格式，但是 jsduck 并不支持 C 语言的数据类型，所以没有办法完全兼容 jsduck 的格式。
 
-### 一、类的注释
+## 类的注释
 
 @class 表示类定义。
 
@@ -32,7 +32,7 @@ AWTK 中的 API 注释，除了作为 API 的文档之外，还有以下用途�
 * window 表示该类是窗口的子类。
 * design 表示可以在 UI 设计器中使用。
 
-### 二、属性注释
+## 属性注释
 
 @property 表示属性定义。
 
@@ -56,7 +56,7 @@ AWTK 中的 API 注释，除了作为 API 的文档之外，还有以下用途�
 * design   该属性可以在设计器中设置。
 * scriptable 该属性是否支持脚本化。
 
-### 三、函数的注释
+## 函数的注释
 
 @method 表示函数定义。
 
@@ -107,7 +107,7 @@ ret_t progress_bar_set_value(widget_t* widget, uint8_t value);
 * deconstructor 析构函数
 * scriptable 是否可以脚本化。对于特殊函数（通常有回调函数作为参数）不方便直接产生代码，可以指定为 scriptable:custom，使用定制的绑定代码。
 
-### 四、枚举的注释
+## 枚举的注释
 
 @enum 表示枚举定义。
 
@@ -147,7 +147,7 @@ typedef enum _align_v_t {
 
 * scriptable 该类可以被脚本化。
 
-### 五、事件的注释
+## 事件的注释
 
 @event 表示事件定义。
 

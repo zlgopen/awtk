@@ -1,8 +1,8 @@
-# 如何使用 mutable\_image 控件
+# 如何使用 mutable_image 控件
 
 如果需要将视频数据或者摄像头采集到的画面显示到屏幕上，可以使用 mutable_image 控件来实现该功能。该控件主要提供了 mutable_image_set_prepare_image 函数注册一个回调函数，该回调函数在每次绘制之前被调用，用于准备下一帧要显示的图片。
 
-## 1 相关函数
+## 相关函数
 
 在使用 mutable_image 控件的时候，通常涉及到下面几个函数。
 
@@ -108,13 +108,13 @@ ret_t image_fill(bitmap_t* dst, rect_t* dst_r, color_t c);
 ret_t image_copy(bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t dy);
 ```
 
-## 2 基本用法
+## 基本用法
 
 可以通过下面两种方式使用 mutable_image 控件，两者完成的功能都是一样的，设置屏幕的颜色为蓝色，效果如下图所示：
 
 ![mutable_image控件基本用法](./images/mutable_image.png)
 
-### 2.1 示例一
+### 示例一
 
 直接操作位图数据 image_data，然后往 image_data 设置相应的颜色值，image_data 的大小 = 位图的高度 \* bitmap_get_line_length（每一行实际占用的内存，一般情况下为 w * bpp，其中 w 表示位图的高度，bpp 表示一个像素占用字节数）。image_data 的位图数据格式要与当前 LCD 保持一致,可以调用 lcd_get_desired_bitmap_format 函数获取当前LCD位图数据格式，例如：
 
@@ -188,7 +188,7 @@ ret_t application_init() {
 }
 ```
 
-### 2.2 示例二
+### 示例二
 
 调用 bitmap_create_ex 创建图片对象，图片对象创建好后，调用 image_fill 函数往图片对象填充颜色值。最后调用 image_copy 函数负责将要显示的图片复制到目标图片中（该图片对象由 mutable_image 控件自动生成和销毁），代码如下：
 
@@ -228,7 +228,7 @@ ret_t application_init() {
 
 > 完整示例请参考 [mutable_image.c](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c)。
 
-## 3 硬件图层融合用法
+## 硬件图层融合用法
 
 在某些平台下，支持 LCD 有多个硬件 FrameBuffer，这些硬件 FrameBuffer 可以在硬件绘制时合成到 LCD 上显示，可将这些 FrameBuffer 理解为多个图层，图层融合后绘制到 LCD 上，这样的速度比软件合成要快很多，因此 mutable_image 控件也支持硬件图层融合用法。
 
@@ -245,7 +245,7 @@ ret_t application_init() {
 2. AWTK 支持刷新透明区域，即支持 window 背景色为透明或半透明的效果，其原理是在绘图之前在矩形区域刷一层全透明的颜色；
 3. AWTK 支持背景色为透明的混合算法，该算法会比背景色为不透明的混合算法更加消耗性能（背景色为透明，需要比背景色不透明的每个像素点增加好几个乘除法的运算，但是如果背景色本身为不透明就会退化为原来的背景色不透明的混合算法）。
 
-### 3.1 示例
+### 示例
 
 硬件图层融合用法相较于基本用法不同的地方有三点：
 
@@ -297,7 +297,7 @@ ret_t application_init() {
 }
 ```
 
-### 3.2 直接刷新硬件 FrameBuffer
+### 直接刷新硬件 FrameBuffer
 
 若嵌入式平台支持多线程，可以使用一条线程绘制视频数据到其中一个硬件图层上，然后使用另外一条线程绘制 AWTK 的 GUI。该方法的优点是视频的刷新率不会受到 AWTK 的帧率影响，就算 AWTK 的 GUI 出现卡顿现象，也不会导致视频卡顿。
 

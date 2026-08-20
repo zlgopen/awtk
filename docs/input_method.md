@@ -2,9 +2,9 @@
 
 输入法是 GUI 重要的组件之一，虽然实现起来并不是太复杂，但其涉及的组件比较多，理解起来还是比较困难的，这里介绍一下 AWTK 中输入法的内部架构。
 
-![overview](images/input_method_overview.png)
+![overview](./images/input_method_overview.png)
 
-## 一、软键盘
+## 软键盘
 
 在嵌入式系统中，通常没有物理键盘，所以需要在屏幕上实现软键盘。AWTK 中的软键盘是一个普通的窗口，其中的按钮和候选字控件，都是用 AWTK 的 UI 描述文件定义的，可以方便实现各种不同的软键盘。软键盘的描述文件放在 res/raw/ui 目录下，文件名以 kb_打头。
 
@@ -27,17 +27,17 @@
 
 **方案：** 为不同输入类型的编辑器提供不同软键盘，这些软键盘有各自的 UI 描述文件。输入类型和 UI 描述文件名之间的对应关系如下：
 
-| 输入类型   |      键盘描述文件      |  说明 |
-|----------|:-------------:|------:|
-| INPUT_PHONE | kb_phone | 电话号码|
-| INPUT_INT | kb_int | 整数 |
-| INPUT_FLOAT | kb_float | 浮点数|
-| INPUT_UINT | kb_uint | 非负整数 |
-| INPUT_UFLOAT | kb_ufloat | 非负浮点数|
-| INPUT_HEX | kb_hex | 16 进制 |
-| INPUT_EMAIL | kb_ascii |邮件地址|
-| INPUT_PASSWORD | kb_ascii |密码|
-| 其它 | kb_default ||
+| 输入类型       | 键盘描述文件 |       说明 |
+| -------------- | :----------: | ---------: |
+| INPUT_PHONE    |   kb_phone   |   电话号码 |
+| INPUT_INT      |    kb_int    |       整数 |
+| INPUT_FLOAT    |   kb_float   |     浮点数 |
+| INPUT_UINT     |   kb_uint    |   非负整数 |
+| INPUT_UFLOAT   |  kb_ufloat   | 非负浮点数 |
+| INPUT_HEX      |    kb_hex    |    16 进制 |
+| INPUT_EMAIL    |   kb_ascii   |   邮件地址 |
+| INPUT_PASSWORD |   kb_ascii   |       密码 |
+| 其它           |  kb_default  |            |
      
 > 参考：input\_methods/input\_method\_default.c
 
@@ -45,22 +45,22 @@
 
 **方案：** 通过按钮的名字决定其功能：
 
-| 按钮名称  |      功能说明 |
-|----------|:-------------:|
-| return         | 回车键          |
-| action         | 定制按钮        |
-| backspace      | 删除键          |
-| tab            | tab键           |
-| space          | 空格键          |
-| close          | 关闭软键盘       |
-| clear          | 清除编辑器的内容 |
-| cancel         | 恢复编辑器的内容 |
-| back           | 关闭当前窗口     |
-| back_to_home   | 返回home窗口    |
-| 前缀key:        | 键值           |
-| 前缀hard_key:   | 模拟物理键盘    |
-| 前缀page:       | 切换到页面      |
-| 前缀opt:        | 多个字符选择一个，点击切换到下一个，超时提交字符(用于实现九宫格输入) |
+| 按钮名称      |                               功能说明                               |
+| ------------- | :------------------------------------------------------------------: |
+| return        |                                回车键                                |
+| action        |                               定制按钮                               |
+| backspace     |                                删除键                                |
+| tab           |                                tab键                                 |
+| space         |                                空格键                                |
+| close         |                              关闭软键盘                              |
+| clear         |                           清除编辑器的内容                           |
+| cancel        |                           恢复编辑器的内容                           |
+| back          |                             关闭当前窗口                             |
+| back_to_home  |                             返回home窗口                             |
+| 前缀key:      |                                 键值                                 |
+| 前缀hard_key: |                             模拟物理键盘                             |
+| 前缀page:     |                              切换到页面                              |
+| 前缀opt:      | 多个字符选择一个，点击切换到下一个，超时提交字符(用于实现九宫格输入) |
 
 
 * 4. 有时需要显示候选字有时不需要。
@@ -71,7 +71,7 @@
 
 > 详情请参考 [keyboard 的文档](https://github.com/zlgopen/awtk/blob/master/docs/manual/keyboard_t.md)。
 
-## 二、输入法接口及实现
+## 输入法接口及实现
 
 AWTK 作为一个通用的 GUI，需要考虑以下几种情况：
 
@@ -82,23 +82,23 @@ AWTK 作为一个通用的 GUI，需要考虑以下几种情况：
 
 针对上面几种情况，AWTK 提供了三种不同的实现，可以根据需要加入对应的实现：
 
-![input method](images/input_method.png)
+![input method](./images/input_method.png)
 
 * null 实现只是提供了空的实现，不启用输入法和软键盘。
 * sdl 实现包装了原生输入法 (SDL 的实现有些问题，还需要进一步完善）。
 * default 提供了自己的实现，负责软键盘的打开关闭和输入法引擎的创建。
 
-## 三、输入法引擎及实现
+## 输入法引擎及实现
 
 输入法引擎主要负责将用户的按键转换成一组候选字（这些候选字将在软键盘上的候选字控件上显示出来）。输入法引擎有很多，不同的语言也有不同的输入法引擎。请参考 [输入法引擎](https://github.com/zlgopen/awtk/blob/master/src/input_engines/README.md)
 
-![](images/input_engine.png)
+![](./images/input_engine.png)
 
-## 四、编辑器
+## 编辑器
 
 编辑器只需要在得到焦点或失去焦点时，请求输入法打开或关闭输入法即可。
 
-## 五、键盘控制打开、关闭和 toggle 输入法
+## 键盘控制打开、关闭和 toggle 输入法
 
 在没有触屏的系统中，可能需要用按键来打开、关闭和 toggle 输入法，否则软键盘一旦弹出来，就没有办法关闭了。
 
@@ -118,11 +118,10 @@ AWTK 作为一个通用的 GUI，需要考虑以下几种情况：
 #endif /*TK_KEY_TOGGLE_INPUT_METHOD*/
 ```
 
-## 六、其它
+## 其它
 
 * 修改候选字的最大个数，重新定义宏 TK\_IM\_MAX\_CANDIDATE\_CHARS 即可。
 
 ```
 #define TK_IM_MAX_CANDIDATE_CHARS 32
 ```
-

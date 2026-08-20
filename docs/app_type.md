@@ -1,4 +1,4 @@
-## 应用程序的类型
+# 应用程序的类型
 
 在 AWTK 中，应用程序有以下类型：
 
@@ -28,7 +28,7 @@ typedef enum _app_type_t {
 } app_type_t;
 ```
 
-### APP_SIMULATOR
+## APP_SIMULATOR
 
 > 默认运行方式，有以下特点：
 
@@ -36,14 +36,15 @@ typedef enum _app_type_t {
 * 使用 AWTK 的剪切板
 * 在 PC 上运行时，窗口不可调整大小。
 
-### APP_DESKTOP
+## APP_DESKTOP
+
 > 用于开发 PC 软件，有以下特点：
 
 * 使用系统的输入法
 * 使用系统的剪切板
 * 窗口可以调整大小。
 
-### APP_MOBILE
+## APP_MOBILE
 
 > 在 Android/iOS 上：
 * 使用系统的输入法
@@ -55,7 +56,7 @@ typedef enum _app_type_t {
 * 使用 AWTK 的剪切板
 * 窗口自动调整大小。
 
-### 使用方法
+## 使用方法
 
 建议使用 awtk_main.inc。
 

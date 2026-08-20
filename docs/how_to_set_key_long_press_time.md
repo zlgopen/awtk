@@ -9,4 +9,4 @@
     input_device_status_t* ids = window_manager_get_input_device_status(wm);
     input_device_status_set_key_long_press_time(ids, TK_KEY_1, 2000);
     input_device_status_set_key_long_press_time(ids, TK_KEY_2, 10000);
-```    
+```

@@ -4,7 +4,7 @@ system\_bar 是一个位于屏幕上方的窗口，通常用来显示当前窗�
 
 system\_bar 是可选的，可以启用也可以不启用。如果要启用 system\_bar，可以按下列方法：
 
-## 一、创建 system\_bar 窗口
+## 创建 system\_bar 窗口
 
 system\_bar 和普通窗口类似，你可以用代码创建，也可以用 XML UI 描述文件创建，比如下面是 demouiold 中的 system\_bar 的 XML UI 描述文件 (system\_bar.xml)：
 
@@ -37,7 +37,7 @@ system\_bar 和普通窗口类似，你可以用代码创建，也可以用 XML 
 
 > 如果窗口希望收到 EVT\_REQUEST\_CLOSE\_WINDOW 事件时，由用户决定是否关闭当前。可以设置窗口的 closable 属性为"confirm"，同时处理 EVT\_REQUEST\_CLOSE\_WINDOW 事件，根据当前的情况决定是否关闭窗口。
 
-## 二、打开窗口
+## 打开窗口
 
 如果要启用 system\_bar 窗口，必须在打开应用程序的窗口之前打开 system\_bar 窗口。
 
@@ -47,7 +47,7 @@ system\_bar 和普通窗口类似，你可以用代码创建，也可以用 XML 
 window_open("system_bar");
 ```
 
-## 三、style
+## style
 
 system\_bar 的 style 和其它窗口一样，可以在 styles 目录下放一个与窗口同名的 style 文件 (system\_bar.xml)。比如下面是 demouiold 中的 system\_bar 的 style(system\_bar.xml)：
 

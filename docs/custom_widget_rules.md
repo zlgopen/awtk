@@ -4,24 +4,16 @@
 
 编译脚本请参考：https://github.com/zlgopen/awtk-widget-number-label/blob/master/src/SConscript
 
-## 1. 目录结构
+## 目录结构
 
 * design 存放示例代码的原始资源，用 Designer 打开后可进行编辑。
-
 * res 存放示例代码运行时需要的资源，由 Designer 打包 或者 scripts/update_res.py 脚本生成。
-
 * bin 存放动态库和可执行文件。
-
 * lib 存放静态库文件。
-
 * demos 存放示例代码。
-
 * idl 存放生成的 IDL 文件。
-
 * scripts 存放资源生成的脚本文件。
-
 * src 存放控件源码，每个控件放在独立的目录。
-
 * tests 用于存放测试代码。
 
 示例：
@@ -45,9 +37,9 @@
 
 > 完整示例参考 [number-label](https://github.com/zlgopen/awtk-widget-number-label)
 
-## 2. 命名规范
+## 命名规范
 
-### 2.1 控件类型名
+### 控件类型名
 
 控件类型名使用小写的英文单词，多个单词之间用下划线连接。
 
@@ -61,16 +53,16 @@
 
 > 控件名要求能展示控件的功能。
 
-### 2.2 子目录名
+### 子目录名
 
 在 src 下的子目录名与控件类型名保持一致。
 
-### 2.3 源文件名
+### 源文件名
 
 * 头文件名：控件类型名 + ".h"
 * 源文件名：控件类型名 + ".c"
 
-### 2.4 类名
+### 类名
 
 控件类型名 + "_t"
 
@@ -85,12 +77,13 @@ typedef struct _number_label_t {
 
 > 自定义控件只能以 widget_t 作为父类。
 
-### 2.2 函数名
+### 函数名
 
 成员函数以控件类型名为前缀，以下划线连接，全部使用小写单词。
 
 如：
-```
+
+```c
 /**
  * @method number_label_set_format
  * 设置格式字符串（用于将浮点数转换为字符串）。
@@ -103,7 +96,7 @@ typedef struct _number_label_t {
 ret_t number_label_set_format(widget_t* widget, const char* format);
 ```
 
-### 2.3 属性名
+### 属性名
 
 属性名使用小写的英文单词，多个单词之间用下划线连接。
 
@@ -141,7 +134,7 @@ static ret_t gesture_lock_get_prop(widget_t* widget, const char* name, value_t* 
 }
 ```
 
-### 2.4 事件名
+### 事件名
 
 如果控件有自定义的事件，事件名以"EVT"为前缀，使用大写的英文单词，单词之间用下划线连接。
 
@@ -154,11 +147,11 @@ static ret_t gesture_lock_get_prop(widget_t* widget, const char* name, value_t* 
  */
 ```
 
-### 2.5 动态库名
+### 动态库名
 
 如果动态库中只有一个控件，动态库的名称使用控件类型名。如果动态库中有多个控件，可以自行考虑名称。
 
-### 2.6 控件注册函数名
+### 控件注册函数名
 
 控件注册函数负责注册动态库中的控件。
 
@@ -178,7 +171,7 @@ static ret_t gesture_lock_get_prop(widget_t* widget, const char* name, value_t* 
 ret_t number_label_register(void);
 ```
 
-### 2.7 获取支持的渲染模式的函数名
+### 获取支持的渲染模式的函数名
 
 目前可选的渲染模式有 OpenGL、AGGE-BGR565、AGGE-BGRA8888、AGGE-MONO；默认支持全部模式，模式之间以“|”间隔，可根据实际情况修改。
 
@@ -198,11 +191,11 @@ ret_t number_label_register(void);
 const char* number_label_supported_render_mode(void);
 ```
 
-## 3. 注释格式
+## 注释格式
 
 自定义控件需要使用 AWTK 标准注释。请参考 [API 注释格式](api_doc.md)
 
-## 4. 辅助工具
+## 辅助工具
 
 awtk 提供了一些工具用于生成 IDL 和动态库导出符号表。
 
@@ -210,46 +203,44 @@ awtk 提供了一些工具用于生成 IDL 和动态库导出符号表。
 
 如：
 
-```
+```bash
 node ../awtk/tools/idl_gen/index.js idl/idl.json src/
 ```
 
 * awtk/tools/dll\_def\_gen/index.js 用于生成动态库导出符号表。 
 
 如：
-```
+
+```bash
 node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 ```
 
 > 使用这些工具需要安装 [nodejs](https://nodejs.org/zh-cn/)
 
-## 5. 依赖的 AWTK 版本
+## 依赖的 AWTK 版本
 
 可以在自定义控件项目的 project.json 文件中设置该动态库依赖的 AWTK 版本。
 
 如：
+
 ```json
 {
-  ...
   "usesSdk": {
     "awtk:minSdkVersion": "20070",
     "awtk:maxSdkVersion": "20090",
     "awtk:targetSdkVersion": "20090"
   }
-  ...
 }
 ```
 
 * 参数 awtk:minSdkVersion 是可选的，表示兼容的最低版本。
-
 * 参数 awtk:maxSdkVersion 是可选的，表示兼容的最高版本。
-
 * 参数 awtk:targetSdkVersion 是可选的，表示最佳版本。
 
 > 上述版本号对应发布的 AWTK 中 component.json 文件中的 "release_id"
 > 注意：如果没有显式设置，则认为兼容所有版本。
 
-## 6. Designer 新建控件的初始状态
+## Designer 新建控件的初始状态
 
 默认情况下，从 Designer 的控件列表的自定义分组中拖出一个控件，其属性为控件 create 时的初值，样式为全透明。
 
@@ -305,11 +296,11 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 
 > Designer 新建控件时会根据上述描述初始化控件的属性及样式，但会忽略 x、y 属性。
 
-## 7. Designer 中的图标
+## Designer 中的图标
 
 如果需要修改自定义控件在 Designer 中的图标，请将图标存放到指定位置。
 
-### 7.1 库的图标
+### 库的图标
 
 库的图标指在 Designer 的“选择模板”或者“模板管理”页面上用于标识自定义控件库或者描述其功能的图标，大小为 60*60 像素。
 
@@ -317,7 +308,7 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 
 > 如果不指定，则显示为空。
 
-### 7.2 控件列表上的图标
+### 控件列表上的图标
 
 控件列表上的图标指在 Designer 的控件列表上该控件的图标，大小为 48*48 像素。
 
@@ -326,7 +317,7 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 > 如果不指定，则显示默认图标。
 > 如果自定义控件库包含多个控件，可以用“widget_list_”前缀 + 控件类型名的形式，为控件单独指定图标，比如“widget_list_number_label.png”。
 
-### 7.3 对象浏览器上的图标
+### 对象浏览器上的图标
 
 对象浏览器上的图标指在 Designer 的对象浏览器上该控件类型的对象左侧显示的图标，大小为 16*16 像素。
 
@@ -335,16 +326,14 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 > 如果不指定，则显示默认图标。
 > 如果自定义控件库包含多个控件，可以用“widget_obj_”前缀 + 控件类型名的形式，为控件单独指定图标，比如“widget_obj_number_label.png”。
 
-## 8. src 目录中的源代码使用相对路径的方式 include 头文件
+## src 目录中的源代码使用相对路径的方式 include 头文件
 
 为了避免使用自定义控件库时需设置一遍编译时的 include 目录，提高用户体验，要求在源代码中 include 头文件时使用相对路径的形式。
 
 比如，number_label.h、number_label.c 在同一个目录，则在 number_label.c 中按如下方式 include：
 
 ```c
-...
 #include "number_label.h"
-...
 ```
 
 > 如果不使用相对路径的方式，则请在自定义控件库的 README.md 文件中注明该库需要 include 的目录。

@@ -1,6 +1,6 @@
 # 参考手册
 
-## 一、GUI 相关组件
+## GUI 相关组件
 
 ### 控件
 
@@ -11,9 +11,11 @@
 * [widget](manual/widget_t.md) 所有控件、窗口和窗口管理器的基类。
 
 #### 窗口管理器
+
 * [window\_manager](manual/window_manager_t.md) 窗口管理器。
 
 #### 窗口
+
 * [window\_base](manual/window_base_t.md) 窗口基类。
 * [dialog](manual/dialog_t.md) 对话框。
 * [popup](manual/popup_t.md) 弹出窗口。
@@ -23,6 +25,7 @@
 * [overlay](manual/overlay_t.md) 悬浮窗口。
 
 #### 基本控件
+
 * [button](manual/button_t.md) 按钮控件。
 * [label](manual/label_t.md) 文本控件。
 * [edit](manual/edit_t.md) 单行编辑器控件。
@@ -46,6 +49,7 @@
 * [tab\_button\_group](manual/tab_button_group_t.md) 标签按钮分组控件。
 
 #### 通用容器控件
+
 * [row](manual/row_t.md) 行控件。
 * [column](manual/column_t.md) 列控件。
 * [grid](manual/grid_t.md) 网格控件。
@@ -56,6 +60,7 @@
 * [button\_group](manual/button_group_t.md) 按钮分组控件。
 
 #### 扩展控件
+
 * [candidates](manual/candidates_t.md) 软键盘候选字控件。
 * [canvas\_widget](manual/canvas_widget_t.md) 画布控件。
 * [color\_picker](manual/color_picker_t.md) 颜色选择器控件。
@@ -89,14 +94,13 @@
 ### 常用常量
 
 * [控件状态定义](manual/widget_state_t.md)
-
 * [控件属性定义](manual/widget_prop_t.md)
 
 ### 画布
 
 #### 普通画布
-* [canvas](manual/canvas_t.md)
 
+* [canvas](manual/canvas_t.md)
 * [canvas offline](manual/canvas_offline_t.md)
 
 #### 矢量图画布
@@ -112,7 +116,7 @@
 * [asset\_info](manual/asset_info_t.md) 资源信息。
 * [assets\_manager](manual/assets_manager_t.md) 资源管理器。
 
-#### 1. 字体
+#### 字体
 
 ![font\_overview](images/font_overview.png)
 
@@ -124,7 +128,7 @@
 * [font\_loader\_bitmap](manual/font_loader_bitmap_t.md) 基于位图实现的字体加载器。
 * [font\_manager](manual/font_manager_t.md) 字体管理器。
 
-#### 2. 图片
+#### 图片
 
 ![image\_overview](images/image_overview.png)
 
@@ -133,11 +137,11 @@
 * [image\_loader\_stb](manual/image_loader_stb_t.md) stb 图片加载器。
 * [image\_manager](manual/image_manager_t.md) 图片管理器。
 
-#### 3. 字符串资源
+#### 字符串资源
 
 * [locale\_info](manual/locale_info_t.md) 本地化信息。
 
-#### 4. 窗体样式
+#### 窗体样式
 
 ![style\_overview](images/style_overview.png)
 
@@ -147,7 +151,7 @@
 * [style\_const](manual/style_const_t.md) 只读的 style。
 * [style\_mutable](manual/style_mutable_t.md) 可修改的 style。
 
-#### 5.UI 描述数据
+#### UI 描述数据
 
 ![ui\_loader\_overview](images/ui_loader_overview.png)
 
@@ -180,13 +184,11 @@
 ![timer\_overview](images/timer_overview.png)
 
 * [timer](manual/timer_t.md) 定时器。
-
 * [timer\_info](manual/timer_info_t.md) 单个 timer 的信息。
 
 ![idle\_overview](images/idle_overview.png)
 
 * [idle](manual/idle_t.md) 用于异步执行一些函数。 
-
 * [idle\_info](manual/idle_info_t.md) 单个 idle 的信息。 
 
 ### 布局器
@@ -196,19 +198,12 @@
 ![children\_layouter](images/layout_children_layouter.png)
 
 * [self\_layouter](manual/self_layouter_t.md) 控件自身排版布局器的接口
-
 * [children\_layouter](manual/children_layouter_t.md) 子控件排版布局器的接口
-
 * [self\_layouter\_factory](manual/self_layouter_factory_t.md) 控件自身排版布局器的工厂。
-
 * [children\_layouter\_factory](manual/children_layouter_factory_t.md) 子控件排版布局器的的工厂。
-
 * [self\_layouter\_default](manual/self_layouter_default_t.md) 缺省的控件自身布局算法实现。
-
 * [self\_layouter\_menu](manual/self_layouter_menu_t.md) 菜单控件自身布局算法实现。
-
 * [children\_layouter\_default](manual/children_layouter_default_t.md) 缺省的子控件布局算法实现。
-
 * [children\_layouter\_list\_view](manual/children_layouter_list_view_t.md) 列表视图的子控件布局算法实现。
 
 ### lcd
@@ -216,38 +211,25 @@
 ![lcd](images/lcd.png)
  
 * [lcd](manual/lcd_t.md) LCD 接口
-
 * [lcd\_type](manual/lcd_type_t.md) LCD 类型定义
-
 * [lcd\_draw\_mode](manual/lcd_draw_mode_t.md) LCD 绘制模式
-
 * [lcd\_mem\_fragment](manual/lcd_mem_fragment_t.md) 片段 LCD
-
 * [lcd\_orientation](manual/lcd_orientation_t.md) LCD 旋转常量
-
 * [lcd\_mem\_bgr565](manual/lcd_mem_bgr565_t.md) bgr565 格式的 LCD
-
 * [lcd\_mem\_bgr888](manual/lcd_mem_bgr888_t.md) bgr888 格式的 LCD
-
 * [lcd\_mem\_bgra8888](manual/lcd_mem_bgra8888_t.md) bgra8888 格式的 LCD
-
 * [lcd\_mem\_rgb565](manual/lcd_mem_rgb565_t.md) rgb565 格式的 LCD
-
 * [lcd\_mem\_rgb888](manual/lcd_mem_rgb888_t.md) rgb888 格式的 LCD
-
 * [lcd\_mem\_rgba8888](manual/lcd_mem_rgba8888_t.md) bgra8888 格式的 LCD
-
 * [lcd\_mem\_special](manual/lcd_mem_special_t.md) 特殊格式的 LCD
-
 * [lcd\_mono](manual/lcd_mono_t.md) 单色 LCD
-
 * [lcd\_profile](manual/lcd_profile_t.md) 用于 profile 性能的 LCD
 
 ### 杂项
 
 * [system\_info](manual/system_info_t.md) 系统信息。
 
-## 二、基本函数库
+## 基本函数库
 
 ### 容器与基本数据结构
 
@@ -351,7 +333,7 @@
 * [socket\_pair](manual/socketpair_t.md) 生成两个可以互相通信的 socket 句柄。
 
 ### 数据格式
- 
+
 * [ubjson\_parser](manual/ubjson_parser_t.md)
 * [ubjson\_writer](manual/ubjson_writer_t.md)
 * [xml\_parser](manual/XmlParser.md)

@@ -1,13 +1,12 @@
-
 # 如何使用离线的 canvas
 
-​	canvas 在 awtk 中是画布的意思，而且用户常常是通过回调函数回去是在线 canvas 来进行绘图，但是在在线 canvas 上面画东西就会显示到屏幕上面。
+​canvas 在 awtk 中是画布的意思，而且用户常常是通过回调函数回去是在线 canvas 来进行绘图，但是在在线 canvas 上面画东西就会显示到屏幕上面。
 
-​	为了解决用户离线画布的需求，所以 awtk 中提供了 canvas_offline_xxx 系列函数给用户使用。
+为了解决用户离线画布的需求，所以 awtk 中提供了 canvas_offline_xxx 系列函数给用户使用。
 
-### 一，创建离线画布 canvas
+## 创建离线画布 canvas
 
-​	下面为创建离线画布 canvas 的函数，在离线画布 canvas 内置了一个离线的 bitmap，提供给用户使用。
+​下面为创建离线画布 canvas 的函数，在离线画布 canvas 内置了一个离线的 bitmap，提供给用户使用。
 
 ```c
 /**
@@ -44,11 +43,11 @@ bitmap_t* canvas_offline_get_bitmap(canvas_t* canvas);
   canvas_offline = canvas_offline_create(320, 480, BITMAP_FMT_RGBA8888);
 ```
 
-> 备注：在 opengl 模式下离线 canvas 格式只能为 RGBA8888，而在 AGGE 下可以为 RGBA8888，BGRA8888，RGB565 和 BGR5656。（其他的格式暂时不支持）
+> 在 opengl 模式下离线 canvas 格式只能为 RGBA8888，而在 AGGE 下可以为 RGBA8888，BGRA8888，RGB565 和 BGR5656。（其他的格式暂时不支持）
 
-### 二，绘图离线画布 canvas 
+## 绘图离线画布 canvas
 
-​	离线 canvas 的绘图过程和平时使用 canvas 绘图是一样的，只不过在绘制之前需要先调用 canvas_offline_begin_draw 函数，结束的时候调用 canvas_offline_end_draw  函数。
+​离线 canvas 的绘图过程和平时使用 canvas 绘图是一样的，只不过在绘制之前需要先调用 canvas_offline_begin_draw 函数，结束的时候调用 canvas_offline_end_draw  函数。
 
 ```c
 /**
@@ -109,15 +108,13 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas);
   bitmap_save_png(offline_bitmap, "test.png");
 ```
 
-> 备注：
->
 > 1. 如果 awtk 在 opengl 模式下，同时需要操作 bitmap 中的位图数据的话，就需要调用 canvas_offline_flush_bitmap 函数把 GPU 中的显存数据回传到内存中。
 > 2. canvas 的所有函数，离线  canvas 都可以调用，并且绘制数据只会放到离线 canvas 中。
 > 3. 如果需要使用 vg 的话，可以通过 canvas_get_vgcanvas  函数，获取离线 canvas 的 vg 对象。
 
-### 三，释放离线画布 canvas
+## 释放离线画布 canvas
 
-​	释放离线画布只是释放对应的离线 canvas，而不会释放绑定的 bitmap，bitmap 需要用户自行管理。
+​释放离线画布只是释放对应的离线 canvas，而不会释放绑定的 bitmap，bitmap 需要用户自行管理。
 
 ```c
 /**
@@ -131,11 +128,11 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas);
 ret_t canvas_offline_destroy(canvas_t* canvas);
 ```
 
-### 四，用户自定义特殊的离线画布 canvas
+## 用户自定义特殊的离线画布 canvas
 
-​	由于有一些特别平台不能直接使用 awtk 提供的离线 canvas，只能通过平台的一些特殊的接口来实现离线画布 canvas，所以 awtk 的离线 canvas 提供了一个给外部重载离线 canvas 的函数的方法。
+​由于有一些特别平台不能直接使用 awtk 提供的离线 canvas，只能通过平台的一些特殊的接口来实现离线画布 canvas，所以 awtk 的离线 canvas 提供了一个给外部重载离线 canvas 的函数的方法。
 
-​	通过定义 WITH_CANVAS_OFFLINE_CUSTOM 宏，并且用户自行重写下面的函数，并且返回值必须是 RET_OK 或者非 NULL：
+​通过定义 WITH_CANVAS_OFFLINE_CUSTOM 宏，并且用户自行重写下面的函数，并且返回值必须是 RET_OK 或者非 NULL：
 
 | 函数名字                                        | 作用                                                       |
 | ----------------------------------------------- | ---------------------------------------------------------- |
@@ -148,8 +145,7 @@ ret_t canvas_offline_destroy(canvas_t* canvas);
 | canvas_offline_custom_flush_bitmap              | 用户自定义 canvas_offline_custom_flush_bitmap              |
 | canvas_offline_custom_destroy                   | 用户自定义 canvas_offline_custom_destroy                   |
 
-> 备注：如果用户只需要部分函数的实现的话，可以把其他的函数返回 RET_FAIL 或者 NULL ，即可以让离线画布 canvas 函数执行回 awtk 的原来的代码逻辑。
-
+> 如果用户只需要部分函数的实现的话，可以把其他的函数返回 RET_FAIL 或者 NULL ，即可以让离线画布 canvas 函数执行回 awtk 的原来的代码逻辑。
+>
 > 具体用法请参考 
 > [demo\_offline\_canvas.c](https://github.com/zlgopen/awtk/blob/master/demos/demo_canvas_offline.c)
-

@@ -6,10 +6,9 @@ AWTK 控件支持键值映射，也就是将一个键值转换成另外一个键
 
 如：
 
-```
+```xml
 <list_view x="0"  y="0" w="100%" h="-50" item_height="60" map_key:up="pageup" map_key:down="pagedown">
 ```
 
 > 键值映射可以放到任何控件，请根据自己的需要调整。
-
 > 键名的定义请参考 [enums.c](https://github.com/zlgopen/awtk/blob/master/src/base/enums.c#L99)。
