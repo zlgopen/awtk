@@ -20,4 +20,4 @@
 
 > time 只能输入时分，要输入时分秒请用 time\_full。
 
-参考：[input type](manual/input_type_t.md)
+参考：[input type](https://github.com/zlgopen/awtk/tree/master/docs/manual/input_type_t.md)

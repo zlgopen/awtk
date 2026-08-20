@@ -131,7 +131,7 @@ ret_t input_engine_set_lang(input_engine_t* engine, const char* lang);
 
 预编辑状态是在文本真正提交到编辑器之前的状态，在预编辑状态下输入的文本，可以被后面的输入覆盖。比如软键盘上，一个按键有 ABC 三个字符，按一下输入 A，再按一下输入 B，继续按钮输入 C，在指定时间内没有按，则提交当前的字符到编辑器。
 
-![](./images/t9_1.png)
+![](./images/t9_1.gif)
 
 #### 软键盘
 

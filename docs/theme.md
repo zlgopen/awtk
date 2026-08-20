@@ -91,7 +91,7 @@ AWTK 的窗体样式按控件进行分类，每种控件可以有多种不同的
 参考： 
 
 * [AWTK 中图片的绘制方式](image_draw_type.md)
-* [如何在窗体样式文件中写控件布局参数](how_to_write_layout_params_in_style.md)
+* [如何在窗体样式文件中写控件布局参数](howtos/how_to_write_layout_params_in_style.md)
 
 ### 扩展属性
 

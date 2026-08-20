@@ -1,12 +1,12 @@
 # 如何使用多点触控
 
-​	AWTK 提供的多点触控功能主要是为了给用户提供多点触控的基本数据，方便用户开发多点触控的控件或者应用。
+​AWTK 提供的多点触控功能主要是为了给用户提供多点触控的基本数据，方便用户开发多点触控的控件或者应用。
 
-### 一，多点触控的类型
+## 多点触控的类型
 
-​	AWTK 一共提供了两种多点触控的类型，分别是获取手指 ID 的可识别手指类型的多点触控和不可以获取手指 ID 的不可识别手指类型的多点触控，下表为两者的区别：
+​AWTK 一共提供了两种多点触控的类型，分别是获取手指 ID 的可识别手指类型的多点触控和不可以获取手指 ID 的不可识别手指类型的多点触控，下表为两者的区别：
 
-|                          | 可识别手指类型 | 不可识别手指类型的 |
+| 说明                     | 可识别手指类型 | 不可识别手指类型的 |
 | ------------------------ | -------------- | ------------------ |
 | 是否需要提供手指 ID      | 是             | 否                 |
 | 触摸消息是否提供距离增量 | 是             | 是                 |
@@ -15,9 +15,9 @@
 
 > 因为某些触摸硬件是无法提供具体的手指 ID 的，所以 AWTK 特别提供一种不需要手指 ID 的多点触控机制，但是这个机制提供出来的消息是只能支持两个手指头的旋转数据，所以用户需要更加具体情况来旋转使用。
 
-### 二，多点触控的API
+## 多点触控的API
 
-#### 可识别手指类型
+### 可识别手指类型
 
 ```c
 /**
@@ -51,7 +51,7 @@ multi_gesture_touch_fingers_t* multi_gesture_touch_fingers_create(int32_t finger
 ret_t multi_gesture_post_event_from_fingers(main_loop_t* loop, multi_gesture_touch_fingers_t* touch, uint32_t point_size, multi_touch_point_event_t* points);
 ```
 
-#### 不可识别手指类型
+### 不可识别手指类型
 
 ```c
 /**
@@ -89,13 +89,13 @@ ret_t multi_gesture_post_event_from_points(main_loop_t* loop, multi_gesture_touc
 >
 > [multi\_gesture.inc](https://github.com/zlgopen/awtk/blob/master/src/base/multi_gesture.inc)
 
-### 三，如何使用
+## 如何使用
 
-​	本文使用 github 中 [stm32f429 项目](https://github.com/zlgopen/awtk-stm32f429igtx-raw)为例子，来讲述如何使用 awtk 提供的多点触控方案。
+​本文使用 github 中 [stm32f429 项目](https://github.com/zlgopen/awtk-stm32f429igtx-raw)为例子，来讲述如何使用 awtk 提供的多点触控方案。
 
-#### 适配层
+### 适配层
 
-​	stm32f429 项目中的适配层，把触摸数据发送到 AWTK 消息循环中。
+​stm32f429 项目中的适配层，把触摸数据发送到 AWTK 消息循环中。
 
 ```c
 /* main_loop_stm32_raw.c */
@@ -217,7 +217,7 @@ lcd_t* platform_create_lcd(wh_t w, wh_t h) {
 > 1. 上面的代码有两个 for 循环，一个是计算当前按下的手指个数，一个是把硬件的手指坐标数据转换为 multi_touch_point_event_t 类型。
 > 2. 只需要把上面 multi_gesture_post_event_form_points 函数取消注释，然后把 multi_gesture_post_event_form_fingers 函数加上注释就可以实现使用不可识别手指类型的多点触控，本例子默认为可识别手指类型的多点触控。
 
-#### 应用层
+### 应用层
 
 ​由于多点触控无法通过手指点击坐标来确定具体的控件，所以 AWTK 的多点触控默认会发送给当前选中的窗口上面，所以用户想获取具体的消息，需要通过给当前的窗口注册多点触控消息事件（EVT_MULTI_GESTURE 事件）来获取对应消息，如下代码：
 

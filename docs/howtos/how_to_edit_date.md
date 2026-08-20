@@ -18,4 +18,4 @@
 <edit w="70%" text="" tips="date autofix"  input_type="date" auto_fix="true"/>
 ```
 
-参考：[input type](manual/input_type_t.md)
+参考：[input type](https://github.com/zlgopen/awtk/tree/master/docs/manual/input_type_t.md)

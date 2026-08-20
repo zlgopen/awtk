@@ -18,4 +18,4 @@
 <edit w="70%" text="192.168.1.1" tips="ipv4 autofix" input_type="ipv4" auto_fix="true"/>
 ```
 
-参考：[input type](manual/input_type_t.md)
+参考：[input type](https://github.com/zlgopen/awtk/tree/master/docs/manual/input_type_t.md)

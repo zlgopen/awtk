@@ -4,9 +4,8 @@
 
 ## 在 style 中指定布局参数
 
-* 控件自身布局参数使用 self_layout 属性指定。请参考 [控件布局参数文档](layout.md)
-
-* 子控件布局参数使用 children_layout 属性指定。请参考 [控件布局参数文档](layout.md)
+* 控件自身布局参数使用 self_layout 属性指定。请参考 [控件布局参数文档](https://github.com/zlgopen/awtk/tree/master/docs/layout.md)
+* 子控件布局参数使用 children_layout 属性指定。请参考 [控件布局参数文档](https://github.com/zlgopen/awtk/tree/master/docs/layout.md)
 
 示例：
 
