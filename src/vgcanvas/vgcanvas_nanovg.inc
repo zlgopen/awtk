@@ -29,6 +29,7 @@ static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t
 static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo);
 static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
                                            bitmap_t* img, const rect_t* r);
+static const rectf_t* vgcanvas_nanovg_get_clip_rect(vgcanvas_t* vgcanvas);
 
 #ifndef WITH_NANOVG_GPU
 static ret_t vgcanvas_nanovg_soft_text_set_font(vgcanvas_t* vgcanvas, const char* name);
@@ -300,16 +301,16 @@ static ret_t vgcanvas_nanovg_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t 
 }
 
 static bool_t vgcanvas_nanovg_is_rectf_in_clip_rect(vgcanvas_t* vgcanvas, float_t left, float_t top, float_t right, float_t bottom) {
-  float_t clip_left = vgcanvas->clip_rect.x;
-  float_t clip_right = vgcanvas->clip_rect.x + vgcanvas->clip_rect.w - 1;
-  float_t clip_top = vgcanvas->clip_rect.y;
-  float_t clip_bottom = vgcanvas->clip_rect.y + vgcanvas->clip_rect.h - 1;
+  const rectf_t* clip_rect = vgcanvas_nanovg_get_clip_rect(vgcanvas);
+  float_t clip_left = clip_rect->x;
+  float_t clip_right = clip_rect->x + clip_rect->w - 1;
+  float_t clip_top = clip_rect->y;
+  float_t clip_bottom = clip_rect->y + clip_rect->h - 1;
   if (left > clip_right || right < clip_left || top > clip_bottom || bottom < clip_top) {
     return FALSE;
   }
   return TRUE;
 }
-
 
 static const rectf_t* vgcanvas_nanovg_get_clip_rect(vgcanvas_t* vgcanvas) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;

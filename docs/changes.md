@@ -3,6 +3,7 @@
 2026/8/21
   * 修复 NANOVG_BACKEND=AGGE 时未切换 VGCANVAS=NANOVG，导致 demoui 在非 OpenGL 窗口上创建 GL 上下文崩溃
   * 重写 tkc/crc，去掉 Tiny Protocol 的 LGPL 代码，按公开 CRC 参数自行生成查找表
+  * 修复 vgcanvas 裁剪区可能异常的问题 (感谢雪飞提供补丁)
 
 2026/8/20
   * 迁移并格式化fscript相关文档(感谢雨欣提供补丁)
