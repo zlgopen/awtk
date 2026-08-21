@@ -1,20 +1,23 @@
-﻿/*
-    Copyright 2016-2019 (C) Alexey Dynda
+﻿/**
+ * File:   crc.h
+ * Author: AWTK Develop Team
+ * Brief:  crc and checksum helpers.
+ *
+ * Copyright (c) 2019 - 2026 Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * License file for more details.
+ *
+ */
 
-    This file is part of Tiny Protocol Library.
-
-    Protocol Library is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    Protocol Library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with Protocol Library.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * History:
+ * ================================================================
+ * 2019-10-08 Li XianJing <xianjimli@hotmail.com> created
+ * 2026-08-21 AWTK Develop Team reimplemented without third-party LGPL code
+ *
  */
 
 #ifndef TK_CRC_H
