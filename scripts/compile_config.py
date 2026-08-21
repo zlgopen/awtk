@@ -35,6 +35,12 @@ def get_curr_app_root() :
   global APP_ROOT
   return APP_ROOT
 
+def resolve_vgcanvas(vgcanvas, nanovg_backend):
+  """AGGE is software-only and cannot pair with NANOVG_PLUS (GPU)."""
+  if nanovg_backend == 'AGGE' and vgcanvas == 'NANOVG_PLUS':
+    return 'NANOVG'
+  return vgcanvas
+
 def get_curr_config_for_awtk() :
   global WIN32_RES
   global COMPILE_CONFIG

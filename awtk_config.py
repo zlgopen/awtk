@@ -80,6 +80,12 @@ if is_raspberrypi():
   NANOVG_BACKEND='GLES2'
 
 NANOVG_BACKEND = compile_helper.get_value('NANOVG_BACKEND', NANOVG_BACKEND)
+_vgcanvas_before_resolve = VGCANVAS
+VGCANVAS = compile_config.resolve_vgcanvas(VGCANVAS, NANOVG_BACKEND)
+if _vgcanvas_before_resolve != VGCANVAS:
+    print('NANOVG_BACKEND=AGGE requires VGCANVAS=NANOVG, auto set VGCANVAS=NANOVG')
+if compile_helper.get_value('VGCANVAS', None) != VGCANVAS:
+    compile_helper.set_value('VGCANVAS', VGCANVAS)
 
 FRAME_BUFFER_FORMAT = ''
 if VGCANVAS == 'CAIRO':
