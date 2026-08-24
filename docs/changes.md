@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/8/24
+  * 修复 macOS 桌面应用输入法候选框位置错误（Retina 下误乘 device_pixel_ratio，候选框落到屏幕右下角）
+
 2026/8/21
   * 修复 NANOVG_BACKEND=AGGE 时未切换 VGCANVAS=NANOVG，导致 demoui 在非 OpenGL 窗口上创建 GL 上下文崩溃
   * 重写 tkc/crc，去掉 Tiny Protocol 的 LGPL 代码，按公开 CRC 参数自行生成查找表

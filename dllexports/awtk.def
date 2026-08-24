@@ -718,6 +718,7 @@ EXPORTS
     text_edit_preedit_abort
     text_edit_insert_text
     text_edit_show_context_menu
+    text_edit_adjust_ime_rect
     theme_default_create
     theme_default_create_ex
     theme_xml_create

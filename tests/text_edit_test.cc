@@ -219,3 +219,23 @@ TEST(TextEdit, insert_text) {
   canvas_reset(&c);
   lcd_destroy(lcd);
 }
+
+TEST(TextEdit, ime_rect_macos_keeps_window_points) {
+  rect_t r = rect_init(100, 350, 200, 16);
+  ASSERT_EQ(text_edit_adjust_ime_rect(&r, 2.0f), RET_OK);
+#ifdef MACOS
+  ASSERT_EQ(r.x, 100);
+  ASSERT_EQ(r.y, 350);
+  ASSERT_EQ(r.w, 200);
+  ASSERT_EQ(r.h, 16);
+#else
+  ASSERT_EQ(r.x, 200);
+  ASSERT_EQ(r.y, 700);
+  ASSERT_EQ(r.w, 400);
+  ASSERT_EQ(r.h, 32);
+#endif
+}
+
+TEST(TextEdit, ime_rect_invalid_args) {
+  ASSERT_EQ(text_edit_adjust_ime_rect(NULL, 2.0f), RET_BAD_PARAMS);
+}

@@ -142,6 +142,22 @@ static ret_t text_edit_select_word_impl(text_edit_t* text_edit, uint32_t cursor,
 static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, canvas_t* c,
                                    STB_TEXTEDIT_CHARTYPE* iter, STB_TEXTEDIT_CHARTYPE* chr);
 
+ret_t text_edit_adjust_ime_rect(rect_t* r, float_t device_pixel_ratio) {
+  return_value_if_fail(r != NULL, RET_BAD_PARAMS);
+
+#ifdef MACOS
+  /* SDL/Cocoa IME 使用窗口点坐标，与 widget_to_screen 一致 */
+  (void)device_pixel_ratio;
+#else
+  r->x = (xy_t)(r->x * device_pixel_ratio);
+  r->y = (xy_t)(r->y * device_pixel_ratio);
+  r->w = (wh_t)(r->w * device_pixel_ratio);
+  r->h = (wh_t)(r->h * device_pixel_ratio);
+#endif /*MACOS*/
+
+  return RET_OK;
+}
+
 #ifdef WITH_SDL
 #include "platforms/pc/sdl_api.h"
 #include "base/native_window.h"
@@ -169,16 +185,14 @@ static ret_t text_edit_update_input_rect(text_edit_t* text_edit) {
   p.x = p.x + x;
   p.y = p.y + y;
 
-  r.x = p.x;
-  r.y = p.y;
-  r.w = text_edit->widget->w;
-  r.h = impl->font_size;
-
-  float_t ratio = system_info()->device_pixel_ratio;
-  r.x *= ratio;
-  r.y *= ratio;
-  r.w *= ratio;
-  r.h *= ratio;
+  {
+    rect_t ir = rect_init(p.x, p.y, text_edit->widget->w, impl->font_size);
+    text_edit_adjust_ime_rect(&ir, system_info()->device_pixel_ratio);
+    r.x = ir.x;
+    r.y = ir.y;
+    r.w = ir.w;
+    r.h = ir.h;
+  }
 
 #ifdef AWTK_SDL3
   {

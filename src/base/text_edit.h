@@ -581,6 +581,19 @@ ret_t text_edit_show_context_menu(text_edit_t* text_edit, int32_t x, int32_t y);
 
 ret_t text_edit_set_lock_scrollbar_value(text_edit_t* text_edit, bool_t lock);
 
+/**
+ * @method text_edit_adjust_ime_rect
+ * 将控件坐标系下的输入法候选区矩形转换为原生 IME 坐标。
+ *
+ * @param {rect_t*} r 输入为控件/窗口坐标，输出为原生 IME 坐标。
+ * @param {float_t} device_pixel_ratio 设备像素比。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ * 备注：macOS 上 SDL/Cocoa 使用窗口点坐标，与 widget_to_screen 一致，不再乘 device_pixel_ratio。
+ */
+ret_t text_edit_adjust_ime_rect(rect_t* r, float_t device_pixel_ratio);
+
 END_C_DECLS
 
 #endif /*TK_TEXT_EDIT_H*/
