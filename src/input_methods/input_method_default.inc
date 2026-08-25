@@ -630,6 +630,8 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
         im->keyboard = NULL;
         input_method_set_target_widget(im, NULL);
       }
+    } else {
+      input_method_set_target_widget(im, NULL);
     }
   }
 
