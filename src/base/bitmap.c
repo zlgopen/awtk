@@ -564,6 +564,9 @@ ret_t bitmap_init_from_bgra(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
   } else {
     return RET_NOT_IMPL;
   }
+  if (ret == RET_OK && bitmap->buffer != NULL && bitmap->format == BITMAP_FMT_RGBA8888) {
+    ret = bitmap_platform_create(bitmap);
+  }
   return ret;
 }
 
@@ -599,6 +602,9 @@ ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
     ret = bitmap_init_gray(bitmap, w, h, data, comp, o);
   } else {
     return RET_NOT_IMPL;
+  }
+  if (ret == RET_OK && bitmap->buffer != NULL && bitmap->format == BITMAP_FMT_RGBA8888) {
+    ret = bitmap_platform_create(bitmap);
   }
   return ret;
 }
