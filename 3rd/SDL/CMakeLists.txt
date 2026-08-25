@@ -239,7 +239,8 @@ endif()
 add_definitions(-DUSING_GENERATED_CONFIG_H)
 # General includes
 include_directories(${SDL2_BINARY_DIR}/include ${SDL2_SOURCE_DIR}/include)
-if(USE_GCC OR USE_CLANG)
+# clang-cl 不支持 -idirafter
+if((USE_GCC OR USE_CLANG) AND NOT CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -idirafter ${SDL2_SOURCE_DIR}/src/video/khronos")
 else()
   include_directories(${SDL2_SOURCE_DIR}/src/video/khronos)
