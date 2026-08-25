@@ -3,6 +3,7 @@
 2026/8/25
   * 修正edit失去焦点后没有重置input_method中的widget指针的问题(感谢福明提供补丁)
   * 修复clang-cl下SDL编译错误(感谢均权提供补丁)
+  * 增加 object_evt_router_publish(感谢兆坤提供补丁)
 
 2026/8/24
   * 修复 macOS 桌面应用输入法候选框位置错误（Retina 下误乘 device_pixel_ratio，候选框落到屏幕右下角）

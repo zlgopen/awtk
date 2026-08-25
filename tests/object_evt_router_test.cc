@@ -702,3 +702,247 @@ TEST(ObjectEvtRouter, widget) {
   TK_OBJECT_UNREF(obj_widget);
   TK_OBJECT_UNREF(router);
 }
+
+// ===========================================================================
+// object_evt_router_publish：主动按主题发布（不依赖已注册发布者 emit）
+// ===========================================================================
+
+TEST(ObjectEvtRouter, publish_without_register) {
+  tk_object_t* router = object_evt_router_create();
+
+  // 无需 register 任何发布者：直接订阅主题后即可主动 publish
+  ASSERT_EQ(object_evt_router_subscribe(router, "pub_topic", test_subscribe_callback, NULL),
+            RET_OK);
+
+  // e->target 为 NULL（event_init 默认值）：主动发布不应崩溃
+  event_t e = event_init(EVT_VALUE_CHANGED, NULL);
+  s_callback_called = 0;
+  ASSERT_EQ(object_evt_router_publish(router, "pub_topic", &e), RET_OK);
+  ASSERT_EQ(s_callback_called, 1);
+  ASSERT_EQ((int)s_last_event.type, (int)EVT_VALUE_CHANGED);
+  ASSERT_EQ(s_last_event.target, (void*)NULL);
+
+  TK_OBJECT_UNREF(router);
+}
+
+TEST(ObjectEvtRouter, publish_preserves_event_target) {
+  tk_object_t* router = object_evt_router_create();
+  tk_object_t* source = object_default_create();
+  tk_object_set_name(source, "pub_source");
+
+  ASSERT_EQ(object_evt_router_subscribe(router, "pub_topic", test_subscribe_callback, NULL),
+            RET_OK);
+
+  // 调用方传入的 target 应原样送达订阅者
+  event_t e = event_init(EVT_VALUE_CHANGED, source);
+  s_callback_called = 0;
+  ASSERT_EQ(object_evt_router_publish(router, "pub_topic", &e), RET_OK);
+  ASSERT_EQ(s_callback_called, 1);
+  ASSERT_EQ(s_last_event.target, source);
+
+  TK_OBJECT_UNREF(router);
+  TK_OBJECT_UNREF(source);
+}
+
+TEST(ObjectEvtRouter, publish_bad_params) {
+  tk_object_t* router = object_evt_router_create();
+  tk_object_t* not_router = object_default_create();
+  event_t e = event_init(EVT_VALUE_CHANGED, NULL);
+
+  ASSERT_NE(object_evt_router_publish(NULL, "t", &e), RET_OK);
+  ASSERT_NE(object_evt_router_publish(router, NULL, &e), RET_OK);
+  ASSERT_NE(object_evt_router_publish(router, "", &e), RET_OK);
+  ASSERT_NE(object_evt_router_publish(router, "t", NULL), RET_OK);
+  // 传入非 object_evt_router 对象应被拒绝
+  ASSERT_NE(object_evt_router_publish(not_router, "t", &e), RET_OK);
+
+  TK_OBJECT_UNREF(router);
+  TK_OBJECT_UNREF(not_router);
+}
+
+TEST(ObjectEvtRouter, publish_to_nonexistent_topic) {
+  tk_object_t* router = object_evt_router_create();
+
+  ASSERT_EQ(object_evt_router_subscribe(router, "real_topic", test_subscribe_callback, NULL),
+            RET_OK);
+
+  event_t e = event_init(EVT_VALUE_CHANGED, NULL);
+  s_callback_called = 0;
+  // 发布到无订阅者的主题：返回 RET_OK，回调不被调用
+  ASSERT_EQ(object_evt_router_publish(router, "no_subscribers", &e), RET_OK);
+  ASSERT_EQ(s_callback_called, 0);
+
+  TK_OBJECT_UNREF(router);
+}
+
+TEST(ObjectEvtRouter, publish_delivers_to_topic_and_broadcast) {
+  tk_object_t* router = object_evt_router_create();
+
+  ASSERT_EQ(object_evt_router_subscribe(router, "topic", test_subscribe_callback, NULL), RET_OK);
+  // "" 为广播主题：任意主题的发布都会送达
+  ASSERT_EQ(object_evt_router_subscribe(router, "", test_subscribe_callback2, NULL), RET_OK);
+
+  event_t e = event_init(EVT_VALUE_CHANGED, NULL);
+  s_callback_called = 0;
+  s_callback2_called = 0;
+  ASSERT_EQ(object_evt_router_publish(router, "topic", &e), RET_OK);
+  ASSERT_EQ(s_callback_called, 1);
+  ASSERT_EQ(s_callback2_called, 1);
+
+  TK_OBJECT_UNREF(router);
+}
+
+TEST(ObjectEvtRouter, publish_does_not_fire_other_topic) {
+  tk_object_t* router = object_evt_router_create();
+
+  ASSERT_EQ(object_evt_router_subscribe(router, "topic_a", test_subscribe_callback, NULL), RET_OK);
+  ASSERT_EQ(object_evt_router_subscribe(router, "topic_b", test_subscribe_callback2, NULL),
+            RET_OK);
+
+  event_t e = event_init(EVT_VALUE_CHANGED, NULL);
+  s_callback_called = 0;
+  s_callback2_called = 0;
+  ASSERT_EQ(object_evt_router_publish(router, "topic_a", &e), RET_OK);
+  ASSERT_EQ(s_callback_called, 1);
+  ASSERT_EQ(s_callback2_called, 0);
+
+  TK_OBJECT_UNREF(router);
+}
+
+TEST(ObjectEvtRouter, publish_bypasses_evt_filter) {
+  tk_object_t* router = object_evt_router_create();
+  tk_object_t* publisher = object_default_create();
+  object_evt_router_register_opt_t reg_opt;
+  memset(&reg_opt, 0, sizeof(reg_opt));
+  reg_opt.evt_filter = test_evt_filter_reject;  // 过滤器一律拒绝
+
+  // 注册一个 reject 过滤器 + EVT_PROP_CHANGED 的发布者
+  ASSERT_EQ(
+      object_evt_router_register(router, "filtered", publisher, EVT_PROP_CHANGED, &reg_opt),
+      RET_OK);
+  ASSERT_EQ(object_evt_router_subscribe(router, "filtered", test_subscribe_callback, NULL), RET_OK);
+
+  value_t v;
+  value_set_int(&v, 1);
+
+  // 对照：发布者 emit EVT_PROP_CHANGED，过滤器拒绝 → 订阅者收不到
+  s_callback_called = 0;
+  tk_object_set_prop(publisher, "p", &v);
+  ASSERT_EQ(s_callback_called, 0);
+
+  // 同一发布者、同一事件类型、同一主题，改由主动发布 → 订阅者收到
+  event_t e = event_init(EVT_PROP_CHANGED, publisher);
+  s_callback_called = 0;
+  ASSERT_EQ(object_evt_router_publish(router, "filtered", &e), RET_OK);
+  ASSERT_EQ(s_callback_called, 1);
+  ASSERT_EQ((int)s_last_event.type, (int)EVT_PROP_CHANGED);
+  ASSERT_EQ(s_last_event.target, publisher);
+
+  TK_OBJECT_UNREF(router);
+  TK_OBJECT_UNREF(publisher);
+}
+
+TEST(ObjectEvtRouter, publish_priority_order) {
+  tk_object_t* router = object_evt_router_create();
+  int order[3] = {0};
+  int count = 0;
+  priority_test_ctx_t test_ctx = {order, &count};
+
+  object_evt_router_subscribe_opt_t opt_low;
+  memset(&opt_low, 0, sizeof(opt_low));
+  opt_low.priority = 10;
+  opt_low.callback_ctx = &test_ctx;
+  ASSERT_EQ(
+      object_evt_router_subscribe(router, "priority_topic", test_priority_callback_low, &opt_low),
+      RET_OK);
+
+  object_evt_router_subscribe_opt_t opt_high;
+  memset(&opt_high, 0, sizeof(opt_high));
+  opt_high.priority = 100;
+  opt_high.callback_ctx = &test_ctx;
+  ASSERT_EQ(object_evt_router_subscribe(router, "priority_topic", test_priority_callback_high,
+                                        &opt_high),
+            RET_OK);
+
+  object_evt_router_subscribe_opt_t opt_medium;
+  memset(&opt_medium, 0, sizeof(opt_medium));
+  opt_medium.priority = 50;
+  opt_medium.callback_ctx = &test_ctx;
+  ASSERT_EQ(object_evt_router_subscribe(router, "priority_topic", test_priority_callback_medium,
+                                        &opt_medium),
+            RET_OK);
+
+  event_t e = event_init(EVT_VALUE_CHANGED, NULL);
+  ASSERT_EQ(object_evt_router_publish(router, "priority_topic", &e), RET_OK);
+
+  // 执行顺序：高优先级(2) -> 中优先级(3) -> 低优先级(1)
+  ASSERT_EQ(order[0], 2);
+  ASSERT_EQ(order[1], 3);
+  ASSERT_EQ(order[2], 1);
+
+  TK_OBJECT_UNREF(router);
+}
+
+TEST(ObjectEvtRouter, publish_ret_stop_behavior) {
+  tk_object_t* router = object_evt_router_create();
+  int stop_called = 0;
+  int after_stop_called = 0;
+
+  // 高优先级回调返回 RET_STOP 后，低优先级回调不再被调用
+  object_evt_router_subscribe_opt_t stop_opt;
+  memset(&stop_opt, 0, sizeof(stop_opt));
+  stop_opt.priority = 100;
+  stop_opt.callback_ctx = &stop_called;
+  ASSERT_EQ(object_evt_router_subscribe(router, "stop_topic", test_stop_callback, &stop_opt),
+            RET_OK);
+
+  object_evt_router_subscribe_opt_t after_opt;
+  memset(&after_opt, 0, sizeof(after_opt));
+  after_opt.priority = 10;
+  after_opt.callback_ctx = &after_stop_called;
+  ASSERT_EQ(object_evt_router_subscribe(router, "stop_topic", test_ok_callback, &after_opt),
+            RET_OK);
+
+  event_t e = event_init(EVT_VALUE_CHANGED, NULL);
+  ASSERT_EQ(object_evt_router_publish(router, "stop_topic", &e), RET_OK);
+  ASSERT_EQ(stop_called, 1);
+  ASSERT_EQ(after_stop_called, 0);
+
+  TK_OBJECT_UNREF(router);
+}
+
+TEST(ObjectEvtRouter, publish_ret_remove_behavior) {
+  tk_object_t* router = object_evt_router_create();
+  int remove_called = 0;
+  int after_remove_called = 0;
+
+  object_evt_router_subscribe_opt_t remove_opt;
+  memset(&remove_opt, 0, sizeof(remove_opt));
+  remove_opt.callback_ctx = &remove_called;
+  ASSERT_EQ(
+      object_evt_router_subscribe(router, "remove_topic", test_remove_callback, &remove_opt),
+      RET_OK);
+
+  object_evt_router_subscribe_opt_t after_opt;
+  memset(&after_opt, 0, sizeof(after_opt));
+  after_opt.callback_ctx = &after_remove_called;
+  ASSERT_EQ(object_evt_router_subscribe(router, "remove_topic", test_ok_callback, &after_opt),
+            RET_OK);
+
+  event_t e = event_init(EVT_VALUE_CHANGED, NULL);
+
+  // 第一次发布：返回 RET_REMOVE 的回调与后续回调都被调用
+  ASSERT_EQ(object_evt_router_publish(router, "remove_topic", &e), RET_OK);
+  ASSERT_EQ(remove_called, 1);
+  ASSERT_EQ(after_remove_called, 1);
+
+  remove_called = 0;
+  after_remove_called = 0;
+
+  // 第二次发布：返回 RET_REMOVE 的回调不再被调用
+  ASSERT_EQ(object_evt_router_publish(router, "remove_topic", &e), RET_OK);
+  ASSERT_EQ(remove_called, 0);
+  ASSERT_EQ(after_remove_called, 1);
+
+  TK_OBJECT_UNREF(router);
+}

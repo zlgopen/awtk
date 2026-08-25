@@ -97,6 +97,18 @@ typedef struct _object_evt_router_t object_evt_router_t;
 tk_object_t* object_evt_router_create(void);
 
 /**
+ * @method object_evt_router_publish
+ * 发布。
+ *
+ * @param {tk_object_t*} obj object_evt_router对象。
+ * @param {const char*} topic 主题。
+ * @param {event_t*} e 事件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_evt_router_publish(tk_object_t* obj, const char* topic, event_t* e);
+
+/**
  * @method object_evt_router_register
  * 注册。
  *
