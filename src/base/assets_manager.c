@@ -79,6 +79,12 @@ static system_info_t* assets_manager_get_system_info(assets_manager_t* am) {
 }
 
 #if defined(AWTK_WEB)
+const char* assets_manager_get_res_root(assets_manager_t* am) {
+  return_value_if_fail(am != NULL, NULL);
+
+  return am->res_root;
+}
+
 static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t type,
                                               uint16_t subtype, const char* name) {
   asset_info_t* info = TKMEM_ALLOC(sizeof(asset_info_t));

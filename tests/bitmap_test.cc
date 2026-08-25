@@ -215,6 +215,31 @@ TEST(Bitmap, transform1) {
   bitmap_destroy(b);
 }
 
+TEST(Bitmap, init_from_rgba8888) {
+  uint32_t i = 0;
+  bitmap_t bitmap;
+  rgba_t rgba;
+  uint8_t data[8] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88};
+
+  memset(&bitmap, 0x00, sizeof(bitmap));
+  ASSERT_EQ(bitmap_init_from_rgba(&bitmap, 2, 1, BITMAP_FMT_RGBA8888, data, 4, LCD_ORIENTATION_0),
+            RET_OK);
+  ASSERT_EQ(bitmap.buffer != NULL, TRUE);
+  ASSERT_EQ(bitmap.format, BITMAP_FMT_RGBA8888);
+  ASSERT_EQ(bitmap.w, 2);
+  ASSERT_EQ(bitmap.h, 1);
+
+  for (i = 0; i < 2; i++) {
+    ASSERT_EQ(bitmap_get_pixel(&bitmap, i, 0, &rgba), RET_OK);
+    ASSERT_EQ(rgba.r, data[i * 4 + 0]);
+    ASSERT_EQ(rgba.g, data[i * 4 + 1]);
+    ASSERT_EQ(rgba.b, data[i * 4 + 2]);
+    ASSERT_EQ(rgba.a, data[i * 4 + 3]);
+  }
+
+  bitmap_deinit(&bitmap);
+}
+
 TEST(Bitmap, transform2) {
   rgba_t rgba;
   uint8_t red = 0x80;

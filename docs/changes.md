@@ -4,6 +4,8 @@
   * 修正edit失去焦点后没有重置input_method中的widget指针的问题(感谢福明提供补丁)
   * 修复clang-cl下SDL编译错误(感谢均权提供补丁)
   * 增加 object_evt_router_publish(感谢兆坤提供补丁)
+  * Web gif_image 改为 fetch 原始字节 + STB 按帧解码，播放控制与 Native 一致。
+  * 修复 Web 上 STB 解码后的 bitmap 未绑定 mutable image，导致 gif 显示空白。
 
 2026/8/24
   * 修复 macOS 桌面应用输入法候选框位置错误（Retina 下误乘 device_pixel_ratio，候选框落到屏幕右下角）
