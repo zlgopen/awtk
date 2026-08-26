@@ -184,10 +184,8 @@ static ret_t self_layouter_flex_set_param(self_layouter_t* layouter, const char*
 }
 
 static ret_t self_layouter_flex_layout_flex(self_layouter_flex_t* layout, widget_t* widget, wh_t* w,
-                                            wh_t* h, bool_t wh_is_changed[2]) {
-  return_value_if_fail(
-      layout != NULL && widget != NULL && w != NULL && h != NULL && wh_is_changed != NULL,
-      RET_BAD_PARAMS);
+                                            wh_t* h) {
+  return_value_if_fail(layout != NULL && widget != NULL && w != NULL && h != NULL, RET_BAD_PARAMS);
 
   if (W_ATTR_FLEX == layout->layouter.w_attr || H_ATTR_FLEX == layout->layouter.h_attr) {
     widget_t* window_manager = widget_get_window_manager(widget);
@@ -229,7 +227,6 @@ static ret_t self_layouter_flex_layout_flex(self_layouter_flex_t* layout, widget
       }
       WIDGET_FOR_EACH_CHILD_END()
       *w += x_margin;
-      wh_is_changed[0] = TRUE;
     }
 
     if (H_ATTR_FLEX == layout->layouter.h_attr) {
@@ -240,7 +237,6 @@ static ret_t self_layouter_flex_layout_flex(self_layouter_flex_t* layout, widget
       }
       WIDGET_FOR_EACH_CHILD_END()
       *h += y_margin;
-      wh_is_changed[1] = TRUE;
     }
     return RET_OK;
   }
@@ -248,10 +244,8 @@ static ret_t self_layouter_flex_layout_flex(self_layouter_flex_t* layout, widget
 }
 
 static ret_t self_layouter_flex_layout_fill(self_layouter_flex_t* layout, widget_t* widget, wh_t* w,
-                                            wh_t* h, bool_t wh_is_changed[2]) {
-  return_value_if_fail(
-      layout != NULL && widget != NULL && w != NULL && h != NULL && wh_is_changed != NULL,
-      RET_BAD_PARAMS);
+                                            wh_t* h) {
+  return_value_if_fail(layout != NULL && widget != NULL && w != NULL && h != NULL, RET_BAD_PARAMS);
 
   if (W_ATTR_FILL == layout->layouter.w_attr || H_ATTR_FILL == layout->layouter.h_attr) {
     wh_t spacing = 0, x_margin = 0, y_margin = 0;
@@ -319,7 +313,6 @@ static ret_t self_layouter_flex_layout_fill(self_layouter_flex_t* layout, widget
       } else {
         *w = 0;
       }
-      wh_is_changed[0] = TRUE;
     }
 
     if (H_ATTR_FILL == layout->layouter.h_attr) {
@@ -358,7 +351,6 @@ static ret_t self_layouter_flex_layout_fill(self_layouter_flex_t* layout, widget
       } else {
         *h = 0;
       }
-      wh_is_changed[1] = TRUE;
     }
     return RET_OK;
   }
@@ -368,33 +360,50 @@ static ret_t self_layouter_flex_layout_fill(self_layouter_flex_t* layout, widget
 static ret_t self_layouter_flex_layout(self_layouter_t* layouter, widget_t* widget, rect_t* area) {
   ret_t ret = RET_OK;
   wh_t w, h;
-  bool_t wh_is_changed[2] = {FALSE, FALSE};
+  bool_t w_is_changed, h_is_changed;
+  self_layouter_layout_t default_layout_func = NULL;
   self_layouter_flex_t* layout = (self_layouter_flex_t*)layouter;
   return_value_if_fail(widget != NULL && widget->parent != NULL, RET_BAD_PARAMS);
 
+  if (self_layouter_default_vtable() != NULL) {
+    default_layout_func = self_layouter_default_vtable()->layout;
+  }
+
+  if (default_layout_func != NULL) {
+    /* w 或 h 可能是 PERCENT 类型，需要先根据 area 获取 widget 正确的 w 或 h */
+    ret = default_layout_func(layouter, widget, area);
+    return_value_if_fail(ret == RET_OK, ret);
+  }
+
   w = widget->w, h = widget->h;
-  self_layouter_flex_layout_flex(layout, widget, &w, &h, wh_is_changed);
-  self_layouter_flex_layout_fill(layout, widget, &w, &h, wh_is_changed);
-  ret = widget_move_resize_ex(widget, widget->x, widget->y, w, h, FALSE);
+  self_layouter_flex_layout_flex(layout, widget, &w, &h);
+  self_layouter_flex_layout_fill(layout, widget, &w, &h);
 
-  if (RET_OK == ret) {
-    if (self_layouter_default_vtable() != NULL && self_layouter_default_vtable()->layout != NULL) {
-      /* flex 布局已经调整了 w 或 h，所以不能再对 w 或 h 做缺省的处理，否则替换掉 flex 的布局结果 */
-      uint8_t w_attr = layout->layouter.w_attr, h_attr = layout->layouter.h_attr;
-      if (wh_is_changed[0]) {
-        layout->layouter.w_attr = W_ATTR_UNDEF;
-      }
-      if (wh_is_changed[1]) {
-        layout->layouter.h_attr = H_ATTR_UNDEF;
-      }
+  w_is_changed = (w != widget->w);
+  h_is_changed = (h != widget->h);
+  if (w_is_changed || h_is_changed) {
+    ret = widget_move_resize_ex(widget, widget->x, widget->y, w, h, FALSE);
 
-      ret = self_layouter_default_vtable()->layout(layouter, widget, area);
+    if (RET_OK == ret) {
+      if (default_layout_func != NULL) {
+        /* w 或 h 发生改变，需要调整 x 或 y */
+        /* flex 布局已经调整了 w 或 h，所以不能再对 w 或 h 做缺省的处理，否则替换掉 flex 的布局结果 */
+        uint8_t w_attr = layout->layouter.w_attr, h_attr = layout->layouter.h_attr;
+        if (w_is_changed) {
+          layout->layouter.w_attr = W_ATTR_UNDEF;
+        }
+        if (h_is_changed) {
+          layout->layouter.h_attr = H_ATTR_UNDEF;
+        }
 
-      if (wh_is_changed[0]) {
-        layout->layouter.w_attr = w_attr;
-      }
-      if (wh_is_changed[1]) {
-        layout->layouter.h_attr = h_attr;
+        ret = default_layout_func(layouter, widget, area);
+
+        if (w_is_changed) {
+          layout->layouter.w_attr = w_attr;
+        }
+        if (h_is_changed) {
+          layout->layouter.h_attr = h_attr;
+        }
       }
     }
   }

@@ -2,6 +2,7 @@
 
 2026/8/26
   * fix children_layouter_default hflow vflow(感谢兆坤提供补丁)
+  * fix self_layouter_flex_layout(感谢兆坤提供补丁)
 
 2026/8/25
   * 修正edit失去焦点后没有重置input_method中的widget指针的问题(感谢福明提供补丁)
