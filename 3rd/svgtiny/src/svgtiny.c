@@ -1038,7 +1038,7 @@ svgtiny_code svgtiny_parse_ellipse(dom_element *ellipse,
 		return svgtiny_LIBDOM_ERROR;
 	}
 	if (attr != NULL) {
-		ry = svgtiny_parse_length(attr, state.viewport_width, state);
+		ry = svgtiny_parse_length(attr, state.viewport_height, state);
 	}
 	dom_string_unref(attr);
 
