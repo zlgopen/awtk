@@ -16,7 +16,6 @@ AWTK把SVG转换成二进制格式的BSVG，可以大幅提升解析速度和降
 
 * svg元素不支持preserveAspectRatio、zoomAndPan属性
 * path、rect、circle、ellipse、line、polyline、polygon元素不支持fill-rule、stroke-linecap、stroke-linejoin、stroke-miterlimit、stroke-dasharray、stroke-dashoffset、display、visibility属性
-* rect元素不支持rx、ry属性
 * text元素不支持transform、rotate、text-anchor、font-family、font-size、font-style、font-weight、xml:space属性
 * text元素的x、y属性，不支持多个数值
 * 颜色属性（如fill、stroke），不支持currentColor、系统颜色

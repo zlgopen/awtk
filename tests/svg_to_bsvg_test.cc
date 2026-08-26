@@ -81,6 +81,30 @@ TEST(SVGToBSVG, rect) {
   TKMEM_FREE(out);
 }
 
+TEST(SVGToBSVG, rounded_rect) {
+  bsvg_t svg;
+  uint32_t* out = NULL;
+  uint32_t out_length = 0;
+  const svg_shape_t* shape = NULL;
+  const char* content =
+      "<rect x=\"10\" y=\"10\" width=\"30\" height=\"40\" rx=\"5\" ry=\"5\" stroke=\"black\" "
+      "fill=\"transparent\" stroke-width=\"5\"/>";
+
+  tk_snprintf(s_buff, sizeof(s_buff) - 1, s_template, content);
+  svg_to_bsvg(s_buff, strlen(s_buff), &out, &out_length);
+
+  bsvg_init(&svg, out, out_length);
+  shape = bsvg_get_first_shape(&svg);
+
+  ASSERT_EQ(shape->type, SVG_SHAPE_PATH);
+  ASSERT_EQ(shape->fill_type, SVG_COLOR_NULL);
+  ASSERT_EQ(shape->stroke_type, SVG_COLOR_SOLID);
+  ASSERT_EQ(svg_shape_get_stroke(shape)->solid.color, 0xff000000u);
+  ASSERT_EQ(shape->stroke_width, 5.0f);
+
+  TKMEM_FREE(out);
+}
+
 TEST(SVGToBSVG, line) {
   bsvg_t svg;
   uint32_t* out = NULL;

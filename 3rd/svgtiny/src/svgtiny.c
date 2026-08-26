@@ -737,36 +737,143 @@ svgtiny_code svgtiny_parse_rect(dom_element *rect,
 {
 	svgtiny_code err;
 	float x, y, width, height;
+	float rx = -1, ry = -1;
+	unsigned int i = 0;
+	dom_string *attr;
+	dom_exception exc;
 	float *p;
 
 	svgtiny_setup_state_local(&state);
 
 	svgtiny_parse_position_attributes(rect, state,
 			&x, &y, &width, &height);
+
+	exc = dom_element_get_attribute(rect, state.interned_rx, &attr);
+	if (exc != DOM_NO_ERR) {
+		svgtiny_cleanup_state_local(&state);
+		return svgtiny_LIBDOM_ERROR;
+	}
+	if (attr != NULL) {
+		rx = svgtiny_parse_length(attr, state.viewport_width, state);
+	}
+	dom_string_unref(attr);
+
+	exc = dom_element_get_attribute(rect, state.interned_ry, &attr);
+	if (exc != DOM_NO_ERR) {
+		svgtiny_cleanup_state_local(&state);
+		return svgtiny_LIBDOM_ERROR;
+	}
+	if (attr != NULL) {
+		ry = svgtiny_parse_length(attr, state.viewport_height, state);
+	}
+	dom_string_unref(attr);
+
 	svgtiny_parse_paint_attributes(rect, &state);
 	svgtiny_parse_transform_attributes(rect, &state);
 
-	p = malloc(13 * sizeof p[0]);
+	/* a negative radius is unsupported and treated as unspecified */
+	if (rx < 0)
+		rx = ry;
+	if (ry < 0)
+		ry = rx;
+	if (rx < 0 || ry < 0) {
+		rx = 0;
+		ry = 0;
+	}
+	if (rx > width / 2)
+		rx = width / 2;
+	if (ry > height / 2)
+		ry = height / 2;
+
+	if (rx == 0 || ry == 0) {
+		p = malloc(13 * sizeof p[0]);
+		if (!p) {
+			svgtiny_cleanup_state_local(&state);
+			return svgtiny_OUT_OF_MEMORY;
+		}
+
+		p[0] = svgtiny_PATH_MOVE;
+		p[1] = x;
+		p[2] = y;
+		p[3] = svgtiny_PATH_LINE;
+		p[4] = x + width;
+		p[5] = y;
+		p[6] = svgtiny_PATH_LINE;
+		p[7] = x + width;
+		p[8] = y + height;
+		p[9] = svgtiny_PATH_LINE;
+		p[10] = x;
+		p[11] = y + height;
+		p[12] = svgtiny_PATH_CLOSE;
+
+		err = svgtiny_add_path(p, 13, &state);
+
+		svgtiny_cleanup_state_local(&state);
+
+		return err;
+	}
+
+	p = malloc(44 * sizeof p[0]);
 	if (!p) {
 		svgtiny_cleanup_state_local(&state);
 		return svgtiny_OUT_OF_MEMORY;
 	}
 
-	p[0] = svgtiny_PATH_MOVE;
-	p[1] = x;
-	p[2] = y;
-	p[3] = svgtiny_PATH_LINE;
-	p[4] = x + width;
-	p[5] = y;
-	p[6] = svgtiny_PATH_LINE;
-	p[7] = x + width;
-	p[8] = y + height;
-	p[9] = svgtiny_PATH_LINE;
-	p[10] = x;
-	p[11] = y + height;
-	p[12] = svgtiny_PATH_CLOSE;
+	p[i++] = svgtiny_PATH_MOVE;
+	p[i++] = x + rx;
+	p[i++] = y;
 
-	err = svgtiny_add_path(p, 13, &state);
+	p[i++] = svgtiny_PATH_LINE;
+	p[i++] = x + width - rx;
+	p[i++] = y;
+
+	p[i++] = svgtiny_PATH_BEZIER;
+	p[i++] = x + width - rx + rx * KAPPA;
+	p[i++] = y;
+	p[i++] = x + width;
+	p[i++] = y + ry - ry * KAPPA;
+	p[i++] = x + width;
+	p[i++] = y + ry;
+
+	p[i++] = svgtiny_PATH_LINE;
+	p[i++] = x + width;
+	p[i++] = y + height - ry;
+
+	p[i++] = svgtiny_PATH_BEZIER;
+	p[i++] = x + width;
+	p[i++] = y + height - ry + ry * KAPPA;
+	p[i++] = x + width - rx + rx * KAPPA;
+	p[i++] = y + height;
+	p[i++] = x + width - rx;
+	p[i++] = y + height;
+
+	p[i++] = svgtiny_PATH_LINE;
+	p[i++] = x + rx;
+	p[i++] = y + height;
+
+	p[i++] = svgtiny_PATH_BEZIER;
+	p[i++] = x + rx - rx * KAPPA;
+	p[i++] = y + height;
+	p[i++] = x;
+	p[i++] = y + height - ry + ry * KAPPA;
+	p[i++] = x;
+	p[i++] = y + height - ry;
+
+	p[i++] = svgtiny_PATH_LINE;
+	p[i++] = x;
+	p[i++] = y + ry;
+
+	p[i++] = svgtiny_PATH_BEZIER;
+	p[i++] = x;
+	p[i++] = y + ry - ry * KAPPA;
+	p[i++] = x + rx - rx * KAPPA;
+	p[i++] = y;
+	p[i++] = x + rx;
+	p[i++] = y;
+
+	p[i++] = svgtiny_PATH_CLOSE;
+
+	err = svgtiny_add_path(p, i, &state);
 
 	svgtiny_cleanup_state_local(&state);
 
