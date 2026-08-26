@@ -410,11 +410,11 @@ TEST(ChildrenLayoutDefault, hflow_overflow) {
   widget_move_resize(b3, 0, 0, 400, 0);
   widget_move_resize(b4, 0, 0, 400, 0);
   ASSERT_EQ(children_layouter_layout(l, w), RET_OK);
-  /* layout_h=90, item_h=30 -> 3 行放下(y=0/30/60), 第4行溢出隐藏 */
+  /* layout_h=90, item_h=30 -> 3 行放下(y=0/30/60), 第4行溢出: 保留 w, 归零 h */
   ASSERT_EQ(b1->y, 0);
   ASSERT_EQ(b2->y, 30);
   ASSERT_EQ(b3->y, 60);
-  ASSERT_EQ(b4->w, 0);
+  ASSERT_EQ(b4->w, 400);
   ASSERT_EQ(b4->h, 0);
   children_layouter_destroy(l);
   widget_destroy(w);
@@ -442,7 +442,7 @@ TEST(ChildrenLayoutDefault, vflow) {
   ASSERT_EQ(b4->y, 200);
   children_layouter_destroy(l);
 
-  /* overflow: layout_w=90, item_w=30 -> 3 列放下, 第4列隐藏 */
+  /* overflow: layout_w=90, item_w=30 -> 3 列放下, 第4列溢出: 归零 w, 保留 h */
   widget_move_resize(w, 0, 0, 90, 400);
   widget_move_resize(b1, 0, 0, 0, 400);
   widget_move_resize(b2, 0, 0, 0, 400);
@@ -454,7 +454,7 @@ TEST(ChildrenLayoutDefault, vflow) {
   ASSERT_EQ(b2->x, 30);
   ASSERT_EQ(b3->x, 60);
   ASSERT_EQ(b4->w, 0);
-  ASSERT_EQ(b4->h, 0);
+  ASSERT_EQ(b4->h, 400);
   children_layouter_destroy(l);
 
   widget_destroy(w);

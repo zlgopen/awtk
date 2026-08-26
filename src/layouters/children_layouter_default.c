@@ -331,7 +331,7 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
       uint32_t row_start = 0;
       if (y_pos + item_h > layout_h) {
         for (; i < n; i++) {
-          widget_move_resize_ex(children[i], 0, 0, 0, 0, FALSE);
+          widget_move_resize_ex(children[i], 0, 0, children[i]->w, 0, FALSE);
         }
         break;
       }
@@ -386,7 +386,7 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
       uint32_t col_start = 0;
       if (x_pos + item_w > layout_w) {
         for (; i < n; i++) {
-          widget_move_resize_ex(children[i], 0, 0, 0, 0, FALSE);
+          widget_move_resize_ex(children[i], 0, 0, 0, children[i]->h, FALSE);
         }
         break;
       }
