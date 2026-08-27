@@ -305,28 +305,30 @@ error:
   return ret;
 }
 
-static ret_t object_evt_router_publisher_log_on_visit(void* ctx, const void* data) {
+static ret_t object_evt_router_destroying_unregister_log_on_visit(void* ctx, const void* data) {
   const object_evt_router_register_info_t* info = (const object_evt_router_register_info_t*)(data);
   object_evt_router_t* evt_router = (object_evt_router_t*)(ctx);
-  evt_router->register_infos_group->visiting = FALSE;
+  if (TK_OBJECT_LIFE_OWN == info->opt.publisher_lifecycle) {
+    return RET_OK;
+  }
   object_evt_router_dispatch_log(
       evt_router, LOG_LEVEL_INFO, NULL,
       OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(info, "Not unregister on destroy."),
       OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(info));
-  evt_router->register_infos_group->visiting = TRUE;
   return RET_OK;
 }
 
-static ret_t object_evt_router_subscriber_log_on_visit(void* ctx, const void* data) {
+static ret_t object_evt_router_destroying_unsubscribe_log_on_visit(void* ctx, const void* data) {
   const object_evt_router_subscribe_info_t* info =
       (const object_evt_router_subscribe_info_t*)(data);
   object_evt_router_t* evt_router = (object_evt_router_t*)(ctx);
-  evt_router->subscribe_infos_group->visiting = FALSE;
+  if (TK_OBJECT_LIFE_OWN == info->opt.subscriber_lifecycle) {
+    return RET_OK;
+  }
   object_evt_router_dispatch_log(
       evt_router, LOG_LEVEL_INFO, NULL,
       OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_FORMAT(info, "Not unsubscribe on destroy."),
       OBJECT_EVT_ROUTER_LOG_SUBSCRIBE_INFO_ARGS(info));
-  evt_router->subscribe_infos_group->visiting = TRUE;
   return RET_OK;
 }
 
@@ -341,9 +343,11 @@ static ret_t object_evt_router_on_destroy(tk_object_t* obj) {
   return_value_if_fail(evt_router != NULL, RET_BAD_PARAMS);
 
   object_evt_router_infos_group_foreach(evt_router->register_infos_group,
-                                        object_evt_router_publisher_log_on_visit, evt_router);
+                                        object_evt_router_destroying_unregister_log_on_visit,
+                                        evt_router);
   object_evt_router_infos_group_foreach(evt_router->subscribe_infos_group,
-                                        object_evt_router_subscriber_log_on_visit, evt_router);
+                                        object_evt_router_destroying_unsubscribe_log_on_visit,
+                                        evt_router);
 
   object_evt_router_infos_group_foreach(evt_router->register_infos_group,
                                         object_evt_router_publisher_event_off_on_visit, evt_router);
@@ -610,15 +614,15 @@ ret_t object_evt_router_publish(tk_object_t* obj, const char* topic, event_t* e)
                                         object_evt_router_publish_matched_callback, (void*)topic);
 }
 
-typedef struct _object_evt_router_on_publish_on_visit_ctx_t {
+typedef struct _object_evt_router_on_publish_matched_on_visit_ctx_t {
   object_evt_router_t* evt_router;
   event_t* e;
   darray_t* matched_subscribe_infos;
-} object_evt_router_on_publish_on_visit_ctx_t;
+} object_evt_router_on_publish_matched_on_visit_ctx_t;
 
-static ret_t object_evt_router_on_publish_on_visit(void* ctx, const void* data) {
-  object_evt_router_on_publish_on_visit_ctx_t* actx =
-      (object_evt_router_on_publish_on_visit_ctx_t*)(ctx);
+static ret_t object_evt_router_on_publish_matched_on_visit(void* ctx, const void* data) {
+  object_evt_router_on_publish_matched_on_visit_ctx_t* actx =
+      (object_evt_router_on_publish_matched_on_visit_ctx_t*)(ctx);
   const named_value_t* nv = (const named_value_t*)(data);
   darray_t* infos = (darray_t*)value_pointer(&nv->value);
   uint32_t i = 0;
@@ -658,15 +662,15 @@ static ret_t object_evt_router_on_publish_matched_callback(object_evt_router_t* 
                                                            darray_t* matched_subscribe_infos,
                                                            void* ctx) {
   ret_t ret = RET_OK;
-  object_evt_router_on_publish_on_visit_ctx_t actx = {
+  object_evt_router_on_publish_matched_on_visit_ctx_t actx = {
       .evt_router = evt_router,
       .e = (event_t*)(ctx),
       .matched_subscribe_infos = matched_subscribe_infos,
   };
   bool_t visiting = evt_router->register_infos_group->visiting;
-  evt_router->register_infos_group->visiting = FALSE;
+  evt_router->register_infos_group->visiting = FALSE; /* 允许递归 matched */
   ret = tk_object_foreach_prop(evt_router->register_infos_group,
-                               object_evt_router_on_publish_on_visit, &actx);
+                               object_evt_router_on_publish_matched_on_visit, &actx);
   evt_router->register_infos_group->visiting = visiting;
   return ret;
 }

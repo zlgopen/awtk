@@ -1,4 +1,6 @@
 # 最新动态
+2026/8/27
+  * improve object_evt_router(感谢兆坤提供补丁)
 
 2026/8/26
   * fix children_layouter_default hflow vflow(感谢兆坤提供补丁)
