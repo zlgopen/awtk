@@ -384,10 +384,8 @@ ret_t darray_foreach(darray_t* darray, tk_visit_t visit, void* ctx) {
 
   if (darray->elms != NULL) {
     uint32_t i = 0;
-    void** elms = darray->elms;
-
     for (i = 0; i < darray->size;) {
-      void* iter = elms[i];
+      void* iter = darray->elms[i];
       ret = visit(ctx, iter);
       TK_FOREACH_VISIT_RESULT_PROCESSING(ret, darray_remove_index(darray, i));
       i++;
