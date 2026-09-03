@@ -9,6 +9,7 @@
   * 完善 font_gen 在 bitmap 模式下的打包行为，添加 save_special_char 属性，用于保留 fribidi 和 sheenbidi 整形阿拉伯文需要的字符(感谢泽武提供补丁)
   * 打包脚本添加 IS_SAVE_SPECIAL_CHAR 属性，用于 font_gen 打包时的特殊字符保留(感谢泽武提供补丁)
   * 完善 button 和 calibration_win 控件的 ellipses 属性的实现(感谢泽武提供补丁)
+  * 修复部分 xml 中存在属性重复定义的问题(感谢泽武提供补丁)
 
 2026/8/28
   * improve object_evt_router(感谢兆坤提供补丁)
