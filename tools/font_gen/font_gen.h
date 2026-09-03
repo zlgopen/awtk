@@ -30,10 +30,10 @@
 BEGIN_C_DECLS
 
 ret_t font_gen(font_t* font, uint16_t font_size, glyph_format_t format, const char* str,
-               const char* output_filename, const char* theme, const char* res_dir);
+               const char* output_filename, const char* theme, const char* res_dir, bool_t save_special_char);
 /*public for test*/
 uint32_t font_gen_buff(font_t* font, uint16_t font_size, glyph_format_t format, const char* str,
-                       wbuffer_t* wbuffer);
+                       wbuffer_t* wbuffer, bool_t save_special_char);
 
 END_C_DECLS
 

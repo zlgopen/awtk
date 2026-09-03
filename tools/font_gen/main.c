@@ -24,15 +24,11 @@
 #include "common/utils.h"
 #include "font_gen.h"
 #include "font_loader/font_loader_bitmap.h"
-#ifdef WITH_STB_FONT
-#include "font_loader/font_loader_stb.h"
-#else
-#include "font_loader/font_loader_ft.h"
-#endif /*WITH_STB_FONT*/
+#include "font_gen_tools.h"
 
 ret_t gen_one(const char* ttf_filename, const char* str_filename, const char* out_filename,
               const char* theme_name, const char* res_dir, uint32_t font_size,
-              glyph_format_t format, bool_t mono) {
+              glyph_format_t format, bool_t mono, bool_t save_special_char) {
   uint32_t size = 0;
   font_t* font = NULL;
   char* str_buff = NULL;
@@ -40,20 +36,11 @@ ret_t gen_one(const char* ttf_filename, const char* str_filename, const char* ou
   exit_if_need_not_update_for_infiles(out_filename, 2, ttf_filename, str_filename);
 
   ttf_buff = (uint8_t*)read_file(ttf_filename, &size);
+  if (size == 0) {
+    return RET_OK;
+  }
   return_value_if_fail(ttf_buff != NULL, RET_FAIL);
-#ifdef WITH_STB_FONT
-  if (mono) {
-    font = font_stb_mono_create("default", ttf_buff, size);
-  } else {
-    font = font_stb_create("default", ttf_buff, size);
-  }
-#else
-  if (mono) {
-    font = font_ft_mono_create("default", ttf_buff, size);
-  } else {
-    font = font_ft_create("default", ttf_buff, size);
-  }
-#endif /*WITH_STB_FONT*/
+  font = font_gen_create_font("default", ttf_buff, size, mono);
 
   str_buff = read_file(str_filename, &size);
   if (str_buff == NULL) {
@@ -62,7 +49,8 @@ ret_t gen_one(const char* ttf_filename, const char* str_filename, const char* ou
   return_value_if_fail(str_buff != NULL, 0);
 
   if (font != NULL) {
-    font_gen(font, (uint16_t)font_size, format, str_buff, out_filename, theme_name, res_dir);
+    font_gen(font, (uint16_t)font_size, format, str_buff, out_filename, theme_name, res_dir,
+             save_special_char);
   }
 
   TKMEM_FREE(ttf_buff);
@@ -73,6 +61,7 @@ ret_t gen_one(const char* ttf_filename, const char* str_filename, const char* ou
 
 int wmain(int argc, wchar_t* argv[]) {
   bool_t mono = FALSE;
+  bool_t save_special_char = FALSE;
   uint32_t font_size = 20;
   const char* res_dir = NULL;
   const char* theme_name = NULL;
@@ -83,7 +72,7 @@ int wmain(int argc, wchar_t* argv[]) {
   if (argc < 5) {
     printf(
         "Usage: %S ttf_filename str_filename out_filename font_size [mono|4bits|alpha] theme "
-        "res_dir\n",
+        "save_special_char res_dir\n",
         argv[0]);
 
     return 0;
@@ -108,10 +97,17 @@ int wmain(int argc, wchar_t* argv[]) {
     theme_name = str_theme.str;
   }
 
+  if (argc > 7) {
+    if (tk_wstr_eq(argv[7], L"true") || tk_wstr_eq(argv[7], L"TRUE") ||
+        tk_wstr_eq(argv[7], L"True")) {
+      save_special_char = TRUE;
+    }
+  }
+
   str_t str_res_dir = {0};
   str_init(&str_res_dir, 0);
-  if (argc > 7) {
-    str_from_wstr(&str_res_dir, argv[7]);
+  if (argc > 8) {
+    str_from_wstr(&str_res_dir, argv[8]);
     res_dir = str_res_dir.str;
   }
 
@@ -127,7 +123,8 @@ int wmain(int argc, wchar_t* argv[]) {
   str_from_wstr(&str_file, argv[2]);
   str_from_wstr(&out_file, argv[3]);
 
-  gen_one(ttf_file.str, str_file.str, out_file.str, theme_name, res_dir, font_size, format, mono);
+  gen_one(ttf_file.str, str_file.str, out_file.str, theme_name, res_dir, font_size, format, mono,
+          save_special_char);
 
   str_reset(&ttf_file);
   str_reset(&str_file);

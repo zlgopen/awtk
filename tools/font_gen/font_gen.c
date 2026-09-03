@@ -34,6 +34,11 @@
 
 #define MAX_CHARS 100 * 1024
 #define MAX_BUFF_SIZE 1 * 1024 * 1024
+//阿拉伯特殊字符范围 687 + 143
+#define UNICODE_ARABIC_LIGATURE_START 0xFB50
+#define UNICODE_ARABIC_LIGATURE_END 0xFDFF
+#define UNICODE_ARABIC_DECORA_CHAR_START 0xFE70
+#define UNICODE_ARABIC_DECORA_CHAR_END 0xFEFF
 
 static int char_cmp(const void* a, const void* b) {
   wchar_t c1 = *(wchar_t*)a;
@@ -43,7 +48,8 @@ static int char_cmp(const void* a, const void* b) {
 }
 
 ret_t font_gen(font_t* font, uint16_t font_size, glyph_format_t format, const char* str,
-               const char* output_filename, const char* theme, const char* res_dir) {
+               const char* output_filename, const char* theme, const char* res_dir,
+               bool_t save_special_char) {
   str_t tstr;
   str_t name;
   wbuffer_t wbuffer;
@@ -53,7 +59,7 @@ ret_t font_gen(font_t* font, uint16_t font_size, glyph_format_t format, const ch
   wbuffer_init_extendable(&wbuffer);
 
   str = font_gen_expand_text(str, &tstr);
-  size = font_gen_buff(font, font_size, format, str, &wbuffer);
+  size = font_gen_buff(font, font_size, format, str, &wbuffer, save_special_char);
 
   if (strstr(output_filename, ".bin") != NULL) {
     file_write(output_filename, wbuffer.data, size);
@@ -133,7 +139,7 @@ static ret_t font_gen_glyph(font_t* font, glyph_format_t format, wchar_t c, font
 }
 
 uint32_t font_gen_buff(font_t* font, uint16_t font_size, glyph_format_t format, const char* str,
-                       wbuffer_t* wbuffer) {
+                       wbuffer_t* wbuffer, bool_t save_special_char) {
   int i = 0;
   glyph_t g;
   int size = 0;
@@ -142,6 +148,19 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, glyph_format_t format, 
 
   tk_utf8_to_utf16(str, wstr, MAX_CHARS);
   size = wcslen(wstr);
+  if (save_special_char) {
+    wchar_t* p = wstr + size;
+    // 添加阿拉伯语补充字符范围
+    for (wchar_t c = UNICODE_ARABIC_LIGATURE_START;
+         c <= UNICODE_ARABIC_LIGATURE_END && p < wstr + MAX_CHARS - 1; c++, p++) {
+      *p = c;
+    }
+    for (wchar_t c = UNICODE_ARABIC_DECORA_CHAR_START;
+         c <= UNICODE_ARABIC_DECORA_CHAR_END && p < wstr + MAX_CHARS - 1; c++, p++) {
+      *p = c;
+    }
+    size = p - wstr;
+  }
 
   qsort(wstr, size, sizeof(wchar_t), char_cmp);
   size = unique(wstr, size);
