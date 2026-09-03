@@ -289,6 +289,7 @@ TEST(ComboBOx, change_value_abort) {
   value_change_event_t evt;
   memset(&evt, 0x00, sizeof(evt));
 
+  combo_box_set_options(w, "0:none;1:red;2:green;3:blue");
   widget_on(w, EVT_VALUE_WILL_CHANGE, on_value_will_changed_abort, NULL);
   ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_VALUE, 3), RET_OK);
   ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 3), 0);
@@ -498,6 +499,194 @@ TEST(ComboBox, selected_index) {
 
   combo_box_reset_options(w);
   ASSERT_EQ(combo_box_count_options(w), 0);
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, set_selected_index_minus1) {
+  char text[100];
+  value_t v;
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+  combo_box_t* combo_box = COMBO_BOX(w);
+
+  combo_box_set_options(w, "1:red;2:green;3:blue");
+  combo_box_set_selected_index(w, 1);
+  ASSERT_EQ(combo_box_get_value(w), 2);
+
+  combo_box_set_selected_index(w, -1);
+  ASSERT_EQ(combo_box->selected_index, -1);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_VALUE, &v), RET_EXCEED_RANGE);
+  ASSERT_EQ(combo_box_get_value(w), -1);
+  widget_get_text_utf8(w, text, sizeof(text) - 1);
+  ASSERT_STREQ(text, "");
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, set_selected_index_out_of_range) {
+  char text[100];
+  value_t v;
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+  combo_box_t* combo_box = COMBO_BOX(w);
+
+  combo_box_set_options(w, "1:red;2:green;3:blue");
+  combo_box_set_selected_index(w, 1);
+  ASSERT_EQ(combo_box_get_value(w), 2);
+
+  combo_box_set_selected_index(w, 5);
+  ASSERT_EQ(combo_box->selected_index, 5);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_VALUE, &v), RET_EXCEED_RANGE);
+  ASSERT_EQ(combo_box_get_value(w), -1);
+  widget_get_text_utf8(w, text, sizeof(text) - 1);
+  ASSERT_STREQ(text, "");
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, set_value_not_found) {
+  char text[100];
+  value_t v;
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+  combo_box_t* combo_box = COMBO_BOX(w);
+
+  combo_box_set_options(w, "1:red;2:green;3:blue");
+  combo_box_set_selected_index(w, 0);
+  ASSERT_EQ(combo_box_get_value(w), 1);
+
+  ASSERT_EQ(combo_box_set_value(w, 999), RET_OK);
+  ASSERT_EQ(combo_box->selected_index, -1);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_VALUE, &v), RET_EXCEED_RANGE);
+  ASSERT_EQ(combo_box_get_value(w), -1);
+  widget_get_text_utf8(w, text, sizeof(text) - 1);
+  ASSERT_STREQ(text, "");
+
+  ASSERT_EQ(combo_box_set_value(w, 2), RET_OK);
+  ASSERT_EQ(combo_box->selected_index, 1);
+  ASSERT_EQ(combo_box_get_value(w), 2);
+  widget_get_text_utf8(w, text, sizeof(text) - 1);
+  ASSERT_STREQ(text, "green");
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, set_selected_index_by_text_not_found) {
+  char text[100];
+  value_t v;
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+  combo_box_t* combo_box = COMBO_BOX(w);
+
+  combo_box_set_options(w, "1:red;2:green;3:blue");
+  combo_box_set_selected_index(w, 0);
+
+  combo_box_set_selected_index_by_text(w, "nonexistent");
+  ASSERT_EQ(combo_box->selected_index, -1);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_VALUE, &v), RET_EXCEED_RANGE);
+  ASSERT_EQ(combo_box_get_value(w), -1);
+  widget_get_text_utf8(w, text, sizeof(text) - 1);
+  ASSERT_STREQ(text, "");
+
+  combo_box_set_selected_index_by_text(w, "green");
+  ASSERT_EQ(combo_box->selected_index, 1);
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, wheel_from_minus1) {
+  wheel_event_t evt;
+  const char* options = "1:red;2:green;3:blue";
+  widget_t* w = combo_box_create(NULL, 0, 0, 100, 30);
+  combo_box_t* combo_box = COMBO_BOX(w);
+
+  combo_box_set_options(w, options);
+  widget_set_prop_bool(w, WIDGET_PROP_READONLY, TRUE);
+
+  /* 从 -1 上滚 → 0 */
+  combo_box_set_selected_index(w, -1);
+  wheel_event_init(&evt, EVT_WHEEL, w, 1);
+  widget_dispatch(w, (event_t*)&evt);
+  ASSERT_EQ(combo_box->selected_index, 0);
+
+  /* 从 -1 下滚 → nr-1 = 2 */
+  combo_box_set_selected_index(w, -1);
+  wheel_event_init(&evt, EVT_WHEEL, w, -1);
+  widget_dispatch(w, (event_t*)&evt);
+  ASSERT_EQ(combo_box->selected_index, 2);
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, event_int32) {
+  value_change_event_t evt;
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+  memset(&evt, 0x00, sizeof(evt));
+
+  combo_box_set_options(w, "1:red;2:green;3:blue");
+  combo_box_set_selected_index(w, 0);
+
+  widget_on(w, EVT_VALUE_CHANGED, on_value_changed, &evt);
+  combo_box_set_selected_index(w, -1);
+  ASSERT_EQ(value_int(&(evt.old_value)), 0);
+  ASSERT_EQ(value_int(&(evt.new_value)), -1);
+  ASSERT_EQ(combo_box_get_value(w), -1);
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, get_prop_value_exceed_range) {
+  value_t v;
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+
+  combo_box_set_options(w, "1:red;2:green;3:blue");
+  combo_box_set_selected_index(w, 0);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_VALUE, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+
+  /* selected_index=-1，widget_get_prop_int 返 defval */
+  combo_box_set_selected_index(w, -1);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_VALUE, &v), RET_EXCEED_RANGE);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 123), 123);
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, set_prop_value_not_found) {
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+  combo_box_t* combo_box = COMBO_BOX(w);
+
+  combo_box_set_options(w, "1:red;2:green;3:blue");
+  combo_box_set_selected_index(w, 0);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_VALUE, 999), RET_OK);
+  ASSERT_EQ(combo_box->selected_index, -1);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 123), 123);
+  ASSERT_EQ(combo_box_get_value(w), -1);
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, set_text) {
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+
+  combo_box_set_options(w, "1:red;2:green;3:blue");
+  combo_box_set_selected_index(w, 0);
+  ASSERT_EQ(combo_box_get_value(w), 1);
+
+  widget_set_text(w, L"green");
+  ASSERT_EQ(combo_box_get_value(w), 2);
+  ASSERT_EQ(string(combo_box_get_text(w)), string("green"));
+
+  widget_set_text(w, L"blue");
+  ASSERT_EQ(combo_box_get_value(w), 3);
+
+  widget_set_text(w, L"unknown");
+  ASSERT_EQ(combo_box_get_value(w), -1);
+
+  widget_set_text(w, L"green");
+  ASSERT_EQ(combo_box_get_value(w), 2);
+
+  // same text
+  widget_set_text(w, L"green");
+  ASSERT_EQ(combo_box_get_value(w), 2);
 
   widget_destroy(w);
 }

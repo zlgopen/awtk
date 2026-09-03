@@ -3,6 +3,9 @@
   * object_evt_router 补充注释(感谢兆坤提供补丁)
   * 优化darray_remove_range(感谢兆坤提供补丁)
   * improve object_evt_router_unregister(感谢兆坤提供补丁)
+  * 完善 combobox(感谢福明提供补丁)
+    - 设置 selected_index 为 -1 时combobox 不选中任何下拉项；
+    - 编辑 combobox 文本后，自动选中文本对应的下拉项；
 
 2026/8/28
   * improve object_evt_router(感谢兆坤提供补丁)

@@ -47,7 +47,8 @@ const char* const s_combo_box_properties[] = {TK_EDIT_PROPS,
 
 static ret_t combo_box_active(widget_t* widget);
 static ret_t combo_box_add_selected_index(widget_t* widget, int32_t delta);
-static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, widget_t* item);
+static ret_t combo_box_set_selected_index_ex(widget_t* widget, int32_t index, widget_t* item);
+static bool_t combo_box_is_index_exceed_range(widget_t* widget, int32_t index);
 
 static ret_t combo_box_on_copy(widget_t* widget, widget_t* other) {
   combo_box_t* combo_box = COMBO_BOX(widget);
@@ -212,8 +213,12 @@ static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) 
     value_set_int(v, combo_box->selected_index);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    value_set_int(v, combo_box->value);
-    return RET_OK;
+    if (combo_box_is_index_exceed_range(widget, combo_box->selected_index)) {
+      return RET_EXCEED_RANGE;
+    } else {
+      value_set_int(v, combo_box->value);
+      return RET_OK;
+    }
   } else if (tk_str_eq(name, WIDGET_PROP_LOCALIZE_OPTIONS)) {
     value_set_bool(v, combo_box->localize_options);
     return RET_OK;
@@ -307,31 +312,81 @@ ret_t combo_box_parse_options(widget_t* widget, const char* str) {
 }
 
 ret_t combo_box_set_options(widget_t* widget, const char* options) {
-  ret_t ret = combo_box_parse_options(widget, options);
+  ret_t ret = RET_FAIL;
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
+
+  ret = combo_box_parse_options(widget, options);
   if (!widget->loading) {
-    ret = combo_box_sync_index_to_value(widget, 0, FALSE);
+    ret = combo_box_sync_index_to_value(widget, combo_box->selected_index, FALSE);
   }
+
   return ret;
 }
 
 static ret_t combo_box_text_to_index(widget_t* widget, const char* text) {
   ret_t ret = RET_FAIL;
+  locale_info_t* locale_info = NULL;
   combo_box_t* combo_box = COMBO_BOX(widget);
   combo_box_option_t* option = NULL;
   int32_t i = 0;
+  int32_t index = -1;
+  int32_t value = -1;
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
 
+  if (widget->loading) {
+    return RET_FAIL;
+  }
+
+  if (combo_box->localize_options) {
+    locale_info = widget_get_locale_info(widget);
+  }
+
   option = combo_box_get_option(widget, combo_box->selected_index);
-  if (option != NULL && tk_str_eq(text, option->text)) {
-    return RET_OK;
+  if (option != NULL) {
+    const char* cur_text = locale_info ? locale_info_tr(locale_info, option->text) : option->text;
+    if (tk_str_eq(text, cur_text)) {
+      return RET_OK;
+    }
   }
 
   option = combo_box->option_items;
-  for (i = 0; option != NULL; option = option->next, i++) {
-    if (tk_str_eq(text, option->text)) {
-      combo_box->selected_index = i;
-      ret = RET_OK;
-      break;
+  if (option == NULL) {
+    return RET_FAIL;
+  }
+
+  if (locale_info != NULL) {
+    for (i = 0; option != NULL; option = option->next, i++) {
+      if (tk_str_eq(text, locale_info_tr(locale_info, option->text))) {
+        index = i;
+        value = option->value;
+        ret = RET_OK;
+        break;
+      }
+    }
+  } else {
+    for (i = 0; option != NULL; option = option->next, i++) {
+      if (tk_str_eq(text, option->text)) {
+        index = i;
+        value = option->value;
+        ret = RET_OK;
+        break;
+      }
+    }
+  }
+
+  if (combo_box->selected_index != index) {
+    value_change_event_t evt;
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_int(&(evt.old_value), combo_box->selected_index);
+    value_set_int(&(evt.new_value), index);
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      combo_box->selected_index = index;
+      if (index >= 0) {
+        combo_box->value = value;
+      }
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
     }
   }
 
@@ -349,8 +404,7 @@ static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_
     combo_box_set_selected_index(widget, value_int(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    combo_box_set_value(widget, value_int(v));
-    return RET_OK;
+    return combo_box_set_value(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_LOCALIZE_OPTIONS)) {
     combo_box_set_localize_options(widget, value_bool(v));
     return RET_OK;
@@ -534,9 +588,15 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
     case EVT_FOCUS:
       combo_box_update_status(widget);
       break;
-    case EVT_BLUR:
+    case EVT_BLUR: {
+      str_t str;
       combo_box_update_status(widget);
+      str_init(&str, 0);
+      str_from_wstr(&str, widget_get_text(widget));
+      combo_box_text_to_index(widget, str.str);
+      str_reset(&str);
       break;
+    }
     case EVT_WHEEL: {
       wheel_event_t* evt = (wheel_event_t*)e;
       if (combo_box->combobox_popup == NULL && widget->enable && widget->sensitive &&
@@ -803,12 +863,19 @@ static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
 }
 
 static ret_t combo_box_active(widget_t* widget) {
+  str_t str;
   point_t p = {0, 0};
   widget_t* win = NULL;
   widget_t* combo_box_win = NULL;
   const char* applet_name = NULL;
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
+
+  str_init(&str, 0);
+  str_from_wstr(&str, widget_get_text(widget));
+  combo_box_text_to_index(widget, str.str);
+  str_reset(&str);
+
   if (combo_box->open_window) {
     win = window_open(combo_box->open_window);
     combo_box_win = widget_get_window(widget);
@@ -1049,7 +1116,7 @@ int32_t combo_box_find_option(widget_t* widget, int32_t value) {
   uint32_t i = 0;
   combo_box_option_t* iter = NULL;
   combo_box_t* combo_box = COMBO_BOX(widget);
-  return_value_if_fail(combo_box != NULL, 0);
+  return_value_if_fail(combo_box != NULL, -1);
 
   iter = combo_box->option_items;
   while (iter != NULL) {
@@ -1061,14 +1128,14 @@ int32_t combo_box_find_option(widget_t* widget, int32_t value) {
     iter = iter->next;
   }
 
-  return 0;
+  return -1;
 }
 
 static int32_t combo_box_find_option_of_text(widget_t* widget, const char* text) {
   uint32_t i = 0;
   combo_box_option_t* iter = NULL;
   combo_box_t* combo_box = COMBO_BOX(widget);
-  return_value_if_fail(combo_box != NULL, 0);
+  return_value_if_fail(combo_box != NULL, -1);
 
   iter = combo_box->option_items;
   while (iter != NULL) {
@@ -1080,7 +1147,7 @@ static int32_t combo_box_find_option_of_text(widget_t* widget, const char* text)
     iter = iter->next;
   }
 
-  return 0;
+  return -1;
 }
 
 static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index, bool_t only_set) {
@@ -1103,7 +1170,18 @@ static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index, boo
   return RET_OK;
 }
 
-static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, widget_t* item) {
+static bool_t combo_box_is_index_exceed_range(widget_t* widget, int32_t index) {
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(widget != NULL, FALSE);
+
+  if (combo_box->open_window != NULL) {
+    return FALSE;
+  }
+
+  return combo_box->option_items != NULL && (index < 0 || index >= combo_box_count_options(widget));
+}
+
+static ret_t combo_box_set_selected_index_ex(widget_t* widget, int32_t index, widget_t* item) {
   edit_t* edit = EDIT(widget);
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(combo_box != NULL, RET_OK);
@@ -1111,8 +1189,8 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
   if (combo_box->selected_index != index) {
     value_change_event_t evt;
     value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
-    value_set_uint32(&(evt.old_value), combo_box->selected_index);
-    value_set_uint32(&(evt.new_value), index);
+    value_set_int(&(evt.old_value), combo_box->selected_index);
+    value_set_int(&(evt.new_value), index);
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
       if (widget->emitter != NULL) {
@@ -1126,6 +1204,9 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
         } else {
           combo_box_set_text(widget, NULL, item->text.str, FALSE);
         }
+      } else if (combo_box_is_index_exceed_range(widget, index)) {
+        combo_box->value = -1;
+        combo_box_set_text_only(widget, "", NULL, FALSE);
       } else {
         combo_box_sync_index_to_value(widget, index, FALSE);
       }
@@ -1137,6 +1218,9 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
       widget_dispatch(widget, (event_t*)&evt);
       widget_invalidate(widget, NULL);
     }
+  } else if (combo_box_is_index_exceed_range(widget, index)) {
+    combo_box->value = -1;
+    combo_box_set_text_only(widget, "", NULL, FALSE);
   } else {
     combo_box_sync_index_to_value(widget, index, FALSE);
   }
@@ -1152,17 +1236,22 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
 static ret_t combo_box_add_selected_index(widget_t* widget, int32_t delta) {
   combo_box_t* combo_box = COMBO_BOX(widget);
   ENSURE(combo_box);
-  uint32_t nr = combo_box_count_options(widget);
+  int32_t nr = combo_box_count_options(widget);
 
   if (nr > 0) {
-    uint32_t selected_index = (combo_box->selected_index + delta + nr) % nr;
+    int32_t selected_index;
+    if (combo_box_is_index_exceed_range(widget, combo_box->selected_index)) {
+      selected_index = (delta > 0) ? 0 : nr - 1;
+    } else {
+      selected_index = (combo_box->selected_index + delta + nr) % nr;
+    }
     combo_box_set_selected_index(widget, selected_index);
   }
 
   return RET_OK;
 }
 
-ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index) {
+ret_t combo_box_set_selected_index(widget_t* widget, int32_t index) {
   return combo_box_set_selected_index_ex(widget, index, NULL);
 }
 
@@ -1174,7 +1263,10 @@ ret_t combo_box_set_value(widget_t* widget, int32_t value) {
 
 int32_t combo_box_get_value(widget_t* widget) {
   combo_box_t* combo_box = COMBO_BOX(widget);
-  return_value_if_fail(combo_box != NULL, 0);
+  return_value_if_fail(combo_box != NULL, -1);
+  if (combo_box_is_index_exceed_range(widget, combo_box->selected_index)) {
+    return -1;
+  }
 
   return combo_box->value;
 }
