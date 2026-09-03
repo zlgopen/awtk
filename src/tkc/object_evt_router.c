@@ -248,8 +248,9 @@ struct _object_evt_router_t {
   tk_object_t* subscribe_infos_group;
   uint32_t unregistered_count;
   uint32_t unsubscribed_count;
-  int8_t recursion_depth;
-  int8_t log_recursion_depth;
+  int8_t recursion_depth;     /* 发布嵌套深度 */
+  int8_t log_recursion_depth; /* 日志分发嵌套深度 */
+  /* 发布进行中：此时 unregister/unsubscribe 只打标记，发布结束再清理，避免遍历中删除 */
   bool_t publishing : 1;
 };
 
@@ -264,10 +265,11 @@ static ret_t object_evt_router_dispatch_log(object_evt_router_t* evt_router, tk_
     return RET_SKIP;
   }
 
-  /* 防止无限递归导致栈溢出 */
-  if (evt_router->log_recursion_depth >= 2) {
+  /* 如果日志消息是 evt_router 自己产生的，则只允许分发一次，防止无限递归导致栈溢出 */
+  if (evt_router->log_recursion_depth > 1) {
     if (e != NULL) {
       if (EVT_LOG_MESSAGE == e->type && e->target == evt_router) {
+        /* debug 等级直接抛弃，其他等级则通过 log 通知 */
         if (level <= LOG_LEVEL_DEBUG) {
           return RET_STOP;
         }
@@ -466,6 +468,7 @@ static ret_t object_evt_router_publish_topic_to_matched_on_visit(void* ctx, cons
     object_evt_router_subscribe_info_t* exist_sub_info =
         (object_evt_router_subscribe_info_t*)darray_get(actx->matched_subscribe_infos,
                                                         exist_sub_info_index);
+    /* 匹配到相同的订阅记录，高优先级覆盖低优先级 */
     if (object_evt_router_subscribe_info_cmp_by_priority(sub_info, exist_sub_info) < 0) {
       ret = darray_replace(actx->matched_subscribe_infos, exist_sub_info_index, sub_info);
     }
@@ -498,6 +501,7 @@ inline static void object_evt_router_publish_impl_match(
     object_evt_router_t* evt_router, darray_t* matched_subscribe_infos,
     object_evt_router_publish_subscribe_infos_matched_t callback, void* callback_ctx) {
   callback(evt_router, matched_subscribe_infos, callback_ctx);
+  /* 匹配订阅所有主题（为空字符串时表示订阅所有主题）的订阅者 */
   object_evt_router_publish_topic_to_matched(evt_router, "", matched_subscribe_infos);
   darray_sort(matched_subscribe_infos,
               (tk_compare_t)object_evt_router_subscribe_info_cmp_by_priority);
@@ -590,6 +594,7 @@ static ret_t object_evt_router_publish_impl(
   darray_init(&matched_subscribe_infos, 8, NULL,
               (tk_compare_t)object_evt_router_subscribe_info_cmp);
 
+  /* publish 可递归嵌套，保存旧值以便内层结束后恢复外层状态 */
   publishing = evt_router->publishing;
   evt_router->publishing = TRUE;
 
@@ -693,8 +698,9 @@ static ret_t object_evt_router_on_publish_matched_callback(object_evt_router_t* 
       .e = (event_t*)(ctx),
       .matched_subscribe_infos = matched_subscribe_infos,
   };
+  /* 防止用户在匹配过程中的 evt_filter 触发 on_publish 导致递归 matched，foreach BUSY */
   bool_t visiting = evt_router->register_infos_group->visiting;
-  evt_router->register_infos_group->visiting = FALSE; /* 允许递归 matched */
+  evt_router->register_infos_group->visiting = FALSE;
   ret = tk_object_foreach_prop(evt_router->register_infos_group,
                                object_evt_router_on_publish_matched_on_visit, &actx);
   evt_router->register_infos_group->visiting = visiting;
@@ -818,6 +824,7 @@ static ret_t object_evt_router_unregister_on_visit(void* ctx, const void* data) 
   }
   if (actx->publisher == info->publisher) {
     actx->target = info;
+    /* 没有任何 topic 再用这个 publisher 注册 evt_type 事件，才进行 emitter_off */
     if (NULL == tk_object_find_prop(actx->evt_router->register_infos_group,
                                     (tk_compare_t)object_evt_router_unregister_group_cmp, actx)) {
       emitter_off_by_func(EMITTER(info->publisher), info->evt_type, object_evt_router_on_publish,
@@ -849,7 +856,7 @@ ret_t object_evt_router_unregister(tk_object_t* obj, const char* topic, tk_objec
         .publisher = publisher,
         .infos = infos,
     };
-    tk_object_ref(publisher);
+    tk_object_ref(publisher); /* 防止 infos foreach 时释放 publisher 导致悬空 */
 
     ret = darray_foreach(infos, object_evt_router_unregister_on_visit, &ctx);
     if (RET_OK == ret) {
@@ -959,6 +966,7 @@ ret_t object_evt_router_unsubscribe(tk_object_t* obj, const char* topic,
     tk_object_t* subscriber = NULL;
 
     if (opt != NULL && opt->subscriber != NULL) {
+      /* 防止 infos remove subscriber 时导致悬空 */
       subscriber = TK_OBJECT_REF(opt->subscriber);
     }
 
