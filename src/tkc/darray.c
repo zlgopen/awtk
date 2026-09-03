@@ -135,35 +135,42 @@ ret_t darray_remove_index(darray_t* darray, uint32_t index) {
   return RET_OK;
 }
 
+inline static void darray_reverse_range(darray_t* darray, uint32_t start, uint32_t end) {
+  void** elms = darray->elms;
+  for (; start < end; start++, end--) {
+    tk_swap(elms[start], elms[end], void*);
+  }
+}
+
 ret_t darray_remove_range(darray_t* darray, uint32_t start, uint32_t end) {
   return_value_if_fail(darray != NULL && start < end && end <= darray->size, RET_BAD_PARAMS);
 
   if (darray->elms != NULL) {
     uint32_t i = 0;
+    uint32_t size = darray->size;
     uint32_t range_size = end - start;
     void** elms = darray->elms;
-    void** removed = TKMEM_ALLOC(range_size * sizeof(void*));
 
-    return_value_if_fail(removed != NULL, RET_OOM);
+    /* 将删除区间 [start, end) 旋转到数组末尾 */
+    /**
+     * eg:
+     * 原数组： [ 0 1 2 3 4 5 6 ]
+     * [start, end) = [2, 5)
+     **/
+    /* [ 0 1|4 3 2|5 6 ] */
+    darray_reverse_range(darray, start, end - 1);
+    /* [ 0 1 4 3 2|6 5|] */
+    darray_reverse_range(darray, end, size - 1);
+    /* [ 0 1|5 6 2 3 4|] */
+    darray_reverse_range(darray, start, size - 1);
 
-    for (i = start; i < end; i++) {
-      removed[i - start] = elms[i];
-    }
+    darray->size = size - range_size;
 
-    for (i = start; i + range_size < darray->size; i++) {
-      elms[i] = elms[i + range_size];
-    }
-
-    for (i = darray->size - range_size; i < darray->size; i++) {
+    for (i = size - range_size; i < size; i++) {
+      void* iter = elms[i];
       elms[i] = NULL;
+      darray->destroy(iter);
     }
-
-    darray->size -= range_size;
-
-    for (i = 0; i < range_size; i++) {
-      darray->destroy(removed[i]);
-    }
-    TKMEM_FREE(removed);
   }
 
   return RET_OK;
@@ -517,17 +524,13 @@ void* darray_bsearch(darray_t* darray, tk_compare_t cmp, void* ctx) {
 }
 
 ret_t darray_reverse(darray_t* darray) {
-  uint32_t start = 0;
-  uint32_t end = 0;
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
 
   if (darray->size < 2) {
     return RET_OK;
   }
 
-  for (start = 0, end = darray->size - 1; start < end; start++, end--) {
-    tk_swap(darray->elms[start], darray->elms[end], void*);
-  }
+  darray_reverse_range(darray, 0, darray->size - 1);
 
   return RET_OK;
 }
