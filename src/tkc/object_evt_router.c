@@ -800,6 +800,7 @@ typedef struct _object_evt_router_unregister_group_cmp_ctx_t {
   tk_object_t* publisher;
   darray_t* infos;
   const object_evt_router_register_info_t* target;
+  bool_t unregistered : 1;
 } object_evt_router_unregister_group_cmp_ctx_t;
 
 static int object_evt_router_unregister_group_cmp(const void* data, const void* ctx) {
@@ -832,6 +833,7 @@ static ret_t object_evt_router_unregister_on_visit(void* ctx, const void* data) 
     }
     actx->target = NULL;
 
+    actx->unregistered = TRUE;
     if (actx->evt_router->publishing) {
       object_evt_router_set_unregistered(actx->evt_router, info);
       return RET_OK;
@@ -860,16 +862,20 @@ ret_t object_evt_router_unregister(tk_object_t* obj, const char* topic, tk_objec
 
     ret = darray_foreach(infos, object_evt_router_unregister_on_visit, &ctx);
     if (RET_OK == ret) {
-      object_evt_router_register_info_t tmp = {
-          .publisher = publisher,
-      };
-      object_evt_router_dispatch_log(
-          evt_router, LOG_LEVEL_INFO, NULL,
-          OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(&tmp, "Unregister topic: \"%s\"."),
-          OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), topic);
+      if (ctx.unregistered) {
+        object_evt_router_register_info_t tmp = {
+            .publisher = publisher,
+        };
+        object_evt_router_dispatch_log(
+            evt_router, LOG_LEVEL_INFO, NULL,
+            OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_FORMAT(&tmp, "Unregister topic: \"%s\"."),
+            OBJECT_EVT_ROUTER_LOG_REGISTER_INFO_ARGS(&tmp), topic);
 
-      if (0 == infos->size) {
-        tk_object_remove_prop(evt_router->register_infos_group, topic);
+        if (0 == infos->size) {
+          tk_object_remove_prop(evt_router->register_infos_group, topic);
+        }
+      } else {
+        ret = RET_NOT_FOUND;
       }
     }
 
