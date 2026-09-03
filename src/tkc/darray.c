@@ -178,51 +178,36 @@ ret_t darray_remove(darray_t* darray, void* data) {
 }
 
 ret_t darray_remove_all(darray_t* darray, tk_compare_t cmp, void* ctx) {
-  int32_t i = 0;
-  int32_t k = 0;
-  int32_t size = 0;
-  void** elms = NULL;
-  void** removed = NULL;
-  uint32_t remove_count = 0;
-  uint32_t n = 0;
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
 
-  elms = darray->elms;
-  size = darray->size;
-  cmp = cmp != NULL ? cmp : darray->compare;
+  if (darray->elms != NULL) {
+    int32_t i = 0;
+    int32_t new_size = 0;
+    int32_t old_size = darray->size;
+    void** elms = darray->elms;
 
-  for (i = 0; i < size; i++) {
-    void* iter = elms[i];
-    if (cmp(iter, ctx) == 0 && iter != NULL) {
-      remove_count++;
+    cmp = cmp != NULL ? cmp : darray->compare;
+
+    for (i = 0, new_size = 0; i < old_size; i++) {
+      if (0 == cmp(elms[i], ctx)) {
+        continue;
+      }
+      if (i != new_size) {
+        tk_swap(elms[i], elms[new_size], void*);
+      }
+      new_size++;
     }
-  }
 
-  if (remove_count > 0) {
-    removed = TKMEM_ALLOC(remove_count * sizeof(void*));
-    return_value_if_fail(removed != NULL, RET_OOM);
-  }
+    darray->size = new_size;
 
-  for (i = 0, k = 0, n = 0; i < size; i++) {
-    void* iter = elms[i];
-    if (cmp(iter, ctx) == 0) {
+    for (i = new_size; i < old_size; i++) {
+      void* iter = elms[i];
       if (iter != NULL) {
-        removed[n++] = iter;
+        elms[i] = NULL;
+        darray->destroy(iter);
       }
-      elms[i] = NULL;
-    } else {
-      if (k != i) {
-        elms[k] = elms[i];
-      }
-      k++;
     }
   }
-  darray->size = k;
-
-  for (i = 0; i < remove_count; i++) {
-    darray->destroy(removed[i]);
-  }
-  TKMEM_FREE(removed);
 
   return RET_OK;
 }
