@@ -149,7 +149,8 @@ static ret_t calibration_win_on_paint_self(widget_t* widget, canvas_t* c) {
 
   if (text->size > 0) {
     rect_t r = rect_init(0, 40, widget->w, widget->h);
-    canvas_draw_text_in_rect(c, text->str, text->size, &r);
+    bool_t ellipses = widget_get_prop_bool(widget, WIDGET_PROP_ELLIPSES, FALSE);
+    widget_draw_text_in_rect(widget, c, widget->text.str, widget->text.size, &r, ellipses);
   }
 
   canvas_set_stroke_color(c, fg);

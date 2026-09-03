@@ -151,6 +151,7 @@ static ret_t button_invalidate(widget_t* widget, const rect_t* rect) {
 
 static ret_t button_draw_preview(void* ctx, event_t* e) {
   rect_t r;
+  bool_t ellipses;
   widget_t* widget = WIDGET(ctx);
   point_t p = {0, 0};
   paint_event_t* evt = paint_event_cast(e);
@@ -169,6 +170,8 @@ static ret_t button_draw_preview(void* ctx, event_t* e) {
   int32_t woy = style_get_int(style, STYLE_ID_Y_OFFSET, 0);
   int32_t round_r = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
 
+  ellipses = widget_get_prop_bool(widget, WIDGET_PROP_ELLIPSES, FALSE);
+
   widget_to_screen(widget, &p);
   canvas_untranslate(c, ox, oy);
 
@@ -184,7 +187,7 @@ static ret_t button_draw_preview(void* ctx, event_t* e) {
 
   canvas_set_text_color(c, text_color);
   canvas_set_font(c, font, font_size * TK_BUTTON_PREVIEW_SCALE);
-  canvas_draw_text_in_rect(c, widget->text.str, widget->text.size, &r);
+  widget_draw_text_in_rect(widget, c, widget->text.str, widget->text.size, &r, ellipses);
 
   canvas_set_stroke_color(c, border_color);
   if (round_r > 0) {
