@@ -159,6 +159,7 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
     global LCD_ORIENTATION
     global LCD_FAST_ROTATION_MODE
     global RES_CONFIG
+    global IS_SAVE_SPECIAL_CHAR
 
     common.show_usage(is_new_usage);
 
@@ -169,6 +170,7 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
     RES_CONFIG_JSON_PATH=''
     RES_OUTPUT_DIR='./res'
     TMP_LCD_FAST_ROTATION_MODE=None
+    GIS_SAVE_SPECIAL_CHAR= None
     args = sys.argv[1:];
     is_longsots_res_output_dir = False
     if common.is_all_sopts_args(args) :
@@ -182,6 +184,7 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
         TMP_LCD_FAST_ROTATION_MODE = get_dict_value(longsots_dict, 'lcd_enable_fast_rotation', TMP_LCD_FAST_ROTATION_MODE)
         RES_CONFIG_JSON_PATH = get_dict_value(longsots_dict, 'res_config_file', RES_CONFIG_JSON_PATH)
         TMP_APP_ROOT = get_dict_value(longsots_dict, 'app_root', TMP_APP_ROOT)
+        GIS_SAVE_SPECIAL_CHAR = get_dict_value(longsots_dict, 'save_special_char', GIS_SAVE_SPECIAL_CHAR)
 
         if 'output_dir' in longsots_dict:
             is_longsots_res_output_dir = True
@@ -220,6 +223,7 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
     THEMES = []
     APP_THEME = 'default'
     LCD_ORIENTATION = ''
+    IS_SAVE_SPECIAL_CHAR = 'False'
     OUTPUT_ROOT = None
     IS_GENERATE_INC_RES = True
     IS_GENERATE_INC_BITMAP = True
@@ -236,6 +240,8 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
         LCD_ORIENTATION = TMP_LCD_ORIENTATION
     if TMP_LCD_FAST_ROTATION_MODE != None :
         LCD_FAST_ROTATION_MODE = TMP_LCD_FAST_ROTATION_MODE
+    if GIS_SAVE_SPECIAL_CHAR != None :
+        IS_SAVE_SPECIAL_CHAR = GIS_SAVE_SPECIAL_CHAR
 
     ASSET_C = common.join_path(OUTPUT_ROOT, '../assets.inc')
     if action == 'json':
@@ -263,6 +269,7 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
         common.set_app_theme(APP_THEME)
         common.set_enable_generate_inc_res(IS_GENERATE_INC_RES)
         common.set_enable_generate_inc_bitmap(IS_GENERATE_INC_BITMAP)
+        common.set_save_special_char(IS_SAVE_SPECIAL_CHAR)
         common.set_is_excluded_file_handler(is_excluded_file_handler)
         on_generate_res_event()
         common.update_res()

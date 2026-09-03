@@ -29,6 +29,7 @@ THEME_PACKAGED = True
 IMAGEGEN_OPTIONS = 'bgra+bgr565'
 FONT_BPPS = None
 LCD_ORIENTATION = '0'
+IS_SAVE_SPECIAL_CHAR = 'False'
 LCD_FAST_ROTATION_MODE = False
 ON_GENERATE_RES_BEFORE = None
 ON_GENERATE_RES_AFTER = None
@@ -153,6 +154,9 @@ def set_enable_generate_inc_bitmap(enable):
     global IS_GENERATE_INC_BITMAP
     IS_GENERATE_INC_BITMAP = enable
 
+def set_save_special_char(save_special_char):
+    global IS_SAVE_SPECIAL_CHAR
+    IS_SAVE_SPECIAL_CHAR = save_special_char
 
 def set_app_theme(theme):
     global APP_THEME
@@ -412,13 +416,13 @@ def resgen(raw, inc, theme, outExtname, sources_file = ' '):
     exec_cmd('\"' + to_exe('resgen') + '\" \"' + raw + '\" \"' + inc + '\" ' + theme + ' ' + outExtname + ' \"' + sources_file + '\"')
 
 
-def fontgen(raw, text, inc, size, options, theme):
+def fontgen(raw, text, inc, size, options, theme, save_special_char='False'):
     fontgenName = 'fontgen'
     if options == 'mono' and os.path.exists(to_exe('fontgen_ft')):
         fontgenName = 'fontgen_ft'
 
     exec_cmd('\"' + to_exe(fontgenName) + '\" \"' + raw + '\" \"' + text + '\" \"' + inc + '\" ' +
-        str(size) + ' ' + options + ' ' + theme)
+        str(size) + ' ' + options + ' ' + theme + ' ' + save_special_char)
 
 
 def imagegen(raw, inc, options, theme, lcd_orientation, lcd_fast_rotation_mode, sources_file = ' '):
@@ -671,8 +675,11 @@ def gen_res_all_xml():
 
 def gen_res_bitmap_font(input_dir, font_options, theme):
     storage_dir = input_dir
+    save_special_char = 'False'
     if STORAGE_DIR:
         storage_dir = join_path(STORAGE_DIR, theme)
+    if IS_SAVE_SPECIAL_CHAR:
+        save_special_char = IS_SAVE_SPECIAL_CHAR
 
     if not os.path.exists(join_path(storage_dir, 'fonts/config')):
         return
@@ -704,7 +711,7 @@ def gen_res_bitmap_font(input_dir, font_options, theme):
             raw = get_origin_font(os.path.dirname(input_dir), fontname, theme)
             if raw and size.isdigit():
                 inc = join_path(OUTPUT_DIR, 'inc/fonts/' + fontname + '_' + str(size) + '.data')
-                fontgen(raw, f, inc, size, bpp, theme)
+                fontgen(raw, f, inc, size, bpp, theme, save_special_char)
 
 
 def get_origin_font(design_dir, fontname, theme):
@@ -871,7 +878,6 @@ def gen_res_all_string():
         strgen(raw, inc, THEME)
 
     emit_generate_res_after('string')
-
 
 def gen_gpinyin():
     emit_generate_res_before('gpinyin')
@@ -1346,6 +1352,7 @@ def get_opts(args) :
                 'res_config_script_argv=', 'RES_CONFIG_SCRIPT_ARGV=',
                 'output_dir=', 'OUTPUT_DIR=',
                 'app_root=', 'APP_ROOT',
+                'save_special_char='
                 ]
     try :
         opts, tmp_args = getopt.getopt(args, 'h', longsots)
