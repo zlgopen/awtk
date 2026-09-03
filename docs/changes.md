@@ -1,4 +1,7 @@
 # 最新动态
+2026/9/4
+  * 优化darray_remove_range(感谢兆坤提供补丁)
+
 2026/9/3
   * object_evt_router 补充注释(感谢兆坤提供补丁)
   * 优化darray_remove_range(感谢兆坤提供补丁)

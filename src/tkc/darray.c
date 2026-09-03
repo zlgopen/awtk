@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   darray.c
  * Author: AWTK Develop Team
  * Brief:  dynamic darray.
@@ -135,38 +135,23 @@ ret_t darray_remove_index(darray_t* darray, uint32_t index) {
   return RET_OK;
 }
 
-inline static void darray_reverse_range(darray_t* darray, uint32_t start, uint32_t end) {
-  void** elms = darray->elms;
-  for (; start < end; start++, end--) {
-    tk_swap(elms[start], elms[end], void*);
-  }
-}
-
 ret_t darray_remove_range(darray_t* darray, uint32_t start, uint32_t end) {
   return_value_if_fail(darray != NULL && start < end && end <= darray->size, RET_BAD_PARAMS);
 
   if (darray->elms != NULL) {
     uint32_t i = 0;
-    uint32_t size = darray->size;
     uint32_t range_size = end - start;
+    uint32_t old_size = darray->size;
+    uint32_t new_size = old_size - range_size;
     void** elms = darray->elms;
 
-    /* 将删除区间 [start, end) 旋转到数组末尾 */
-    /**
-     * eg:
-     * 原数组： [ 0 1 2 3 4 5 6 ]
-     * [start, end) = [2, 5)
-     **/
-    /* [ 0 1|4 3 2|5 6 ] */
-    darray_reverse_range(darray, start, end - 1);
-    /* [ 0 1 4 3 2|6 5|] */
-    darray_reverse_range(darray, end, size - 1);
-    /* [ 0 1|5 6 2 3 4|] */
-    darray_reverse_range(darray, start, size - 1);
+    for (i = start; i < new_size; i++) {
+      tk_swap(elms[i], elms[i + range_size], void*);
+    }
 
-    darray->size = size - range_size;
+    darray->size = new_size;
 
-    for (i = size - range_size; i < size; i++) {
+    for (i = new_size; i < old_size; i++) {
       void* iter = elms[i];
       elms[i] = NULL;
       darray->destroy(iter);
@@ -520,6 +505,13 @@ void* darray_bsearch(darray_t* darray, tk_compare_t cmp, void* ctx) {
     return darray->elms[index];
   } else {
     return NULL;
+  }
+}
+
+inline static void darray_reverse_range(darray_t* darray, uint32_t start, uint32_t end) {
+  void** elms = darray->elms;
+  for (; start < end; start++, end--) {
+    tk_swap(elms[start], elms[end], void*);
   }
 }
 
