@@ -60,6 +60,7 @@ font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader) {
   return_value_if_fail(fm != NULL, NULL);
   memset(fm, 0x00, sizeof(font_manager_t));
 
+  emitter_init(EMITTER(fm));
   darray_init(&(fm->fonts), 2, (tk_destroy_t)font_destroy, (tk_compare_t)font_cmp);
 
   fm->loader = loader;
@@ -262,7 +263,7 @@ ret_t font_manager_deinit(font_manager_t* fm) {
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
   TKMEM_FREE(fm->name);
   emitter_off_by_ctx(EMITTER(fm->assets_manager), fm);
-
+  emitter_deinit(EMITTER(fm)); 
   return darray_deinit(&(fm->fonts));
 }
 
