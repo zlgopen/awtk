@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/9/7
+  * 修正combo_box在没有options时获取value返回值不正确的问题(感谢福明提供补丁)
+
 2026/9/4
   * 优化darray_remove_range(感谢兆坤提供补丁)
   * 优化darray_remove_all(感谢兆坤提供补丁)

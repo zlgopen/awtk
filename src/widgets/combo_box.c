@@ -1178,7 +1178,7 @@ static bool_t combo_box_is_index_exceed_range(widget_t* widget, int32_t index) {
     return FALSE;
   }
 
-  return combo_box->option_items != NULL && (index < 0 || index >= combo_box_count_options(widget));
+  return index < 0 || (combo_box->option_items != NULL && index >= combo_box_count_options(widget));
 }
 
 static ret_t combo_box_set_selected_index_ex(widget_t* widget, int32_t index, widget_t* item) {

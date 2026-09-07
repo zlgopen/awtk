@@ -523,6 +523,24 @@ TEST(ComboBox, set_selected_index_minus1) {
   widget_destroy(w);
 }
 
+TEST(ComboBox, set_selected_index_minus1_no_options) {
+  value_t v;
+  char text[100];
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+  combo_box_t* combo_box = COMBO_BOX(w);
+
+  ASSERT_EQ(combo_box_count_options(w), 0u);
+
+  combo_box_set_selected_index(w, -1);
+  ASSERT_EQ(combo_box->selected_index, -1);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_VALUE, &v), RET_EXCEED_RANGE);
+  ASSERT_EQ(combo_box_get_value(w), -1);
+  widget_get_text_utf8(w, text, sizeof(text) - 1);
+  ASSERT_STREQ(text, "");
+
+  widget_destroy(w);
+}
+
 TEST(ComboBox, set_selected_index_out_of_range) {
   char text[100];
   value_t v;
