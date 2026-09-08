@@ -33,7 +33,11 @@
 #include "platforms/pc/sdl_api.h"
 
 struct _tk_mutex_t {
+#ifdef AWTK_SDL3
+  SDL_Mutex* mutex;
+#else
   SDL_mutex* mutex;
+#endif
 };
 
 tk_mutex_t* tk_mutex_create() {
@@ -51,36 +55,52 @@ tk_mutex_t* tk_mutex_create() {
 ret_t tk_mutex_lock(tk_mutex_t* mutex) {
   return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
 
+#ifdef AWTK_SDL3
+  SDL_LockMutex(mutex->mutex);
+  return RET_OK;
+#else
   if (SDL_LockMutex(mutex->mutex) != 0) {
     log_debug("SDL_LockMutex fail\n");
     return RET_FAIL;
   }
 
   return RET_OK;
+#endif
 }
 
 ret_t tk_mutex_try_lock(tk_mutex_t* mutex) {
-  int ret = 0;
   return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
 
-  ret = SDL_TryLockMutex(mutex->mutex);
-  if (ret == SDL_MUTEX_TIMEDOUT) {
-    return RET_TIMEOUT;
-  } else if (ret == 0) {
-    return RET_OK;
+#ifdef AWTK_SDL3
+  return SDL_TryLockMutex(mutex->mutex) ? RET_OK : RET_TIMEOUT;
+#else
+  {
+    int ret = SDL_TryLockMutex(mutex->mutex);
+    if (ret == SDL_MUTEX_TIMEDOUT) {
+      return RET_TIMEOUT;
+    } else if (ret == 0) {
+      return RET_OK;
+    }
   }
 
   return RET_FAIL;
+#endif
 }
 
 ret_t tk_mutex_unlock(tk_mutex_t* mutex) {
   return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
+
+#ifdef AWTK_SDL3
+  SDL_UnlockMutex(mutex->mutex);
+  return RET_OK;
+#else
   if (SDL_UnlockMutex(mutex->mutex) != 0) {
     log_debug("SDL_UnlockMutex fail\n");
     return RET_FAIL;
   }
 
   return RET_OK;
+#endif
 }
 
 ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
@@ -96,14 +116,22 @@ ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
 /********************************************************/
 
 typedef struct _tk_cond_t {
+#ifdef AWTK_SDL3
+  SDL_Condition* cond;
+#else
   SDL_cond* cond;
+#endif
 } tk_cond_t;
 
 tk_cond_t* tk_cond_create(void) {
   tk_cond_t* cond = (tk_cond_t*)TKMEM_ALLOC(sizeof(tk_cond_t));
   return_value_if_fail(cond != NULL, NULL);
 
+#ifdef AWTK_SDL3
+  cond->cond = SDL_CreateCondition();
+#else
   cond->cond = SDL_CreateCond();
+#endif
   if (cond->cond == NULL) {
     TKMEM_FREE(cond);
   }
@@ -114,7 +142,11 @@ tk_cond_t* tk_cond_create(void) {
 ret_t tk_cond_destroy(tk_cond_t* cond) {
   return_value_if_fail(cond != NULL, RET_BAD_PARAMS);
 
+#ifdef AWTK_SDL3
+  SDL_DestroyCondition(cond->cond);
+#else
   SDL_DestroyCond(cond->cond);
+#endif
   memset(cond, 0x00, sizeof(tk_cond_t));
   TKMEM_FREE(cond);
 
@@ -124,31 +156,54 @@ ret_t tk_cond_destroy(tk_cond_t* cond) {
 ret_t tk_cond_signal(tk_cond_t* cond) {
   return_value_if_fail(cond != NULL, RET_BAD_PARAMS);
 
+#ifdef AWTK_SDL3
+  SDL_SignalCondition(cond->cond);
+  return RET_OK;
+#else
   return SDL_CondSignal(cond->cond) == 0 ? RET_OK : RET_FAIL;
+#endif
 }
 
 ret_t tk_cond_broadcast(tk_cond_t* cond) {
   return_value_if_fail(cond != NULL, RET_BAD_PARAMS);
 
+#ifdef AWTK_SDL3
+  SDL_BroadcastCondition(cond->cond);
+  return RET_OK;
+#else
   return SDL_CondBroadcast(cond->cond) == 0 ? RET_OK : RET_FAIL;
+#endif
 }
 
 ret_t tk_cond_wait_timeout(tk_cond_t* cond, tk_mutex_t* mutex, uint32_t ms) {
   return_value_if_fail(cond != NULL && mutex != NULL, RET_BAD_PARAMS);
 
+#ifdef AWTK_SDL3
+  return SDL_WaitConditionTimeout(cond->cond, mutex->mutex, (Sint32)ms) ? RET_OK : RET_TIMEOUT;
+#else
   return SDL_CondWaitTimeout(cond->cond, mutex->mutex, ms) == 0 ? RET_OK : RET_FAIL;
+#endif
 }
 
 ret_t tk_cond_wait(tk_cond_t* cond, tk_mutex_t* mutex) {
   return_value_if_fail(cond != NULL && mutex != NULL, RET_BAD_PARAMS);
 
+#ifdef AWTK_SDL3
+  SDL_WaitCondition(cond->cond, mutex->mutex);
+  return RET_OK;
+#else
   return SDL_CondWait(cond->cond, mutex->mutex) == 0 ? RET_OK : RET_FAIL;
+#endif
 }
 
 /********************************************************/
 
 struct _tk_semaphore_t {
+#ifdef AWTK_SDL3
+  SDL_Semaphore* sem;
+#else
   SDL_sem* sem;
+#endif
 };
 
 tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
@@ -164,23 +219,33 @@ tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
 }
 
 ret_t tk_semaphore_wait(tk_semaphore_t* semaphore, uint32_t timeout_ms) {
-  int ret = 0;
   return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
 
-  ret = SDL_SemWaitTimeout(semaphore->sem, timeout_ms);
-  if (ret == SDL_MUTEX_TIMEDOUT) {
-    return RET_TIMEOUT;
-  } else if (ret == 0) {
-    return RET_OK;
+#ifdef AWTK_SDL3
+  return SDL_WaitSemaphoreTimeout(semaphore->sem, (Sint32)timeout_ms) ? RET_OK : RET_TIMEOUT;
+#else
+  {
+    int ret = SDL_SemWaitTimeout(semaphore->sem, timeout_ms);
+    if (ret == SDL_MUTEX_TIMEDOUT) {
+      return RET_TIMEOUT;
+    } else if (ret == 0) {
+      return RET_OK;
+    }
   }
 
   return RET_FAIL;
+#endif
 }
 
 ret_t tk_semaphore_post(tk_semaphore_t* semaphore) {
   return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
 
+#ifdef AWTK_SDL3
+  SDL_SignalSemaphore(semaphore->sem);
+  return RET_OK;
+#else
   return SDL_SemPost(semaphore->sem) == 0 ? RET_OK : RET_FAIL;
+#endif
 }
 
 ret_t tk_semaphore_destroy(tk_semaphore_t* semaphore) {
@@ -276,7 +341,11 @@ ret_t tk_thread_start(tk_thread_t* thread) {
   thread->thread = SDL_CreateThread((SDL_ThreadFunction)(entry), thread->name, thread);
 
   if (thread->thread != NULL) {
+#ifdef AWTK_SDL3
+    (void)SDL_SetCurrentThreadPriority((SDL_ThreadPriority)(thread->priority));
+#else
     SDL_SetThreadPriority((SDL_ThreadPriority)(thread->priority));
+#endif
   }
   return thread->thread != NULL ? RET_OK : RET_FAIL;
 }
