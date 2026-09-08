@@ -232,6 +232,7 @@ typedef struct _combo_box_t {
   bool_t is_button_click;
   event_func_t on_item_click;
   void* on_item_click_ctx;
+  uint32_t index_to_value_idle_id;
   uint32_t init_popup_button_idle_id;
 } combo_box_t;
 

@@ -90,6 +90,10 @@ static ret_t combo_box_on_destroy(widget_t* widget) {
     idle_remove(combo_box->init_popup_button_idle_id);
   }
 
+  if (combo_box->index_to_value_idle_id != TK_INVALID_ID) {
+    idle_remove(combo_box->index_to_value_idle_id);
+  }
+
   str_reset(&(combo_box->text));
   combo_box_reset_options(widget);
   TKMEM_FREE(combo_box->open_window);
@@ -311,6 +315,30 @@ ret_t combo_box_parse_options(widget_t* widget, const char* str) {
   return RET_OK;
 }
 
+static ret_t combo_box_on_idle_sync_index_to_value(const idle_info_t* idle) {
+  widget_t* widget = NULL;
+  combo_box_t* combo_box = NULL;
+  return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
+
+  widget = WIDGET(idle->ctx);
+  combo_box = COMBO_BOX(widget);
+  ENSURE(combo_box);
+
+  combo_box_sync_index_to_value(widget, combo_box->selected_index, FALSE);
+  combo_box->index_to_value_idle_id = TK_INVALID_ID;
+
+  return RET_OK;
+}
+
+static ret_t combo_box_idle_sync_index_to_value(widget_t* widget) {
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  ENSURE(combo_box);
+  if (!combo_box->index_to_value_idle_id) {
+    combo_box->index_to_value_idle_id = idle_add(combo_box_on_idle_sync_index_to_value, widget);
+  }
+  return RET_OK;
+}
+
 ret_t combo_box_set_options(widget_t* widget, const char* options) {
   ret_t ret = RET_FAIL;
   combo_box_t* combo_box = COMBO_BOX(widget);
@@ -318,7 +346,7 @@ ret_t combo_box_set_options(widget_t* widget, const char* options) {
 
   ret = combo_box_parse_options(widget, options);
   if (!widget->loading) {
-    ret = combo_box_sync_index_to_value(widget, combo_box->selected_index, FALSE);
+    combo_box_idle_sync_index_to_value(widget);
   }
 
   return ret;
