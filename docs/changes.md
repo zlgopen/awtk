@@ -1,6 +1,7 @@
 # 最新动态
 
 2026/9/8
+  * improve emitter_dispatch_log(感谢兆坤提供补丁)
   * 修复combo_box设置options属性会导致mvvm把错误的值设置到模型的问题(感谢福明提供补丁)
 
 2026/9/7

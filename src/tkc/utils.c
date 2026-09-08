@@ -3005,15 +3005,8 @@ ret_t tk_ret_from_str(const char* str, bool_t* valid) {
   return (ret_t)tk_atol(str);
 }
 
-inline static bool_t emitter_dispatch_log_filter(emitter_t* emitter, tk_log_level_t level,
-                                                 ret_t* result) {
-  return_value_if_fail(emitter != NULL && result != NULL, FALSE);
-  if (level < log_get_log_level()) {
-    *result = RET_SKIP;
-    return FALSE;
-  }
+inline static bool_t emitter_dispatch_log_filter(emitter_t* emitter) {
   if (emitter->disable || !emitter_exist_by_etype(emitter, EVT_LOG_MESSAGE)) {
-    *result = RET_OK;
     return FALSE;
   }
   return TRUE;
@@ -3024,7 +3017,6 @@ static ret_t emitter_dispatch_vlog_impl(emitter_t* emitter, tk_log_level_t level
   str_t log;
   ret_t ret = RET_OK;
   log_message_event_t evt;
-  return_value_if_fail(emitter != NULL && format != NULL, RET_BAD_PARAMS);
 
   str_init(&log, 0);
   goto_error_if_fail(RET_OK == (ret = str_append_vformat_simple(&log, format, ap)));
@@ -3042,10 +3034,12 @@ error:
 
 ret_t emitter_dispatch_vlog(emitter_t* emitter, tk_log_level_t level, const char* format,
                             va_list ap) {
-  ret_t ret = RET_OK;
-  if (!emitter_dispatch_log_filter(emitter, level, &ret)) {
-    return ret;
+  return_value_if_fail(emitter != NULL && format != NULL, RET_BAD_PARAMS);
+
+  if (!emitter_dispatch_log_filter(emitter)) {
+    return RET_OK;
   }
+
   return emitter_dispatch_vlog_impl(emitter, level, format, ap);
 }
 
@@ -3054,8 +3048,8 @@ ret_t emitter_dispatch_log(emitter_t* emitter, tk_log_level_t level, const char*
   ret_t ret = RET_OK;
   return_value_if_fail(emitter != NULL && format != NULL, RET_BAD_PARAMS);
 
-  if (!emitter_dispatch_log_filter(emitter, level, &ret)) {
-    return ret;
+  if (!emitter_dispatch_log_filter(emitter)) {
+    return RET_OK;
   }
 
   va_start(args, format);

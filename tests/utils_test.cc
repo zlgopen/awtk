@@ -2562,7 +2562,7 @@ TEST(Utils, str_append_vformat_simple) {
 
 TEST(Utils, emitter_dispatch_log_basic) {
   emitter_t emitter;
-  dispatch_log_test_ctx_t ctx = {0};
+  dispatch_log_test_ctx_t ctx = {};
 
   emitter_init(&emitter);
   str_init(&ctx.messages, 0);
@@ -2586,7 +2586,7 @@ TEST(Utils, emitter_dispatch_log_no_listener) {
 
 TEST(Utils, emitter_dispatch_log_disabled) {
   emitter_t emitter;
-  dispatch_log_test_ctx_t ctx = {0};
+  dispatch_log_test_ctx_t ctx = {};
 
   emitter_init(&emitter);
   str_init(&ctx.messages, 0);
@@ -2600,27 +2600,9 @@ TEST(Utils, emitter_dispatch_log_disabled) {
   emitter_deinit(&emitter);
 }
 
-TEST(Utils, emitter_dispatch_log_level_skip) {
-  emitter_t emitter;
-  dispatch_log_test_ctx_t ctx = {0};
-  tk_log_level_t old_level = log_get_log_level();
-
-  emitter_init(&emitter);
-  str_init(&ctx.messages, 0);
-  emitter_on(&emitter, EVT_LOG_MESSAGE, dispatch_log_test_on_log, &ctx);
-  log_set_log_level(LOG_LEVEL_WARN);
-
-  ASSERT_EQ(emitter_dispatch_log(&emitter, LOG_LEVEL_DEBUG, "debug %d", 1), RET_SKIP);
-  ASSERT_EQ(ctx.count, 0u);
-
-  log_set_log_level(old_level);
-  str_reset(&ctx.messages);
-  emitter_deinit(&emitter);
-}
-
 TEST(Utils, emitter_dispatch_log_nested) {
   emitter_t emitter;
-  dispatch_log_test_ctx_t ctx = {0};
+  dispatch_log_test_ctx_t ctx = {};
 
   emitter_init(&emitter);
   str_init(&ctx.messages, 0);
@@ -2637,7 +2619,7 @@ TEST(Utils, emitter_dispatch_log_nested) {
 
 TEST(Utils, emitter_dispatch_log_format_fail) {
   emitter_t emitter;
-  dispatch_log_test_ctx_t ctx = {0};
+  dispatch_log_test_ctx_t ctx = {};
 
   emitter_init(&emitter);
   str_init(&ctx.messages, 0);
