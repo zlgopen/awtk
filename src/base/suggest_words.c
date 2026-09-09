@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   suggest_words.h
  * Author: AWTK Develop Team
  * Brief:  suggest_words
@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "tkc/utf8.h"
 #include "tkc/buffer.h"
 #include "base/suggest_words.h"
@@ -36,31 +37,22 @@ typedef struct _suggest_words_header_t {
   uint32_t nr;
 } suggest_words_header_t;
 
+static int suggest_words_bsearch_cmp(const void* key, const void* iter) {
+  wchar_t c = *(const wchar_t*)(key);
+  const suggest_words_index_t* index = (const suggest_words_index_t*)(iter);
+  return c - index->code;
+}
+
 static const uint8_t* suggest_words_find_data(const asset_info_t* res, wchar_t c) {
-  int low = 0;
-  int mid = 0;
-  int high = 0;
-  int result = 0;
-  uint32_t header_size = sizeof(suggest_words_header_t);
   const suggest_words_header_t* header = (suggest_words_header_t*)(res->data);
-  const suggest_words_index_t* index = (suggest_words_index_t*)(res->data + header_size);
-  uint32_t data_offset = header_size + header->nr * sizeof(suggest_words_index_t);
+  const suggest_words_index_t* index =
+      (suggest_words_index_t*)(res->data + sizeof(suggest_words_header_t));
+  uint32_t data_offset =
+      sizeof(suggest_words_header_t) + header->nr * sizeof(suggest_words_index_t);
+  const suggest_words_index_t* iter = (const suggest_words_index_t*)tk_bsearch(
+      &c, index, header->nr, sizeof(suggest_words_index_t), suggest_words_bsearch_cmp, NULL);
 
-  high = header->nr - 1;
-  while (low <= high) {
-    mid = low + ((high - low) >> 1);
-    result = index[mid].code - c;
-
-    if (result == 0) {
-      return res->data + data_offset + index[mid].offset;
-    } else if (result < 0) {
-      low = mid + 1;
-    } else {
-      high = mid - 1;
-    }
-  }
-
-  return NULL;
+  return iter != NULL ? res->data + data_offset + iter->offset : NULL;
 }
 
 static const uint16_t* get_str(const uint16_t* p16, wchar_t* str, uint32_t max_chars) {

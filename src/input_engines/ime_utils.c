@@ -1,4 +1,4 @@
-﻿
+
 /**
  * File:   t9.c
  * Author: AWTK Develop Team
@@ -21,33 +21,29 @@
  */
 
 #include "ime_utils.h"
+#include "tkc/utils.h"
 
-int32_t ime_utils_table_search_index(const table_entry_t* items, uint32_t items_nr, const char* key,
-                                     uint32_t key_len, bool_t exact) {
-  int r = 0;
-  int32_t low = 0;
-  int32_t high = items_nr - 1;
+typedef struct _ime_utils_table_bsearch_cmp_ctx_t {
+  const char* key;
+  uint32_t key_len;
+  bool_t exact;
+} ime_utils_table_bsearch_cmp_ctx_t;
 
-  while (low <= high) {
-    uint32_t mid = (low + high) / 2;
-    const table_entry_t* iter = items + mid;
+static int ime_utils_table_bsearch_cmp(const ime_utils_table_bsearch_cmp_ctx_t* ctx,
+                                       const table_entry_t* iter) {
+  return ctx->exact ? tk_strcmp(ctx->key, iter->key)
+                    : tk_strncmp(ctx->key, iter->key, ctx->key_len);
+}
 
-    if (exact) {
-      r = strcmp(iter->key, key);
-    } else {
-      r = strncmp(iter->key, key, key_len);
-    }
+static int32_t ime_utils_table_search_index(const table_entry_t* items, uint32_t items_nr,
+                                            const char* key, uint32_t key_len, bool_t exact) {
+  tk_bsearch_result_t result;
+  ime_utils_table_bsearch_cmp_ctx_t ctx = {.key = key, .key_len = key_len, .exact = exact};
 
-    if (r == 0) {
-      return mid;
-    } else if (r < 0) {
-      low = mid + 1;
-    } else {
-      high = mid - 1;
-    }
-  }
+  tk_bsearch(&ctx, items, items_nr, sizeof(table_entry_t),
+             (tk_compare_t)ime_utils_table_bsearch_cmp, &result);
 
-  return -1;
+  return result.index;
 }
 
 static uint32_t ime_utils_count_words(const char** words) {
@@ -58,7 +54,7 @@ static uint32_t ime_utils_count_words(const char** words) {
   return n;
 }
 
-ret_t ime_utils_add_candidate(wbuffer_t* wbuffer, const char* str, bool_t extendable) {
+static ret_t ime_utils_add_candidate(wbuffer_t* wbuffer, const char* str, bool_t extendable) {
   return_value_if_fail(wbuffer != NULL && str != NULL, RET_BAD_PARAMS);
   if (!extendable && wbuffer->cursor + strlen(str) + 2 > wbuffer->capacity) {
     return RET_FAIL;

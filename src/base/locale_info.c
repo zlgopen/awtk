@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   locale_info.c
  * Author: AWTK Develop Team
  * Brief:  locale_info
@@ -355,30 +355,24 @@ ret_t locale_infos_reload_all(void) {
   return RET_OK;
 }
 
+typedef struct _str_table_bsearch_ctx_t {
+  const char* start;
+  const char* key;
+} str_table_bsearch_ctx_t;
+
+static int str_table_bsearch_cmp(const void* key, const void* iter) {
+  const str_table_bsearch_ctx_t* ctx = (const str_table_bsearch_ctx_t*)(key);
+  const str_pair_t* pair = (const str_pair_t*)(iter);
+  return tk_strcmp(ctx->key, ctx->start + pair->key);
+}
+
 const char* str_table_lookup(const str_table_t* table, const char* key) {
-  int low = 0;
-  int mid = 0;
-  int high = 0;
-  int result = 0;
-  const char* iter = NULL;
-  const char* start = (const char*)table;
+  str_table_bsearch_ctx_t ctx = {.start = (const char*)table, .key = key};
+  const str_pair_t* pair = NULL;
   return_value_if_fail(table != NULL && table->nr > 0 && key != NULL, NULL);
 
-  high = table->nr - 1;
-  while (low <= high) {
-    mid = low + ((high - low) >> 1);
-    iter = start + table->strs[mid].key;
+  pair = (const str_pair_t*)tk_bsearch(&ctx, table->strs, table->nr, sizeof(str_pair_t),
+                                       str_table_bsearch_cmp, NULL);
 
-    result = strcmp(iter, key);
-
-    if (result == 0) {
-      return start + table->strs[mid].value;
-    } else if (result < 0) {
-      low = mid + 1;
-    } else {
-      high = mid - 1;
-    }
-  }
-
-  return NULL;
+  return pair != NULL ? ctx.start + pair->value : NULL;
 }

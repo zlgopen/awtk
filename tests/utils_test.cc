@@ -2176,7 +2176,7 @@ typedef struct _tk_bsearch_int_item_t {
   int32_t value;
 } tk_bsearch_int_item_t;
 
-static int32_t tk_bsearch_int_item_cmp(const void* a, const void* b) {
+static int tk_bsearch_int_item_cmp(const void* a, const void* b) {
   const tk_bsearch_int_item_t* a1 = (const tk_bsearch_int_item_t*)a;
   const tk_bsearch_int_item_t* b1 = (const tk_bsearch_int_item_t*)b;
   return a1->key - b1->key;

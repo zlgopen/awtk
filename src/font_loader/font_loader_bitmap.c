@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   font.h
  * Author: AWTK Develop Team
  * Brief:  font interface
@@ -29,26 +29,15 @@ typedef struct _font_bitmap_t {
   uint32_t buff_size;
 } font_bitmap_t;
 
-static font_bitmap_index_t* find_glyph(font_bitmap_index_t* elms, uint32_t nr, wchar_t c) {
-  int low = 0;
-  int mid = 0;
-  int result = 0;
-  int high = nr - 1;
+static int font_bitmap_bsearch_cmp(const void* key, const void* iter) {
+  wchar_t c = *(const wchar_t*)(key);
+  const font_bitmap_index_t* index = (const font_bitmap_index_t*)(iter);
+  return c - index->c;
+}
 
-  while (low <= high) {
-    mid = low + ((high - low) >> 1);
-    result = elms[mid].c - c;
-
-    if (result == 0) {
-      return elms + mid;
-    } else if (result < 0) {
-      low = mid + 1;
-    } else {
-      high = mid - 1;
-    }
-  }
-
-  return NULL;
+inline static font_bitmap_index_t* find_glyph(font_bitmap_index_t* elms, uint32_t nr, wchar_t c) {
+  return (font_bitmap_index_t*)tk_bsearch(&c, elms, nr, sizeof(font_bitmap_index_t),
+                                          font_bitmap_bsearch_cmp, NULL);
 }
 
 static ret_t font_bitmap_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
