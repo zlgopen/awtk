@@ -1,4 +1,4 @@
-﻿#include "color_parser.h"
+#include "color_parser.h"
 #include "tkc/str.h"
 #include "tkc/mem.h"
 #include "tkc/utils.h"
@@ -154,13 +154,10 @@ static int compare_color(const color_map_t* a, const color_map_t* b) {
 }
 
 static const char* map_name_to_value(const char* name) {
-  color_map_t color_map;
-  color_map.name = name;
-  color_map.value = NULL;
-
-  color_map_t* ret = (color_map_t*)bsearch(&color_map, colors_map, ARRAY_SIZE(colors_map),
-                                           sizeof(color_map_t), (tk_compare_t)compare_color);
-
+  color_map_t color_map = {.name = name, .value = NULL};
+  color_map_t* ret =
+      (color_map_t*)tk_bsearch(&color_map, colors_map, ARRAY_SIZE(colors_map), sizeof(color_map_t),
+                               (tk_compare_t)compare_color, NULL);
   return ret ? ret->value : NULL;
 }
 

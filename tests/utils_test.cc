@@ -2171,6 +2171,37 @@ TEST(Utils, tk_strs_bsearch) {
   }
 }
 
+typedef struct _tk_bsearch_int_item_t {
+  int32_t key;
+  int32_t value;
+} tk_bsearch_int_item_t;
+
+static int32_t tk_bsearch_int_item_cmp(const void* a, const void* b) {
+  const tk_bsearch_int_item_t* a1 = (const tk_bsearch_int_item_t*)a;
+  const tk_bsearch_int_item_t* b1 = (const tk_bsearch_int_item_t*)b;
+  return a1->key - b1->key;
+}
+
+TEST(Utils, tk_bsearch) {
+  tk_bsearch_int_item_t items[] = {{1, 10}, {3, 30}, {5, 50}, {7, 70}, {9, 90}};
+  tk_bsearch_int_item_t key = {5, 0};
+  tk_bsearch_int_item_t missing = {4, 0};
+  tk_bsearch_int_item_t* ret = NULL;
+  tk_bsearch_result_t result;
+
+  ret = (tk_bsearch_int_item_t*)tk_bsearch(&key, items, ARRAY_SIZE(items),
+                                           sizeof(tk_bsearch_int_item_t), tk_bsearch_int_item_cmp,
+                                           &result);
+  ASSERT_EQ(ret->value, 50);
+  ASSERT_EQ(result.index, 2);
+
+  ret = (tk_bsearch_int_item_t*)tk_bsearch(&missing, items, ARRAY_SIZE(items),
+                                           sizeof(tk_bsearch_int_item_t), tk_bsearch_int_item_cmp,
+                                           &result);
+  ASSERT_EQ(ret, (void*)NULL);
+  ASSERT_EQ(result.index, -1);
+}
+
 TEST(Utils, tk_str_indexable) {
   ASSERT_EQ(tk_str_indexable("abc"), FALSE);
   ASSERT_EQ(tk_str_indexable(""), FALSE);

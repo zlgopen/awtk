@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   utils.h
  * Author: AWTK Develop Team
  * Brief:  utils struct and utils functions.
@@ -1417,6 +1417,26 @@ const char* tk_skip_to_chars(const char* str, const char* chars);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_mergesort(void* base, size_t nmemb, size_t size, tk_compare_t cmp);
+
+typedef struct _tk_bsearch_result_t {
+  int32_t index;
+  int32_t low;
+} tk_bsearch_result_t;
+
+/**
+ * @method tk_bsearch
+ * 二分查找(要求数组已排序)。
+ * @param {const void*} key 要查找的元素。
+ * @param {const void*} base 数组。
+ * @param {size_t} nmemb 元素个数。
+ * @param {size_t} size 元素大小。
+ * @param {tk_compare_t} cmp 比较函数。
+ * @param {tk_bsearch_result_t*} result 结果。
+ *
+ * @return {void*} 返回找到的元素，如果没有找到，则返回NULL。
+ */
+void* tk_bsearch(const void* key, const void* base, size_t nmemb, size_t size, tk_compare_t cmp,
+                 tk_bsearch_result_t* result);
 
 /**
  * @method tk_strs_bsearch

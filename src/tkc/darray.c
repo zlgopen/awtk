@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   darray.c
  * Author: AWTK Develop Team
  * Brief:  dynamic darray.
@@ -439,45 +439,29 @@ ret_t darray_destroy(darray_t* darray) {
   return RET_OK;
 }
 
+typedef struct _darray_bsearch_cmp_ctx_t {
+  tk_compare_t cmp;
+  void* ctx;
+} darray_bsearch_cmp_ctx_t;
+
+static int darray_bsearch_cmp(const void* ctx, const void* iter) {
+  const darray_bsearch_cmp_ctx_t* actx = (const darray_bsearch_cmp_ctx_t*)ctx;
+  return -actx->cmp(*(void* const*)iter, actx->ctx);
+}
+
 int32_t darray_bsearch_index_ex(darray_t* darray, tk_compare_t cmp, void* ctx, int32_t* ret_low) {
-  int32_t low = 0;
-  int32_t mid = 0;
-  int32_t high = 0;
-  int32_t result = 0;
-  void* iter = NULL;
+  tk_bsearch_result_t result;
+  darray_bsearch_cmp_ctx_t actx;
   return_value_if_fail(darray != NULL, -1);
 
-  if (darray->size == 0) {
-    if (ret_low != NULL) {
-      *ret_low = 0;
-    }
-    return -1;
-  }
-  if (cmp == NULL) {
-    cmp = darray->compare;
-  }
+  actx = (darray_bsearch_cmp_ctx_t){.cmp = cmp != NULL ? cmp : darray->compare, .ctx = ctx};
 
-  high = darray->size - 1;
-  while (low <= high) {
-    mid = low + ((high - low) >> 1);
-    iter = darray->elms[mid];
-
-    result = cmp(iter, ctx);
-
-    if (result == 0) {
-      return mid;
-    } else if (result < 0) {
-      low = mid + 1;
-    } else {
-      high = mid - 1;
-    }
-  }
+  tk_bsearch(&actx, darray->elms, darray->size, sizeof(void*), darray_bsearch_cmp, &result);
 
   if (ret_low != NULL) {
-    *ret_low = low;
+    *ret_low = result.low;
   }
-
-  return -1;
+  return result.index;
 }
 
 int32_t darray_bsearch_index(darray_t* darray, tk_compare_t cmp, void* ctx) {

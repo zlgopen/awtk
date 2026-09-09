@@ -2767,37 +2767,57 @@ ret_t tk_mergesort(void* base, size_t nmemb, size_t size, tk_compare_t cmp) {
   return RET_OK;
 }
 
-const char* tk_strs_bsearch(const char** strs, uint32_t nr, const char* str,
-                            bool_t case_sensitive) {
-  int32_t low = 0;
-  int32_t mid = 0;
-  int32_t high = 0;
-  int32_t result = 0;
-  const char* iter = NULL;
-  tk_compare_t cmp = case_sensitive ? (tk_compare_t)tk_strcmp : (tk_compare_t)tk_stricmp;
-  return_value_if_fail(strs != NULL && str != NULL, NULL);
+void* tk_bsearch(const void* key, const void* base, size_t nmemb, size_t size, tk_compare_t cmp,
+                 tk_bsearch_result_t* result) {
+  void* ret = NULL;
+  int32_t low = 0, high = (int32_t)nmemb - 1;
+  tk_bsearch_result_t _result;
 
-  if (nr == 0) {
-    return NULL;
+  if (NULL == result) {
+    result = &_result;
   }
+  memset(result, 0, sizeof(*result));
+  result->index = -1;
+  return_value_if_fail(key != NULL && base != NULL && cmp != NULL, NULL);
 
-  high = nr - 1;
   while (low <= high) {
-    mid = low + ((high - low) >> 1);
-    iter = strs[mid];
+    int32_t mid = low + ((high - low) >> 1);
+    void* iter = (void*)((const uint8_t*)base + size * mid);
+    int res = cmp(key, iter); /* 参数顺序与 bsearch 一致 */
 
-    result = cmp(iter, str);
-
-    if (result == 0) {
-      return iter;
-    } else if (result < 0) {
+    if (res < 0) {
+      high = mid - 1;
+    } else if (res > 0) {
       low = mid + 1;
     } else {
-      high = mid - 1;
+      result->index = mid;
+      ret = iter;
+      break;
     }
   }
 
-  return NULL;
+  result->low = low;
+  return ret;
+}
+
+static int tk_strs_bsearch_cmp(const char** str, const char** iter) {
+  return tk_strcmp(*str, *iter);
+}
+
+static int tk_strs_bsearch_icmp(const char** str, const char** iter) {
+  return tk_stricmp(*str, *iter);
+}
+
+const char* tk_strs_bsearch(const char** strs, uint32_t nr, const char* str,
+                            bool_t case_sensitive) {
+  const char** ret = NULL;
+  tk_compare_t cmp =
+      case_sensitive ? (tk_compare_t)tk_strs_bsearch_cmp : (tk_compare_t)tk_strs_bsearch_icmp;
+  return_value_if_fail(strs != NULL && str != NULL, NULL);
+
+  ret = (const char**)tk_bsearch(&str, strs, nr, sizeof(const char*), cmp, NULL);
+
+  return ret != NULL ? *ret : NULL;
 }
 
 bool_t tk_str_indexable(const char* str) {

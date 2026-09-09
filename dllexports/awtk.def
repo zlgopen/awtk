@@ -2583,6 +2583,7 @@ EXPORTS
     tk_skip_chars
     tk_skip_to_chars
     tk_mergesort
+    tk_bsearch
     tk_strs_bsearch
     tk_str_indexable
     tk_normalize_rad
