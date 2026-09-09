@@ -1,5 +1,6 @@
 ﻿#include "gtest/gtest.h"
 #include "widgets/combo_box.h"
+#include "widgets/label.h"
 #include "ui_loader/ui_serializer.h"
 
 #include <string>
@@ -709,6 +710,69 @@ TEST(ComboBox, set_text) {
   // same text
   widget_set_text(w, L"green");
   ASSERT_EQ(combo_box_get_value(w), 2);
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, blur_text_from_value_child) {
+  widget_t* w = combo_box_create(NULL, 0, 0, 100, 30);
+  combo_box_t* combo_box = COMBO_BOX(w);
+
+  combo_box_set_options(w, "1:red;2:green;3:blue");
+  combo_box_set_selected_index(w, 0);
+  ASSERT_EQ(combo_box_get_value(w), 1);
+
+  widget_t* value_child = label_create(w, 0, 0, 80, 30);
+  ASSERT_NE(value_child, (widget_t*)NULL);
+  widget_set_name(value_child, "value");
+  widget_set_text(value_child, L"green");
+
+  event_t e = event_init(EVT_BLUR, w);
+  widget_dispatch(w, &e);
+  ASSERT_EQ(combo_box->selected_index, 1);
+  ASSERT_EQ(combo_box_get_value(w), 2);
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, blur_text_from_self) {
+  widget_t* w = combo_box_create(NULL, 0, 0, 100, 30);
+  combo_box_t* combo_box = COMBO_BOX(w);
+
+  combo_box_set_options(w, "1:red;2:green;3:blue");
+  combo_box_set_selected_index(w, 0);
+  ASSERT_EQ(combo_box_get_value(w), 1);
+
+  widget_set_text(w, L"blue");
+  event_t e = event_init(EVT_BLUR, w);
+  widget_dispatch(w, &e);
+  ASSERT_EQ(combo_box->selected_index, 2);
+  ASSERT_EQ(combo_box_get_value(w), 3);
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, active_text_from_value_child) {
+  widget_t* w = combo_box_create(NULL, 0, 0, 100, 30);
+  combo_box_t* combo_box = COMBO_BOX(w);
+
+  combo_box_set_options(w, "1:red;2:green;3:blue");
+  combo_box_set_selected_index(w, 0);
+
+  widget_t* value_child = label_create(w, 0, 0, 80, 30);
+  ASSERT_NE(value_child, (widget_t*)NULL);
+  widget_set_name(value_child, "value");
+  widget_set_text(value_child, L"red");
+
+  event_t e = event_init(EVT_BLUR, w);
+  widget_dispatch(w, &e);
+  ASSERT_EQ(combo_box->selected_index, 0);
+  ASSERT_EQ(combo_box_get_value(w), 1);
+
+  widget_set_text(value_child, L"blue");
+  widget_dispatch(w, &e);
+  ASSERT_EQ(combo_box->selected_index, 2);
+  ASSERT_EQ(combo_box_get_value(w), 3);
 
   widget_destroy(w);
 }

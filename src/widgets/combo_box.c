@@ -618,9 +618,14 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
       break;
     case EVT_BLUR: {
       str_t str;
+      widget_t* value_widget = widget_lookup(widget, WIDGET_NAME_VALUE, TRUE);
+      if (value_widget == NULL) {
+        value_widget = widget;
+      }
+
       combo_box_update_status(widget);
       str_init(&str, 0);
-      str_from_wstr(&str, widget_get_text(widget));
+      str_from_wstr(&str, widget_get_text(value_widget));
       combo_box_text_to_index(widget, str.str);
       str_reset(&str);
       break;
@@ -895,12 +900,17 @@ static ret_t combo_box_active(widget_t* widget) {
   point_t p = {0, 0};
   widget_t* win = NULL;
   widget_t* combo_box_win = NULL;
+  widget_t* value_widget = NULL;
   const char* applet_name = NULL;
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
 
   str_init(&str, 0);
-  str_from_wstr(&str, widget_get_text(widget));
+  value_widget = widget_lookup(widget, WIDGET_NAME_VALUE, TRUE);
+  if (value_widget == NULL) {
+    value_widget = widget;
+  }
+  str_from_wstr(&str, widget_get_text(value_widget));
   combo_box_text_to_index(widget, str.str);
   str_reset(&str);
 

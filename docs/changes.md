@@ -2,6 +2,7 @@
 
 2026/9/9
   * 统一bsearch实现(感谢兆坤提供补丁)
+  * 修复combo_box同步文本到index时没有从value控件获取的问题(感谢福明提供补丁)
 
 2026/9/8
   * improve emitter_dispatch_log(感谢兆坤提供补丁)
