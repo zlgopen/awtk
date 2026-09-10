@@ -172,7 +172,7 @@ typedef ret_t (*font_destroy_t)(font_t* f);
  *
  */
 struct _font_t {
-  char name[TK_NAME_LEN + 1];
+  char name[MAX_PATH + 1];
   font_match_t match;
   font_get_glyph_t get_glyph;
   font_get_vmetrics_t get_vmetrics;

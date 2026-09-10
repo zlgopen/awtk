@@ -217,7 +217,7 @@ static font_t* font_stb_create_ex(const char* name, const uint8_t* buff, uint32_
   f->base.shrink_cache = font_stb_shrink_cache;
   f->base.desc = mono ? "mono(stb)" : "truetype(stb)";
 
-  tk_strncpy(f->base.name, name, TK_NAME_LEN);
+  tk_strncpy(f->base.name, name, MAX_PATH);
 
   glyph_cache_init(&(f->cache), TK_GLYPH_CACHE_NR, destroy_glyph);
   stbtt_InitFont(&(f->stb_font), buff, stbtt_GetFontOffsetForIndex(buff, 0));

@@ -116,10 +116,10 @@ ret_t font_manager_add_font(font_manager_t* fm, font_t* font) {
 }
 
 #if WITH_BITMAP_FONT
-static const char* font_manager_fix_bitmap_font_name(char str[MAX_PATH], const char* name,
+static const char* font_manager_fix_bitmap_font_name(char str[MAX_PATH + 1], const char* name,
                                                      font_size_t size) {
-  memset(str, 0, MAX_PATH);
-  tk_snprintf(str, MAX_PATH, "%s_%d", name, size);
+  memset(str, 0, MAX_PATH + 1);
+  tk_snprintf(str, MAX_PATH + 1, "%s_%d", name, size);
   return str;
 }
 #endif
@@ -127,7 +127,7 @@ static const char* font_manager_fix_bitmap_font_name(char str[MAX_PATH], const c
 font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t size) {
 #if WITH_BITMAP_FONT
   font_t* font = NULL;
-  char font_name[MAX_PATH];
+  char font_name[MAX_PATH + 1];
   font_cmp_info_t info_bitmap;
 #endif
 
@@ -152,7 +152,7 @@ font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
     const asset_info_t* info = NULL;
 
 #if WITH_BITMAP_FONT
-    char font_name[MAX_PATH];
+    char font_name[MAX_PATH + 1];
     font_manager_fix_bitmap_font_name(font_name, name, size);
     info = assets_manager_ref(fm->assets_manager, ASSET_TYPE_FONT, font_name);
     if (info != NULL) {
@@ -218,7 +218,7 @@ ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t
   event_t e;
 
 #if WITH_BITMAP_FONT
-  char font_name[MAX_PATH];
+  char font_name[MAX_PATH + 1];
   font_cmp_info_t info_bitmap;
 #endif
 
@@ -263,7 +263,7 @@ ret_t font_manager_deinit(font_manager_t* fm) {
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
   TKMEM_FREE(fm->name);
   emitter_off_by_ctx(EMITTER(fm->assets_manager), fm);
-  emitter_deinit(EMITTER(fm)); 
+  emitter_deinit(EMITTER(fm));
   return darray_deinit(&(fm->fonts));
 }
 

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   font.h
  * Author: AWTK Develop Team
  * Brief:  font interface
@@ -100,7 +100,7 @@ font_t* font_bitmap_init(font_bitmap_t* f, const char* name, const uint8_t* buff
   f->base.get_glyph = font_bitmap_get_glyph;
   f->base.destroy = font_bitmap_destroy;
   f->base.desc = "bitmap font";
-  tk_strncpy(f->base.name, name, TK_NAME_LEN);
+  tk_strncpy(f->base.name, name, MAX_PATH);
 
   return &(f->base);
 }

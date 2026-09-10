@@ -197,7 +197,7 @@ static font_t* font_ft_create_ex(const char* name, const uint8_t* buff, uint32_t
   f->base.shrink_cache = font_ft_shrink_cache;
   f->base.desc = mono ? "mono(freetype)" : "truetype(freetype)";
 
-  tk_strncpy(f->base.name, name, TK_NAME_LEN);
+  tk_strncpy(f->base.name, name, MAX_PATH);
 
   glyph_cache_init(&(f->cache), TK_GLYPH_CACHE_NR, destroy_glyph);
 
