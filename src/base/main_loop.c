@@ -89,9 +89,9 @@ ret_t main_loop_recv_event(main_loop_t* l, event_queue_req_t* r) {
 
 ret_t main_loop_sleep_default(main_loop_t* l) {
   uint64_t now = time_now_ms();
-  uint32_t gap = now - l->last_loop_time;
+  uint64_t gap = now - l->last_loop_time;
   uint32_t sleep_time = TK_MAX_SLEEP_TIME;
-  int32_t least_sleep_time = gap > TK_MAX_SLEEP_TIME ? 0 : (TK_MAX_SLEEP_TIME - gap);
+  uint32_t least_sleep_time = gap > TK_MAX_SLEEP_TIME ? 0 : (TK_MAX_SLEEP_TIME - gap);
 
   sleep_time = tk_min(least_sleep_time, sleep_time);
   sleep_time = tk_min(sleep_time, l->curr_expected_sleep_time);

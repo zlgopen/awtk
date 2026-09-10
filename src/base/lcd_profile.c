@@ -308,7 +308,7 @@ static ret_t lcd_profile_end_frame(lcd_t* lcd) {
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
-  uint32_t end = 0;
+  uint64_t end = 0;
   uint64_t start = time_now_ms();
   lcd_profile_t* profile = LCD_PROFILE(lcd);
   ret = lcd_end_frame(profile->impl);

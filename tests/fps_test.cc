@@ -11,10 +11,10 @@ TEST(FPS, basic) {
   for (i = 0; i < 180; i++) {
     ASSERT_EQ(fps_inc(&fps), RET_OK);
   }
-  uint32_t cost = time_now_ms() - start;
+  uint64_t cost = time_now_ms() - start;
   sleep_ms(3000 - cost);
   cost = time_now_ms() - start;
-  log_debug("cost=%u\n", cost);
+  log_debug("cost=%" PRIu64 "\n", cost);
 
   ASSERT_EQ(fps_get(&fps), (uint32_t)tk_roundi(180 * 1000.0 / cost));
 }

@@ -72,8 +72,8 @@ ret_t tk_istream_flush(tk_istream_t* stream) {
 
 int32_t tk_istream_read_len(tk_istream_t* stream, void* buff, uint32_t max_size,
                             uint32_t timeout_ms) {
-  uint32_t now = 0;
-  uint32_t end = 0;
+  uint64_t now = 0;
+  uint64_t end = 0;
   int32_t offset = 0;
   ret_t ret = RET_OK;
   int32_t read_bytes = 0;

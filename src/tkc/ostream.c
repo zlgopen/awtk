@@ -40,8 +40,8 @@ ret_t tk_ostream_seek(tk_ostream_t* stream, uint32_t offset) {
 
 int32_t tk_ostream_write_len(tk_ostream_t* stream, const void* buff, uint32_t max_size,
                              uint32_t timeout_ms) {
-  uint32_t now = 0;
-  uint32_t end = 0;
+  uint64_t now = 0;
+  uint64_t end = 0;
   int32_t offset = 0;
   int32_t write_bytes = 0;
   int32_t remain_bytes = max_size;

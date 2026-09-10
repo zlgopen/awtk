@@ -111,7 +111,7 @@ uint32_t timer_manager_add_with_type(timer_manager_t* timer_manager, timer_func_
 uint32_t timer_manager_add_with_type_and_id(timer_manager_t* timer_manager, uint32_t id,
                                             timer_func_t on_timer, void* ctx, uint32_t duration,
                                             uint16_t timer_info_type, bool_t is_check_id) {
-  uint32_t now = 0;
+  uint64_t now = 0;
   timer_info_t* timer = NULL;
   return_value_if_fail(on_timer != NULL, TK_INVALID_ID);
   return_value_if_fail(id != TK_INVALID_ID, TK_INVALID_ID);
