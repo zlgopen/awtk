@@ -210,6 +210,9 @@ static ret_t native_window_sdl_set_window_hit_test(native_window_t* win, xy_t x,
 
 static ret_t native_window_sdl_set_fullscreen(native_window_t* win, bool_t fullscreen) {
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+  int gx = 0, gy = 0;
+
+  SDL_GetGlobalMouseState(&gx, &gy); /* 切换前记下屏幕坐标 */
 
   if (fullscreen) {
 #ifdef AWTK_SDL3
@@ -224,6 +227,8 @@ static ret_t native_window_sdl_set_fullscreen(native_window_t* win, bool_t fulls
     SDL_SetWindowFullscreen(sdl->window, 0);
 #endif
   }
+
+  SDL_WarpMouseGlobal(gx, gy); /* 立刻覆盖掉那次 warp，光标留在原地 */
 
   return RET_OK;
 }
