@@ -58,9 +58,6 @@ struct _ui_loader_t {
   ui_loader_load_t load;
   bool_t support_bin;
   bool_t support_xml;
-
-  /* private */
-  void* asset;
 };
 
 /**
