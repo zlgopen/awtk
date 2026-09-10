@@ -82,12 +82,12 @@ TEST(Edit, uint) {
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_STEP, &v2), RET_OK);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
 
-  ASSERT_EQ(edit_set_int_limit(b, 0, 0xFFFFFFFF, 5), RET_OK);
+  ASSERT_EQ(edit_set_int_limit(b, 0, INT_MAX, 5), RET_OK);
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
   ASSERT_EQ(0, value_int(&v2));
 
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
-  ASSERT_EQ(0xFFFFFFFF, value_uint32(&v2));
+  ASSERT_EQ(INT_MAX, value_int32(&v2));
 
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_INPUT_TYPE, &v2), RET_OK);
   ASSERT_EQ(INPUT_UINT, value_int(&v2));

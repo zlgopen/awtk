@@ -578,7 +578,7 @@ widget_t* window_manager_init(window_manager_t* wm, const widget_vtable_t* wvt,
   locale_info_on(locale_info(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);
   wm->vt = vt;
   wm->global_emitter = emitter_create();
-  wm->curr_expected_sleep_time = 0xFFFFFFFF;
+  wm->curr_expected_sleep_time = UINT32_MAX;
   widget_on(widget, EVT_DESTROY, window_manager_on_destroy, widget);
   input_device_status_init(&(wm->input_device_status));
 
@@ -863,7 +863,7 @@ ret_t window_manager_set_ignore_input_events(widget_t* widget, bool_t ignore_inp
 
 uint32_t window_manager_get_curr_expected_sleep_time(widget_t* widget) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
-  return_value_if_fail(wm != NULL && wm->vt != NULL, 0xFFFFFFFF);
+  return_value_if_fail(wm != NULL && wm->vt != NULL, UINT32_MAX);
   return wm->curr_expected_sleep_time;
 }
 

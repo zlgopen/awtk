@@ -100,7 +100,7 @@ wstr_t* wstr_attach(wstr_t* str, wchar_t* buff, uint32_t capacity) {
 ret_t wstr_set(wstr_t* str, const wchar_t* text) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
 
-  return wstr_set_with_len(str, text, 0xffffffff);
+  return wstr_set_with_len(str, text, UINT32_MAX);
 }
 
 ret_t wstr_set_with_len(wstr_t* str, const wchar_t* text, uint32_t len) {

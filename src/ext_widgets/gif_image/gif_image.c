@@ -596,7 +596,7 @@ static ret_t gif_image_init(widget_t* widget) {
 
   image_base_init(widget);
   gif_image_play(widget);
-  gif_image->loop = 0xffffffff;
+  gif_image->loop = UINT32_MAX;
   gif_image->loop_done = FALSE;
   gif_image->gif_update_flag = TRUE;
   memset(&(gif_image->bitmap), 0, sizeof(bitmap_t));

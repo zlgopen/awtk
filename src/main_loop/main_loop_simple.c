@@ -249,7 +249,7 @@ static ret_t main_loop_dispatch_input(main_loop_simple_t* loop) {
 }
 
 static ret_t main_loop_simple_step(main_loop_t* l) {
-  uint32_t curr_expected_sleep_time = 0xFFFFFFFF;
+  uint32_t curr_expected_sleep_time = UINT32_MAX;
   main_loop_simple_t* loop = (main_loop_simple_t*)l;
 
   main_loop_dispatch_input(loop);

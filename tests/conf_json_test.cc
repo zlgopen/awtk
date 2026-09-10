@@ -769,7 +769,7 @@ TEST(Json, uint32) {
   tk_object_t* conf = conf_json_create();
   ASSERT_NE(conf, (tk_object_t*)NULL);
   ASSERT_EQ(tk_object_set_prop_str(conf, "name", "awtk"), RET_OK);
-  ASSERT_EQ(tk_object_set_prop_uint32(conf, "value", 0xffffffff), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_uint32(conf, "value", UINT32_MAX), RET_OK);
 
   str_init(&str, 100);
   ASSERT_EQ(tk_object_foreach_prop(conf, on_prop, &str), RET_OK);

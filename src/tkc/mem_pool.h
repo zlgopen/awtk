@@ -80,7 +80,7 @@ static inline int32_t mem_pool_get_free_index(mem_pool_t* pool) {
       break;
     }
 
-    if (bits[i] != 0xffffffff) {
+    if (bits[i] != UINT32_MAX) {
       uint32_t k = 0;
       uint32_t v = bits[i];
       for (k = 0; k < 32; k++) {

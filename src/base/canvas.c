@@ -209,8 +209,8 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
     /* 把 canvas 的裁剪区设置为无限大，在 opengl 的状态下让 vg 来处理裁剪区的问题 */
     c->clip_left = 0;
     c->clip_top = 0;
-    c->clip_right = 0x7fffffff;
-    c->clip_bottom = 0x7fffffff;
+    c->clip_right = INT32_MAX;
+    c->clip_bottom = INT32_MAX;
 #endif
   } else {
     if (r != NULL) {

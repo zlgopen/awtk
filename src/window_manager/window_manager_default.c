@@ -1350,7 +1350,7 @@ static ret_t window_manager_default_paint(widget_t* widget) {
 
   canvas_set_global_alpha(c, 0xff);
   window_manager_default_update_fps(widget);
-  window_manager_set_curr_expected_sleep_time(widget, 0xFFFFFFFF);
+  window_manager_set_curr_expected_sleep_time(widget, UINT32_MAX);
 
 #ifndef WITHOUT_WINDOW_ANIMATORS
   if (wm->animator != NULL) {

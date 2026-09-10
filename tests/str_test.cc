@@ -851,7 +851,7 @@ TEST(Str, uint32) {
   ASSERT_STREQ(str.str, "123");
   str_reset(&str);
 
-  ASSERT_EQ(str_append_uint32(&str, 0xffffffff), RET_OK);
+  ASSERT_EQ(str_append_uint32(&str, UINT32_MAX), RET_OK);
   ASSERT_STREQ(str.str, "4294967295");
   str_reset(&str);
 }
@@ -956,8 +956,8 @@ TEST(Str, from) {
   ASSERT_EQ(str_from_uint32(s, 123), RET_OK);
   ASSERT_EQ(str_eq(s, "123"), TRUE);
 
-  ASSERT_EQ(str_from_uint32(s, 0xffffffff), RET_OK);
-  ASSERT_EQ(tk_atoul(s->str), 0xffffffff);
+  ASSERT_EQ(str_from_uint32(s, UINT32_MAX), RET_OK);
+  ASSERT_EQ(tk_atoul(s->str), UINT32_MAX);
 
   ASSERT_EQ(str_from_int64(s, 1234), RET_OK);
   ASSERT_EQ(str_eq(s, "1234"), TRUE);

@@ -287,7 +287,7 @@ TEST(WStr, value) {
   vu64 = tk_atoul(sutf8);
   ASSERT_EQ(value_uint64(&v1), vu64);
 
-  value_set_uint32(&v1, 0xffffffff);
+  value_set_uint32(&v1, UINT32_MAX);
   ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
   ASSERT_EQ(wstr_get_utf8(&str, sutf8, sizeof(sutf8)), RET_OK);
   vu64 = tk_atoul(sutf8);

@@ -89,7 +89,7 @@ static ret_t main_loop_dispatch_input(main_loop_console_t* loop) {
 static ret_t main_loop_console_step(main_loop_t* l) {
   main_loop_console_t* loop = (main_loop_console_t*)l;
   const uint32_t duration = 16;
-  uint32_t curr_expected_sleep_time = 0xFFFFFFFF;
+  uint32_t curr_expected_sleep_time = UINT32_MAX;
   uint32_t cost_time = 0;
   uint64_t time_in = time_now_ms();
   uint64_t time_out = time_in;
