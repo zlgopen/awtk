@@ -70,7 +70,8 @@ ret_t ui_loader_load_default(ui_loader_t* loader, const uint8_t* data, uint32_t 
   return RET_OK;
 }
 
-static const ui_loader_t s_default_ui_loader = {.load = ui_loader_load_default};
+static const ui_loader_t s_default_ui_loader = {.load = ui_loader_load_default,
+                                                .support_bin = TRUE};
 
 ui_loader_t* default_ui_loader() {
   return (ui_loader_t*)&s_default_ui_loader;

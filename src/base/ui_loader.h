@@ -56,6 +56,11 @@ typedef ret_t (*ui_loader_load_t)(ui_loader_t* loader, const uint8_t* data, uint
  */
 struct _ui_loader_t {
   ui_loader_load_t load;
+  bool_t support_bin;
+  bool_t support_xml;
+
+  /* private */
+  void* asset;
 };
 
 /**
@@ -115,6 +120,15 @@ widget_t* ui_loader_load_widget_with_parent(const char* name, widget_t* parent);
  *
  */
 widget_t* ui_loader_load_widget_from_xml(widget_t* parent, const char* xml, uint32_t size);
+
+/**
+ * @method ui_loader_set
+ * 设置缺省的UI加载器，默认为 default_ui_loader()。
+ * @param {ui_loader_t*} loader loader对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ui_loader_set(ui_loader_t* loader);
 
 END_C_DECLS
 

@@ -753,6 +753,7 @@ EXPORTS
     ui_builder_on_start
     ui_builder_on_end
     ui_builder_destroy
+    ui_builder_set_additional_context
     ui_feedback_request
     ui_feedback_init
     ui_feedback_deinit
@@ -760,6 +761,7 @@ EXPORTS
     ui_loader_load_widget
     ui_loader_load_widget_with_parent
     ui_loader_load_widget_from_xml
+    ui_loader_set
     velocity_reset
     velocity_update
     vg_gradient_create_radial

@@ -75,6 +75,9 @@ struct _ui_builder_t {
   widget_t* root;
   widget_t* widget;
   const char* name;
+  const asset_info_t* ui;
+  void* additional_ctx;
+  tk_destroy_t free_additional_ctx;
 };
 
 /**
@@ -156,6 +159,19 @@ ret_t ui_builder_on_end(ui_builder_t* builder);
  *
  */
 ret_t ui_builder_destroy(ui_builder_t* builder);
+
+/**
+ * @method ui_builder_set_additional_context
+ * 设置额外的上下文信息。
+ *
+ * @param {ui_builder_t*} builder builder对象。
+ * @param {void*} ctx 上下文对象。
+ * @param {tk_destroy_t} free_ctx 销毁上下文对象的回调。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t ui_builder_set_additional_context(ui_builder_t* builder, void* ctx, tk_destroy_t free_ctx);
 
 #define UI_DATA_MAGIC 0x11221212
 

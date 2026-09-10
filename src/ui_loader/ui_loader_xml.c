@@ -789,7 +789,7 @@ ret_t ui_loader_load_xml(ui_loader_t* loader, const uint8_t* data, uint32_t size
   return RET_OK;
 }
 
-static const ui_loader_t s_xml_ui_loader = {.load = ui_loader_load_xml};
+static const ui_loader_t s_xml_ui_loader = {.load = ui_loader_load_xml, .support_xml = TRUE};
 
 ui_loader_t* xml_ui_loader() {
   return (ui_loader_t*)&s_xml_ui_loader;
