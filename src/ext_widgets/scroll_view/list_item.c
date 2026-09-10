@@ -106,9 +106,8 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       widget_ungrab(widget->parent, widget);
       if (!list_item->dragged && list_item->pressed) {
-        pointer_event_t evt = *(pointer_event_t*)e;
-        evt.e = event_init(EVT_CLICK, widget);
-        evt.e.size = sizeof(pointer_event_t);
+        pointer_event_t evt;
+        pointer_event_init(&evt, EVT_CLICK, widget, 0, 0);
         ret = widget_dispatch(widget, (event_t*)&evt);
       }
       list_item->dragged = FALSE;

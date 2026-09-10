@@ -417,11 +417,12 @@ static ret_t candidates_on_keyup(widget_t* widget, key_event_t* e) {
       int32_t i = e->key - (int32_t)TK_KEY_0 - 1;
 
       if (i >= 0 && i < nr) {
-        event_t click = event_init(EVT_CLICK, NULL);
+        pointer_event_t click;
+        pointer_event_init(&click, EVT_CLICK, NULL, 0, 0);
         child = widget_get_child(widget, i);
 
         if (child->text.size > 0 && child->visible) {
-          widget_dispatch(child, &click);
+          widget_dispatch(child, (event_t*)&click);
           ret = RET_STOP;
         }
       }

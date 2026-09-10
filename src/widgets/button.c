@@ -47,10 +47,7 @@ static ret_t button_on_repeat(const timer_info_t* info) {
   widget = WIDGET(info->ctx);
   return_value_if_fail(button != NULL && widget != NULL, RET_REMOVE);
 
-  evt.x = 0;
-  evt.y = 0;
-  evt.e = event_init(EVT_CLICK, widget);
-  evt.e.size = sizeof(pointer_event_t);
+  pointer_event_init(&evt, EVT_CLICK, widget, 0, 0);
 
   button->repeat_nr++;
   widget_dispatch(widget, (event_t*)&evt);

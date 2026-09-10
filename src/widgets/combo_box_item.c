@@ -44,10 +44,9 @@ static ret_t combo_box_item_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_UP: {
-      pointer_event_t evt = *(pointer_event_t*)e;
       if (combo_box_item->pressed) {
-        evt.e = event_init(EVT_CLICK, widget);
-        evt.e.size = sizeof(pointer_event_t);
+        pointer_event_t evt;
+        pointer_event_init(&evt, EVT_CLICK, widget, 0, 0);
         combo_box_item_set_checked(widget, TRUE);
         ret = widget_dispatch(widget, (event_t*)&evt);
       }
