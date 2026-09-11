@@ -413,10 +413,12 @@ int tk_tcp_connect_ex(const char* host, int port, int timeout, void* opts) {
   FD_ZERO(&wset);
   FD_SET(sock, &rset);
   FD_SET(sock, &wset);
+
+  /* timeout <= 0 的情况已经提前返回了，这里必然 > 0 */
   tv.tv_sec = timeout / 1000;
   tv.tv_usec = (timeout % 1000) * 1000;
 
-  ret = select(sock + 1, &rset, &wset, NULL, timeout == 0xFFFFFFFF ? NULL : &tv);
+  ret = select(sock + 1, &rset, &wset, NULL, &tv);
   if (ret <= 0) {
     /* Timeout or fail */
     goto done;
