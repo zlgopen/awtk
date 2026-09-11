@@ -181,9 +181,9 @@ ret_t darray_remove_all(darray_t* darray, tk_compare_t cmp, void* ctx) {
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
 
   if (darray->elms != NULL) {
-    int32_t i = 0;
-    int32_t new_size = 0;
-    int32_t old_size = darray->size;
+    uint32_t i = 0;
+    uint32_t new_size = 0;
+    uint32_t old_size = darray->size;
     void** elms = darray->elms;
 
     cmp = cmp != NULL ? cmp : darray->compare;
