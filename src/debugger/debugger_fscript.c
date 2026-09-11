@@ -775,7 +775,7 @@ static ret_t debugger_fscript_before_exec_func(debugger_t* debugger, int32_t lin
     debugger_fscript_unlock(debugger);
 
     if (paused && d->cond_var != NULL) {
-      tk_cond_var_wait(d->cond_var, 0xffffff);
+      tk_cond_var_wait(d->cond_var, UINT32_MAX);
     }
   }
 
@@ -804,7 +804,7 @@ static ret_t debugger_fscript_after_exec_func(debugger_t* debugger, int32_t line
     debugger_fscript_unlock(debugger);
 
     if (paused && d->cond_var != NULL) {
-      tk_cond_var_wait(d->cond_var, 0xffffff);
+      tk_cond_var_wait(d->cond_var, UINT32_MAX);
     }
   }
 

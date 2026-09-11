@@ -747,7 +747,7 @@ static void sym_params(const char* param_str, darray_t* o) {
   tokenizer_t* t = NULL;
   
   // src+1 去除 (
-  t = tokenizer_init(&tokenizer, src+1, 0xffffff, ",");
+  t = tokenizer_init(&tokenizer, src+1, UINT32_MAX, ",");
   while (tokenizer_has_more(t)) {
     const char* s = tokenizer_next_str(t);
     darray_push(o, parse_param(s));

@@ -699,7 +699,7 @@ static ret_t window_manager_default_switch_to(widget_t* widget, widget_t* curr_w
   return_value_if_fail(curr_win != NULL && target_win != NULL && wm != NULL, RET_BAD_PARAMS);
 
   wm->ready_animator = FALSE;
-  widget_restack(target_win, 0xffffff);
+  widget_restack(target_win, UINT32_MAX);
   if (close) {
     widget_on(target_win, EVT_WINDOW_TO_FOREGROUND, on_window_switch_done, curr_win);
   }

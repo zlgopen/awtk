@@ -7,7 +7,7 @@ using std::string;
 TEST(Tokenizer, basic) {
   tokenizer_t tokenizer;
 
-  tokenizer_t* t = tokenizer_init(&tokenizer, "w10 h10 10 3 123.1", 0xffffff, " ");
+  tokenizer_t* t = tokenizer_init(&tokenizer, "w10 h10 10 3 123.1", UINT32_MAX, " ");
   ASSERT_EQ(t, &tokenizer);
 
   ASSERT_EQ(tokenizer_has_more(t), TRUE);
@@ -34,7 +34,7 @@ TEST(Tokenizer, basic) {
 TEST(Tokenizer, separators) {
   tokenizer_t tokenizer;
 
-  tokenizer_t* t = tokenizer_init(&tokenizer, "w10,   h10, 10 ,   3, 123.1", 0xffffff, " ,");
+  tokenizer_t* t = tokenizer_init(&tokenizer, "w10,   h10, 10 ,   3, 123.1", UINT32_MAX, " ,");
   ASSERT_EQ(t, &tokenizer);
 
   ASSERT_EQ(tokenizer_has_more(t), TRUE);

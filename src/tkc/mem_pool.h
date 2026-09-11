@@ -42,7 +42,18 @@ static inline bool_t mem_pool_match_size(mem_pool_t* pool, uint32_t size) {
 }
 
 static inline uint32_t mem_pool_get_bits_size(uint32_t block_nr) {
-  return (block_nr / 32 + 2) & 0xfffffffe;
+  /**
+   * 返回位图占用的 uint32_t 字数（不是字节数），至少够 ceil(block_nr / 32) 个字用。
+   *
+   * block_nr / 32 是向下取整，+2 中 1 个字把它补成向上取整、另 1 个字是余量；
+   * & mask 再向下取偶（最多减 1 个字），偶数个字正好占 8 字节的整数倍，
+   * 而 sizeof(mem_pool_t) 也是 8 的倍数（32 位平台 16 字节、64 位平台 24 字节），
+   * 于是数据区起点 sizeof(mem_pool_t) + bits_size * 4 保持 8 字节对齐。
+   *
+   * 因此 +2 不能改成 +1：取偶后约一半的 block_nr 会少算一个字，位图不够用。
+   */
+  const uint32_t mask = 0xfffffffeu;
+  return (block_nr / 32 + 2) & mask;
 }
 
 static inline uint32_t mem_pool_get_min_size(uint32_t block_size, uint32_t block_nr) {

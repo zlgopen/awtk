@@ -4,7 +4,7 @@
 
 ```c
 tokenizer_t tokenizer;
-tokenizer_t* t = tokenizer_init(&tokenizer, "20,111.2,22.3,333.3,44,555.5", 0xffffff, ",");
+tokenizer_t* t = tokenizer_init(&tokenizer, "20,111.2,22.3,333.3,44,555.5", UINT32_MAX, ",");
 
 while(tokenizer_has_more(t)) {
 double v = tokenizer_next_float(t, 0);

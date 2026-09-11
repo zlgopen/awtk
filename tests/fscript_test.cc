@@ -506,19 +506,19 @@ TEST(FScript, bit_not) {
   value_reset(&v);
 
   fscript_eval(obj, "~(u8(1))", &v);
-  ASSERT_EQ(value_uint8(&v), 0xfe);
+  ASSERT_EQ(value_uint8(&v), UINT8_MAX - 1);
   value_reset(&v);
 
   fscript_eval(obj, "~(u16(1))", &v);
-  ASSERT_EQ(value_uint16(&v), 0xfffe);
+  ASSERT_EQ(value_uint16(&v), UINT16_MAX - 1);
   value_reset(&v);
 
   fscript_eval(obj, "~(u32(1))", &v);
-  ASSERT_EQ(value_uint32(&v), 0xfffffffe);
+  ASSERT_EQ(value_uint32(&v), UINT32_MAX - 1);
   value_reset(&v);
 
   fscript_eval(obj, "~(u64(1))", &v);
-  ASSERT_EQ(value_uint64(&v), 0xfffffffffffffffe);
+  ASSERT_EQ(value_uint64(&v), UINT64_MAX - 1);
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);

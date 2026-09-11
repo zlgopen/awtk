@@ -438,7 +438,7 @@ ret_t window_manager_switch_to(widget_t* widget, widget_t* curr_win, widget_t* t
   if (wm->vt->switch_to != NULL) {
     return wm->vt->switch_to(widget, curr_win, target_win, close);
   } else {
-    widget_restack(target_win, 0xffffff);
+    widget_restack(target_win, UINT32_MAX);
     if (close) {
       window_manager_close_window_force(widget, curr_win);
     }
