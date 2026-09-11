@@ -1768,7 +1768,7 @@ TEST(FExr, get) {
   TK_OBJECT_UNREF(obj);
 }
 
-TEST(FExr, dollor) {
+TEST(FExr, dollar) {
   value_t v;
   tk_object_t* obj = object_default_create();
 

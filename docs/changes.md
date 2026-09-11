@@ -4,6 +4,7 @@
   * 完善 darray_remove_all (感谢兆坤提供补丁) 
   * 完善 0x7fffffff 和 0xffffffff 用标准宏替换(感谢兆坤提供补丁)
   * 去除 tk_tcp_connect_ex 中不生效的判断(感谢兆坤提供补丁)
+  * 修复拼写错误(感谢兆坤提供补丁)
 
 2026/9/10
   * 完善 ui_builder (感谢朝泽提供补丁)
