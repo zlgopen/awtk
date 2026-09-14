@@ -987,7 +987,7 @@ ret_t serial_iflush(serial_handle_t handle) {
 
 ret_t serial_oflush(serial_handle_t handle) {
   serial_dev_t dev = serial_handle_get_dev(handle);
-  return tcflush(dev, TCOFLUSH) == 0 ? RET_OK : RET_FAIL;
+  return tcdrain(dev) == 0 ? RET_OK : RET_FAIL;
 }
 
 ret_t serial_close(serial_handle_t handle) {
