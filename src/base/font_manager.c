@@ -115,33 +115,33 @@ ret_t font_manager_add_font(font_manager_t* fm, font_t* font) {
   return RET_OK;
 }
 
-#if WITH_BITMAP_FONT
+#ifdef WITH_BITMAP_FONT
 static const char* font_manager_fix_bitmap_font_name(char str[MAX_PATH + 1], const char* name,
                                                      font_size_t size) {
   memset(str, 0, MAX_PATH + 1);
   tk_snprintf(str, MAX_PATH + 1, "%s_%d", name, size);
   return str;
 }
-#endif
+#endif /*WITH_BITMAP_FONT*/
 
 font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t size) {
-#if WITH_BITMAP_FONT
+#ifdef WITH_BITMAP_FONT
   font_t* font = NULL;
   char font_name[MAX_PATH + 1];
   font_cmp_info_t info_bitmap;
-#endif
+#endif /*WITH_BITMAP_FONT*/
 
   font_cmp_info_t info = {name, size};
   return_value_if_fail(fm != NULL, NULL);
 
-#if WITH_BITMAP_FONT
+#ifdef WITH_BITMAP_FONT
   info_bitmap.name = font_manager_fix_bitmap_font_name(font_name, name, size);
   info_bitmap.size = size;
   font = darray_find(&(fm->fonts), &info_bitmap);
   if (font != NULL) {
     return font;
   }
-#endif
+#endif /*WITH_BITMAP_FONT*/
 
   return darray_find(&(fm->fonts), &info);
 }
@@ -151,14 +151,14 @@ font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
   if (fm->loader != NULL) {
     const asset_info_t* info = NULL;
 
-#if WITH_BITMAP_FONT
+#ifdef WITH_BITMAP_FONT
     char font_name[MAX_PATH + 1];
     font_manager_fix_bitmap_font_name(font_name, name, size);
     info = assets_manager_ref(fm->assets_manager, ASSET_TYPE_FONT, font_name);
     if (info != NULL) {
       name = font_name;
     }
-#endif
+#endif /*WITH_BITMAP_FONT*/
 
     if (info == NULL) {
       info = assets_manager_ref(fm->assets_manager, ASSET_TYPE_FONT, name);
@@ -217,19 +217,19 @@ ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t
   font_cmp_info_t info = {name, size};
   event_t e;
 
-#if WITH_BITMAP_FONT
+#ifdef WITH_BITMAP_FONT
   char font_name[MAX_PATH + 1];
   font_cmp_info_t info_bitmap;
-#endif
+#endif /*WITH_BITMAP_FONT*/
 
   name = system_info_fix_font_name(name);
   return_value_if_fail(fm != NULL, RET_FAIL);
 
-#if WITH_BITMAP_FONT
+#ifdef WITH_BITMAP_FONT
   info_bitmap.name = font_manager_fix_bitmap_font_name(font_name, name, size);
   info_bitmap.size = size;
   ret = darray_remove(&(fm->fonts), &info_bitmap);
-#endif
+#endif /*WITH_BITMAP_FONT*/
 
   e = event_init(EVT_ASSET_MANAGER_UNLOAD_ASSET, (void*)name);
   emitter_dispatch(EMITTER(fm), &e);

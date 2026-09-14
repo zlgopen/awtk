@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/9/14
+  * 完善 font_manager 中的宏定义(感谢泽武提供补丁)
+
 2026/9/11
   * 完善 darray_remove_all (感谢兆坤提供补丁) 
   * 完善 0x7fffffff 和 0xffffffff 用标准宏替换(感谢兆坤提供补丁)
