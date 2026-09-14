@@ -2,6 +2,7 @@
 
 2026/9/14
   * 完善 font_manager 中的宏定义(感谢泽武提供补丁)
+  * 修复nanovg_plus_gl的宏不正确的问题和计算frag_size大小多一些的 问题(感谢智明提供补丁)
 
 2026/9/11
   * 完善 darray_remove_all (感谢兆坤提供补丁) 

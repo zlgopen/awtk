@@ -152,7 +152,7 @@ typedef struct _nvgp_gl_shader_t {
 #ifdef NVGP_GL3
   GLuint vert_arr;
 #endif
-#ifdef NVGP_GL_USE_UNIFORMBUFFER
+#if NVGP_GL_USE_UNIFORMBUFFER
   GLuint frag_buf;
 #endif
   int32_t frag_size;
@@ -509,8 +509,8 @@ static void nvgp_gl_delete_shader(nvgp_gl_shader_t* shader) {
   if (shader->frag != 0) {
     glDeleteShader(shader->frag);
   }
-#if NANOVG_GL3
-#if NANOVG_GL_USE_UNIFORMBUFFER
+#if NVGP_GL3
+#if NVGP_GL_USE_UNIFORMBUFFER
   if (shader->frag_buf != 0) {
     glDeleteBuffers(1, &shader->frag_buf);
   }
@@ -556,7 +556,7 @@ static void  nvgp_gl_init_shader(nvgp_gl_shader_t* shader, int32_t align) {
   glGenBuffers(1, &shader->frag_buf);
   glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &align);
 #endif
-  shader->frag_size = sizeof(nvgp_gl_frag_uniforms_t) + align - sizeof(nvgp_gl_frag_uniforms_t) % align;
+  shader->frag_size = (sizeof(nvgp_gl_frag_uniforms_t) + align - 1) / align * align;
 }
 
 static nvgp_bool_t nvgp_gl_create_shader(nvgp_gl_shader_t* shader, const char* name, const char* header,
@@ -704,7 +704,7 @@ static void nvgp_gl_set_shader_data(nvgp_gl_context_t* gl, nvgp_gl_shader_t* sha
   if (!shader->setted_data) {
     shader->setted_data = 1;
 #endif
-#ifdef NVGP_GL_USE_UNIFORMBUFFER
+#if NVGP_GL_USE_UNIFORMBUFFER
     // Upload ubo for frag shaders
     glBindBuffer(GL_UNIFORM_BUFFER, shader->frag_buf);
     glBufferData(GL_UNIFORM_BUFFER, shader->nuniforms * shader->frag_size, shader->uniforms, GL_STREAM_DRAW);
@@ -741,10 +741,6 @@ static void nvgp_gl_set_shader_data(nvgp_gl_context_t* gl, nvgp_gl_shader_t* sha
     glEnableVertexAttribArray(1);
   }
 #endif
-
-#if NVGP_GL_USE_UNIFORMBUFFER
-  glBindBuffer(GL_UNIFORM_BUFFER, shader->frag_buf);
-#endif
 }
 
 static void nvgp_gl_bind_texture(nvgp_gl_context_t* gl, GLuint tex) {
@@ -778,7 +774,7 @@ static nvgp_gl_frag_uniforms_t* nvgp_gl_frag_uniform_ptr(nvgp_gl_shader_t* shade
 static void nvgp_gl_set_uniforms(nvgp_gl_context_t* gl, nvgp_gl_shader_t* shader, uint32_t uniform_offset, int32_t image) {
 #if NVGP_GL_USE_UNIFORMBUFFER
   glBindBufferRange(GL_UNIFORM_BUFFER, NVGP_GL_FRAG_BINDING, shader->frag_buf, uniform_offset,
-                    sizeof(nvgp_gl_frag_uniforms_t));
+                    shader->frag_size);
 #else
   nvgp_gl_frag_uniforms_t* frag = nvgp_gl_frag_uniform_ptr(shader, uniform_offset);
   glUniform4fv(shader->loc[NVGP_GL_LOC_FRAG], NVGP_GL_UNIFORMARRAY_SIZE, &(frag->uniformArray[0][0]));
@@ -1257,7 +1253,7 @@ static void nvgp_gl_flush(nvgp_gl_context_t* gl) {
   }
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);
-#if defined NANOVG_GL3
+#if defined NVGP_GL3
   glBindVertexArray(0);
 #endif
   glDisable(GL_CULL_FACE);
