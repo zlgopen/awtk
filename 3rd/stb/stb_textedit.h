@@ -360,6 +360,8 @@ typedef struct
    float baseline_y_delta;  // position of baseline relative to previous row's baseline
    float ymin,ymax;         // height of row above and below baseline
    int num_chars;
+   int num_glyph;
+   int* glyph_arr;
 } StbTexteditRow;
 #endif //INCLUDE_STB_TEXTEDIT_H
 
@@ -427,15 +429,33 @@ static int stb_text_locate_coord(STB_TEXTEDIT_STRING *str, float x, float y)
    if (x < r.x1) {
       // search characters in row for one that straddles 'x'
       prev_x = r.x0;
-      for (k=0; k < r.num_chars; ++k) {
-         float w = STB_TEXTEDIT_GETWIDTH(str, i, k);
+      for (k=0; k < r.num_glyph;) {
+         float w = STB_TEXTEDIT_GETWIDTH(str, r.glyph_arr[k], 0);
          if (x < prev_x+w) {
-            if (x < prev_x+w/2)
-               return k+i;
-            else
-               return k+i+1;
+            if (x < prev_x+w/2) {
+               // cursor on RTL glyph left, for str is on str after
+               if (STB_TEXTEDIT_GETBIDITYPE(str, r.glyph_arr[k]) == 1 ||
+                   STB_TEXTEDIT_GETBIDITYPE(str, r.glyph_arr[k]) == 0) {
+                  return STB_TEXTEDIT_GLYPH_TO_STR(str, r.glyph_arr[k]);
+               } else {
+                  int l = STB_TEXTEDIT_GLYPH_TO_STR(str, r.glyph_arr[k]);
+                  l += STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, r.glyph_arr[k]);
+                  return l;
+               }
+            } else {
+               // cursor on LTR glyph right, for str is on str after
+               if (STB_TEXTEDIT_GETBIDITYPE(str, r.glyph_arr[k]) == 1 ||
+                   STB_TEXTEDIT_GETBIDITYPE(str, r.glyph_arr[k]) == 0) {
+                  int l = STB_TEXTEDIT_GLYPH_TO_STR(str, r.glyph_arr[k]);
+                  l += STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, r.glyph_arr[k]);
+                  return l;
+               } else {
+                  return STB_TEXTEDIT_GLYPH_TO_STR(str, r.glyph_arr[k]);
+               }  
+            }
          }
          prev_x += w;
+         k+=STB_TEXTEDIT_GET_GLYPHS_GLYPH_NUM(str, r.glyph_arr[k]);
       }
       // shouldn't happen, but if it does, fall through to end-of-line case
    }
@@ -544,8 +564,19 @@ static void stb_textedit_find_charpos(StbFindState *find, STB_TEXTEDIT_STRING *s
          find->length = 0;
          find->prev_first = prev_start;
          find->x = r.x0;
-         for (i=0; first+i < n; ++i)
-            find->x += STB_TEXTEDIT_GETWIDTH(str, first, i);
+         // find cursor x position
+         for (i=0; i < r.num_glyph; ) {
+            if (STB_TEXTEDIT_STR_TO_GLYPH(str, n - 1) != r.glyph_arr[i]) {
+               find->x += STB_TEXTEDIT_GETWIDTH(str, r.glyph_arr[i], 0);
+            } else {
+               break;
+            }
+            i+=STB_TEXTEDIT_GET_GLYPHS_GLYPH_NUM(str, r.glyph_arr[i]);
+         }
+         if (STB_TEXTEDIT_GETBIDITYPE(str, r.glyph_arr[i]) == 1 ||
+             STB_TEXTEDIT_GETBIDITYPE(str, r.glyph_arr[i]) == 0) {
+            find->x += STB_TEXTEDIT_GETWIDTH(str, r.glyph_arr[i], 0);
+         }
       }
       return;
    }
@@ -569,8 +600,34 @@ static void stb_textedit_find_charpos(StbFindState *find, STB_TEXTEDIT_STRING *s
 
    // now scan to find xpos
    find->x = r.x0;
-   for (i=0; first+i < n; ++i)
-      find->x += STB_TEXTEDIT_GETWIDTH(str, first, i);
+   if (n > 0 && n != first) {
+      // cursor not on start
+      for (i=0; i < r.num_glyph;) {
+         if (STB_TEXTEDIT_STR_TO_GLYPH(str, n-1) != r.glyph_arr[i]) {
+            find->x += STB_TEXTEDIT_GETWIDTH(str, r.glyph_arr[i], 0);  
+         } else {
+            break;
+         }
+         i+=STB_TEXTEDIT_GET_GLYPHS_GLYPH_NUM(str, r.glyph_arr[i]);
+      }
+      if (STB_TEXTEDIT_GETBIDITYPE(str, r.glyph_arr[i]) == 1 ||
+          STB_TEXTEDIT_GETBIDITYPE(str, r.glyph_arr[i]) == 0) {
+         find->x += STB_TEXTEDIT_GETWIDTH(str, r.glyph_arr[i], 0);
+      }
+   } else {
+      // cursor on start
+      for (i=0; i < r.num_glyph;) {
+         if (STB_TEXTEDIT_STR_TO_GLYPH(str, n) != r.glyph_arr[i]) {
+            find->x += STB_TEXTEDIT_GETWIDTH(str, r.glyph_arr[i], 0);  
+         } else {
+            break;
+         }
+         i+=STB_TEXTEDIT_GET_GLYPHS_GLYPH_NUM(str, r.glyph_arr[i]);
+      }
+      if (STB_TEXTEDIT_GETBIDITYPE(str, r.glyph_arr[i]) == 2) {
+         find->x += STB_TEXTEDIT_GETWIDTH(str, r.glyph_arr[i++], 0);
+      }
+   }
 }
 
 #define STB_TEXT_HAS_SELECTION(s)   ((s)->select_start != (s)->select_end)
@@ -781,9 +838,11 @@ retry:
          // if currently there's a selection, move cursor to start of selection
          if (STB_TEXT_HAS_SELECTION(state))
             stb_textedit_move_to_first(state);
-         else 
-            if (state->cursor > 0)
-               --state->cursor;
+         else {
+            if (state->cursor > 0) {
+               state->cursor -= STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, STB_TEXTEDIT_STR_TO_GLYPH(str, --state->cursor)) - 1;
+            }
+         }
          state->has_preferred_x = 0;
          break;
 
@@ -791,8 +850,11 @@ retry:
          // if currently there's a selection, move cursor to end of selection
          if (STB_TEXT_HAS_SELECTION(state))
             stb_textedit_move_to_last(str, state);
-         else
-            ++state->cursor;
+         else {
+            if (state->cursor < STB_TEXTEDIT_STRINGLEN(str)) {
+               state->cursor += STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, STB_TEXTEDIT_STR_TO_GLYPH(str, state->cursor));
+            }
+         }
          stb_textedit_clamp(str, state);
          state->has_preferred_x = 0;
          break;
@@ -801,8 +863,9 @@ retry:
          stb_textedit_clamp(str, state);
          stb_textedit_prep_selection_at_cursor(state);
          // move selection left
-         if (state->select_end > 0)
-            --state->select_end;
+         if (state->select_end > 0) {
+            state->select_end -= STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, STB_TEXTEDIT_STR_TO_GLYPH(str, --state->select_end)) - 1;
+         }
          state->cursor = state->select_end;
          state->has_preferred_x = 0;
          break;
@@ -848,11 +911,11 @@ retry:
          stb_textedit_clamp( str, state );
          break;
 #endif
-
+         
       case STB_TEXTEDIT_K_RIGHT | STB_TEXTEDIT_K_SHIFT:
          stb_textedit_prep_selection_at_cursor(state);
          // move selection right
-         ++state->select_end;
+         state->select_end += STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, STB_TEXTEDIT_STR_TO_GLYPH(str, state->select_end));
          stb_textedit_clamp(str, state);
          state->cursor = state->select_end;
          state->has_preferred_x = 0;
@@ -862,6 +925,7 @@ retry:
       case STB_TEXTEDIT_K_DOWN | STB_TEXTEDIT_K_SHIFT: {
          StbFindState find;
          StbTexteditRow row;
+         wstr_t* text = &(str->widget->text);
          int i, sel = (key & STB_TEXTEDIT_K_SHIFT) != 0;
 
          if (state->single_line) {
@@ -887,16 +951,65 @@ retry:
             state->cursor = start;
             STB_TEXTEDIT_LAYOUTROW(&row, str, state->cursor);
             x = row.x0;
-            for (i=0; i < row.num_chars; ++i) {
-               float dx = STB_TEXTEDIT_GETWIDTH(str, start, i);
+            for (i=0; i < row.num_glyph;) {
+               float dx = STB_TEXTEDIT_GETWIDTH(str, row.glyph_arr[i], 0);
                #ifdef STB_TEXTEDIT_GETWIDTH_NEWLINE
                if (dx == STB_TEXTEDIT_GETWIDTH_NEWLINE)
                   break;
                #endif
                x += dx;
-               if (x > goal_x)
+               if (x >= goal_x)
                   break;
-               ++state->cursor;
+               i+=STB_TEXTEDIT_GET_GLYPHS_GLYPH_NUM(str, row.glyph_arr[i]);
+            }
+            if (goal_x == 0) {
+               if (row.num_glyph == 0) {
+                  state->cursor = start;
+               } else {
+                  if (i >= row.num_glyph) {
+                     state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1]);
+                  } else {
+                     // for LTR get directly, for RTL neeed add str_num
+                     if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 1 ||
+                         STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 0) {
+                        state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i]);
+                     } else if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 2) {
+                        while (text->str[STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i])] == L'\n' ||
+                               text->str[STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i])] == L'\r') {
+                           i++;
+                        }
+                        int cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i]);
+                        state->cursor = cursor + STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, row.glyph_arr[i]);
+                     }
+                  }
+               }
+            } else {
+               if (row.num_glyph == 0) {
+                  state->cursor = start;
+               } else {
+                  if (i >= row.num_glyph) {
+                     // for LTR get directly, for RTL neeed add str_num
+                     if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 1 ||
+                         STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 0) {
+                        if (text->str[STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1])] == L'\n') {
+                           state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1]);
+                        }
+                        else {
+                           state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1]) + STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, row.glyph_arr[i]);
+                        }
+                     } else {
+                        state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1]);
+                     }
+                  } else {
+                     // for RTL get directly, for LTR neeed add str_num
+                     if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 1 ||
+                         STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 0) {
+                        state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i]) + STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, row.glyph_arr[i]);
+                     } else if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 2) {
+                        state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i]);
+                     }
+                  }
+               }
             }
             stb_textedit_clamp(str, state);
 
@@ -913,6 +1026,8 @@ retry:
       case STB_TEXTEDIT_K_UP | STB_TEXTEDIT_K_SHIFT: {
          StbFindState find;
          StbTexteditRow row;
+         wstr_t* text = &(str->widget->text);
+       
          int i, sel = (key & STB_TEXTEDIT_K_SHIFT) != 0;
 
          if (state->single_line) {
@@ -937,17 +1052,59 @@ retry:
             state->cursor = find.prev_first;
             STB_TEXTEDIT_LAYOUTROW(&row, str, state->cursor);
             x = row.x0;
-            for (i=0; i < row.num_chars; ++i) {
-               float dx = STB_TEXTEDIT_GETWIDTH(str, find.prev_first, i);
+            for (i=0; i < row.num_glyph;) {
+               float dx = STB_TEXTEDIT_GETWIDTH(str, row.glyph_arr[i], 0);
                #ifdef STB_TEXTEDIT_GETWIDTH_NEWLINE
                if (dx == STB_TEXTEDIT_GETWIDTH_NEWLINE)
                   break;
                #endif
                x += dx;
-               if (x > goal_x)
+               if (x >= goal_x)
                   break;
-               ++state->cursor;
+               i+=STB_TEXTEDIT_GET_GLYPHS_GLYPH_NUM(str, row.glyph_arr[i]);
             }
+            if (goal_x == 0) {
+               if (i >= row.num_glyph) {
+                  state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1]);
+               } else {
+                  // for LTR get directly, for RTL neeed add str_num
+                  if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 1 ||
+                      STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 0) {
+                     state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i]);
+                  } else if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 2) {
+                     while (text->str[STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i])] == L'\n' ||
+                            text->str[STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i])] == L'\r') {
+                        i++;
+                     }
+                     int cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i]);
+                     state->cursor = cursor + STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, row.glyph_arr[i]);
+                  }
+               }
+            } else {
+               if (i >= row.num_glyph) {
+                  // for LTR get directly, for RTL neeed add str_num
+                  if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 1 ||
+                      STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 0) {
+                     if (text->str[STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1])] == L'\n') {
+                        state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1]);
+                     }
+                     else {
+                        state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1]) + STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, row.glyph_arr[i]);
+                     }
+                  } else {
+                     state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1]);   
+                  }
+               } else {
+                  // for RTL get directly, for LTR neeed add str_num
+                  if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 1 ||
+                      STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 0) {
+                     state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i]) + STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, row.glyph_arr[i]);
+                  } else if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 2) {
+                     state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i]);
+                  }
+               }
+            }
+
             stb_textedit_clamp(str, state);
 
             state->has_preferred_x = 1;

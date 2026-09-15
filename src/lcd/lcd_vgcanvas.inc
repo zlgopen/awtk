@@ -300,6 +300,16 @@ static ret_t lcd_vgcanvas_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr,
   return vgcanvas_fill_text(canvas, text->str, x, y, 0xffff);
 }
 
+static ret_t lcd_vgcanvas_draw_text_by_glyphs(lcd_t* lcd, glyphs_t* glyphs, uint32_t start, uint32_t len, xy_t x, xy_t y) {
+  vgcanvas_t* canvas = LCD(lcd)->canvas;
+  return_value_if_fail(canvas != NULL, RET_BAD_PARAMS);
+
+  vgcanvas_set_fill_color(canvas, lcd->text_color);
+  vgcanvas_set_text_align(canvas, "left");
+  vgcanvas_set_text_baseline(canvas, "top");
+  return vgcanvas_fill_text_by_glyphs(canvas, glyphs, start, len, x, y, 0xffff);
+}
+
 wh_t lcd_vgcanvas_get_width(lcd_t* lcd) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
@@ -363,6 +373,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->draw_image_matrix = lcd_vgcanvas_draw_image_matrix;
   base->draw_points = lcd_vgcanvas_draw_points;
   base->draw_text = lcd_vgcanvas_draw_text;
+  base->draw_text_by_glyphs = lcd_vgcanvas_draw_text_by_glyphs;
   base->measure_text = lcd_vgcanvas_measure_text;
   base->end_frame = lcd_vgcanvas_end_frame;
   base->get_vgcanvas = lcd_vgcanvas_get_vgcanvas;

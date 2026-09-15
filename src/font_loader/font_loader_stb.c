@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   font_stb.h
  * Author: AWTK Develop Team
  * Brief:  stb truetype font loader
@@ -21,10 +21,12 @@
  */
 
 #include "tkc/utils.h"
+#include "base/bidi.h"
 #include "base/types_def.h"
 #include "font_loader/font_loader_stb.h"
 
-#ifdef WITH_STB_FONT
+#if defined(WITH_STB_FONT) && !defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING) && \
+    !defined(WITH_HARFBUZZ_TEXT_SHAPING)
 
 #define STB_TRUETYPE_IMPLEMENTATION
 
@@ -97,7 +99,6 @@ static font_vmetrics_t font_stb_get_vmetrics(font_t* f, font_size_t font_size) {
   if (scale == INFINITY) {
     scale = stbtt_ScaleForMappingEmToPixels(sf, font_size);
   }
-
   vmetrics.ascent = tk_roundi(scale * font->ascent);
   vmetrics.descent = tk_roundi(scale * font->descent);
   vmetrics.line_gap = scale * font->line_gap;
@@ -110,13 +111,14 @@ static font_vmetrics_t font_stb_get_vmetrics(font_t* f, font_size_t font_size) {
   return vmetrics;
 }
 
-static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
+static glyph_t* font_stb_get_glyph_impl(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
   int x = 0;
   int y = 0;
   int w = 0;
   int h = 0;
   int lsb = 0;
   int advance = 0;
+  glyph_t* gg = NULL;
   uint8_t* bitmap = NULL;
   font_stb_t* font = (font_stb_t*)f;
   stbtt_fontinfo* sf = &(font->stb_font);
@@ -126,10 +128,6 @@ static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, gly
   /* 某些字库存在ascent - descent等于0的情况，算出来的scale为无穷大inf，此时采用EM size */
   if (scale == INFINITY) {
     scale = stbtt_ScaleForMappingEmToPixels(sf, font_size);
-  }
-
-  if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
-    return RET_OK;
   }
 
   bitmap = stbtt_GetCodepointBitmap(sf, 0, scale, c, &w, &h, &x, &y);
@@ -142,6 +140,9 @@ static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, gly
   g->format = GLYPH_FMT_ALPHA;
   g->advance = tk_roundi(advance * scale);
   g->data = NULL;
+  g->bidi_type = FONT_BIDI_TYPE_LTR;
+  g->chr = c;
+  g->glyph_index = stbtt_FindGlyphIndex(sf, c);
 
   if (bitmap != NULL) {
     if (font->mono) {
@@ -157,9 +158,9 @@ static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, gly
     } else {
       g->data = bitmap;
     }
-    return_value_if_fail(g->data != NULL, RET_FAIL);
+    return_value_if_fail(g->data != NULL, NULL);
 
-    glyph_t* gg = glyph_clone(g);
+    gg = glyph_clone(g);
     if (gg != NULL) {
       if (glyph_cache_add(&(font->cache), c, font_size, gg) != RET_OK) {
         TKMEM_FREE(gg);
@@ -173,7 +174,45 @@ static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, gly
     }
   }
 
-  return g->data != NULL || c == ' ' ? RET_OK : RET_NOT_FOUND;
+  return gg;
+}
+
+static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
+  font_stb_t* font = (font_stb_t*)f;
+  if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
+    return RET_OK;
+  }
+  return font_stb_get_glyph_impl(f, c, font_size, g) != NULL || c == ' ' ? RET_OK : RET_NOT_FOUND;
+}
+
+static glyphs_t* font_stb_create_glyphs(font_t* f, const wchar_t* str, uint32_t len,
+                                        font_size_t font_size, font_raster_params_t* params) {
+  bidi_t b;
+  uint32_t i = 0;
+  glyphs_t* glyphs = NULL;
+  font_stb_t* font = (font_stb_t*)f;
+  font_vmetrics_t vmetrics = font_get_vmetrics(f, font_size);
+  bidi_init(&b, FALSE, FALSE, params->bidi_type);
+  if (bidi_log2vis(&b, str, len) == RET_OK) {
+    glyphs = glyphs_create(b.vis_str, b.vis_str_size, len, FALSE, font_size, &vmetrics);
+    goto_error_if_fail(glyphs != NULL);
+    glyphs->font = f;
+    for (i = 0; i < b.vis_str_size; i++) {
+      wchar_t c = b.vis_str[i];
+      if (glyph_cache_lookup(&(font->cache), c, font_size, &glyphs->glyphs[i]) != RET_OK) {
+        if (font_stb_get_glyph_impl(f, c, font_size, &glyphs->glyphs[i]) == NULL) {
+          glyphs->glyphs[i].chr = c;
+          glyphs->glyphs[i].w = 0;
+          glyphs->glyphs[i].h = 0;
+        }
+      }
+      glyphs->glyphs[i].str_count = 1;
+      glyphs->glyphs[i].glyph_count = 1;
+    }
+  }
+error:
+  bidi_deinit(&b);
+  return glyphs;
 }
 
 static ret_t font_stb_shrink_cache(font_t* f, uint32_t cache_nr) {
@@ -213,6 +252,7 @@ static font_t* font_stb_create_ex(const char* name, const uint8_t* buff, uint32_
   f->base.match = font_stb_match;
   f->base.destroy = font_stb_destroy;
   f->base.get_glyph = font_stb_get_glyph;
+  f->base.create_glyphs = font_stb_create_glyphs;
   f->base.get_vmetrics = font_stb_get_vmetrics;
   f->base.shrink_cache = font_stb_shrink_cache;
   f->base.desc = mono ? "mono(stb)" : "truetype(stb)";

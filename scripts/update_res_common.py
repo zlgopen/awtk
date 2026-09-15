@@ -585,11 +585,23 @@ def gen_res_all_ui():
 
     emit_generate_res_after('ui')
 
+def gen_res_all_harfbuzz(out_folder):
+    raw = join_path(INPUT_DIR, 'data')
+    inc = join_path(OUTPUT_DIR, 'inc/data')
+    json_path = join_path(INPUT_DIR, 'data/_s_harfbuzz_data_info.json')
+    bin_path = join_path(out_folder, '_s_harfbuzz_data_info.bin')
+    if not os.path.exists(json_path):
+        return
+    else:
+        import update_res_hb as update_hb
+        update_hb.uharfbuzz_gen_bin(json_path, bin_path)
+    if IS_GENERATE_INC_RES or IS_GENERATE_INC_BITMAP:
+        resgen(raw, inc, THEME, '.data')
 
 def gen_res_all_data():
     if not THEME_PACKAGED and THEME != 'default':
         return
-
+    out_folder = ""
     raw = join_path(INPUT_DIR, 'data')
     if not os.path.exists(raw):
         return
@@ -620,6 +632,8 @@ def gen_res_all_data():
         inc = join_path(OUTPUT_DIR, 'inc/data')
         make_dirs(inc)
         resgen(raw, inc, THEME, '.data', sources_file)
+
+    gen_res_all_harfbuzz(out_folder)
 
     emit_generate_res_after('data')
 
@@ -800,10 +814,23 @@ def gen_res_all_font():
             if IS_AWTK_DEMO and raw:
                 text = join_path(INPUT_DIR, 'fonts/text.txt')
                 if os.path.exists(text):
-                    fontsizes = [16, 18, 20, 24, 32, 96]
+                    fontsizes = [16, 18, 20, 24, 28, 32, 96]
                     for size in fontsizes:
                         inc = join_path(OUTPUT_DIR, 'inc/fonts/default_%d.data' % size)
                         fontgen(raw, text, inc, size, font_options, THEME)
+                text = join_path(INPUT_DIR, 'fonts/trado.txt')
+                if os.path.exists(text):
+                    raw_trado = None
+                    for ext in ['.ttf', '.otf']:
+                        candidate = join_path(INPUT_DIR, 'fonts/trado' + ext)
+                        if os.path.exists(candidate):
+                            raw_trado = candidate
+                            break
+                    if raw_trado:
+                        fontsizes = [60]
+                        for size in fontsizes:
+                            inc = join_path(OUTPUT_DIR, 'inc/fonts/trado_%d.data' % size)
+                            fontgen(raw_trado, text, inc, size, font_options, THEME)
 
         if IS_GENERATE_INC_RES:
             in_folder = join_path(INPUT_DIR, 'fonts')
@@ -1022,13 +1049,13 @@ def gen_assets_c_of_one_theme(with_multi_theme = True):
     result += "#else /*WITH_STB_IMAGE*/\n"
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/images/*.data'), join_path(OUTPUT_ROOT, 'default/inc/images/*.data'), with_multi_theme)
     result += '#endif /*WITH_STB_IMAGE*/\n'
+    result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/scripts/*.res'), join_path(OUTPUT_ROOT, 'default/inc/scripts/*.res'), with_multi_theme)
+    result += '#endif /*AWTK_WEB*/\n'
     result += "#ifdef WITH_TRUETYPE_FONT\n"
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/fonts/*.res'), join_path(OUTPUT_ROOT, 'default/inc/fonts/*.res'), with_multi_theme)
     result += "#else /*WITH_TRUETYPE_FONT*/\n"
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/fonts/*.data'), join_path(OUTPUT_ROOT, 'default/inc/fonts/*.data'), with_multi_theme)
     result += '#endif /*WITH_TRUETYPE_FONT*/\n'
-    result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/scripts/*.res'), join_path(OUTPUT_ROOT, 'default/inc/scripts/*.res'), with_multi_theme)
-    result += '#endif /*AWTK_WEB*/\n'
     result += "#ifdef WITH_VGCANVAS\n"
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/images/*.bsvg'), join_path(OUTPUT_ROOT, 'default/inc/images/*.bsvg'), with_multi_theme)
     result += '#endif /*WITH_VGCANVAS*/\n'
@@ -1054,13 +1081,13 @@ def gen_assets_c_of_one_theme(with_multi_theme = True):
         result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/images/*.res'), join_path(OUTPUT_ROOT, 'default/inc/images/*.res'))
     else:
         result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/images/*.data'), join_path(OUTPUT_ROOT, 'default/inc/images/*.data'))
+    result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/scripts/*.res'), join_path(OUTPUT_ROOT, 'default/inc/scripts/*.res'))
+    result += '#endif /*AWTK_WEB*/\n'
     result += "#ifdef WITH_TRUETYPE_FONT\n"
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/fonts/*.res'), join_path(OUTPUT_ROOT, 'default/inc/fonts/*.res'))
     result += "#else /*WITH_TRUETYPE_FONT*/\n"
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/fonts/*.data'), join_path(OUTPUT_ROOT, 'default/inc/fonts/*.data'))
     result += '#endif /*WITH_TRUETYPE_FONT*/\n'
-    result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/scripts/*.res'), join_path(OUTPUT_ROOT, 'default/inc/scripts/*.res'))
-    result += '#endif /*AWTK_WEB*/\n'
     result += "#ifdef WITH_VGCANVAS\n"
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/images/*.bsvg'), join_path(OUTPUT_ROOT, 'default/inc/images/*.bsvg'))
     result += '#endif /*WITH_VGCANVAS*/\n'

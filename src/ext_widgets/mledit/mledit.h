@@ -101,6 +101,7 @@ typedef struct _mledit_t {
    * 是否自动折行。
    */
   bool_t wrap_word;
+
   /**
    * @property {bool_t} readonly
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]

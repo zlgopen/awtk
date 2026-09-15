@@ -52,13 +52,16 @@ static uint32_t hscroll_label_get_loop_end_and_begin_distance(widget_t* widget) 
 
 static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t left_margin,
                                          uint32_t right_margin) {
+  ret_t ret = RET_OK;
   rect_t r = {0, 0, 0, 0};
   wstr_t* text = &(widget->text);
   uint32_t w = widget->w - left_margin - right_margin;
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  glyphs_t* glyphs = widget_create_glyphs(widget, c, text->str, text->size);
   ENSURE(hscroll_label);
+  return_value_if_fail(glyphs != NULL, RET_FAIL);
 
-  hscroll_label->text_w = canvas_measure_text(c, text->str, text->size);
+  hscroll_label->text_w = glyphs_measure(glyphs, 0, glyphs_get_length(glyphs));
   if (hscroll_label->text_w != hscroll_label->old_text_w) {
     if (tk_str_eq(widget->state, WIDGET_STATE_FOCUSED)) {
       hscroll_label_start(widget);
@@ -71,7 +74,8 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
       !hscroll_label_is_running(widget)) {
     r = rect_init(left_margin, 0, w, widget->h);
 
-    return widget_draw_text_in_rect(widget, c, text->str, text->size, &r, TRUE);
+    ret = canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), &r, TRUE);
+    goto destroy;
   }
 
   if (w > hscroll_label->text_w) {
@@ -83,7 +87,7 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
   }
 
   r = rect_init(left_margin - hscroll_label->xoffset, 0, w, widget->h);
-  widget_draw_text_in_rect(widget, c, text->str, text->size, &r, FALSE);
+  canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), &r, FALSE);
 
   if (hscroll_label->stop_at_begin) {
     int32_t range = hscroll_label_get_range(widget, FALSE);
@@ -91,11 +95,12 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
         hscroll_label->xoffset - range - hscroll_label_get_loop_end_and_begin_distance(widget);
     if (offset > 0) {
       r = rect_init(w - offset + left_margin, 0, w, widget->h);
-      widget_draw_text_in_rect(widget, c, text->str, text->size, &r, FALSE);
+      canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), &r, FALSE);
     }
   }
-
-  return RET_OK;
+destroy :
+  glyphs_destroy(glyphs);
+  return ret;
 }
 
 static ret_t hscroll_label_on_paint_self(widget_t* widget, canvas_t* c) {

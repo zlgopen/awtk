@@ -38,7 +38,7 @@ env = DefaultEnvironment(TOOLS = APP_TOOLS,
 if awtk.OS_NAME == 'Darwin':
   env.AppendUnique(SHLINKFLAGS=['-install_name', '@rpath/$TARGET.name'])
 
-SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
+SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + awtk.TEXT_SHAPING_PROJS + [
   '3rd/cjson/SConscript',
   '3rd/mbedtls/SConscript',
   '3rd/glad/SConscript',
@@ -61,7 +61,7 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   'src/xml/SConscript',
   'src/charset/SConscript',
   'src/romfs/SConscript',
-  ]
+]
 
 os.environ['BUILD_TOOLS'] = str(compile_helper.get_value('BUILD_TOOLS', True))
 if compile_helper.get_value('BUILD_TOOLS', True) :

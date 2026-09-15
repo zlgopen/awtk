@@ -4,36 +4,36 @@
 
 TEST(Bidi, basic) {
   bidi_t bidi;
-  bidi_t* b = bidi_init(&bidi, FALSE, FALSE, BIDI_TYPE_LTR);
+  bidi_t* b = bidi_init(&bidi, FALSE, FALSE, FONT_BIDI_TYPE_LTR);
   ASSERT_EQ(bidi_log2vis(b, L"abc", 3), RET_OK);
   bidi_deinit(b);
 }
 
 TEST(Bidi, type) {
-  ASSERT_EQ(bidi_type_from_name("ltr"), BIDI_TYPE_LTR);
-  ASSERT_EQ(bidi_type_from_name("rtl"), BIDI_TYPE_RTL);
-  ASSERT_EQ(bidi_type_from_name("wltr"), BIDI_TYPE_WLTR);
-  ASSERT_EQ(bidi_type_from_name("wrtl"), BIDI_TYPE_WRTL);
-  ASSERT_EQ(bidi_type_from_name("lro"), BIDI_TYPE_LRO);
-  ASSERT_EQ(bidi_type_from_name("rlo"), BIDI_TYPE_RLO);
+  ASSERT_EQ(bidi_type_from_name("ltr"), FONT_BIDI_TYPE_LTR);
+  ASSERT_EQ(bidi_type_from_name("rtl"), FONT_BIDI_TYPE_RTL);
+  ASSERT_EQ(bidi_type_from_name("wltr"), FONT_BIDI_TYPE_WLTR);
+  ASSERT_EQ(bidi_type_from_name("wrtl"), FONT_BIDI_TYPE_WRTL);
+  ASSERT_EQ(bidi_type_from_name("lro"), FONT_BIDI_TYPE_LRO);
+  ASSERT_EQ(bidi_type_from_name("rlo"), FONT_BIDI_TYPE_RLO);
 }
 
 TEST(Bidi, type_null) {
-  ASSERT_EQ(bidi_type_from_name(NULL), BIDI_TYPE_AUTO);
+  ASSERT_EQ(bidi_type_from_name(NULL), FONT_BIDI_TYPE_AUTO);
 }
 
 TEST(Bidi, type_empty) {
-  ASSERT_EQ(bidi_type_from_name(""), BIDI_TYPE_AUTO);
+  ASSERT_EQ(bidi_type_from_name(""), FONT_BIDI_TYPE_AUTO);
 }
 
 TEST(Bidi, type_unknown) {
-  ASSERT_EQ(bidi_type_from_name("unknown"), BIDI_TYPE_AUTO);
+  ASSERT_EQ(bidi_type_from_name("unknown"), FONT_BIDI_TYPE_AUTO);
 }
 
 TEST(Bidi, log2vis_bad_params) {
   bidi_t bidi;
   ASSERT_EQ(bidi_log2vis(NULL, L"a", 1), RET_BAD_PARAMS);
-  bidi_t* b = bidi_init(&bidi, FALSE, FALSE, BIDI_TYPE_LTR);
+  bidi_t* b = bidi_init(&bidi, FALSE, FALSE, FONT_BIDI_TYPE_LTR);
 #ifdef WITH_TEXT_BIDI
   ASSERT_EQ(bidi_log2vis(b, NULL, 1), RET_BAD_PARAMS);
   ASSERT_EQ(bidi_log2vis(b, L"a", 0), RET_BAD_PARAMS);
@@ -43,7 +43,7 @@ TEST(Bidi, log2vis_bad_params) {
 
 TEST(Bidi, log2vis_contract_ltr) {
   bidi_t bidi;
-  bidi_t* b = bidi_init(&bidi, FALSE, FALSE, BIDI_TYPE_LTR);
+  bidi_t* b = bidi_init(&bidi, FALSE, FALSE, FONT_BIDI_TYPE_LTR);
   ASSERT_EQ(bidi_log2vis(b, L"abc", 3), RET_OK);
   ASSERT_NE(b->vis_str, nullptr);
   ASSERT_EQ(b->vis_str_size, 3u);
@@ -64,7 +64,7 @@ TEST(Bidi, log2vis_contract_ltr) {
 
 TEST(Bidi, log2vis_alloc_l2v_ltr) {
   bidi_t bidi;
-  bidi_t* b = bidi_init(&bidi, TRUE, FALSE, BIDI_TYPE_LTR);
+  bidi_t* b = bidi_init(&bidi, TRUE, FALSE, FONT_BIDI_TYPE_LTR);
   ASSERT_EQ(bidi_log2vis(b, L"ab", 2), RET_OK);
   ASSERT_NE(b->positions_L_to_V, nullptr);
   ASSERT_EQ(b->positions_V_to_L, nullptr);
@@ -75,7 +75,7 @@ TEST(Bidi, log2vis_alloc_l2v_ltr) {
 
 TEST(Bidi, log2vis_alloc_v2l_ltr) {
   bidi_t bidi;
-  bidi_t* b = bidi_init(&bidi, FALSE, TRUE, BIDI_TYPE_LTR);
+  bidi_t* b = bidi_init(&bidi, FALSE, TRUE, FONT_BIDI_TYPE_LTR);
   ASSERT_EQ(bidi_log2vis(b, L"ab", 2), RET_OK);
   ASSERT_EQ(b->positions_L_to_V, nullptr);
   ASSERT_NE(b->positions_V_to_L, nullptr);
@@ -86,7 +86,7 @@ TEST(Bidi, log2vis_alloc_v2l_ltr) {
 
 TEST(Bidi, log2vis_alloc_both_ltr) {
   bidi_t bidi;
-  bidi_t* b = bidi_init(&bidi, TRUE, TRUE, BIDI_TYPE_LTR);
+  bidi_t* b = bidi_init(&bidi, TRUE, TRUE, FONT_BIDI_TYPE_LTR);
   ASSERT_EQ(bidi_log2vis(b, L"xy", 2), RET_OK);
   ASSERT_NE(b->positions_L_to_V, nullptr);
   ASSERT_NE(b->positions_V_to_L, nullptr);
@@ -124,7 +124,7 @@ TEST(Bidi, auto1) {
   wstr_append(&str, L"ص");
   wstr_append(&str, L"ر");
 
-  bidi_t* b = bidi_init(&bidi, FALSE, FALSE, BIDI_TYPE_RTL);
+  bidi_t* b = bidi_init(&bidi, FALSE, FALSE, FONT_BIDI_TYPE_RTL);
   ASSERT_EQ(bidi_log2vis(b, str.str, str.size), RET_OK);
 
   wstr_reset(&str);

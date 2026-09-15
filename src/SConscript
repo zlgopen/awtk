@@ -26,6 +26,8 @@ BASE_SOURCES = Glob('layouters/*.c') + \
     Glob('remote_ui/service/*.c') + \
     Glob('remote_ui/client/*.c') + \
     Glob('remote_ui/shared/*.c') + \
+    Glob('font_loader/harfbuzz/*.c') + \
+    Glob('font_loader/harfbuzz/*.cpp') + \
     Glob('window_manager/window_manager_default.c')
 
 if GRAPHIC_BUFFER == "default" :

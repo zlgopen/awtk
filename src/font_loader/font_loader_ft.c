@@ -1,4 +1,4 @@
-﻿/*
+/*
  * font_loader_ft.c
  *
  *  Created on: 2018/12/26
@@ -6,12 +6,14 @@
  */
 
 #include "tkc/mem.h"
+#include "base/bidi.h"
 #include "tkc/utils.h"
 #include "base/types_def.h"
 #include "base/glyph_cache.h"
 #include "font_loader/font_loader_ft.h"
 
-#ifdef WITH_FT_FONT
+#if defined(WITH_FT_FONT) && !defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING) && \
+    !defined(WITH_HARFBUZZ_TEXT_SHAPING)
 #ifdef USE_SYSTEM_FREETYPE
 #include <ft2build.h>
 #include <freetype/freetype.h>
@@ -64,23 +66,18 @@ static bool_t font_ft_match(font_t* f, const char* name, font_size_t font_size) 
   return (name == NULL || strcmp(name, f->name) == 0);
 }
 
-static ret_t font_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
+static ret_t font_ft_get_glyph_impl(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
   font_ft_t* font = (font_ft_t*)f;
   ft_fontinfo* sf = &(font->ft_font);
   FT_Glyph glyph;
   FT_GlyphSlot glyf;
   uint32_t flags = FT_LOAD_DEFAULT | FT_LOAD_RENDER | FT_LOAD_NO_AUTOHINT;
 
-  g->data = NULL;
-  if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
-    return RET_OK;
-  }
-
   if (font->mono) {
     flags |= FT_LOAD_TARGET_MONO;
   }
 
-  FT_Set_Char_Size(sf->face, 0, font_size * 72, 0, 50);
+  FT_Set_Char_Size(sf->face, 0, font_size * 64, 0, 50);
   if (!FT_Load_Char(sf->face, c, flags)) {
     glyf = sf->face->glyph;
     FT_Get_Glyph(glyf, &glyph);
@@ -93,6 +90,9 @@ static ret_t font_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyp
     g->y = -glyf->bitmap_top;
     g->data = glyf->bitmap.buffer;
     g->advance = glyf->metrics.horiAdvance / 64;
+    g->chr = c;
+    g->bidi_type = FONT_BIDI_TYPE_LTR;
+    g->glyph_index = FT_Get_Char_Index(sf->face, c);
 
     if (g->data != NULL) {
       glyph_ft_t* g_ft = glyph_ft_create();
@@ -121,13 +121,51 @@ static ret_t font_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyp
   return g->data != NULL ? RET_OK : RET_NOT_FOUND;
 }
 
+static ret_t font_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
+  font_ft_t* font = (font_ft_t*)f;
+  if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
+    return RET_OK;
+  }
+  return font_ft_get_glyph_impl(f, c, font_size, g);
+}
+
+static glyphs_t* font_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_t len,
+                                       font_size_t font_size, font_raster_params_t* params) {
+  bidi_t b;
+  uint32_t i = 0;
+  glyphs_t* glyphs = NULL;
+  font_ft_t* font = (font_ft_t*)f;
+  font_vmetrics_t vmetrics = font_get_vmetrics(f, font_size);
+  bidi_init(&b, FALSE, FALSE, params->bidi_type);
+  if (bidi_log2vis(&b, str, len) == RET_OK) {
+    glyphs = glyphs_create(b.vis_str, b.vis_str_size, len, FALSE, font_size, &vmetrics);
+    goto_error_if_fail(glyphs != NULL);
+    glyphs->font = f;
+    for (i = 0; i < b.vis_str_size; i++) {
+      wchar_t c = b.vis_str[i];
+      if (glyph_cache_lookup(&(font->cache), c, font_size, &glyphs->glyphs[i]) != RET_OK) {
+        if (font_ft_get_glyph_impl(f, c, font_size, &glyphs->glyphs[i]) != RET_OK) {
+          glyphs->glyphs[i].chr = c;
+          glyphs->glyphs[i].w = 0;
+          glyphs->glyphs[i].h = 0;
+        }
+      }
+      glyphs->glyphs[i].str_count = 1;
+      glyphs->glyphs[i].glyph_count = 1;
+    }
+  }
+error:
+  bidi_deinit(&b);
+  return glyphs;
+}
+
 static font_vmetrics_t font_ft_get_vmetrics(font_t* f, font_size_t font_size) {
   int32_t height = 0;
   font_vmetrics_t vmetrics;
   font_ft_t* font = (font_ft_t*)f;
   ft_fontinfo* sf = &(font->ft_font);
 
-  FT_Set_Char_Size(sf->face, 0, font_size * 72, 0, 50);
+  FT_Set_Char_Size(sf->face, 0, font_size * 64, 0, 50);
 
   height = FT_MulFix(sf->face->height, sf->face->size->metrics.y_scale);
   vmetrics.ascent = FT_MulFix(sf->face->ascender, sf->face->size->metrics.y_scale);
@@ -193,6 +231,7 @@ static font_t* font_ft_create_ex(const char* name, const uint8_t* buff, uint32_t
   f->base.match = font_ft_match;
   f->base.destroy = font_ft_destroy;
   f->base.get_glyph = font_ft_get_glyph;
+  f->base.create_glyphs = font_ft_create_glyphs;
   f->base.get_vmetrics = font_ft_get_vmetrics;
   f->base.shrink_cache = font_ft_shrink_cache;
   f->base.desc = mono ? "mono(freetype)" : "truetype(freetype)";

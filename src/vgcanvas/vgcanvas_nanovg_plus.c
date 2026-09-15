@@ -1,6 +1,7 @@
 ﻿#include "tkc/utils.h"
 #include "tkc/utf8.h"
 #include "tkc/mem.h"
+#include "tkc/wstr.h"
 #include "base/vgcanvas.h"
 #include "base/image_manager.h"
 #include "base/native_window.h"
@@ -13,6 +14,7 @@
 typedef struct _vgcanvas_nanovg_plus_t {
   vgcanvas_t base;
 
+  wstr_t tmp_wstr;
   int font_id;
   nvgp_context_t* vg;
   uint32_t text_align_v;
@@ -291,7 +293,7 @@ static ret_t vgcanvas_nanovg_plus_destroy(vgcanvas_t* vgcanvas) {
   vgcanvas_nanovg_plus_deinit(vgcanvas);
 
   nvgp_destroy(vg);
-
+  wstr_reset(&canvas->tmp_wstr);
   TKMEM_FREE(vgcanvas);
 
   return RET_OK;
@@ -341,6 +343,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   nanovg->window = window;
   nanovg->base.ratio = info.ratio;
 
+  wstr_init(&nanovg->tmp_wstr, 128);
   vgcanvas_nanovg_plus_init((vgcanvas_t*)nanovg);
 
   opengl_init();

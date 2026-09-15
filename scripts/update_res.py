@@ -15,7 +15,6 @@ def is_demouiold_excluded_file(filename):
         '/fonts/default_full.res',
         '/fonts/default_32.data',
         '/fonts/default_96.data',
-        '/fonts/trado.res',
         '/images/bg_landscape_[1-3]',
         '/images/bg_portrait_[1-3]',
         '/images/bg[1-5]',

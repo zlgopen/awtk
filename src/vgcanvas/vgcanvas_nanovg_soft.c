@@ -21,6 +21,7 @@
 
 #include "nanovg.h"
 #include "tkc/utf8.h"
+#include "tkc/wstr.h"
 #include "tkc/mem.h"
 #include "base/vgcanvas.h"
 #include "base/font.h"
@@ -36,6 +37,7 @@ typedef struct _vgcanvas_nanovg_t {
   vgcanvas_t base;
 
   struct _vgcanvas_nanovg_soft_text_cache_item_t* text_cache_items;
+  wstr_t tmp_wstr;
   int font_id;
   NVGcontext* vg;
   uint32_t text_align_v;
@@ -67,7 +69,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
 #else
   assert(!"not support backend");
 #endif
-
+  wstr_init(&nanovg->tmp_wstr, 128);
   vgcanvas_nanovg_soft_set_asset_manager(&(nanovg->base));
 
   return &(nanovg->base);

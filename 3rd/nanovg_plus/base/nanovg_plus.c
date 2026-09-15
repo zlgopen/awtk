@@ -406,6 +406,11 @@ void nvgp_update_image_rgba(nvgp_context_t* ctx, int image, const unsigned char*
   ctx->vt->update_texture(ctx->vt_ctx, image, 0, 0, w, h, rgba_data);
 }
 
+int nvgp_create_empty_font(nvgp_context_t* ctx, const char* name) {
+  CHECK_OBJECT_IS_NULL(ctx);
+  return fonsCreateEmptyFont(ctx->fs, name);
+}
+
 int nvgp_create_font_mem(nvgp_context_t* ctx, const char* name, unsigned char* data, int ndata, nvgp_bool_t freeData) {
   CHECK_OBJECT_IS_NULL(ctx);
   return fonsAddFontMem(ctx->fs, name, data, ndata, freeData ? 1 : 0);
@@ -1730,6 +1735,62 @@ float nvgp_text(nvgp_context_t* ctx, float x, float y, const char* string, const
   nvgp_render_text(ctx, verts, nverts);
 
   return iter.nextx / scale;
+}
+
+void nvgp_glyph(nvgp_context_t* ctx, unsigned int codepoint, float font_size, float x, float y, float w, float h, const unsigned char* data) {
+  FONSquad q;
+  floatptr_t c[4*2];
+  nvgp_state_t* state = nvgp_get_state(ctx);
+  float _scale = ctx->ratio;
+  float invscale = 1.0f / _scale;
+  uint32_t cverts = 6; // conservative estimate.
+  uint32_t nverts = 0;
+  nvgp_vertex_t* verts = nvgp_alloc_temp_verts(ctx, cverts);
+  if (verts == NULL) return;
+
+  fonsSetBlur(ctx->fs, state->font_blur*_scale);
+  fonsSetFont(ctx->fs, state->font_id);
+
+  if (!fonFONSquadFromGlyph(ctx->fs, &q, codepoint, (short)font_size, x, y, (int)w, (int)h, data)) {
+    /* atlas 满导致字形分配失败：扩容 atlas 后重试，仿照 nvgp_text 的处理。
+     * 不处理的话 q 未初始化，三点共线会触发 nvgp_triangles_is_cw 的 assert。 */
+    if (!nvgp_alloc_text_atlas(ctx)) {
+      return; /* 已达最大 atlas，无法扩容，跳过该字形（不绘制但不崩） */
+    }
+    if (!fonFONSquadFromGlyph(ctx->fs, &q, codepoint, (short)font_size, x, y, (int)w, (int)h, data)) {
+      return; /* 重试仍失败，跳过 */
+    }
+  }
+  // Transform corners.
+  nvgp_transform_point(&c[0],&c[1], &state->matrix, q.x0*invscale, q.y0*invscale);
+  nvgp_transform_point(&c[2],&c[3], &state->matrix, q.x1*invscale, q.y0*invscale);
+  nvgp_transform_point(&c[4],&c[5], &state->matrix, q.x1*invscale, q.y1*invscale);
+  nvgp_transform_point(&c[6],&c[7], &state->matrix, q.x0*invscale, q.y1*invscale);
+
+  // Create triangles
+  if (nverts+6 <= cverts) {
+    // 把顶点数据改为顺时针方向，由于使用 glEnable(GL_CULL_FACE); 面剔除，如果是逆时针的话，就无法显示
+    nvgp_vset(&verts[nverts], c[0], c[1], q.s0, q.t0); nverts++;
+    if (nvgp_triangles_is_cw(c[0], c[1], c[4], c[5], c[2], c[3])) {
+      nvgp_vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+      nvgp_vset(&verts[nverts], c[2], c[3], q.s1, q.t0); nverts++;
+    } else {
+      nvgp_vset(&verts[nverts], c[2], c[3], q.s1, q.t0); nverts++;
+      nvgp_vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+    }
+
+    nvgp_vset(&verts[nverts], c[0], c[1], q.s0, q.t0); nverts++;
+    if (nvgp_triangles_is_cw(c[0], c[1], c[6], c[7], c[4], c[5])) {
+      nvgp_vset(&verts[nverts], c[6], c[7], q.s0, q.t1); nverts++;
+      nvgp_vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+    } else {
+      nvgp_vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+      nvgp_vset(&verts[nverts], c[6], c[7], q.s0, q.t1); nverts++;
+    }
+  }
+  nvgp_flush_text_texture(ctx);
+
+  nvgp_render_text(ctx, verts, nverts);
 }
 
 /***********************************************************************************************/

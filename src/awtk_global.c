@@ -71,6 +71,7 @@
 
 #include "base/widget_animator_manager.h"
 #include "font_loader/font_loader_bitmap.h"
+#include "font_loader/font_loader_harfbuzz_data_bitmap.h"
 #include "base/window_animator_factory.h"
 
 #include "widgets/widgets.h"
@@ -114,16 +115,11 @@
 #endif /*AWTK_WEB*/
 
 static ret_t tk_add_font(const asset_info_t* res) {
-  if (res->subtype == ASSET_TYPE_FONT_BMP) {
-#ifdef WITH_BITMAP_FONT
-    font_manager_add_font(font_manager(),
-                          font_bitmap_create(asset_info_get_name(res), res->data, res->size));
-#endif
-  } else if (res->subtype == ASSET_TYPE_FONT_TTF) {
-#ifdef WITH_TRUETYPE_FONT
-    font_manager_add_font(font_manager(),
-                          font_truetype_create(asset_info_get_name(res), res->data, res->size));
-#endif /*WITH_TRUETYPE_FONT*/
+  if (res->subtype == ASSET_TYPE_FONT_BMP || res->subtype == ASSET_TYPE_FONT_TTF) {
+    font_t* font = NULL;
+    font_manager_t* fm = font_manager();
+    font = font_loader_load(fm->loader, asset_info_get_name(res), res->data, res->size);
+    font_manager_add_font(fm, font);
   } else {
     log_debug("not support font type:%d\n", res->subtype);
   }
@@ -232,7 +228,11 @@ ret_t tk_init_internal(void) {
 #ifdef WITH_TRUETYPE_FONT
   font_loader = font_loader_truetype();
 #elif defined(WITH_BITMAP_FONT)
+#ifdef WITH_NO_TEXT_SHAPING
   font_loader = font_loader_bitmap();
+#elif defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING)
+  font_loader = font_loader_harfbuzz_data_bitmap();
+#endif /*WITH_HARFBUZZ_TEXT_SHAPING*/
 #endif /*WITH_TRUETYPE_FONT*/
 
   return_value_if_fail(easing_init() == RET_OK, RET_FAIL);

@@ -1901,10 +1901,10 @@ static ret_t edit_inc_default(edit_t* edit) {
     default:
       break;
   }
+  edit_set_cursor(WIDGET(edit), text->size);
   if (!edit->readonly) {
     text_edit_select_all(edit->model);
   }
-  edit_set_cursor(WIDGET(edit), text->size);
   edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 
   return widget_invalidate_force(widget, NULL);
@@ -1956,10 +1956,10 @@ static ret_t edit_dec_default(edit_t* edit) {
     default:
       break;
   }
+  edit_set_cursor(WIDGET(edit), text->size);
   if (!edit->readonly) {
     text_edit_select_all(edit->model);
   }
-  edit_set_cursor(WIDGET(edit), text->size);
   edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 
   return widget_invalidate_force(widget, NULL);

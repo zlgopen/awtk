@@ -25,16 +25,32 @@
 #ifdef WITH_STB_FONT
 
 #define WITH_TRUETYPE_FONT 1
+
+#if defined(WITH_HARFBUZZ_TEXT_SHAPING) || defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING)
+#include "font_loader/font_loader_harfbuzz_stb.h"
+#define font_truetype_create font_hb_stb_create
+#define font_loader_truetype font_loader_hb_stb
+
+#else
 #include "font_loader/font_loader_stb.h"
 #define font_truetype_create font_stb_create
 #define font_loader_truetype font_loader_stb
+#endif /*WITH_NO_TEXT_SHAPING*/
 
 #elif defined(WITH_FT_FONT)
 
 #define WITH_TRUETYPE_FONT 1
+
+#if defined(WITH_HARFBUZZ_TEXT_SHAPING) || defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING)
+#include "font_loader/font_loader_harfbuzz_freetype.h"
+#define font_truetype_create font_hb_ft_create
+#define font_loader_truetype font_loader_hb_ft
+
+#else defined(WITH_NO_TEXT_SHAPING)
 #include "font_loader/font_loader_ft.h"
 #define font_truetype_create font_ft_create
 #define font_loader_truetype font_loader_ft
+#endif /*WITH_NO_TEXT_SHAPING*/
 
 #else
 #undef WITH_TRUETYPE_FONT

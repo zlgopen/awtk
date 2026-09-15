@@ -40,12 +40,18 @@ typedef struct _rich_text_render_node_t {
 
   /*该节点显示的区域*/
   rect_t rect;
-  /*文本节点的文本*/
-  wchar_t* text;
-  /*文本节点的文本的长度*/
+  /*文本节点的字模列表对象*/
+  glyphs_t* glyphs;
+  /*文本节点的逻辑序号*/
+  uint32_t index;
+  /*文本节点的字模的长度*/
   uint16_t size;
   /*该行剩余空间水平对齐使用*/
   int16_t align_h_w;
+  /*基线位置*/
+  int16_t line_base;
+  /*字模列表数组*/
+  int32_t* glyphs_array;
 
   /*该结点总共需要承担的多余空间*/
   uint16_t spacing;
@@ -53,7 +59,8 @@ typedef struct _rich_text_render_node_t {
   uint8_t flexible_w_chars;
   /*每个弹性宽度字符应该承担的多余空间*/
   uint8_t flexible_w_char_delta_w;
-
+  /* 在释放的时候，是否释放字模列表对象 */
+  bool_t free_glyphs;
   struct _rich_text_render_node_t* next;
 } rich_text_render_node_t;
 

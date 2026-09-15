@@ -407,6 +407,10 @@ typedef struct _system_info_t system_info_t;
 #define WITH_TRUETYPE_FONT 1
 #endif /*WITH_STB_FONT or WITH_FT_FONT*/
 
+#if defined(WITH_HARFBUZZ_TEXT_SHAPING) || defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING)
+#define WITH_HARFBUZZ 1
+#endif
+
 #if defined(WITH_LCD_MONO)
 #define WITHOUT_WINDOW_ANIMATORS 1
 #define WITH_BITMAP_FONT 1

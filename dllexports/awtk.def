@@ -323,9 +323,12 @@ EXPORTS
     canvas_measure_text
     canvas_get_font_height
     canvas_measure_utf8
+    canvas_draw_text_by_glyphs
     canvas_draw_text
     canvas_draw_utf8
     canvas_draw_text_in_rect
+    canvas_draw_text_in_rect_by_glyphs
+    canvas_draw_text_bidi_in_rect_by_glyphs
     canvas_draw_text_bidi_in_rect
     canvas_draw_utf8_in_rect
     canvas_draw_icon
@@ -428,9 +431,28 @@ EXPORTS
     glyph_create
     glyph_clone
     glyph_destroy
+    glyphs_create
+    glyphs_destroy
+    glyphs_get_str
+    glyphs_get_str_length
+    glyphs_get_length
+    glyphs_get_valid
+    glyphs_get_glyph_index_from_str_index
+    glyphs_get_glyph_indexs_from_str_indexs
+    glyphs_get_str_index_from_glyph_index
+    glyphs_get_font_size
+    glyphs_get_physical_font_size
+    glyphs_get
+    glyphs_get_font_ascent
+    glyphs_get_physical_font_ascent
+    glyphs_measure
+    glyphs_get_height
     font_get_vmetrics
     font_match
     font_get_glyph
+    font_create_glyphs
+    font_set_raster_params
+    font_get_raster_params
     font_shrink_cache
     font_destroy
     glyph_cache_init
@@ -573,6 +595,7 @@ EXPORTS
     lcd_draw_glyph
     lcd_measure_text
     lcd_draw_text
+    lcd_draw_text_by_glyphs
     lcd_draw_image
     lcd_draw_image_matrix
     lcd_get_vgcanvas
@@ -822,6 +845,7 @@ EXPORTS
     vgcanvas_set_text_baseline
     vgcanvas_get_text_metrics
     vgcanvas_fill_text
+    vgcanvas_fill_text_by_glyphs
     vgcanvas_measure_text
     vgcanvas_draw_image
     vgcanvas_draw_image_repeat
@@ -1043,6 +1067,8 @@ EXPORTS
     widget_invalidate_force
     widget_paint
     widget_draw_text_in_rect
+    widget_draw_text_in_rect_with_glyphs
+    widget_create_glyphs
     widget_dispatch
     widget_dispatch_async
     widget_dispatch_simple_event
@@ -3267,10 +3293,28 @@ EXPORTS
     vpage_get_widget_vtable
     font_loader_bitmap
     font_loader_ft
+    font_loader_harfbuzz_data_bitmap
+    font_loader_hb_ft
+    font_loader_hb_stb
+    font_hb_stb_create
+    font_loader_hb_stb_mono
+    font_hb_stb_mono_create
     font_loader_stb
     font_stb_create
     font_loader_stb_mono
     font_stb_mono_create
+    harfbuzz_data_loader
+    harfbuzz_data_loader_create
+    harfbuzz_data_loader_set
+    harfbuzz_data_loader_find_info
+    harfbuzz_data_loader_destroy
+    harfbuzz_data_loader_ref
+    harfbuzz_data_loader_unref
+    harfbuzz_shape_text
+    harfbuzz_shape_text_destroy
+    hb_set_normal_glyphs_chr
+    hb_set_hb_glyphs_chr
+    hb_set_glyphs_maps
     fscript_app_conf_register
     fscript_array_register
     fscript_array_get_fscript_array_vt

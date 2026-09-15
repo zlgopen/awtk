@@ -106,7 +106,10 @@ class compile_helper :
     'BUILD_DEMOS' : { 'value' : True, 'type' : bool.__name__, 'desc' : ['build awtk\'s demo examples'], 'help_info' : 'build awtk\'s demo examples, value is true or false, default value is true' },
     'BUILD_TOOLS' : { 'value' : True, 'type' : bool.__name__, 'desc' : ['build awtk\'s tools'], 'help_info' : 'build awtk\'s tools, value is true or false, default value is true' },
     'WIN32_RES' : { 'value' : None, 'type' : str.__name__, 'save_file' : False, 'desc' : ['app\'s win32 res path'], 'help_info' : 'app\'s win32 res path, WIN32_RES=XXXXX, value\'s default=\'awtk/win32_res/awtk.res\' ' },
+    'FONT_LOADER': { 'value' : None, 'type' : str.__name__, 'str_enum' : ['freetype', 'stb', 'bitmap'], 'desc' : ['if FONT_LOADER is freetype/stb/bitmap'], 'help_info': 'font engine in FreeType, bitmap, STB_TrueType.' },
+    'TEXT_SHAPING': { 'value' : None, 'type' : str.__name__,'str_enum' : ['no_text_shaping', 'harfbuzz', 'harfbuzz_data'], 'desc' : ['TEXT_SHAPING is no_text_shaping/harfbuzz'], 'help_info' : 'text shaping engine in none or harfbuzz.' },
     'BIDI_BACKEND' : { 'value' : None, 'type' : str.__name__, 'str_enum' : ['sheenbidi', 'fribidi'], 'desc' : ['Unicode bidi implementation: sheenbidi (default) or fribidi'], 'help_info' : 'set bidi backend, BIDI_BACKEND=sheenbidi|fribidi, default is sheenbidi' },
+    'WITH_FS_RES' : { 'value' : True, 'type' : bool.__name__, 'desc' : ['with fs res'], 'help_info' : 'is build with WITH_FS_RES, value is true or false' },
   })
 
   def try_load_default_config(self) :

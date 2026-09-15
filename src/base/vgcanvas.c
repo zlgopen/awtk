@@ -247,12 +247,15 @@ bool_t vgcanvas_is_point_in_path(vgcanvas_t* vg, float_t x, float_t y) {
 }
 
 ret_t vgcanvas_set_font(vgcanvas_t* vg, const char* font) {
-  return_value_if_fail(vg != NULL && vg->vt->set_font != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(vg != NULL, RET_BAD_PARAMS);
 
-  font = system_info_fix_font_name(font);
-  vg->font = tk_str_copy(vg->font, font);
+  if (vg->vt->set_font != NULL) {
+    font = system_info_fix_font_name(font);
+    vg->font = tk_str_copy(vg->font, font);
 
-  return vg->vt->set_font(vg, vg->font);
+    return vg->vt->set_font(vg, vg->font);
+  }
+  return RET_FAIL;
 }
 
 ret_t vgcanvas_set_font_size(vgcanvas_t* vg, float_t size) {
@@ -294,6 +297,13 @@ ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
   return_value_if_fail(vg != NULL && vg->vt->fill_text != NULL && text != NULL, RET_BAD_PARAMS);
 
   return vg->vt->fill_text(vg, text, x, y, max_width);
+}
+
+ret_t vgcanvas_fill_text_by_glyphs(vgcanvas_t* vg, glyphs_t* glyphs, uint32_t start, uint32_t len, float_t x, float_t y,
+                                   float_t max_width) {
+  return_value_if_fail(vg != NULL && vg->vt->fill_text_by_glyphs != NULL && glyphs != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->fill_text_by_glyphs(vg, glyphs, start, len, x, y, max_width);
 }
 
 float_t vgcanvas_measure_text(vgcanvas_t* vg, const char* text) {

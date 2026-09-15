@@ -114,6 +114,9 @@ typedef struct _label_t {
    * >为0表示忽略该参数。小于0时取父控件宽度加上max_w。
    */
   int32_t max_w;
+
+  /*private*/
+  glyphs_t* glyphs;
 } label_t;
 
 /**

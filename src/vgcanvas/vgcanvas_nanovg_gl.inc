@@ -244,6 +244,7 @@ static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
   nvgDeleteGLES3(vg);
 #endif
 
+  wstr_reset(&canvas->tmp_wstr);
   TKMEM_FREE(vgcanvas);
 
   return RET_OK;

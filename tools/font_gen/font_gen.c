@@ -176,6 +176,8 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, glyph_format_t format, 
   header->ascent = vmetrics.ascent;
   header->descent = vmetrics.descent;
   header->line_gap = vmetrics.line_gap;
+  header->font_ascender = vmetrics.font_ascender;
+  header->font_descender = vmetrics.font_descender;
 
   memset(&g, 0x00, sizeof(g));
   for (i = 0; i < size; i++) {
@@ -189,12 +191,18 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, glyph_format_t format, 
            (int)(g.h), (int)(g.pitch));
     if (font_gen_glyph(font, format, c, font_size, &g) == RET_OK) {
       uint32_t data_size = g.pitch * g.h;
+      header->index[i].gid = g.glyph_index;
 
-      wbuffer_write_uint16(wbuffer, g.x);
-      wbuffer_write_uint16(wbuffer, g.y);
+      wbuffer_write_uint32(wbuffer, g.glyph_index);
+      wbuffer_write_uint16(wbuffer, g.chr);
+      wbuffer_write_int16(wbuffer, g.x);
+      wbuffer_write_int16(wbuffer, g.y);
       wbuffer_write_uint16(wbuffer, g.w);
       wbuffer_write_uint16(wbuffer, g.h);
-      wbuffer_write_uint16(wbuffer, g.advance);
+      wbuffer_write_int16(wbuffer, g.advance);
+      wbuffer_write_int16(wbuffer, g.bidi_type);
+      wbuffer_write_uint16(wbuffer, g.str_count);
+      wbuffer_write_uint16(wbuffer, g.glyph_count);
       wbuffer_write_uint8(wbuffer, g.format);
       wbuffer_write_uint8(wbuffer, g.pitch);
 

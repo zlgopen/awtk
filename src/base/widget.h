@@ -1972,6 +1972,36 @@ ret_t widget_draw_text_in_rect(widget_t* widget, canvas_t* c, const wchar_t* str
                                const rect_t* r, bool_t ellipses);
 
 /**
+ * @method widget_draw_text_in_rect_with_glyphs
+ * 根据 glyphs 对象在canvas绘制一行文本。
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param {glyphs_t*} glyphs 字模列表对象。
+ * @param {uint32_t} start 起始位置。
+ * @param {uint32_t} size 文本长度。
+ * @param {const rect_t*} r 矩形区域。
+ * @param {bool_t} ellipses 宽度不够时是否显示省略号。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_draw_text_in_rect_with_glyphs(widget_t* widget, canvas_t* c, glyphs_t* glyphs,
+                                           uint32_t start, uint32_t size, const rect_t* r,
+                                           bool_t ellipses);
+/**
+ * @method widget_create_glyphs
+ * 创建字模列表对象。
+ * 备注：
+ * 返回的 glyphs_t 对象，需要用户调用 glyphs_destroy 函数释放。
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param {const wchar_t*} str 文本。
+ * @param {uint32_t} size 文本长度。
+ *
+ * @return {glyphs_t*} 成功返回 glyphs 对象，失败返回NULL。
+*/
+glyphs_t* widget_create_glyphs(widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size);
+
+/**
  * @method widget_dispatch
  * 分发一个事件。
  * @param {widget_t*} widget 控件对象。
@@ -3531,6 +3561,8 @@ ret_t widget_draw_arc_at_center(widget_t* widget, canvas_t* c, bool_t bg, double
                                 double start_angle, double end_angle, bool_t counter_clock_wise,
                                 const char* line_cap, double r);
 
+const char* widget_get_bidi(widget_t* widget);
+bool_t widget_get_shaping(widget_t* widget);
 ret_t widget_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y);
 ret_t widget_on_wheel(widget_t* widget, wheel_event_t* e);
 ret_t widget_on_multi_gesture(widget_t* widget, multi_gesture_event_t* e);

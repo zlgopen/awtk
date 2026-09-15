@@ -227,6 +227,7 @@
 #include "assets/default/inc/ui/scroll_rows.data"
 #include "assets/default/inc/ui/tab_bottom_compact.data"
 #include "assets/default/inc/ui/popup.data"
+#include "assets/default/inc/ui/harfbuzz_test.data"
 #include "assets/default/inc/ui/overlay_test.data"
 #include "assets/default/inc/ui/serial.data"
 #include "assets/default/inc/ui/image_packed.data"
@@ -246,6 +247,7 @@
 #include "assets/default/inc/data/suggest_words_zh_cn_dat.data"
 #include "assets/default/inc/data/test_json.data"
 #include "assets/default/inc/data/custom_keys_for_demo_5key_app_json.data"
+#include "assets/default/inc/data/_s_harfbuzz_data_info_json_in.data"
 #include "assets/default/inc/data/a_b_c_any.data"
 #ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
@@ -533,16 +535,18 @@
 #include "assets/default/inc/images/edit_clear_p.data"
 #include "assets/default/inc/images/battery_2.data"
 #endif /*WITH_STB_IMAGE*/
+#include "assets/default/inc/scripts/dummy.res"
+#endif /*AWTK_WEB*/
 #ifdef WITH_TRUETYPE_FONT
+#include "assets/default/inc/fonts/trado.res"
 #include "assets/default/inc/fonts/default.res"
 #else /*WITH_TRUETYPE_FONT*/
 #include "assets/default/inc/fonts/default_20.data"
 #include "assets/default/inc/fonts/default_16.data"
 #include "assets/default/inc/fonts/default_18.data"
+#include "assets/default/inc/fonts/default_28.data"
 #include "assets/default/inc/fonts/default_24.data"
 #endif /*WITH_TRUETYPE_FONT*/
-#include "assets/default/inc/scripts/dummy.res"
-#endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
 #include "assets/default/inc/images/paths_data_02_t.bsvg"
 #include "assets/default/inc/images/pointer_4.bsvg"
@@ -799,6 +803,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_scroll_rows_default);
   assets_manager_add(am, ui_tab_bottom_compact_default);
   assets_manager_add(am, ui_popup_default);
+  assets_manager_add(am, ui_harfbuzz_test_default);
   assets_manager_add(am, ui_overlay_test_default);
   assets_manager_add(am, ui_serial_default);
   assets_manager_add(am, ui_image_packed_default);
@@ -818,6 +823,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, data_suggest_words_zh_cn_dat_default);
   assets_manager_add(am, data_test_json_default);
   assets_manager_add(am, data_custom_keys_for_demo_5key_app_json_default);
+  assets_manager_add(am, data__s_harfbuzz_data_info_json_in_default);
   assets_manager_add(am, data_a_b_c_any_default);
 #ifndef AWTK_WEB
   assets_manager_add(am, image_ani6_default);
@@ -961,16 +967,18 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_backspace_default);
   assets_manager_add(am, image_arrow_left_p_default);
   assets_manager_add(am, image_clock_hour_default);
+  assets_manager_add(am, script_dummy_default);
+#endif /*AWTK_WEB*/
 #ifdef WITH_TRUETYPE_FONT
+  assets_manager_add(am, font_trado_default);
   assets_manager_add(am, font_default_default);
 #else /*WITH_TRUETYPE_FONT*/
   assets_manager_add(am, font_default_20_default);
   assets_manager_add(am, font_default_16_default);
   assets_manager_add(am, font_default_18_default);
+  assets_manager_add(am, font_default_28_default);
   assets_manager_add(am, font_default_24_default);
 #endif /*WITH_TRUETYPE_FONT*/
-  assets_manager_add(am, script_dummy_default);
-#endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
   assets_manager_add(am, image_paths_data_02_t_default);
   assets_manager_add(am, image_pointer_4_default);

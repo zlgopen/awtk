@@ -23,52 +23,9 @@
 #define TK_BIDI_H
 
 #include "base/types_def.h"
+#include "base/font.h"
 
 BEGIN_C_DECLS
-
-/**
- * @enum bidi_type_t 
- * @annotation ["scriptable"]
- * @prefix BIDI_TYPE_
- * bidi 类型常量定义。
- */
-typedef enum _bidi_type_t {
-  /**
-   * @const BIDI_TYPE_AUTO
-   * 自动检查。
-   */
-  BIDI_TYPE_AUTO = 0,
-  /**
-   * @const BIDI_TYPE_LTR
-   * Left-To-Right letter。
-   */
-  BIDI_TYPE_LTR,
-  /**
-   * @const BIDI_TYPE_RTL
-   * Right-To-Left letter。
-   */
-  BIDI_TYPE_RTL,
-  /**
-   * @const BIDI_TYPE_LRO
-   * Left-To-Right letter Override。
-   */
-  BIDI_TYPE_LRO,
-  /**
-   * @const BIDI_TYPE_RLO
-   * Right-To-Left letter Override。
-   */
-  BIDI_TYPE_RLO,
-  /**
-   * @const BIDI_TYPE_WLTR
-   * Weak Left To Right paragraph。
-   */
-  BIDI_TYPE_WLTR,
-  /**
-   * @const BIDI_TYPE_WRTL
-   * Weak Right To Left paragraph。
-   */
-  BIDI_TYPE_WRTL
-} bidi_type_t;
 
 /**
  * @class bidi_t
@@ -89,17 +46,17 @@ typedef struct _bidi_t {
    */
   uint32_t vis_str_size;
   /**
-   * @property {bidi_type_t} request_type
+   * @property {font_bidi_type_t} request_type
    * @annotation ["readable"]
    * 请求的类型。
    */
-  bidi_type_t request_type;
+  font_bidi_type_t request_type;
   /**
-   * @property {bidi_type_t} resolved_type
+   * @property {font_bidi_type_t} resolved_type
    * @annotation ["readable"]
    * 实际的类型。
    */
-  bidi_type_t resolved_type;
+  font_bidi_type_t resolved_type;
   /**
    * @property {int32_t*} positions_L_to_V
    * @annotation ["readable"]
@@ -126,11 +83,11 @@ typedef struct _bidi_t {
  * @param {bidi_t*} bidi bidi对象。
  * @param {bool_t} alloc_l2v 是否为positions_L_to_V分配空间。 
  * @param {bool_t} alloc_v2l 是否为positions_V_to_L分配空间。 
- * @param {bidi_type_t} type 类型。 
+ * @param {font_bidi_type_t} type 类型。 
  *
  * @return {bidi_t*} 返回bidi对象。
  */
-bidi_t* bidi_init(bidi_t* bidi, bool_t alloc_l2v, bool_t alloc_v2l, bidi_type_t type);
+bidi_t* bidi_init(bidi_t* bidi, bool_t alloc_l2v, bool_t alloc_v2l, font_bidi_type_t type);
 
 /**
  * @method bidi_type_from_name
@@ -138,9 +95,9 @@ bidi_t* bidi_init(bidi_t* bidi, bool_t alloc_l2v, bool_t alloc_v2l, bidi_type_t 
  * @annotation ["static"]
  * @param {const char*} name 类型名称(取值：rtl,ltr,auto,wrtl,wltr,lro,rlo)。 
  *
- * @return {bidi_type_t} 返回bidi对象。
+ * @return {font_bidi_type_t} 返回bidi对象。
  */
-bidi_type_t bidi_type_from_name(const char* name);
+font_bidi_type_t bidi_type_from_name(const char* name);
 
 /**
  * @method bidi_log2vis
@@ -165,7 +122,7 @@ ret_t bidi_log2vis(bidi_t* bidi, const wchar_t* str, uint32_t size);
 ret_t bidi_deinit(bidi_t* bidi);
 #else
 static inline bidi_t* bidi_init(bidi_t* bidi, bool_t alloc_l2v, bool_t alloc_v2l,
-                                bidi_type_t type) {
+                                font_bidi_type_t type) {
   return_value_if_fail(bidi != NULL, NULL);
   memset(bidi, 0x00, sizeof(bidi_t));
 
@@ -180,8 +137,8 @@ static inline ret_t bidi_log2vis(bidi_t* bidi, const wchar_t* str, uint32_t size
   return RET_OK;
 }
 
-static inline bidi_type_t bidi_type_from_name(const char* name) {
-  return BIDI_TYPE_AUTO;
+static inline font_bidi_type_t bidi_type_from_name(const char* name) {
+  return FONT_BIDI_TYPE_AUTO;
 }
 
 static inline ret_t bidi_deinit(bidi_t* bidi) {

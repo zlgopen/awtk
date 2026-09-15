@@ -262,6 +262,7 @@ static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
   vgcanvas_nanovg_soft_close_asset_manager(vgcanvas);
   vgcanvas_nanovg_deinit(vgcanvas);
   nvgDeleteInternal(canvas->vg);
+  wstr_reset(&canvas->tmp_wstr);
   TKMEM_FREE(vgcanvas);
 
   return RET_OK;

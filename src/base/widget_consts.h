@@ -150,6 +150,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_BIDI "bidi"
 
 /**
+ * @const WIDGET_PROP_SHAPING
+ * 是否整形（harfbuzz模式下默认开启）。
+ */
+#define WIDGET_PROP_SHAPING "shaping"
+
+/**
  * @const WIDGET_PROP_CANVAS
  * Canvas。
  */

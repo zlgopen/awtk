@@ -556,6 +556,22 @@ float_t canvas_get_font_height(canvas_t* c);
 float_t canvas_measure_utf8(canvas_t* c, const char* str);
 
 /**
+ * @method canvas_draw_text_by_glyphs
+ * 绘制文本。
+ *
+ * @param {canvas_t*} c canvas对象。
+ * @param {glyphs_t*} glyphs 字模列表。
+ * @param {uint32_t} start 字模开始序号。
+ * @param {uint32_t} len 长度。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_draw_text_by_glyphs(canvas_t* c, glyphs_t* glyphs, uint32_t start, uint32_t len,
+                                 xy_t x, xy_t y);
+
+/**
  * @method canvas_draw_text
  * 绘制文本。
  *
@@ -598,6 +614,37 @@ ret_t canvas_draw_utf8(canvas_t* c, const char* str, xy_t x, xy_t y);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t canvas_draw_text_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, const rect_t* r);
+
+/**
+ * @method canvas_draw_text_in_rect_by_glyphs
+ * 绘制文本。
+ *
+ * @param {canvas_t*} c canvas对象。
+ * @param {glyphs_t*} glyphs 字模列表。
+ * @param {uint32_t} start 字模起始序号。
+ * @param {uint32_t} len 绘制长度。
+ * @param {const rect_t*} r 矩形区域。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_draw_text_in_rect_by_glyphs(canvas_t* c, glyphs_t* glyphs, uint32_t start,
+                                         uint32_t len, const rect_t* r_in);
+
+/**
+ * @method canvas_draw_text_bidi_in_rect_by_glyphs
+ * 绘制文本
+ *
+ * @param {canvas_t*} c canvas对象。
+ * @param {glyphs_t*} glyphs 字模列表。
+ * @param {uint32_t} start 字模起始序号。
+ * @param {uint32_t} len 绘制长度。
+ * @param {const rect_t*} r_in 矩形区域。
+ * @param {bool_t} ellipses 如果目标宽度不够，是否显示省略号。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_draw_text_bidi_in_rect_by_glyphs(canvas_t* c, glyphs_t* glyphs, uint32_t start,
+                                              uint32_t len, const rect_t* r_in, bool_t ellipses);
 
 /**
  * @method canvas_draw_text_bidi_in_rect

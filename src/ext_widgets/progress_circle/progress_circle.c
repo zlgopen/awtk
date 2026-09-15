@@ -81,19 +81,24 @@ static rect_t progress_circle_calc_text_dirty_rect(widget_t* widget) {
   }
 
   if (c != NULL && progress_circle->show_text) {
+    glyphs_t* glyphs = NULL;
     wstr_t* text = &(widget->text);
     widget_prepare_text_style(widget, c);
 
     float_t last_text_width =
         (text->str) ? (canvas_measure_text(c, text->str, text->size) + 10) : 10;
     progress_circle_update_text(widget);
+    glyphs = widget_create_glyphs(widget, c, text->str, text->size);
 
-    r.w = canvas_measure_text(c, text->str, text->size) + 10;
+    r.w = glyphs_measure(glyphs, 0, glyphs_get_length(glyphs)) + 10;
     r.w = tk_max(last_text_width, r.w);
     r.h = c->font_size + 4;
 
     r.x = (widget->w - r.w) / 2;
     r.y = (widget->h - r.h) / 2;
+    if (glyphs != NULL) {
+      glyphs_destroy(glyphs);
+    }
   }
 
   return r;

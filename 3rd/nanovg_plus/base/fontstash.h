@@ -293,11 +293,21 @@ int fons__tt_loadFont(FONScontext *context, FONSttFontImpl *font, unsigned char 
 void fons__tt_getFontVMetrics(FONSttFontImpl *font, int *ascent, int *descent, int *lineGap)
 {
 	stbtt_GetFontVMetrics(&font->font, ascent, descent, lineGap);
+	if(*ascent == 0 && *descent == 0) {
+		float scale = stbtt_ScaleForMappingEmToPixels(&font->font, 18);
+		*ascent = (int)(18 / scale);
+		*descent = 0;
+		*lineGap = 0;
+	}
 }
 
 float fons__tt_getPixelHeightScale(FONSttFontImpl *font, float size)
 {
-	return stbtt_ScaleForPixelHeight(&font->font, size);
+	float scale = stbtt_ScaleForPixelHeight(&font->font, size);
+	if (scale == INFINITY) {
+		scale = stbtt_ScaleForMappingEmToPixels(&font->font, size);
+	}
+	return scale;
 }
 
 int fons__tt_getGlyphIndex(FONSttFontImpl *font, int codepoint)
@@ -920,6 +930,29 @@ error:
 	return FONS_INVALID;
 }
 
+int fonsCreateEmptyFont(FONScontext* stash, const char* name)
+{
+	int i, ascent, descent, fh, lineGap;
+	FONSfont* font;
+
+	int idx = fons__allocFont(stash);
+	if (idx == FONS_INVALID)
+		return FONS_INVALID;
+
+	font = stash->fonts[idx];
+	strncpy(font->name, name, sizeof(font->name));
+	font->name[sizeof(font->name)-1] = '\0';
+
+	// Init hash lookup.
+	for (i = 0; i < FONS_HASH_LUT_SIZE; ++i)
+		font->lut[i] = -1;
+
+	return idx;
+error:
+	stash->nfonts--;
+	return FONS_INVALID;
+}
+
 int fonsAddFontMem(FONScontext* stash, const char* name, unsigned char* data, int dataSize, int freeData)
 {
 	int i, ascent, descent, fh, lineGap;
@@ -1188,6 +1221,104 @@ static FONSglyph* fons__getGlyph(FONScontext* stash, FONSfont* font, unsigned in
 	return glyph;
 }
 
+static FONSglyph* fons__setGlyphByData(FONScontext* stash, FONSfont* font, unsigned int codepoint,
+								 short fontSize, short iblur, int dw, int dh, const unsigned char* data)
+{
+	int i, gw, gh, gx, gy, x, y;
+	FONSglyph* glyph = NULL;
+	unsigned int h;
+	int pad = 0, added;
+	unsigned char* bdst;
+	unsigned char* dst;
+
+	if (fontSize < 2) return NULL;
+	if (iblur > 20) iblur = 20;
+	pad = iblur+2;
+
+	// Reset allocator.
+	stash->nscratch = 0;
+
+	// Find code point and size.
+	h = fons__hashint(codepoint) & (FONS_HASH_LUT_SIZE-1);
+	i = font->lut[h];
+	while (i != -1) {
+		if (font->glyphs[i].codepoint == codepoint && font->glyphs[i].size == fontSize && font->glyphs[i].blur == iblur) {
+			glyph = &font->glyphs[i];
+			if (glyph->x0 >= 0 && glyph->y0 >= 0) {
+			  return glyph;
+			}
+			// At this point, glyph exists but the bitmap data is not yet created.
+			break;
+		}
+		i = font->glyphs[i].next;
+	}
+
+	gw = dw + pad*2;
+	gh = dh + pad*2;
+
+	// Find free spot for the rect in the atlas
+	added = fons__atlasAddRect(stash->atlas, gw, gh, &gx, &gy);
+	if (added == 0 && stash->handleError != NULL) {
+		// Atlas is full, let the user to resize the atlas (or not), and try again.
+		stash->handleError(stash->errorUptr, FONS_ATLAS_FULL, 0);
+		added = fons__atlasAddRect(stash->atlas, gw, gh, &gx, &gy);
+	}
+	if (added == 0) return NULL;
+
+
+	// Init glyph.
+	if (glyph == NULL) {
+		glyph = fons__allocGlyph(font);
+		glyph->codepoint = codepoint;
+		glyph->size = fontSize;
+		glyph->blur = iblur;
+		glyph->next = 0;
+
+		// Insert char to hash lookup.
+		glyph->next = font->lut[h];
+		font->lut[h] = font->nglyphs-1;
+	}
+	glyph->x0 = (short)gx;
+	glyph->y0 = (short)gy;
+	glyph->x1 = (short)(glyph->x0+gw);
+	glyph->y1 = (short)(glyph->y0+gh);
+	glyph->xoff = (short)-pad;
+	glyph->yoff = (short)-pad;
+
+	// Rasterize
+	dst = &stash->texData[(glyph->x0+pad) + (glyph->y0+pad) * stash->params.width];
+	for (y = 0; y < dh; y++) {
+		memcpy(dst, data, dw);
+		data += dw;
+		dst += stash->params.width;
+	}
+
+	// Make sure there is one pixel empty border.
+	dst = &stash->texData[glyph->x0 + glyph->y0 * stash->params.width];
+	for (y = 0; y < gh; y++) {
+		dst[y*stash->params.width] = 0;
+		dst[gw-1 + y*stash->params.width] = 0;
+	}
+	for (x = 0; x < gw; x++) {
+		dst[x] = 0;
+		dst[x + (gh-1)*stash->params.width] = 0;
+	}
+
+	// Blur
+	if (iblur > 0) {
+		stash->nscratch = 0;
+		bdst = &stash->texData[glyph->x0 + glyph->y0 * stash->params.width];
+		fons__blur(stash, bdst, gw, gh, stash->params.width, iblur);
+	}
+
+	stash->dirtyRect[0] = fons__mini(stash->dirtyRect[0], glyph->x0);
+	stash->dirtyRect[1] = fons__mini(stash->dirtyRect[1], glyph->y0);
+	stash->dirtyRect[2] = fons__maxi(stash->dirtyRect[2], glyph->x1);
+	stash->dirtyRect[3] = fons__maxi(stash->dirtyRect[3], glyph->y1);
+
+	return glyph;
+}
+
 static void fons__getQuad(FONScontext* stash, FONSfont* font,
 						   int prevGlyphIndex, FONSglyph* glyph,
 						   float scale, float spacing, float* x, float* y, FONSquad* q)
@@ -1403,6 +1534,31 @@ int fonsTextIterInit(FONScontext* stash, FONStextIter* iter,
 	iter->codepoint = 0;
 	iter->prevGlyphIndex = -1;
 	iter->bitmapOption = bitmapOption;
+
+	return 1;
+}
+
+int fonFONSquadFromGlyph(FONScontext* stash, FONSquad* quad, unsigned int codepoint, short fontSize, float x, float y, int w, int h, const unsigned char* data) {
+	short isize = 0;
+	FONSfont* font = NULL;
+	FONSglyph* glyph = NULL;
+	unsigned int utf8state = 0;
+	FONSstate* state = fons__getState(stash);
+
+	if (stash == NULL)
+		return 0;
+
+	if (state->font < 0 || state->font >= stash->nfonts)
+		return 0;
+
+	font = stash->fonts[state->font];
+	// Get glyph and quad
+	glyph = fons__setGlyphByData(stash, font, codepoint, fontSize, (short)state->blur, w, h, data);
+	// If the iterator was initialized with FONS_GLYPH_BITMAP_OPTIONAL, then the UV coordinates of the quad will be invalid.
+	if (glyph != NULL)
+		fons__getQuad(stash, font, -1, glyph, 0.0f, state->spacing, &x, &y, quad);
+	else
+		return 0;
 
 	return 1;
 }
@@ -1639,6 +1795,8 @@ void fontsDeleteFontByName(FONScontext* stash, const char* name)
 			fons__freeFont(stash->fonts[id]);
 		}
 		stash->nfonts = 0;
+		// reset Atlas when del font
+		fonsResetAtlas(stash, stash->params.width, stash->params.height);
 	}
 	else {
 		id = fonsGetFontByName(stash, name);
@@ -1655,6 +1813,10 @@ void fontsDeleteFontByName(FONScontext* stash, const char* name)
 				}
 			}
 			stash->nfonts--;
+			// reset Atlas
+			if (stash->nfonts == 0) {
+				fonsResetAtlas(stash, stash->params.width, stash->params.height);
+			}
 		}
 	}
 }

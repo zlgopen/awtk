@@ -74,6 +74,8 @@ typedef struct _line_info_t {
   uint32_t offset;
   uint16_t length;
   uint16_t text_w;
+  int32_t glyph_count;
+  int32_t* glyph_arr;
 } line_info_t;
 
 typedef struct _row_info_t {
@@ -94,6 +96,8 @@ typedef struct _text_edit_impl_t {
   STB_TexteditState state;
 
   rows_t* rows;
+  glyphs_t* glyphs;
+  glyphs_t* mask_glyphs;
   uint32_t max_chars;
   point_t caret;
   bool_t wrap_word;
@@ -135,8 +139,9 @@ typedef struct _text_edit_impl_t {
 
 static ret_t text_edit_notify(text_edit_t* text_edit);
 static bool_t text_edit_is_need_layout(text_edit_t* text_edit);
-static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter);
 static ret_t text_edit_update_caret_pos(text_edit_t* text_edit);
+static int32_t text_edit_calc_x_on_canvas(text_edit_t* text_edit, line_info_t* iter,
+                                          glyphs_t* glyphs, glyphs_t* mask_glyphs, canvas_t* c);
 static ret_t text_edit_select_word_impl(text_edit_t* text_edit, uint32_t cursor, int32_t* start,
                                         int32_t* end);
 static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, canvas_t* c,
@@ -215,6 +220,16 @@ static ret_t text_edit_update_input_rect(text_edit_t* text_edit) {
 }
 #endif /*WITH_SDL*/
 
+static ret_t line_info_destroy(void* data) {
+  line_info_t* line_info = (line_info_t*)data;
+  if (line_info->glyph_arr != NULL) {
+    TKMEM_FREE(line_info->glyph_arr);
+  }
+  TKMEM_FREE(data);
+
+  return RET_OK;
+}
+
 static align_h_t widget_get_text_align_h(widget_t* widget) {
   return (align_h_t)style_get_int(widget->astyle, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
 }
@@ -249,6 +264,36 @@ static ret_t widget_get_text_layout_info(widget_t* widget, text_layout_info_t* i
   return RET_OK;
 }
 
+static glyphs_t* text_edit_create_glyphs(text_edit_t* text_edit, const wchar_t* str,
+                                         uint32_t size) {
+  font_t* font = NULL;
+  glyphs_t* glyphs = NULL;
+  font_raster_params_t params;
+  DECL_IMPL(text_edit);
+  widget_t* widget = text_edit->widget;
+  style_t* style = widget->astyle;
+  font_manager_t* fm = widget_get_font_manager(widget);
+  bool_t shaping = widget_get_shaping(widget);
+  const char* bidi_type = widget_get_bidi(widget);
+  const char* font_name = system_info_fix_font_name(style_get_str(style, STYLE_ID_FONT_NAME, NULL));
+  uint32_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
+  return_value_if_fail(text_edit != NULL && fm != NULL, NULL);
+
+  if (str != NULL && size > 0) {
+    font = font_manager_get_font(fm, font_name, font_size);
+    if (font != NULL) {
+      font_get_raster_params(font, &params);
+      params.shaping = shaping;
+      params.bidi_type = bidi_type_from_name(bidi_type);
+      font_set_raster_params(font, &params);
+
+      glyphs = font_create_glyphs(font, str, size, font_size, NULL);
+    }
+  }
+
+  return glyphs;
+}
+
 static rows_t* rows_create(uint32_t capacity) {
   uint32_t msize = sizeof(rows_t) + capacity * sizeof(row_info_t);
   rows_t* rows = (rows_t*)TKMEM_ALLOC(msize);
@@ -257,7 +302,7 @@ static rows_t* rows_create(uint32_t capacity) {
 
   memset(rows, 0x00, msize);
   for (i = 0; i < capacity; i++) {
-    darray_init(&rows->row[i].info, 4, default_destroy, NULL);
+    darray_init(&rows->row[i].info, 4, line_info_destroy, NULL);
     darray_push(&rows->row[i].info, TKMEM_ZALLOC(line_info_t));
     rows->row[i].line_num = 1;
   }
@@ -361,24 +406,25 @@ static inline bool_t text_edit_is_briefly_show_char(text_edit_t* text_edit, uint
   return impl->briefly_show_char && index == (impl->state.cursor - 1);
 }
 
-static uint32_t text_edit_measure_text_on_canvas(text_edit_t* text_edit, wchar_t* str,
-                                                 wchar_t mask_char, uint32_t size, canvas_t* c) {
+static uint32_t text_edit_measure_text_on_canvas(text_edit_t* text_edit, glyphs_t* glyphs,
+                                                 glyphs_t* mask_glyphs, uint32_t start,
+                                                 uint32_t size, canvas_t* c) {
   uint32_t i = 0;
   uint32_t w = 0;
-
+  DECL_IMPL(text_edit);
+  uint32_t mask_w = mask_glyphs != NULL ? glyphs_measure(mask_glyphs, 0, 1) : 0;
   for (i = 0; i < size; i++) {
     bool_t preedit = text_edit_is_preedit_char(text_edit, i);
     bool_t briefly_show = text_edit_is_briefly_show_char(text_edit, i);
-    wchar_t* chr = (mask_char && (!preedit && !briefly_show)) ? &mask_char : &str[i];
-    w += text_edit_measure_char(text_edit, c, chr, NULL);
+    int32_t chr_w = (mask_w > 0 && (!preedit && !briefly_show) && impl->mask)
+                        ? mask_w
+                        : glyphs_measure(glyphs, i + start, 1);
+    if (chr_w > 0) {
+      w += chr_w + CHAR_SPACING;
+    }
   }
 
   return w;
-}
-
-static uint32_t text_edit_measure_text(text_edit_t* text_edit, wchar_t* str, wchar_t mask_char,
-                                       uint32_t size) {
-  return text_edit_measure_text_on_canvas(text_edit, str, mask_char, size, GET_CANVAS(text_edit));
 }
 
 static void text_edit_adjust_hscroll(text_layout_info_t* layout_info, uint32_t text_w,
@@ -406,32 +452,84 @@ static void text_edit_adjust_hscroll(text_layout_info_t* layout_info, uint32_t t
   }
 }
 
+// 填充 glyph_arr 数组中的数据
+static void text_edit_fill_glyph_arr(line_info_t* line, glyphs_t* glyphs, uint32_t str_start,
+                                     uint32_t str_len) {
+  int32_t cap = 0;
+  line->glyph_arr = glyphs_get_glyph_indexs_from_str_indexs(
+      glyphs, str_start, str_len, line->glyph_arr, line->glyph_count, &cap);
+  line->glyph_count = cap;
+}
+
+// 记录当前行数据
+static void text_edit_finish_line(row_info_t* row, glyphs_t* glyphs, uint32_t line_start,
+                                  uint32_t line_end, uint32_t x, bool_t add_num_line) {
+  line_info_t* line = (line_info_t*)darray_get(&row->info, row->line_num - 1);
+  line->text_w = x;
+  line->offset = line_start;
+  line->length = line_end - line_start;
+  text_edit_fill_glyph_arr(line, glyphs, line_start, line->length);
+  if (add_num_line) {
+    row->line_num++;
+  }
+  if (row->info.size < row->line_num) {
+    darray_push(&row->info, TKMEM_ZALLOC(line_info_t));
+  }
+}
+
 static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uint32_t row_num,
-                                                     uint32_t line_index, uint32_t offset) {
+                                                     uint32_t line_index, uint32_t offset,
+                                                     glyphs_t* glyphs, glyphs_t* mask_glyphs) {
+  int32_t i = 0;
   uint32_t y = 0;
+  uint32_t index = 0;
   uint32_t caret_x = 0;
   DECL_IMPL(text_edit);
+  const glyph_t* g = NULL;
+  uint32_t caret_text_w = 0;
   canvas_t* c = GET_CANVAS(text_edit);
   wstr_t* text = &(text_edit->widget->text);
   STB_TexteditState* state = &(impl->state);
   row_info_t* row = impl->rows->row + row_num;
-  wchar_t mask_char = impl->mask ? impl->mask_char : 0;
   text_layout_info_t* layout_info = &(impl->layout_info);
-  align_h_t align_h = widget_get_text_align_h(text_edit->widget);
-  uint32_t text_w = text_edit_measure_text(text_edit, text->str, mask_char, text->size);
-  uint32_t caret_text_w = text_edit_measure_text(text_edit, text->str, mask_char, state->cursor);
   line_info_t* line = (line_info_t*)darray_head(&row->info);
+  align_h_t align_h = widget_get_text_align_h(text_edit->widget);
+  int32_t cursor_index = glyphs_get_glyph_index_from_str_index(glyphs, state->cursor);
+  uint32_t text_w = text_edit_measure_text_on_canvas(text_edit, glyphs, mask_glyphs, 0,
+                                                     glyphs_get_length(glyphs), c);
+
+  if (cursor_index < 0) {
+    // 小于0 说明光标在末尾，查找最后一个字符的字模所在处
+    index = glyphs_get_glyph_index_from_str_index(glyphs, state->cursor - 1);
+    g = glyphs_get(glyphs, index);
+    caret_text_w = text_edit_measure_text_on_canvas(text_edit, glyphs, mask_glyphs, index,
+                                                    glyphs_get_length(glyphs) - index, c);
+    if (g != NULL && g->bidi_type == FONT_BIDI_TYPE_RTL) {
+      caret_text_w = text_w - caret_text_w;
+    } else {
+      caret_text_w = text_w;
+    }
+    assert(state->cursor >= text->size);
+  } else {
+    index = cursor_index;
+    caret_text_w =
+        text_edit_measure_text_on_canvas(text_edit, glyphs, mask_glyphs, 0, cursor_index, c);
+    g = glyphs_get(glyphs, index);
+    if (g != NULL && g->bidi_type == FONT_BIDI_TYPE_RTL) {
+      caret_text_w += glyphs_measure(glyphs, index, g->glyph_count);
+    }
+  }
 
   assert(offset == 0 && row_num == 0);
 
   memset(row, 0x00, sizeof(row_info_t) - sizeof(darray_t));
-
-  row->line_num = 1;
   line->offset = 0;
   line->text_w = text_w;
-  line->length = text->size;
+  line->length = glyphs_get_str_length(glyphs);
+  text_edit_fill_glyph_arr(line, glyphs, 0, line->length);
+  line->x = text_edit_calc_x_on_canvas(text_edit, line, glyphs, mask_glyphs, c);
+  row->line_num = 1;
   row->length = line->length;
-  line->x = text_edit_calc_x(text_edit, line);
   layout_info->virtual_h = tk_max(y, layout_info->widget_h);
 
   caret_x = caret_text_w;
@@ -455,96 +553,91 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
 }
 
 static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint32_t row_num,
-                                                    uint32_t line_index, uint32_t offset) {
+                                                    uint32_t line_index, uint32_t offset,
+                                                    glyphs_t* glyphs) {
   uint32_t i = 0;
   uint32_t x = 0;
+  uint32_t gc = 0;
+  uint32_t char_w = 0;
+  uint32_t real_index = 0;
+  uint32_t str_len = 0;
+  uint32_t line_start = offset;
+  uint32_t line_end = 0;
+  uint32_t last_breakable_i = 0;
+  uint32_t last_breakable_x = 0;
+  const glyph_t* g = NULL;
+  const glyph_t* last_g = NULL;
   DECL_IMPL(text_edit);
-  wchar_t last_char = 0;
-  point_t caret = {-1, -1};
-  canvas_t* c = GET_CANVAS(text_edit);
-  wstr_t* text = &(text_edit->widget->text);
-  STB_TexteditState* state = &(impl->state);
   row_info_t* row = impl->rows->row + row_num;
   uint32_t line_height = impl->line_height;
   uint32_t y = line_index * line_height;
   uint32_t offset0 = offset;
-  uint32_t last_breakable_i = 0;
-  uint32_t last_breakable_x = 0;
   line_info_t* last_line = NULL;
   text_layout_info_t* layout_info = &(impl->layout_info);
+
+  str_len = glyphs_get_str_length(glyphs);
 
   memset(row, 0x00, sizeof(row_info_t) - sizeof(darray_t));
   row->line_num = 1;
 
-  for (i = offset; i < text->size; i++) {
-    wchar_t* p = text->str + i;
-    break_type_t word_break = LINE_BREAK_NO;
-    break_type_t line_break = LINE_BREAK_NO;
-    uint32_t char_w = text_edit_measure_char(text_edit, c, p, &last_char);
+  for (i = offset; i < str_len;) {
+    real_index = glyphs_get_glyph_index_from_str_index(glyphs, i);
+    g = glyphs_get(glyphs, real_index);
+    if (g == NULL) break;
+    gc = g->glyph_count;
 
-    if (i == state->cursor) {
-      caret.x = x;
-      caret.y = y;
-    }
-
-    line_break = line_break_check(*p, p[1]);
-    if (line_break == LINE_BREAK_MUST) {
+    // 换行符强制换行
+    if (g->chr == STB_TEXTEDIT_NEWLINER || g->chr == STB_TEXTEDIT_NEWLINE) {
       i++;
-      break;
-    }
-
-    if (impl->wrap_word) {
-      if ((x + char_w) > layout_info->w) {
-        if (last_breakable_x > 0) {
-          i = last_breakable_i + 1;
-          x = last_breakable_x;
-          last_breakable_x = 0;
-        }
-        if (i == offset) {
+      if (g->chr == STB_TEXTEDIT_NEWLINER && i < str_len) {
+        real_index = glyphs_get_glyph_index_from_str_index(glyphs, i);
+        g = glyphs_get(glyphs, real_index);
+        if (g != NULL && g->chr == STB_TEXTEDIT_NEWLINE) {
           i++;
         }
-
-        last_line = (line_info_t*)darray_get(&row->info, row->line_num - 1);
-        memset(last_line, 0x00, sizeof(line_info_t));
-        last_line->text_w = x;
-        last_line->offset = offset;
-        last_line->length = i - offset;
-
-        row->line_num++;
-        if (row->info.size < row->line_num) {
-          darray_push(&row->info, TKMEM_ZALLOC(line_info_t));
+      }
+      line_end = i;
+      break;
+    } else {
+      char_w = (uint32_t)glyphs_measure(glyphs, real_index, gc) + CHAR_SPACING;
+      if (impl->wrap_word && (x + char_w) > layout_info->w) {
+        // 换行，有 last_break 数据就使用，没有以当前位置换行
+        if (last_breakable_x > 0) {
+          x = last_breakable_x;
+          line_end = last_breakable_i;
+        } else if (line_start == i) {
+          x = char_w;
+          line_end = i + g->str_count;
+        } else {
+          line_end = i;
         }
-
-        p = text->str + i;
-        char_w = text_edit_measure_char(text_edit, c, p, NULL);
-
-        x = char_w;
-        y += line_height;
-        offset = i;
-        line_index++;
-        if (state->cursor == i) {
-          caret.x = 0;
-          caret.y = y;
+      } else {
+        // 记录 line_break 信息
+        if (impl->wrap_word && i > 0) {
+          real_index = glyphs_get_glyph_index_from_str_index(glyphs, i - 1);
+          last_g = glyphs_get(glyphs, real_index);
+          if (last_g != NULL && line_break_check(last_g->chr, g->chr) == LINE_BREAK_ALLOW) {
+            last_breakable_i = i;
+            last_breakable_x = x;
+          }
         }
+        x += char_w;
+        i += g->str_count;
         continue;
       }
-
-      x += char_w;
-      word_break = word_break_check(*p, p[1]);
-      if (word_break == LINE_BREAK_ALLOW && line_break == LINE_BREAK_ALLOW) {
-        last_breakable_x = x;
-        last_breakable_i = i;
-      }
-    } else {
-      x += char_w;
     }
+
+    text_edit_finish_line(row, glyphs, line_start, line_end, x, TRUE);
+    x = 0;
+    y += line_height;
+    line_index++;
+    line_start = line_end;
+    last_breakable_i = 0;
+    last_breakable_x = 0;
+    i = line_start;
   }
 
-  while (row->info.size > row->line_num) {
-    row->info.destroy(darray_pop(&row->info));
-  }
-
-  if (last_char == STB_TEXTEDIT_NEWLINE) {
+  if (g->chr == STB_TEXTEDIT_NEWLINE || g->chr == STB_TEXTEDIT_NEWLINER) {
     impl->last_row_number = row_num + 1;
     impl->last_line_number = line_index + 1;
   } else {
@@ -552,25 +645,19 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
     impl->last_line_number = line_index;
   }
 
-  if (i == state->cursor && state->cursor == text->size) {
-    if (last_char == STB_TEXTEDIT_NEWLINE) {
-      caret.x = 0;
-      caret.y = y + line_height;
-    } else {
-      caret.x = x;
-      caret.y = y;
-    }
-  }
-  if (caret.x >= 0 && caret.y >= 0) {
-    /* 计算好了再统一修改光标坐标，以免多次修改导致滚动条的位置突变 */
-    text_edit_set_caret_pos(impl, caret.x, caret.y, c->font_size, line_index, row_num);
+  while (row->info.size > row->line_num) {
+    row->info.destroy(darray_pop(&row->info));
   }
 
-  last_line = (line_info_t*)darray_get(&row->info, row->line_num - 1);
-  memset(last_line, 0x00, sizeof(line_info_t));
-  last_line->text_w = x;
-  last_line->offset = offset;
-  last_line->length = i - offset;
+  if (i > line_start || line_start == 0) {
+    text_edit_finish_line(row, glyphs, line_start, i, x, FALSE);
+  } else {
+    // 去除末尾空行多余的 line
+    row->line_num--;
+    while (row->info.size > row->line_num) {
+      row->info.destroy(darray_pop(&row->info));
+    }
+  }
 
   row->length = i - offset0;
   layout_info->virtual_h = tk_max(y + line_height, layout_info->widget_h);
@@ -589,138 +676,189 @@ static ret_t text_edit_fix_oy(text_edit_impl_t* impl) {
 }
 
 static row_info_t* text_edit_layout_line(text_edit_t* text_edit, uint32_t row_num,
-                                         uint32_t line_index, uint32_t offset) {
+                                         uint32_t line_index, uint32_t offset, glyphs_t* glyphs,
+                                         glyphs_t* mask_glyphs) {
   DECL_IMPL(text_edit);
   if (impl->single_line) {
-    return text_edit_single_line_layout_line(text_edit, row_num, line_index, offset);
+    return text_edit_single_line_layout_line(text_edit, row_num, line_index, offset, glyphs,
+                                             mask_glyphs);
   } else {
-    return text_edit_multi_line_layout_line(text_edit, row_num, line_index, offset);
+    return text_edit_multi_line_layout_line(text_edit, row_num, line_index, offset, glyphs);
   }
 }
 
 /* 用于layout指定位置的text文本 */
 static ret_t text_edit_layout_fragment(text_edit_t* text_edit, uint32_t start, uint32_t end,
-                                       row_info_t* row_tmp, uint32_t* line_index,
-                                       uint32_t* row_num) {
-  uint32_t i;
+                                       row_info_t* row_tmp, uint32_t* line_index, uint32_t* row_num,
+                                       uint32_t row_start, uint32_t row_end,
+                                       uint32_t* glyph_count_diff) {
+  uint32_t i = 0;
+  uint32_t k = 0;
   uint32_t x = 0;
-  uint32_t offset0 = start;
-  uint32_t offset = start;
-  DECL_IMPL(text_edit);
-  canvas_t* c = GET_CANVAS(text_edit);
-  wstr_t* text = &(text_edit->widget->text);
-  line_info_t* last_line = NULL;
+  uint32_t gc = 0;
+  uint32_t char_w = 0;
+  uint32_t real_index = 0;
+  uint32_t str_len = 0;
+  uint32_t line_start = start;
+  uint32_t line_end = 0;
   uint32_t last_breakable_i = 0;
   uint32_t last_breakable_x = 0;
+  uint32_t glyph_count = 0;
+  uint32_t old_glyph_count = 0;
+  const glyph_t* g = NULL;
+  const glyph_t* last_g = NULL;
+  DECL_IMPL(text_edit);
   text_layout_info_t* layout_info = &(impl->layout_info);
   row_info_t* row = row_tmp + *row_num;
+  glyphs_t* glyphs = impl->glyphs;
+
+  // 记录待替换的行原先有多少字模
+  for (i = row_start; i < row_end; i++) {
+    row = impl->rows->row + i;
+    for (k = 0; k < row->line_num; k++) {
+      line_info_t* line = (line_info_t*)darray_get(&row->info, k);
+      old_glyph_count += line->glyph_count;
+    }
+  }
+
+  if (glyphs == NULL) {
+    *glyph_count_diff = old_glyph_count;
+    return RET_OK;
+  }
+  row = row_tmp + *row_num;
   row->line_num = 1;
+  str_len = glyphs_get_str_length(glyphs);
 
-  for (i = offset0; i < end; i++) {
-    wchar_t* p = text->str + i;
-    break_type_t word_break = LINE_BREAK_NO;
-    break_type_t line_break = LINE_BREAK_NO;
-    uint32_t char_w = text_edit_measure_char(text_edit, c, p, NULL);
-    line_break = line_break_check(*p, p[1]);
-    if (line_break == LINE_BREAK_MUST || i == end - 1) {
-      last_line = (line_info_t*)darray_get(&row->info, row->line_num - 1);
-      last_line->text_w = x;
-      last_line->offset = offset0;
-      last_line->length = i + 1 - offset0;
-      row->length = i + 1 - offset;
+  for (i = start; i < end;) {
+    real_index = glyphs_get_glyph_index_from_str_index(glyphs, i);
+    g = glyphs_get(glyphs, real_index);
+    if (g == NULL) break;
+    gc = g->glyph_count;
+    glyph_count += gc;
 
-      offset = i + 1;
-      offset0 = i + 1;
+    /* 换行符强制换行 */
+    if (g->chr == STB_TEXTEDIT_NEWLINER || g->chr == STB_TEXTEDIT_NEWLINE) {
+      i++;
+      if (g->chr == STB_TEXTEDIT_NEWLINER && i < end) {
+        real_index = glyphs_get_glyph_index_from_str_index(glyphs, i);
+        g = glyphs_get(glyphs, real_index);
+        if (g != NULL && g->chr == STB_TEXTEDIT_NEWLINE) {
+          i++;
+        }
+      }
+      line_end = i;
+      text_edit_finish_line(row, glyphs, line_start, line_end, x, FALSE);
       (*row_num)++;
       (*line_index)++;
-      x = 0;
-      last_breakable_x = 0;
-
       while (row->info.size > row->line_num) {
         row->info.destroy(darray_pop(&row->info));
       }
-      if (i != end - 1) {
+      // 后续还有内容的话就将下一行初始化
+      if (i < end) {
         row = row_tmp + *row_num;
         row->line_num = 1;
       }
-
+      x = 0;
+      line_start = i;
+      last_breakable_i = 0;
+      last_breakable_x = 0;
       continue;
     }
-    if (impl->wrap_word) {
-      if ((x + char_w) > layout_info->w) {
-        if (last_breakable_x > 0) {
-          i = last_breakable_i + 1;
-          x = last_breakable_x;
-          last_breakable_x = 0;
-        }
-        if (i == offset0) {
-          i++;
-        }
 
-        last_line = (line_info_t*)darray_get(&row->info, row->line_num - 1);
-        memset(last_line, 0x00, sizeof(line_info_t));
-        last_line->text_w = x;
-        last_line->offset = offset0;
-        last_line->length = i - offset0;
-
-        row->line_num++;
-        if (row->info.size < row->line_num) {
-          darray_push(&row->info, TKMEM_ZALLOC(line_info_t));
-        }
-
-        p = text->str + i;
-        char_w = text_edit_measure_char(text_edit, c, p, NULL);
+    // 超过行长，换行并记录当前行信息
+    char_w = (uint32_t)glyphs_measure(glyphs, real_index, gc) + CHAR_SPACING;
+    if (impl->wrap_word && (x + char_w) > layout_info->w) {
+      if (last_breakable_x > 0) {
+        x = last_breakable_x;
+        line_end = last_breakable_i;
+      } else if (line_start == i) {
         x = char_w;
-        offset0 = i;
-        (*line_index)++;
-        continue;
+        line_end = i + g->str_count;
+      } else {
+        line_end = i;
       }
-      x += char_w;
-      word_break = word_break_check(*p, p[1]);
-      if (word_break == LINE_BREAK_ALLOW && line_break == LINE_BREAK_ALLOW) {
-        last_breakable_x = x;
-        last_breakable_i = i;
+      text_edit_finish_line(row, glyphs, line_start, line_end, x, TRUE);
+      (*line_index)++;
+      while (row->info.size > row->line_num) {
+        row->info.destroy(darray_pop(&row->info));
       }
-    } else {
-      x += char_w;
+      x = 0;
+      line_start = line_end;
+      last_breakable_i = 0;
+      last_breakable_x = 0;
+      i = line_start;
+      continue;
     }
+
+    /* 记录可换行位置 */
+    if (impl->wrap_word && i > start) {
+      real_index = glyphs_get_glyph_index_from_str_index(glyphs, i - 1);
+      last_g = glyphs_get(glyphs, real_index);
+      if (last_g != NULL && line_break_check(last_g->chr, g->chr) == LINE_BREAK_ALLOW) {
+        last_breakable_i = i;
+        last_breakable_x = x;
+      }
+    }
+    x += char_w;
+    i += g->str_count;
   }
+
+  /* 收尾最后一行 */
+  if (i > line_start) {
+    text_edit_finish_line(row, glyphs, line_start, i, x, FALSE);
+    (*row_num)++;
+    (*line_index)++;
+  }
+  // 计算替换前后的字模差
+  if (old_glyph_count > glyph_count) {
+    *glyph_count_diff = old_glyph_count - glyph_count;
+  } else {
+    *glyph_count_diff = glyph_count - old_glyph_count;
+  }
+
   return RET_OK;
 }
 
 /* 用于前移或者后移某部分行数据 */
 static ret_t text_edit_row_transfer(text_edit_t* text_edit, uint32_t start, uint32_t interval,
                                     bool_t forward, uint32_t change_num, bool_t overwrite,
-                                    uint32_t rm_row_num) {
-  uint32_t i, j;
+                                    uint32_t glyph_count_diff) {
+  uint32_t i, j, k;
   DECL_IMPL(text_edit);
   row_info_t* row;
   row_info_t* row_temp;
 
   if (forward) {
+    // 清理前面的行给后面前移使用
     for (i = start; i < interval + start; i++) {
       row = impl->rows->row + i;
       darray_deinit(&row->info);
     }
+    // 前移 interval 行
     for (i = start; i < impl->rows->size - interval; i++) {
       row = impl->rows->row + i;
       row_temp = impl->rows->row + interval + i;
       for (j = 0; j < row_temp->line_num; j++) {
         line_info_t* line = (line_info_t*)darray_get(&row_temp->info, j);
         line->offset = line->offset - change_num;
+        for (k = 0; k < line->glyph_count; k++) {
+          line->glyph_arr[k] = line->glyph_arr[k] - glyph_count_diff;
+        }
       }
       row->length = row_temp->length;
       row->line_num = row_temp->line_num;
       row->info = row_temp->info;
     }
+    // 清理末尾的行
     for (; i < impl->rows->size; i++) {
       row = impl->rows->row + i;
       row->length = 0;
       row->line_num = 1;
-      darray_init(&row->info, 4, default_destroy, NULL);
+      darray_init(&row->info, 4, line_info_destroy, NULL);
       darray_push(&row->info, TKMEM_ZALLOC(line_info_t));
     }
   } else {
+    // 超出的部分不进行处理，没有超出的清理内容
     for (i = impl->rows->size + interval; i > impl->rows->size; i--) {
       if (i > impl->rows->capacity || (overwrite && i <= impl->rows->size)) {
         continue;
@@ -728,6 +866,7 @@ static ret_t text_edit_row_transfer(text_edit_t* text_edit, uint32_t start, uint
       row = impl->rows->row + i - 1;
       darray_deinit(&row->info);
     }
+    // 后移 interval 行
     for (i = impl->rows->size; i > start + 1; i--) {
       row = impl->rows->row + i - 1;
       if (i + interval > impl->rows->capacity) {
@@ -738,16 +877,20 @@ static ret_t text_edit_row_transfer(text_edit_t* text_edit, uint32_t start, uint
       for (j = 0; j < row->line_num; j++) {
         line_info_t* line = (line_info_t*)darray_get(&row->info, j);
         line->offset = line->offset + change_num;
+        for (k = 0; k < line->glyph_count; k++) {
+          line->glyph_arr[k] = line->glyph_arr[k] + glyph_count_diff;
+        }
       }
       row_temp->length = row->length;
       row_temp->line_num = row->line_num;
       row_temp->info = row->info;
     }
+    // 初始化中间空出来的部分
     for (; i < start + interval + 1; i++) {
       row = impl->rows->row + i;
       row->length = 0;
       row->line_num = 1;
-      darray_init(&row->info, 4, default_destroy, NULL);
+      darray_init(&row->info, 4, line_info_destroy, NULL);
       darray_push(&row->info, TKMEM_ZALLOC(line_info_t));
     }
   }
@@ -757,16 +900,18 @@ static ret_t text_edit_row_transfer(text_edit_t* text_edit, uint32_t start, uint
 ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t offset,
                                               uint32_t insert_length, const wchar_t* wtext,
                                               bool_t overwrite, uint32_t rm_num) {
-  uint32_t i, j;
+  uint32_t i, j, k;
   uint32_t row_num = 0;
   uint32_t row_num_tmp = 0;
   uint32_t rm_row_num = 0;
   uint32_t line_index = 0;
   uint32_t line_index_tmp = 0;
+  uint32_t glyph_count_diff = 0;
   wstr_t s = {0};
   wchar_t last_char = 0;
   DECL_IMPL(text_edit);
   row_info_t* row = NULL;
+  canvas_t* c = GET_CANVAS(text_edit);
   wstr_t* text = &(text_edit->widget->text);
   uint32_t line_height = impl->line_height;
   uint32_t offset0 = offset;
@@ -778,6 +923,10 @@ ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t o
   uint32_t layout_row_num = 0;
   row_info_t* row_tmp = NULL;
   widget_prepare_text_style(text_edit->widget, GET_CANVAS(text_edit));
+  if (impl->glyphs != NULL) {
+    glyphs_destroy(impl->glyphs);
+  }
+  impl->glyphs = text_edit_create_glyphs(text_edit, text->str, text->size);
 
   if (insert_length == 0) {
     return RET_SKIP;
@@ -794,6 +943,7 @@ ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t o
   }
   layout_row_num = insert_row_num + 1;
 
+  // 文本为空或者插入行大于容量，需要全部重新layout，直接使用text_edit_layout
   if (impl->rows->size == 0 || impl->rows->capacity <= layout_row_num) {
     text_edit_layout(text_edit);
     wstr_reset(&s);
@@ -806,11 +956,13 @@ ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t o
     if (offset < rm_num) {
       uint32_t end = 0;
       row_tmp = TKMEM_ZALLOCN(row_info_t, layout_row_num);
+      // 初始化 row_tmp
       for (i = 0; i < layout_row_num; i++) {
         row_tmp[i].line_num = 1;
-        darray_init(&row_tmp[i].info, 4, default_destroy, NULL);
+        darray_init(&row_tmp[i].info, 4, line_info_destroy, NULL);
         darray_push(&row_tmp[i].info, TKMEM_ZALLOC(line_info_t));
       }
+      // 计算被移除后最顶上的行还有多少字符
       for (i = 0; i < impl->rows->size; i++) {
         row_num_tmp++;
         row = impl->rows->row + i;
@@ -823,12 +975,17 @@ ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t o
           }
         }
       }
-      text_edit_layout_fragment(text_edit, 0, end, row_tmp, &line_index, &row_num);
+      // 对最前方剩余的字符进行 layout，layout 后根据 remove 前后的行数进行前移或后移调整
+      text_edit_layout_fragment(text_edit, 0, end, row_tmp, &line_index, &row_num, 0, row_num_tmp,
+                                &glyph_count_diff);
       if (row_num > row_num_tmp) {
-        text_edit_row_transfer(text_edit, row_num_tmp, row_num - row_num_tmp, FALSE, 0, 0, 0);
+        text_edit_row_transfer(text_edit, row_num_tmp, row_num - row_num_tmp, FALSE, 0, 0,
+                               glyph_count_diff);
       } else {
-        text_edit_row_transfer(text_edit, row_num, row_num_tmp - row_num, TRUE, 0, 0, 0);
+        text_edit_row_transfer(text_edit, row_num, row_num_tmp - row_num, TRUE, 0, 0,
+                               glyph_count_diff);
       }
+      // 将 layout 后的行存储到空位中，并将后续行的数据进行完善
       for (i = 0; i < row_num; i++) {
         row = impl->rows->row + i;
         row->length = row_tmp[i].length;
@@ -855,6 +1012,7 @@ ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t o
       wstr_reset(&s);
       return RET_OK;
     }
+    // 计算被移除的字符一共占用多少行
     for (i = 0; i < impl->rows->size; i++) {
       row = impl->rows->row + i;
       last_line = (line_info_t*)darray_get(&row->info, row->line_num - 1);
@@ -865,8 +1023,10 @@ ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t o
         break;
       }
     }
+    // 对移除字符后的首行进行 layout，然后用差值进行前移
     text_edit_layout_fragment(text_edit, rm_num, rm_line_offset, impl->rows->row, &line_index,
-                              &row_num_tmp);
+                              &row_num_tmp, 0, row_num, &glyph_count_diff);
+
     if (row_num_tmp == 0) {
       i = 0;
     } else {
@@ -874,7 +1034,7 @@ ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t o
     }
 
     rm_row_num = row_num - row_num_tmp;
-    text_edit_row_transfer(text_edit, i, rm_row_num, TRUE, rm_num, TRUE, 0);
+    text_edit_row_transfer(text_edit, i, rm_row_num, TRUE, rm_num, TRUE, glyph_count_diff);
 
     impl->rows->size = impl->rows->size - rm_row_num;
     impl->last_row_number = impl->rows->size;
@@ -900,6 +1060,7 @@ ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t o
   last_char = *(text->str + text->size - insert_length - 1);
   line_index_tmp = row->line_num;
   if (offset0 == text->size - insert_length) {
+    // layout_row_num默认多计算一行，如果插入在末尾且末尾不为换行符时需减去
     if (!(last_char == STB_TEXTEDIT_NEWLINE || last_char == STB_TEXTEDIT_NEWLINER)) {
       row_num--;
       if (insert_row_num > 0 && (*(s.str + insert_length - 1) == STB_TEXTEDIT_NEWLINE ||
@@ -908,6 +1069,7 @@ ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t o
         layout_row_num--;
       }
     } else {
+      // 插入字符没有换行符，记为一行
       if (insert_row_num == 0) {
         insert_row_num = 1;
         layout_row_num = 1;
@@ -921,7 +1083,7 @@ ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t o
   }
 
   row_tmp = TKMEM_ZALLOCN(row_info_t, layout_row_num);
-
+  // 计算偏移位置，初始化临时 row
   if (row_num > 0) {
     row = impl->rows->row + row_num - 1;
     last_line = (line_info_t*)darray_get(&row->info, row->line_num - 1);
@@ -933,15 +1095,16 @@ ret_t text_edit_multi_line_insert_text_layout(text_edit_t* text_edit, uint32_t o
 
   for (i = 0; i < layout_row_num; i++) {
     row_tmp[i].line_num = 1;
-    darray_init(&row_tmp[i].info, 4, default_destroy, NULL);
+    darray_init(&row_tmp[i].info, 4, line_info_destroy, NULL);
     darray_push(&row_tmp[i].info, TKMEM_ZALLOC(line_info_t));
   }
-
+  row = impl->rows->row + row_num;
+  // layout插入行，并根据layout的结果后移指定行数
   text_edit_layout_fragment(text_edit, offset0, insert_line_offset, row_tmp, &line_index,
-                            &row_num_tmp);
+                            &row_num_tmp, row_num, row_num + 1, &glyph_count_diff);
   text_edit_row_transfer(text_edit, row_num, insert_row_num, FALSE, insert_length, overwrite,
-                         rm_row_num);
-
+                         glyph_count_diff);
+  // 将layout好的行塞入指定位置
   for (i = 0; i < layout_row_num; i++) {
     if (i + row_num > impl->rows->capacity) {
       darray_deinit(&row_tmp[i].info);
@@ -970,10 +1133,14 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   uint32_t offset = 0;
   DECL_IMPL(text_edit);
   row_info_t* iter = NULL;
+  glyphs_t* glyphs = NULL;
+  uint32_t size = 0;
+  uint32_t str_len = 0;
+  uint32_t glyphs_len = 0;
+  glyphs_t* mask_glyphs = NULL;
   canvas_t* c = GET_CANVAS(text_edit);
   uint32_t max_rows = impl->rows->capacity;
   wstr_t* text = &(text_edit->widget->text);
-  uint32_t size = text_edit->widget->text.size;
   text_layout_info_t* layout_info = &(impl->layout_info);
   uint32_t char_w = 0;
   uint32_t line_index = 0;
@@ -986,23 +1153,46 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   widget_prepare_text_style(text_edit->widget, c);
   impl->line_height = c->font_size * FONT_BASELINE;
   widget_get_text_layout_info(text_edit->widget, layout_info);
-  char_w = text_edit_measure_char(text_edit, c, text->str, NULL);
+  glyphs = text_edit_create_glyphs(text_edit, text->str, text->size);
+  if (impl->glyphs != NULL) {
+    glyphs_destroy(impl->glyphs);
+  }
+  impl->glyphs = glyphs;
+  if (glyphs != NULL) {
+    char_w = glyphs_measure(glyphs, 0, 1);
+  }
+
+  if (impl->mask) {
+    mask_glyphs = text_edit_create_glyphs(text_edit, &impl->mask_char, 1);
+    if (impl->mask_glyphs != NULL) {
+      glyphs_destroy(impl->mask_glyphs);
+    }
+    impl->mask_glyphs = mask_glyphs;
+  }
 
   if (layout_info->w < char_w) {
     return RET_OK;
   }
 
-  while ((offset < size || size == 0) && i < max_rows) {
-    iter = text_edit_layout_line(text_edit, i, line_index, offset);
-    if (iter == NULL || iter->length == 0) {
-      break;
+  if (glyphs != NULL) {
+    str_len = glyphs_get_str_length(glyphs);
+    while ((offset < str_len || str_len == 0) && i < max_rows) {
+      iter = text_edit_layout_line(text_edit, i, line_index, offset, glyphs, mask_glyphs);
+      if (iter == NULL || iter->length == 0) {
+        break;
+      }
+      line_index += iter->line_num;
+      offset += iter->length;
+      i++;
     }
-    line_index += iter->line_num;
-    offset += iter->length;
-    i++;
+  } else {
+    if (impl->single_line) {
+      uint32_t y = (layout_info->h - c->font_size) / 2;
+      text_edit_set_caret_pos(impl, 0, y, c->font_size, 0, 0);
+    }
   }
 
-  if (offset < size) {
+  if (glyphs != NULL && offset < glyphs_get_str_length(glyphs)) {
     text->size = offset;
     text->str[offset] = L'\0';
   }
@@ -1012,6 +1202,9 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   text_edit_fix_oy(impl);
 
   text_edit_update_input_rect(text_edit);
+  if (!impl->single_line) {
+    text_edit_update_caret_pos(text_edit);
+  }
 
   text_edit_notify(text_edit);
 
@@ -1041,10 +1234,13 @@ static void text_edit_layout_for_stb(StbTexteditRow* row, STB_TEXTEDIT_STRING* s
     row->x0 = info->x;
     row->x1 = info->x + info->text_w;
     row->num_chars = info->length;
+    row->num_glyph = info->glyph_count;
+    row->glyph_arr = info->glyph_arr;
   } else {
     row->x0 = 0;
     row->x1 = 0;
     row->num_chars = 1;
+    row->num_glyph = 0;
   }
 
   row->ymin = 0;
@@ -1070,18 +1266,19 @@ static ret_t text_edit_paint_caret(text_edit_t* text_edit, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* c,
-                                              line_parser_t* p) {
+static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* c, line_parser_t* p,
+                                              glyphs_t* glyphs) {
   int32_t y = 0;
   int32_t w = 0;
   int32_t font_size = 0;
   int32_t line_height = 0;
+  const wchar_t* str = NULL;
   DECL_IMPL(text_edit);
   widget_t* widget = text_edit->widget;
   text_layout_info_t* layout_info = 0;
-  const char* bidi_type = widget_get_prop_str(widget, WIDGET_PROP_BIDI, NULL);
   return_value_if_fail(text_edit != NULL && text_edit->widget != NULL && c != NULL, RET_BAD_PARAMS);
 
+  str = glyphs_get_str(glyphs);
   font_size = c->font_size;
   layout_info = &(impl->layout_info);
   line_height = font_size + style_get_int(text_edit->widget->astyle, STYLE_ID_SPACER, 2);
@@ -1090,68 +1287,76 @@ static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* 
   y = layout_info->margin_t;
   while (line_parser_next(p) == RET_OK) {
     uint32_t size = 0;
+    uint32_t glyph_count = p->line_size;
     rect_t r = rect_init(layout_info->margin_l, y, w, font_size);
 
     if ((y + font_size) > layout_info->h) {
       break;
     }
 
-    for (size = 0; size < p->line_size; size++) {
-      if (CHAR_IS_LINE_BREAK(p->line[size])) {
-        break;
+    if (glyph_count > 0) {
+      for (size = 0; size < p->line_size; size++) {
+        if (CHAR_IS_LINE_BREAK(str[size + p->line_index])) {
+          break;
+        }
       }
+      widget_draw_text_in_rect_with_glyphs(widget, c, glyphs, p->line_index, size, &r, FALSE);
     }
-    canvas_draw_text_bidi_in_rect(c, p->line, size, &r, bidi_type, FALSE);
 
     y += line_height;
   }
+
   return RET_OK;
 }
 
 static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
   DECL_IMPL(text_edit);
+  uint32_t glyphs_length = 0;
   wstr_t* text = &(impl->tips);
   widget_t* widget = text_edit->widget;
   text_layout_info_t* layout_info = &(impl->layout_info);
-  const char* bidi_type = widget_get_prop_str(widget, WIDGET_PROP_BIDI, NULL);
 
   if (text->size > 0) {
-    if (impl->tips_is_mlines) {
-      line_parser_t p;
-      line_parser_init(&p, c, (const wchar_t*)(text->str), text->size, c->font_size, layout_info->w,
-                       TRUE, TRUE);
-      if (p.total_lines > 1) {
-        text_edit_paint_tips_mlines_text(text_edit, c, &p);
+    glyphs_t* glyphs = widget_create_glyphs(widget, c, (const wchar_t*)text->str, text->size);
+    if (glyphs != NULL) {
+      glyphs_length = glyphs_get_length(glyphs);
+      if (impl->tips_is_mlines) {
+        line_parser_t p;
+        line_parser_init(&p, glyphs, c->font_size, layout_info->w, TRUE, TRUE);
+        if (p.total_lines > 1) {
+          text_edit_paint_tips_mlines_text(text_edit, c, &p, glyphs);
+        } else {
+          align_h_t align_h = c->text_align_h;
+          align_v_t align_v = c->text_align_v;
+          rect_t r = rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w,
+                               layout_info->h);
+          canvas_set_text_align(c, align_h, ALIGN_V_TOP);
+          canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_length, &r, FALSE);
+          canvas_set_text_align(c, align_h, align_v);
+        }
+        line_parser_deinit(&p);
       } else {
-        align_h_t align_h = c->text_align_h;
-        align_v_t align_v = c->text_align_v;
         rect_t r =
             rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
-        canvas_set_text_align(c, align_h, ALIGN_V_TOP);
-        canvas_draw_text_bidi_in_rect(c, text->str, text->size, &r, bidi_type, FALSE);
-        canvas_set_text_align(c, align_h, align_v);
+        canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_length, &r, FALSE);
       }
-      line_parser_deinit(&p);
-    } else {
-      rect_t r =
-          rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
-      canvas_draw_text_bidi_in_rect(c, text->str, text->size, &r, bidi_type, FALSE);
+      glyphs_destroy(glyphs);
     }
   }
 
   return RET_OK;
 }
 
-static int32_t text_edit_calc_x_on_canvas(text_edit_t* text_edit, line_info_t* iter, canvas_t* c) {
+static int32_t text_edit_calc_x_on_canvas(text_edit_t* text_edit, line_info_t* iter,
+                                          glyphs_t* glyphs, glyphs_t* mask_glyphs, canvas_t* c) {
   DECL_IMPL(text_edit);
   widget_t* widget = text_edit->widget;
   wstr_t* text = &(widget->text);
-  wchar_t chr = impl->mask ? impl->mask_char : 0;
   text_layout_info_t* layout_info = &(impl->layout_info);
   align_h_t align_h = widget_get_text_align_h(text_edit->widget);
 
-  uint32_t row_width =
-      text_edit_measure_text_on_canvas(text_edit, text->str + iter->offset, chr, iter->length, c);
+  uint32_t row_width = text_edit_measure_text_on_canvas(text_edit, glyphs, mask_glyphs,
+                                                        iter->offset, iter->glyph_count, c);
   if (row_width < layout_info->w) {
     switch (align_h) {
       case ALIGN_H_CENTER: {
@@ -1169,17 +1374,13 @@ static int32_t text_edit_calc_x_on_canvas(text_edit_t* text_edit, line_info_t* i
   return 0;
 }
 
-static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter) {
-  return text_edit_calc_x_on_canvas(text_edit, iter, GET_CANVAS(text_edit));
-}
-
 static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info_t* iter,
-                                  uint32_t y) {
-  bidi_t b;
+                                  uint32_t y, glyphs_t* glyphs, glyphs_t* mask_glyphs) {
   uint32_t x = 0;
   uint32_t k = 0;
+  const glyph_t* last_g = NULL;
+  bool_t is_fill_rect = FALSE;
   widget_t* widget = text_edit->widget;
-  const char* bidi_type = widget_get_prop_str(widget, WIDGET_PROP_BIDI, NULL);
   DECL_IMPL(text_edit);
   wstr_t* text = &(widget->text);
   style_t* style = widget->astyle;
@@ -1190,34 +1391,40 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
 
   color_t black = color_init(0, 0, 0, 0xff);
   color_t white = color_init(0xf0, 0xf0, 0xf0, 0xff);
+  color_t select_bg_color = style_get_color(style, STYLE_ID_SELECTED_BG_COLOR, white);
+  color_t select_text_color = style_get_color(style, STYLE_ID_SELECTED_TEXT_COLOR, black);
+  color_t text_color = style_get_color(style, STYLE_ID_TEXT_COLOR, black);
 
   uint32_t select_start = tk_min(state->select_start, state->select_end);
   uint32_t select_end = tk_max(state->select_start, state->select_end);
 
   if (impl->single_line) {
-    x = layout_info->margin_l + text_edit_calc_x_on_canvas(text_edit, iter, c);
+    x = layout_info->margin_l + iter->x;
   } else {
     x = layout_info->margin_l;
   }
 
-  bidi_init(&b, FALSE, FALSE, bidi_type_from_name(bidi_type));
-  ENSURE(bidi_log2vis(&b, text->str + iter->offset, iter->length) == RET_OK);
-
-  for (k = 0; k < iter->length; k++) {
-    uint32_t offset = iter->offset + k;
+  for (k = 0; k < iter->glyph_count; k++) {
+    uint32_t offset = glyphs_get_str_index_from_glyph_index(impl->glyphs, iter->glyph_arr[k]);
     bool_t selected = offset >= select_start && offset < select_end;
     bool_t preedit = text_edit_is_preedit_char(text_edit, offset);
     bool_t briefly_show = text_edit_is_briefly_show_char(text_edit, offset);
-    wchar_t* chr = (impl->mask && (!preedit && !briefly_show)) ? &impl->mask_char : &b.vis_str[k];
-    wchar_t show_chr = *chr;
-    uint32_t char_w = text_edit_measure_char(text_edit, c, chr, &show_chr);
-    if (0 == char_w) {
-      continue;
+    int32_t char_w = glyphs_measure(glyphs, iter->glyph_arr[k], 1);
+    const glyph_t* g = glyphs_get(glyphs, iter->glyph_arr[k]);
+    wchar_t chr =
+        (impl->mask && (!preedit && !briefly_show)) ? impl->mask_char : (g != NULL ? g->chr : 0);
+
+    bool_t draw_space = FALSE;
+    if (impl->single_line && chr == STB_TEXTEDIT_NEWLINE) {
+      draw_space = TRUE;
+      char_w = 4;
     }
-    char_w -= CHAR_SPACING;
+    if (char_w > 0 && impl->mask && (!preedit && !briefly_show)) {
+      char_w = glyphs_measure(mask_glyphs, 0, 1);
+    }
 
     if ((x + char_w) < view_left) {
-      x += char_w + CHAR_SPACING;
+      x += (char_w == 0 ? char_w : char_w + CHAR_SPACING);
       continue;
     }
 
@@ -1225,49 +1432,64 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
       break;
     }
 
-    if (show_chr != STB_TEXTEDIT_NEWLINE) {
+    if (chr != STB_TEXTEDIT_NEWLINE) {
       xy_t rx = x - layout_info->ox;
       xy_t ry = y - layout_info->oy;
 
+      // 处理 char_w == 0 时，后面的背景色会覆盖 char_w 为 0 的字模的问题
       if (selected || preedit) {
-        color_t select_bg_color = style_get_color(style, STYLE_ID_SELECTED_BG_COLOR, white);
-        color_t select_text_color = style_get_color(style, STYLE_ID_SELECTED_TEXT_COLOR, black);
-
-        canvas_set_fill_color(c, select_bg_color);
-        canvas_fill_rect(c, rx, ry, char_w + CHAR_SPACING, c->font_size);
-
+        if (char_w == 0 && !is_fill_rect) {
+          last_g = glyphs_get(glyphs, iter->glyph_arr[k] + g->glyph_count - 1);
+          canvas_set_fill_color(c, select_bg_color);
+          canvas_fill_rect(
+              c, rx, ry, glyphs_measure(glyphs, iter->glyph_arr[k], g->glyph_count) + CHAR_SPACING,
+              c->font_size);
+          is_fill_rect = TRUE;
+        } else if (char_w > 0) {
+          if (is_fill_rect && last_g == g) {
+            is_fill_rect = FALSE;
+          } else {
+            canvas_set_fill_color(c, select_bg_color);
+            canvas_fill_rect(c, rx, ry, char_w + CHAR_SPACING, c->font_size);
+          }
+        }
         canvas_set_text_color(c, select_text_color);
       } else {
-        color_t text_color = style_get_color(style, STYLE_ID_TEXT_COLOR, black);
         canvas_set_text_color(c, text_color);
       }
 
       /*FIXME: 密码编辑时，*字符本身偏高，看起来不像居中。但是无法拿到字模信息，只好手工修正一下。*/
-      if (impl->mask && (!preedit && !briefly_show) && impl->mask_char == '*') {
-        int32_t oy = c->font_size / 6;
-        canvas_draw_text(c, &show_chr, 1, rx, ry + oy);
-      } else {
-        canvas_draw_text(c, &show_chr, 1, rx, ry);
+      if (impl->mask && (!preedit && !briefly_show)) {
+        int32_t oy = 0;
+        if (impl->mask_char == '*') {
+          oy = c->font_size / 6;
+        }
+        canvas_draw_text_by_glyphs(c, mask_glyphs, 0, 1, rx, ry + oy);
+      } else if (!draw_space) {
+        canvas_draw_text_by_glyphs(c, glyphs, iter->glyph_arr[k], 1, rx, ry);
       }
 
-      x += char_w + CHAR_SPACING;
+      x += (char_w == 0 ? char_w : char_w + CHAR_SPACING);
     }
   }
-  bidi_deinit(&b);
 
   return RET_OK;
 }
 
 static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
+  uint32_t i = 0;
+  uint32_t k = 0;
   DECL_IMPL(text_edit);
   rows_t* rows = impl->rows;
+  glyphs_t* mask_glyphs = NULL;
   uint32_t line_height = impl->line_height;
   text_layout_info_t* layout_info = &(impl->layout_info);
   int32_t view_top = layout_info->oy + layout_info->margin_t;
   int32_t view_bottom = layout_info->oy + layout_info->margin_t + layout_info->h;
+  glyphs_t* glyphs = impl->glyphs;
+  return_value_if_fail(glyphs != NULL, RET_FAIL);
+  mask_glyphs = impl->mask_glyphs;
 
-  uint32_t i = 0;
-  uint32_t k = 0;
   for (i = 0; i < rows->size; i++) {
     uint32_t j = 0;
     row_info_t* row = rows->row + i;
@@ -1291,7 +1513,7 @@ static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
         break;
       }
 
-      text_edit_paint_line(text_edit, c, line, y);
+      text_edit_paint_line(text_edit, c, line, y, glyphs, mask_glyphs);
     }
   }
 
@@ -1331,6 +1553,12 @@ static ret_t text_edit_do_paint(text_edit_t* text_edit, canvas_t* c) {
   is_notify = impl->line_height != new_line_height;
   impl->line_height = new_line_height;
 
+  if (is_notify || impl->glyphs == NULL || !glyphs_get_valid(impl->glyphs) ||
+      !tk_str_eq(impl->glyphs->font->name, c->font_name) ||
+      impl->glyphs->font_size != c->font_size) {
+    text_edit_layout(text_edit);
+  }
+
   if (text_edit_paint_text(text_edit, c) == RET_OK) {
     DECL_IMPL(text_edit);
     STB_TexteditState* state = &(impl->state);
@@ -1338,10 +1566,6 @@ static ret_t text_edit_do_paint(text_edit_t* text_edit, canvas_t* c) {
     if (state->select_start == state->select_end && impl->caret_visible) {
       text_edit_paint_caret(text_edit, c);
     }
-  }
-
-  if (is_notify) {
-    text_edit_layout(text_edit);
   }
 
   return RET_OK;
@@ -1414,14 +1638,60 @@ static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, canvas_t* c,
 static int text_edit_get_char_width(STB_TEXTEDIT_STRING* str, int pos, int offset) {
   STB_TEXTEDIT_CHARTYPE* iter = &str->widget->text.str[pos + offset];
   DECL_IMPL(str);
+  const glyph_t* g = glyphs_get(impl->glyphs, pos + offset);
+  STB_TEXTEDIT_CHARTYPE chr = g->chr;
+  uint32_t mask_w = impl->mask_glyphs != NULL ? glyphs_measure(impl->mask_glyphs, 0, 1) : 0;
+  bool_t preedit = text_edit_is_preedit_char(str, pos + offset);
+  bool_t briefly_show = text_edit_is_briefly_show_char(str, pos + offset);
 
-  if (!impl->single_line) {
-    if (*iter == STB_TEXTEDIT_NEWLINE) {
-      return STB_TEXTEDIT_GETWIDTH_NEWLINE;
+  if (chr == STB_TEXTEDIT_NEWLINE) {
+    return 0;
+  } else if (g != NULL) {
+    // 直接获取整个字模簇的宽度
+    int32_t chr_w = (mask_w > 0 && (!preedit && !briefly_show) && impl->mask)
+                        ? mask_w
+                        : glyphs_measure(impl->glyphs, pos + offset, g->glyph_count);
+    if (chr_w > 0) {
+      chr_w += CHAR_SPACING;
     }
+    return chr_w;
   }
-
   return text_edit_measure_char(str, NULL, iter, NULL);
+}
+
+static int text_edit_get_glyphs_num(STB_TEXTEDIT_STRING* str, int pos, bool_t is_str) {
+  DECL_IMPL(str);
+  const glyph_t* g = NULL;
+  if (pos < 0 || impl->glyphs == NULL) {
+    return 1;
+  }
+  g = glyphs_get(impl->glyphs, (uint32_t)pos);
+  if (g != NULL) {
+    if (is_str) {
+      return g->str_count;
+    }
+    return g->glyph_count;
+  }
+  return 1;
+}
+
+static int text_edit_get_glyphs_str_num(STB_TEXTEDIT_STRING* str, int pos) {
+  return text_edit_get_glyphs_num(str, pos, TRUE);
+}
+
+static int text_edit_get_glyphs_glyph_num(STB_TEXTEDIT_STRING* str, int pos) {
+  return text_edit_get_glyphs_num(str, pos, FALSE);
+}
+
+static int text_edit_get_bidi_type(STB_TEXTEDIT_STRING* str, int pos) {
+  DECL_IMPL(str);
+  const glyph_t* g = glyphs_get(impl->glyphs, pos);
+
+  if (g != NULL) {
+    return g->bidi_type;
+  } else {
+    return 0;
+  }
 }
 
 static STB_TEXTEDIT_CHARTYPE text_edit_get_char(STB_TEXTEDIT_STRING* str, int offset) {
@@ -1473,7 +1743,14 @@ static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHAR
 #define STB_TEXTEDIT_STRINGLEN(str) ((str)->widget->text.size)
 #define STB_TEXTEDIT_LAYOUTROW text_edit_layout_for_stb
 #define STB_TEXTEDIT_GETWIDTH(str, n, i) text_edit_get_char_width(str, n, i)
-#define STB_TEXTEDIT_KEYTOTEXT(key) (((key) & KEYDOWN_BIT) ? 0 : ((uint16_t)key))
+#define STB_TEXTEDIT_STR_TO_GLYPH(str, n) \
+  glyphs_get_glyph_index_from_str_index(((text_edit_impl_t*)str)->glyphs, n)
+#define STB_TEXTEDIT_GLYPH_TO_STR(str, n) \
+  glyphs_get_str_index_from_glyph_index(((text_edit_impl_t*)str)->glyphs, n)
+#define STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, n) text_edit_get_glyphs_str_num(str, n)
+#define STB_TEXTEDIT_GET_GLYPHS_GLYPH_NUM(str, n) text_edit_get_glyphs_glyph_num(str, n)
+#define STB_TEXTEDIT_GETBIDITYPE(str, n) text_edit_get_bidi_type(str, n)
+#define STB_TEXTEDIT_KEYTOTEXT(key) (((key)&KEYDOWN_BIT) ? 0 : ((uint16_t)key))
 #define STB_TEXTEDIT_GETCHAR(str, i) text_edit_get_char(str, i)
 #define STB_TEXTEDIT_IS_SPACE(ch) iswspace(ch)
 #define STB_TEXTEDIT_DELETECHARS text_edit_remove
@@ -1789,54 +2066,114 @@ static bool_t text_edit_is_need_layout(text_edit_t* text_edit) {
   return FALSE;
 }
 
+// 获取指定行内指定字模所在位置
+static uint16_t text_edit_get_glyphs_pos(glyphs_t* glyphs, line_info_t* line, uint32_t index) {
+  uint16_t x = line->x;
+  uint32_t i = 0;
+  for (i = 0; i < line->glyph_count;) {
+    if (line->glyph_arr[i] == index) break;
+    const glyph_t* lg = glyphs_get(glyphs, line->glyph_arr[i]);
+    if (lg != NULL && lg->chr != STB_TEXTEDIT_NEWLINE && lg->chr != STB_TEXTEDIT_NEWLINER) {
+      x += glyphs_measure(glyphs, line->glyph_arr[i], lg->glyph_count) + CHAR_SPACING;
+      i += lg->glyph_count;
+    } else {
+      i++;
+    }
+  }
+  return x;
+}
+
 static ret_t text_edit_update_caret_pos(text_edit_t* text_edit) {
   uint32_t i = 0;
   uint32_t j = 0;
-  uint32_t k = 0;
   uint32_t y = 0;
-  DECL_IMPL(text_edit);
   uint32_t line_index = 0;
+  DECL_IMPL(text_edit);
+  row_info_t* row = NULL;
+  line_info_t* line = NULL;
+  glyphs_t* glyphs = impl->glyphs;
   rows_t* rows = impl->rows;
   bool_t is_setting = FALSE;
   canvas_t* c = GET_CANVAS(text_edit);
   uint32_t font_size = impl->font_size;
   uint32_t line_height = impl->line_height;
-  wstr_t* text = &(text_edit->widget->text);
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
-  canvas_set_font(c, impl->font_name, font_size);
+  if (glyphs == NULL || !glyphs_get_valid(glyphs)) {
+    text_edit_fix_oy(impl);
+    text_edit_notify(text_edit);
+    return RET_OK;
+  }
 
   for (i = 0; i < rows->size; i++) {
-    row_info_t* row = rows->row + i;
+    row = rows->row + i;
     for (j = 0; j < row->line_num; j++, y += line_height, line_index++) {
-      line_info_t* line = (line_info_t*)darray_get(&row->info, j);
-      uint32_t line_offset_begin = line->offset;
-      uint32_t line_offset_end = line->offset + line->length;
-      if ((line_offset_begin <= impl->state.cursor && impl->state.cursor < line_offset_end) ||
-          (j + 1 == row->line_num && impl->state.cursor == line_offset_end)) {
-        uint32_t x = line->x;
-        wchar_t last_char = 0;
-        wchar_t* p = text->str + line_offset_begin;
-        uint32_t offset = impl->state.cursor - line_offset_begin;
-        for (k = 0; k < line->length; k++, p++) {
-          if (offset == k) {
-            break;
+      line = (line_info_t*)darray_get(&row->info, j);
+      if (line == NULL) continue;
+
+      uint32_t line_begin = line->offset;
+      uint32_t line_end = line->offset + line->length;
+
+      if ((line_begin <= impl->state.cursor && impl->state.cursor <= line_end) ||
+          (j + 1 == row->line_num && impl->state.cursor == line_end)) {
+        uint32_t x = 0;
+        const glyph_t* g = NULL;
+        int32_t target_gi = 0;
+
+        if (impl->state.cursor > line_begin) {
+          // 光标不在行首，取前一字模
+          target_gi = glyphs_get_glyph_index_from_str_index(glyphs, impl->state.cursor - 1);
+          g = glyphs_get(glyphs, target_gi);
+
+          if (g != NULL && (g->chr == STB_TEXTEDIT_NEWLINE || g->chr == STB_TEXTEDIT_NEWLINER)) {
+            // 换行符后光标移到下一行起始，按行首逻辑计算
+            line_info_t* next_line = NULL;
+            row_info_t* next_row = NULL;
+            if (i + 1 < rows->size) {
+              next_row = rows->row + i + 1;
+              next_line = (line_info_t*)darray_get(&next_row->info, 0);
+            }
+            y += line_height;
+            line_index++;
+            // 查找下一行的行首字模位置
+            if (next_line != NULL) {
+              target_gi = glyphs_get_glyph_index_from_str_index(glyphs, next_line->offset);
+              g = glyphs_get(glyphs, target_gi);
+              x = text_edit_get_glyphs_pos(glyphs, next_line, target_gi);
+              // 行首为 RTL，移动到字符右侧显示
+              if (g != NULL && g->bidi_type == FONT_BIDI_TYPE_RTL) {
+                x += glyphs_measure(glyphs, target_gi, g->glyph_count);
+              }
+            } else {
+              x = 0;
+            }
+          } else {
+            // 普通字符：累加到光标字模前的所有字模宽度
+            x = text_edit_get_glyphs_pos(glyphs, line, target_gi);
+            // 字符为 LTR，光标在字模右侧
+            if (g != NULL && g->bidi_type != FONT_BIDI_TYPE_RTL) {
+              x += glyphs_measure(glyphs, target_gi, g->glyph_count);
+            }
           }
-          x += text_edit_measure_char(text_edit, c, p, &last_char);
-        }
-        is_setting = TRUE;
-        if (last_char == STB_TEXTEDIT_NEWLINE) {
-          text_edit_set_caret_pos(impl, 0, y + line_height, c->font_size, line_index, i);
         } else {
-          text_edit_set_caret_pos(impl, x, y, c->font_size, line_index, i);
+          // 光标在行首：找行首字模在视觉序中的位置
+          target_gi = glyphs_get_glyph_index_from_str_index(glyphs, impl->state.cursor);
+          g = glyphs_get(glyphs, target_gi);
+          x = text_edit_get_glyphs_pos(glyphs, line, target_gi);
+          // 行首为 RTL，移动到字符右侧显示
+          if (g != NULL && g->bidi_type == FONT_BIDI_TYPE_RTL) {
+            x += glyphs_measure(glyphs, target_gi, g->glyph_count);
+          }
         }
+
+        is_setting = TRUE;
+        text_edit_set_caret_pos(impl, x, y, font_size, line_index, i);
         break;
       }
     }
-    if (is_setting) {
-      break;
-    }
+    if (is_setting) break;
   }
+
   text_edit_fix_oy(impl);
   text_edit_notify(text_edit);
 
@@ -1852,7 +2189,7 @@ ret_t text_edit_click(text_edit_t* text_edit, xy_t x, xy_t y) {
   point = text_edit_normalize_point(text_edit, x, y);
   stb_textedit_click(text_edit, &(impl->state), point.x, point.y);
 
-  if (impl->single_line || text_edit_is_need_layout(text_edit)) {
+  if (impl->single_line) {
     text_edit_layout(text_edit);
   } else {
     text_edit_update_caret_pos(text_edit);
@@ -2494,7 +2831,12 @@ ret_t text_edit_set_select(text_edit_t* text_edit, uint32_t start, uint32_t end)
   impl->state.select_start = start;
   impl->state.select_end = tk_min(end, text_edit->widget->text.size);
 
-  text_edit_layout(text_edit);
+  if (impl->single_line) {
+    text_edit_layout(text_edit);
+  } else {
+    text_edit_update_caret_pos(text_edit);
+    text_edit_update_input_rect(text_edit);
+  }
 
   return RET_OK;
 }
@@ -2551,7 +2893,12 @@ ret_t text_edit_unselect(text_edit_t* text_edit) {
 
   impl->state.select_end = impl->state.select_start;
 
-  text_edit_layout(text_edit);
+  if (impl->single_line) {
+    text_edit_layout(text_edit);
+  } else {
+    text_edit_update_caret_pos(text_edit);
+    text_edit_update_input_rect(text_edit);
+  }
 
   return RET_OK;
 }
@@ -2599,6 +2946,15 @@ ret_t text_edit_destroy(text_edit_t* text_edit) {
   if (impl->briefly_show_char_done_timer_id != TK_INVALID_ID) {
     timer_remove(impl->briefly_show_char_done_timer_id);
   }
+  if (impl->glyphs != NULL) {
+    glyphs_destroy(impl->glyphs);
+    impl->glyphs = NULL;
+  }
+  if (impl->mask_glyphs != NULL) {
+    glyphs_destroy(impl->mask_glyphs);
+    impl->mask_glyphs = NULL;
+  }
+
   TKMEM_FREE(text_edit);
 
   return RET_OK;

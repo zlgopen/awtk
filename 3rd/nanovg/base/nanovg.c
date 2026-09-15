@@ -2731,6 +2731,11 @@ int nvgCreateFont(NVGcontext* ctx, const char* name, const char* path)
 	return fonsAddFont(ctx->fs, name, path);
 }
 
+int nvgCreateEmptyFont(NVGcontext* ctx, const char* name)
+{
+	return fonsCreateEmptyFont(ctx->fs, name);
+}
+
 int nvgCreateFontMem(NVGcontext* ctx, const char* name, unsigned char* data, int ndata, int freeData)
 {
 	return fonsAddFontMem(ctx->fs, name, data, ndata, freeData);
@@ -2872,6 +2877,51 @@ static inline int nvgpTrianglesIsCW(float x1, float y1, float x2, float y2, floa
   float ret = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1);
   assert(ret != 0.0f);
   return ret < 0.0f ? 1 : 0;
+}
+
+void nvgGlyph(NVGcontext* ctx, unsigned int codepoint, float fontSize, float x, float y, float w, float h, const unsigned char* data) 
+{
+	FONSquad q;
+	float c[4*2];
+	NVGstate* state = nvg__getState(ctx);
+	float _scale = ctx->devicePxRatio;
+	float invscale = 1.0f / _scale;
+	int cverts = 6; // conservative estimate.
+	int nverts = 0;
+	NVGvertex* verts = nvg__allocTempVerts(ctx, cverts);
+	if (verts == NULL) return;
+
+	fonsSetBlur(ctx->fs, state->fontBlur*_scale);
+	fonsSetFont(ctx->fs, state->fontId);
+
+	fonFONSquadFromGlyph(ctx->fs, &q, codepoint, (short)fontSize, x, y, (int)w, (int)h, data);
+	// Transform corners.
+	nvgTransformPoint(&c[0],&c[1], state->xform, q.x0*invscale, q.y0*invscale);
+	nvgTransformPoint(&c[2],&c[3], state->xform, q.x1*invscale, q.y0*invscale);
+	nvgTransformPoint(&c[4],&c[5], state->xform, q.x1*invscale, q.y1*invscale);
+	nvgTransformPoint(&c[6],&c[7], state->xform, q.x0*invscale, q.y1*invscale);
+	// Create triangles
+	if (nverts+6 <= cverts) {
+		nvg__vset(&verts[nverts], c[0], c[1], q.s0, q.t0); nverts++;
+		if (nvgpTrianglesIsCW(c[0], c[1], c[4], c[5], c[2], c[3])) {
+			nvg__vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+			nvg__vset(&verts[nverts], c[2], c[3], q.s1, q.t0); nverts++;
+		} else {
+			nvg__vset(&verts[nverts], c[2], c[3], q.s1, q.t0); nverts++;
+			nvg__vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+		}
+		nvg__vset(&verts[nverts], c[0], c[1], q.s0, q.t0); nverts++;
+		if (nvgpTrianglesIsCW(c[0], c[1], c[6], c[7], c[4], c[5])) {
+			nvg__vset(&verts[nverts], c[6], c[7], q.s0, q.t1); nverts++;
+			nvg__vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+		} else {
+			nvg__vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+			nvg__vset(&verts[nverts], c[6], c[7], q.s0, q.t1); nverts++;
+		}
+	}
+	nvg__flushTextTexture(ctx);
+
+	nvg__renderText(ctx, verts, nverts);
 }
 
 float nvgText(NVGcontext* ctx, float x, float y, const char* string, const char* end)
@@ -3390,6 +3440,10 @@ void nvgFontFace(NVGcontext* ctx, const char* font)
 {
 }
 
+int nvgCreateEmptyFont(NVGcontext* ctx, const char* name) {
+  return 0;
+}
+
 int nvgCreateFontMem(NVGcontext* ctx, const char* name, unsigned char* data, int ndata, int freeData)
 {
   return 0;
@@ -3397,6 +3451,10 @@ int nvgCreateFontMem(NVGcontext* ctx, const char* name, unsigned char* data, int
 
 int nvgFindFont(NVGcontext* ctx, const char* name) {
   return 0;
+}
+
+void nvgGlyph(NVGcontext* ctx, unsigned int codepoint, float fontSize, float x, float y, float w, float h, const unsigned char* data) {
+	return;
 }
 
 float nvgText(NVGcontext* ctx, float x, float y, const char* string, const char* end) {

@@ -602,6 +602,10 @@ void nvgStroke(NVGcontext* ctx);
 // Returns handle to the font.
 int nvgCreateFont(NVGcontext* ctx, const char* name, const char* filename);
 
+// Creates empty font, glyph from the specified memory chunk.
+// Returns handle to the font.
+int nvgCreateEmptyFont(NVGcontext* ctx, const char* name);
+
 // Creates font by loading it from the specified memory chunk.
 // Returns handle to the font.
 int nvgCreateFontMem(NVGcontext* ctx, const char* name, unsigned char* data, int ndata, int freeData);
@@ -638,6 +642,9 @@ void nvgFontFace(NVGcontext* ctx, const char* font);
 
 // Draws text string at specified location. If end is specified only the sub-string up to the end is drawn.
 float nvgText(NVGcontext* ctx, float x, float y, const char* string, const char* end);
+
+// Draws a bitamp glyph.
+void nvgGlyph(NVGcontext* ctx, unsigned int codepoint, float fontSize, float x, float y, float w, float h, const unsigned char* data);
 
 // Draws multi-line text string at specified location wrapped at the specified width. If end is specified only the sub-string up to the end is drawn.
 // White space is stripped at the beginning of the rows, the text is split at word boundaries or when new-line characters are encountered.

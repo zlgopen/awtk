@@ -385,11 +385,11 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_List_Moresettings_defa
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Sliding_dot_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_check_default[]);
 #endif /*WITH_STB_IMAGE*/
+#endif /*AWTK_WEB*/
 #ifdef WITH_TRUETYPE_FONT
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_default[]);
 #else /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
-#endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
 #include "dark/inc/images/computer.bsvg"
 extern TK_CONST_DATA_ALIGN(const unsigned char image_gradient_default[]);
@@ -619,11 +619,11 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, image_uiex_List_desktop_default);
   assets_manager_add(am, image_bg5_default);
   assets_manager_add(am, image_bg5_s_default);
+#endif /*AWTK_WEB*/
 #ifdef WITH_TRUETYPE_FONT
   assets_manager_add(am, font_default_default);
 #else /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
-#endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
   assets_manager_add(am, image_computer_dark);
   assets_manager_add(am, image_gradient_default);

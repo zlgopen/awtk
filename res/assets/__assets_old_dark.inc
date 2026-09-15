@@ -227,6 +227,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_color_picker_rgb_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_scroll_rows_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_tab_bottom_compact_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_popup_default[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_harfbuzz_test_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_overlay_test_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_serial_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_image_packed_default[]);
@@ -246,6 +247,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char data_custom_keys_json_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_suggest_words_zh_cn_dat_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_test_json_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_custom_keys_for_demo_5key_app_json_default[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char data__s_harfbuzz_data_info_json_in_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_a_b_c_any_default[]);
 #ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
@@ -533,16 +535,18 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_arrow_left_n_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_edit_clear_p_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_battery_2_default[]);
 #endif /*WITH_STB_IMAGE*/
+extern TK_CONST_DATA_ALIGN(const unsigned char script_dummy_default[]);
+#endif /*AWTK_WEB*/
 #ifdef WITH_TRUETYPE_FONT
+extern TK_CONST_DATA_ALIGN(const unsigned char font_trado_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_default[]);
 #else /*WITH_TRUETYPE_FONT*/
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_20_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_16_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_18_default[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char font_default_28_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_24_default[]);
 #endif /*WITH_TRUETYPE_FONT*/
-extern TK_CONST_DATA_ALIGN(const unsigned char script_dummy_default[]);
-#endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
 extern TK_CONST_DATA_ALIGN(const unsigned char image_paths_data_02_t_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer_4_default[]);
@@ -799,6 +803,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_scroll_rows_default);
   assets_manager_add(am, ui_tab_bottom_compact_default);
   assets_manager_add(am, ui_popup_default);
+  assets_manager_add(am, ui_harfbuzz_test_default);
   assets_manager_add(am, ui_overlay_test_default);
   assets_manager_add(am, ui_serial_default);
   assets_manager_add(am, ui_image_packed_default);
@@ -818,6 +823,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, data_suggest_words_zh_cn_dat_default);
   assets_manager_add(am, data_test_json_default);
   assets_manager_add(am, data_custom_keys_for_demo_5key_app_json_default);
+  assets_manager_add(am, data__s_harfbuzz_data_info_json_in_default);
   assets_manager_add(am, data_a_b_c_any_default);
 #ifndef AWTK_WEB
   assets_manager_add(am, image_ani6_default);
@@ -961,16 +967,18 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, image_backspace_default);
   assets_manager_add(am, image_arrow_left_p_default);
   assets_manager_add(am, image_clock_hour_default);
+  assets_manager_add(am, script_dummy_default);
+#endif /*AWTK_WEB*/
 #ifdef WITH_TRUETYPE_FONT
+  assets_manager_add(am, font_trado_default);
   assets_manager_add(am, font_default_default);
 #else /*WITH_TRUETYPE_FONT*/
   assets_manager_add(am, font_default_20_default);
   assets_manager_add(am, font_default_16_default);
   assets_manager_add(am, font_default_18_default);
+  assets_manager_add(am, font_default_28_default);
   assets_manager_add(am, font_default_24_default);
 #endif /*WITH_TRUETYPE_FONT*/
-  assets_manager_add(am, script_dummy_default);
-#endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
   assets_manager_add(am, image_paths_data_02_t_default);
   assets_manager_add(am, image_pointer_4_default);

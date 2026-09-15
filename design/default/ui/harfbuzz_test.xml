@@ -1,0 +1,67 @@
+﻿<window name="harfbuzz_test" visible="true">
+  <label name="label" x="24" y="24" w="252" h="60" style:normal:font_name="trado" style:normal:font_size="60" visible="true" style:normal:border_color="#000000" style:disable:font_name="trado" style:focused:font_name="trado" style:normal:text_align_h="left" line_wrap="true" text="سلام دنیا"/>
+  <edit min="0" max="1024" step="1" name="edit" x="24" y="304" w="252" h="55" tips="Please enter your text" auto_fix="true" style:empty:font_name="trado" style:empty:font_size="60" style:normal:font_name="trado" style:normal:font_size="60" style:focused:font_size="60" style:disable:font_size="60" style:error:font_size="60" style:empty_focus:font_size="60" style:over:font_size="60" style:empty_over:font_size="60" style:changed:font_size="60" style:focused:font_name="trado" style:disable:font_name="trado" style:error:font_name="trado">
+    <property name="style:empty_focus:font_name">
+      <![CDATA[trado]]>
+    </property>
+    <property name="style:over:font_name">
+      <![CDATA[trado]]>
+    </property>
+    <property name="style:empty_over:font_name">
+      <![CDATA[trado]]>
+    </property>
+    <property name="style:changed:font_name">
+      <![CDATA[trado]]>
+    </property>
+    <property name="visible">
+      <![CDATA[true]]>
+    </property>
+    <property name="text">
+      <![CDATA[الأساسيَّةُ]]>
+    </property>
+  </edit>
+  <label name="label2" x="24" y="94" w="252" h="60" style:normal:font_name="trado" style:normal:font_size="60" visible="true" style:normal:border_color="#000000" style:disable:font_name="trado" style:focused:font_name="trado" style:normal:text_align_h="left" line_wrap="true" text="سلام"/>
+  <label name="label3" x="294" y="119" w="292" h="272" style:normal:font_name="trado" style:normal:font_size="60" visible="true" style:normal:border_color="#000000" style:disable:font_name="trado" style:focused:font_name="trado" style:normal:text_align_v="top" style:normal:text_align_h="left" line_wrap="true" word_wrap="false" auto_adjust_size="false" length="-1" style:disable:font_size="60" style:focused:font_size="60" text="تشخیصِ اِعْ‌ًٌَُراب ناهمخوان از وظایف حروفْ‌چین است."/>
+  <label name="label4" x="24" y="164" w="252" h="60" style:normal:font_name="trado" style:normal:font_size="60" visible="true" style:normal:border_color="#000000" style:disable:font_name="trado" style:focused:font_name="trado" style:normal:text_align_h="left" line_wrap="true" text="شكراً"/>
+  <label name="label5" x="604" y="119" w="167" h="175" style:normal:font_name="trado" style:normal:font_size="60" visible="true" style:normal:border_color="#000000" style:disable:font_name="trado" style:focused:font_name="trado" style:normal:text_align_h="left" line_wrap="true" style:disable:font_size="60" style:focused:font_size="60" text="صباح الخير"/>
+  <label name="label6" x="294" y="24" w="292" h="85" style:normal:font_name="trado" style:normal:font_size="60" visible="true" style:normal:border_color="#000000" style:disable:font_name="trado" style:focused:font_name="trado" style:normal:text_align_h="left" line_wrap="true" style:disable:font_size="60" style:focused:font_size="60" text="مساء الخير"/>
+  <label name="label7" x="24" y="234" w="252" h="60" style:normal:font_name="trado" style:normal:font_size="60" visible="true" style:normal:border_color="#000000" style:disable:font_name="trado" style:focused:font_name="trado" style:normal:text_align_h="left" line_wrap="true" text="مُABC"/>
+  <label name="label_anim" x="604" y="24" w="167" h="43" style:normal:border_color="#000000" visible="true" style:normal:font_size="18" style:disable:font_size="18" style:focused:font_size="18" text="Label"/>
+  <edit min="0" max="1024" step="1" name="edit_anim" x="604" y="77" w="167" h="32" tips="Please enter your text" auto_fix="true" visible="true"/>
+  <label name="label7" x="24" y="369" w="252" h="92" style:normal:font_name="default" style:normal:font_size="60" visible="true" style:normal:border_color="#000000" style:disable:font_name="trado" style:focused:font_name="trado" style:normal:text_align_h="left" line_wrap="true" text="中文测试"/>
+  <label name="label7" x="294" y="401" w="292" h="60" style:normal:font_name="trado" style:normal:font_size="60" visible="true" style:normal:border_color="#000000" style:disable:font_name="trado" style:focused:font_name="trado" style:normal:text_align_h="left" line_wrap="true" text="لا A"/>
+  <mledit name="mledit" x="604" y="304" w="167" h="157" max_lines="100" scroll_line="10" wrap_word="true" style:normal:font_name="trado" style:focused:font_name="trado" style:disable:font_name="trado" style:empty:font_name="trado" style:empty_focus:font_name="trado" style:over:font_name="trado" style:empty_over:font_name="trado" style:changed:font_name="trado" style:focused:font_size="60" style:disable:font_size="60" style:empty:font_size="60" style:empty_focus:font_size="60" style:over:font_size="60" style:empty_over:font_size="60" style:changed:font_size="60" visible="true">
+    <property name="style:normal:font_size">
+      <![CDATA[60]]>
+    </property>
+    <property name="style:normal:margin_left">
+      <![CDATA[34]]>
+    </property>
+    <property name="style:focused:margin_left">
+      <![CDATA[34]]>
+    </property>
+    <property name="style:disable:margin_left">
+      <![CDATA[34]]>
+    </property>
+    <property name="style:empty:margin_left">
+      <![CDATA[34]]>
+    </property>
+    <property name="style:empty_focus:margin_left">
+      <![CDATA[34]]>
+    </property>
+    <property name="style:over:margin_left">
+      <![CDATA[34]]>
+    </property>
+    <property name="style:empty_over:margin_left">
+      <![CDATA[34]]>
+    </property>
+    <property name="style:changed:margin_left">
+      <![CDATA[34]]>
+    </property>
+    <property name="text">
+      <![CDATA[الأساسيَّةُ]]>
+    </property>
+    <line_number name="line_number" x="0" y="0" w="32" h="100%"/>
+    <scroll_bar_d name="scroll_bar_d" x="right" y="0" w="14" h="100%" value="0"/>
+  </mledit>
+</window>

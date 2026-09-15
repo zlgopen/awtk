@@ -47,6 +47,7 @@
 
 #include "tkc/utf8.h"
 #include "tkc/mem.h"
+#include "tkc/wstr.h"
 #include "base/opengl.h"
 #include "base/vgcanvas.h"
 #include "base/image_manager.h"
@@ -63,6 +64,7 @@
 typedef struct _vgcanvas_nanovg_t {
   vgcanvas_t base;
 
+  wstr_t tmp_wstr;
   int font_id;
 #ifdef WITH_NANOVG_PLUS_GPU
   nvgp_context_t* vg;
@@ -143,7 +145,7 @@ vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_f
   if (nanovg->vg == NULL) {
     assert(!"OpenGL is not supported!");
   }
-
+  wstr_init(&nanovg->tmp_wstr, 128);
 #if defined(WITH_NANOVG_PLUS_GPU)
   vgcanvas_asset_manager_add_vg(vgcanvas_asset_manager(), &(nanovg->base),
                                 vgcanvas_asset_manager_nanovg_plus_bitmap_destroy,

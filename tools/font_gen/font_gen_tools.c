@@ -23,10 +23,21 @@
 #include "base/font.h"
 #include "font_gen_tools.h"
 
-#ifdef WITH_STB_FONT
+#if defined(WITH_STB_FONT) && !defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING) && \
+    !defined(WITH_HARFBUZZ_TEXT_SHAPING)
 #include "font_loader/font_loader_stb.h"
-#elif defined(WITH_FT_FONT)
+#endif
+#if defined(WITH_FT_FONT) && !defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING) && \
+    !defined(WITH_HARFBUZZ_TEXT_SHAPING)
 #include "font_loader/font_loader_ft.h"
+#endif
+#if defined(WITH_STB_FONT) && \
+    (defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING) || defined(WITH_HARFBUZZ_TEXT_SHAPING))
+#include "font_loader/font_loader_harfbuzz_stb.h"
+#endif
+#if defined(WITH_FT_FONT) && \
+    (defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING) || defined(WITH_HARFBUZZ_TEXT_SHAPING))
+#include "font_loader/font_loader_harfbuzz_freetype.h"
 #endif
 
 #if !defined(WITH_STB_FONT) && !defined(WITH_FT_FONT)
@@ -89,8 +100,8 @@ static ret_t font_gen_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, 
   return g->data != NULL ? RET_OK : RET_NOT_FOUND;
 }
 
-static glyphs_t* font_gen_ft_get_glyphs(font_t* f, const wchar_t* str, uint32_t len,
-                                        font_size_t font_size, font_raster_params_t* params) {
+static glyphs_t* font_gen_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_t len,
+                                           font_size_t font_size, font_raster_params_t* params) {
   (void)f;
   (void)str;
   (void)len;
@@ -174,7 +185,7 @@ static font_t* font_gen_ft_create(const char* name, const uint8_t* buff, uint32_
   f->base.match = font_gen_ft_match;
   f->base.destroy = font_gen_ft_destroy;
   f->base.get_glyph = font_gen_ft_get_glyph;
-  f->base.get_glyphs = font_gen_ft_get_glyphs;
+  f->base.create_glyphs = font_gen_ft_create_glyphs;
   f->base.get_vmetrics = font_gen_ft_get_vmetrics;
   f->base.shrink_cache = font_gen_ft_shrink_cache;
   f->base.desc = mono ? "mono(freetype)" : "truetype(freetype)";
@@ -189,7 +200,13 @@ static font_t* font_gen_ft_create(const char* name, const uint8_t* buff, uint32_
 font_t* font_gen_create_font(const char* name, const uint8_t* buff, uint32_t size, bool_t mono) {
   /* 优先复用运行时已编译进 base 库的 loader。
    * 只有这些 loader 都未编译进来时，才回退到本模块自带的 FreeType 实现。 */
-#ifdef WITH_STB_FONT
+#if defined(WITH_STB_FONT) && \
+    (defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING) || defined(WITH_HARFBUZZ_TEXT_SHAPING))
+  return mono ? font_hb_stb_mono_create(name, buff, size) : font_hb_stb_create(name, buff, size);
+#elif defined(WITH_FT_FONT) && \
+    (defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING) || defined(WITH_HARFBUZZ_TEXT_SHAPING))
+  return mono ? font_hb_ft_mono_create(name, buff, size) : font_hb_ft_create(name, buff, size);
+#elif defined(WITH_STB_FONT)
   return mono ? font_stb_mono_create(name, buff, size) : font_stb_create(name, buff, size);
 #elif defined(WITH_FT_FONT)
   return mono ? font_ft_mono_create(name, buff, size) : font_ft_create(name, buff, size);

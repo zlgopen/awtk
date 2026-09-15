@@ -28,6 +28,7 @@
 #include "tkc/color_parser.h"
 #include "tkc/object_default.h"
 
+#include "base/bidi.h"
 #include "base/keys.h"
 #include "base/enums.h"
 #include "base/theme.h"
@@ -1691,6 +1692,15 @@ const char* widget_get_bidi(widget_t* widget) {
   return NULL;
 }
 
+bool_t widget_get_shaping(widget_t* widget) {
+  value_t v;
+  if (widget_get_prop(widget, WIDGET_PROP_SHAPING, &v) == RET_OK) {
+    return value_bool(&v);
+  }
+
+  return TRUE;
+}
+
 ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
   rect_t ir;
   wh_t h = 0;
@@ -1701,6 +1711,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   int32_t spacer = 0;
   int32_t icon_at = 0;
   uint16_t font_size = 0;
+  glyphs_t* glyphs = NULL;
   float_t text_size = 0.0f;
   style_t* style = widget->astyle;
   int32_t align_h = ALIGN_H_LEFT;
@@ -1723,9 +1734,12 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   }
 
   widget_prepare_text_style(widget, c);
+  if (text->size > 0) {
+    glyphs = widget_create_glyphs(widget, c, text->str, text->size);
+  }
 
   font_size = c->font_size;
-  text_size = text->size > 0 ? canvas_measure_text(c, text->str, text->size) : 0;
+  text_size = glyphs != NULL ? glyphs_measure(glyphs, 0, glyphs_get_length(glyphs)) : 0;
   if (icon_at == ICON_AT_RIGHT || icon_at == ICON_AT_LEFT) {
     align_v = style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
     align_h = style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
@@ -1747,7 +1761,8 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
                                  &r_icon);
 
       canvas_draw_icon_in_rect(c, &img, &r_icon);
-      widget_draw_text_in_rect(widget, c, text->str, text->size, &r_text, ellipses);
+      canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), &r_text,
+                                              ellipses);
     } else {
       if (icon_at == ICON_AT_AUTO) {
         widget_calc_icon_text_rect(&ir, font_size, text_size, icon_at, img.w, img.h, spacer, NULL,
@@ -1760,9 +1775,12 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
     }
   } else if (text->size > 0) {
     widget_calc_icon_text_rect(&ir, font_size, text_size, icon_at, 0, 0, spacer, &r_text, NULL);
-    widget_draw_text_in_rect(widget, c, text->str, text->size, &r_text, ellipses);
+    canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), &r_text,
+                                            ellipses);
   }
-
+  if (glyphs != NULL) {
+    glyphs_destroy(glyphs);
+  }
   return RET_OK;
 }
 
@@ -4368,12 +4386,17 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
 }
 
 float_t widget_measure_text(widget_t* widget, const wchar_t* text) {
+  float_t w = 0.0f;
+  glyphs_t* glyphs = NULL;
   canvas_t* c = widget_get_canvas(widget);
   return_value_if_fail(widget != NULL && text != NULL && c != NULL, 0);
 
   widget_prepare_text_style(widget, c);
-
-  return canvas_measure_text(c, (wchar_t*)text, wcslen(text));
+  glyphs = widget_create_glyphs(widget, c, (wchar_t*)text, wcslen(text));
+  return_value_if_fail(glyphs != NULL, 0.0f);
+  w = glyphs_measure(glyphs, 0, glyphs->length);
+  glyphs_destroy(glyphs);
+  return w;
 }
 
 ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
@@ -5458,10 +5481,156 @@ ret_t widget_end_wait_pointer_cursor(widget_t* widget) {
 
 ret_t widget_draw_text_in_rect(widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size,
                                const rect_t* r, bool_t ellipses) {
-  const char* bidi_type = widget_get_bidi(widget);
+  ret_t ret = RET_FAIL;
+  glyphs_t* glyphs = NULL;
   return_value_if_fail(widget != NULL && c != NULL && str != NULL && r != NULL, RET_BAD_PARAMS);
+  if (size == 0) {
+    return RET_OK;
+  }
 
-  return canvas_draw_text_bidi_in_rect(c, str, size, r, bidi_type, ellipses);
+  glyphs = widget_create_glyphs(widget, c, str, size);
+  if (glyphs != NULL) {
+    ret = canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), r,
+                                                  ellipses);
+    glyphs_destroy(glyphs);
+  }
+
+  return ret;
+}
+
+ret_t widget_draw_text_in_rect_with_glyphs(widget_t* widget, canvas_t* c, glyphs_t* glyphs,
+                                           uint32_t start, uint32_t size, const rect_t* r,
+                                           bool_t ellipses) {
+  int32_t len = 0;
+  uint32_t i = 0;
+  uint32_t end = 0;
+  uint32_t* glyph_arr = NULL;
+  int32_t x = 0;
+  int32_t y = 0;
+  int32_t text_w = 0;
+  int32_t height = 0;
+  int32_t ellipses_w = 0;
+  bool_t truncated = FALSE;
+  glyphs_t* ellipse_glyphs = NULL;
+  return_value_if_fail(widget != NULL && c != NULL && glyphs != NULL && r != NULL, RET_BAD_PARAMS);
+  if (size == 0) {
+    return RET_OK;
+  }
+
+  /* 按字符串范围一次性取回本行字模序号集合（已展开同簇字形并按视觉顺序排好） */
+  len = 0;
+  glyph_arr =
+      (uint32_t*)glyphs_get_glyph_indexs_from_str_indexs(glyphs, start, size, NULL, 0, &len);
+  end = (uint32_t)len;
+
+  /* 计算本行可绘制文本总宽 */
+  for (i = 0; i < end; i++) {
+    const glyph_t* g = glyphs_get(glyphs, glyph_arr[i]);
+    if (g != NULL && g->chr != '\r' && g->chr != '\n') {
+      text_w += glyphs_measure(glyphs, glyph_arr[i], 1);
+    }
+  }
+  height = (int32_t)glyphs_get_height(glyphs);
+
+  if (ellipses && text_w > r->w) {
+    /* 超宽：留出省略号宽度后截断 */
+    ellipse_glyphs = font_create_glyphs(c->font, L"...", 3, c->font_size, NULL);
+    if (ellipse_glyphs != NULL) {
+      ellipses_w = (int32_t)glyphs_measure(ellipse_glyphs, 0, glyphs_get_length(ellipse_glyphs));
+    }
+    text_w = 0;
+    for (end = 0; end < (uint32_t)len; end++) {
+      const glyph_t* g = glyphs_get(glyphs, glyph_arr[end]);
+      int32_t char_w = (g != NULL) ? glyphs_measure(glyphs, glyph_arr[end], 1) : 0;
+      if ((text_w + char_w + ellipses_w) >= r->w) {
+        break;
+      }
+      text_w += char_w;
+    }
+    truncated = (end < (uint32_t)len);
+  }
+
+  /* 计算 align_h 水平起点（省略号截断时左对齐） */
+  if (truncated) {
+    x = r->x;
+  } else {
+    switch (c->text_align_h) {
+      case ALIGN_H_RIGHT: {
+        x = r->x + (r->w - text_w);
+        break;
+      }
+      case ALIGN_H_CENTER: {
+        x = r->x + ((r->w - text_w) >> 1);
+        break;
+      }
+      default: {
+        x = r->x;
+        break;
+      }
+    }
+  }
+
+  /* 计算 align_v 垂直起点 */
+  switch (c->text_align_v) {
+    case ALIGN_V_BOTTOM: {
+      y = r->y + (r->h - height);
+      break;
+    }
+    case ALIGN_V_MIDDLE: {
+      y = r->y + ((r->h - height) >> 1);
+      break;
+    }
+    default: {
+      y = r->y;
+      break;
+    }
+  }
+
+  /* 逐字形按坐标绘制（count=1），不依赖字模在物理数组中连续 */
+  for (i = 0; i < end; i++) {
+    uint32_t gi = glyph_arr[i];
+    const glyph_t* g = glyphs_get(glyphs, gi);
+    if (g == NULL || g->chr == '\r' || g->chr == '\n') {
+      continue;
+    }
+    canvas_draw_text_by_glyphs(c, glyphs, gi, 1, x, y);
+    x += glyphs_measure(glyphs, gi, 1);
+  }
+
+  if (truncated && ellipse_glyphs != NULL) {
+    /* 被截断时在尾部补省略号 */
+    uint32_t ellipse_len = glyphs_get_length(ellipse_glyphs);
+    for (i = 0; i < ellipse_len; i++) {
+      const glyph_t* g = glyphs_get(ellipse_glyphs, i);
+      if (g == NULL) {
+        break;
+      }
+      canvas_draw_text_by_glyphs(c, ellipse_glyphs, i, 1, x, y);
+      x += glyphs_measure(ellipse_glyphs, i, 1);
+    }
+  }
+
+  if (ellipse_glyphs != NULL) {
+    glyphs_destroy(ellipse_glyphs);
+  }
+  TKMEM_FREE(glyph_arr);
+  return RET_OK;
+}
+
+glyphs_t* widget_create_glyphs(widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size) {
+  font_raster_params_t params;
+  bool_t shaping = widget_get_shaping(widget);
+  const char* bidi_type = widget_get_bidi(widget);
+  return_value_if_fail(widget != NULL && c != NULL, NULL);
+  if (str != NULL && size > 0) {
+    font_get_raster_params(c->font, &params);
+    params.shaping = shaping;
+    params.bidi_type = bidi_type_from_name(bidi_type);
+    font_set_raster_params(c->font, &params);
+
+    return font_create_glyphs(c->font, str, size, c->font_size, NULL);
+  }
+  return NULL;
 }
 
 bool_t widget_is_parent_of(const widget_t* widget, const widget_t* child) {

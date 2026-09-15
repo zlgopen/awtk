@@ -24,6 +24,7 @@
 #define TK_VG_CANVAS_H
 
 #include "tkc/rect.h"
+#include "base/font.h"
 #include "base/bitmap.h"
 #include "base/dirty_rects.h"
 #include "base/vg_gradient.h"
@@ -130,6 +131,8 @@ typedef ret_t (*vgcanvas_get_text_metrics_t)(vgcanvas_t* vg, float_t* ascent, fl
                                              float_t* line_hight);
 typedef ret_t (*vgcanvas_fill_text_t)(vgcanvas_t* vg, const char* text, float_t x, float_t y,
                                       float_t max_width);
+typedef ret_t (*vgcanvas_fill_text_by_glyphs_t)(vgcanvas_t* vg, glyphs_t* glyphs, uint32_t start, uint32_t len, float_t x, float_t y,
+                                      float_t max_width);
 typedef float_t (*vgcanvas_measure_text_t)(vgcanvas_t* vg, const char* text);
 typedef ret_t (*vgcanvas_draw_image_t)(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
                                        float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
@@ -231,6 +234,7 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_set_text_baseline_t set_text_baseline;
   vgcanvas_get_text_metrics_t get_text_metrics;
   vgcanvas_fill_text_t fill_text;
+  vgcanvas_fill_text_by_glyphs_t fill_text_by_glyphs;
   vgcanvas_measure_text_t measure_text;
   vgcanvas_draw_image_t draw_image;
   vgcanvas_draw_image_repeat_t draw_image_repeat;
@@ -824,12 +828,12 @@ ret_t vgcanvas_clip_path(vgcanvas_t* vg);
  * ........
  *   rect_t r;
  *   rect_t r_save;
- *   r = rectf_init(c->ox, c->oy, widget->w, widget->h); 
+ *   r = rectf_init(c->ox, c->oy, widget->w, widget->h);
  *   r_save = *vgcanvas_get_clip_rect(vg);
  *   r = rectf_intersect(&r, &r_save);
  *   vgcanvas_clip_rect(vg, (float_t)r.x, (float_t)r.y, (float_t)r.w, (float_t)r.h);
  * ........
- * 
+ *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {float_t} x x坐标。
@@ -875,7 +879,7 @@ bool_t vgcanvas_is_rectf_in_clip_rect(vgcanvas_t* vg, float_t left, float_t top,
  *    由于缩放和旋转以及平移会导致 vg 的坐标系和上一个裁剪区的坐标系不同，
  *    导致直接使用做交集的话，裁剪区会出错。
  * 2. 该函数不支持旋转后调用，会导致裁剪区异常。
- * 
+ *
  * ```
  * vgcanvas_clip_rect(vg, old_r.x, old_r.y, old_r.w, old_r.h);
  * vgcanvas_save(vg);
@@ -1011,6 +1015,24 @@ ret_t vgcanvas_get_text_metrics(vgcanvas_t* vg, float_t* ascent, float_t* descen
 ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y, float_t max_width);
 
 /**
+ * @method vgcanvas_fill_text_by_glyphs
+ * 绘制文本。
+ *
+ * @annotation ["scriptable"]
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {glyphs_t*} glyphs 字模列表对象。
+ * @param {uint32_t} start 字模开始序号。
+ * @param {uint32_t} len 字模长度。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * @param {float_t} max_width 最大宽度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_fill_text_by_glyphs(vgcanvas_t* vg, glyphs_t* glyphs, uint32_t start, uint32_t len, float_t x, float_t y,
+                                   float_t max_width);
+
+/**
  * @method vgcanvas_measure_text
  * 测量文本的宽度。
  *
@@ -1046,7 +1068,7 @@ ret_t vgcanvas_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
 /**
  * @method vgcanvas_draw_image_repeat
  * 绘制图片。
- * 
+ *
  * 备注：
  * 当绘制区域大于原图区域时，多余的绘制区域会重复绘制原图区域的东西。（绘制图区按照绘制图片的宽高来绘制的）
  * 当绘制图片的宽高和原图的不同，在重复绘制的同时加入缩放。
@@ -1494,13 +1516,13 @@ ret_t vgcanvas_set_canvas(vgcanvas_t* vg, canvas_t* c);
 
 /**
  * @const VGCANVAS_LINE_CAP_SQUARE
- * 方头。 
+ * 方头。
  */
 #define VGCANVAS_LINE_CAP_SQUARE "square"
 
 /**
  * @const VGCANVAS_LINE_CAP_BUTT
- * 平头。 
+ * 平头。
  */
 #define VGCANVAS_LINE_CAP_BUTT "butt"
 
@@ -1518,13 +1540,13 @@ ret_t vgcanvas_set_canvas(vgcanvas_t* vg, canvas_t* c);
 
 /**
  * @const VGCANVAS_LINE_JOIN_BEVEL
- * bevel。 
+ * bevel。
  */
 #define VGCANVAS_LINE_JOIN_BEVEL "bevel"
 
 /**
  * @const VGCANVAS_LINE_JOIN_MITTER
- * mitter。 
+ * mitter。
  */
 #define VGCANVAS_LINE_JOIN_MITTER "mitter"
 

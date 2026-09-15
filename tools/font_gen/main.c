@@ -111,6 +111,7 @@ int wmain(int argc, wchar_t* argv[]) {
     res_dir = str_res_dir.str;
   }
 
+
   str_t ttf_file;
   str_t str_file;
   str_t out_file;

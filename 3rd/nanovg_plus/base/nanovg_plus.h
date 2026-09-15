@@ -365,6 +365,16 @@ void nvgp_update_image_rgba(nvgp_context_t* ctx, int image, const unsigned char*
 
 
 
+/**
+ * @method nvgp_create_empty_font
+ * 创建新的空字库
+ * @annotation ["constructor", "scriptable"]
+ * @param {nvgp_context_t*} ctx 矢量画布上下文
+ * @param {const char*} name 字库的名字
+ * 
+ * @return {int} 成功返回 字库 id。
+ */
+int nvgp_create_empty_font(nvgp_context_t* ctx, const char* name);
 
 /**
  * @method nvgp_create_font_mem
@@ -757,7 +767,20 @@ float nvgp_text_bounds(nvgp_context_t* ctx, float x, float y, const char* string
  */
 float nvgp_text(nvgp_context_t* ctx, float x, float y, const char* string, const char* end);
 
-
+/**
+ * @method nvgp_glyph
+ * 渲染字模
+ * @annotation ["constructor", "scriptable"]
+ * @param {nvgp_context_t*} ctx 矢量画布上下文
+ * @param {unsigned int} codepoint 字模对应的 codepoint
+ * @param {float} font_size 字号
+ * @param {float} x 坐标 x
+ * @param {float} y 坐标 y
+ * @param {float} w 字模宽度
+ * @param {float} h 字模高度
+ * @param {const unsigned char*} data 字模数据
+ */
+void nvgp_glyph(nvgp_context_t* ctx, unsigned int codepoint, float font_size, float x, float y, float w, float h, const unsigned char* data);
 
 /**
  * @method nvgp_set_stroke_color

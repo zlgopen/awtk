@@ -4,6 +4,10 @@
   * improve edit_on_key_down(感谢兆坤提供补丁)
   * 添加属性是否为输入属性的注释(感谢福明提供补丁)
   * fix combo_box_ex and edit_ex(感谢兆坤提供补丁)
+  * 感谢 智明、颖健和泽武 提供补丁:
+    - 新增 HarfBuzz 文本整形功能，配合 FriBidi/SheenBidi 支持阿拉伯语、印度语、希伯来语和泰语等复杂文本显示
+    - 添加 BIDI_BACKEND 和 TEXT_SHAPING 编译选项，以及 harfbuzz 示例与使用文档
+    - 以及相关改动
 
 2026/9/14
   * 完善 font_manager 中的宏定义(感谢泽武提供补丁)

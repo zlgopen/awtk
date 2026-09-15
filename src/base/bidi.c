@@ -2,6 +2,21 @@
  * File:   bidi.c
  * Author: AWTK Develop Team
  * Brief:  Unicode Bidirectional Algorithm.
+ *
+ * Copyright (c) 2018 - 2025 Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * License file for more details.
+ *
+ */
+
+/**
+ * History:
+ * ================================================================
+ * 2020-07-09 Li XianJing <xianjimli@hotmail.com> created
+ *
  */
 
 #include "base/bidi.h"
@@ -34,38 +49,38 @@
 #endif
 
 #if defined(WITH_BIDI_FRIBIDI)
-static bidi_type_t bidi_type_from_fribidi_par_type(int fribidi_type) {
+static font_bidi_type_t bidi_type_from_fribidi_par_type(int fribidi_type) {
   switch (fribidi_type) {
     case FRIBIDI_PAR_RTL:
-      return BIDI_TYPE_RTL;
+      return FONT_BIDI_TYPE_RTL;
     case FRIBIDI_PAR_LTR:
-      return BIDI_TYPE_LTR;
+      return FONT_BIDI_TYPE_LTR;
     case FRIBIDI_TYPE_RLO:
-      return BIDI_TYPE_RLO;
+      return FONT_BIDI_TYPE_RLO;
     case FRIBIDI_TYPE_LRO:
-      return BIDI_TYPE_LRO;
+      return FONT_BIDI_TYPE_LRO;
     case FRIBIDI_PAR_WRTL:
-      return BIDI_TYPE_WRTL;
+      return FONT_BIDI_TYPE_WRTL;
     case FRIBIDI_PAR_WLTR:
-      return BIDI_TYPE_WLTR;
+      return FONT_BIDI_TYPE_WLTR;
     default:
-      return BIDI_TYPE_AUTO;
+      return FONT_BIDI_TYPE_AUTO;
   }
 }
 
-static FriBidiParType bidi_type_to_fribidi_par_type(bidi_type_t type) {
+static FriBidiParType bidi_type_to_fribidi_par_type(font_bidi_type_t type) {
   switch (type) {
-    case BIDI_TYPE_RTL:
+    case FONT_BIDI_TYPE_RTL:
       return (FriBidiParType)FRIBIDI_PAR_RTL;
-    case BIDI_TYPE_LTR:
+    case FONT_BIDI_TYPE_LTR:
       return (FriBidiParType)FRIBIDI_PAR_LTR;
-    case BIDI_TYPE_RLO:
+    case FONT_BIDI_TYPE_RLO:
       return (FriBidiParType)FRIBIDI_TYPE_RLO;
-    case BIDI_TYPE_LRO:
+    case FONT_BIDI_TYPE_LRO:
       return (FriBidiParType)FRIBIDI_TYPE_LRO;
-    case BIDI_TYPE_WRTL:
+    case FONT_BIDI_TYPE_WRTL:
       return (FriBidiParType)FRIBIDI_PAR_WRTL;
-    case BIDI_TYPE_WLTR:
+    case FONT_BIDI_TYPE_WLTR:
       return (FriBidiParType)FRIBIDI_PAR_WLTR;
     default:
       return (FriBidiParType)FRIBIDI_PAR_ON;
@@ -75,37 +90,37 @@ static FriBidiParType bidi_type_to_fribidi_par_type(bidi_type_t type) {
 
 #if defined(WITH_BIDI_SHEEN)
 /**
- * Map AWTK bidi_type_t to SheenBidi paragraph baseLevel.
+ * Map AWTK font_bidi_type_t to SheenBidi paragraph baseLevel.
  *
  * SBParagraph treats values < SBLevelMax as explicit embedding levels (P2-P3 skipped).
  * FriBidi's FRIBIDI_TYPE_LRO / FRIBIDI_PAR_LTR are strong overrides, not "default then infer".
  * Using SBLevelDefaultLTR for LRO made bidi.xml line 8 (bidi="lro") diverge from FriBidi.
  */
-static SBLevel bidi_type_to_sb_base_level(bidi_type_t type) {
+static SBLevel bidi_type_to_sb_base_level(font_bidi_type_t type) {
   switch (type) {
-    case BIDI_TYPE_LRO:
-    case BIDI_TYPE_LTR:
+    case FONT_BIDI_TYPE_LRO:
+    case FONT_BIDI_TYPE_LTR:
       return (SBLevel)0;
-    case BIDI_TYPE_RLO:
-    case BIDI_TYPE_RTL:
+    case FONT_BIDI_TYPE_RLO:
+    case FONT_BIDI_TYPE_RTL:
       return (SBLevel)1;
-    case BIDI_TYPE_WRTL:
+    case FONT_BIDI_TYPE_WRTL:
       return SBLevelDefaultRTL;
-    case BIDI_TYPE_WLTR:
-    case BIDI_TYPE_AUTO:
+    case FONT_BIDI_TYPE_WLTR:
+    case FONT_BIDI_TYPE_AUTO:
     default:
       return SBLevelDefaultLTR;
   }
 }
 
-static bidi_type_t sb_base_level_to_bidi_type(SBLevel base_level) {
+static font_bidi_type_t sb_base_level_to_bidi_type(SBLevel base_level) {
   if (base_level == 1) {
-    return BIDI_TYPE_RTL;
+    return FONT_BIDI_TYPE_RTL;
   }
   if (base_level == 0) {
-    return BIDI_TYPE_LTR;
+    return FONT_BIDI_TYPE_LTR;
   }
-  return BIDI_TYPE_AUTO;
+  return FONT_BIDI_TYPE_AUTO;
 }
 
 static SBStringEncoding awtk_wchar_sb_encoding(void) {
@@ -113,29 +128,29 @@ static SBStringEncoding awtk_wchar_sb_encoding(void) {
 }
 #endif
 
-bidi_type_t bidi_type_from_name(const char* name) {
+font_bidi_type_t bidi_type_from_name(const char* name) {
   if (name == NULL || *name == '\0') {
-    return BIDI_TYPE_AUTO;
+    return FONT_BIDI_TYPE_AUTO;
   }
 
   if (tk_str_eq(name, "rtl")) {
-    return BIDI_TYPE_RTL;
+    return FONT_BIDI_TYPE_RTL;
   } else if (tk_str_eq(name, "ltr")) {
-    return BIDI_TYPE_LTR;
+    return FONT_BIDI_TYPE_LTR;
   } else if (tk_str_eq(name, "rlo")) {
-    return BIDI_TYPE_RLO;
+    return FONT_BIDI_TYPE_RLO;
   } else if (tk_str_eq(name, "lro")) {
-    return BIDI_TYPE_LRO;
+    return FONT_BIDI_TYPE_LRO;
   } else if (tk_str_eq(name, "wrtl")) {
-    return BIDI_TYPE_WRTL;
+    return FONT_BIDI_TYPE_WRTL;
   } else if (tk_str_eq(name, "wltr")) {
-    return BIDI_TYPE_WLTR;
+    return FONT_BIDI_TYPE_WLTR;
   } else {
-    return BIDI_TYPE_AUTO;
+    return FONT_BIDI_TYPE_AUTO;
   }
 }
 
-bidi_t* bidi_init(bidi_t* bidi, bool_t alloc_l2v, bool_t alloc_v2l, bidi_type_t type) {
+bidi_t* bidi_init(bidi_t* bidi, bool_t alloc_l2v, bool_t alloc_v2l, font_bidi_type_t type) {
   return_value_if_fail(bidi != NULL, NULL);
   memset(bidi, 0x00, sizeof(*bidi));
 
@@ -180,6 +195,7 @@ static ret_t bidi_log2vis_fribidi(bidi_t* bidi, const wchar_t* str, uint32_t siz
 
   return RET_OK;
 }
+
 #endif
 
 #if defined(WITH_BIDI_SHEEN)

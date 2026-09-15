@@ -385,11 +385,11 @@
 #include "assets/default/inc/images/uiex_Sliding_dot.data"
 #include "assets/default/inc/images/uiex_check.data"
 #endif /*WITH_STB_IMAGE*/
+#endif /*AWTK_WEB*/
 #ifdef WITH_TRUETYPE_FONT
 #include "assets/default/inc/fonts/default.res"
 #else /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
-#endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
 #include "assets/dark/inc/images/computer.bsvg"
 #include "assets/default/inc/images/gradient.bsvg"
@@ -619,11 +619,11 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_uiex_List_desktop_default);
   assets_manager_add(am, image_bg5_default);
   assets_manager_add(am, image_bg5_s_default);
+#endif /*AWTK_WEB*/
 #ifdef WITH_TRUETYPE_FONT
   assets_manager_add(am, font_default_default);
 #else /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
-#endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
   assets_manager_add(am, image_computer_dark);
   assets_manager_add(am, image_gradient_default);

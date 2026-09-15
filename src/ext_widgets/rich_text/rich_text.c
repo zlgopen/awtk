@@ -122,25 +122,30 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
         rect_t cr;
         int32_t i = 0;
         float_t x = r.x;
-        wchar_t* text = iter->text;
+        font_vmetrics_t vmetrics;
+        glyphs_t* glyphs = iter->glyphs;
         int32_t spacing = iter->spacing;
+        int32_t* glyphs_arr = iter->glyphs_array;
         rich_text_font_t* font = &(iter->node->u.text.font);
-
-        canvas_set_text_color(c, font->color);
         canvas_set_font(c, font->name, font->size);
+        canvas_set_text_color(c, font->color);
         canvas_set_text_align(c, ALIGN_H_LEFT, font->align_v);
+        vmetrics = font_get_vmetrics(c->font, c->font_size);
 
-        for (i = 0; i < iter->size; i++) {
-          float_t cw = canvas_measure_text(c, text + i, 1);
-          cr.x = x;
-          cr.y = r.y;
-          cr.h = r.h;
-          cr.w = cw + 1;
-
-          canvas_draw_text_in_rect(c, text + i, 1, &cr);
-          x += cw;
-          if (spacing > 0) {
-            if (rich_text_is_flexable_w_char(text[i])) {
+        if (glyphs != NULL) {
+          for (i = 0; i < iter->size; i++) {
+            const glyph_t* g = glyphs_get(glyphs, glyphs_arr[i]);
+            float_t cw = glyphs_measure(glyphs, glyphs_arr[i], 1);
+            cr.x = x;
+            cr.y = r.y;
+            cr.h = r.h;
+            cr.w = cw + 1;
+            if (font->align_v == ALIGN_V_BOTTOM) {
+              cr.y -= r.h - iter->line_base + vmetrics.descent;
+            }
+            canvas_draw_text_in_rect_by_glyphs(c, glyphs, glyphs_arr[i], 1, &cr);
+            x += cw;
+            if (spacing > 0 && g != NULL && rich_text_is_flexable_w_char(g->chr)) {
               x += iter->flexible_w_char_delta_w;
               spacing -= iter->flexible_w_char_delta_w;
             }
@@ -172,6 +177,7 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
 static bool_t rich_text_is_need_reset_from_style(rich_text_t* rich_text, const char* font_name,
                                                  uint16_t font_size, color_t color,
                                                  align_v_t align_v) {
+  rich_text_render_node_t* iter = NULL;
   return_value_if_fail(rich_text != NULL, FALSE);
   if (font_name != NULL && tk_str_cmp(rich_text->default_font_name, font_name) != 0) {
     return TRUE;
@@ -187,6 +193,15 @@ static bool_t rich_text_is_need_reset_from_style(rich_text_t* rich_text, const c
 
   if (rich_text->default_align_v != align_v) {
     return TRUE;
+  }
+
+  iter = rich_text->render_node;
+  while (iter != NULL) {
+    glyphs_t* glyphs = iter->glyphs;
+    if (glyphs != NULL && !glyphs_get_valid(glyphs)) {
+      return TRUE;
+    }
+    iter = iter->next;
   }
 
   return FALSE;

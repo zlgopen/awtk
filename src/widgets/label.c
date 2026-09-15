@@ -1,5 +1,5 @@
 ﻿/**
- * File:   label.h
+ * File:   label.c
  * Author: AWTK Develop Team
  * Brief:  label
  *
@@ -26,9 +26,10 @@
 #include "base/widget_vtable.h"
 #include "base/window_manager.h"
 
-static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, line_parser_t* p, int32_t x,
-                                     int32_t y, int32_t w, int32_t h) {
+static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, line_parser_t* p,
+                                     glyphs_t* glyphs, int32_t x, int32_t y, int32_t w, int32_t h) {
   int32_t top = y;
+  const wchar_t* str = NULL;
   int32_t bottom = y + h;
   style_t* style = widget->astyle;
   int32_t font_size = c->font_size;
@@ -37,6 +38,7 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, line_parser_
   align_h_t align_h = (align_h_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
   int32_t line_height = font_size + spacer;
   int32_t h_text = p->total_lines * line_height - spacer;
+  str = glyphs_get_str(glyphs);
 
   switch (align_v) {
     case ALIGN_V_MIDDLE: {
@@ -57,19 +59,22 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, line_parser_
 
   while (line_parser_next(p) == RET_OK) {
     uint32_t size = 0;
+    uint32_t glyph_count = p->line_size;
     rect_t r = rect_init(x, y, w, font_size);
 
     if ((y + font_size) > bottom) {
       break;
     }
 
-    for (size = 0; size < p->line_size; size++) {
-      if (p->line[size] == '\r' || p->line[size] == '\n') {
-        break;
+    if (glyph_count > 0) {
+      for (size = 0; size < p->line_size; size++) {
+        if (str[size + p->line_index] == '\r' || str[size + p->line_index] == '\n') {
+          break;
+        }
       }
-    }
 
-    widget_draw_text_in_rect(widget, c, p->line, size, &r, FALSE);
+      widget_draw_text_in_rect_with_glyphs(widget, c, glyphs, p->line_index, size, &r, FALSE);
+    }
 
     y += line_height;
   }
@@ -81,22 +86,33 @@ static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str,
   line_parser_t p;
   ret_t ret = RET_OK;
   label_t* label = LABEL(widget);
+  glyphs_t* glyphs = label->glyphs;
   ENSURE(label);
   rect_t r = widget_get_content_area_ex(widget, 0);
+  if (glyphs == NULL || !glyphs_get_valid(glyphs) || !tk_str_eq(glyphs->font->name, c->font_name) ||
+      glyphs->font_size != c->font_size) {
+    if (glyphs != NULL) {
+      glyphs_destroy(glyphs);
+    }
+    glyphs = widget_create_glyphs(widget, c, widget->text.str, size);
+    label->glyphs = glyphs;
+  }
 
+  return_value_if_fail(glyphs != NULL, RET_FAIL);
   return_value_if_fail((r.w > 0 && widget->h >= c->font_size), RET_FAIL);
-  return_value_if_fail(line_parser_init(&p, c, widget->text.str, size, c->font_size, r.w,
-                                        label->line_wrap, label->word_wrap) == RET_OK,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(
+      line_parser_init(&p, glyphs, c->font_size, r.w, label->line_wrap, label->word_wrap) == RET_OK,
+      RET_BAD_PARAMS);
 
   if (p.total_lines > 1 && !label->ellipses) {
-    ret = label_paint_text_mlines(widget, c, &p, r.x, r.y, r.w, r.h);
+    ret = label_paint_text_mlines(widget, c, &p, glyphs, r.x, r.y, r.w, r.h);
   } else {
     wstr_t str = widget->text;
     str.size = size;
 
     ret = widget_paint_helper(widget, c, NULL, &str);
   }
+
   line_parser_deinit(&p);
   return ret;
 }
@@ -118,33 +134,48 @@ static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
+static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c, glyphs_t* glyphs) {
   wh_t line_max_w = 0;
+  uint32_t tmp_cap = 0;
+  int32_t* tmp = NULL;
   line_parser_t parser;
   line_parser_t* p = &parser;
-  wstr_t* str = &(widget->text);
   label_t* label = LABEL(widget);
   uint32_t size = label->length >= 0 ? tk_min(label->length, widget->text.size) : widget->text.size;
-
-  return_value_if_fail(
-      line_parser_init(p, c, str->str, size, c->font_size, 0xffff, FALSE, FALSE) == RET_OK,
-      RET_BAD_PARAMS);
+  return_value_if_fail(line_parser_init(p, glyphs, c->font_size, 0xffff, FALSE, FALSE) == RET_OK,
+                       RET_BAD_PARAMS);
 
   while (line_parser_next(p) == RET_OK) {
-    uint32_t line_w = 0;
-    line_w = canvas_measure_text(c, p->line, p->line_size);
-    if (line_w > line_max_w) {
-      line_max_w = line_w;
+    int32_t len = 0;
+    tmp = glyphs_get_glyph_indexs_from_str_indexs(glyphs, p->line_index, p->line_size, tmp, tmp_cap,
+                                                  &len);
+    tmp_cap = len;
+    if (len > 0) {
+      float_t line_w = glyphs_measure(glyphs, tmp[0], (uint32_t)len);
+      if (line_w > line_max_w) {
+        line_max_w = (wh_t)line_w;
+      }
     }
   }
+  TKMEM_FREE(tmp);
   line_parser_deinit(p);
   return line_max_w;
 }
 
 ret_t label_set_length(widget_t* widget, int32_t length) {
   label_t* label = LABEL(widget);
+  uint32_t size = 0;
+  canvas_t* c = widget_get_canvas(widget);
   return_value_if_fail(label != NULL, RET_BAD_PARAMS);
-  label->length = length;
+  if (length != label->length) {
+    label->length = length;
+    if (label->glyphs != NULL) {
+      glyphs_destroy(label->glyphs);
+    }
+    size = label->length >= 0 ? tk_min(label->length, widget->text.size) : widget->text.size;
+    widget_prepare_text_style(widget, c);
+    label->glyphs = widget_create_glyphs(widget, c, widget->text.str, size);
+  }
 
   return widget_invalidate_force(widget, NULL);
 }
@@ -176,12 +207,26 @@ ret_t label_set_word_wrap(widget_t* widget, bool_t word_wrap) {
 ret_t label_set_ellipses(widget_t* widget, bool_t ellipses) {
   label_t* label = LABEL(widget);
   return_value_if_fail(label != NULL, RET_BAD_PARAMS);
-  // if (!label->ellipses && ellipses && label->tmp_text == NULL) {
-  //   label->tmp_text = TKMEM_ZALLOC(wstr_t);
-  //   return_value_if_fail(label->tmp_text != NULL, RET_OOM);
-  //   wstr_init(label->tmp_text, 16);
-  // }
+
   label->ellipses = ellipses;
+
+  return widget_invalidate_force(widget, NULL);
+}
+
+ret_t label_set_text(widget_t* widget, const value_t* v) {
+  label_t* label = LABEL(widget);
+  uint32_t size = 0;
+  canvas_t* c = widget_get_canvas(widget);
+
+  return_value_if_fail(label != NULL, RET_BAD_PARAMS);
+
+  wstr_from_value(&(widget->text), v);
+  if (label->glyphs != NULL) {
+    glyphs_destroy(label->glyphs);
+  }
+  size = label->length >= 0 ? tk_min(label->length, widget->text.size) : widget->text.size;
+  widget_prepare_text_style(widget, c);
+  label->glyphs = widget_create_glyphs(widget, c, widget->text.str, size);
 
   return widget_invalidate_force(widget, NULL);
 }
@@ -220,8 +265,7 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
     widget_set_need_relayout(widget);
   }
   if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_TEXT)) {
-    wstr_from_value(&(widget->text), v);
-    return RET_OK;
+    return label_set_text(widget, v);
   } else if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
     return label_set_length(widget, tk_roundi(value_float(v)));
   } else if (tk_str_eq(name, WIDGET_PROP_MAX_W)) {
@@ -246,6 +290,7 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
   wh_t max_line_w = 0;
   int32_t line_height = 0;
   label_t* label = LABEL(widget);
+  glyphs_t* glyphs = label->glyphs;
   ENSURE(label);
   style_t* style = widget->astyle;
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
@@ -262,7 +307,18 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
     return widget_resize(widget, widget->w, line_height);
   }
 
-  max_line_w = label_get_text_line_max_w(widget, c);
+  if (glyphs == NULL || !glyphs_get_valid(glyphs) || !tk_str_eq(glyphs->font->name, c->font_name) ||
+      glyphs->font_size != c->font_size) {
+    if (glyphs != NULL) {
+      glyphs_destroy(glyphs);
+    }
+    glyphs = widget_create_glyphs(widget, c, widget->text.str, size);
+    label->glyphs = glyphs;
+  }
+
+  return_value_if_fail(glyphs != NULL, RET_FAIL);
+
+  max_line_w = label_get_text_line_max_w(widget, c, glyphs);
   if (label->line_wrap) {
     w = widget->w - margin_left - margin_right;
     if (max_w != 0) {
@@ -277,12 +333,11 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
       w = max_w - margin_left - margin_right;
     }
   }
-
   return_value_if_fail(w > 0, RET_BAD_PARAMS);
 
-  return_value_if_fail(line_parser_init(&p, c, widget->text.str, size, c->font_size, w,
-                                        label->line_wrap, label->word_wrap) == RET_OK,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(
+      line_parser_init(&p, glyphs, c->font_size, w, label->line_wrap, label->word_wrap) == RET_OK,
+      RET_BAD_PARAMS);
 
   widget_w = w + margin_left + margin_right;
   widget_h = line_height * p.total_lines + margin_top + margin_bottom;
@@ -297,7 +352,7 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
     widget_h = tk_min(widget_h, max_h);
   }
   line_parser_deinit(&p);
-  return widget_move_resize_ex(widget, widget->x, widget->y, widget_w, widget_h, FALSE);
+  return widget_resize(widget, widget_w, widget_h);
 }
 
 static ret_t label_auto_adjust_size(widget_t* widget) {
@@ -346,6 +401,17 @@ static ret_t label_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
+static ret_t label_on_destroy(widget_t* widget) {
+  label_t* label = LABEL(widget);
+  return_value_if_fail(label != NULL, RET_BAD_PARAMS);
+
+  if (label->glyphs != NULL) {
+    glyphs_destroy(label->glyphs);
+    label->glyphs = NULL;
+  }
+  return RET_OK;
+}
+
 static ret_t label_init(widget_t* widget) {
   label_t* label = LABEL(widget);
   return_value_if_fail(label != NULL, RET_BAD_PARAMS);
@@ -354,6 +420,7 @@ static ret_t label_init(widget_t* widget) {
   label->length = -1;
   label->line_wrap = FALSE;
   label->word_wrap = FALSE;
+
   return RET_OK;
 }
 
@@ -372,7 +439,8 @@ TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
                          .get_prop = label_get_prop,
                          .on_event = label_on_event,
                          .auto_adjust_size = label_auto_adjust_size,
-                         .on_paint_self = label_on_paint_self};
+                         .on_paint_self = label_on_paint_self,
+                         .on_destroy = label_on_destroy};
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(label), x, y, w, h);
