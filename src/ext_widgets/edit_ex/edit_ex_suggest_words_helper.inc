@@ -225,8 +225,12 @@ static widget_t* edit_ex_create_suggest_words_popup(widget_t* widget) {
   item_height = widget->h;
   win = popup_create(NULL, 0, 0, w, h);
   popup_set_parent_widget_by_create(win, widget);
+
   // FIXME: 弹出popup时后台edit不丢失焦点。
   widget_set_prop_bool(win, WIDGET_PROP_IS_KEYBOARD, TRUE);
+
+  /* 不让滚动条拿走选中项的焦点导致按下 down/up 无法切换选中项 */
+  widget_set_prop_bool(win, WIDGET_PROP_STRONGLY_FOCUS, TRUE);
 
   applet_name = widget_get_prop_str(window_for_edit_ex, WIDGET_PROP_APPLET_NAME, NULL);
   widget_set_prop_str(win, WIDGET_PROP_APPLET_NAME, applet_name);

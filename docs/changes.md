@@ -3,6 +3,7 @@
 2026/9/15
   * improve edit_on_key_down(感谢兆坤提供补丁)
   * 添加属性是否为输入属性的注释(感谢福明提供补丁)
+  * fix combo_box_ex and edit_ex(感谢兆坤提供补丁)
 
 2026/9/14
   * 完善 font_manager 中的宏定义(感谢泽武提供补丁)

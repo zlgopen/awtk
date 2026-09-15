@@ -125,6 +125,9 @@ static widget_t* combo_box_ex_create_scroll_popup(combo_box_t* combo_box) {
   widget_set_prop_str(win, WIDGET_PROP_APPLET_NAME, applet_name);
   popup_set_parent_widget_by_create(win, widget);
 
+  /* 不让滚动条拿走选中项的焦点导致按下 down/up 无法切换选中项 */
+  widget_set_prop_bool(win, WIDGET_PROP_STRONGLY_FOCUS, TRUE);
+
   value_set_bool(&v, TRUE);
   widget_set_prop(win, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE, &v);
   widget_set_prop_str(win, WIDGET_PROP_THEME, "combobox_ex_popup");
