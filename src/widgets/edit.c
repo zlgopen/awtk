@@ -734,8 +734,9 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
       widget_focus_prev(widget);
     }
     return RET_STOP;
-  } else if (key_code_is_left(key) || key_code_is_right(key) || key == TK_KEY_HOME ||
-             key == TK_KEY_END) {
+  } else if ((key == TK_KEY_HOME || key == TK_KEY_END) ||
+             (key == TK_KEY_PAGEUP || key == TK_KEY_PAGEDOWN) || (key == TK_KEY_INSERT) ||
+             (key_code_is_left(key) || key_code_is_right(key))) {
     text_edit_key_down(edit->model, e);
     return RET_STOP;
   } else if (is_print || key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE) {
