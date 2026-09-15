@@ -78,7 +78,7 @@ typedef struct _scroll_bar_t {
   int32_t virtual_size;
   /**
    * @property {int32_t} value
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
    * 当前的值。
    */
   int32_t value;

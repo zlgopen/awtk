@@ -94,7 +94,7 @@ typedef struct _image_value_t {
 
   /**
    * @property {double} value
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
    * 值。
    */
   double value;

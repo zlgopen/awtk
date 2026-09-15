@@ -90,7 +90,7 @@ typedef struct _check_button_t {
   widget_t widget;
   /**
    * @property {bool_t} value
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
    * 值(勾选为TRUE，非勾选为FALSE)。
    */
   bool_t value;

@@ -237,6 +237,13 @@ typedef struct _edit_t {
    *
    */
   bool_t scroll_to_begin_on_blur;
+
+  /**
+   * @property {wstr_t} text
+   * @annotation ["set_prop","get_prop","readable","persitent","design","fake","inputable"]
+   * 文本。
+   */
+
   /*private*/
   uint8_t margin;
   uint8_t top_margin;

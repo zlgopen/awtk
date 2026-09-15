@@ -62,7 +62,7 @@ typedef struct _group_box_t {
   widget_t widget;
   /**
    * @property {uint32_t} value
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
    * 选中的单选按钮的索引。
   */
   uint32_t value;

@@ -55,6 +55,7 @@ AWTK 中的 API 注释，除了作为 API 的文档之外，还有以下用途�
 * persitent 该属性是否需要持久化。
 * design   该属性可以在设计器中设置。
 * scriptable 该属性是否支持脚本化。
+* inputable 该属性是否属于输入属性。
 
 ## 函数的注释
 

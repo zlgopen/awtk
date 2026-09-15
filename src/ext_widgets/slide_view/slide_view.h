@@ -127,12 +127,24 @@ typedef struct _slide_view_t {
    */
   uint32_t animating_time;
 
+  /**
+   * @property {uint32_t} active
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
+   * 当前活跃的page。
+   */
+  uint32_t active;
+
+  /**
+   * @property {uint32_t} value
+   * @annotation ["set_prop","get_prop","readable","persitent","design","fake","inputable"]
+   * 当前活跃的page。
+   */
+
   /* private */
   velocity_t velocity;
   point_t down;
   int32_t xoffset;
   int32_t yoffset;
-  uint32_t active;
   uint32_t last_active;
   uint32_t timer_id;
   bool_t dragged;

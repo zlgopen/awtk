@@ -60,7 +60,7 @@ typedef struct _pages_t {
   widget_t widget;
   /**
    * @property {uint32_t} active
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
    * 当前活跃的page。(起始值从0开始。需要用到 MVVM 数据绑定请设置 value 属性)
    */
   uint32_t active;
@@ -74,7 +74,7 @@ typedef struct _pages_t {
 
   /**
    * @property {uint32_t} value
-   * @annotation ["set_prop","get_prop","readable","persitent","design","fake"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","fake","inputable"]
    * 当前活跃的page。
    */
   /* private */

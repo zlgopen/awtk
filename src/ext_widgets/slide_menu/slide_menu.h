@@ -99,7 +99,7 @@ typedef struct _slide_menu_t {
 
   /**
    * @property {int32_t} value
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
    * 值。代表当前选中项的索引。
    */
   int32_t value;

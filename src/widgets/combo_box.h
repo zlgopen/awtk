@@ -186,14 +186,14 @@ typedef struct _combo_box_t {
 
   /**
    * @property {int32_t} selected_index
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
    * 当前选中的选项。
    */
   int32_t selected_index;
 
   /**
    * @property {int32_t} value
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
    * 值。
    */
   int32_t value;

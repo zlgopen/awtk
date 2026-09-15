@@ -75,7 +75,7 @@ typedef struct _slider_t {
   widget_t widget;
   /**
    * @property {double} value
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
    * 值。
    */
   double value;

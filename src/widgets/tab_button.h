@@ -94,7 +94,7 @@ typedef struct _tab_button_t {
   widget_t widget;
   /**
    * @property {bool_t} value
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
    * 值。
    */
   bool_t value;

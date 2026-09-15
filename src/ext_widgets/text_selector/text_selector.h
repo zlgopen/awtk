@@ -90,7 +90,7 @@ typedef struct _text_selector_t {
 
   /**
    * @property {int32_t} selected_index
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
    * 当前选中的选项。
    */
   int32_t selected_index;
@@ -163,6 +163,18 @@ typedef struct _text_selector_t {
    * 绘制蒙版的区域占比（范围0~1）。
    */
   float_t mask_area_scale;
+
+  /**
+   * @property {wstr_t} text
+   * @annotation ["set_prop","get_prop","readable","persitent","design","fake","inputable"]
+   * 文本。
+   */
+
+  /**
+   * @property {int32_t} value
+   * @annotation ["set_prop","get_prop","readable","persitent","design","fake","inputable"]
+   * 值。
+   */
 
   /*private*/
   bool_t pressed;

@@ -155,6 +155,13 @@ typedef struct _mledit_t {
    * 是否根据文本自动调整控件自身高度。
    */
   bool_t auto_adjust_height;
+
+  /**
+   * @property {wstr_t} text
+   * @annotation ["set_prop","get_prop","readable","persitent","design","fake","inputable"]
+   * 文本。
+   */
+
   /*private*/
   bool_t lock_scrollbar_value;
   uint8_t margin;

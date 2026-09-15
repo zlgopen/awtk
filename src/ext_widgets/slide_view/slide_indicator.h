@@ -104,7 +104,7 @@ typedef struct _slide_indicator_t {
 
   /**
    * @property {uint32_t} value
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","inputable"]
    * 值(缺省为0)。
    */
   uint32_t value;
