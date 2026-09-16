@@ -1096,7 +1096,7 @@ static void xml_parser_pop_tag(XmlParser* parser, const char* tag) {
                                  expected_tag, tag);
   }
 
-  darray_pop(parser->tag_stack);
+  darray_remove_index(parser->tag_stack, parser->tag_stack->size - 1);
   return;
 }
 
@@ -1111,7 +1111,7 @@ static void xml_parser_check_unclosed_tags(XmlParser* parser) {
   while (parser->tag_stack->size > 0) {
     char* unclosed_tag = (char*)darray_tail(parser->tag_stack);
     xml_parser_report_error_more(parser, "unclosed tag: '%s' was never closed", unclosed_tag);
-    darray_pop(parser->tag_stack);
+    darray_remove_index(parser->tag_stack, parser->tag_stack->size - 1);
   }
 }
 

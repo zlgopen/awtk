@@ -1057,6 +1057,8 @@ TEST(DArrayTest, clear_reentrant) {
     ASSERT_EQ(s_darray_reentrant_found_self[i], FALSE);
     ASSERT_EQ(s_darray_reentrant_remove_ret[i], RET_NOT_FOUND);
   }
+
+  darray_deinit(&darray);
 }
 
 typedef struct _darray_prop_item_t {

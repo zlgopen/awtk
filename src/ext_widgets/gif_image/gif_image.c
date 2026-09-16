@@ -423,8 +423,8 @@ static ret_t gif_image_on_destroy(widget_t* widget) {
     image->timer_id = TK_INVALID_ID;
   }
 #ifdef WITH_STB_IMAGE
+  stb_gif_frame_free(&(image->gif_context), &(image->gif_msg), &(image->gif_cache));
   if (image->part_buffer_load_mode) {
-    stb_gif_frame_free(&(image->gif_context), &(image->gif_msg), &(image->gif_cache));
     bitmap_deinit(&(image->bitmap));
     if (image->gif_res != NULL) {
       assets_manager_unref(am, image->gif_res);
