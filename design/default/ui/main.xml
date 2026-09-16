@@ -59,6 +59,7 @@
       <button focusable="true" name="open:svg_test" text="SVG Test"/>
       <button focusable="true" name="open:spin_box" text="Spin box"/>
       <button focusable="true" name="open:modeless" text="Modeless"/>
+      <button focusable="true" name="open:harfbuzz" text="Harfbuzz Test"/>
     </view>
     <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
       <button focusable="true" name="open:image_anchor" text="Image Anchor"/>

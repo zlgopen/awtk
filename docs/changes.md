@@ -2,6 +2,7 @@
 
 2026/9/16
   * 修复虚拟宽高很大时，scroll bar 的 dragger 过小的问(感谢兆坤提供补丁) 
+  * demouiold 添加 harfbuzz_test 界面(感谢泽武提供补丁)
 
 2026/9/15
   * improve edit_on_key_down(感谢兆坤提供补丁)

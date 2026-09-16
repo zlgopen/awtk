@@ -1,0 +1,6 @@
+﻿<window anim_hint="htranslate" >
+  <label name="label" x="5" y="5" w="95%" h="60" style="harfbuzz" text="سلام دنیا"/>
+  <label name="label3" x="5" y="70" w="95%" h="200" line_wrap="true" word_wrap="false" auto_adjust_size="false" length="-1" style="harfbuzz" text="تشخیصِ اِعْ‌ًٌَُراب ناهمخوان از وظایف حروفْ‌چین است."/>
+  <edit min="0" max="1024" step="1" name="edit" x="5" y="273" w="95%" h="55" tips="Please enter your text" auto_fix="true" style="harfbuzz" text="الأساسيَّةُ"/>
+  <mledit name="mledit" x="5" y="330" w="95%" h="100" max_lines="100" scroll_line="10" wrap_word="true" style="harfbuzz" text="صباح الخير"/>
+</window>

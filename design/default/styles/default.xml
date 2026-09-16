@@ -180,6 +180,14 @@
     <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
     <empty_focus bg_color="#f0f0f0" text_color="#a0a0a0" border_color="black"/>
   </style>
+  <style name="harfbuzz" border_color="#a0a0a0" font_size="60" font_name="trado" text_color="black" text_align_h="left">
+    <normal/>
+    <focused/>
+    <disable/>
+    <error/>
+    <empty/>
+    <empty_focus/>
+  </style>
 </edit>
 
 <edit_ex selected_fg_color="#020202" selected_text_color="#010101" selected_bg_color="#b5d7fd">
@@ -265,6 +273,10 @@
   
   <style name="big_green">
     <normal text_color="green" font_size="24" text_align_h="center" border_color="#a0a0a0"/>
+  </style>
+
+  <style name="harfbuzz">
+    <normal text_color="black" font_size="60" font_name="trado" text_align_h="left" border_color="#000000"/>
   </style>
 
 </label>
@@ -723,6 +735,14 @@
     <error      bg_color="#f0f0f0" text_color="red" />
     <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
     <empty_focus bg_color="#f0f0f0" text_color="#a0a0a0" border_color="black"/>
+  </style>
+  <style name="harfbuzz" border_color="#a0a0a0" font_size="60" font_name="trado" text_color="black" text_align_h="left">
+    <normal/>
+    <focused/>
+    <disable/>
+    <error/>
+    <empty/>
+    <empty_focus/>
   </style>
 </mledit>
 

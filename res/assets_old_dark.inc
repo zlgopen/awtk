@@ -107,6 +107,7 @@
 #include "assets/default/inc/ui/dialog_win.data"
 #include "assets/default/inc/ui/fruit.data"
 #include "assets/default/inc/ui/list_view_m.data"
+#include "assets/default/inc/ui/harfbuzz.data"
 #include "assets/default/inc/ui/slide_view_h_loop.data"
 #include "assets/default/inc/ui/main_fscript.data"
 #include "assets/default/inc/ui/mutable_image.data"
@@ -683,6 +684,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_dialog_win_default);
   assets_manager_add(am, ui_fruit_default);
   assets_manager_add(am, ui_list_view_m_default);
+  assets_manager_add(am, ui_harfbuzz_default);
   assets_manager_add(am, ui_slide_view_h_loop_default);
   assets_manager_add(am, ui_main_fscript_default);
   assets_manager_add(am, ui_mutable_image_default);
