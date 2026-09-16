@@ -40,7 +40,7 @@
 #define SCROLL_BAR_RIGHT_BUTTON_STYLE_NAME "scroll_right"
 
 #ifndef TK_DRAGGER_MIN_SIZE
-#define TK_DRAGGER_MIN_SIZE 0
+#define TK_DRAGGER_MIN_SIZE 10
 #endif /*TK_DRAGGER_MIN_SIZE*/
 
 #define SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down) \
@@ -145,7 +145,7 @@ static ret_t scroll_bar_mobile_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-/*destkop*/
+/*desktop*/
 static ret_t scroll_bar_desktop_on_click(widget_t* widget, pointer_event_t* e) {
   int32_t delta = 0;
   point_t p = {e->x, e->y};
@@ -265,22 +265,26 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
 
   value = scroll_bar->value;
   if (SCROLL_BAR_IS_HORIZON(widget)) {
-    int64_t max_bar_w = widget_w - 2 * button_margin;
+    int64_t dragger_max_w = widget_w - 2 * button_margin;
+    dragger_max_w = tk_max(0, dragger_max_w);
     virtual_size = tk_max(widget_w, scroll_bar->virtual_size);
 
     y = 1;
     h = widget_h - 2;
-    w = (widget_w * max_bar_w) / virtual_size;
+    w = (widget_w * dragger_max_w) / virtual_size;
     w = tk_max(w, TK_DRAGGER_MIN_SIZE);
+    w = tk_min(w, dragger_max_w);
     x = (widget_w - w - 2 * button_margin) * value / virtual_size + button_margin;
   } else {
-    int64_t max_bar_h = widget_h - 2 * button_margin;
+    int64_t dragger_max_h = widget_h - 2 * button_margin;
+    dragger_max_h = tk_max(0, dragger_max_h);
     virtual_size = tk_max(widget_h, scroll_bar->virtual_size);
 
     x = 1;
     w = widget_w - 2;
-    h = (widget_h * max_bar_h) / virtual_size;
+    h = (widget_h * dragger_max_h) / virtual_size;
     h = tk_max(h, TK_DRAGGER_MIN_SIZE);
+    h = tk_min(h, dragger_max_h);
     y = (widget_h - h - 2 * button_margin) * value / virtual_size + button_margin;
   }
 
