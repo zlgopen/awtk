@@ -152,20 +152,12 @@ typedef struct _nvgp_gl_shader_t {
 #ifdef NVGP_GL3
   GLuint vert_arr;
 #endif
-#if NVGP_GL_USE_UNIFORMBUFFER
-  GLuint frag_buf;
-#endif
-  int32_t frag_size;
   GLuint vert_buf;
 
   uint32_t setted_data;
   uint32_t cverts;
   uint32_t nverts;
   nvgp_vertex_t* verts;
-
-  uint8_t* uniforms;
-  int cuniforms;
-  int nuniforms;
 } nvgp_gl_shader_t;
 
 typedef struct _nvgp_gl_call_t {
@@ -273,6 +265,14 @@ typedef struct _nvgp_gl_context_t {
   nvgp_darray_t textures;
   uint32_t texture_id;
   nvgp_line_cap_t line_cap;
+
+#if NVGP_GL_USE_UNIFORMBUFFER
+  GLuint frag_buf;
+#endif
+  int32_t frag_size;
+  uint8_t* uniforms;
+  int cuniforms;
+  int nuniforms;
 
 // cached state
   GLuint curr_prog;
@@ -451,18 +451,18 @@ static int nvgp_gl_alloc_verts(nvgp_gl_shader_t* shader, int32_t n) {
   return ret;
 }
 
-static int nvgp_gl_alloc_frag_uniforms(nvgp_gl_shader_t* shader, int n) {
-  int32_t ret = 0, structSize = shader->frag_size;
-  if (shader->nuniforms + n > shader->cuniforms) {
+static int nvgp_gl_alloc_frag_uniforms(nvgp_gl_context_t* gl, int n) {
+  int32_t ret = 0, structSize = gl->frag_size;
+  if (gl->nuniforms + n > gl->cuniforms) {
     uint8_t* uniforms;
-    int cuniforms = nvgp_max(shader->nuniforms + n, 128) + shader->cuniforms / 2;  // 1.5x Overallocate
-    uniforms = NVGP_REALLOCT(uint8_t, shader->uniforms, structSize * cuniforms);
+    int cuniforms = nvgp_max(gl->nuniforms + n, 128) + gl->cuniforms / 2;  // 1.5x Overallocate
+    uniforms = NVGP_REALLOCT(uint8_t, gl->uniforms, structSize * cuniforms);
     if (uniforms == NULL) return -1;
-    shader->uniforms = uniforms;
-    shader->cuniforms = cuniforms;
+    gl->uniforms = uniforms;
+    gl->cuniforms = cuniforms;
   }
-  ret = shader->nuniforms * structSize;
-  shader->nuniforms += n;
+  ret = gl->nuniforms * structSize;
+  gl->nuniforms += n;
   return ret;
 }
 
@@ -509,12 +509,7 @@ static void nvgp_gl_delete_shader(nvgp_gl_shader_t* shader) {
   if (shader->frag != 0) {
     glDeleteShader(shader->frag);
   }
-#if NVGP_GL3
-#if NVGP_GL_USE_UNIFORMBUFFER
-  if (shader->frag_buf != 0) {
-    glDeleteBuffers(1, &shader->frag_buf);
-  }
-#endif
+#if NANOVG_GL3
   if (shader->vert_arr != 0) {
     glDeleteVertexArrays(1, &shader->vert_arr);
   }
@@ -524,7 +519,6 @@ static void nvgp_gl_delete_shader(nvgp_gl_shader_t* shader) {
   }
 
   NVGP_FREE(shader->verts);
-  NVGP_FREE(shader->uniforms);
   NVGP_MEMSET(shader, 0x0, sizeof(nvgp_gl_shader_t));
 }
 
@@ -539,7 +533,7 @@ static void nvgp_gl_get_uniforms(nvgp_gl_shader_t* shader) {
 #endif
 }
 
-static void  nvgp_gl_init_shader(nvgp_gl_shader_t* shader, int32_t align) {
+static void  nvgp_gl_init_shader(nvgp_gl_shader_t* shader) {
   nvgp_gl_get_uniforms(shader);
 #if NVGP_GL_USE_UNIFORMBUFFER
   glUniformBlockBinding(shader->prog, shader->loc[NVGP_GL_LOC_FRAG], NVGP_GL_FRAG_BINDING);
@@ -550,13 +544,6 @@ static void  nvgp_gl_init_shader(nvgp_gl_shader_t* shader, int32_t align) {
   glGenVertexArrays(1, &shader->vert_arr);
 #endif
   glGenBuffers(1, &shader->vert_buf);
-
-#if NVGP_GL_USE_UNIFORMBUFFER
-  // Create UBOs
-  glGenBuffers(1, &shader->frag_buf);
-  glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &align);
-#endif
-  shader->frag_size = (sizeof(nvgp_gl_frag_uniforms_t) + align - 1) / align * align;
 }
 
 static nvgp_bool_t nvgp_gl_create_shader(nvgp_gl_shader_t* shader, const char* name, const char* header,
@@ -651,10 +638,26 @@ static nvgp_bool_t nvgp_gl_render_create(nvgp_gl_context_t* gl_ctx) {
                                 tmp_fill_frag_shader) == 0)
         return FALSE;
       }
-      nvgp_gl_init_shader(&(gl_ctx->shader_list[i]), UNIFORM_OFFSET_ALIGNMENT);
+      nvgp_gl_init_shader(&(gl_ctx->shader_list[i]));
       nvgp_gl_check_error(gl_ctx, "uniform locations");
     }
   }
+
+  // Create the single shared UBO (all shaders share one buffer) and compute
+  // the aligned frag uniform size used by the shared uniform array.
+#if NVGP_GL_USE_UNIFORMBUFFER
+  {
+    GLint align = UNIFORM_OFFSET_ALIGNMENT;
+    glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &align);
+    gl_ctx->frag_size = (sizeof(nvgp_gl_frag_uniforms_t) + align - 1) / align * align;
+    glGenBuffers(1, &gl_ctx->frag_buf);
+  }
+#else
+  {
+    int32_t align = UNIFORM_OFFSET_ALIGNMENT;
+    gl_ctx->frag_size = (sizeof(nvgp_gl_frag_uniforms_t) + align - 1) / align * align;
+  }
+#endif
 
   nvgp_gl_check_error(gl_ctx, "create done");
 
@@ -703,11 +706,6 @@ static void nvgp_gl_set_shader_data(nvgp_gl_context_t* gl, nvgp_gl_shader_t* sha
 #ifdef NVGP_GL3
   if (!shader->setted_data) {
     shader->setted_data = 1;
-#endif
-#if NVGP_GL_USE_UNIFORMBUFFER
-    // Upload ubo for frag shaders
-    glBindBuffer(GL_UNIFORM_BUFFER, shader->frag_buf);
-    glBufferData(GL_UNIFORM_BUFFER, shader->nuniforms * shader->frag_size, shader->uniforms, GL_STREAM_DRAW);
 #endif
 
     // Upload vertex data
@@ -767,16 +765,16 @@ static nvgp_gl_texture_t* nvgp_gl_find_texture(nvgp_gl_context_t* gl, int32_t id
   return NULL;
 }
 
-static nvgp_gl_frag_uniforms_t* nvgp_gl_frag_uniform_ptr(nvgp_gl_shader_t* shader, uint32_t i) {
-  return (nvgp_gl_frag_uniforms_t*)&shader->uniforms[i];
+static nvgp_gl_frag_uniforms_t* nvgp_gl_frag_uniform_ptr(nvgp_gl_context_t* gl, uint32_t i) {
+  return (nvgp_gl_frag_uniforms_t*)&gl->uniforms[i];
 }
 
 static void nvgp_gl_set_uniforms(nvgp_gl_context_t* gl, nvgp_gl_shader_t* shader, uint32_t uniform_offset, int32_t image) {
 #if NVGP_GL_USE_UNIFORMBUFFER
-  glBindBufferRange(GL_UNIFORM_BUFFER, NVGP_GL_FRAG_BINDING, shader->frag_buf, uniform_offset,
-                    shader->frag_size);
+  glBindBufferRange(GL_UNIFORM_BUFFER, NVGP_GL_FRAG_BINDING, gl->frag_buf, uniform_offset,
+                    sizeof(nvgp_gl_frag_uniforms_t));
 #else
-  nvgp_gl_frag_uniforms_t* frag = nvgp_gl_frag_uniform_ptr(shader, uniform_offset);
+  nvgp_gl_frag_uniforms_t* frag = nvgp_gl_frag_uniform_ptr(gl, uniform_offset);
   glUniform4fv(shader->loc[NVGP_GL_LOC_FRAG], NVGP_GL_UNIFORMARRAY_SIZE, &(frag->uniformArray[0][0]));
 #endif
 
@@ -793,9 +791,9 @@ static void nvgp_gl_reset_shader(nvgp_gl_context_t* gl) {
   uint32_t i = 0;
   for (i = 0; i < nvgp_get_arrary_size(gl->shader_list); i++) {
     gl->shader_list[i].nverts = 0;
-    gl->shader_list[i].nuniforms = 0;
     gl->shader_list[i].setted_data = 0;
   }
+  gl->nuniforms = 0;
 }
 
 static nvgp_bool_t nvgp_gl_is_same_shader_prog(nvgp_gl_context_t* gl, nvgp_gl_shader_t* shader) {
@@ -885,7 +883,7 @@ static void nvgp_gl_flush_fill_by_color(nvgp_gl_context_t* gl, nvgp_gl_call_t* c
     // Draw anti-aliased pixels
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
-    nvgp_gl_set_uniforms(gl, shader, call->uniform_offset + shader->frag_size, 0);
+    nvgp_gl_set_uniforms(gl, shader, call->uniform_offset + gl->frag_size, 0);
     nvgp_gl_check_error(gl, "fill fill");
 
     if (gl->flags & NVGP_GL_FLAG_ANTIALIAS) {
@@ -921,7 +919,7 @@ static void nvgp_gl_flush_fill_by_color(nvgp_gl_context_t* gl, nvgp_gl_call_t* c
     // Draw anti-aliased pixels
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
-    nvgp_gl_set_uniforms(gl, shader, call->uniform_offset + shader->frag_size, 0);
+    nvgp_gl_set_uniforms(gl, shader, call->uniform_offset + gl->frag_size, 0);
     nvgp_gl_check_error(gl, "fill fill");
 
     if (gl->flags & NVGP_GL_FLAG_ANTIALIAS) {
@@ -983,7 +981,7 @@ static void nvgp_gl_flush_fill_by_image(nvgp_gl_context_t* gl, nvgp_gl_call_t* c
   // Draw anti-aliased pixels
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
-  nvgp_gl_set_uniforms(gl, shader, call->uniform_offset + shader->frag_size, call->image);
+  nvgp_gl_set_uniforms(gl, shader, call->uniform_offset + gl->frag_size, call->image);
   nvgp_gl_check_error(gl, "fill fill");
 
   if (gl->flags & NVGP_GL_FLAG_ANTIALIAS) {
@@ -1065,7 +1063,7 @@ static void nvgp_gl_flush_stroke_by_color(nvgp_gl_context_t* gl, nvgp_gl_call_t*
     // Fill the stroke base without overlap
     nvgp_gl_stencil_func(gl, GL_EQUAL, 0x0, 0xff);
     glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
-    nvgp_gl_set_uniforms(gl, shader, call->uniform_offset + shader->frag_size, 0);
+    nvgp_gl_set_uniforms(gl, shader, call->uniform_offset + gl->frag_size, 0);
     nvgp_gl_check_error(gl, "stroke fill 0");
     for (i = 0; i < call->path_count; i++) {
       nvgp_gl_path_t* path = nvgp_darray_get_ptr(&gl->paths, call->path_index + i, nvgp_gl_path_t);
@@ -1127,7 +1125,7 @@ static void nvgp_gl_flush_stroke_by_image(nvgp_gl_context_t* gl, nvgp_gl_call_t*
     // Fill the stroke base without overlap
     nvgp_gl_stencil_func(gl, GL_EQUAL, 0x0, 0xff);
     glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
-    nvgp_gl_set_uniforms(gl, shader, call->uniform_offset + shader->frag_size, call->image);
+    nvgp_gl_set_uniforms(gl, shader, call->uniform_offset + gl->frag_size, call->image);
     nvgp_gl_check_error(gl, "stroke fill 0");
     for (i = 0; i < call->path_count; i++) {
       nvgp_gl_path_t* path = nvgp_darray_get_ptr(&gl->paths, call->path_index + i, nvgp_gl_path_t);
@@ -1213,6 +1211,11 @@ static void nvgp_gl_flush_draw_text(nvgp_gl_context_t* gl, nvgp_gl_call_t* call_
 static void nvgp_gl_flush(nvgp_gl_context_t* gl) {
   uint32_t i = 0;
   nvgp_gl_reset_gl_state(gl);
+#if NVGP_GL_USE_UNIFORMBUFFER
+  // Upload all frag uniforms once per frame into the shared UBO.
+  glBindBuffer(GL_UNIFORM_BUFFER, gl->frag_buf);
+  glBufferData(GL_UNIFORM_BUFFER, gl->nuniforms * gl->frag_size, gl->uniforms, GL_STREAM_DRAW);
+#endif
   for (i = 0; i < gl->calls.size; i++) {
     nvgp_gl_call_t* call_base = nvgp_darray_get_ptr(&gl->calls, i, nvgp_gl_call_t);
     switch (call_base->call_type)
@@ -1253,7 +1256,7 @@ static void nvgp_gl_flush(nvgp_gl_context_t* gl) {
   }
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);
-#if defined NVGP_GL3
+#if defined NANOVG_GL3
   glBindVertexArray(0);
 #endif
   glDisable(GL_CULL_FACE);
@@ -1574,13 +1577,13 @@ static nvgp_bool_t nvgp_gl_render_convex_fill_by_color(nvgp_gl_context_t* gl, nv
       NVGP_MEMCPY(shader->verts + offset, path->stroke, sizeof(nvgp_vertex_t) * path->nstroke);
       offset += path->nstroke;
     }
-    call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 1);
+    call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 1);
     if (call->uniform_offset == -1) {
       NVGP_FREE(call);
       goto error;
     }
     // Fill shader
-    frag = nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset);
+    frag = nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset);
     nvgp_gl_convert_paint(gl, frag, paint, scissor, fringe, fringe, -1.0f);
 
     nvgp_darray_push(&gl->calls, call);
@@ -1647,18 +1650,18 @@ static nvgp_bool_t nvgp_gl_render_fill_by_color(nvgp_gl_context_t* gl, nvgp_pain
     nvgp_gl_vset(&quad[2], bounds[0], bounds[3], 0.5f, 1.0f);
     nvgp_gl_vset(&quad[3], bounds[0], bounds[1], 0.5f, 1.0f);
 
-    call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 2);
+    call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 2);
     if (call->uniform_offset == -1) {
       NVGP_FREE(call);
       goto error;
     }
     // Simple shader for stencil
-    frag = nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset);
+    frag = nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset);
     NVGP_MEMSET(frag, 0, sizeof(*frag));
     frag->strokeThr = -1.0f;
     frag->draw_info[0] = 1;
     // Fill shader
-    nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset + shader->frag_size), paint, scissor, fringe, fringe, -1.0f);
+    nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset + gl->frag_size), paint, scissor, fringe, fringe, -1.0f);
 
     nvgp_darray_push(&gl->calls, call);
     return TRUE;
@@ -1723,17 +1726,17 @@ static nvgp_bool_t nvgp_gl_render_fill_by_image(nvgp_gl_context_t* gl, nvgp_pain
     nvgp_gl_vset(&quad[2], bounds[0], bounds[3], 0.5f, 1.0f);
     nvgp_gl_vset(&quad[3], bounds[0], bounds[1], 0.5f, 1.0f);
 
-    call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 2);
+    call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 2);
     if (call->uniform_offset == -1) {
       NVGP_FREE(call);
       goto error;
     }
     // Simple shader for stencil
-    frag = nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset);
+    frag = nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset);
     NVGP_MEMSET(frag, 0, sizeof(*frag));
     frag->strokeThr = -1.0f;
     // Fill shader
-    nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset + shader->frag_size), paint, scissor, fringe, fringe, -1.0f);
+    nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset + gl->frag_size), paint, scissor, fringe, fringe, -1.0f);
 
     nvgp_darray_push(&gl->calls, call);
     return TRUE;
@@ -1810,12 +1813,12 @@ static nvgp_bool_t nvgp_gl_render_draw_image(nvgp_gl_context_t* gl, nvgp_paint_t
     }
 
     if (paths->size == 1) {
-      call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 1);
+      call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 1);
       if (call->uniform_offset == -1) {
         NVGP_FREE(call);
         goto error;
       }
-      frag = nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset);
+      frag = nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset);
       nvgp_gl_convert_paint(gl, frag, paint, scissor, fringe, fringe, -1.0f);
     } else {
       call->triangle_offset = offset;
@@ -1825,17 +1828,17 @@ static nvgp_bool_t nvgp_gl_render_draw_image(nvgp_gl_context_t* gl, nvgp_paint_t
       nvgp_gl_vset(&quad[2], bounds[0], bounds[3], 0.5f, 1.0f);
       nvgp_gl_vset(&quad[3], bounds[0], bounds[1], 0.5f, 1.0f);
 
-      call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 2);
+      call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 2);
       if (call->uniform_offset == -1) {
         NVGP_FREE(call);
         goto error;
       }
       // Simple shader for stencil
-      frag = nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset);
+      frag = nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset);
       NVGP_MEMSET(frag, 0, sizeof(*frag));
       frag->strokeThr = -1.0f;
       // Fill shader
-      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset + shader->frag_size), paint, scissor, fringe, fringe, -1.0f);
+      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset + gl->frag_size), paint, scissor, fringe, fringe, -1.0f);
     }
     
     nvgp_darray_push(&gl->calls, call);
@@ -1883,12 +1886,12 @@ static nvgp_bool_t nvgp_gl_render_fast_stroke_by_color(nvgp_gl_context_t* gl, nv
     memcpy(&shader->verts[offset], path->stroke, sizeof(nvgp_vertex_t) * path->nstroke);
     offset += path->nstroke;
 
-    call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 1);
+    call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 1);
     if (call->uniform_offset == -1) {
       NVGP_FREE(call);
       goto error;
     }
-    frag = nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset);
+    frag = nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset);
     nvgp_gl_convert_paint(gl, frag, paint, scissor, stroke_width, fringe, -1.0f);
 
     nvgp_darray_push(&gl->calls, call);
@@ -1939,25 +1942,25 @@ static nvgp_bool_t nvgp_gl_render_stroke_by_color(nvgp_gl_context_t* gl, nvgp_pa
 
     if (gl->flags & NVGP_GL_FLAG_STENCIL_STROKES) {
       // Fill shader
-      call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 2);
+      call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 2);
       if (call->uniform_offset == -1) {
         NVGP_FREE(call);
         goto error;
       }
 
-      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset), paint, scissor,
+      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset), paint, scissor,
                           stroke_width, fringe, -1.0f);
-      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset + shader->frag_size), paint,
+      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset + gl->frag_size), paint,
                           scissor, stroke_width, fringe, 1.0f - 0.5f / 255.0f);
 
     } else {
       // Fill shader
-      call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 1);
+      call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 1);
       if (call->uniform_offset == -1) {
         NVGP_FREE(call);
         goto error;
       }
-      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset), paint, scissor,
+      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset), paint, scissor,
                           stroke_width, fringe, -1.0f);
     }
     nvgp_darray_push(&gl->calls, call);
@@ -2011,25 +2014,25 @@ static nvgp_bool_t nvgp_gl_render_stroke_by_image(nvgp_gl_context_t* gl, nvgp_pa
 
     if (gl->flags & NVGP_GL_FLAG_STENCIL_STROKES) {
       // Fill shader
-      call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 2);
+      call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 2);
       if (call->uniform_offset == -1) {
         NVGP_FREE(call);
         goto error;
       }
 
-      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset), paint, scissor,
+      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset), paint, scissor,
                           stroke_width, fringe, -1.0f);
-      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset + shader->frag_size), paint,
+      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset + gl->frag_size), paint,
                           scissor, stroke_width, fringe, 1.0f - 0.5f / 255.0f);
 
     } else {
       // Fill shader
-      call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 1);
+      call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 1);
       if (call->uniform_offset == -1) {
         NVGP_FREE(call);
         goto error;
       }
-      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset), paint, scissor,
+      nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset), paint, scissor,
                           stroke_width, fringe, -1.0f);
     }
     nvgp_darray_push(&gl->calls, call);
@@ -2064,12 +2067,12 @@ static nvgp_bool_t nvgp_gl_render_fast_draw_text(nvgp_gl_context_t* gl, nvgp_pai
     NVGP_MEMCPY(&shader->verts[call->triangle_offset], verts, sizeof(nvgp_vertex_t) * nverts);
 
     // Fill shader
-    call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 1);
+    call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 1);
     if (call->uniform_offset == -1) {
       NVGP_FREE(call);
       goto error;
     }
-    frag = nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset);
+    frag = nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset);
     nvgp_gl_convert_paint(gl, frag, paint, scissor, 1.0f, fringe, -1.0f);
 
     nvgp_darray_push(&gl->calls, call);
@@ -2103,12 +2106,12 @@ static int32_t nvgp_gl_render_draw_text_by_transformer(nvgp_gl_context_t* gl, nv
   NVGP_MEMCPY(&shader->verts[call->triangle_offset], verts, sizeof(nvgp_vertex_t) * nverts);
 
   // Fill shader
-  call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 1);
+  call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 1);
   if (call->uniform_offset == -1) {
     NVGP_FREE(call);
     goto error;
   }
-  frag = nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset);
+  frag = nvgp_gl_frag_uniform_ptr(gl, call->uniform_offset);
   nvgp_gl_convert_paint(gl, frag, paint, scissor, 1.0f, fringe, -1.0f);
 
   nvgp_darray_push(&gl->calls, call);
@@ -2388,8 +2391,8 @@ static void nvgp_gl_render_cancel(void* uptr) {
   for (i = 0; i < nvgp_get_arrary_size(gl->shader_list); i++) {
     nvgp_darray_clear(&gl->paths);
     gl->shader_list[i].nverts = 0;
-    gl->shader_list[i].nuniforms = 0;
   }
+  gl->nuniforms = 0;
   nvgp_darray_clear_by_destroy_function(&gl->calls, nvgp_gl_call_destroy, NULL);
 }
 
@@ -2408,6 +2411,12 @@ static void nvgp_gl_destroy(void* uptr) {
   for (i = 0; i < NVGP_GL_SHADER_COUNT; i++) {
     nvgp_gl_delete_shader(&ctx->shader_list[i]);
   }
+#if NVGP_GL_USE_UNIFORMBUFFER
+  if (ctx->frag_buf != 0) {
+    glDeleteBuffers(1, &ctx->frag_buf);
+  }
+#endif
+  NVGP_FREE(ctx->uniforms);
   nvgp_darray_clear_by_destroy_function(&ctx->calls, nvgp_gl_call_destroy, NULL);
   nvgp_darray_clear_by_destroy_function(&ctx->textures, nvgp_gl_texture_destroy, NULL);
   nvgp_darray_deinit(&ctx->calls);
