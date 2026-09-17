@@ -69,6 +69,8 @@ file(GLOB _base_glob CONFIGURE_DEPENDS
   "${CMAKE_SOURCE_DIR}/src/svg/*.c"
   "${CMAKE_SOURCE_DIR}/src/clip_board/*.c"
   "${CMAKE_SOURCE_DIR}/src/font_loader/*.c"
+  "${CMAKE_SOURCE_DIR}/src/font_loader/harfbuzz/*.c"
+  "${CMAKE_SOURCE_DIR}/src/font_loader/harfbuzz/*.cpp"
   "${CMAKE_SOURCE_DIR}/src/blend/*.c"
   "${CMAKE_SOURCE_DIR}/src/image_loader/*.c"
   "${CMAKE_SOURCE_DIR}/src/designer_support/*.c"
