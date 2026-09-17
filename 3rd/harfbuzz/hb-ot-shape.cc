@@ -152,6 +152,11 @@ hb_ot_shape_planner_t::compile (hb_ot_shape_plan_t           &plan,
   bool has_gsub = false;
   has_gsub = hb_ot_layout_has_substitution (face);
   bool has_gpos = !disable_gpos && hb_ot_layout_has_positioning (face);
+
+#ifdef HB_NO_AAT_SHAPE
+  (void)has_gsub;
+#endif
+
   if (false)
     ;
 #ifndef HB_NO_AAT_SHAPE

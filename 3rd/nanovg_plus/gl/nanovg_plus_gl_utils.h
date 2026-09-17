@@ -216,6 +216,8 @@ void nvgp_gl_bind_framebuffer(nvgp_gl_util_framebuffer* fb) {
   if (s_nvgp_gl_default_fbo == -1) {
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &s_nvgp_gl_default_fbo);
   }
+
+#if defined(NVGP_GL3) || defined(NVGP_GLES3)
   if (fb != NULL && fb->fbo != fb->self_fbo && fb->temp_fbo > 0 && fb->samples > 0) {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, fb->self_fbo);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb->temp_fbo);
@@ -224,6 +226,8 @@ void nvgp_gl_bind_framebuffer(nvgp_gl_util_framebuffer* fb) {
                       0, 0, fb->width, fb->height,
                       GL_COLOR_BUFFER_BIT, GL_LINEAR);
   }
+#endif
+
   glBindFramebuffer(GL_FRAMEBUFFER, fb != NULL ? fb->fbo : s_nvgp_gl_default_fbo);
 #else
   (void)(fb);

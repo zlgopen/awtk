@@ -192,12 +192,15 @@ static void nvgluBindFramebuffer(NVGLUframebuffer* fb)
 {
 #ifdef NANOVG_FBO_VALID
 	if (defaultFBO == -1) glGetIntegerv(GL_FRAMEBUFFER_BINDING, &defaultFBO);
+	
+#if defined(NANOVG_GL3) || defined(NANOVG_GLES3)
 	if (fb != NULL && fb->fbo != fb->self_fbo && fb->temp_fbo > 0 && fb->samples > 0) {
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, fb->self_fbo);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb->temp_fbo);
     // 执行多重采样解析
 		glBlitFramebuffer(0, 0, fb->width, fb->height, 0, 0, fb->width, fb->height, GL_COLOR_BUFFER_BIT, GL_LINEAR);
 	}
+#endif
 	glBindFramebuffer(GL_FRAMEBUFFER, fb != NULL ? fb->fbo : defaultFBO);
 #else
 	NVG_NOTUSED(fb);
