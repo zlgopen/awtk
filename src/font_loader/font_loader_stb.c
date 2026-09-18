@@ -141,7 +141,7 @@ static glyph_t* font_stb_get_glyph_impl(font_t* f, wchar_t c, font_size_t font_s
   g->advance = tk_roundi(advance * scale);
   g->data = NULL;
   g->bidi_type = FONT_BIDI_TYPE_LTR;
-  g->chr = c;
+  g->chr = (uint16_t)c;
   g->glyph_index = stbtt_FindGlyphIndex(sf, c);
 
   if (bitmap != NULL) {
@@ -201,7 +201,7 @@ static glyphs_t* font_stb_create_glyphs(font_t* f, const wchar_t* str, uint32_t 
       wchar_t c = b.vis_str[i];
       if (glyph_cache_lookup(&(font->cache), c, font_size, &glyphs->glyphs[i]) != RET_OK) {
         if (font_stb_get_glyph_impl(f, c, font_size, &glyphs->glyphs[i]) == NULL) {
-          glyphs->glyphs[i].chr = c;
+          glyphs->glyphs[i].chr = (uint16_t)c;
           glyphs->glyphs[i].w = 0;
           glyphs->glyphs[i].h = 0;
         }

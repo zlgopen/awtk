@@ -166,7 +166,7 @@ static glyphs_t* font_harfbuzz_data_bitmap_create_glyphs(font_t* f, const wchar_
       wchar_t c = str[i];
       ret = font_harfbuzz_data_bitmap_get_glyph_impl(f, c, font_size, &hb_str, &glyphs->glyphs[i]);
       if (ret != RET_OK && glyphs->glyphs[i].data == NULL) {
-        glyphs->glyphs[i].chr = c;
+        glyphs->glyphs[i].chr = (uint16_t)c;
         glyphs->glyphs[i].w = 0;
         glyphs->glyphs[i].h = 0;
       }
@@ -182,7 +182,7 @@ static glyphs_t* font_harfbuzz_data_bitmap_create_glyphs(font_t* f, const wchar_
         if (font_harfbuzz_data_bitmap_get_glyph_impl(f, c, font_size, NULL, &glyphs->glyphs[i]) !=
                 RET_OK &&
             glyphs->glyphs[i].data == NULL) {
-          glyphs->glyphs[i].chr = c;
+          glyphs->glyphs[i].chr = (uint16_t)c;
           glyphs->glyphs[i].w = 0;
           glyphs->glyphs[i].h = 0;
         }

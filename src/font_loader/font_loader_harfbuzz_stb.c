@@ -294,7 +294,7 @@ static glyphs_t* font_hb_stb_create_glyphs(font_t* f, const wchar_t* str, uint32
         c = b.vis_str[i];
         if (glyph_cache_lookup(&(font->cache), c, font_size, &glyphs->glyphs[i]) != RET_OK) {
           if (font_hb_stb_get_glyph_impl(f, c, font_size, NULL, &glyphs->glyphs[i]) == NULL) {
-            glyphs->glyphs[i].chr = c;
+            glyphs->glyphs[i].chr = (uint16_t)c;
             glyphs->glyphs[i].w = 0;
             glyphs->glyphs[i].h = 0;
           }

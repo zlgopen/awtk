@@ -89,7 +89,7 @@ static ret_t font_gen_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, 
   g->y = -glyf->bitmap_top;
   g->data = glyf->bitmap.buffer;
   g->advance = glyf->metrics.horiAdvance / 64;
-  g->chr = c;
+  g->chr = (uint16_t)c;
   g->bidi_type = FONT_BIDI_TYPE_LTR;
   g->glyph_index = FT_Get_Char_Index(sf->face, c);
 

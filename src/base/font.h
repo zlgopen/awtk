@@ -131,11 +131,11 @@ struct _glyph_t {
    */
   uint32_t glyph_index;
   /**
-   * @property {wchar_t} chr
+   * @property {uint16_t} chr
    * @annotation ["readable"]
    * 字符。
    */
-  wchar_t chr;
+  uint16_t chr;
   /**
    * @property {int16_t} x
    * @annotation ["readable"]

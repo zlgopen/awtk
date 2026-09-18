@@ -90,7 +90,7 @@ static ret_t font_ft_get_glyph_impl(font_t* f, wchar_t c, font_size_t font_size,
     g->y = -glyf->bitmap_top;
     g->data = glyf->bitmap.buffer;
     g->advance = glyf->metrics.horiAdvance / 64;
-    g->chr = c;
+    g->chr = (uint16_t)c;
     g->bidi_type = FONT_BIDI_TYPE_LTR;
     g->glyph_index = FT_Get_Char_Index(sf->face, c);
 
@@ -145,7 +145,7 @@ static glyphs_t* font_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_t l
       wchar_t c = b.vis_str[i];
       if (glyph_cache_lookup(&(font->cache), c, font_size, &glyphs->glyphs[i]) != RET_OK) {
         if (font_ft_get_glyph_impl(f, c, font_size, &glyphs->glyphs[i]) != RET_OK) {
-          glyphs->glyphs[i].chr = c;
+          glyphs->glyphs[i].chr = (uint16_t)c;
           glyphs->glyphs[i].w = 0;
           glyphs->glyphs[i].h = 0;
         }

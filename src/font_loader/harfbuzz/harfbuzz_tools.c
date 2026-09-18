@@ -150,7 +150,7 @@ ret_t hb_set_hb_glyphs_chr(glyphs_t* glyphs, hb_info_t* info, uint32_t glyph_len
     g = &glyphs->glyphs[i];
     cur_cluster = info[i].cluster;
     if (g != NULL && cur_cluster >= 0 && (uint32_t)cur_cluster < glyphs->str_length) {
-      g->chr = glyphs->str[cur_cluster];
+      g->chr = (uint16_t)glyphs->str[cur_cluster];
     }
   }
 
@@ -167,12 +167,12 @@ ret_t hb_set_normal_glyphs_chr(glyphs_t* glyphs, bidi_t* b) {
   if (b != NULL && b->vis_str != NULL) {
     for (i = 0; i < len; i++) {
       g = &glyphs->glyphs[i];
-      g->chr = b->vis_str[i];
+      g->chr = (uint16_t)b->vis_str[i];
     }
   } else {
     for (i = 0; i < len; i++) {
       g = &glyphs->glyphs[i];
-      g->chr = glyphs->str[i];
+      g->chr = (uint16_t)glyphs->str[i];
     }
   }
 

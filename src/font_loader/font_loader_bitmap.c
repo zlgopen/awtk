@@ -84,7 +84,7 @@ static glyphs_t* font_bitmap_create_glyphs(font_t* f, const wchar_t* str, uint32
       wchar_t c = b.vis_str[i];
       if (font_bitmap_get_glyph(f, c, font_size, &glyphs->glyphs[i]) != RET_OK &&
           glyphs->glyphs[i].data == NULL) {
-        glyphs->glyphs[i].chr = c;
+        glyphs->glyphs[i].chr = (uint16_t)c;
         glyphs->glyphs[i].w = 0;
         glyphs->glyphs[i].h = 0;
       }
