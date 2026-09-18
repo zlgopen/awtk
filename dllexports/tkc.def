@@ -597,6 +597,7 @@ EXPORTS
     idle_manager_remove_all
     idle_manager_remove_all_by_ctx
     idle_manager_remove
+    idle_manager_remove_ex
     idle_manager_append
     idle_manager_find
     idle_manager_add

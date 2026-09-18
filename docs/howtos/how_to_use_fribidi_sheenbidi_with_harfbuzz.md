@@ -140,6 +140,10 @@ scons TEXT_SHAPING=harfbuzz
 ```
 3rd/harfbuzz
 src/font_loader/harfbuzz
+
+// 根据选择的 bidi 类型决定加入编译的 bidi 文件
+3rd/SheenBidi-3.0.0
+3rd/fribidi
 ```
 
 在项目的 `awtk_config.h` 中加入以下宏定义：
@@ -149,9 +153,42 @@ src/font_loader/harfbuzz
 #define WITH_STB_FONT 1
 #define WITH_FT_FONT 1
 
+// 启用 bidi
+#define WITH_BIDI_SHEEN 1
+#define WITH_BIDI_FRIBIDI 1
+
 // 定义启用 harfbuzz 动态整形
 #define WITH_HARFBUZZ_TEXT_SHAPING 1
 ```
 
 完成以上两步后再进行编译，即可使用动态字符串整形方案。
 
+## 如何在 AWTK-Android 平台使用
+
+AWTK-Android 平台也同步适配了 harfbuzz 的使用，只要在编译前修改一下编译配置即可：
+
+```cmake
+# awtk-android/android-project/app/src/main/cpp/CMakeLists.txt 
+
+# 将 WITH_HARFBUZZ 置为 TRUE
+# enable harfbuzz
+set(WITH_HARFBUZZ TRUE)
+# set(WITH_HARFBUZZ FALSE)
+```
+
+完成修改后进行编译即可使用 harfbuzz 功能。
+
+## 如何在 AWTK-Web 平台使用
+
+AWTK-Web 平台也适配了 harfbuzz 的应用，与 AWTK-Android 类似，只需要修改一下编译配置即可：
+
+```cmake
+# awtk-web/web-project/CMakeLists.txt
+
+# 将 WITH_HARFBUZZ 置为 TRUE
+# enable harfbuzz
+set(WITH_HARFBUZZ TRUE)
+# set(WITH_HARFBUZZ FALSE)
+```
+
+完成修改后进行编译即可使用 harfbuzz 功能。
