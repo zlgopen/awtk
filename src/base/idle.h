@@ -100,6 +100,17 @@ ret_t idle_queue_ex(idle_func_t on_idle, void* ctx, tk_destroy_t on_destroy, voi
 ret_t idle_remove(uint32_t idle_id);
 
 /**
+ * @method idle_remove_ex
+ * 删除指定的idle。
+ * @annotation ["scriptable", "static"]
+ * @param {tk_compare_t} compare idle_info_t比较函数。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t idle_remove_ex(tk_compare_t compare, void* ctx);
+
+/**
  * @method idle_remove_all_by_ctx
  * 根据上下文删除所有对应的idle。
  * @annotation ["static"]

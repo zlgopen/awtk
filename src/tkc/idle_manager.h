@@ -140,6 +140,17 @@ ret_t idle_manager_remove_all_by_ctx(idle_manager_t* idle_manager, void* ctx);
 ret_t idle_manager_remove(idle_manager_t* idle_manager, uint32_t idle_id);
 
 /**
+ * @method idle_manager_remove_ex
+ * 删除满足条件的idle。
+ * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
+ * @param {tk_compare_t} compare idle_info_t比较函数。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t idle_manager_remove_ex(idle_manager_t* idle_manager, tk_compare_t compare, void* ctx);
+
+/**
  * @method idle_manager_append
  * 追加idle。
  * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。

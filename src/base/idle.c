@@ -39,6 +39,10 @@ ret_t idle_remove(uint32_t idle_id) {
   return idle_manager_remove(idle_manager(), idle_id);
 }
 
+ret_t idle_remove_ex(tk_compare_t compare, void* ctx) {
+  return idle_manager_remove_ex(idle_manager(), compare, ctx);
+}
+
 ret_t idle_remove_all_by_ctx_and_type(uint32_t type, void* ctx) {
   return idle_manager_remove_all_by_ctx_and_type(idle_manager(), type, ctx);
 }

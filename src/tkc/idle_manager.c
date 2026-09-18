@@ -148,6 +148,13 @@ ret_t idle_manager_remove(idle_manager_t* idle_manager, uint32_t idle_id) {
   return slist_remove(&(idle_manager->idles), idle_info_init_dummy(&idle, idle_id));
 }
 
+ret_t idle_manager_remove_ex(idle_manager_t* idle_manager, tk_compare_t compare, void* ctx) {
+  idle_info_t idle;
+  return_value_if_fail(idle_manager != NULL, RET_BAD_PARAMS);
+
+  return slist_remove_ex(&(idle_manager->idles), compare, ctx, -1);
+}
+
 const idle_info_t* idle_manager_find(idle_manager_t* idle_manager, uint32_t idle_id) {
   idle_info_t idle;
   return_value_if_fail(idle_id != TK_INVALID_ID, NULL);
