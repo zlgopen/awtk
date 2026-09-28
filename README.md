@@ -45,7 +45,7 @@
 * To support development of [Web](https://github.com/zlgopen/awtk-web.git) applications.✔
 * To support development of [Android](https://github.com/zlgopen/awtk-android.git) applications.✔
 * To support development of [iOS](https://github.com/zlgopen/awtk-ios.git) applications.✔
-* To support development of [HarmonyOs](https://github.com/zlgopen/awtk-harmonyos-next.git) applications.✔
+* To support development of [HarmonyOS](https://github.com/zlgopen/awtk-harmonyos-next.git) applications.✔
 * To support development of 2D mini games.
 
 ## III. Main Features
@@ -157,7 +157,7 @@
 
 > For details, please see https://github.com/zlgopen/awtk-mvvm
 
-### 10. Open source codes are freely available for commercial purposes (LGPL)
+### 10. Open source codes are freely available for commercial purposes (Apache License 2.0)
 
 ## IV.  Simulation Run
 

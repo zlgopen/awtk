@@ -42,7 +42,7 @@
 * 支持开发 Linux 应用程序。✔
 * 支持开发 MacOS 应用程序。✔
 * 支持开发 Windows 应用程序。✔
-* 支持开发 [Web](https://github.com/zlgopen/awtk-webt.git) 应用程序。✔
+* 支持开发 [Web](https://github.com/zlgopen/awtk-web.git) 应用程序。✔
 * 支持开发 [Android](https://github.com/zlgopen/awtk-android.git) 应用程序。✔
 * 支持开发 [iOS](https://github.com/zlgopen/awtk-ios.git) 应用程序。✔
 * 支持开发 [鸿蒙系统](https://github.com/zlgopen/awtk-harmonyos-next.git) 应用程序。✔
@@ -158,7 +158,7 @@
 
 > 详情请参考：https://github.com/zlgopen/awtk-mvvm
 
-### 10. 开放源码，免费商用 (LGPL)。
+### 10. 开放源码，免费商用 (Apache License 2.0)。
 
 > 欢迎对照 [《GUI 引擎评价指标》](https://github.com/zlgopen/gui-lib-evaluation) 进行评测。
 
