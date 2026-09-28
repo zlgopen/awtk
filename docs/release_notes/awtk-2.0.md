@@ -198,7 +198,7 @@
 * `list_view` 支持水平滚动。window 增加 `accept_button` 与 `cancel_button`。
 * 支持 Linux G2D。使用 Cairo 时自动启用 pixman G2D。AGGE 增加 RGB565 位图。增加 `lcd_mem_argb8888`。
 * OpenGL 可在平台抗锯齿与矢量库抗锯齿之间切换，并支持快速旋转。
-* 增加 wchar32、原子操作、树结构，以及 `object_fifo`、`object_orchestrator`、`object_evt_proxy`、`object_overload`、`object_load_conf`。
+* 增加 wchar32、原子操作、树结构，以及 `object_fifo`、`object_workflow_cmd`、`object_evt_router`、`object_override`、`object_load_conf`。
 * XML `<?include?>` 可用 `prop_name-prop` 修改被包含控件的属性和样式。预览程序可从 strings.xml 读取翻译。
 * 支持 OpenRTOS 头文件。控件弹出 popup 时不丢失焦点。
 * 增加 x4 图片打包。字号可转换为标准字号。软键盘候选词可见个数可配置。
