@@ -375,7 +375,9 @@ npm install -g glob
 
 * [扩展控件实例：液体流动](https://github.com/zlgopen/awtk-widget-liquid-flow)
 
-* [扩展控件实例：液体流动](https://github.com/zlgopen/awtk-widget-liquid-flow)
+* [扩展控件实例：3D 场景](https://github.com/zlgopen/awtk-widget-coin3d)
+
+* [扩展控件实例：3D 图表](https://github.com/zlgopen/awtk-widget-plot3d)
 
 * [扩展控件实例：环形调节器](https://github.com/zlgopen/awtk-widget-slider-circle)
  

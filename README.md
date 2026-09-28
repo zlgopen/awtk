@@ -377,6 +377,10 @@ npm install -g glob
 
 * [Examples for Custom Widgets: liquid flow](https://github.com/zlgopen/awtk-widget-liquid-flow)
 
+* [Examples for Custom Widgets: coin3d](https://github.com/zlgopen/awtk-widget-coin3d)
+
+* [Examples for Custom Widgets: plot3d](https://github.com/zlgopen/awtk-widget-plot3d)
+
 * [Examples for Custom Font Loader](https://github.com/zlgopen/awtk-custom-font-loader)
 
 * [Write AWTK App With ReactJS](https://github.com/zlgopen/react-awtk)
