@@ -99,6 +99,8 @@
 * Support different CPU from low-end (such as Cortex M3) to high-end.
 * Support no-filesystem platform and custom filesystem.
 * Support raw systems platform and RTOS.
+* Support event recording and playback for stress testing.
+* Support Appium for fully automated UI testing.
 
 ### 5. Easy-to-use
 
@@ -141,8 +143,8 @@
 
 * Support Unicode. 
 * Support input methods.
-* Support translate strings. 
-* Support translate images.
+* Support translate strings (take effect in real time).
+* Support translate images (take effect in real time).
 * Support text bidirectional algorithms.
 
 ### 9. The MVVM framework for embedded software thoroughly separate user interfaces from business logic 
@@ -159,6 +161,8 @@
 
 ### 10. Open source codes are freely available for commercial purposes (Apache License 2.0)
 
+> Welcome to evaluate AWTK against the [GUI Engine Evaluation Criteria](https://github.com/zlgopen/gui-lib-evaluation).
+
 ## IV.  Simulation Run
 
 ### Code Downloading 
@@ -172,6 +176,8 @@
 ```
 git clone https://github.com/zlgopen/awtk.git
 ```
+
+> Users in China can use: https://hub.fastgit.org/zlgopen/awtk.git
 
 > Under Windows, codes can be downloaded by git with GUI tool.
 
