@@ -1144,9 +1144,12 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   text_layout_info_t* layout_info = &(impl->layout_info);
   uint32_t char_w = 0;
   uint32_t line_index = 0;
+
   impl->caret.x = 0;
   impl->caret.y = 0;
   impl->rows->size = 0;
+  impl->last_row_number = 0;
+  impl->last_line_number = 0;
 
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
