@@ -1980,18 +1980,27 @@ ret_t edit_clear(edit_t* edit) {
 }
 
 static ret_t edit_on_inc(void* ctx, event_t* e) {
+  edit_t* edit = EDIT(ctx);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   (void)e;
-  return edit_inc(EDIT(ctx));
+  edit->is_key_inputing = TRUE;
+  return edit_inc(edit);
 }
 
 static ret_t edit_on_dec(void* ctx, event_t* e) {
+  edit_t* edit = EDIT(ctx);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   (void)e;
-  return edit_dec(EDIT(ctx));
+  edit->is_key_inputing = TRUE;
+  return edit_dec(edit);
 }
 
 static ret_t edit_on_clear(void* ctx, event_t* e) {
+  edit_t* edit = EDIT(ctx);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   (void)e;
-  return edit_clear(EDIT(ctx));
+  edit->is_key_inputing = TRUE;
+  return edit_clear(edit);
 }
 
 static ret_t edit_on_password_visible(void* ctx, event_t* e) {

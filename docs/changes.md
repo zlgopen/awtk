@@ -2,6 +2,7 @@
 
 2026/9/29
   * 修复 mledit 使用 auto_adjust_height 时，全选删除文本后高度没有收缩的问题(感谢兆坤提供补丁)
+  * 修复点击spin_box中的增减按钮时获取WIDGET_PROP_INPUTING不为true的问题(感谢福明提供补丁)
 
 2026/9/26
   * 将 License 变更 为 Apache License。

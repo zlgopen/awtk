@@ -1,6 +1,7 @@
 ﻿#include "widgets/spin_box.h"
 #include "base/canvas.h"
 #include "base/widget.h"
+#include "base/idle.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
 #include "gtest/gtest.h"
@@ -111,4 +112,39 @@ TEST(SpinBox, easy_touch_mode) {
 
   widget_destroy(w);
   widget_destroy(w1);
+}
+
+TEST(SpinBox, inputing) {
+  event_t e;
+  widget_t* w = spin_box_create(NULL, 10, 20, 30, 40);
+  widget_t* inc = widget_lookup(w, STR_EDIT_INC_NAME, TRUE);
+  widget_t* dec = widget_lookup(w, STR_EDIT_DEC_NAME, TRUE);
+  edit_set_int_limit(w, -100, 100, 1);
+
+  /*edit 通过 idle 给 inc/dec 按钮挂 CLICK 监听*/
+  idle_dispatch();
+
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_INPUTING, TRUE), FALSE);
+
+  e = event_init(EVT_CLICK, inc);
+  widget_dispatch(inc, &e);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_INPUTING, TRUE), TRUE);
+
+  sleep_ms(600);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_INPUTING, TRUE), TRUE);
+
+  e = event_init(EVT_CLICK, dec);
+  widget_dispatch(dec, &e);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_INPUTING, TRUE), TRUE);
+
+  e = event_init(EVT_BLUR, w);
+  widget_dispatch(w, &e);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_INPUTING, TRUE), FALSE);
+
+  e = event_init(EVT_CLICK, inc);
+  widget_dispatch(inc, &e);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_INPUTING, TRUE), TRUE);
+
+  widget_destroy(w);
+  idle_dispatch();
 }
