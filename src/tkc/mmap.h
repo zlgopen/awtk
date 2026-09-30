@@ -46,6 +46,8 @@ typedef struct _mmap_t {
    */
   uint32_t size;
   /*private*/
+  bool_t writable;
+  bool_t shared;
   void* handle;
   void* fd;
 } mmap_t;
