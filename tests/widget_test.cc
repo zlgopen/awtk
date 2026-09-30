@@ -1485,18 +1485,18 @@ TEST(Widget, key_long_press_stop_keeps_ref_count) {
 
 TEST(Widget, focus_up_prefers_nearer_widget) {
   widget_t* win = window_create(NULL, 0, 0, 400, 300);
-  widget_t* far = button_create(win, 0, 140, 40, 40);
+  widget_t* farther = button_create(win, 0, 140, 40, 40);
   widget_t* nearer = button_create(win, 130, 140, 40, 40);
   widget_t* current = button_create(win, 100, 200, 40, 40);
 
-  widget_set_focusable(far, TRUE);
+  widget_set_focusable(farther, TRUE);
   widget_set_focusable(nearer, TRUE);
   widget_set_focusable(current, TRUE);
   ASSERT_EQ(widget_set_focused(current, TRUE), RET_OK);
 
   ASSERT_EQ(widget_focus_up(current), RET_OK);
   ASSERT_EQ(nearer->focused, TRUE);
-  ASSERT_EQ(far->focused, FALSE);
+  ASSERT_EQ(farther->focused, FALSE);
 
   widget_destroy(win);
 }
