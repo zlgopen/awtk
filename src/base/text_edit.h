@@ -447,6 +447,25 @@ ret_t text_edit_paint(text_edit_t* text_edit, canvas_t* c);
 ret_t text_edit_layout(text_edit_t* text_edit);
 
 /**
+ * @method text_edit_set_text_changed
+ * 标记文本已被外部修改，并失效行级缓存。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_set_text_changed(text_edit_t* text_edit);
+
+/**
+ * @method text_edit_set_partial_layout
+ * 设置是否启用部分 layout。关闭时会强制下一次执行全量 layout。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {bool_t} partial_layout 是否只 layout 可见区域。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_set_partial_layout(text_edit_t* text_edit, bool_t partial_layout);
+
+/**
  * @method text_edit_multi_line_insert_text_layout
  * 插入字符串后的重新排版。（内部使用函数）
  * @param {text_edit_t*} text_edit text_edit对象。

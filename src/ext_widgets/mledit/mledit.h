@@ -103,6 +103,13 @@ typedef struct _mledit_t {
   bool_t wrap_word;
 
   /**
+   * @property {bool_t} partial_layout
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否只 layout 可见区域。(默认不开启)
+   */
+  bool_t partial_layout;
+
+  /**
    * @property {bool_t} readonly
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 编辑器是否为只读。
@@ -250,6 +257,17 @@ ret_t mledit_set_focus(widget_t* widget, bool_t focus);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t mledit_set_wrap_word(widget_t* widget, bool_t wrap_word);
+
+/**
+ * @method mledit_set_partial_layout
+ * 设置是否只 layout 可见区域。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} partial_layout 是否只 layout 可见区域。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_set_partial_layout(widget_t* widget, bool_t partial_layout);
 
 /**
  * @method mledit_set_overwrite
@@ -536,6 +554,7 @@ widget_t* mledit_cast(widget_t* widget);
 #define MLEDIT_PROP_MAX_LINES "max_lines"
 #define MLEDIT_PROP_MAX_CHARS "max_chars"
 #define MLEDIT_PROP_WRAP_WORD "wrap_word"
+#define MLEDIT_PROP_PARTIAL_LAYOUT "partial_layout"
 #define MLEDIT_PROP_OVERWRITE "overwrite"
 #define MLEDIT_PROP_AUTO_ADJUST_HEIGHT "auto_adjust_height"
 

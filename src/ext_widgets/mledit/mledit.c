@@ -188,6 +188,20 @@ ret_t mledit_set_wrap_word(widget_t* widget, bool_t wrap_word) {
   return RET_OK;
 }
 
+ret_t mledit_set_partial_layout(widget_t* widget, bool_t partial_layout) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+
+  mledit->partial_layout = partial_layout;
+  text_edit_set_partial_layout(mledit->model, partial_layout);
+
+  // 属性可能在 canvas 就绪前设置，这里不要求立即 layout，由下一次绘制完成。
+  text_edit_layout(mledit->model);
+  widget_invalidate(widget, NULL);
+
+  return RET_OK;
+}
+
 ret_t mledit_set_overwrite(widget_t* widget, bool_t overwrite) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
@@ -266,6 +280,9 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_WRAP_WORD)) {
     value_set_bool(v, mledit->wrap_word);
+    return RET_OK;
+  } else if (tk_str_eq(name, MLEDIT_PROP_PARTIAL_LAYOUT)) {
+    value_set_bool(v, mledit->partial_layout);
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_OVERWRITE)) {
     value_set_bool(v, mledit->overwrite);
@@ -392,6 +409,7 @@ static ret_t mledit_set_text(widget_t* widget, const value_t* v) {
 
   if (!wstr_equal(&(widget->text), &str)) {
     wstr_set(&(widget->text), str.str);
+    text_edit_set_text_changed(mledit->model);
     mledit_update_text(widget);
     mledit_reset_text_edit_layout(mledit->model);
     mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
@@ -417,6 +435,9 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_WRAP_WORD)) {
     mledit_set_wrap_word(widget, value_bool(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, MLEDIT_PROP_PARTIAL_LAYOUT)) {
+    mledit_set_partial_layout(widget, value_bool(v));
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_OVERWRITE)) {
     mledit_set_overwrite(widget, value_bool(v));
@@ -637,6 +658,7 @@ ret_t mledit_clear(mledit_t* mledit) {
   return_value_if_fail(widget != NULL && mledit != NULL, RET_BAD_PARAMS);
 
   widget->text.size = 0;
+  text_edit_set_text_changed(mledit->model);
   mledit_set_cursor(WIDGET(mledit), 0);
 
   return widget_invalidate_force(widget, NULL);
@@ -943,15 +965,17 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_WHEEL: {
-      key_event_t kevt;
       wheel_event_t* evt = (wheel_event_t*)e;
-      int32_t delta = evt->dy;
-      if (delta > 0) {
-        key_event_init(&kevt, EVT_KEY_DOWN, widget, TK_KEY_UP);
-        text_edit_key_down(mledit->model, (key_event_t*)&kevt);
-      } else if (delta < 0) {
-        key_event_init(&kevt, EVT_KEY_DOWN, widget, TK_KEY_DOWN);
-        text_edit_key_down(mledit->model, (key_event_t*)&kevt);
+      text_edit_state_t state = {0};
+      int32_t oy = 0;
+      int32_t max_oy = 0;
+
+      if (evt->dy != 0 && text_edit_get_state(mledit->model, &state) == RET_OK &&
+          state.line_height > 0) {
+        // 滚轮只滚动视口，不移动光标。
+        oy = state.oy + (evt->dy < 0 ? (int32_t)state.line_height : -(int32_t)state.line_height);
+        max_oy = tk_max(state.virtual_h - widget->h, 0);
+        text_edit_set_offset(mledit->model, 0, tk_clampi(oy, 0, max_oy));
       }
       ret = RET_STOP;
       widget_invalidate(widget, NULL);
@@ -1018,6 +1042,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       }
 
       wstr_shrink(&(widget->text), max_size);
+      text_edit_set_text_changed(mledit->model);
 
       break;
     }
@@ -1243,6 +1268,10 @@ static uint32_t mledit_update_text(widget_t* widget) {
     wstr_remove(text, 0, i + 1);
   }
 
+  if (rm_cnt > 0) {
+    text_edit_set_text_changed(mledit->model);
+  }
+
   return rm_cnt;
 }
 
@@ -1261,6 +1290,9 @@ static ret_t mledit_insert_text_overwrite(widget_t* widget, uint32_t offset, con
   offset = tk_min(offset, text->size);
   wstr_insert(text, offset, s.str, s.size);
   newtext_len = s.size;
+  if (newtext_len > 0) {
+    text_edit_set_text_changed(mledit->model);
+  }
 
   rm_cnt = mledit_update_text(widget);
 

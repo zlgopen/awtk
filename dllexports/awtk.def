@@ -730,6 +730,8 @@ EXPORTS
     text_edit_set_mask_char
     text_edit_paint
     text_edit_layout
+    text_edit_set_text_changed
+    text_edit_set_partial_layout
     text_edit_multi_line_insert_text_layout
     text_edit_set_offset
     text_edit_set_on_state_changed
@@ -3079,6 +3081,7 @@ EXPORTS
     mledit_set_cancelable
     mledit_set_focus
     mledit_set_wrap_word
+    mledit_set_partial_layout
     mledit_set_overwrite
     mledit_set_max_lines
     mledit_set_max_chars

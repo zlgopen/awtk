@@ -5,6 +5,8 @@
   * 修复方向键移动焦点时距离计算下溢、选中更远控件的问题
   * improve mmap(感谢兆坤提供补丁)
   * 修复 edit_ex 初始有值时，首次将文本设为空后，控件失焦不会 触发 value_changed 事件的问题(感谢兆坤提供补丁)
+  * mledit 添加 partial_layout 属性，用于开启部分 layout 模式(感谢泽武提供补丁)
+
 
 2026/9/29
   * 修复 mledit 使用 auto_adjust_height 时，全选删除文本后高度没有收缩的问题(感谢兆坤提供补丁)
