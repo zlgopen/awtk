@@ -1454,6 +1454,53 @@ TEST(Widget, map_key1) {
   widget_destroy(w);
 }
 
+static ret_t on_key_long_press_stop(void* ctx, event_t* e) {
+  int32_t* stopped = (int32_t*)ctx;
+  (void)e;
+
+  if (stopped != NULL) {
+    *stopped = 1;
+  }
+
+  return RET_STOP;
+}
+
+TEST(Widget, key_long_press_stop_keeps_ref_count) {
+  key_event_t e;
+  int32_t stopped = 0;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* child = button_create(w, 0, 0, 100, 40);
+
+  w->key_target = child;
+  ASSERT_EQ(widget_on(child, EVT_KEY_LONG_PRESS, on_key_long_press_stop, &stopped) > 0, TRUE);
+
+  key_event_init(&e, EVT_KEY_LONG_PRESS, w, TK_KEY_RETURN);
+  ASSERT_EQ(widget_on_keydown(w, &e), RET_STOP);
+  ASSERT_EQ(stopped, 1);
+  ASSERT_EQ(w->ref_count, 1);
+  ASSERT_EQ(child->ref_count, 1);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, focus_up_prefers_nearer_widget) {
+  widget_t* win = window_create(NULL, 0, 0, 400, 300);
+  widget_t* far = button_create(win, 0, 140, 40, 40);
+  widget_t* nearer = button_create(win, 130, 140, 40, 40);
+  widget_t* current = button_create(win, 100, 200, 40, 40);
+
+  widget_set_focusable(far, TRUE);
+  widget_set_focusable(nearer, TRUE);
+  widget_set_focusable(current, TRUE);
+  ASSERT_EQ(widget_set_focused(current, TRUE), RET_OK);
+
+  ASSERT_EQ(widget_focus_up(current), RET_OK);
+  ASSERT_EQ(nearer->focused, TRUE);
+  ASSERT_EQ(far->focused, FALSE);
+
+  widget_destroy(win);
+}
+
 TEST(Widget, exec) {
   widget_t* w = button_create(NULL, 0, 0, 0, 0);
 

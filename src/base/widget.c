@@ -3031,8 +3031,10 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
       ret = widget_on_keydown_general(widget, e);
     }
   } else if (e->e.type == EVT_KEY_LONG_PRESS) {
-    return_value_if_equal(widget_on_keydown_children(widget, e), RET_STOP);
-    ret = widget_on_keydown_after_children(widget, e);
+    ret = widget_on_keydown_children(widget, e);
+    if (ret != RET_STOP) {
+      ret = widget_on_keydown_after_children(widget, e);
+    }
   }
   widget_unref(widget);
 
@@ -4722,9 +4724,9 @@ static bool_t is_same_col(const rect_t* r1, const rect_t* r2) {
   return (cx2 >= r1->x && cx2 < (r1->x + r1->w)) || (cx1 >= r2->x && cx1 < (r2->x + r2->w));
 }
 
-static uint32_t distance2(const rect_t* r1, const rect_t* r2) {
-  uint32_t dx = (r1->x + r1->w / 2) - (r2->x + r2->w / 2);
-  uint32_t dy = (r1->y + r1->h / 2) - (r2->y + r2->h / 2);
+static int64_t distance2(const rect_t* r1, const rect_t* r2) {
+  int64_t dx = (int64_t)(r1->x + r1->w / 2) - (int64_t)(r2->x + r2->w / 2);
+  int64_t dy = (int64_t)(r1->y + r1->h / 2) - (int64_t)(r2->y + r2->h / 2);
 
   return dx * dx + dy * dy;
 }
