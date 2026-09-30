@@ -577,7 +577,7 @@ static ret_t vgcanvas_nanovg_plus_get_text_metrics(vgcanvas_t* vgcanvas, float_t
   }
 
   if (line_hight != NULL) {
-    *line_hight = vmetrics.line_gap;
+    *line_hight = (float_t)(vmetrics.ascent - vmetrics.descent + vmetrics.line_gap);
   }
   return RET_OK;
 }
