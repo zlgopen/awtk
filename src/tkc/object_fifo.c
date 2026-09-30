@@ -601,24 +601,39 @@ ret_t object_fifo_push_head(object_t* obj, const void* data) {
 }
 
 ret_t object_fifo_npush_head(object_t* obj, const void* data, uint32_t nr) {
-  ret_t ret = RET_OK;
+  ret_t ret = RET_NOT_IMPL;
+  uint32_t cursor = 0;
+  uint32_t head_index = 0;
   uint32_t size = 0;
   uint32_t capacity = 0;
+  uint32_t overflow = 0;
   object_fifo_t* object_fifo = OBJECT_FIFO(obj);
   return_value_if_fail(object_fifo != NULL && object_fifo->vt != NULL, RET_BAD_PARAMS);
 
-  size = OBJECT_FIFO_GET_SIZE(obj);
-  capacity = OBJECT_FIFO_GET_CAPACITY(obj);
+  if (object_fifo->vt->set != NULL) {
+    size = OBJECT_FIFO_GET_SIZE(obj);
+    capacity = OBJECT_FIFO_GET_CAPACITY(obj);
 
-  ret = object_fifo_dispatch_push_head_event(object_fifo, EVT_OBJECT_FIFO_WILL_PUSH_HEAD, data, nr);
-  if (ret == RET_STOP) {
-    ret = RET_OK;
-  } else {
-    size = tk_min(size + nr, capacity);
-    object_set_prop_uint32(obj, OBJECT_FIFO_PROP_SIZE, size);
+    ret = object_fifo_dispatch_push_head_event(object_fifo, EVT_OBJECT_FIFO_WILL_PUSH_HEAD, data,
+                                               nr);
+    if (ret == RET_STOP) {
+      ret = RET_OK;
+    } else {
+      cursor = OBJECT_FIFO_GET_CURSOR(obj);
+      overflow = size + nr > capacity ? size + nr - capacity : 0;
+      if (overflow > 0) {
+        // 满容量头部插入时，从尾部淘汰旧数据。
+        cursor = (cursor - overflow + capacity) % capacity;
+      }
+      size = tk_min(size + nr, capacity);
+      object_set_prop_uint32(obj, OBJECT_FIFO_PROP_SIZE, size);
+      object_set_prop_uint32(obj, OBJECT_FIFO_PROP_CURSOR, cursor);
 
-    object_fifo_set(obj, 0, data, nr);
-    object_fifo_dispatch_push_head_event(object_fifo, EVT_OBJECT_FIFO_PUSH_HEAD, data, nr);
+      // 头部插入不触发 set 事件，直接写底层缓存。
+      head_index = (cursor + 1 + capacity - size) % capacity;
+      ret = object_fifo->vt->set(obj, head_index, data, nr);
+      object_fifo_dispatch_push_head_event(object_fifo, EVT_OBJECT_FIFO_PUSH_HEAD, data, nr);
+    }
   }
 
   return ret;
