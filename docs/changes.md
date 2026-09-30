@@ -8,6 +8,7 @@
   * mledit 添加 partial_layout 属性，用于开启部分 layout 模式(感谢泽武提供补丁)
   * 完善 vgcanvas 中获取 font 数据的行为(感谢泽武提供补丁)
   * 完善 harfbuzz 文档(感谢泽武提供补丁)
+  * 完善 harfbuzz 整形规则，保持与 vscode 一致(感谢泽武提供补丁)
 
 2026/9/29
   * 修复 mledit 使用 auto_adjust_height 时，全选删除文本后高度没有收缩的问题(感谢兆坤提供补丁)

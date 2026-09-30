@@ -53,6 +53,39 @@ typedef enum {
   RAQM_BIDI_LEVEL_LTR = 2,
 } raqm_direction_t;
 
+static bool_t _raqm_is_arabic_indic_digit(wchar_t ch) {
+  return ch >= 0x0660 && ch <= 0x0669;
+}
+
+static const wchar_t* _raqm_get_bidi_text(const wchar_t* text, uint32_t text_len,
+                                          wchar_t** owned_text) {
+  uint32_t i = 0;
+
+  *owned_text = NULL;
+  return_value_if_fail(text != NULL && text_len > 0, text);
+
+  // 一次遍历完成检测和替换；未命中时不分配内存。
+  for (i = 1; i < text_len; ++i) {
+    bool_t replace = text[i] == L' ' && i + 1 < text_len &&
+                     _raqm_is_arabic_indic_digit(text[i - 1]) &&
+                     _raqm_is_arabic_indic_digit(text[i + 1]);
+    if (*owned_text == NULL) {
+      if (!replace) {
+        continue;
+      }
+
+      *owned_text = (wchar_t*)TKMEM_ALLOC(text_len * sizeof(wchar_t));
+      return_value_if_fail(*owned_text != NULL, text);
+      memcpy(*owned_text, text, i * sizeof(wchar_t));
+    }
+
+    // NBSP 的 bidi 类型是 CS，可让数字序列保持原有逻辑顺序。
+    (*owned_text)[i] = replace ? 0x00A0 : text[i];
+  }
+
+  return *owned_text != NULL ? *owned_text : text;
+}
+
 #ifdef WITH_BIDI_SHEEN
 static raqm_bidi_run_t* _raqm_bidi_itemize(const wchar_t* text, uint32_t text_len,
                                            size_t* run_count) {
@@ -64,15 +97,17 @@ static raqm_bidi_run_t* _raqm_bidi_itemize(const wchar_t* text, uint32_t text_le
   SBAlgorithmRef bidi = NULL;
   raqm_bidi_run_t* runs = NULL;
   raqm_bidi_run_t* tmp_runs = NULL;
+  wchar_t* owned_bidi_text = NULL;
+  const wchar_t* bidi_text = _raqm_get_bidi_text(text, text_len, &owned_bidi_text);
   SBLevel base_level = 0; /* force LTR base direction to match VSCode/Notepad */
-  SBCodepointSequence input = {SBStringEncodingUTF32, (void*)text, text_len};
+  SBCodepointSequence input = {SBStringEncodingUTF32, (void*)bidi_text, text_len};
   if (sizeof(wchar_t) == 2) {
     input.stringEncoding = SBStringEncodingUTF16;
   }
 
   /* paragraph */
   while (cur_start < text_len) {
-    input.stringBuffer = &text[cur_start];
+    input.stringBuffer = &bidi_text[cur_start];
     input.stringLength = text_len - cur_start;
     bidi = SBAlgorithmCreate(&input);
     par = SBAlgorithmCreateParagraph(bidi, 0, INT32_MAX, base_level);
@@ -104,6 +139,7 @@ static raqm_bidi_run_t* _raqm_bidi_itemize(const wchar_t* text, uint32_t text_le
   memcpy(runs, tmp_runs, sizeof(raqm_bidi_run_t) * (*run_count));
 
   TKMEM_FREE(tmp_runs);
+  TKMEM_FREE(owned_bidi_text);
 
   return runs;
 }
@@ -254,6 +290,8 @@ static raqm_bidi_run_t* _raqm_bidi_itemize(const wchar_t* text, uint32_t text_le
   FriBidiLevel* levels = NULL;
   FriBidiCharType* char_type = NULL;
   FriBidiBracketType* bracket_type = NULL;
+  wchar_t* owned_bidi_text = NULL;
+  const wchar_t* bidi_text = NULL;
   FriBidiParType pbase_dir = FRIBIDI_PAR_LTR; /* force LTR base direction to match VSCode/Notepad */
 
   // 初始化bidi相关信息
@@ -261,8 +299,9 @@ static raqm_bidi_run_t* _raqm_bidi_itemize(const wchar_t* text, uint32_t text_le
   char_type = (FriBidiCharType*)TKMEM_CALLOC(text_len, sizeof(FriBidiCharType));
   bracket_type = (FriBidiBracketType*)TKMEM_CALLOC(text_len, sizeof(FriBidiBracketType));
   return_value_if_fail(levels && char_type && bracket_type, NULL);
-  fribidi_get_bidi_types(text, text_len, char_type);
-  fribidi_get_bracket_types(text, text_len, char_type, bracket_type);
+  bidi_text = _raqm_get_bidi_text(text, text_len, &owned_bidi_text);
+  fribidi_get_bidi_types((const FriBidiChar*)bidi_text, text_len, char_type);
+  fribidi_get_bracket_types((const FriBidiChar*)bidi_text, text_len, char_type, bracket_type);
   fribidi_get_par_embedding_levels_ex(char_type, bracket_type, text_len, &pbase_dir, levels);
 
   /* 根据字符类型与嵌套级别，将文本划分为多个子串，并根据双向规则重新排序 */
@@ -274,6 +313,7 @@ static raqm_bidi_run_t* _raqm_bidi_itemize(const wchar_t* text, uint32_t text_le
   levels = NULL;
   char_type = NULL;
   bracket_type = NULL;
+  TKMEM_FREE(owned_bidi_text);
 
   return runs;
 }
