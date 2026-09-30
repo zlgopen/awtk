@@ -53,6 +53,8 @@ FriBidi 和 SheenBidi 均是用于处理双向文本的开源库，但二者的�
 
 动态整形方案使用 C/C++ 版本的 HarfBuzz 库，AWTK 内部已对其进行了适配，在编译 AWTK 时会一同加入编译。在绘制字符串过程中，AWTK 内部会调用 FriBidi/SheenBidi + HarfBuzz 库获取文本整形数据，最后调用字体渲染库 stb_truetype 或 FreeType 进行显示。
 
+当前方案使用的 bidi + HarfBuzz 的规则是：bidi 的段落基准方向固定为 LTR，HarfBuzz 的 OpenType feature为关闭标准连字、上下文连字和上下文备选字形。
+
 该方案的优点如下：
 
 1. 支持文本变动的场景，在文本变动后也可显示文本整形效果；
