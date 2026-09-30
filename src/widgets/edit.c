@@ -88,7 +88,7 @@ static ret_t edit_commit_text(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t edit_dispatch_value_change_event(widget_t* widget, uint32_t type) {
+static ret_t edit_dispatch_value_change_event(widget_t* widget, event_base_type_t type) {
   value_change_event_t evt;
   edit_t* edit = EDIT(widget);
   wstr_t* text = &(widget->text);
@@ -1514,7 +1514,7 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   return RET_NOT_FOUND;
 }
 
-ret_t edit_set_text_impl(widget_t* widget, const value_t* v, bool_t changing) {
+ret_t edit_set_text_impl(widget_t* widget, const value_t* v, bool_t changed, bool_t changing) {
   wstr_t str;
   wstr_init(&str, 0);
   edit_t* edit = EDIT(widget);
@@ -1534,7 +1534,12 @@ ret_t edit_set_text_impl(widget_t* widget, const value_t* v, bool_t changing) {
 
     edit_set_cursor(WIDGET(edit), 0);
     text_edit_layout(edit->model);
-    edit_dispatch_value_change_event(widget, changing ? EVT_VALUE_CHANGING : EVT_VALUE_CHANGED);
+    if (changing) {
+      edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
+    }
+    if (changed) {
+      edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
+    }
     edit->is_text_error = FALSE;
     edit_update_status(widget);
     edit_check_valid_value(widget);
@@ -1546,7 +1551,7 @@ ret_t edit_set_text_impl(widget_t* widget, const value_t* v, bool_t changing) {
 }
 
 inline static ret_t edit_set_text(widget_t* widget, const value_t* v) {
-  return edit_set_text_impl(widget, v, FALSE);
+  return edit_set_text_impl(widget, v, TRUE, FALSE);
 }
 
 ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
