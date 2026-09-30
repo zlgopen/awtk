@@ -1,4 +1,5 @@
 ﻿#include "tkc/fs.h"
+#include "tkc/mem.h"
 #include "tkc/mmap.h"
 #include "gtest/gtest.h"
 #include <string.h>
@@ -147,4 +148,43 @@ TEST(MMap, read_shared_view) {
   mmap_destroy(a);
   mmap_destroy(b);
   file_remove(filename);
+}
+
+/* 共享可写在销毁时刷回文件 */
+TEST(MMap, shared_write_back) {
+  uint32_t size = 0;
+  char* data = NULL;
+  const char* filename = "mmap_shared_write.bin";
+  mmap_t* map = NULL;
+
+  mmap_test_prepare(filename, "abcd");
+
+  map = mmap_create(filename, TRUE, TRUE);
+  ASSERT_TRUE(map != NULL);
+  memcpy(map->data, "WXYZ", 4);
+  ASSERT_EQ(mmap_destroy(map), RET_OK);
+
+  data = (char*)file_read(filename, &size);
+  ASSERT_TRUE(data != NULL);
+  ASSERT_EQ(size, (uint32_t)4);
+  ASSERT_EQ(memcmp(data, "WXYZ", 4) == 0, TRUE);
+  TKMEM_FREE(data);
+  file_remove(filename);
+}
+
+/* 目录不是普通文件 */
+TEST(MMap, not_regular_file) {
+  const char* dirname = "mmap_not_file_dir";
+  mmap_t* map = NULL;
+
+  if (fs_dir_exist(os_fs(), dirname)) {
+    ASSERT_EQ(fs_remove_dir(os_fs(), dirname), RET_OK);
+  }
+  ASSERT_EQ(fs_create_dir(os_fs(), dirname), RET_OK);
+  map = mmap_create(dirname, FALSE, FALSE);
+  ASSERT_TRUE(map == NULL);
+  if (map != NULL) {
+    mmap_destroy(map);
+  }
+  ASSERT_EQ(fs_remove_dir(os_fs(), dirname), RET_OK);
 }
