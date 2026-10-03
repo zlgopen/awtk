@@ -660,7 +660,7 @@ typedef struct _RTL_CRITICAL_SECTION GTEST_CRITICAL_SECTION;
 // support TR1 tuple.  libc++ only provides std::tuple, in C++11 mode,
 // and it can be used with some compilers that define __GNUC__.
 # if (defined(__GNUC__) && !defined(__CUDACC__) && (GTEST_GCC_VER_ >= 40000) \
-      && !GTEST_OS_QNX && !defined(_LIBCPP_VERSION)) || _MSC_VER >= 1600
+      && !GTEST_OS_QNX && !defined(_LIBCPP_VERSION)) || (_MSC_VER >= 1600 && _MSC_VER < 1951)
 #  define GTEST_ENV_HAS_TR1_TUPLE_ 1
 # endif
 
