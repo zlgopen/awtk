@@ -231,6 +231,7 @@
 #include "default/inc/ui/scroll_rows.data"
 #include "default/inc/ui/tab_bottom_compact.data"
 #include "default/inc/ui/popup.data"
+#include "default/inc/ui/mledit_partial_layout.data"
 #include "default/inc/ui/harfbuzz_test.data"
 #include "default/inc/ui/overlay_test.data"
 #include "default/inc/ui/serial.data"
@@ -1184,6 +1185,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_scroll_rows_default);
   assets_manager_add(am, ui_tab_bottom_compact_default);
   assets_manager_add(am, ui_popup_default);
+  assets_manager_add(am, ui_mledit_partial_layout_default);
   assets_manager_add(am, ui_harfbuzz_test_default);
   assets_manager_add(am, ui_overlay_test_default);
   assets_manager_add(am, ui_serial_default);

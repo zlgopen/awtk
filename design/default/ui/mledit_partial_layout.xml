@@ -1,0 +1,14 @@
+<window name="mledit_partial_layout" anim_hint="htranslate">
+  <label name="title" x="20" y="20" w="760" h="30" text="mledit partial layout demo" />
+  <button name="toggle_partial_layout" x="20" y="60" w="110" h="30" text="部分layout" />
+  <label name="partial_layout_status" x="140" y="60" w="40" h="30" text="关" />
+  <button name="toggle_overwrite" x="210" y="60" w="100" h="30" text="overwrite" />
+  <label name="overwrite_status" x="320" y="60" w="40" h="30" text="关" />
+  <button name="toggle_insert" x="390" y="60" w="100" h="30" text="定时插入" />
+  <label name="insert_status" x="500" y="60" w="40" h="30" text="开" />
+  <button name="toggle_performance" x="550" y="60" w="110" h="30" text="性能测试" />
+  <label name="performance_status" x="670" y="60" w="40" h="30" text="关" />
+  <mledit name="mledit" x="20" y="110" w="730" h="330" text="" wrap_word="true" max_lines="100" partial_layout="false" overwrite="false">
+    <scroll_bar_d name="scroll_bar" x="right" y="0" w="14" h="100%" value="0" />
+  </mledit>
+</window>
