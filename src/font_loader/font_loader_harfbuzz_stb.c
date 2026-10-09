@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   font_loader_hb_stb.c
  * Author: AWTK Develop Team
  * Brief:  font interface
@@ -104,6 +104,30 @@ static bool_t font_hb_stb_match(font_t* f, const char* name, font_size_t font_si
   return (name == NULL || strcmp(name, f->name) == 0);
 }
 
+/* 计算公式：scale = font_size / (ascent - descent) */
+static float_t font_hb_stb_get_scale(stbtt_fontinfo* sf, font_size_t font_size) {
+  float_t scale = stbtt_ScaleForPixelHeight(sf, font_size);
+
+  // 某些字库的 ascent - descent 可能为 0，此时按 EM 大小缩放。
+  if (scale == INFINITY) {
+    scale = stbtt_ScaleForMappingEmToPixels(sf, font_size);
+  }
+
+  return scale;
+}
+
+static void font_hb_stb_apply_hb_info(glyph_t* g, const hb_info_t* info, float_t scale) {
+  return_if_fail(g != NULL);
+
+  if (info != NULL) {
+    g->x += (int16_t)tk_roundi(info->x_offset * scale);
+    g->y -= (int16_t)tk_roundi(info->y_offset * scale);
+    g->bidi_type = info->bidi_type;
+    g->advance = (int16_t)tk_roundi(info->x_advance * scale);
+  }
+  return;
+}
+
 static font_vmetrics_t font_hb_stb_get_vmetrics(font_t* f, font_size_t font_size) {
   int ascender = 0;
   int descender = 0;
@@ -142,17 +166,9 @@ static glyph_t* font_hb_stb_get_glyph_impl(font_t* f, wchar_t c, font_size_t fon
   hb_info_t* hb_info = NULL;
   font_hb_stb_t* font = (font_hb_stb_t*)f;
   stbtt_fontinfo* sf = &(font->stb_font);
+  float scale = font_hb_stb_get_scale(sf, font_size);
 
-  /* 计算公式：scale = font_size / (ascent - descent) */
-  float scale = stbtt_ScaleForPixelHeight(sf, font_size);
-
-  /* 某些字库存在ascent - descent等于0的情况，算出来的scale为无穷大inf，此时采用EM size */
-  if (scale == INFINITY) {
-    scale = stbtt_ScaleForMappingEmToPixels(sf, font_size);
-  }
-
-  if (hb_str != NULL && hb_str->hb_info != NULL) {
-    hb_info = hb_str->hb_info;
+  if (hb_str != NULL) {
     bitmap = stbtt_GetGlyphBitmap(sf, 0, scale, hb_str->cur_gid, &w, &h, &x, &y);
     stbtt_GetGlyphHMetrics(sf, hb_str->cur_gid, &advance, &lsb);
   } else {
@@ -167,18 +183,10 @@ static glyph_t* font_hb_stb_get_glyph_impl(font_t* f, wchar_t c, font_size_t fon
   g->format = GLYPH_FMT_ALPHA;
   g->advance = tk_roundi(advance * scale);
   g->data = NULL;
-  if (hb_info != NULL) {
+  if (hb_str != NULL) {
     g->glyph_index = hb_str->cur_gid;
   } else {
     g->glyph_index = stbtt_FindGlyphIndex(sf, c);
-  }
-
-  if (hb_str != NULL && hb_info != NULL) {
-    g->x += (hb_info[hb_str->cur_index].x_offset * scale);
-    g->y -= (hb_info[hb_str->cur_index].y_offset * scale);
-    g->bidi_type = hb_info[hb_str->cur_index].bidi_type;
-    advance = hb_info[hb_str->cur_index].x_advance;
-    g->advance = tk_roundi(advance * scale);
   }
 
   if (bitmap != NULL) {
@@ -243,6 +251,7 @@ static glyphs_t* font_hb_stb_create_glyphs(font_t* f, const wchar_t* str, uint32
   hb_codepoint_t* codepoint = NULL;
   font_hb_stb_t* font = (font_hb_stb_t*)f;
   font_vmetrics_t vmetrics = font_get_vmetrics(f, font_size);
+  float_t scale = font_hb_stb_get_scale(&(font->stb_font), font_size);
 
   if (params->shaping) {
 #ifdef WITH_HARFBUZZ_DATA_TEXT_SHAPING
@@ -280,6 +289,8 @@ static glyphs_t* font_hb_stb_create_glyphs(font_t* f, const wchar_t* str, uint32
             glyphs->glyphs[i].h = 0;
           }
         }
+        // 同一个 glyph 在不同字符上的 offset/advance 可能不同，不能随位图一起缓存。
+        font_hb_stb_apply_hb_info(&glyphs->glyphs[i], &hb_info[i], scale);
       }
     }
   }

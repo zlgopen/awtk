@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   font_loader_hb_ft.c
  * Author: AWTK Develop Team
  * Brief:  freetype font loader
@@ -101,13 +101,23 @@ static bool_t font_hb_ft_match(font_t* f, const char* name, font_size_t font_siz
   return (name == NULL || strcmp(name, f->name) == 0);
 }
 
+static void font_hb_ft_apply_hb_info(glyph_t* g, const hb_info_t* info, float_t scale) {
+  return_if_fail(g != NULL);
+
+  if (info != NULL) {
+    g->x += (int16_t)(info->x_offset * scale);
+    g->y -= (int16_t)(info->y_offset * scale);
+    g->bidi_type = info->bidi_type;
+    g->advance = (int16_t)tk_roundi(info->x_advance * scale);
+  }
+  return;
+}
+
 static ret_t font_hb_ft_get_glyph_impl(font_t* f, wchar_t c, font_size_t font_size,
                                        hb_str_t* hb_str, glyph_t* g) {
   FT_Glyph glyph;
   FT_GlyphSlot glyf;
   ret_t ret = RET_OK;
-  float_t scale = 0.0f;
-  float_t advance = 0.0f;
   hb_info_t* hb_info = NULL;
   FT_Error ft_ret = FT_Err_Ok;
   font_ft_t* font = (font_ft_t*)f;
@@ -139,13 +149,7 @@ static ret_t font_hb_ft_get_glyph_impl(font_t* f, wchar_t c, font_size_t font_si
     g->data = glyf->bitmap.buffer;
     g->advance = glyf->metrics.horiAdvance / 64;
 
-    if (hb_info != NULL) {
-      scale = ((float_t)font_size / (sf->face->ascender - sf->face->descender));
-      g->x += (int16_t)(hb_info[hb_str->cur_index].x_offset * scale);
-      g->y -= (int16_t)(hb_info[hb_str->cur_index].y_offset * scale);
-      g->bidi_type = hb_info[hb_str->cur_index].bidi_type;
-      advance = (hb_info[hb_str->cur_index].x_advance * scale);
-      g->advance = (int16_t)tk_roundi(advance);
+    if (hb_str != NULL) {
       g->glyph_index = hb_str->cur_gid;
     } else {
       g->glyph_index = FT_Get_Char_Index(sf->face, c);
@@ -203,6 +207,8 @@ static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_
   ret_t has_glyph_cache = RET_FAIL;
   font_ft_t* font = (font_ft_t*)f;
   font_vmetrics_t vmetrics = font_get_vmetrics(f, font_size);
+  float_t scale =
+      ((float_t)font_size / (font->ft_font.face->ascender - font->ft_font.face->descender));
 
   if (params->shaping) {
 #ifdef WITH_HARFBUZZ_DATA_TEXT_SHAPING
@@ -239,6 +245,8 @@ static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_
             glyphs->glyphs[i].h = 0;
           }
         }
+        // 同一个 glyph 在不同字符上的 offset/advance 可能不同，不能随位图一起缓存。
+        font_hb_ft_apply_hb_info(&glyphs->glyphs[i], &hb_info[i], scale);
       }
     }
   }
