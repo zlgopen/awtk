@@ -2277,13 +2277,22 @@ static point_t text_edit_normalize_point(text_edit_t* text_edit, xy_t x, xy_t y)
   return point;
 }
 
+static bool_t text_edit_is_font_changed(text_edit_t* text_edit) {
+  DECL_IMPL(text_edit);
+  style_t* style = text_edit->widget->astyle;
+  uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
+  const char* font_name = system_info_fix_font_name(style_get_str(style, STYLE_ID_FONT_NAME, NULL));
+
+  return !tk_str_eq(font_name, impl->font_name) || font_size != impl->font_size;
+}
+
 static bool_t text_edit_update_font_info(text_edit_t* text_edit) {
   DECL_IMPL(text_edit);
   style_t* style = text_edit->widget->astyle;
   uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
   const char* font_name = system_info_fix_font_name(style_get_str(style, STYLE_ID_FONT_NAME, NULL));
 
-  if (!tk_str_eq(font_name, impl->font_name) || font_size != impl->font_size) {
+  if (text_edit_is_font_changed(text_edit)) {
     impl->font_name = font_name;
     impl->font_size = font_size;
     return TRUE;
@@ -2294,7 +2303,7 @@ static bool_t text_edit_update_font_info(text_edit_t* text_edit) {
 static bool_t text_edit_is_need_layout(text_edit_t* text_edit) {
   DECL_IMPL(text_edit);
 
-  if (text_edit_update_font_info(text_edit)) {
+  if (text_edit_is_font_changed(text_edit)) {
     return TRUE;
   }
 
