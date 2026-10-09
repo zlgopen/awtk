@@ -35,13 +35,61 @@
 #include <sys/mman.h>
 #endif /*WIN32*/
 
-inline static mmap_t* mmap_alloc(uint32_t size, bool_t writable, bool_t shared) {
-  mmap_t* map = TKMEM_ZALLOC(mmap_t);
+/**
+ * @enum mmap_mode_t
+ * @prefix MMAP_MODE_
+ * mmap 模式。
+ */
+typedef enum _mmap_mode_t {
+  /**
+   * @const MMAP_MODE_FILE
+   * 文件映射。
+   */
+  MMAP_MODE_FILE = 0,
+} mmap_mode_t;
+
+/**
+ * @struct mmap_opt_t
+ * mmap 选项。
+ *
+ * writable 为 TRUE 且 shared 为 TRUE：写入对其它共享映射可见，mmap_destroy 时刷回文件。
+ * writable 为 TRUE 且 shared 为 FALSE：写时复制，只影响当前映射，不回写文件。
+ * writable 为 FALSE：只读。shared 只决定是否与其它映射共享物理页。
+ */
+typedef struct _mmap_opt_t {
+  /**
+   * @property {bool_t} writable
+   * 是否可写。
+   */
+  bool_t writable;
+  /**
+   * @property {bool_t} shared
+   * 是否共享。(TRUE: 写回写；FALSE: COW 私有写)
+   */
+  bool_t shared;
+} mmap_opt_t;
+
+typedef struct _mmap_impl_t {
+  mmap_t map;
+  mmap_mode_t mode;
+  mmap_opt_t opt;
+  void* handle;
+  void* fd;
+} mmap_impl_t;
+
+inline static bool_t mmap_size_valid(int64_t size) {
+  return 0 < size && size <= UINT32_MAX;
+}
+
+inline static mmap_impl_t* mmap_alloc(uint32_t size, mmap_mode_t mode, const mmap_opt_t* opt) {
+  mmap_impl_t* map = TKMEM_ZALLOC(mmap_impl_t);
   return_value_if_fail(map != NULL, NULL);
 
-  map->size = size;
-  map->writable = writable;
-  map->shared = shared;
+  map->map.size = size;
+  map->mode = mode;
+  if (opt != NULL) {
+    map->opt = *opt;
+  }
 
   return map;
 }
@@ -66,9 +114,9 @@ error:
   return NULL;
 }
 
-mmap_t* mmap_create(const char* filename, bool_t writable, bool_t shared) {
+static mmap_t* mmap_create_file(const char* filename, const mmap_opt_t* opt) {
   uint32_t size = 0;
-  mmap_t* map = NULL;
+  mmap_impl_t* map = NULL;
   wchar_t* wfilename = NULL;
   HANDLE file = INVALID_HANDLE_VALUE;
   HANDLE mapping = NULL;
@@ -76,12 +124,12 @@ mmap_t* mmap_create(const char* filename, bool_t writable, bool_t shared) {
   DWORD protect = PAGE_READONLY;
   DWORD file_access = GENERIC_READ;
   DWORD map_access = FILE_MAP_READ;
-  return_value_if_fail(filename != NULL, NULL);
+  return_value_if_fail(filename != NULL && opt != NULL, NULL);
 
   file_size.QuadPart = 0;
-  if (writable) {
+  if (opt->writable) {
     file_access = GENERIC_READ | GENERIC_WRITE;
-    if (shared) {
+    if (opt->shared) {
       protect = PAGE_READWRITE;
       /* FILE_MAP_ALL_ACCESS 含 FILE_MAP_EXECUTE，PAGE_READWRITE 映射会失败。 */
       map_access = FILE_MAP_READ | FILE_MAP_WRITE;
@@ -101,23 +149,23 @@ mmap_t* mmap_create(const char* filename, bool_t writable, bool_t shared) {
   goto_error_if_fail(INVALID_HANDLE_VALUE != file);
   goto_error_if_fail(FILE_TYPE_DISK == GetFileType(file));
   goto_error_if_fail(GetFileSizeEx(file, &file_size));
-  goto_error_if_fail(0 < file_size.QuadPart && (uint64_t)file_size.QuadPart <= UINT32_MAX);
+  goto_error_if_fail(mmap_size_valid((int64_t)file_size.QuadPart));
 
   size = (uint32_t)file_size.QuadPart;
 
   mapping = CreateFileMappingW(file, NULL, protect, 0, size, NULL);
   goto_error_if_fail(mapping != NULL);
 
-  map = mmap_alloc(size, writable, shared);
+  map = mmap_alloc(size, MMAP_MODE_FILE, opt);
   goto_error_if_fail(map != NULL);
 
   map->fd = (void*)file;
   map->handle = (void*)mapping;
 
-  map->data = MapViewOfFile(mapping, map_access, 0, 0, size);
-  goto_error_if_fail(map->data != NULL);
+  map->map.data = MapViewOfFile(mapping, map_access, 0, 0, size);
+  goto_error_if_fail(map->map.data != NULL);
 
-  return map;
+  return &map->map;
 error:
   log_warn("%s failed: err code = %u\n", __FUNCTION__, GetLastError());
   if (mapping != NULL) {
@@ -131,10 +179,11 @@ error:
 }
 
 inline static ret_t mmap_flush(mmap_t* map) {
+  mmap_impl_t* impl = (mmap_impl_t*)map;
   return_value_if_fail(map != NULL && map->data != NULL, RET_BAD_PARAMS);
 
   goto_error_if_fail(FlushViewOfFile(map->data, map->size));
-  goto_error_if_fail(FlushFileBuffers((HANDLE)map->fd));
+  goto_error_if_fail(FlushFileBuffers((HANDLE)impl->fd));
 
   return RET_OK;
 error:
@@ -144,8 +193,9 @@ error:
 
 inline static ret_t mmap_close_handles(mmap_t* map) {
   ret_t ret = RET_OK;
-  HANDLE file = (HANDLE)map->fd;
-  HANDLE mapping = (HANDLE)map->handle;
+  mmap_impl_t* impl = (mmap_impl_t*)map;
+  HANDLE file = (HANDLE)impl->fd;
+  HANDLE mapping = (HANDLE)impl->handle;
 
   if (map->data != NULL) {
     if (!UnmapViewOfFile(map->data)) {
@@ -169,15 +219,17 @@ inline static ret_t mmap_close_handles(mmap_t* map) {
   return ret;
 }
 #else
-mmap_t* mmap_create(const char* filename, bool_t writable, bool_t shared) {
+static mmap_t* mmap_create_file(const char* filename, const mmap_opt_t* opt) {
   int fd = -1;
   uint32_t size = 0;
   struct stat st;
-  mmap_t* map = NULL;
-  int protect = writable ? (PROT_READ | PROT_WRITE) : PROT_READ;
-  int open_flags = (writable ? O_RDWR : O_RDONLY) | O_CLOEXEC;
-  int map_flags = MAP_FILE | (shared ? MAP_SHARED : MAP_PRIVATE);
-  return_value_if_fail(filename != NULL, NULL);
+  mmap_impl_t* map = NULL;
+  int protect, open_flags, map_flags;
+  return_value_if_fail(filename != NULL && opt != NULL, NULL);
+
+  protect = opt->writable ? (PROT_READ | PROT_WRITE) : PROT_READ;
+  open_flags = (opt->writable ? O_RDWR : O_RDONLY) | O_CLOEXEC;
+  map_flags = MAP_FILE | (opt->shared ? MAP_SHARED : MAP_PRIVATE);
 
   memset(&st, 0x00, sizeof(st));
 
@@ -185,19 +237,19 @@ mmap_t* mmap_create(const char* filename, bool_t writable, bool_t shared) {
   goto_error_if_fail(fd >= 0);
   goto_error_if_fail(0 == fstat(fd, &st));
   goto_error_if_fail(S_ISREG(st.st_mode));
-  goto_error_if_fail(0 < st.st_size && (uint64_t)st.st_size <= UINT32_MAX);
+  goto_error_if_fail(mmap_size_valid((int64_t)st.st_size));
 
   size = (uint32_t)st.st_size;
 
-  map = mmap_alloc(size, writable, shared);
+  map = mmap_alloc(size, MMAP_MODE_FILE, opt);
   goto_error_if_fail(map != NULL);
 
   map->fd = tk_pointer_from_int(fd);
 
-  map->data = mmap(NULL, size, protect, map_flags, fd, 0);
-  goto_error_if_fail(map->data != MAP_FAILED);
+  map->map.data = mmap(NULL, size, protect, map_flags, fd, 0);
+  goto_error_if_fail(map->map.data != MAP_FAILED);
 
-  return map;
+  return &map->map;
 error:
   log_warn("%s failed: err code = %d\n", __FUNCTION__, errno);
   if (fd >= 0) {
@@ -220,7 +272,8 @@ error:
 
 inline static ret_t mmap_close_handles(mmap_t* map) {
   ret_t ret = RET_OK;
-  int fd = tk_pointer_to_int(map->fd);
+  mmap_impl_t* impl = (mmap_impl_t*)map;
+  int fd = tk_pointer_to_int(impl->fd);
 
   if (map->data != NULL) {
     if (0 != munmap(map->data, map->size)) {
@@ -240,11 +293,35 @@ inline static ret_t mmap_close_handles(mmap_t* map) {
 }
 #endif /*WIN32*/
 
+static mmap_t* mmap_create_ex(const char* name, mmap_mode_t mode, const mmap_opt_t* opt) {
+  mmap_opt_t _opt;
+  return_value_if_fail(name != NULL, NULL);
+
+  if (NULL == opt) {
+    memset(&_opt, 0, sizeof(_opt));
+    opt = &_opt;
+  }
+
+  switch (mode) {
+    case MMAP_MODE_FILE:
+      return mmap_create_file(name, opt);
+    default:
+      log_warn("%s: unsupported mmap mode %d\n", __FUNCTION__, mode);
+      return NULL;
+  }
+}
+
+mmap_t* mmap_create(const char* filename, bool_t writable, bool_t shared) {
+  mmap_opt_t opt = {.writable = writable, .shared = shared};
+  return mmap_create_ex(filename, MMAP_MODE_FILE, &opt);
+}
+
 ret_t mmap_destroy(mmap_t* map) {
   ret_t ret = RET_OK;
+  mmap_impl_t* impl = (mmap_impl_t*)map;
   return_value_if_fail(map != NULL, RET_BAD_PARAMS);
 
-  if (map->writable && map->shared) {
+  if (MMAP_MODE_FILE == impl->mode && impl->opt.writable && impl->opt.shared) {
     if (RET_OK != mmap_flush(map)) {
       ret = RET_FAIL;
     }

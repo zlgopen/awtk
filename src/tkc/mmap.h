@@ -30,10 +30,6 @@ BEGIN_C_DECLS
  * @class mmap_t
  * 把文件内容映射到内存。
  *
- * writable 为 TRUE 且 shared 为 TRUE：写入对其它共享映射可见，mmap_destroy 时刷回文件。
- * writable 为 TRUE 且 shared 为 FALSE：写时复制，只影响当前映射，不回写文件。
- * writable 为 FALSE：只读。shared 只决定是否与其它映射共享物理页。
- *
  * 空文件，以及大小超过 UINT32_MAX 的文件，mmap_create 返回 NULL。
  * Windows 上 filename 必须是合法 UTF-8，非法编码返回 NULL。
  */
@@ -51,11 +47,6 @@ typedef struct _mmap_t {
    * 数据长度。
    */
   uint32_t size;
-  /*private*/
-  bool_t writable;
-  bool_t shared;
-  void* handle;
-  void* fd;
 } mmap_t;
 
 /**
