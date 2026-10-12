@@ -302,9 +302,11 @@ static ret_t application_on_launch(void) {
 
 static ret_t application_on_exit(void) {
   // 当程序退出时调用，全局只触发一次。
-  locale_info_t* info = locale_info();
-  locale_info_set(s_old_locale_info);
-  locale_info_xml_destroy(info);
+  if (s_old_locale_info != NULL) {
+    locale_info_t* info = locale_info();
+    locale_info_set(s_old_locale_info);
+    locale_info_xml_destroy(info);
+  }
 
   return RET_OK;
 }
