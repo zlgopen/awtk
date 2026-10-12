@@ -9,6 +9,8 @@
     SDL2 (bundled add_subdirectory(3rd/SDL), default) or SDL3 (find_package, AWTK_SDL_VERSION=3).
   - cmake/src_libs.cmake        : src/SConscript + src/*/SConscript static libs,
     then final libawtk SHARED (mirrors env.SharedLibrary for awtk).
+  - cmake/awtk_demo_runtime.cmake : include() adds awtk_demos_runtime (one DLL/assets copy).
+    demos/CMakeLists.txt calls awtk_attach_demo_runtime() per executable.
 
   Environment / options mirrored from awtk_config.py + scripts/compile_config.py:
   - INPUT_ENGINE, VGCANVAS, NANOVG_BACKEND, NATIVE_WINDOW, LCD (derived),

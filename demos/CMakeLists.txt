@@ -1,4 +1,7 @@
 # demoui: mirrors demos/SConscript — demo_ui_app.c + static assets (res/assets.inc via assets.c)
+# Shared DLL/assets copy lives in cmake/awtk_demo_runtime.cmake (one writer, not per target).
+
+include(awtk_demo_runtime)
 
 add_library(awtk_demos_ui_assets STATIC "${CMAKE_SOURCE_DIR}/demos/assets.c")
 target_include_directories(awtk_demos_ui_assets PRIVATE ${AWTK_SRC_INCLUDES})
@@ -25,39 +28,14 @@ if(AWTK_BUILD_SHARED AND (AWTK_OS_LINUX OR AWTK_OS_DARWIN))
   set_target_properties(awtk_demo_ui PROPERTIES BUILD_RPATH "$<TARGET_FILE_DIR:awtk>")
 endif()
 
-# Windows: demoui.exe lives under build/demos/<Config>/ but awtk.dll is under build/<Config>/ — copy deps next to the exe for running without PATH.
-if(AWTK_BUILD_SHARED AND AWTK_OS_WINDOWS)
-  add_custom_command(
-    TARGET awtk_demo_ui POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-      "$<TARGET_FILE:awtk>"
-      "$<TARGET_FILE_DIR:awtk_demo_ui>"
-    VERBATIM
-  )
-  if(SDL_SHARED AND TARGET SDL2)
-    add_custom_command(
-      TARGET awtk_demo_ui POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "$<TARGET_FILE:SDL2>"
-        "$<TARGET_FILE_DIR:awtk_demo_ui>"
-      VERBATIM
-    )
-  endif()
-  add_custom_command(
-    TARGET awtk_demo_ui POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-      "${CMAKE_SOURCE_DIR}/res/assets"
-      "$<TARGET_FILE_DIR:awtk_demo_ui>/res/assets"
-    VERBATIM
-  )
-endif()
+awtk_attach_demo_runtime(awtk_demo_ui)
 
 # demo_vg_text: dedicated vg text rendering showcase.
 add_executable(awtk_demo_vg_text "${CMAKE_SOURCE_DIR}/demos/demo_vg_text_app.c")
 target_include_directories(awtk_demo_vg_text PRIVATE ${AWTK_SRC_INCLUDES})
 awtk_apply_platform_compile_options(awtk_demo_vg_text)
 awtk_apply_common_compile_definitions(awtk_demo_vg_text)
-target_link_libraries(awtk_demo_vg_text PRIVATE awtk awtk_demos_ui_assets)
+target_link_libraries(awtk_demo_vg_text PRIVATE awtk_demos_ui_assets awtk)
 set_target_properties(awtk_demo_vg_text PROPERTIES OUTPUT_NAME demo_vg_text LINKER_LANGUAGE CXX)
 add_dependencies(awtk_demo_vg_text awtk)
 
@@ -69,28 +47,4 @@ if(AWTK_BUILD_SHARED AND (AWTK_OS_LINUX OR AWTK_OS_DARWIN))
   set_target_properties(awtk_demo_vg_text PROPERTIES BUILD_RPATH "$<TARGET_FILE_DIR:awtk>")
 endif()
 
-if(AWTK_BUILD_SHARED AND AWTK_OS_WINDOWS)
-  add_custom_command(
-    TARGET awtk_demo_vg_text POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-      "$<TARGET_FILE:awtk>"
-      "$<TARGET_FILE_DIR:awtk_demo_vg_text>"
-    VERBATIM
-  )
-  if(SDL_SHARED AND TARGET SDL2)
-    add_custom_command(
-      TARGET awtk_demo_vg_text POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "$<TARGET_FILE:SDL2>"
-        "$<TARGET_FILE_DIR:awtk_demo_vg_text>"
-      VERBATIM
-    )
-  endif()
-  add_custom_command(
-    TARGET awtk_demo_vg_text POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-      "${CMAKE_SOURCE_DIR}/res/assets"
-      "$<TARGET_FILE_DIR:awtk_demo_vg_text>/res/assets"
-    VERBATIM
-  )
-endif()
+awtk_attach_demo_runtime(awtk_demo_vg_text)
