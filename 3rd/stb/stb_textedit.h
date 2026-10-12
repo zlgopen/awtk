@@ -1367,6 +1367,7 @@ static void stb_text_undo(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
    r->insert_length = u.delete_length;
    r->delete_length = u.insert_length;
    r->where = u.where;
+   r->cursor_at_end = u.cursor_at_end;
 
    if (u.delete_length) {
       // if the undo record says to delete characters, then the redo record will

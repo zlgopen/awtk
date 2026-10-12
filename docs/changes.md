@@ -5,6 +5,7 @@
   * 修复 font_loader_harfbuzz 中可能存在的越界访问问题(感谢泽武提供补丁)
   * 移除edit和mledit在EVT_POINTER_DOWN下触发打开输入法的状态（因为EVT_FOCUS就会触发）(感谢智明提供补丁)
   * 修复测试用例执行失败的问题(感谢智明提供补丁)
+  * 修复 text_edit 中 redo 后光标位置固定在开头的问题(感谢泽武提供补丁)
 
 2026/10/10
   * 修复 text_edit 相关问题(感谢泽武提供补丁)
