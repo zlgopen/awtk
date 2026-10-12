@@ -99,11 +99,11 @@ TEST(StrGen, xml1) {
   wbuffer_t wbuffer;
   wbuffer_t* b = wbuffer_init(&wbuffer, buff, sizeof(buff));
   sg.Output("en_US", b);
-  ASSERT_EQ(string("OK"), str_table_lookup(table, "ok"));
-  ASSERT_EQ(string("Cancel"), str_table_lookup(table, "cancel"));
-  ASSERT_EQ(string("a<b>c"), str_table_lookup(table, "abc"));
-  ASSERT_EQ(string("en:\"<>'"), str_table_lookup(table, "\"<>'"));
-  ASSERT_EQ(string("  abc  "), str_table_lookup(table, "with_space"));
+  ASSERT_STREQ("OK", str_table_lookup(table, "ok"));
+  ASSERT_STREQ("Cancel", str_table_lookup(table, "cancel"));
+  ASSERT_STREQ("a<b>c", str_table_lookup(table, "abc"));
+  ASSERT_STREQ("en:\"<>'", str_table_lookup(table, "\"<>'"));
+  ASSERT_STREQ("  abc  ", str_table_lookup(table, "with_space"));
 
   sg.Output("zh_CN", b);
   assert_str_eq(L"确定", str_table_lookup(table, "ok"));
@@ -111,8 +111,8 @@ TEST(StrGen, xml1) {
   assert_str_eq(L"zh:\"<>'", str_table_lookup(table, "\"<>'"));
   assert_str_eq(L"  保留空格  ", str_table_lookup(table, "with_space"));
 
-  ASSERT_EQ(string("a\"b&c"), str_table_lookup(table, "abc"));
-  ASSERT_EQ(NULL, str_table_lookup(table, "not exist"));
+  ASSERT_STREQ("a\"b&c", str_table_lookup(table, "abc"));
+  ASSERT_STREQ(NULL, str_table_lookup(table, "not exist"));
 
   wbuffer_deinit(b);
 }
