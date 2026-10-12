@@ -279,12 +279,13 @@ static glyphs_t* font_hb_stb_create_glyphs(font_t* f, const wchar_t* str, uint32
 #endif /* WITH_HARFBUZZ_DATA_TEXT_SHAPING */
       for (i = 0; i < glyph_count; ++i) {
         // 获取每个字模的数据，并赋值到glyphs->glyphs
+        uint32_t cluster = hb_info[i].cluster;
+        wchar_t c = cluster < len ? str[cluster] : 0;
         hb_str.cur_index = i;
         hb_str.cur_gid = hb_info[i].glyphid;
         if (glyph_cache_lookup(&(font->hb_cache), hb_info[i].glyphid, font_size,
                                &glyphs->glyphs[i]) != RET_OK) {
-          if (font_hb_stb_get_glyph_impl(f, str[i], font_size, &hb_str, &glyphs->glyphs[i]) ==
-              NULL) {
+          if (font_hb_stb_get_glyph_impl(f, c, font_size, &hb_str, &glyphs->glyphs[i]) == NULL) {
             glyphs->glyphs[i].w = 0;
             glyphs->glyphs[i].h = 0;
           }

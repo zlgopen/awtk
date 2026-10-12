@@ -235,12 +235,13 @@ static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_
       hb_str.hb_info = hb_info;
 #endif /* WITH_HARFBUZZ_DATA_TEXT_SHAPING */
       for (i = 0; i < glyph_count; ++i) {
+        uint32_t cluster = hb_info[i].cluster;
+        wchar_t c = cluster < len ? str[cluster] : 0;
         hb_str.cur_index = i;
         hb_str.cur_gid = hb_info[i].glyphid;
         if (glyph_cache_lookup(&(font->hb_cache), hb_info[i].glyphid, font_size,
                                &glyphs->glyphs[i]) != RET_OK) {
-          if (font_hb_ft_get_glyph_impl(f, str[i], font_size, &hb_str, &glyphs->glyphs[i]) !=
-              RET_OK) {
+          if (font_hb_ft_get_glyph_impl(f, c, font_size, &hb_str, &glyphs->glyphs[i]) != RET_OK) {
             glyphs->glyphs[i].w = 0;
             glyphs->glyphs[i].h = 0;
           }
