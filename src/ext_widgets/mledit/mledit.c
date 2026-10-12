@@ -739,9 +739,6 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         widget_grab(widget->parent, widget);
       }
 
-      if (widget->target == NULL) {
-        mledit_request_input_method(widget);
-      }
       mledit_update_status(widget);
       widget_invalidate(widget, NULL);
       mledit_start_update_caret(mledit);

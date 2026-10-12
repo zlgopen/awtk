@@ -836,9 +836,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         widget_grab(widget->parent, widget);
       }
 
-      if (widget->target == NULL && !edit->readonly) {
-        input_method_request(input_method(), widget);
-      }
       edit_update_status(widget);
       widget_invalidate(widget, NULL);
       edit_start_update_caret(edit);

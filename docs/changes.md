@@ -3,6 +3,7 @@
 2026/10/12
   * 修正了cmake脚本执行并行编译时，拷贝资源冲突出错的问题；完善了awtk-cmake.md使用说明(感谢陈谭/雪飞提供补丁)
   * 修复 font_loader_harfbuzz 中可能存在的越界访问问题(感谢泽武提供补丁)
+  * 移除edit和mledit在EVT_POINTER_DOWN下触发打开输入法的状态（因为EVT_FOCUS就会触发）(感谢智明提供补丁)
 
 2026/10/10
   * 修复 text_edit 相关问题(感谢泽武提供补丁)
