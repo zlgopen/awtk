@@ -142,6 +142,7 @@ typedef struct _text_edit_impl_t {
   bool_t prefix_dirty;
   bool_t full_layout_dirty;
   bool_t partial_layout;
+  bool_t caret_jump_layout;
   uint32_t avg_char_w;
   uint32_t last_layout_w;
   bool_t incremental_edit;
@@ -320,8 +321,12 @@ static glyphs_t* text_edit_create_glyphs(text_edit_t* text_edit, const wchar_t* 
   bool_t shaping = widget_get_shaping(widget);
   const char* bidi_type = widget_get_bidi(widget);
   const char* font_name = system_info_fix_font_name(style_get_str(style, STYLE_ID_FONT_NAME, NULL));
+  canvas_t* c = GET_CANVAS(text_edit);
   uint32_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
-  return_value_if_fail(text_edit != NULL && fm != NULL, NULL);
+  return_value_if_fail(fm != NULL && c != NULL, NULL);
+
+  widget_prepare_text_style(widget, c);
+  font_size = c->font_size;
 
   if (str != NULL && size > 0) {
     font = font_manager_get_font(fm, font_name, font_size);
@@ -1095,8 +1100,8 @@ static void text_edit_update_layout_metrics(text_edit_impl_t* impl) {
       tk_max(impl->prefix_lines[impl->row_index_size] * impl->line_height, layout_info->widget_h);
 }
 
-// 只 layout 当前视口覆盖的文档行
-static ret_t text_edit_layout_visible(text_edit_t* text_edit) {
+// 只 layout 当前视口覆盖的文档行，跳转光标时延伸到光标所在行。
+static ret_t text_edit_layout_visible(text_edit_t* text_edit, bool_t caret_jump_layout) {
   DECL_IMPL(text_edit);
   text_layout_info_t* layout_info = &impl->layout_info;
   int32_t first_line = 0;
@@ -1152,9 +1157,23 @@ static ret_t text_edit_layout_visible(text_edit_t* text_edit) {
     }
   }
 
-  // 下方多 layout 一行，给估算值和精确值切换留出边界余量。
   if (last_row + 1 < impl->row_index_size) {
+    // 下方多 layout 一行，给估算值和精确值切换留出边界余量。
     text_edit_ensure_row_layout(text_edit, (uint32_t)last_row + 1);
+  }
+
+  // 如果需要显示光标，则保证光标所在行在已更新列表中
+  if (caret_jump_layout) {
+    int32_t caret_row = text_edit_index_row_at_offset(impl, impl->state.cursor);
+
+    caret_row = caret_row < 0 ? (int32_t)impl->row_index_size - 1 : caret_row;
+    if (caret_row > (int32_t)last_row + 1) {
+      for (i = (uint32_t)last_row + 2; i <= (uint32_t)caret_row; i++) {
+        if (text_edit_ensure_row_layout(text_edit, i) == NULL) {
+          break;
+        }
+      }
+    }
   }
 
   text_edit_prefix_ensure(impl);
@@ -1230,7 +1249,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   uint32_t view_anchor_offset = 0;
   uint32_t first_line = 0;
   int32_t view_anchor_index = 0;
-  bool_t keep_bottom = FALSE;
+  bool_t scroll_to_caret = FALSE;
 
   impl->caret.x = 0;
   impl->caret.y = 0;
@@ -1239,10 +1258,9 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
 
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
-  // layout 前已经贴底时，layout 后仍然保持贴底。
-  keep_bottom = !impl->single_line && impl->layout_info.virtual_h > impl->layout_info.h &&
-                impl->layout_info.oy >=
-                impl->layout_info.virtual_h - impl->layout_info.h;
+  // 光标跳转只对下一次 layout 生效，锁定滚动时不更新到光标。
+  scroll_to_caret = impl->caret_jump_layout && !impl->single_line && !impl->lock_scrollbar_value;
+  impl->caret_jump_layout = FALSE;
 
   widget_prepare_text_style(text_edit->widget, c);
 
@@ -1297,7 +1315,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
     if (has_view_anchor) {
       text_edit_restore_view_anchor(impl, view_anchor_row, view_anchor_offset);
     }
-    text_edit_layout_visible(text_edit);
+    text_edit_layout_visible(text_edit, scroll_to_caret);
   } else {
     if (text_edit_layout_all(text_edit) == RET_OK) {
       impl->full_layout_dirty = FALSE;
@@ -1307,17 +1325,16 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   text_edit_update_layout_metrics(impl);
 
   text_edit_fix_oy(impl);
-  if (keep_bottom) {
-    impl->layout_info.oy =
-        tk_max(impl->layout_info.virtual_h - impl->layout_info.h, 0);
-  } else if (has_view_anchor) {
+  if (has_view_anchor) {
     text_edit_restore_view_anchor(impl, view_anchor_row, view_anchor_offset);
   }
 
   text_edit_update_input_rect(text_edit);
   if (!impl->single_line) {
     bool_t old_lock = impl->lock_scrollbar_value;
-    impl->lock_scrollbar_value = TRUE;
+    if (!scroll_to_caret) {
+      impl->lock_scrollbar_value = TRUE;
+    }
     text_edit_update_caret_pos(text_edit);
     impl->lock_scrollbar_value = old_lock;
   }
@@ -2511,13 +2528,10 @@ static ret_t text_edit_update_caret_pos(text_edit_t* text_edit) {
   uint32_t row_start = 0;
   uint32_t line_index = 0;
   canvas_t* c = GET_CANVAS(text_edit);
-  uint32_t font_size = impl->font_size;
-  uint32_t line_height = impl->line_height;
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
-
-  if (font_size == 0) {
-    font_size = style_get_int(text_edit->widget->astyle, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
-  }
+  widget_prepare_text_style(text_edit->widget, c);
+  uint32_t font_size = c->font_size;
+  uint32_t line_height = impl->line_height;
 
   text_edit_index_ensure(impl);
   text_edit_prefix_ensure(impl);
@@ -2715,23 +2729,35 @@ static ret_t text_edit_handle_shortcut(text_edit_t* text_edit, key_event_t* evt,
 #endif
     uint32_t key = evt->key;
     char c = tolower(key);
+    DECL_IMPL(text_edit);
+    bool_t update_caret_pos = FALSE;
     if (c == 'z' || c == 'Z') {
       stb_textedit_key(text_edit, state, STB_TEXTEDIT_K_UNDO);
+      update_caret_pos = TRUE;
     } else if (c == 'y' || c == 'Y') {
       stb_textedit_key(text_edit, state, STB_TEXTEDIT_K_REDO);
+      update_caret_pos = TRUE;
     } else if (c == 'c' || c == 'C') {
       text_edit_copy(text_edit);
     } else if (c == 'x' || c == 'X') {
       text_edit_cut(text_edit);
+      return RET_OK;
     } else if (c == 'a' || c == 'A') {
       state->select_start = 0;
       state->select_end = text->size;
     } else if (c == 'v' || c == 'V') {
       text_edit_paste_from_clip_board(text_edit);
+      return RET_OK;
     } else if (key > 128 || !tk_isprint(key)) {
       return RET_FAIL;
     }
 
+    if (!impl->single_line && update_caret_pos) {
+      text_edit_update_caret_pos(text_edit);
+      if (impl->partial_layout && !impl->lock_scrollbar_value) {
+        impl->caret_jump_layout = TRUE;
+      }
+    }
     text_edit_layout(text_edit);
 
     return RET_OK;
@@ -3054,12 +3080,18 @@ on_text_will_delete_end:
 
   stb_textedit_key(text_edit, state, key);
 layout:
-  if (text_edit_is_need_layout(text_edit) || impl->single_line || !move_caret_pos) {
-    text_edit_layout(text_edit);
-  }
-
-  if (!impl->single_line) {
+  if (!impl->single_line && impl->partial_layout && !impl->lock_scrollbar_value) {
     text_edit_update_caret_pos(text_edit);
+    impl->caret_jump_layout = TRUE;
+    text_edit_layout(text_edit);
+  } else {
+    if (text_edit_is_need_layout(text_edit) || impl->single_line || !move_caret_pos) {
+      text_edit_layout(text_edit);
+    }
+
+    if (!impl->single_line) {
+      text_edit_update_caret_pos(text_edit);
+    }
   }
 
   text_edit_update_input_rect(text_edit);
@@ -3122,6 +3154,13 @@ ret_t text_edit_cut(text_edit_t* text_edit) {
 
   if (text_edit_copy(text_edit) == RET_OK) {
     stb_textedit_cut(text_edit, &(impl->state));
+    if (!impl->single_line) {
+      text_edit_update_caret_pos(text_edit);
+      if (impl->partial_layout && !impl->lock_scrollbar_value) {
+        impl->caret_jump_layout = TRUE;
+      }
+      text_edit_layout(text_edit);
+    }
   }
 
   return RET_OK;
@@ -3204,7 +3243,10 @@ ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size)
   }
 
   if (!impl->single_line) {
-    text_edit_update_caret_pos(text_edit);
+    if (!impl->lock_scrollbar_value) {
+      text_edit_update_caret_pos(text_edit);
+      impl->caret_jump_layout = TRUE;
+    }
   }
   text_edit_layout(text_edit);
 
@@ -3228,6 +3270,10 @@ ret_t text_edit_set_cursor(text_edit_t* text_edit, uint32_t cursor) {
       text_edit_layout(text_edit);
     } else {
       text_edit_update_caret_pos(text_edit);
+      if (impl->partial_layout && !impl->lock_scrollbar_value) {
+        impl->caret_jump_layout = TRUE;
+        text_edit_layout(text_edit);
+      }
       text_edit_update_input_rect(text_edit);
     }
   }
@@ -3444,7 +3490,7 @@ ret_t text_edit_set_offset(text_edit_t* text_edit, int32_t ox, int32_t oy) {
   impl->layout_info.ox = ox;
   impl->layout_info.oy = oy;
   // 滚动后新进入视口的行需要立即 layout，避免部分 layout 下出现空白。
-  text_edit_layout_visible(text_edit);
+  text_edit_layout_visible(text_edit, FALSE);
   text_edit_fix_oy(impl);
   text_edit_notify(text_edit);
 
@@ -3558,13 +3604,24 @@ static ret_t text_edit_insert_wtext_with_len(text_edit_t* text_edit, uint32_t of
   ret = len > 0 ? RET_OK : RET_SKIP;
 
   if (ret == RET_OK) {
-    if (offset + len != text_edit_get_cursor(text_edit)) {
+    bool_t cursor_changed = offset + len != text_edit_get_cursor(text_edit);
+
+    if (cursor_changed) {
       text_edit_set_cursor(text_edit, offset + len);
     }
     if (impl->single_line) {
       text_edit_layout(text_edit);
     } else {
-      text_edit_multi_line_insert_text_layout(text_edit, offset, len, wtext, FALSE, 0);
+      // set_cursor 在部分 layout 下已经完成跳转 layout。
+      if (!(cursor_changed && impl->partial_layout && !impl->lock_scrollbar_value)) {
+        if (!cursor_changed) {
+          text_edit_update_caret_pos(text_edit);
+        }
+        if (impl->partial_layout && !impl->lock_scrollbar_value) {
+          impl->caret_jump_layout = TRUE;
+        }
+        text_edit_multi_line_insert_text_layout(text_edit, offset, len, wtext, FALSE, 0);
+      }
     }
   }
 
