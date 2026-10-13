@@ -99,7 +99,10 @@ static void xml_gen_on_comment(XmlBuilder* thiz, const char* text, size_t length
 }
 
 static XmlBuilder* builder_init(xml_str_builder_t& b, StrGen* sg) {
-  memset(&b, 0x00, sizeof(xml_str_builder_t));
+  memset(&b.builder, 0x00, sizeof(XmlBuilder));
+  b.level = 0;
+  b.sg = NULL;
+  
 
   b.sg = sg;
   b.level = 0;
