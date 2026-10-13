@@ -49,7 +49,7 @@ static ret_t edit_reset_layout(widget_t* widget);
 static ret_t edit_update_status(widget_t* widget);
 static ret_t edit_check_valid_value(widget_t* widget);
 static ret_t edit_select_all_async(const idle_info_t* info);
-static ret_t edit_dispatch_value_change_event(widget_t* widget, uint32_t type);
+static ret_t edit_dispatch_value_change_event(widget_t* widget, event_base_type_t type);
 static ret_t edit_paste(widget_t* widget, const wchar_t* str, uint32_t size);
 
 static ret_t edit_save_text(widget_t* widget) {
