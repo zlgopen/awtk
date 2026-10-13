@@ -137,6 +137,7 @@ typedef struct _text_edit_impl_t {
   wchar_t mask_char;
   bool_t mask;
 
+  // 部分 layout 使用的脏标记和结构体数据
   uint32_t* prefix_lines;
   bool_t index_dirty;
   bool_t prefix_dirty;
@@ -163,7 +164,7 @@ typedef struct _text_edit_impl_t {
 
 #define DECL_IMPL(te) text_edit_impl_t* impl = (text_edit_impl_t*)(te)
 
-// 失效指定范围的行级缓存，字模对象在下次 layout 时按需重建
+// 失效指定范围的行级缓存，小范围改动时可以减少后续需要 layout 的内容
 static void text_edit_invalidate_row_cache(text_edit_impl_t* impl, uint32_t begin, uint32_t end) {
   uint32_t i = 0;
 
@@ -343,7 +344,7 @@ static glyphs_t* text_edit_create_glyphs(text_edit_t* text_edit, const wchar_t* 
   return glyphs;
 }
 
-// 确保密码掩码字模可用，字库卸载后重建。
+// 确保密码掩码字模可用，若非法则进行更新。
 static glyphs_t* text_edit_ensure_mask_glyphs(text_edit_t* text_edit) {
   DECL_IMPL(text_edit);
   const wchar_t* mask_str = NULL;
@@ -778,7 +779,7 @@ static row_info_t* text_edit_layout_line(text_edit_t* text_edit, uint32_t row_nu
   }
 }
 
-// 设置文档行索引，内容变化时清除对应的行级缓存
+// 初始化文档行索引信息，内容变化时清除对应的行级缓存，确保字模和 layout 信息准确
 static void text_edit_index_set_row(text_edit_impl_t* impl, uint32_t row, uint32_t start_offset,
                                     uint32_t char_len, bool_t incremental) {
   row_index_t* r = &impl->row_index[row];
@@ -816,6 +817,7 @@ static ret_t text_edit_index_rebuild(text_edit_impl_t* impl) {
 
   return_value_if_fail(impl->row_index != NULL && impl->prefix_lines != NULL, RET_BAD_PARAMS);
 
+  // 单行编辑器直接设置一行并跳过
   if (impl->single_line) {
     text_edit_index_set_row(impl, 0, 0, size, incremental);
     impl->row_index_size = 1;
@@ -825,6 +827,7 @@ static ret_t text_edit_index_rebuild(text_edit_impl_t* impl) {
     return RET_OK;
   }
 
+  // 根据换行符查找并进行换行
   for (i = 0; i + 1 < size; i++) {
     wchar_t c = text->str[i];
     if ((c == STB_TEXTEDIT_NEWLINE || c == STB_TEXTEDIT_NEWLINER) &&
@@ -869,6 +872,7 @@ static uint32_t text_edit_estimate_row_wrap(text_edit_impl_t* impl, uint32_t row
   row_index_t* r = &impl->row_index[row];
   uint32_t w = 0;
 
+  // 已 layout 行使用精确值
   if (r->wrap_valid && r->wrap_width == impl->last_layout_w) {
     return r->wrap_lines;
   }
@@ -877,6 +881,7 @@ static uint32_t text_edit_estimate_row_wrap(text_edit_impl_t* impl, uint32_t row
     return 1;
   }
 
+  // 未 layout 行用像素和字号信息估算大致行数
   w = impl->layout_info.w > 0 ? impl->layout_info.w : 1;
   if (r->pixel_valid && r->pixel_width > 0) {
     uint32_t n = (r->pixel_width + w - 1) / w;
@@ -961,7 +966,7 @@ static int32_t text_edit_index_row_at_offset(text_edit_impl_t* impl, uint32_t of
   return impl->row_index_size > 0 ? (int32_t)impl->row_index_size - 1 : -1;
 }
 
-// 根据物理行快速定位 row
+// 通过 prefix_lines 存储的行数前缀快速定位 row
 static int32_t text_edit_index_row_at_line(text_edit_impl_t* impl, uint32_t line) {
   int32_t low = 0;
   int32_t high = (int32_t)impl->row_index_size;
@@ -1016,7 +1021,6 @@ static row_info_t* text_edit_ensure_row_layout(text_edit_t* text_edit, uint32_t 
   ri = &impl->row_index[row_num];
   row = impl->rows->row + row_num;
   if (ri->is_layout && ri->wrap_width == impl->last_layout_w) {
-    // 字库被卸载时 glyphs_t.valid 会被置假，这种缓存行也需要重建字模并重新 layout。
     if (ri->char_len == 0 || (row->glyphs != NULL && glyphs_get_valid(row->glyphs))) {
       return impl->rows->row + row_num;
     }
@@ -1024,6 +1028,7 @@ static row_info_t* text_edit_ensure_row_layout(text_edit_t* text_edit, uint32_t 
 
   // 根据行信息决定是否需要重建 glyphs 和 layout
   if (ri->char_len > 0) {
+    // 字库被卸载时 glyphs_t.valid 会被置假，这种缓存行也需要重建字模并重新 layout。
     if (!ri->glyphs_valid || row->glyphs == NULL || !glyphs_get_valid(row->glyphs)) {
       glyphs_t* glyphs = text_edit_create_glyphs(
           text_edit, text_edit->widget->text.str + ri->start_offset, ri->char_len);
@@ -1041,6 +1046,7 @@ static row_info_t* text_edit_ensure_row_layout(text_edit_t* text_edit, uint32_t 
                                 mask_glyphs);
     return_value_if_fail(row != NULL, NULL);
   } else {
+    // 为空行时，清除行数据
     if (row->glyphs != NULL) {
       glyphs_destroy(row->glyphs);
       row->glyphs = NULL;
@@ -1070,6 +1076,7 @@ static row_info_t* text_edit_ensure_row_layout(text_edit_t* text_edit, uint32_t 
     text_edit_prefix_shift_from(impl, row_num, delta);
   }
 
+  // 更新当前行的标志位信息
   ri->wrap_lines = row->line_num;
   ri->is_layout = TRUE;
   ri->wrap_valid = TRUE;
@@ -1135,6 +1142,7 @@ static ret_t text_edit_layout_visible(text_edit_t* text_edit, bool_t caret_jump_
   first_row = first_row < 0 ? 0 : first_row;
   last_row = first_row;
 
+  // 计算累计高度，超过当前视口高度就退出循环
   for (i = (uint32_t)first_row; i < impl->row_index_size; i++) {
     row = text_edit_ensure_row_layout(text_edit, i);
     if (row == NULL) {
@@ -1239,6 +1247,15 @@ static void text_edit_restore_view_anchor(text_edit_impl_t* impl, uint32_t row,
   layout_info->oy = tk_clampi(oy, 0, max_oy);
 }
 
+/**
+ * 新版 text_edit_layout 优化逻辑：只 layout 可视窗口内的文本，并将 glyphs 字模分段获取。
+ * 在设置文本时，根据文本的换行符，将每行的字符串信息分段存储到 row_index 中，并根据字符字号粗略计算每行占用。
+ * 在进行 layout 时，根据当前的 oy 与行高计算需要 layout 的起始行，并根据 layout 结果与视口高度决定终点。
+ * 在 layout 时，将每行的具体信息覆盖到 row_index 和 prefix_lines，更新当前记录的精确值。
+ * 在光标操作导致 layout，则需要将视口拉到光标所在位置，当前的做法是先根据估计行数计算光标位置并计算一次 oy，
+ * 将 oy 拉近到光标附近，随后 layout 当前 oy 的起始行到视口底部或光标位置，最后重新再更新一次确切的光标位置和 oy
+ * 若与操作无关，则本次 layout 不修改 oy，只进行文本 layout。
+ */
 static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   DECL_IMPL(text_edit);
   canvas_t* c = GET_CANVAS(text_edit);
@@ -1264,11 +1281,12 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
 
   widget_prepare_text_style(text_edit->widget, c);
 
+  // 若字号变动，则需要全部置脏
   if (text_edit_update_font_info(text_edit)) {
     text_edit_invalidate_row_cache(impl, 0, impl->rows != NULL ? impl->rows->capacity : 0);
   }
 
-  // 记录旧视口顶端在文档行内的位置，前缀和重算后按它恢复 oy。
+  // 记录旧视口顶端在文档行内的位置，前缀和重算后按它恢复 oy，防止更新精确值导致跳变。
   if (impl->line_height > 0 && impl->row_index_size > 0 && impl->prefix_lines != NULL &&
       impl->layout_info.oy >= 0) {
     first_line = (uint32_t)impl->layout_info.oy / impl->line_height;
@@ -1298,6 +1316,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
     return RET_OK;
   }
 
+  // 确保 row_index 和 prefix_lines 更新
   text_edit_index_ensure(impl);
   text_edit_prefix_ensure(impl);
   impl->rows->size = impl->row_index_size;
@@ -1330,6 +1349,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   }
 
   text_edit_update_input_rect(text_edit);
+  // 根据是否光标移动导致的 layout 来决定是否更新 oy 位置到光标处
   if (!impl->single_line) {
     bool_t old_lock = impl->lock_scrollbar_value;
     if (!scroll_to_caret) {
@@ -1356,7 +1376,7 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
   return text_edit_layout_impl(text_edit);
 }
 
-// 将当前所有行置为脏
+// 将当前所有行置为脏，用于设置文本时
 ret_t text_edit_set_text_changed(text_edit_t* text_edit) {
   DECL_IMPL(text_edit);
 
@@ -1406,11 +1426,13 @@ static void text_edit_layout_for_stb(StbTexteditRow* row, STB_TEXTEDIT_STRING* s
 
   if (c == NULL) return;
 
+  // 确保 row_index 和 prefix_lines 状态，根据 offset 获取当前行
   text_edit_index_ensure(impl);
   text_edit_prefix_ensure(impl);
   row_num = text_edit_index_row_at_offset(impl, (uint32_t)offset);
   if (row_num < 0) return;
 
+  // 记录当前 stb 使用的行数，用于后续 stb 调用相关接口使用对应行的数据并 layout 该行
   impl->stb_row_num = (uint32_t)row_num;
   rinfo = text_edit_ensure_row_layout(str, (uint32_t)row_num);
   if (rinfo == NULL) return;
@@ -1826,6 +1848,7 @@ static uint32_t text_edit_count_line_breaks(const wstr_t* text) {
   return count;
 }
 
+// remove 时更新 remove 位置后续的行信息
 static int text_edit_remove(STB_TEXTEDIT_STRING* str, int pos, int num) {
   DECL_IMPL(str);
   wstr_t* text = &(str->widget->text);
@@ -1864,6 +1887,7 @@ static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, canvas_t* c,
   return canvas_measure_text(c, chr, 1) + CHAR_SPACING;
 }
 
+// 根据 layout_stb 中记录的行信息获取字模
 static glyphs_t* text_edit_get_stb_glyphs(text_edit_impl_t* impl, uint32_t* row_start) {
   uint32_t row = impl->stb_row_num;
 
@@ -1878,6 +1902,7 @@ static glyphs_t* text_edit_get_stb_glyphs(text_edit_impl_t* impl, uint32_t* row_
   return impl->rows->row[row].glyphs;
 }
 
+// 根据 layout_stb 中记录的行信息计算字符宽度
 static int text_edit_get_char_width(STB_TEXTEDIT_STRING* str, int pos, int offset) {
   DECL_IMPL(str);
   uint32_t row_start = 0;
@@ -2005,6 +2030,7 @@ static int32_t text_edit_glyph_to_str(STB_TEXTEDIT_STRING* str, int g) {
   return (int32_t)(row_start + glyphs_get_str_index_from_glyph_index(glyphs, (uint32_t)g));
 }
 
+// insert 时更新 insert 位置后续的行信息
 static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHARTYPE* newtext,
                             int num) {
   wstr_t* text = &(str->widget->text);
@@ -2347,7 +2373,7 @@ static point_t text_edit_normalize_point(text_edit_t* text_edit, xy_t x, xy_t y)
 
 // 在当前已经用于绘制的显示行内，根据 x 坐标计算文本偏移。
 static uint32_t text_edit_get_offset_at_point_in_line(text_edit_t* text_edit, uint32_t row_num,
-                                                       line_info_t* line, int32_t x) {
+                                                      line_info_t* line, int32_t x) {
   DECL_IMPL(text_edit);
   uint32_t k = 0;
   uint32_t row_start = 0;
@@ -2405,7 +2431,7 @@ static uint32_t text_edit_get_offset_at_point_in_line(text_edit_t* text_edit, ui
 
 // 部分布局下按点击前的 prefix_lines 定位，避免点击过程把上方行从估算值切到精确值。
 static uint32_t text_edit_locate_point_with_current_layout(text_edit_t* text_edit, int32_t x,
-                                                            int32_t y) {
+                                                           int32_t y) {
   DECL_IMPL(text_edit);
   uint32_t line_index = 0;
   uint32_t line_in_row = 0;
@@ -2641,6 +2667,7 @@ end:
   return RET_OK;
 }
 
+// 部分 layout 模式下不使用 stb 内的逻辑，防止点击后会从起始开始 layout
 ret_t text_edit_click(text_edit_t* text_edit, xy_t x, xy_t y) {
   point_t point;
   DECL_IMPL(text_edit);
@@ -2676,6 +2703,7 @@ ret_t text_edit_click(text_edit_t* text_edit, xy_t x, xy_t y) {
   return RET_OK;
 }
 
+// 部分 layout 的模式下不使用 stb 内部的逻辑，防止从起始行开始 layout
 ret_t text_edit_drag(text_edit_t* text_edit, xy_t x, xy_t y) {
   point_t point;
   DECL_IMPL(text_edit);
@@ -2752,6 +2780,7 @@ static ret_t text_edit_handle_shortcut(text_edit_t* text_edit, key_event_t* evt,
       return RET_FAIL;
     }
 
+    // 先更新一次光标位置和 oy，再进行 layout 后重新更新一次 oy
     if (!impl->single_line && update_caret_pos) {
       text_edit_update_caret_pos(text_edit);
       if (impl->partial_layout && !impl->lock_scrollbar_value) {
@@ -3081,6 +3110,7 @@ on_text_will_delete_end:
   stb_textedit_key(text_edit, state, key);
 layout:
   if (!impl->single_line && impl->partial_layout && !impl->lock_scrollbar_value) {
+    // 先更新一次光标位置和 oy，再进行 layout 后重新更新一次 oy
     text_edit_update_caret_pos(text_edit);
     impl->caret_jump_layout = TRUE;
     text_edit_layout(text_edit);
@@ -3242,6 +3272,7 @@ ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size)
     text_edit_briefly_show_char(text_edit);
   }
 
+  // 先更新一次光标位置和 oy，再进行 layout 后重新更新一次 oy
   if (!impl->single_line) {
     if (!impl->lock_scrollbar_value) {
       text_edit_update_caret_pos(text_edit);
@@ -3269,6 +3300,7 @@ ret_t text_edit_set_cursor(text_edit_t* text_edit, uint32_t cursor) {
     if (impl->single_line) {
       text_edit_layout(text_edit);
     } else {
+      // 先更新一次光标位置和 oy，再进行 layout 后重新更新一次 oy
       text_edit_update_caret_pos(text_edit);
       if (impl->partial_layout && !impl->lock_scrollbar_value) {
         impl->caret_jump_layout = TRUE;
