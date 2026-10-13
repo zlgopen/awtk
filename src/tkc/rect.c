@@ -21,50 +21,53 @@
 #include "tkc/mem.h"
 #include "tkc/rect.h"
 
-#define rectX_fix                \
-  {                              \
-    if (r->x < 0) {              \
-      r->x = 0;                  \
-    }                            \
-                                 \
-    if (r->x > max_w) {          \
-      r->x = max_w;              \
-      r->w = 0;                  \
-    }                            \
-                                 \
-    if (r->y < 0) {              \
-      r->y = 0;                  \
-    }                            \
-                                 \
-    if (r->y > max_h) {          \
-      r->y = max_h;              \
-      r->h = 0;                  \
-    }                            \
-                                 \
-    if (r->w < 0) {              \
-      r->w = 0;                  \
-    }                            \
-                                 \
-    if (r->h < 0) {              \
-      r->h = 0;                  \
-    }                            \
-                                 \
-    if ((r->x + r->w) > max_w) { \
-      r->w = max_w - r->x;       \
-    }                            \
-                                 \
-    if ((r->y + r->h) > max_h) { \
-      r->h = max_h - r->y;       \
-    }                            \
-                                 \
-    if (r->w < 0) {              \
-      r->w = 0;                  \
-    }                            \
-                                 \
-    if (r->h < 0) {              \
-      r->h = 0;                  \
-    }                            \
-  }
+#define rectX_fix(r, max_w, max_h)     \
+  do {                                 \
+    if ((r)->x < 0) {                  \
+      (r)->x = 0;                      \
+    }                                  \
+                                       \
+    if ((r)->x > (max_w)) {            \
+      (r)->x = max_w;                  \
+      (r)->w = 0;                      \
+    }                                  \
+                                       \
+    if ((r)->y < 0) {                  \
+      (r)->y = 0;                      \
+    }                                  \
+                                       \
+    if ((r)->y > (max_h)) {            \
+      (r)->y = max_h;                  \
+      (r)->h = 0;                      \
+    }                                  \
+                                       \
+    if ((r)->w < 0) {                  \
+      (r)->w = 0;                      \
+    }                                  \
+                                       \
+    if ((r)->h < 0) {                  \
+      (r)->h = 0;                      \
+    }                                  \
+                                       \
+    if (((r)->x + (r)->w) > (max_w)) { \
+      (r)->w = (max_w) - (r)->x;       \
+    }                                  \
+                                       \
+    if (((r)->y + (r)->h) > (max_h)) { \
+      (r)->h = (max_h) - (r)->y;       \
+    }                                  \
+                                       \
+    if ((r)->w < 0) {                  \
+      (r)->w = 0;                      \
+    }                                  \
+                                       \
+    if ((r)->h < 0) {                  \
+      (r)->h = 0;                      \
+    }                                  \
+  } while (0)
+
+#define rectX_eq(r1, r2) \
+  ((r1)->x == (r2)->x && (r1)->y == (r2)->y && (r1)->w == (r2)->w && (r1)->h == (r2)->h)
 
 ret_t rect_merge(rect_t* dr, const rect_t* r) {
   return_value_if_fail(r != NULL && dr != NULL, RET_BAD_PARAMS);
@@ -95,10 +98,8 @@ bool_t rect_contains(const rect_t* r, xy_t x, xy_t y) {
 }
 
 bool_t rect_has_intersect(const rect_t* r1, const rect_t* r2) {
-  xy_t right1 = 0;
-  xy_t right2 = 0;
-  xy_t bottom1 = 0;
-  xy_t bottom2 = 0;
+  xy_t right1 = 0, right2 = 0;
+  xy_t bottom1 = 0, bottom2 = 0;
   return_value_if_fail(r1 != NULL && r2 != NULL, FALSE);
 
   right1 = r1->x + r1->w - 1;
@@ -125,53 +126,38 @@ rect_t rect_init(xy_t x, xy_t y, wh_t w, wh_t h) {
 
 bool_t rect_diff(const rect_t* r1, const rect_t* r2, rect_t* out_r1, rect_t* out_r2, rect_t* out_r3,
                  rect_t* out_r4) {
-#define RECT_DIFF_INIT(r, r_x, r_y, r_w, r_h) \
-  {                                           \
-    (r)->x = (r_x);                           \
-    (r)->y = (r_y);                           \
-    (r)->w = (r_w);                           \
-    (r)->h = (r_h);                           \
-  }
   rect_t in;
   return_value_if_fail(r1 != NULL && r2 != NULL && out_r1 != NULL && out_r2 != NULL &&
                            out_r3 != NULL && out_r4 != NULL,
                        FALSE);
 
-  memset(out_r1, 0x0, sizeof(rect_t));
-  memset(out_r2, 0x0, sizeof(rect_t));
-  memset(out_r3, 0x0, sizeof(rect_t));
-  memset(out_r4, 0x0, sizeof(rect_t));
+  *out_r1 = *out_r2 = *out_r3 = *out_r4 = rect_init(0, 0, 0, 0);
 
   in = rect_intersect(r1, r2);
   if (in.w == 0 || in.h == 0) {
-    memcpy(out_r1, r1, sizeof(rect_t));
+    *out_r1 = *r1;
     return TRUE;
   } else {
-    if (memcmp(&in, r1, sizeof(rect_t)) == 0) {
+    if (rectX_eq(&in, r1)) {
       return FALSE;
     } else {
       int32_t right1 = r1->x + r1->w - 1;
       int32_t right2 = r2->x + r2->w - 1;
       int32_t bottom1 = r1->y + r1->h - 1;
       int32_t bottom2 = r2->y + r2->h - 1;
-      RECT_DIFF_INIT(out_r1, r1->x, r1->y, r1->w, tk_max(in.y - r1->y, 0));
-      RECT_DIFF_INIT(out_r2, r1->x, in.y, tk_max(in.x - r1->x, 0), in.h);
-      RECT_DIFF_INIT(out_r3, in.x + in.w, in.y, tk_max(right1 - right2, 0), in.h);
-      RECT_DIFF_INIT(out_r4, r1->x, in.y + in.h, r1->w, tk_max(bottom1 - bottom2, 0));
+      *out_r1 = rect_init(r1->x, r1->y, r1->w, tk_max(in.y - r1->y, 0));
+      *out_r2 = rect_init(r1->x, in.y, tk_max(in.x - r1->x, 0), in.h);
+      *out_r3 = rect_init(in.x + in.w, in.y, tk_max(right1 - right2, 0), in.h);
+      *out_r4 = rect_init(r1->x, in.y + in.h, r1->w, tk_max(bottom1 - bottom2, 0));
       return TRUE;
     }
   }
 }
 
 rect_t rect_intersect(const rect_t* r1, const rect_t* r2) {
-  int32_t top = 0;
-  int32_t left = 0;
-  int32_t bottom = 0;
-  int32_t right = 0;
-  int32_t bottom1 = 0;
-  int32_t right1 = 0;
-  int32_t bottom2 = 0;
-  int32_t right2 = 0;
+  int32_t top = 0, left = 0, right = 0, bottom = 0;
+  int32_t bottom1 = 0, bottom2 = 0;
+  int32_t right1 = 0, right2 = 0;
   rect_t r = rect_init(0, 0, 0, 0);
 
   return_value_if_fail(r1 != NULL && r2 != NULL, r);
@@ -195,14 +181,9 @@ rect_t rect_intersect(const rect_t* r1, const rect_t* r2) {
 }
 
 rectf_t rectf_intersect(const rectf_t* r1, const rectf_t* r2) {
-  float_t top = 0;
-  float_t left = 0;
-  float_t bottom = 0;
-  float_t right = 0;
-  float_t bottom1 = 0;
-  float_t right1 = 0;
-  float_t bottom2 = 0;
-  float_t right2 = 0;
+  float_t top = 0.0f, left = 0.0f, right = 0.0f, bottom = 0.0f;
+  float_t bottom1 = 0.0f, bottom2 = 0.0f;
+  float_t right1 = 0.0f, right2 = 0.0f;
   rectf_t r = rectf_init(0.0f, 0.0f, 0.0f, 0.0f);
 
   return_value_if_fail(r1 != NULL && r2 != NULL, r);
@@ -226,7 +207,7 @@ rectf_t rectf_intersect(const rectf_t* r1, const rectf_t* r2) {
 }
 
 rect_t rect_fix(rect_t* r, wh_t max_w, wh_t max_h) {
-  rectX_fix;
+  rectX_fix(r, max_w, max_h);
   return *r;
 }
 
@@ -288,7 +269,7 @@ rectf_t* rectf_scale(rectf_t* r, float_t scale) {
 }
 
 rectf_t rectf_fix(rectf_t* r, wh_t max_w, wh_t max_h) {
-  rectX_fix;
+  rectX_fix(r, max_w, max_h);
   return *r;
 }
 
