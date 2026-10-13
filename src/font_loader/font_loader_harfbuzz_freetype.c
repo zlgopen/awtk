@@ -101,6 +101,19 @@ static bool_t font_hb_ft_match(font_t* f, const char* name, font_size_t font_siz
   return (name == NULL || strcmp(name, f->name) == 0);
 }
 
+static FT_F26Dot6 font_hb_ft_get_char_size(FT_Face face, font_size_t font_size) {
+  float_t pixel_size = font_size;
+  long font_height = face != NULL ? face->ascender - face->descender : 0;
+
+  return_value_if_fail(face != NULL && face->units_per_EM > 0 && font_height > 0,
+                       (FT_F26Dot6)font_size * 64);
+
+  // stb 将 font_size 视为 ascent-descent 的像素高度，这里换算成等价的 EM 像素。
+  pixel_size = ((float_t)font_size * face->units_per_EM) / font_height;
+
+  return (FT_F26Dot6)tk_roundi(pixel_size * 64);
+}
+
 static void font_hb_ft_apply_hb_info(glyph_t* g, const hb_info_t* info, float_t scale) {
   return_if_fail(g != NULL);
 
@@ -128,7 +141,7 @@ static ret_t font_hb_ft_get_glyph_impl(font_t* f, wchar_t c, font_size_t font_si
     flags |= FT_LOAD_TARGET_MONO;
   }
 
-  FT_Set_Char_Size(sf->face, 0, font_size * 64, 0, 50);
+  FT_Set_Char_Size(sf->face, 0, font_hb_ft_get_char_size(sf->face, font_size), 0, 72);
   if (hb_str != NULL && hb_str->hb_info != NULL) {
     hb_info = hb_str->hb_info;
     ft_ret = FT_Load_Glyph(sf->face, hb_str->cur_gid, flags);
@@ -294,7 +307,7 @@ static font_vmetrics_t font_hb_ft_get_vmetrics(font_t* f, font_size_t font_size)
   font_ft_t* font = (font_ft_t*)f;
   ft_fontinfo* sf = &(font->ft_font);
 
-  FT_Set_Char_Size(sf->face, 0, font_size * 64, 0, 50);
+  FT_Set_Char_Size(sf->face, 0, font_hb_ft_get_char_size(sf->face, font_size), 0, 72);
 
   height = FT_MulFix(sf->face->height, sf->face->size->metrics.y_scale);
   vmetrics.ascent = FT_MulFix(sf->face->ascender, sf->face->size->metrics.y_scale);
