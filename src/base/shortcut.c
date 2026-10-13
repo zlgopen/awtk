@@ -19,7 +19,8 @@
  *
  */
 
-#include <tkc/mem.h>
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "tkc/tokenizer.h"
 
 #include "base/enums.h"
@@ -39,7 +40,7 @@ shortcut_t* shortcut_init_with_str(shortcut_t* shortcut, const char* str) {
   tokenizer_t t;
   const char* k = NULL;
   return_value_if_fail(shortcut != NULL && str != NULL, NULL);
-  return_value_if_fail(tokenizer_init_ex(&t, str, strlen(str), " _+", NULL) != NULL, NULL);
+  return_value_if_fail(tokenizer_init(&t, str, tk_strlen(str), " _+") != NULL, NULL);
 
   memset(shortcut, 0, sizeof(shortcut_t));
   while (tokenizer_has_more(&t)) {
