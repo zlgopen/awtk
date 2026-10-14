@@ -1063,10 +1063,18 @@ static row_info_t* text_edit_ensure_row_layout(text_edit_t* text_edit, uint32_t 
     memset(line, 0x00, sizeof(line_info_t));
     line->offset = ri->start_offset;
     if (impl->single_line) {
+      align_h_t align_h = widget_get_text_align_h(text_edit->widget);
+      uint32_t caret_x = 0;
       uint32_t caret_y = (impl->layout_info.h - c->font_size) / 2;
 
+      if (align_h == ALIGN_H_CENTER) {
+        caret_x = impl->layout_info.w / 2;
+      } else if (align_h == ALIGN_H_RIGHT) {
+        caret_x = impl->layout_info.w;
+      }
+
       impl->layout_info.ox = 0;
-      text_edit_set_caret_pos(impl, 0, caret_y, c->font_size, line_index, row_num);
+      text_edit_set_caret_pos(impl, caret_x, caret_y, c->font_size, line_index, row_num);
     }
   }
   // layout 后重建后面行的 prefix_line
