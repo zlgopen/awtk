@@ -287,6 +287,11 @@ typedef enum _asset_info_flag_t {
    * 使用长名字。
    */
   ASSET_INFO_FLAG_FULL_NAME = 1 << 1,
+  /**
+   * @const ASSET_INFO_FLAG_FULL_NAME_IN_ROM
+   * ROM 资源在数据区末尾追加了完整名字(用于兼容旧运行时使用新资源)。
+   */
+  ASSET_INFO_FLAG_FULL_NAME_IN_ROM = 1 << 2,
 } asset_info_flag_t;
 
 /**
@@ -451,6 +456,31 @@ bool_t asset_info_is_in_rom(const asset_info_t* info);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t asset_info_set_is_in_rom(asset_info_t* info, bool_t is_in_rom);
+
+/**
+ * @method asset_info_is_full_name_in_rom
+ *
+ * ROM 资源是否在数据末尾追加了完整名字。
+ * @annotation ["scriptable"]
+ *
+ * @param {const asset_info_t*} info asset_info对象。
+ *
+ * @return {bool_t} 返回 TRUE 表示追加了完整名字，返回 FALSE 表示没有追加。
+ */
+bool_t asset_info_is_full_name_in_rom(const asset_info_t* info);
+
+/**
+ * @method asset_info_set_full_name_in_rom
+ *
+ * 设置 ROM 资源是否在数据末尾追加了完整名字。
+ * @annotation ["scriptable"]
+ *
+ * @param {asset_info_t*} info asset_info对象。
+ * @param {bool_t} is_full_name_in_rom 是否在数据末尾追加了完整名字。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t asset_info_set_full_name_in_rom(asset_info_t* info, bool_t is_full_name_in_rom);
 
 /* internal */
 ret_t asset_info_set_name(asset_info_t* info, const char* name, bool_t is_alloc);

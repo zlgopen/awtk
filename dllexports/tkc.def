@@ -257,6 +257,8 @@ EXPORTS
     asset_info_get_formatted_name
     asset_info_is_in_rom
     asset_info_set_is_in_rom
+    asset_info_is_full_name_in_rom
+    asset_info_set_full_name_in_rom
     async_call
     async_call_init_ex
     async_call_init_ex2

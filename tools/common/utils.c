@@ -217,11 +217,12 @@ static str_t* format_folder_name(const char* name) {
   return str;
 }
 
-static const char* to_var_name(char var_name[2 * TK_NAME_LEN + 1], const char* theme,
-                               const char* prefix, const char* name) {
-  char tmp[TK_NAME_LEN + 1] = {0};
-  char tmp_var_name[2 * TK_NAME_LEN + 1] = {0};
-  const char* p = name + tk_strlen(name);
+static const char* to_var_name(str_t* var_name, const char* theme, const char* prefix,
+                               const char* name) {
+  const char* p = NULL;
+  return_value_if_fail(var_name != NULL && name != NULL, NULL);
+  p = name + tk_strlen(name);
+
   while (p != name) {
     if (*p == '\\' || *p == '/') {
       p++;
@@ -229,16 +230,16 @@ static const char* to_var_name(char var_name[2 * TK_NAME_LEN + 1], const char* t
     }
     p--;
   }
-  tk_strcpy(tmp, p);
-  tk_snprintf(tmp_var_name, 2 * TK_NAME_LEN, "%s_%s_%s", prefix == NULL ? "" : prefix, tmp,
-              theme == NULL ? "default" : theme);
+
+  str_set(var_name, prefix == NULL ? "" : prefix);
+  str_append_more(var_name, "_", p, "_", theme == NULL ? "default" : theme, NULL);
+
   if (p != name) {
-    tk_strncpy(tmp, name, p - name - 1);
-    tk_snprintf(var_name, 2 * TK_NAME_LEN, "%s_%s", tmp_var_name, tmp);
-  } else {
-    tk_strcpy(var_name, tmp_var_name);
+    str_append(var_name, "_");
+    str_append_with_len(var_name, name, p - name - 1);
   }
-  return filter_name(var_name);
+
+  return filter_name(var_name->str);
 }
 
 ret_t output_c_source(const char* filename, const char* theme, const char* prefix, const char* name,
@@ -246,8 +247,11 @@ ret_t output_c_source(const char* filename, const char* theme, const char* prefi
   uint32_t i = 0;
   fs_file_t* ft = NULL;
   char str[TK_NAME_LEN + 1];
-  char var_name[2 * TK_NAME_LEN + 1];
+  str_t var_name;
+  ret_t ret = RET_FAIL;
   return_value_if_fail(filename != NULL && buff != NULL, RET_BAD_PARAMS);
+
+  str_init(&var_name, 0);
 
   if (name == NULL) {
     filename_to_name(filename, str, sizeof(str));
@@ -259,7 +263,7 @@ ret_t output_c_source(const char* filename, const char* theme, const char* prefi
   ft = fs_open_file(os_fs(), filename, "wb+");
   if (ft != NULL) {
     fs_file_printf(ft, "TK_CONST_DATA_ALIGN(const unsigned char %s[]) = {",
-                   to_var_name(var_name, theme, prefix, name));
+                   to_var_name(&var_name, theme, prefix, name));
     for (i = 0; i < size; i++) {
       if ((i % 20) == 0) {
         fs_file_printf(ft, "\n");
@@ -269,11 +273,11 @@ ret_t output_c_source(const char* filename, const char* theme, const char* prefi
 
     fs_file_printf(ft, "};/*%u*/\n", size);
     fs_file_close(ft);
-
-    return RET_OK;
+    ret = RET_OK;
   }
 
-  return RET_FAIL;
+  str_reset(&var_name);
+  return ret;
 }
 
 ret_t output_res_c_source_ex(const char* filename, const char* theme, uint16_t type,
@@ -281,10 +285,32 @@ ret_t output_res_c_source_ex(const char* filename, const char* theme, uint16_t t
   asset_info_t* res = NULL;
   const char* array_name = NULL;
   const char* asset_name = NULL;
+  char full_name[MAX_PATH] = {0};
+  bool_t has_full_name = FALSE;
+  uint32_t name_len = 0;
   uint32_t total_size = sizeof(asset_info_t) + size;
   const key_type_value_t* kv = asset_type_find_by_value(type);
   return_value_if_fail(kv != NULL, RET_BAD_PARAMS);
   return_value_if_fail(filename != NULL && buff != NULL, RET_BAD_PARAMS);
+
+  if (name != NULL) {
+    array_name = name;
+    asset_name = asset_info_get_formatted_name(name);
+  } else {
+    if (type == ASSET_TYPE_DATA) {
+      filename_to_name_ex(filename, full_name, MAX_PATH, FALSE);
+    } else {
+      filename_to_name(filename, full_name, MAX_PATH);
+    }
+    array_name = (const char*)full_name;
+    asset_name = asset_info_get_formatted_name(full_name);
+  }
+
+  name_len = tk_strlen(array_name);
+  has_full_name = name_len > TK_NAME_LEN;
+  if (has_full_name) {
+    total_size += name_len + 1;
+  }
 
   res = (asset_info_t*)malloc(total_size);
   return_value_if_fail(res != NULL, RET_OOM);
@@ -296,20 +322,12 @@ ret_t output_res_c_source_ex(const char* filename, const char* theme, uint16_t t
   res->subtype = subtype;
   memcpy(res->data, buff, size);
   asset_info_set_is_in_rom(res, TRUE);
-  if (name != NULL) {
-    array_name = name;
-    asset_name = asset_info_get_formatted_name(name);
-  } else {
-    char full_name[MAX_PATH] = {0};
-    if (type == ASSET_TYPE_DATA) {
-      filename_to_name_ex(filename, full_name, MAX_PATH, FALSE);
-    } else {
-      filename_to_name(filename, full_name, MAX_PATH);
-    }
-    array_name = (const char*)full_name;
-    asset_name = asset_info_get_formatted_name(full_name);
-  }
   tk_strncpy(res->name.small_name, asset_name, sizeof(res->name.small_name) - 1);
+
+  if (has_full_name) {
+    asset_info_set_full_name_in_rom(res, TRUE);
+    memcpy(res->data + size, array_name, name_len + 1);
+  }
 
   output_c_source(filename, theme, kv->name, array_name, (uint8_t*)res, total_size);
   free(res);

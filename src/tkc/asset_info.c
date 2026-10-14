@@ -126,6 +126,10 @@ uint16_t asset_info_get_type(asset_info_t* info) {
 
 const char* asset_info_get_name(const asset_info_t* info) {
   return_value_if_fail(info != NULL, NULL);
+  if (asset_info_is_in_rom(info) && asset_info_is_full_name_in_rom(info)) {
+    return (const char*)info->data + info->size;
+  }
+
   if (asset_info_is_full_name(info)) {
     return info->name.full_name;
   } else {
@@ -144,6 +148,21 @@ ret_t asset_info_set_is_in_rom(asset_info_t* info, bool_t is_in_rom) {
     info->flags |= ASSET_INFO_FLAG_IN_ROM;
   } else {
     info->flags &= ~ASSET_INFO_FLAG_IN_ROM;
+  }
+  return RET_OK;
+}
+
+bool_t asset_info_is_full_name_in_rom(const asset_info_t* info) {
+  return_value_if_fail(info != NULL, FALSE);
+  return info->flags & ASSET_INFO_FLAG_FULL_NAME_IN_ROM;
+}
+
+ret_t asset_info_set_full_name_in_rom(asset_info_t* info, bool_t is_full_name_in_rom) {
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+  if (is_full_name_in_rom) {
+    info->flags |= ASSET_INFO_FLAG_FULL_NAME_IN_ROM;
+  } else {
+    info->flags &= ~ASSET_INFO_FLAG_FULL_NAME_IN_ROM;
   }
   return RET_OK;
 }
