@@ -1,8 +1,11 @@
+global.g_v1 = 10
+global.g_v2 = 10
 function add(v1, v2, v3){
    return (v1+v2+v3);
 }
 assert(add(100, 200, 300) == 600)
-
+print("global.g_v1 : " + global.g_v1);
+print("global.g_v2 : " + global.g_v2);
 function f(n) {
   if(n == 0) {
     return (0);

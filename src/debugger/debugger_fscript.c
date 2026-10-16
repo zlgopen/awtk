@@ -299,6 +299,52 @@ static ret_t debugger_fscript_get_code(debugger_t* debugger, binary_data_t* code
   return RET_OK;
 }
 
+static ret_t debugger_fscript_set_var_data(debugger_t* debugger, const char* path, const value_t* value) {
+  uint32_t index = 0;
+  ret_t ret = RET_FAIL;
+  call_stack_frame_t* frame = NULL;
+  debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
+  return_value_if_fail(d != NULL && d->fscript != NULL && path != NULL && value != NULL, RET_BAD_PARAMS);
+
+  if (strncmp(path, FSCRIPT_STR_GLOBAL_PREFIX, FSCRIPT_GLOBAL_PREFIX_LEN) == 0) {
+    tk_object_t* global = fscript_get_global_object();
+    if (global != NULL) {
+      path = path + FSCRIPT_GLOBAL_PREFIX_LEN;
+      if (tk_object_has_prop(global, path)) {
+        value_t vv;
+        tk_object_get_prop(global, path, &vv);
+        if (vv.type == value->type) {
+          tk_object_set_prop(global, path, value);
+          return RET_OK;
+        } else {
+          return RET_BAD_PARAMS;
+        }
+      }
+      return RET_NOT_FOUND;
+    }
+  } else {
+    index = d->call_stack_frames.size - debugger->current_frame_index - 1;
+    frame = (call_stack_frame_t*)darray_get(&(d->call_stack_frames), index);
+    return_value_if_fail(frame != NULL, RET_NOT_FOUND);
+    if (frame->locals != NULL) {
+      uint32_t i = 0;
+      for (i = 0; i < frame->locals->size; i++) {
+        named_value_t* iter = (named_value_t*)darray_get(frame->locals, i);
+        if (tk_str_eq(path, iter->name)) {
+          if (iter->value.type == value->type) {
+            named_value_set_value(iter, value);
+            return RET_OK;
+          } else {
+            return RET_BAD_PARAMS;
+          }
+        }
+      }
+    }
+    return RET_NOT_FOUND;
+  }
+  return RET_FAIL;
+}
+
 tk_object_t* debugger_fscript_get_local(debugger_t* debugger, uint32_t frame_index) {
   uint32_t index = 0;
   call_stack_frame_t* frame = NULL;
@@ -528,6 +574,7 @@ static const debugger_vtable_t s_debugger_fscript_vtable = {
     .step_over = debugger_fscript_step_over,
     .step_loop_over = debugger_fscript_step_loop_over,
     .continve = debugger_fscript_continue,
+    .set_var_data = debugger_fscript_set_var_data,
     .get_local = debugger_fscript_get_local,
     .get_self = debugger_fscript_get_self,
     .get_global = debugger_fscript_get_global,

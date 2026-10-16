@@ -170,6 +170,13 @@ ret_t debugger_continue(debugger_t* debugger) {
   return ret;
 }
 
+ret_t debugger_set_var_data(debugger_t* debugger, const char* path, const value_t* value) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->vt->set_var_data != NULL, RET_BAD_PARAMS);
+
+  return debugger->vt->set_var_data(debugger, path, value);
+}
+
 tk_object_t* debugger_get_local(debugger_t* debugger, uint32_t frame_index) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_local != NULL, NULL);

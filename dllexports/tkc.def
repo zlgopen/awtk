@@ -1405,6 +1405,7 @@ EXPORTS
     debugger_step_out
     debugger_step_loop_over
     debugger_continue
+    debugger_set_var_data
     debugger_get_local
     debugger_get_self
     debugger_get_global

@@ -533,6 +533,17 @@ static ret_t debugger_server_dispatch(debugger_server_t* server) {
         resp.error = debugger_clear_break_points(debugger);
         break;
       }
+      case DEBUGGER_REQ_SET_VARIABLE: {
+        tk_object_t* obj = conf_ubjson_load_from_buff(server->buff, req.size, FALSE);
+        if (obj != NULL) {
+          value_t value;
+          const char* name = tk_object_get_prop_str(obj, DEBUGGER_DATA_PROP_PATH_STR);
+          tk_object_get_prop(obj, DEBUGGER_DATA_PROP_VALUE_STR, &value);
+          resp.error = debugger_set_var_data(debugger, name, &value);
+          tk_object_unref(obj);
+        }
+        break;
+      }
       case DEBUGGER_REQ_GET_SELF: {
         if (debugger_lock(debugger) == RET_OK) {
           tk_object_t* obj = debugger_get_self(debugger);

@@ -908,9 +908,9 @@ TEST(Debugger, global) {
   sleep_ms(500);
 
   tk_object_t* global = debugger_get_global(client);
-  ASSERT_EQ(tk_object_get_prop_int(global, "aaa", 0), 111);
-  ASSERT_EQ(tk_object_get_prop_int(global, "bbb", 0), 222);
-  ASSERT_STREQ(tk_object_get_prop_str(global, "ccc"), "abc");
+  ASSERT_EQ(tk_object_get_prop_int(global, "body.variables.[0].value", 0), 111);
+  ASSERT_EQ(tk_object_get_prop_int(global, "body.variables.[1].value", 0), 222);
+  ASSERT_STREQ(tk_object_get_prop_str(global, "body.variables.[2].value"), "abc");
   TK_OBJECT_UNREF(global);
 
   ASSERT_EQ(debugger_clear_break_points(client), RET_OK);

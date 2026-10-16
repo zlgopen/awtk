@@ -23,6 +23,9 @@
 #include "tkc/buffer.h"
 #include "tkc/data_reader_mem.h"
 #include "conf_io/conf_json.h"
+#include "conf_io/conf_ubjson.h"
+#include "tkc/object_default.h"
+#include "ubjson/ubjson_writer.h"
 #include "ubjson/ubjson_parser.h"
 #include "debugger/debugger_message.h"
 #include "debugger/debugger_client.h"
@@ -258,6 +261,34 @@ static ret_t debugger_client_write_simple(debugger_t* debugger, uint32_t code, u
   return debugger_client_write_data(out, &req, sizeof(req));
 }
 
+static ret_t debugger_client_write_obj_data(debugger_t* debugger, uint32_t code, tk_object_t* obj) {
+  wbuffer_t wb;
+  debugger_req_t req;
+  ret_t ret = RET_FAIL;
+  ubjson_writer_t writer;
+  binary_data_t data = {0, NULL};
+  return_value_if_fail(debugger != NULL && obj != NULL, RET_OOM);
+  return_value_if_fail(wbuffer_init_extendable(&wb) != NULL, RET_OOM);
+  debugger_client_t* client = DEBUGGER_CLIENT(debugger);
+  tk_ostream_t* out = tk_iostream_get_ostream(client->io);
+
+  memset(&req, 0x00, sizeof(req));
+
+  ubjson_writer_init(&writer, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+  ret = ubjson_writer_write_object(&writer, obj);
+  if(ret == RET_OK) {
+    req.code = code;
+    req.size = wb.cursor;
+    req.version = DEBUGGER_VERSION;
+    ret = debugger_client_write_data(out, &req, sizeof(req));
+    if (ret == RET_OK) {
+      ret = debugger_client_write_data(out, wb.data, wb.cursor);
+    }
+  }
+  wbuffer_deinit(&wb);
+  return ret;
+}
+
 static ret_t debugger_client_request_simple(debugger_t* debugger, uint32_t code, uint32_t data) {
   return_value_if_fail(debugger_client_write_simple(debugger, code, data) == RET_OK, RET_FAIL);
 
@@ -351,6 +382,20 @@ static tk_object_t* debugger_client_variables_to_dap_format(tk_object_t* obj) {
   return obj;
 }
 
+static ret_t debugger_client_set_var_data(debugger_t* debugger, const char* path, const value_t* value){
+  ret_t ret = RET_OK;
+  tk_object_t* obj = object_default_create();
+  return_value_if_fail(obj != NULL, RET_OOM);
+  tk_object_set_prop_str(obj, DEBUGGER_DATA_PROP_PATH_STR, path);
+  tk_object_set_prop(obj, DEBUGGER_DATA_PROP_VALUE_STR, value);
+  ret = debugger_client_write_obj_data(debugger, DEBUGGER_REQ_SET_VARIABLE, obj);
+  if (ret == RET_OK) {
+    ret = debugger_client_read_simple(debugger, DEBUGGER_REQ_SET_VARIABLE);
+  }
+  tk_object_unref(obj);
+  return ret;
+}
+
 static tk_object_t* debugger_client_get_local(debugger_t* debugger, uint32_t frame_index) {
   if (debugger_client_write_simple(debugger, DEBUGGER_REQ_GET_LOCAL, frame_index) == RET_OK) {
     tk_object_t* obj = debugger_client_read_object(debugger, DEBUGGER_RESP_GET_LOCAL);
@@ -368,9 +413,43 @@ static tk_object_t* debugger_client_get_self(debugger_t* debugger) {
   }
 }
 
+static ret_t debugger_client_get_global_on_visit(void* ctx, const void* data) {
+  char path[MAX_PATH + 1] = {0};
+  named_value_t* nv = (named_value_t*)data;
+  tk_object_t* ret_obj = TK_OBJECT(ctx);
+  uint32_t i = tk_object_get_prop_int(ret_obj, "body.variables." TK_OBJECT_PROP_SIZE, 0);
+
+  tk_snprintf(path, sizeof(path) - 1, "body.variables.[%d].name", i);
+  tk_object_set_prop_str(ret_obj, path, nv->name);
+
+  tk_snprintf(path, sizeof(path) - 1, "body.variables.[%d].evaluateName", i);
+  tk_object_set_prop_str(ret_obj, path, nv->name);
+
+  tk_snprintf(path, sizeof(path) - 1, "body.variables.[%d].value", i);
+  if (nv->value.type == VALUE_TYPE_STRING) {
+    tk_object_set_prop_str(ret_obj, path, value_str(&nv->value));
+  } else {
+    char str_value[MAX_PATH + 1] = {0};
+    value_str_ex(&nv->value, str_value, sizeof(str_value) - 1);
+    tk_object_set_prop_str(ret_obj, path, str_value);
+  }
+
+  tk_snprintf(path, sizeof(path) - 1, "body.variables.[%d].type", i);
+  tk_object_set_prop_str(ret_obj, path, value_type_name(nv->value.type));
+  return RET_OK;
+}
+
 static tk_object_t* debugger_client_get_global(debugger_t* debugger) {
   if (debugger_client_write_simple(debugger, DEBUGGER_REQ_GET_GLOBAL, 0) == RET_OK) {
-    return debugger_client_read_object(debugger, DEBUGGER_RESP_GET_GLOBAL);
+    tk_object_t* ret_obj = NULL;
+    tk_object_t* obj = debugger_client_read_object(debugger, DEBUGGER_RESP_GET_GLOBAL);
+    if (obj != NULL) {
+      ret_obj = conf_ubjson_create();
+      return_value_if_fail(ret_obj != NULL, NULL);
+      tk_object_foreach_prop(obj, debugger_client_get_global_on_visit, ret_obj);
+      TK_OBJECT_UNREF(obj);
+    }
+    return ret_obj;
   } else {
     return NULL;
   }
@@ -466,6 +545,7 @@ static const debugger_vtable_t s_debugger_client_vtable = {
     .step_over = debugger_client_step_over,
     .step_loop_over = debugger_client_step_loop_over,
     .continve = debugger_client_continue,
+    .set_var_data = debugger_client_set_var_data,
     .get_local = debugger_client_get_local,
     .get_self = debugger_client_get_self,
     .get_global = debugger_client_get_global,

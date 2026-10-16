@@ -44,6 +44,7 @@
 #define LLDB_CMD_INITIALIZE "initialize"
 #define LLDB_CMD_DISCONNECT "disconnect"
 #define LLDB_CMD_STACK_TRACE "stackTrace"
+#define LLDB_CMD_SET_VARIABLE "setVariable"
 #define LLDB_CMD_SET_BREAK_POINTS "setBreakpoints"
 #define LLDB_CMD_CONFIGURATION_DONE "configurationDone"
 #define LLDB_CMD_SET_FUNCTION_BREAK_POINTS "setFunctionBreakpoints"
@@ -69,6 +70,7 @@
 #define LLDB_KEY_LINE "line"
 #define LLDB_KEY_TYPE "type"
 #define LLDB_KEY_PATH "path"
+#define LLDB_KEY_VALUE "value"
 #define LLDB_KEY_START "start"
 #define LLDB_KEY_COUNT "count"
 #define LLDB_KEY_EVENT "event"
@@ -1005,6 +1007,62 @@ static tk_object_t* debugger_lldb_get_callstack_impl(debugger_t* debugger, uint3
   return debugger_lldb_get_callstack_for_tid_impl(debugger, start_frame, levels, thread_id);
 }
 
+static tk_object_t* debugger_lldb_create_set_variable_data_req(debugger_t* debugger, const char* name,
+                                                              uint32_t variables_reference, const value_t* value) {
+  const char* str = NULL;
+  char temp_value[128] = {0};
+  tk_object_t* req = NULL;
+  tk_object_t* arguments = NULL;
+
+  req = object_default_create();
+  return_value_if_fail(req != NULL, NULL);
+  if (value->type == VALUE_TYPE_STRING) {
+    str = value_str(value);
+  } else {
+    value_str_ex(value, temp_value, sizeof(temp_value));
+    str = temp_value;
+  }
+
+  tk_object_set_prop_str(req, LLDB_KEY_TYPE, LLDB_MSG_TYPE_REQUEST);
+  tk_object_set_prop_str(req, LLDB_KEY_COMMAND, LLDB_CMD_SET_VARIABLE);
+
+  arguments = object_default_create();
+  tk_object_set_prop_object(req, LLDB_KEY_ARGUMENTS, arguments);
+  tk_object_set_prop_str(arguments, LLDB_KEY_NAME, name);
+  tk_object_set_prop_uint32(arguments, LLDB_KEY_VARIABLES_REFERENCE, variables_reference);
+  tk_object_set_prop_str(arguments, LLDB_KEY_VALUE, str);
+
+  TK_OBJECT_UNREF(arguments);
+
+  return req;
+}
+
+static ret_t debugger_lldb_set_variables_impl(debugger_t* debugger, const char* name,
+                                                     uint32_t variables_reference, const value_t* value) {
+  ret_t ret = RET_OK;
+  tk_object_t* req = NULL;
+  tk_object_t* resp = NULL;
+  tk_object_t* this_obj = NULL;
+  return_value_if_fail(debugger != NULL, RET_BAD_PARAMS);
+  req = debugger_lldb_create_set_variable_data_req(debugger, name, variables_reference, value);
+  return_value_if_fail(req != NULL, RET_FAIL);
+
+  ret = debugger_lldb_write_req(debugger, req);
+  TK_OBJECT_UNREF(req);
+  if (ret == RET_OK) {
+    resp = debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_SET_VARIABLE, LLDB_REQUEST_TIMEOUT);
+    if (resp == NULL) {
+      return RET_FAIL;
+    } else {
+      bool_t success = tk_object_get_prop_bool(resp, LLDB_KEY_SUCCESS, FALSE);
+      tk_object_unref(resp);
+      return success ? RET_OK : RET_FAIL;
+    }
+  } else {
+    return ret;
+  }
+}
+
 static tk_object_t* debugger_lldb_create_get_variables_req(debugger_t* debugger, uint32_t type,
                                                            uint32_t start, uint32_t count) {
   tk_object_t* req = NULL;
@@ -1269,6 +1327,7 @@ static tk_object_t* object_find_variable_value(tk_object_t* obj, const char* nam
     if (tk_str_eq(name, tk_object_get_prop_str(obj, full_path))) {
       tk_object_t* ret_obj = conf_ubjson_create();
 
+      tk_object_set_prop_str(ret_obj, "body.variables.[0].name", name);
       tk_object_set_prop_str(ret_obj, "body.variables.[0].evaluateName", full_name);
 
       tk_snprintf(full_path, sizeof(full_path) - 1, "%s.value", path);
@@ -1301,17 +1360,19 @@ static int32_t object_find_variables_reference(tk_object_t* obj, const char* nam
   return -1;
 }
 
-static tk_object_t* debugger_lldb_get_var(debugger_t* debugger, const char* path) {
+static tk_object_t* debugger_lldb_get_var_impl(debugger_t* debugger, const char* path, int64_t* ret_parent_variables_reference, bool_t* ret_can_expand) {
   tk_object_t* obj = NULL;
   int64_t variables_reference = 0;
-  return_value_if_fail(debugger != NULL, NULL);
+  return_value_if_fail(debugger != NULL && ret_parent_variables_reference != NULL, NULL);
 
   obj = debugger_lldb_get_variables_impl(debugger, VARREF_LOCALS, 0, 0xffff);
   return_value_if_fail(obj != NULL, NULL);
-
+  *ret_can_expand = FALSE;
+  *ret_parent_variables_reference = 0;
   if (TK_STR_IS_NOT_EMPTY(path)) {
     str_t str;
     tokenizer_t t;
+    bool_t can_expand = TRUE;
     char name[MAX_PATH + 1] = {0};
     bool_t is_array = FALSE;
 
@@ -1337,6 +1398,7 @@ static tk_object_t* debugger_lldb_get_var(debugger_t* debugger, const char* path
         }
         if (variables_reference > 0) {
           TK_OBJECT_UNREF(obj);
+          *ret_parent_variables_reference = variables_reference;
           obj = debugger_lldb_get_variables_impl(debugger, variables_reference, 0, 0);
         } else {
           tk_object_t* value_obj = NULL;
@@ -1345,6 +1407,7 @@ static tk_object_t* debugger_lldb_get_var(debugger_t* debugger, const char* path
           } else {
             value_obj = object_find_variable_value(obj, iter, path);
           }
+          can_expand = FALSE;
           TK_OBJECT_UNREF(obj);
           obj = value_obj;
           break;
@@ -1353,9 +1416,69 @@ static tk_object_t* debugger_lldb_get_var(debugger_t* debugger, const char* path
     }
     tokenizer_deinit(&t);
     str_reset(&str);
+    
+    *ret_can_expand = can_expand;
   }
 
   return obj;
+}
+
+static ret_t debugger_lldb_set_var_data(debugger_t* debugger, const char* path, const value_t* value) {
+  bool_t can_expand;
+  tk_object_t* obj = NULL;
+  ret_t ret = RET_NOT_FOUND;
+  int64_t variables_reference = 0;
+  return_value_if_fail(debugger != NULL, RET_BAD_PARAMS);
+  obj = debugger_lldb_get_var_impl(debugger, path, &variables_reference, &can_expand);
+  if (obj != NULL) {
+    if (variables_reference == 0) {
+      ret = debugger_lldb_set_variables_impl(debugger, path, VARREF_LOCALS, value);
+    } else if (can_expand) {
+      const char* name = tk_object_get_prop_str(obj, "body.variables.[0].name");
+      if (name != NULL && *name == '[' && 
+         (value->type == VALUE_TYPE_STRING || value->type == VALUE_TYPE_WSTRING)) {
+        const char* str = NULL;
+        const wchar_t* wstr = NULL;
+        char path[MAX_PATH + 1] = {0};
+        uint32_t size = tk_object_get_prop_uint32(obj, "body.variables.#size", 0);
+        if (value->type == VALUE_TYPE_STRING) {
+          str = value_str(value);
+          uint32_t str_size = tk_strlen(str);
+          size = tk_min(size, str_size);
+        } else {
+          wstr = value_wstr(value);
+          uint32_t str_size = wcslen(wstr);
+          size = tk_min(size, str_size);
+        }
+        for (size_t i = 0; i < size; i++) {
+          value_t vv;
+          if (value->type == VALUE_TYPE_STRING) {
+            value_set_uint32(&vv, str[i]);
+          } else {
+            value_set_uint32(&vv, wstr[i]);
+          }
+          tk_snprintf(path, sizeof(path) - 1, "[%d]", i);
+          ret = debugger_lldb_set_variables_impl(debugger, path, variables_reference, &vv);
+          if (ret != RET_OK) {
+            break;
+          }
+        }
+      } else {
+        ret = RET_FAIL;
+      }
+    } else {
+      const char* name = tk_object_get_prop_str(obj, "body.variables.[0].name");
+      ret = debugger_lldb_set_variables_impl(debugger, name, variables_reference, value);
+    }
+    TK_OBJECT_UNREF(obj);
+  }
+  return ret;
+}
+
+static tk_object_t* debugger_lldb_get_var(debugger_t* debugger, const char* path) {
+  bool_t can_expand;
+  int64_t variables_reference = 0;
+  return debugger_lldb_get_var_impl(debugger, path, &variables_reference, &can_expand);
 }
 
 static tk_object_t* debugger_lldb_get_local(debugger_t* debugger, uint32_t frame_index) {
@@ -1610,6 +1733,7 @@ static const debugger_vtable_t s_debugger_lldb_vtable = {
     .step_over = debugger_lldb_step_over,
     .step_loop_over = debugger_lldb_step_loop_over,
     .continve = debugger_lldb_continue,
+    .set_var_data = debugger_lldb_set_var_data,
     .get_local = debugger_lldb_get_local,
     .get_self = debugger_lldb_get_self,
     .get_global = debugger_lldb_get_global,

@@ -73,6 +73,7 @@ typedef ret_t (*debugger_step_in_t)(debugger_t* debugger);
 typedef ret_t (*debugger_step_out_t)(debugger_t* debugger);
 typedef ret_t (*debugger_step_loop_over_t)(debugger_t* debugger);
 typedef ret_t (*debugger_continue_t)(debugger_t* debugger);
+typedef ret_t (*debugger_set_var_data_t)(debugger_t* debugger, const char* name, const value_t* value);
 typedef tk_object_t* (*debugger_get_local_t)(debugger_t* debugger, uint32_t frame_index);
 typedef tk_object_t* (*debugger_get_self_t)(debugger_t* debugger);
 typedef tk_object_t* (*debugger_get_global_t)(debugger_t* debugger);
@@ -129,6 +130,7 @@ typedef struct _debugger_vtable_t {
   debugger_step_over_t step_over;
   debugger_step_loop_over_t step_loop_over;
   debugger_continue_t continve;
+  debugger_set_var_data_t set_var_data;
   debugger_get_local_t get_local;
   debugger_get_self_t get_self;
   debugger_get_global_t get_global;
@@ -322,6 +324,22 @@ ret_t debugger_step_loop_over(debugger_t* debugger);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t debugger_continue(debugger_t* debugger);
+
+/**
+ * @method debugger_set_var_data
+ * 设置变量的值。
+ * * 返回数据结构请参考：https://microsoft.github.io/debug-adapter-protocol/specification#Requests_SetVariable
+ * > 处于暂停状态才能执行本命令。
+ * > path 可以为路径，如: 
+ * > * a.name 为结构a下的成员name。
+ * > * a.names[1].first为结构a下的成员names数组中第二个元素下的first成员。
+ * @param {debugger_t*} debugger debugger对象。
+ * @param {const char*} path 变量名或路径。
+ * @param {const value_t*} value 变量的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t debugger_set_var_data(debugger_t* debugger, const char* path, const value_t* value);
 
 /**
  * @method debugger_get_local

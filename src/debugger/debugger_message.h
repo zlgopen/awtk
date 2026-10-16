@@ -26,6 +26,9 @@
 
 BEGIN_C_DECLS
 
+#define DEBUGGER_DATA_PROP_PATH_STR "path"
+#define DEBUGGER_DATA_PROP_VALUE_STR "value"
+
 /**
  * @enum debugger_req_type_t
  * @prefix DEBUGGER_REQ_
@@ -93,6 +96,11 @@ typedef enum _debugger_req_type_t {
    * 清除断点请求码。
    */
   DEBUGGER_REQ_CLEAR_BREAK_POINTS,
+  /**
+   * @const DEBUGGER_REQ_SET_VARIABLE
+   * 设置变量数据请求码。
+   */
+  DEBUGGER_REQ_SET_VARIABLE,
   /**
    * @const DEBUGGER_REQ_GET_SELF
    * 获取self对象请求码。

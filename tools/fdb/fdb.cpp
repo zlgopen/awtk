@@ -591,6 +591,30 @@ static ret_t func_continue(app_info_t* app, tokenizer_t* tokenizer) {
   return debugger_is_running(app->debugger) ? RET_OK : fdb_show_code(app, FALSE);
 }
 
+static ret_t func_set_var_data(app_info_t* app, tokenizer_t* tokenizer) {
+  char name[128 + 1] = {0};
+  tk_strcpy(name, tokenizer_next(tokenizer));
+  if (name != NULL) {
+    value_t value;
+    char temp_str[128 + 1] = {0};
+    const char* str_value = tokenizer_next(tokenizer);
+    if (str_value != NULL) {
+      if (str_value[0] == '"') {
+        memcpy(temp_str, str_value + 1, strlen(str_value) - 2);
+        value_set_str(&value, temp_str);
+      } else if (tk_str_is_float(str_value)) {
+        value_set_float(&value, tk_atof(str_value));
+      } else {
+        value_set_int32(&value, tk_atoi(str_value));
+      }
+      ret_t ret = debugger_set_var_data(app->debugger, name, &value);
+      log_debug("set var data : %s \n", ret == RET_OK ? "success" : "fail");
+      return ret;
+    }
+  }
+  return RET_FAIL;
+}
+
 static ret_t func_flush(app_info_t* app, tokenizer_t* tokenizer) {
   uint32_t num = 0;
   debugger_dispatch_messages(app->debugger, 300, &num);
@@ -654,6 +678,7 @@ static const cmd_entry_t s_cmds[] = {
     {"step_in", "s", "step in function", "s", func_step_in},
     {"step_out", "so", "step out function", "so", func_step_out},
     {"continue", "c", "continue", "c", func_continue},
+    {"set_var", "set", "set_var", "set name value", func_set_var_data},
     {"get_code", "l", "show source code", "l", func_get_code},
     {"break", "b", "set break point", "b func\n   b filename:line", func_set_break},
     {"list_break", "lb", "list breakpoints", "lb", func_list_break},
