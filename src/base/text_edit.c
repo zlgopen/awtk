@@ -603,7 +603,7 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
 
   if (cursor_index < 0) {
     // 小于0 说明光标在末尾，查找最后一个字符的字模所在处
-    index = glyphs_get_glyph_index_from_str_index(glyphs, state->cursor - 1);
+    index = glyphs_get_glyph_index_from_str_index(glyphs, text->size - 1);
     g = glyphs_get(glyphs, index);
     caret_text_w = text_edit_measure_text_on_canvas(text_edit, glyphs, mask_glyphs, index,
                                                     glyphs_get_length(glyphs) - index, c);
