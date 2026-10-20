@@ -20,6 +20,7 @@
  */
 
 #include "tkc/utf8.h"
+#include "tkc/utils.h"
 #include "base/enums.h"
 #include "base/dialog.h"
 #include "base/widget_factory.h"
@@ -88,7 +89,12 @@ static ret_t ui_builder_default_on_end(ui_builder_t* b) {
 
     widget_invalidate_force(widget, NULL);
     if (widget && (widget->name == NULL || widget->name[0] == 0)) {
-      widget_set_name(widget, b->name);
+      char name[MAX_PATH + 1] = {0};
+      tk_strncpy(name, b->name, MAX_PATH);
+      if (tk_str_end_with(b->name, ".xml")) {
+        name[strlen(name) - strlen(".xml")] = '\0';
+      }
+      widget_set_name(widget, name);
     }
 
     e = event_init(EVT_WIDGET_LOAD, NULL);
