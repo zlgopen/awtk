@@ -2108,7 +2108,6 @@ ret_t canvas_draw_text_bidi_in_rect_by_glyphs(canvas_t* c, glyphs_t* glyphs, uin
                                               uint32_t len, const rect_t* r_in, bool_t ellipses) {
   ret_t ret = RET_FAIL;
   float_t text_w = 0.0f;
-  font_raster_params_t params;
   return_value_if_fail(c != NULL && glyphs != NULL && r_in != NULL, RET_BAD_PARAMS);
 
   text_w = glyphs_measure(glyphs, start, len);
@@ -2122,7 +2121,6 @@ ret_t canvas_draw_text_bidi_in_rect_by_glyphs(canvas_t* c, glyphs_t* glyphs, uin
 
 ret_t canvas_draw_text_bidi_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr,
                                     const rect_t* r_in, const char* bidi_type, bool_t ellipses) {
-  bidi_t b;
   ret_t ret = RET_FAIL;
   glyphs_t* glyphs = NULL;
   font_raster_params_t params;
