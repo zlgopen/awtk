@@ -99,6 +99,25 @@ canvas_t* canvas_offline_create_by_widget(widget_t* widget, bitmap_format_t form
   return canvas;
 }
 
+#ifdef WITH_GPU
+static ret_t canvas_offline_bitmap_fbo_destroy(bitmap_t* img) {
+  canvas_t* c = NULL;
+  vgcanvas_t* vg = NULL;
+  framebuffer_object_t* fbo = (framebuffer_object_t*)(img->specific_ctx);
+  native_window_t* native_window = (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
+  return_value_if_fail(native_window != NULL, RET_NOT_FOUND);
+
+  c = native_window_get_canvas(native_window);
+  return_value_if_fail(c != NULL, RET_FAIL);
+
+  vg = lcd_get_vgcanvas(c->lcd);
+  vgcanvas_destroy_fbo(vg, fbo);
+
+  TKMEM_FREE(fbo);
+  return RET_OK;
+}
+#endif
+
 canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) {
   canvas_t* c = NULL;
   system_info_t* info = system_info();
@@ -180,6 +199,9 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
     log_warn(" create fbo fail \n");
   }
   fbo_to_img(canvas->fbo, canvas->base.bitmap);
+#ifndef AWTK_WEB
+  canvas->base.bitmap->specific_destroy = canvas_offline_bitmap_fbo_destroy;
+#endif
 #else
   (void)c;
   canvas = TKMEM_ZALLOC(canvas_offline_t);
