@@ -163,9 +163,13 @@ ret_t tk_mem_set_on_out_of_memory(tk_mem_on_out_of_memory_t on_out_of_memory, vo
 /**
  * @method tk_mem_init
  * @export none
- * 初始化内存。
+ * 初始化内存管理器，把 buffer 作为堆。
  *
- * @param {void*} buffer 内存地址。
+ * buffer 的地址必须按指针长度（sizeof(void*)）对齐。分配器把 buffer 起始处当作空闲块节点，
+ * 节点里含有指针成员；起始地址按指针长度对齐后，后续按同样粒度切分出来的空闲块地址也保持对齐。
+ * 用 uintptr_t 或 void* 数组提供这块内存即可满足该对齐。
+ *
+ * @param {void*} buffer 堆内存首地址，必须按 sizeof(void*) 对齐。
  * @param {uint32_t} size 内存长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -176,15 +180,19 @@ ret_t tk_mem_init(void* buffer, uint32_t size);
  * @method tk_mem_init_ex
  * @export none
  * 初始化内存，支持多块不连续的内存。
- * >最后一个参数必须为NULL。
+ * > 最后一个参数必须为 NULL。
+ * > 每一块内存的首地址都必须按指针长度（sizeof(void*)）对齐，原因与 tk_mem_init 相同。
  *
  * 示例：
  * ```c
+ * static uintptr_t mem1[1024];
+ * static uintptr_t mem2[512];
+ * static uintptr_t mem3[256];
  * tk_mem_init_ex(mem1, sizeof(mem1), mem2, sizeof(mem2), mem3, sizeof(mem3), NULL);
  * ```
  *
- * @param {void*} buffer 内存地址。
- * @param {uint32_t} size 内存长度。
+ * @param {void*} buffer 第一块内存的首地址，必须按 sizeof(void*) 对齐。
+ * @param {uint32_t} size 第一块内存的长度。后续参数成对出现（地址、长度），以 NULL 结束；每一块地址同样必须按 sizeof(void*) 对齐。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
