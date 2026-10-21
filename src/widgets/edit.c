@@ -560,6 +560,25 @@ static ret_t edit_update_status(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t edit_on_ime_stop(void* ctx, event_t* evt) {
+  edit_t* edit = EDIT(ctx);
+  widget_t* widget = WIDGET(ctx);
+  edit->is_open_input_method = FALSE;
+  // 关闭软键盘后，根据控件本身的焦点状态来决定该控件是否为输入状态
+  edit->is_key_inputing = widget->focused;
+  return RET_REMOVE;
+}
+
+static ret_t edit_request_input_method_impl(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  input_method_t* im = input_method();
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+  edit->is_open_input_method = TRUE;
+  input_method_request(im, widget);
+  widget_on(window_manager(), EVT_IM_STOP, edit_on_ime_stop, widget);
+  return RET_OK;
+}
+
 static ret_t edit_do_request_input_method(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   input_method_t* im = input_method();
@@ -567,8 +586,7 @@ static ret_t edit_do_request_input_method(widget_t* widget) {
   if (edit->readonly) {
     return RET_OK;
   }
-
-  input_method_request(im, widget);
+  edit_request_input_method_impl(widget);
   if (edit->action_text != NULL) {
     const char* action_text = locale_info_tr(widget_get_locale_info(widget), edit->action_text);
     input_method_update_action_button_info(im, action_text, TRUE);
@@ -646,6 +664,7 @@ static ret_t edit_on_focused(widget_t* widget) {
   edit_start_update_caret(edit);
 
   if (widget->target == NULL) {
+    edit->is_open_input_method = TRUE;
     widget_add_idle(widget, edit_focus_request_input_method);
 
     if (!edit->select_none_when_focused && !edit->readonly) {
@@ -836,6 +855,12 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         widget_grab(widget->parent, widget);
       }
 
+      // 处理在 focused 状态下，再次打开软键盘的情况
+      if (widget->focused && !edit->is_open_input_method) {
+        if (widget->target == NULL && !edit->readonly) {
+          edit_request_input_method_impl(widget);
+        }
+      }
       edit_update_status(widget);
       widget_invalidate(widget, NULL);
       edit_start_update_caret(edit);

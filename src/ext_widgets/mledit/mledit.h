@@ -181,6 +181,9 @@ typedef struct _mledit_t {
   bool_t is_key_inputing;
   bool_t is_activated;
 
+  // 是否打开软键盘
+  bool_t is_open_input_method;
+
   text_edit_t* model;
   uint32_t timer_id;
 

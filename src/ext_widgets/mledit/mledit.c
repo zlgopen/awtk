@@ -28,6 +28,7 @@
 #include "mledit/mledit.h"
 #include "mledit/line_number.h"
 #include "base/input_method.h"
+#include "base/window_manager.h"
 #include "scroll_view/scroll_bar.h"
 
 static ret_t mledit_init(widget_t* widget);
@@ -542,11 +543,30 @@ static ret_t mledit_commit_str(widget_t* widget, const char* str) {
   return RET_OK;
 }
 
+static ret_t mledit_on_ime_stop(void* ctx, event_t* evt) {
+  mledit_t* mledit = MLEDIT(ctx);
+  widget_t* widget = WIDGET(ctx);
+  mledit->is_open_input_method = FALSE;
+  // 关闭软键盘后，根据控件本身的焦点状态来决定该控件是否为输入状态
+  mledit->is_key_inputing = widget->focused;
+  return RET_REMOVE;
+}
+
+static ret_t mledit_request_input_method_impl(widget_t* widget) {
+  mledit_t* mledit = MLEDIT(widget);
+  input_method_t* im = input_method();
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+  mledit->is_open_input_method = TRUE;
+  input_method_request(im, widget);
+  widget_on(window_manager(), EVT_IM_STOP, mledit_on_ime_stop, widget);
+  return RET_OK;
+}
+
 static ret_t mledit_request_input_method_on_window_open(void* ctx, event_t* e) {
   mledit_t* mledit = MLEDIT(ctx);
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
   if (!mledit->readonly) {
-    input_method_request(input_method(), WIDGET(ctx));
+    mledit_request_input_method_impl(WIDGET(ctx));
   }
 
   return RET_REMOVE;
@@ -560,7 +580,7 @@ static ret_t mledit_request_input_method(widget_t* widget) {
   }
 
   if (widget_is_window_opened(widget)) {
-    input_method_request(input_method(), widget);
+    mledit_request_input_method_impl(widget);
   } else {
     widget_t* win = widget_get_window(widget);
     if (win != NULL) {
@@ -703,6 +723,7 @@ static ret_t mledit_focus_request_input_method(const idle_info_t* info) {
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
 
   if (mledit->widget.focused && mledit->open_im_when_focused && mledit->widget.target == NULL) {
+    mledit->is_open_input_method = TRUE;
     mledit_request_input_method(WIDGET(mledit));
   }
 
@@ -739,6 +760,12 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         widget_grab(widget->parent, widget);
       }
 
+      // 处理在 focused 状态下，再次打开软键盘的情况
+      if (widget->focused && !mledit->is_open_input_method) {
+        if (widget->target == NULL && !mledit->readonly) {
+          mledit_request_input_method(widget);
+        }
+      }
       mledit_update_status(widget);
       widget_invalidate(widget, NULL);
       mledit_start_update_caret(mledit);
