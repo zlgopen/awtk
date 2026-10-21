@@ -1594,13 +1594,26 @@ static int32_t text_edit_calc_x_on_canvas(text_edit_t* text_edit, line_info_t* i
   return 0;
 }
 
-static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info_t* iter,
-                                  uint32_t y, uint32_t row_start, glyphs_t* glyphs,
-                                  glyphs_t* mask_glyphs) {
+static bool_t text_edit_need_paint_line_background(text_edit_t* text_edit, line_info_t* iter) {
+  DECL_IMPL(text_edit);
+  STB_TexteditState* state = &(impl->state);
+  uint32_t line_start = iter->offset;
+  uint32_t line_end = iter->offset + iter->length;
+  uint32_t select_start = tk_min(state->select_start, state->select_end);
+  uint32_t select_end = tk_max(state->select_start, state->select_end);
+  uint32_t preedit_start =
+      state->cursor >= impl->preedit_chars_nr ? state->cursor - impl->preedit_chars_nr : 0;
+  bool_t has_selected = select_start < line_end && select_end > line_start;
+  bool_t has_preedit = impl->preedit && preedit_start < line_end && state->cursor > line_start;
+
+  return has_selected || has_preedit;
+}
+
+static ret_t text_edit_paint_line_background(text_edit_t* text_edit, canvas_t* c, line_info_t* iter,
+                                             uint32_t y, uint32_t row_start, glyphs_t* glyphs,
+                                             glyphs_t* mask_glyphs) {
   uint32_t x = 0;
   uint32_t k = 0;
-  const glyph_t* last_g = NULL;
-  bool_t is_fill_rect = FALSE;
   widget_t* widget = text_edit->widget;
   DECL_IMPL(text_edit);
   style_t* style = widget->astyle;
@@ -1608,21 +1621,21 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
   text_layout_info_t* layout_info = &(impl->layout_info);
   uint32_t view_left = layout_info->ox + layout_info->margin_l;
   uint32_t view_right = layout_info->ox + layout_info->margin_l + layout_info->w;
-
-  color_t black = color_init(0, 0, 0, 0xff);
   color_t white = color_init(0xf0, 0xf0, 0xf0, 0xff);
   color_t select_bg_color = style_get_color(style, STYLE_ID_SELECTED_BG_COLOR, white);
-  color_t select_text_color = style_get_color(style, STYLE_ID_SELECTED_TEXT_COLOR, black);
-  color_t text_color = style_get_color(style, STYLE_ID_TEXT_COLOR, black);
-
   uint32_t select_start = tk_min(state->select_start, state->select_end);
   uint32_t select_end = tk_max(state->select_start, state->select_end);
+
+  if (!text_edit_need_paint_line_background(text_edit, iter)) {
+    return RET_OK;
+  }
 
   if (impl->single_line) {
     x = layout_info->margin_l + iter->x;
   } else {
     x = layout_info->margin_l;
   }
+  canvas_set_fill_color(c, select_bg_color);
 
   // 先画完所有选中背景，再绘制文字，避免后一个字符的背景覆盖前一个字形。
   for (k = 0; k < iter->glyph_count; k++) {
@@ -1645,7 +1658,7 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
     }
 
     if ((x + char_w) < view_left) {
-      x += (char_w == 0 ? char_w : char_w + CHAR_SPACING);
+      x += (g->next_glyph != NULL ? char_w : char_w + CHAR_SPACING);
       continue;
     }
 
@@ -1657,22 +1670,83 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
       xy_t rx = x - layout_info->ox;
       xy_t ry = y - layout_info->oy;
 
-      // 处理 char_w == 0时，后面的背景色会覆盖 char_w 为 0 的字模的问题
       if (selected || preedit) {
-        if (!is_fill_rect && g != NULL) {
-          last_g = glyphs_get(glyphs, iter->glyph_arr[k] + g->glyph_count - 1);
-          canvas_set_fill_color(c, select_bg_color);
-          canvas_fill_rect(
-              c, rx, ry, glyphs_measure(glyphs, iter->glyph_arr[k], g->glyph_count) + CHAR_SPACING,
-              c->font_size);
-          is_fill_rect = TRUE;
+        if (g != NULL) {
+          canvas_fill_rect(c, rx, ry, g->next_glyph != NULL ? char_w : char_w + CHAR_SPACING,
+                           c->font_size);
         }
+      }
+
+      x += (g->next_glyph != NULL ? char_w : char_w + CHAR_SPACING);
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info_t* iter,
+                                  uint32_t y, uint32_t row_start, glyphs_t* glyphs,
+                                  glyphs_t* mask_glyphs) {
+  uint32_t x = 0;
+  uint32_t k = 0;
+  widget_t* widget = text_edit->widget;
+  DECL_IMPL(text_edit);
+  style_t* style = widget->astyle;
+  STB_TexteditState* state = &(impl->state);
+  text_layout_info_t* layout_info = &(impl->layout_info);
+  uint32_t view_left = layout_info->ox + layout_info->margin_l;
+  uint32_t view_right = layout_info->ox + layout_info->margin_l + layout_info->w;
+
+  color_t black = color_init(0, 0, 0, 0xff);
+  color_t select_text_color = style_get_color(style, STYLE_ID_SELECTED_TEXT_COLOR, black);
+  color_t text_color = style_get_color(style, STYLE_ID_TEXT_COLOR, black);
+
+  uint32_t select_start = tk_min(state->select_start, state->select_end);
+  uint32_t select_end = tk_max(state->select_start, state->select_end);
+
+  if (impl->single_line) {
+    x = layout_info->margin_l + iter->x;
+  } else {
+    x = layout_info->margin_l;
+  }
+
+  // 背景已在 text_edit_paint_line_background 中绘制。
+  for (k = 0; k < iter->glyph_count; k++) {
+    uint32_t offset = row_start + glyphs_get_str_index_from_glyph_index(glyphs, iter->glyph_arr[k]);
+    bool_t selected = offset >= select_start && offset < select_end;
+    bool_t preedit = text_edit_is_preedit_char(text_edit, offset);
+    bool_t briefly_show = text_edit_is_briefly_show_char(text_edit, offset);
+    int32_t char_w = glyphs_measure(glyphs, iter->glyph_arr[k], 1);
+    const glyph_t* g = glyphs_get(glyphs, iter->glyph_arr[k]);
+    wchar_t chr =
+        (impl->mask && (!preedit && !briefly_show)) ? impl->mask_char : (g != NULL ? g->chr : 0);
+
+    bool_t draw_space = FALSE;
+    if (impl->single_line && chr == STB_TEXTEDIT_NEWLINE) {
+      draw_space = TRUE;
+      char_w = 4;
+    }
+    if (char_w > 0 && impl->mask && (!preedit && !briefly_show)) {
+      char_w = glyphs_measure(mask_glyphs, 0, 1);
+    }
+
+    if ((x + char_w) < view_left) {
+      x += (g->next_glyph != NULL ? char_w : char_w + CHAR_SPACING);
+      continue;
+    }
+
+    if (x > view_right) {
+      break;
+    }
+
+    if (draw_space || chr != STB_TEXTEDIT_NEWLINE) {
+      xy_t rx = x - layout_info->ox;
+      xy_t ry = y - layout_info->oy;
+
+      if (selected || preedit) {
         canvas_set_text_color(c, select_text_color);
       } else {
         canvas_set_text_color(c, text_color);
-      }
-      if (is_fill_rect && last_g == g) {
-        is_fill_rect = FALSE;
       }
 
       /*FIXME: 密码编辑时，*字符本身偏高，看起来不像居中。但是无法拿到字模信息，只好手工修正一下。*/
@@ -1708,6 +1782,7 @@ static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
       line_info_t* line = (line_info_t*)darray_get(&row->info, 0);
       int32_t y = (layout_info->h - c->font_size) / 2 + layout_info->margin_t;
       if (line != NULL) {
+        text_edit_paint_line_background(text_edit, c, line, y, 0, row->glyphs, mask_glyphs);
         text_edit_paint_line(text_edit, c, line, y, 0, row->glyphs, mask_glyphs);
       }
     }
@@ -1744,6 +1819,8 @@ static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
         }
 
         if (line != NULL) {
+          text_edit_paint_line_background(text_edit, c, line, y, ri->start_offset, row->glyphs,
+                                          mask_glyphs);
           text_edit_paint_line(text_edit, c, line, y, ri->start_offset, row->glyphs, mask_glyphs);
         }
       }
