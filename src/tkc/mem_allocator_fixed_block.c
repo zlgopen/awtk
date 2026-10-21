@@ -23,9 +23,19 @@
 #include "tkc/mem.h"
 #include "tkc/str.h"
 
-typedef struct _mem_allocator_fixed_block_info_t {
-  bool_t used : 1;
-} mem_allocator_fixed_block_info_t;
+/**
+ * @enum mem_allocator_fixed_block_bit_t
+ * @prefix MEM_ALLOCATOR_FIXED_BLOCK_BIT_
+ * 每个块的状态位。
+ */
+typedef enum _mem_allocator_fixed_block_bit_t {
+  /**
+   * @const MEM_ALLOCATOR_FIXED_BLOCK_BIT_USED
+   * 是否已使用。
+   */
+  MEM_ALLOCATOR_FIXED_BLOCK_BIT_USED = 0,
+  MEM_ALLOCATOR_FIXED_BLOCK_BIT_NR
+} mem_allocator_fixed_block_bit_t;
 
 typedef union _mem_allocator_fixed_block_node_t mem_allocator_fixed_block_node_t;
 union _mem_allocator_fixed_block_node_t {
@@ -68,13 +78,15 @@ struct _mem_allocator_fixed_block_pool_t {
   /**
    * @property {mem_allocator_fixed_block_node_t} list
    * 内存块数组链表。
+   * 注意：块数组起点会按对齐量向上取整，可能越过本字段，
+   * 所以 list 不一定就是块 0，块 0 由 MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(pool, allocator->size, 0) 给出。
    */
   mem_allocator_fixed_block_node_t list;
   /**
-   * @property {mem_allocator_fixed_block_info_t*} info
-   * 内存块信息数组。
+   * @property {uint8_t*} bits
+   * 块状态位图，每块占 BIT_NR 位，位于块数组之后（由 BITS_GET 计算）。
    */
-  mem_allocator_fixed_block_info_t info[];
+  uint8_t bits[];
 };
 
 typedef struct _mem_allocator_fixed_block_t {
@@ -94,7 +106,28 @@ typedef struct _mem_allocator_fixed_block_t {
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_ALIGN_UP(size, align) (((size) + (align) - 1) & ~((align) - 1))
 
-#define MEM_ALLOCATOR_FIXED_BLOCK_INFO_SIZE(num) (sizeof(mem_allocator_fixed_block_info_t) * (num))
+/* 位序号 = 块下标 × BIT_NR + 属性位；字节下标 = 位序号 / 8，位偏移 = 位序号 % 8 */
+#define MEM_ALLOCATOR_FIXED_BLOCK_BITS_POS(index, bit) \
+  ((index) * MEM_ALLOCATOR_FIXED_BLOCK_BIT_NR + (bit))
+
+/* 位图总字节数：每块 BIT_NR 位，64 位算避免溢出 */
+#define MEM_ALLOCATOR_FIXED_BLOCK_BITS_SIZE(num) \
+  ((uint32_t)((MEM_ALLOCATOR_FIXED_BLOCK_BITS_POS((uint64_t)(num), 0) + 7) / 8))
+
+#define MEM_ALLOCATOR_FIXED_BLOCK_POWER_OF_2(size) ((size) != 0 && !((size) & ((size) - 1)))
+
+/**
+ * 平台最大自然对齐的上界。
+ *
+ * 以 sizeof(long double) 代表平台的最大对齐：
+ *   Linux x86-64 / ARM64 = 16，MSVC x64 / ARM32 = 8，i386 = 12。
+ * sizeof(long double) 不是 2 的幂时（i386 的 12）不能当对齐量用，退回指针大小（4）。
+ * 取 max(..., sizeof(void*)) 保证上限不小于指针大小，块首的空闲链表指针因此始终对齐。
+ */
+#define MEM_ALLOCATOR_FIXED_BLOCK_MAX_ALIGN                  \
+  (MEM_ALLOCATOR_FIXED_BLOCK_POWER_OF_2(sizeof(long double)) \
+       ? tk_max(sizeof(long double), sizeof(void*))          \
+       : sizeof(void*))
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_SIZE(type_size) \
   MEM_ALLOCATOR_FIXED_BLOCK_ALIGN_UP(type_size, sizeof(mem_allocator_fixed_block_node_t*))
@@ -102,23 +135,46 @@ typedef struct _mem_allocator_fixed_block_t {
 #define MEM_ALLOCATOR_FIXED_BLOCK_MEM_SIZE(type_size, num) \
   (MEM_ALLOCATOR_FIXED_BLOCK_SIZE(type_size) * (num))
 
-#define MEM_ALLOCATOR_FIXED_BLOCK_MEM_START_OFFSET offsetof(mem_allocator_fixed_block_pool_t, list)
+/**
+ * 块对齐量 A：块地址需要满足的对齐粒度（地址 % A == 0）。
+ * 取能整除 stride 的最大 2 的幂，并以平台最大自然对齐封顶；
+ * A 整除 stride 保证块与块之间不会丢失对齐，对标准类型有 A >= _Alignof(T)。
+ */
+inline static uint32_t mem_allocator_fixed_block_align(uint32_t type_size) {
+  uint32_t stride = MEM_ALLOCATOR_FIXED_BLOCK_SIZE(type_size);
+  uint32_t lowbit = stride & (0u - stride);
+  return tk_min(lowbit, (uint32_t)MEM_ALLOCATOR_FIXED_BLOCK_MAX_ALIGN);
+}
+
+/* 块数组的起始偏移：把 offsetof(list) 向上取整到 A，使块 0 的地址是 A 的倍数。 */
+inline static uint32_t mem_allocator_fixed_block_start_offset(uint32_t type_size) {
+  uint32_t align = mem_allocator_fixed_block_align(type_size);
+  return (uint32_t)MEM_ALLOCATOR_FIXED_BLOCK_ALIGN_UP(
+      offsetof(mem_allocator_fixed_block_pool_t, list), align);
+}
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_POOL_SIZE(type_size, num) \
-  (MEM_ALLOCATOR_FIXED_BLOCK_MEM_START_OFFSET +             \
-   MEM_ALLOCATOR_FIXED_BLOCK_MEM_SIZE(type_size, num) + MEM_ALLOCATOR_FIXED_BLOCK_INFO_SIZE(num))
+  (mem_allocator_fixed_block_start_offset(type_size) +      \
+   MEM_ALLOCATOR_FIXED_BLOCK_MEM_SIZE(type_size, num) + MEM_ALLOCATOR_FIXED_BLOCK_BITS_SIZE(num))
 
-#define MEM_ALLOCATOR_FIXED_BLOCK_MEM_START(pool) \
-  ((uint8_t*)(pool) + MEM_ALLOCATOR_FIXED_BLOCK_MEM_START_OFFSET)
+#define MEM_ALLOCATOR_FIXED_BLOCK_MEM_START(pool, type_size) \
+  ((uint8_t*)(pool) + mem_allocator_fixed_block_start_offset(type_size))
 
-#define MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(pool, type_size, index)                \
-  (mem_allocator_fixed_block_node_t*)(MEM_ALLOCATOR_FIXED_BLOCK_MEM_START(pool) + \
+#define MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(pool, type_size, index)                           \
+  (mem_allocator_fixed_block_node_t*)(MEM_ALLOCATOR_FIXED_BLOCK_MEM_START(pool, type_size) + \
                                       MEM_ALLOCATOR_FIXED_BLOCK_MEM_SIZE(type_size, index))
 
-#define MEM_ALLOCATOR_FIXED_BLOCK_NODE_INFO_GET(pool, type_size, index)             \
-  (mem_allocator_fixed_block_info_t*)((uint8_t*)MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET( \
-                                          pool, type_size, (pool)->num) +           \
-                                      MEM_ALLOCATOR_FIXED_BLOCK_INFO_SIZE(index))
+#define MEM_ALLOCATOR_FIXED_BLOCK_BITS_GET(pool, type_size) \
+  ((uint8_t*)MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(pool, type_size, (pool)->num))
+
+/* 位序号 → 位图字节地址 */
+#define MEM_ALLOCATOR_FIXED_BLOCK_BITS_BYTE(bits, index, bit) \
+  ((bits) + MEM_ALLOCATOR_FIXED_BLOCK_BITS_POS(index, bit) / 8)
+
+/* 对第 index 块的 bit 位执行 OP：TK_TEST_BIT / TK_SET_BIT / TK_CLEAR_BIT */
+#define MEM_ALLOCATOR_FIXED_BLOCK_BITS_OP(OP, bits, index, bit) \
+  (OP(*MEM_ALLOCATOR_FIXED_BLOCK_BITS_BYTE(bits, index, bit),   \
+      MEM_ALLOCATOR_FIXED_BLOCK_BITS_POS(index, bit) % 8))
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_GET_INDEX(target, start, size) \
   (((uint8_t*)(target) - (uint8_t*)(start)) / MEM_ALLOCATOR_FIXED_BLOCK_SIZE(size))
@@ -126,7 +182,7 @@ typedef struct _mem_allocator_fixed_block_t {
 #define MEM_ALLOCATOR_FIXED_BLOCK_NUM_EXTEND(num) (((num) >> 1) + (num) + 1)
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_MOD(num, div) \
-  (((div) & ((div) - 1) /* 是否为2的幂次方 */) ? (num) % (div) : (num) & ((div) - 1))
+  (MEM_ALLOCATOR_FIXED_BLOCK_POWER_OF_2(div) ? (num) & ((div) - 1) : (num) % (div))
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH(pools, iter) \
   for (iter = pools; iter != NULL; iter = iter->next)
@@ -245,18 +301,20 @@ inline static ret_t mem_allocator_fixed_block_pool_move_to_top(
   return RET_OK;
 }
 
-inline static mem_allocator_fixed_block_info_t* mem_allocator_fixed_block_node_get_info(
-    mem_allocator_fixed_block_pool_t* pool, mem_allocator_fixed_block_node_t* node,
-    uint32_t type_size) {
-  uint32_t index = MEM_ALLOCATOR_FIXED_BLOCK_GET_INDEX(
-      node, MEM_ALLOCATOR_FIXED_BLOCK_MEM_START(pool), type_size);
-  return MEM_ALLOCATOR_FIXED_BLOCK_NODE_INFO_GET(pool, type_size, index);
+/* 由块地址反查块下标；位图按块下标寻址 */
+inline static uint32_t mem_allocator_fixed_block_node_index(mem_allocator_fixed_block_pool_t* pool,
+                                                            mem_allocator_fixed_block_node_t* node,
+                                                            uint32_t type_size) {
+  return MEM_ALLOCATOR_FIXED_BLOCK_GET_INDEX(
+      node, MEM_ALLOCATOR_FIXED_BLOCK_MEM_START(pool, type_size), type_size);
 }
 
 inline static mem_allocator_fixed_block_node_t* mem_allocator_fixed_block_pool_allocate(
     mem_allocator_fixed_block_pool_t* pool, uint32_t type_size) {
   mem_allocator_fixed_block_node_t* ret = NULL;
-  mem_allocator_fixed_block_info_t* info = NULL;
+  uint8_t* bits = NULL;
+  uint32_t index = 0;
+  bool_t used = FALSE;
   return_value_if_fail(pool != NULL, NULL);
   return_value_if_fail(!mem_allocator_fixed_block_pool_is_full(pool), NULL);
 
@@ -267,9 +325,13 @@ inline static mem_allocator_fixed_block_node_t* mem_allocator_fixed_block_pool_a
   pool->used_num++;
   ENSURE(pool->used_num <= pool->num);
 
-  info = mem_allocator_fixed_block_node_get_info(pool, ret, type_size);
-  ENSURE(!info->used);
-  info->used = TRUE;
+  bits = MEM_ALLOCATOR_FIXED_BLOCK_BITS_GET(pool, type_size);
+  index = mem_allocator_fixed_block_node_index(pool, ret, type_size);
+
+  used = MEM_ALLOCATOR_FIXED_BLOCK_BITS_OP(TK_TEST_BIT, bits, index,
+                                           MEM_ALLOCATOR_FIXED_BLOCK_BIT_USED);
+  ENSURE(!used);
+  MEM_ALLOCATOR_FIXED_BLOCK_BITS_OP(TK_SET_BIT, bits, index, MEM_ALLOCATOR_FIXED_BLOCK_BIT_USED);
 
   return ret;
 }
@@ -277,16 +339,22 @@ inline static mem_allocator_fixed_block_node_t* mem_allocator_fixed_block_pool_a
 inline static ret_t mem_allocator_fixed_block_pool_deallocate(
     mem_allocator_fixed_block_pool_t* pool, mem_allocator_fixed_block_node_t* node,
     uint32_t type_size) {
-  mem_allocator_fixed_block_info_t* info = NULL;
+  uint8_t* bits = NULL;
+  uint32_t index = 0;
+  bool_t used = FALSE;
   return_value_if_fail(pool != NULL && node != NULL, RET_BAD_PARAMS);
   ENSURE(!mem_allocator_fixed_block_pool_is_empty(pool));
   return_value_if_fail(!mem_allocator_fixed_block_pool_is_empty(pool), RET_FAIL);
 
-  info = mem_allocator_fixed_block_node_get_info(pool, node, type_size);
-  ENSURE(info->used);
-  return_value_if_fail(info->used, RET_FAIL);
+  bits = MEM_ALLOCATOR_FIXED_BLOCK_BITS_GET(pool, type_size);
+  index = mem_allocator_fixed_block_node_index(pool, node, type_size);
+  used = MEM_ALLOCATOR_FIXED_BLOCK_BITS_OP(TK_TEST_BIT, bits, index,
+                                           MEM_ALLOCATOR_FIXED_BLOCK_BIT_USED);
 
-  info->used = FALSE;
+  /* 未置位说明重复释放，或这个块不属于当前池 */
+  ENSURE(used);
+  return_value_if_fail(used, RET_FAIL);
+  MEM_ALLOCATOR_FIXED_BLOCK_BITS_OP(TK_CLEAR_BIT, bits, index, MEM_ALLOCATOR_FIXED_BLOCK_BIT_USED);
 
   ENSURE(pool->used_num > 0);
   pool->used_num--;
@@ -334,7 +402,9 @@ static ret_t mem_allocator_fixed_block_pool_init(mem_allocator_fixed_block_t* al
   return_value_if_fail(pool->num > 0, RET_BAD_PARAMS);
 
   pool->used_num = 0;
-  pool->unused_list = &pool->list;
+
+  /* 块 0 由起始偏移决定：偏移为 0 时等于 &pool->list，否则在其后（对齐填充之后） */
+  pool->unused_list = MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(pool, allocator->size, 0);
 
   for (i = 0; i < pool->num - 1; i++) {
     node = MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(pool, allocator->size, i);
@@ -343,8 +413,8 @@ static ret_t mem_allocator_fixed_block_pool_init(mem_allocator_fixed_block_t* al
   node = MEM_ALLOCATOR_FIXED_BLOCK_NODE_GET(pool, allocator->size, pool->num - 1);
   node->next = NULL;
 
-  memset(MEM_ALLOCATOR_FIXED_BLOCK_NODE_INFO_GET(pool, allocator->size, 0), 0,
-         MEM_ALLOCATOR_FIXED_BLOCK_INFO_SIZE(pool->num));
+  memset(MEM_ALLOCATOR_FIXED_BLOCK_BITS_GET(pool, allocator->size), 0,
+         MEM_ALLOCATOR_FIXED_BLOCK_BITS_SIZE(pool->num));
 
   return RET_OK;
 }
@@ -486,7 +556,7 @@ static mem_allocator_fixed_block_node_t* mem_allocator_fixed_block_node_find(
   MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH_EX(allocator->pools, pool, prev_pool = NULL,
                                              prev_pool = pool) {
     if (pool->num > 0) {
-      uint8_t* start = MEM_ALLOCATOR_FIXED_BLOCK_MEM_START(pool);
+      uint8_t* start = MEM_ALLOCATOR_FIXED_BLOCK_MEM_START(pool, allocator->size);
       if (start <= (uint8_t*)(ptr)) {
         uint8_t* end = start + MEM_ALLOCATOR_FIXED_BLOCK_MEM_SIZE(allocator->size, pool->num - 1);
         if ((uint8_t*)(ptr) <= end) {

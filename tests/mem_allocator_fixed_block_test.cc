@@ -128,3 +128,72 @@ TEST(MemAllocatorFixedBlock, large_block_many_allocations) {
 
   ASSERT_EQ(mem_allocator_destroy(allocator), RET_OK);
 }
+
+TEST(MemAllocatorFixedBlock, block_alignment) {
+  enum { kNr = 12 };
+  uint32_t i = 0;
+  uint32_t s = 0;
+  void* blocks[kNr] = {0};
+  const uint32_t sizes[] = {(uint32_t)sizeof(void*), 8, 12, 16, 24};
+  const uint32_t nr = (uint32_t)(sizeof(sizes) / sizeof(sizes[0]));
+
+  for (s = 0; s < nr; s++) {
+    uint32_t size = sizes[s];
+    /* 初始只有 4 块，分配 12 块会触发扩容，覆盖多个池 */
+    mem_allocator_t* allocator = mem_allocator_fixed_block_create(size, 4);
+    ASSERT_EQ(allocator != NULL, TRUE);
+
+    for (i = 0; i < kNr; i++) {
+      blocks[i] = MEM_ALLOCATOR_ALLOC(allocator, size);
+      ASSERT_EQ(blocks[i] != NULL, TRUE);
+
+      /* 对齐量 A >= sizeof(void*)，且 A 整除 stride，所以每块至少按指针大小对齐 */
+      ASSERT_EQ(((uintptr_t)blocks[i]) % sizeof(void*), (uintptr_t)0);
+      /* 块与块之间必须保持同一对齐（逐块对齐） */
+      ASSERT_EQ(((uintptr_t)blocks[i]) % 8, ((uintptr_t)blocks[0]) % 8);
+    }
+
+    /* 平台最大自然对齐达到 16 时，16 字节的块必须 16 字节对齐 */
+    if (size == 16 && sizeof(long double) >= 16) {
+      for (i = 0; i < kNr; i++) {
+        ASSERT_EQ(((uintptr_t)blocks[i]) % 16, (uintptr_t)0);
+      }
+    }
+
+    for (i = 0; i < kNr; i++) {
+      MEM_ALLOCATOR_FREE(allocator, blocks[i]);
+      blocks[i] = NULL;
+    }
+
+    ASSERT_EQ(mem_allocator_destroy(allocator), RET_OK);
+  }
+}
+
+TEST(MemAllocatorFixedBlock, block_no_overlap) {
+  enum { kNr = 8, kBlockSize = 16 };
+  uint32_t i = 0;
+  uint32_t j = 0;
+  void* blocks[kNr] = {0};
+  mem_allocator_t* allocator = mem_allocator_fixed_block_create(kBlockSize, kNr);
+  ASSERT_EQ(allocator != NULL, TRUE);
+
+  /* 取空一个池，逐块写不同标记：对齐填充若没算进池大小，块之间会互相覆盖 */
+  for (i = 0; i < kNr; i++) {
+    blocks[i] = MEM_ALLOCATOR_ALLOC(allocator, kBlockSize);
+    ASSERT_EQ(blocks[i] != NULL, TRUE);
+    memset(blocks[i], (int)(i + 1), kBlockSize);
+  }
+
+  for (i = 0; i < kNr; i++) {
+    uint8_t* p = (uint8_t*)blocks[i];
+    for (j = 0; j < kBlockSize; j++) {
+      ASSERT_EQ(p[j], (uint8_t)(i + 1));
+    }
+  }
+
+  for (i = 0; i < kNr; i++) {
+    MEM_ALLOCATOR_FREE(allocator, blocks[i]);
+  }
+
+  ASSERT_EQ(mem_allocator_destroy(allocator), RET_OK);
+}
