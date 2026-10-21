@@ -5,6 +5,7 @@
   * 完善 mem_allocator_fixed_block(感谢兆坤提供补丁)
   * 修改 text_edit 选中背景的绘制时机，提前到当前行字符绘制前，防止部分字符被背景覆盖(感谢泽武提供补丁)
   * 补充 tk_mem_init 与 tk_mem_init_ex 的说明：buffer 地址必须按指针长度对齐(感谢兆坤提供建议)
+  * 修复Ubuntu下编译报错“error: 'isinf' was not declared in this scope”的问题(感谢朝泽提供补丁)
 
 2026/10/20
   * 修复预览时如果窗体没设置名称，找不到对应窗体样式的问题(感谢培煌提供补丁)

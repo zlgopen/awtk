@@ -1,6 +1,7 @@
 #include "tkc/value.h"
 #include "gtest/gtest.h"
 #include "tkc/object_default.h"
+#include <cmath>
 
 TEST(value, i8) {
   value_t v;
@@ -2197,12 +2198,12 @@ TEST(value, div_by_zero_float) {
   value_set_double(&v1, 1.0);
   value_set_double(&v2, 0.0);
   ASSERT_EQ(value_div(&v1, &v2, &o), RET_OK);
-  ASSERT_TRUE(isinf(value_double(&o)));
+  ASSERT_TRUE(std::isinf(value_double(&o)));
 
   value_set_float(&v1, -2.0f);
   value_set_float(&v2, 0.0f);
   ASSERT_EQ(value_div(&v1, &v2, &o), RET_OK);
-  ASSERT_TRUE(isinf(value_double(&o)));
+  ASSERT_TRUE(std::isinf(value_double(&o)));
 }
 
 TEST(value, str_ex_complex) {
