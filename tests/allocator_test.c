@@ -264,6 +264,10 @@ static uint32_t block_size_of_request(uint32_t user_size) {
   return TK_ROUND_TO_MACH(size);
 }
 
+static uint32_t stored_block_size(const void* ptr) {
+  return *(const uint32_t*)((const char*)ptr - SIMPLE_HEAD_SIZE);
+}
+
 static void assert_bytes(const void* ptr, uint32_t n, uint8_t tag) {
   const uint8_t* bytes = (const uint8_t*)ptr;
   uint32_t i = 0;
@@ -317,7 +321,8 @@ static void allocator_test_simple_edges(void) {
   assert(mem_allocator_simple_is_valid(allocator) == TRUE);
   ptr = MEM_ALLOCATOR_ALLOC(allocator, 1);
   assert(ptr != NULL);
-  assert(mem_allocator_simple_get_mem_size(allocator, ptr) == MIN_SIZE + 1);
+  assert(stored_block_size(ptr) == MIN_SIZE + 1);
+  assert(mem_allocator_simple_get_mem_size(allocator, ptr) == (MIN_SIZE + 1) - SIMPLE_HEAD_SIZE);
   assert(simple.info.free_list == NULL);
   assert(MEM_ALLOCATOR_ALLOC(allocator, 1) == NULL);
   assert(simple.info.used_block_nr == 1);
@@ -346,7 +351,8 @@ static void allocator_test_simple_edges(void) {
 
   ptr = MEM_ALLOCATOR_ALLOC(allocator, 0);
   assert(ptr != NULL);
-  assert(mem_allocator_simple_get_mem_size(allocator, ptr) == MIN_SIZE);
+  assert(stored_block_size(ptr) == MIN_SIZE);
+  assert(mem_allocator_simple_get_mem_size(allocator, ptr) == MIN_SIZE - SIMPLE_HEAD_SIZE);
   assert(((uintptr_t)ptr % sizeof(void*)) == 0);
   MEM_ALLOCATOR_FREE(allocator, ptr);
 
@@ -355,7 +361,9 @@ static void allocator_test_simple_edges(void) {
 
     ptr = MEM_ALLOCATOR_ALLOC(allocator, i);
     assert(ptr != NULL);
-    assert(mem_allocator_simple_get_mem_size(allocator, ptr) == expect);
+    assert(stored_block_size(ptr) == expect);
+    assert(mem_allocator_simple_get_mem_size(allocator, ptr) == expect - SIMPLE_HEAD_SIZE);
+    assert(mem_allocator_simple_get_mem_size(allocator, ptr) >= i);
     if (i > 0) {
       memset(ptr, (int)(0x30 + (i & 15)), i);
       assert_bytes(ptr, i, (uint8_t)(0x30 + (i & 15)));
@@ -375,12 +383,14 @@ static void allocator_test_simple_edges(void) {
   /* size 与块头相加回绕后变成最小块 */
   ptr = MEM_ALLOCATOR_ALLOC(allocator, UINT32_MAX);
   assert(ptr != NULL);
-  assert(mem_allocator_simple_get_mem_size(allocator, ptr) == MIN_SIZE);
+  assert(stored_block_size(ptr) == MIN_SIZE);
+  assert(mem_allocator_simple_get_mem_size(allocator, ptr) == MIN_SIZE - SIMPLE_HEAD_SIZE);
   memset(ptr, 0x46, 1);
   ptr = MEM_ALLOCATOR_REALLOC(allocator, ptr, UINT32_MAX);
   assert(ptr != NULL);
   assert(*(uint8_t*)ptr == 0x46);
-  assert(mem_allocator_simple_get_mem_size(allocator, ptr) == MIN_SIZE);
+  assert(stored_block_size(ptr) == MIN_SIZE);
+  assert(mem_allocator_simple_get_mem_size(allocator, ptr) == MIN_SIZE - SIMPLE_HEAD_SIZE);
   MEM_ALLOCATOR_FREE(allocator, ptr);
 
   exact = block_size_of_request(40);
@@ -399,7 +409,8 @@ static void allocator_test_simple_edges(void) {
 
   allocator = mem_allocator_simple_init(&simple, storage, exact + MIN_SIZE);
   ptr = MEM_ALLOCATOR_ALLOC(allocator, 40);
-  assert(mem_allocator_simple_get_mem_size(allocator, ptr) == exact);
+  assert(stored_block_size(ptr) == exact);
+  assert(mem_allocator_simple_get_mem_size(allocator, ptr) == exact - SIMPLE_HEAD_SIZE);
   assert(simple.info.free_list->size == MIN_SIZE);
   other = ptr;
   memset(other, 0x22, 40);
@@ -754,7 +765,10 @@ static void allocator_test_composite_edges(void) {
   assert(ptrs[0] != NULL);
   assert((uint8_t*)ptrs[0] >= (uint8_t*)mem_a);
   assert((uint8_t*)ptrs[0] < (uint8_t*)mem_a + exact);
-  memset(ptrs[0], 0x61, 40);
+  assert(stored_block_size(ptrs[0]) == exact);
+  assert(mem_allocator_simple_get_mem_size(MEM_ALLOCATOR(&composite.allocators[0]), ptrs[0]) ==
+         exact - SIMPLE_HEAD_SIZE);
+  memset(ptrs[0], 0x61, exact - SIMPLE_HEAD_SIZE);
   moved = MEM_ALLOCATOR_REALLOC(allocator, ptrs[0], 1);
   assert(moved != NULL);
   assert((uint8_t*)moved >= (uint8_t*)mem_b);
@@ -783,8 +797,9 @@ static void allocator_test_composite_edges(void) {
     allocator =
         mem_allocator_composite_init(&composite, mem_b, mem1_size, mem_c, sizeof(mem_c), NULL);
     ptrs[0] = MEM_ALLOCATOR_ALLOC(allocator, 80);
+    assert(stored_block_size(ptrs[0]) == need);
     assert(mem_allocator_simple_get_mem_size(MEM_ALLOCATOR(&composite.allocators[0]), ptrs[0]) ==
-           need);
+           old_user);
     memset(ptrs[0], 0x63, 80);
     moved = MEM_ALLOCATOR_REALLOC(allocator, ptrs[0], bigger);
     assert(moved != NULL);
@@ -793,6 +808,37 @@ static void allocator_test_composite_edges(void) {
     MEM_ALLOCATOR_FREE(allocator, moved);
   }
 
+  /* 源缓冲区刚好是一整块时，扩容只拷贝载荷，读不到块尾之后 */
+  {
+    uint32_t need = block_size_of_request(80);
+    uint32_t payload = need - SIMPLE_HEAD_SIZE;
+    uintptr_t storage[32];
+    uint8_t* exact_buf = NULL;
+
+    assert(sizeof(storage) >= need);
+    assert(payload >= 80);
+    exact_buf = (uint8_t*)storage + sizeof(storage) - need;
+    allocator =
+        mem_allocator_composite_init(&composite, exact_buf, need, mem_c, sizeof(mem_c), NULL);
+    ptrs[0] = MEM_ALLOCATOR_ALLOC(allocator, 80);
+    assert(ptrs[0] != NULL);
+    assert(stored_block_size(ptrs[0]) == need);
+    assert(mem_allocator_simple_get_mem_size(MEM_ALLOCATOR(&composite.allocators[0]), ptrs[0]) ==
+           payload);
+    memset(ptrs[0], 0x64, payload);
+    moved = MEM_ALLOCATOR_REALLOC(allocator, ptrs[0], payload + 1);
+    assert(moved != NULL);
+    assert((uint8_t*)moved >= (uint8_t*)mem_c);
+    assert((uint8_t*)moved < (uint8_t*)mem_c + sizeof(mem_c));
+    assert_bytes(moved, payload, 0x64);
+    assert(mem_allocator_simple_get_mem_size(MEM_ALLOCATOR(&composite.allocators[1]), moved) >=
+           payload + 1);
+    MEM_ALLOCATOR_FREE(allocator, moved);
+    mem_allocator_destroy(allocator);
+  }
+
+  allocator =
+      mem_allocator_composite_init(&composite, mem_b, sizeof(mem_b), mem_c, sizeof(mem_c), NULL);
   ptrs[0] = MEM_ALLOCATOR_REALLOC(allocator, NULL, 8);
   assert(ptrs[0] != NULL);
   assert(mem_allocator_composite_is_valid_addr(allocator, ptrs[0]) == TRUE);

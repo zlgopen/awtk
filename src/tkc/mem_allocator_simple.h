@@ -293,7 +293,8 @@ static uint32_t mem_allocator_simple_get_mem_size(mem_allocator_t* allocator, vo
 
   free_iter = (free_node_t*)((char*)ptr - SIMPLE_HEAD_SIZE);
 
-  return free_iter->size;
+  /* 返回载荷容量（块大小去掉头部），而不是整块的大小 */
+  return free_iter->size > SIMPLE_HEAD_SIZE ? free_iter->size - SIMPLE_HEAD_SIZE : 0;
 }
 
 static inline ret_t mem_allocator_simple_destroy(mem_allocator_t* allocator) {
