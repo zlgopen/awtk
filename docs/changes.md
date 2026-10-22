@@ -2,6 +2,7 @@
 
 2026/10/22
   * improve mem_allocator_simple(感谢兆坤提供补丁)
+  * 完善 allocator_test，覆盖 simple、pool、composite 的异常与边界情况
 
 2026/10/21
   * 修复关闭已经打开软键盘后再次点击相同焦点的输入框无法打开软键盘的问题(感谢智明提供补丁)
