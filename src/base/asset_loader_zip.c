@@ -189,15 +189,14 @@ asset_loader_t* asset_loader_zip_create(const char* zipfile) {
   return_value_if_fail(zip != NULL, NULL);
 
   zip->data = load_asset(zipfile, &(zip->size));
-  if (zip->data == NULL) {
-    TKMEM_FREE(zip);
-  }
+  goto_error_if_fail(zip->data != NULL);
 
-  if (!mz_zip_reader_init_mem(&(zip->archive), zip->data, zip->size, 0)) {
-    TKMEM_FREE(zip);
-  }
+  goto_error_if_fail(mz_zip_reader_init_mem(&(zip->archive), zip->data, zip->size, 0));
 
   return (asset_loader_t*)zip;
+error:
+  TKMEM_FREE(zip);
+  return NULL;
 }
 
 static size_t asset_loader_zip_read(void* pOpaque, mz_uint64 offset, void* buff, size_t n) {

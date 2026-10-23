@@ -3,6 +3,7 @@
 2026/10/23
   * improve mem_allocator_fixed_block(感谢兆坤提供补丁)
   * WINDOWS/LINUX/MACOS/LINUX_FB/ANDROID/IOS 平台 MAIN_LOOP_QUEUE_SIZE 默认改为 256(感谢 QY 提供建议)
+  * fix asset_loader_zip_create(感谢兆坤提供补丁)
 
 2026/10/22
   * improve mem_allocator_simple(感谢兆坤提供补丁)
