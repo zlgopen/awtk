@@ -179,7 +179,18 @@ inline static uint32_t mem_allocator_fixed_block_start_offset(uint32_t type_size
 #define MEM_ALLOCATOR_FIXED_BLOCK_GET_INDEX(target, start, size) \
   (((uint8_t*)(target) - (uint8_t*)(start)) / MEM_ALLOCATOR_FIXED_BLOCK_SIZE(size))
 
-#define MEM_ALLOCATOR_FIXED_BLOCK_NUM_EXTEND(num) (((num) >> 1) + (num) + 1)
+#define MEM_ALLOCATOR_FIXED_BLOCK_EXTEND_NUM(num) (((num) >> 1) + 1)
+
+inline static bool_t mem_allocator_fixed_block_pool_overflow(uint32_t type_size, uint32_t num) {
+  if (num > 0) {
+    uint64_t stride = MEM_ALLOCATOR_FIXED_BLOCK_SIZE(type_size);
+    uint64_t limit = (uint64_t)UINT32_MAX - mem_allocator_fixed_block_start_offset(type_size);
+    uint64_t bits = MEM_ALLOCATOR_FIXED_BLOCK_BITS_SIZE(num);
+    /* 位图已占满可用空间，或 stride * num 放不下；先比较再减，避免 limit - bits 下溢 */
+    return bits >= limit || stride > (limit - bits) / num;
+  }
+  return FALSE;
+}
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_MOD(num, div) \
   (MEM_ALLOCATOR_FIXED_BLOCK_POWER_OF_2(div) ? (num) & ((div) - 1) : (num) % (div))
@@ -381,6 +392,8 @@ inline static uint32_t mem_allocator_fixed_block_num(mem_allocator_fixed_block_t
     if (!only_empty || mem_allocator_fixed_block_pool_is_empty(iter)) {
       switch (type) {
         case MEM_ALLOCATOR_FIXED_BLOCK_NUM_TYPE_BLOCK: {
+          /* 饱和而不是回绕：块数多到溢出时，后续的池大小检查会拒绝创建 */
+          return_value_if_fail(ret <= UINT32_MAX - iter->num, UINT32_MAX);
           ret += iter->num;
         } break;
         case MEM_ALLOCATOR_FIXED_BLOCK_NUM_TYPE_POOL: {
@@ -422,7 +435,9 @@ static ret_t mem_allocator_fixed_block_pool_init(mem_allocator_fixed_block_t* al
 inline static mem_allocator_fixed_block_pool_t* mem_allocator_fixed_block_pool_create(
     mem_allocator_fixed_block_t* allocator, uint32_t num) {
   mem_allocator_fixed_block_pool_t* ret = NULL;
+  ENSURE(num > 0);
   return_value_if_fail(allocator != NULL && num > 0, NULL);
+  return_value_if_fail(!mem_allocator_fixed_block_pool_overflow(allocator->size, num), NULL);
 
   ret = TKMEM_ALLOC(MEM_ALLOCATOR_FIXED_BLOCK_POOL_SIZE(allocator->size, num));
   return_value_if_fail(ret != NULL, NULL);
@@ -469,6 +484,7 @@ static ret_t mem_allocator_fixed_block_pools_merge(mem_allocator_fixed_block_t* 
 
   num = mem_allocator_fixed_block_num(allocator, MEM_ALLOCATOR_FIXED_BLOCK_NUM_TYPE_BLOCK, TRUE);
   return_value_if_fail(num > 0, RET_FAIL);
+  return_value_if_fail(!mem_allocator_fixed_block_pool_overflow(allocator->size, num), RET_FAIL);
 
   MEM_ALLOCATOR_FIXED_BLOCK_POOLS_FOREACH_EX(allocator->pools, iter, prev = NULL, prev = iter) {
     /* 保留一个空间最大的空内存池复用 */
@@ -511,9 +527,8 @@ static ret_t mem_allocator_fixed_block_extend(mem_allocator_fixed_block_t* alloc
   if (mem_allocator_fixed_block_is_full(allocator)) {
     uint32_t num =
         mem_allocator_fixed_block_num(allocator, MEM_ALLOCATOR_FIXED_BLOCK_NUM_TYPE_BLOCK, FALSE);
-    uint32_t extend_num = MEM_ALLOCATOR_FIXED_BLOCK_NUM_EXTEND(num);
     mem_allocator_fixed_block_pool_t* pool =
-        mem_allocator_fixed_block_pool_create(allocator, extend_num - num);
+        mem_allocator_fixed_block_pool_create(allocator, MEM_ALLOCATOR_FIXED_BLOCK_EXTEND_NUM(num));
     return_value_if_fail(pool != NULL, RET_OOM);
 
     return mem_allocator_fixed_block_pools_push(&allocator->pools, pool);
@@ -764,6 +779,13 @@ error:
 mem_allocator_t* mem_allocator_fixed_block_create(uint32_t size, uint32_t num) {
   mem_allocator_fixed_block_t* ret = NULL;
   return_value_if_fail(size > 0, NULL);
+
+  /* 取整对齐后不应小于原尺寸，否则说明 size 已经大到回绕 */
+  ENSURE(MEM_ALLOCATOR_FIXED_BLOCK_SIZE(size) >= size);
+  return_value_if_fail(MEM_ALLOCATOR_FIXED_BLOCK_SIZE(size) >= size, NULL);
+
+  ENSURE(!mem_allocator_fixed_block_pool_overflow(size, num));
+  return_value_if_fail(!mem_allocator_fixed_block_pool_overflow(size, num), NULL);
 
   ret = TKMEM_ALLOC(sizeof(mem_allocator_fixed_block_t));
   return_value_if_fail(ret != NULL, NULL);

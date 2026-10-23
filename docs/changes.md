@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/10/23
+  * improve mem_allocator_fixed_block(感谢兆坤提供补丁)
+
 2026/10/22
   * improve mem_allocator_simple(感谢兆坤提供补丁)
   * 完善 allocator_test，覆盖 simple、pool、composite 的异常与边界情况

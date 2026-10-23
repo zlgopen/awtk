@@ -197,3 +197,24 @@ TEST(MemAllocatorFixedBlock, block_no_overlap) {
 
   ASSERT_EQ(mem_allocator_destroy(allocator), RET_OK);
 }
+
+TEST(MemAllocatorFixedBlock, pool_overflow) {
+  mem_allocator_t* allocator = NULL;
+
+  /* 块数过多：池大小超出 uint32，应拒绝创建，而不是分配一个偏小的池 */
+  ASSERT_CATCH(allocator = mem_allocator_fixed_block_create(sizeof(int), 0xFFFFFFFF));
+  ASSERT_EQ(allocator, nullptr);
+
+  /* 块尺寸大到取整对齐后回绕，同样应拒绝 */
+  ASSERT_CATCH(allocator = mem_allocator_fixed_block_create(0xFFFFFFFF, 1));
+  ASSERT_EQ(allocator, nullptr);
+
+  /* 单个块就超过 uint32 可用范围 */
+  ASSERT_CATCH(allocator = mem_allocator_fixed_block_create(0xFFFFFFF0, 1));
+  ASSERT_EQ(allocator, nullptr);
+
+  /* 正常尺寸不受影响 */
+  allocator = mem_allocator_fixed_block_create(sizeof(int), 100);
+  ASSERT_EQ(allocator != NULL, TRUE);
+  ASSERT_EQ(mem_allocator_destroy(allocator), RET_OK);
+}
