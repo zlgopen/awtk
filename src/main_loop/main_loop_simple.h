@@ -131,7 +131,13 @@ ret_t main_loop_post_touch_event(main_loop_t* l, event_type_t event_type, xy_t x
 ret_t main_loop_post_multi_gesture_event(main_loop_t* l, multi_gesture_event_t* event);
 
 #ifndef MAIN_LOOP_QUEUE_SIZE
+
+#if defined(WITH_SDL) || defined(LINUX)
+#define MAIN_LOOP_QUEUE_SIZE 256
+#else
 #define MAIN_LOOP_QUEUE_SIZE 20
+#endif
+
 #endif /*MAIN_LOOP_QUEUE_SIZE*/
 
 END_C_DECLS
