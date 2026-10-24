@@ -137,7 +137,7 @@ static plugin_t* plugin_create(const char* path, const char* lib_name,
 }
 
 static int32_t plugin_compare(plugin_t* plugin, const char* lib_name) {
-  return strcmp(plugin->lib_name, lib_name);
+  return tk_strcmp(plugin->lib_name, lib_name);
 }
 
 plugin_manager_t* plugin_manager_create(const char* path, plugin_get_init_func_name_t get_init,
@@ -168,15 +168,19 @@ static ret_t plugin_manager_unload(plugin_manager_t* plugin_manager) {
 }
 
 bool_t plugin_manager_exist(plugin_manager_t* plugin_manager, const char* lib_name) {
+  return_value_if_fail(plugin_manager != NULL, FALSE);
   return darray_find(&(plugin_manager->plugins), (void*)lib_name) != NULL;
 }
 
 uint32_t plugin_manager_plugin_count(plugin_manager_t* plugin_manager) {
+  return_value_if_fail(plugin_manager != NULL, 0);
   return plugin_manager->plugins.size;
 }
 
 void* plugin_manager_get_func_by_index(plugin_manager_t* plugin_manager, uint32_t index,
                                        const char* func_name) {
+  return_value_if_fail(plugin_manager != NULL, NULL);
+
   if (index < plugin_manager->plugins.size) {
     plugin_t* plugin = (plugin_t*)darray_get(&(plugin_manager->plugins), index);
     if (plugin != NULL) {
@@ -187,6 +191,8 @@ void* plugin_manager_get_func_by_index(plugin_manager_t* plugin_manager, uint32_
 }
 
 const char* plugin_manager_get_lib_name_by_index(plugin_manager_t* plugin_manager, uint32_t index) {
+  return_value_if_fail(plugin_manager != NULL, NULL);
+
   if (index < plugin_manager->plugins.size) {
     plugin_t* plugin = (plugin_t*)darray_get(&(plugin_manager->plugins), index);
     if (plugin != NULL) {

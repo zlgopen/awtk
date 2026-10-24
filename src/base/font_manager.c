@@ -352,8 +352,11 @@ ret_t font_managers_unref(font_manager_t* fm) {
   if (fm->refcount == 1) {
     assets_manager_t* am = fm->assets_manager;
     darray_remove(s_font_managers, fm->name);
-    assert(am->refcount > 0);
-    assets_managers_unref(am);
+
+    if (am != NULL) {
+      assert(am->refcount > 0);
+      assets_managers_unref(am);
+    }
 
     if (s_font_managers->size == 0) {
       darray_destroy(s_font_managers);

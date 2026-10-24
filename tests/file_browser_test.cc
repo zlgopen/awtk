@@ -189,30 +189,42 @@ TEST(FileBrowser, sort_by_name) {
 
   ASSERT_EQ(file_browser_sort_by_name(fb, TRUE), RET_OK);
   iter = file_browser_get_item(fb, 0);
+  ASSERT_TRUE(iter != NULL);
   ASSERT_STREQ(iter->name, "dir1");
   iter = file_browser_get_item(fb, 1);
+  ASSERT_TRUE(iter != NULL);
   ASSERT_STREQ(iter->name, "dir2");
   iter = file_browser_get_item(fb, 2);
+  ASSERT_TRUE(iter != NULL);
   ASSERT_STREQ(iter->name, "a.txt");
   iter = file_browser_get_item(fb, 3);
+  ASSERT_TRUE(iter != NULL);
   ASSERT_STREQ(iter->name, "b.txt");
   iter = file_browser_get_item(fb, 4);
+  ASSERT_TRUE(iter != NULL);
   ASSERT_STREQ(iter->name, "c.txt");
   iter = file_browser_get_item(fb, 5);
+  ASSERT_TRUE(iter != NULL);
   ASSERT_STREQ(iter->name, "d.txt");
 
   ASSERT_EQ(file_browser_sort_by_name(fb, FALSE), RET_OK);
   iter = file_browser_get_item(fb, 0);
+  ASSERT_TRUE(iter != NULL);
   ASSERT_STREQ(iter->name, "dir2");
   iter = file_browser_get_item(fb, 1);
+  ASSERT_TRUE(iter != NULL);
   ASSERT_STREQ(iter->name, "dir1");
   iter = file_browser_get_item(fb, 2);
+  ASSERT_TRUE(iter != NULL);
   ASSERT_STREQ(iter->name, "d.txt");
   iter = file_browser_get_item(fb, 3);
+  ASSERT_TRUE(iter != NULL);
   ASSERT_STREQ(iter->name, "c.txt");
   iter = file_browser_get_item(fb, 4);
+  ASSERT_TRUE(iter != NULL);
   ASSERT_STREQ(iter->name, "b.txt");
   iter = file_browser_get_item(fb, 5);
+  ASSERT_TRUE(iter != NULL);
   ASSERT_STREQ(iter->name, "a.txt");
 
   file_browser_cleanup(fb);
