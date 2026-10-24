@@ -11,6 +11,13 @@ import platform
 import subprocess
 import fnmatch
 import json
+import tempfile
+import threading
+
+try:
+    from concurrent.futures import ThreadPoolExecutor
+except ImportError:
+    ThreadPoolExecutor = None
 
 ###########################
 DPI = 'x1'
@@ -40,7 +47,18 @@ IS_GENERATE_INC_RES = True
 IS_GENERATE_INC_BITMAP = True
 ASSETS_SUBNAME = '__assets_'
 STORAGE_DIR = None
+# 并行子进程数。设为 1 时按原顺序逐条执行。未设置时使用 CPU 核数。
+UPDATE_RES_JOBS_ENV = 'AWTK_UPDATE_RES_JOBS'
+IMAGE_DPI_DIR_NAMES = ('xx', 'x1', 'x2', 'x3', 'x4')
+# resgen 会根据输入路径里是否含有这些目录名决定资源类型。
+RES_PATH_MARKERS = ('images', 'flows')
+MIN_FILES_TO_SHARD = 2
 ###########################
+
+_EXEC_POOL = None
+_EXEC_FUTURES = []
+_EXEC_LOCK = threading.Lock()
+_PRINT_LOCK = threading.Lock()
 
 
 OS_NAME = platform.system()
@@ -101,6 +119,8 @@ def emit_generate_res_before(type):
 
 def emit_generate_res_after(type):
     if ON_GENERATE_RES_AFTER != None:
+        # 钩子会读取刚生成的文件，必须等已提交的子进程结束。
+        wait_exec_cmds()
         ctx = {
             'type': type,
             'theme': THEME,
@@ -258,8 +278,13 @@ def join_path(root, subdir):
 
 
 def make_dirs(path):
-    if not os.path.exists(path):
+    if os.path.isdir(path):
+        return
+    try:
         os.makedirs(path)
+    except OSError:
+        if not os.path.isdir(path):
+            raise
 
 
 def copy_dir(src, dst):
@@ -343,6 +368,7 @@ def glob_asset_files(path):
                 if extname == ext_name:
                     result.append(join_path(root, f))
 
+    result.sort(key=lambda item: item.replace('\\', '/'))
     return result
 
 
@@ -373,28 +399,199 @@ def build_all():
     os.system('scons')
 
 
-def exec_cmd(cmd):
-    if EXEC_CMD_HANDLER:
-        EXEC_CMD_HANDLER(cmd)
-    else:
+def get_parallel_jobs():
+    if EXEC_CMD_HANDLER or ThreadPoolExecutor is None:
+        return 1
+    text = os.environ.get(UPDATE_RES_JOBS_ENV, '').strip()
+    if text != '':
+        try:
+            jobs = int(text)
+        except ValueError:
+            jobs = 1
+        if jobs < 1:
+            jobs = 1
+        return jobs
+    cpu_count = os.cpu_count() if hasattr(os, 'cpu_count') else None
+    if not cpu_count or cpu_count < 1:
+        return 1
+    return cpu_count
+
+
+def _log_cmd_output(cmd, out_str):
+    with _PRINT_LOCK:
         print(cmd)
-        # 转为文件系统的编码格式，避免中文乱码
-        cmd = to_file_system_coding(cmd)
-        # 启动子进程
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-        exe_name = cmd.split(' ', 1)[0]
-        out_str = p.communicate()[0]
-        if out_str != None:
-            encoding = sys.stdout.encoding or 'utf-8'
-            out_str = out_str.decode(encoding, errors='ignore')
-        # 将输出信息重新打印到控制台
         print(out_str)
         sys.stdout.flush()
-        # 如果程序出现异常或某个资源打包失败则直接退出
-        if p.returncode != 0:
-            sys.exit(exe_name + ' exit code:' + str(p.returncode))
-        if 'gen fail' in out_str:
-            sys.exit(1)
+
+
+def _exec_cmd_sync(cmd):
+    if EXEC_CMD_HANDLER:
+        EXEC_CMD_HANDLER(cmd)
+        return
+    # 转为文件系统的编码格式，避免中文乱码
+    coded_cmd = to_file_system_coding(cmd)
+    # 启动子进程
+    p = subprocess.Popen(coded_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+    exe_name = coded_cmd.split(' ', 1)[0]
+    out_bytes = p.communicate()[0]
+    out_str = ''
+    if out_bytes != None:
+        encoding = sys.stdout.encoding or 'utf-8'
+        out_str = out_bytes.decode(encoding, errors='ignore')
+    _log_cmd_output(cmd, out_str)
+    # 如果程序出现异常或某个资源打包失败则直接退出
+    if p.returncode != 0:
+        sys.exit(exe_name + ' exit code:' + str(p.returncode))
+    if 'gen fail' in out_str:
+        sys.exit(1)
+
+
+def _remove_tree_quiet(path):
+    if path and os.path.isdir(path):
+        shutil.rmtree(path, ignore_errors=True)
+
+
+def _exec_cmd_worker(cmd, cleanup_dir):
+    try:
+        _exec_cmd_sync(cmd)
+    finally:
+        _remove_tree_quiet(cleanup_dir)
+
+
+def _ensure_exec_pool():
+    global _EXEC_POOL
+    jobs = get_parallel_jobs()
+    if jobs <= 1:
+        return None
+    if _EXEC_POOL is None:
+        _EXEC_POOL = ThreadPoolExecutor(max_workers=jobs)
+    return _EXEC_POOL
+
+
+def exec_cmd(cmd, cleanup_dir=None):
+    pool = _ensure_exec_pool()
+    if pool is None:
+        try:
+            _exec_cmd_sync(cmd)
+        finally:
+            _remove_tree_quiet(cleanup_dir)
+        return
+    future = pool.submit(_exec_cmd_worker, cmd, cleanup_dir)
+    with _EXEC_LOCK:
+        _EXEC_FUTURES.append(future)
+
+
+def wait_exec_cmds():
+    with _EXEC_LOCK:
+        futures = list(_EXEC_FUTURES)
+        del _EXEC_FUTURES[:]
+    first_error = None
+    for future in futures:
+        try:
+            future.result()
+        except BaseException as ex:
+            if first_error is None:
+                first_error = ex
+    if first_error is None:
+        return
+    if isinstance(first_error, SystemExit):
+        code = first_error.code
+        if code is None:
+            code = 0
+        sys.exit(code)
+    raise first_error
+
+
+def shutdown_exec_pool():
+    global _EXEC_POOL
+    wait_exec_cmds()
+    pool = _EXEC_POOL
+    _EXEC_POOL = None
+    if pool is not None:
+        pool.shutdown(wait=True)
+
+
+def _walk_regular_files(folder):
+    rel_files = []
+    for root, dirs, files in os.walk(folder):
+        dirs.sort()
+        for name in sorted(files):
+            full = join_path(root, name)
+            if os.path.isfile(full):
+                rel_files.append(os.path.relpath(full, folder))
+    return rel_files
+
+
+def _rel_files_from_sources(folder, sources_file):
+    text = ''
+    if sources_file is not None:
+        text = sources_file.strip()
+    if text == '':
+        return _walk_regular_files(folder)
+    names = get_res_names_from_sources_file(text)
+    if not isinstance(names, list):
+        return None
+    base = os.path.basename(os.path.normpath(folder))
+    rel_files = []
+    for name in names:
+        name = name.replace('\\', '/')
+        if base in IMAGE_DPI_DIR_NAMES and name.startswith(base):
+            # 与 imagegen/resgen 一致：去掉 dpi 目录名和紧随的一个分隔符。
+            name = name[len(base) + 1:]
+        full = join_path(folder, name)
+        if os.path.isfile(full):
+            rel_files.append(name)
+    return rel_files
+
+
+def _clone_input_file(src, dst):
+    parent = os.path.dirname(dst)
+    if parent and not os.path.isdir(parent):
+        os.makedirs(parent)
+    # 硬链接保留原 mtime，增量判断与直接处理原目录一致。
+    try:
+        os.link(os.path.realpath(src), dst)
+        return
+    except OSError:
+        pass
+    shutil.copy2(src, dst)
+
+
+def _make_input_shard(src_dir, rel_files):
+    tmp = tempfile.mkdtemp(prefix='awtk_update_res_')
+    src_norm = os.path.normpath(src_dir)
+    base = os.path.basename(src_norm)
+    parent = os.path.basename(os.path.dirname(src_norm))
+    if parent in RES_PATH_MARKERS:
+        shard = join_path(join_path(tmp, parent), base)
+    else:
+        shard = join_path(tmp, base)
+    for rel in rel_files:
+        _clone_input_file(join_path(src_dir, rel), join_path(shard, rel))
+    return tmp, shard
+
+
+def _exec_on_dir(raw, sources_file, build_cmd):
+    if (not os.path.isdir(raw)) or get_parallel_jobs() <= 1:
+        exec_cmd(build_cmd(raw))
+        return
+    rel_files = _rel_files_from_sources(raw, sources_file)
+    if rel_files is None or len(rel_files) < MIN_FILES_TO_SHARD:
+        exec_cmd(build_cmd(raw))
+        return
+    jobs = get_parallel_jobs()
+    if len(rel_files) < jobs:
+        jobs = len(rel_files)
+    groups = []
+    for _ in range(jobs):
+        groups.append([])
+    for index, rel in enumerate(rel_files):
+        groups[index % jobs].append(rel)
+    for group in groups:
+        if len(group) == 0:
+            continue
+        tmp_root, shard = _make_input_shard(raw, group)
+        exec_cmd(build_cmd(shard), tmp_root)
 
 
 def themegen(raw, inc, theme, sources_file = ' '):
@@ -413,7 +610,9 @@ def strgen_bin(raw, bin):
     exec_cmd('\"' + to_exe('strgen') + '\" \"' + raw + '\" \"' + bin + '\" bin')
 
 def resgen(raw, inc, theme, outExtname, sources_file = ' '):
-    exec_cmd('\"' + to_exe('resgen') + '\" \"' + raw + '\" \"' + inc + '\" ' + theme + ' ' + outExtname + ' \"' + sources_file + '\"')
+    def build_cmd(folder):
+        return '\"' + to_exe('resgen') + '\" \"' + folder + '\" \"' + inc + '\" ' + theme + ' ' + outExtname + ' \"' + sources_file + '\"'
+    _exec_on_dir(raw, sources_file, build_cmd)
 
 
 def fontgen(raw, text, inc, size, options, theme, save_special_char='False'):
@@ -428,7 +627,9 @@ def fontgen(raw, text, inc, size, options, theme, save_special_char='False'):
 def imagegen(raw, inc, options, theme, lcd_orientation, lcd_fast_rotation_mode, sources_file = ' '):
     if not lcd_fast_rotation_mode :
         lcd_orientation = '0'
-    exec_cmd('\"' + to_exe('imagegen') + '\" \"' + raw + '\" \"' + inc + '\" ' + options + ' ' + theme + ' ' + lcd_orientation + ' \"' + sources_file + '\"')
+    def build_cmd(folder):
+        return '\"' + to_exe('imagegen') + '\" \"' + folder + '\" \"' + inc + '\" ' + options + ' ' + theme + ' ' + lcd_orientation + ' \"' + sources_file + '\"'
+    _exec_on_dir(raw, sources_file, build_cmd)
 
 
 def svggen(raw, inc, theme, sources_file = ' '):
@@ -539,6 +740,7 @@ def gen_res_png_jpg():
         # 如果当前主题的gen选项与default主题不一致，则按新的gen选项重新生成图片的位图数据
         if IS_GENERATE_INC_BITMAP and THEME != 'default':
             if get_imagegen_options_of_default_theme() != IMAGEGEN_OPTIONS:
+                wait_exec_cmds()
                 for d in dirs:
                     raw = join_path(ASSETS_ROOT, 'default/raw')
                     if not os.path.exists(raw):
@@ -596,6 +798,7 @@ def gen_res_all_harfbuzz(out_folder):
         import update_res_hb as update_hb
         update_hb.uharfbuzz_gen_bin(json_path, bin_path)
     if IS_GENERATE_INC_RES or IS_GENERATE_INC_BITMAP:
+        wait_exec_cmds()
         resgen(raw, inc, THEME, '.data')
 
 def gen_res_all_data():
@@ -795,6 +998,7 @@ def gen_res_all_font():
                 # 如果当前主题的gen选项与default主题不同时为mono，则按新的gen选项重新生成位图字体
                 opt = get_imagegen_options_of_default_theme()
                 if (opt == 'mono' or IMAGEGEN_OPTIONS == 'mono') and opt != IMAGEGEN_OPTIONS:
+                    wait_exec_cmds()
                     input_dir = join_path(ASSETS_ROOT, 'default/raw')
                     if not os.path.exists(input_dir):
                         input_dir = join_path(ASSETS_ROOT, 'default')
@@ -1189,6 +1393,7 @@ def gen_asset_c_entry_with_multi_theme():
     write_file(ASSET_C, result)
 
 def gen_res_c(with_multi_theme = True):
+    wait_exec_cmds()
     theme_foreach(gen_assets_c_of_one_theme, with_multi_theme)
 
     if with_multi_theme:
@@ -1275,6 +1480,7 @@ def dump_args():
     print('ASSETS_ROOT = '+ASSETS_ROOT)
     print('ASSET_C = '+ASSET_C)
     print('OUTPUT = '+OUTPUT_ROOT)
+    print('JOBS = '+str(get_parallel_jobs()))
 
 
 def update_res():
@@ -1323,6 +1529,7 @@ def update_res():
     elif ACTION == 'assets.c':
         gen_res_c()
 
+    shutdown_exec_pool()
     dump_args()
 
 
@@ -1347,6 +1554,7 @@ def clean_res_of_one_theme():
     remove_dir(join_path(OUTPUT_ROOT, ASSETS_SUBNAME+THEME+'.inc'))
 
 def clean_res():
+    wait_exec_cmds()
     print('=========================================================')
     if ASSETS_ROOT != OUTPUT_ROOT:
         dir = os.path.dirname(OUTPUT_ROOT)
@@ -1459,6 +1667,9 @@ def show_usage_imlp(is_new_usage):
 
         print('--output_dir :'.ljust(30) + ' set res output dir, default value is ./res ')
         print(''.ljust(30) + ' use : --output_dir=XXXXX')
+
+        print('AWTK_UPDATE_RES_JOBS :'.ljust(30) + ' parallel jobs, default is CPU count')
+        print(''.ljust(30) + ' use : AWTK_UPDATE_RES_JOBS=1 to run serially')
 
         print('--app_root :'.ljust(30) + ' set app root dir, default value is getcwd() ')
         print(''.ljust(30) + ' use : --app_root=XXXXX')

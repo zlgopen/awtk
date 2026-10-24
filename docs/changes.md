@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/10/24
+  * update_res 并行调用 imagegen、resgen、fontgen 等工具生成资源，进程数由环境变量 AWTK_UPDATE_RES_JOBS 指定（默认 CPU 核数，设为 1 则按原顺序执行）(感谢 QY 提供建议)
+
 2026/10/23
   * improve mem_allocator_fixed_block(感谢兆坤提供补丁)
   * WINDOWS/LINUX/MACOS/LINUX_FB/ANDROID/IOS 平台 MAIN_LOOP_QUEUE_SIZE 默认改为 256(感谢 QY 提供建议)
