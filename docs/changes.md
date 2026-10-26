@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/10/26
+  * 修复 FPS.basic 有概率会失败的问题(感谢兆坤提供补丁)
+
 2026/10/24
   * update_res 并行调用 imagegen、resgen、fontgen 等工具生成资源，进程数由环境变量 AWTK_UPDATE_RES_JOBS 指定（默认 CPU 核数，设为 1 则按原顺序执行）(感谢 QY 提供建议)
   * 修复runTest在错误的工作目录下运行会出现的异常(感谢兆坤提供补丁)
