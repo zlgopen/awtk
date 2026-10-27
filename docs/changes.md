@@ -5,6 +5,7 @@
   * 调整 TK_BITSET_POS 参数顺序(感谢兆坤提供补丁)
   * improve utils.c bits functions(感谢兆坤提供补丁)
   * 修复 Window.applet_name 单独测试会失败的问题(感谢雪飞提供补丁)
+  * 修复 demouiold Edits 页的阿拉伯文本不显示的问题(感谢雪飞提供补丁)
 
 2026/10/26
   * 增加 bitset.h (感谢兆坤提供补丁)
