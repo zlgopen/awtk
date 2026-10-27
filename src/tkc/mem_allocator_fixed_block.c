@@ -108,7 +108,7 @@ typedef struct _mem_allocator_fixed_block_t {
 #define MEM_ALLOCATOR_FIXED_BLOCK_ALIGN_UP(size, align) (((size) + (align) - 1) & ~((align) - 1))
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_BITS_POS(index, bit) \
-  TK_BITSET_POS((index), MEM_ALLOCATOR_FIXED_BLOCK_BIT_NR, (bit))
+  TK_BITSET_POS(MEM_ALLOCATOR_FIXED_BLOCK_BIT_NR, (index), (bit))
 
 /* 位图总字节数：每块 BIT_NR 位，64 位算避免溢出 */
 #define MEM_ALLOCATOR_FIXED_BLOCK_BITS_SIZE(num) \

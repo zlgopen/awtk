@@ -41,13 +41,13 @@ BEGIN_C_DECLS
  * @annotation ["static"]
  * @export none
  * 计算位序号。
- * @param {INT_t} index 元素序号。
  * @param {INT_t} width 每个元素占用的位数。
+ * @param {INT_t} index 元素序号。
  * @param {INT_t} bit 元素内的位序号(小于width)。
  *
  * @return {INT_t} 返回位序号。
  */
-#define TK_BITSET_POS(index, width, bit) ((index) * (width) + (bit))
+#define TK_BITSET_POS(width, index, bit) ((index) * (width) + (bit))
 
 /**
  * @method TK_BITSET_BYTE_INDEX

@@ -15,16 +15,16 @@ TEST(Bitset, consts) {
   ASSERT_EQ(TK_BITSET_BYTES_FOR_BITS((uint64_t)0xFFFFFFFFu), (uint64_t)0x20000000);
 
   /*每个元素占1位*/
-  ASSERT_EQ(TK_BITSET_POS(0, 1, 0), 0);
-  ASSERT_EQ(TK_BITSET_POS(7, 1, 0), 7);
-  ASSERT_EQ(TK_BITSET_POS(8, 1, 0), 8);
+  ASSERT_EQ(TK_BITSET_POS(1, 0, 0), 0);
+  ASSERT_EQ(TK_BITSET_POS(1, 7, 0), 7);
+  ASSERT_EQ(TK_BITSET_POS(1, 8, 0), 8);
   /*每个元素占3位*/
-  ASSERT_EQ(TK_BITSET_POS(0, 3, 2), 2);
-  ASSERT_EQ(TK_BITSET_POS(1, 3, 0), 3);
+  ASSERT_EQ(TK_BITSET_POS(3, 0, 2), 2);
+  ASSERT_EQ(TK_BITSET_POS(3, 1, 0), 3);
   ASSERT_EQ(TK_BITSET_POS(3, 3, 1), 10);
   /*每个元素占5位：32个元素占20个字节*/
-  ASSERT_EQ(TK_BITSET_POS(0, 5, 4), 4);
-  ASSERT_EQ(TK_BITSET_POS(31, 5, 4), 159);
+  ASSERT_EQ(TK_BITSET_POS(5, 0, 4), 4);
+  ASSERT_EQ(TK_BITSET_POS(5, 31, 4), 159);
   ASSERT_EQ(TK_BITSET_BYTES_FOR_BITS(32 * 5), 20);
 
   ASSERT_EQ(TK_BITSET_BYTE_INDEX(0), 0);
@@ -87,7 +87,7 @@ TEST(Bitset, ops) {
   ASSERT_EQ(TK_BITSET_OP(TK_TEST_BIT, buff, TK_BITSET_POS(3, 3, 1)), 1);
   ASSERT_EQ(TK_BITSET_OP(TK_TEST_BIT, buff, TK_BITSET_POS(3, 3, 0)), 0);
   ASSERT_EQ(buff[1], 0x04);
-  ASSERT_EQ(TK_BITSET_OP(TK_TEST_BIT, buff, TK_BITSET_POS(4, 3, 0)), 0);
+  ASSERT_EQ(TK_BITSET_OP(TK_TEST_BIT, buff, TK_BITSET_POS(3, 4, 0)), 0);
 
   /*传const指针也能写：TK_BITSET_BYTE会去掉const限定*/
   memset(buff, 0x00, sizeof(buff));
@@ -141,7 +141,7 @@ static int32_t find_free_block(const uint8_t* bits) {
   uint32_t i = 0;
 
   for (i = 0; i < s_nr; i++) {
-    if (!TK_BITSET_OP(TK_TEST_BIT, bits, TK_BITSET_POS(i, BITSET_BIT_NR, BITSET_BIT_USED))) {
+    if (!TK_BITSET_OP(TK_TEST_BIT, bits, TK_BITSET_POS(BITSET_BIT_NR, i, BITSET_BIT_USED))) {
       return (int32_t)i;
     }
   }
@@ -160,30 +160,30 @@ TEST(Bitset, allocator_usage) {
   ASSERT_EQ(find_free_block(bits), 0);
 
   for (i = 0; i < 3; i++) {
-    TK_BITSET_OP(TK_SET_BIT, bits, TK_BITSET_POS(i, BITSET_BIT_NR, BITSET_BIT_USED));
+    TK_BITSET_OP(TK_SET_BIT, bits, TK_BITSET_POS(BITSET_BIT_NR, i, BITSET_BIT_USED));
   }
   ASSERT_EQ(find_free_block(bits), 3);
 
-  TK_BITSET_OP(TK_CLEAR_BIT, bits, TK_BITSET_POS(1, BITSET_BIT_NR, BITSET_BIT_USED));
+  TK_BITSET_OP(TK_CLEAR_BIT, bits, TK_BITSET_POS(BITSET_BIT_NR, 1, BITSET_BIT_USED));
   ASSERT_EQ(find_free_block(bits), 1);
 
   /*每块5位：块0的USED在bit0，块1的EXPANDED在bit8，块2的USED在bit10*/
-  TK_BITSET_OP(TK_SET_BIT, bits, TK_BITSET_POS(1, BITSET_BIT_NR, BITSET_BIT_EXPANDED));
+  TK_BITSET_OP(TK_SET_BIT, bits, TK_BITSET_POS(BITSET_BIT_NR, 1, BITSET_BIT_EXPANDED));
   ASSERT_EQ(bits[0], 0x01);
   ASSERT_EQ(bits[1], 0x05);
   ASSERT_EQ(find_free_block(bits), 1);
 
   for (i = 0; i < s_nr; i++) {
-    TK_BITSET_OP(TK_SET_BIT, bits, TK_BITSET_POS(i, BITSET_BIT_NR, BITSET_BIT_USED));
+    TK_BITSET_OP(TK_SET_BIT, bits, TK_BITSET_POS(BITSET_BIT_NR, i, BITSET_BIT_USED));
   }
   ASSERT_EQ(find_free_block(bits), -1);
-  ASSERT_EQ(TK_BITSET_OP(TK_TEST_BIT, bits, TK_BITSET_POS(0, BITSET_BIT_NR, BITSET_BIT_USED)), 1);
-  ASSERT_EQ(TK_BITSET_OP(TK_TEST_BIT, bits, TK_BITSET_POS(0, BITSET_BIT_NR, BITSET_BIT_DIRTY)), 0);
+  ASSERT_EQ(TK_BITSET_OP(TK_TEST_BIT, bits, TK_BITSET_POS(BITSET_BIT_NR, 0, BITSET_BIT_USED)), 1);
+  ASSERT_EQ(TK_BITSET_OP(TK_TEST_BIT, bits, TK_BITSET_POS(BITSET_BIT_NR, 0, BITSET_BIT_DIRTY)), 0);
 
   /*只设置每个块的RESERVED位：第0块落在bit4，第31块落在最后一个字节的bit7*/
   memset(bits, 0x00, sizeof(bits));
   for (i = 0; i < s_nr; i++) {
-    TK_BITSET_OP(TK_SET_BIT, bits, TK_BITSET_POS(i, BITSET_BIT_NR, BITSET_BIT_RESERVED));
+    TK_BITSET_OP(TK_SET_BIT, bits, TK_BITSET_POS(BITSET_BIT_NR, i, BITSET_BIT_RESERVED));
   }
   ASSERT_EQ(find_free_block(bits), 0);
   ASSERT_EQ(bits[0], 0x10);
