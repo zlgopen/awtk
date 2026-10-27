@@ -1483,6 +1483,13 @@ TEST(Utils, bits_data_byte_data) {
   ASSERT_EQ(data, 0xaaaa);
   ASSERT_EQ(tk_bits_data_to_bytes_data(bits, sizeof(data), output, 16), RET_OK);
   ASSERT_EQ(memcmp(output, bytes, 16), 0);
+
+  /*容量不足时返回错误，且不写入任何数据*/
+  data = 0;
+  ASSERT_NE(tk_bits_data_from_bytes_data(bits, sizeof(data), bytes, sizeof(bytes) + 1), RET_OK);
+  ASSERT_EQ(data, 0);
+  ASSERT_NE(tk_bits_data_to_bytes_data(bits, sizeof(data), output, sizeof(bytes) + 1), RET_OK);
+  ASSERT_EQ(memcmp(output, bytes, sizeof(bytes)), 0);
 }
 
 TEST(Utils, buffer_get_value_int8) {

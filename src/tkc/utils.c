@@ -1874,13 +1874,8 @@ const char* ret_code_to_name(ret_t ret) {
 }
 
 ret_t bits_stream_get(const uint8_t* buff, uint32_t size, uint32_t index, bool_t* value) {
-  uint32_t max_index = size * TK_BITSET_BITS_PER_BYTE;
   return_value_if_fail(buff != NULL && value != NULL, RET_BAD_PARAMS);
-
-  if (index >= max_index) {
-    log_debug("bits_stream_get failed: %u >= %u\n", index, max_index);
-    return RET_BAD_PARAMS;
-  }
+  return_value_if_fail(index < (uint64_t)size * TK_BITSET_BITS_PER_BYTE, RET_BAD_PARAMS);
 
   *value = TK_BITSET_OP(TK_TEST_BIT, buff, index);
 
@@ -1888,13 +1883,8 @@ ret_t bits_stream_get(const uint8_t* buff, uint32_t size, uint32_t index, bool_t
 }
 
 ret_t bits_stream_set(uint8_t* buff, uint32_t size, uint32_t index, bool_t value) {
-  uint32_t max_index = size * TK_BITSET_BITS_PER_BYTE;
   return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
-
-  if (index >= max_index) {
-    log_debug("bits_stream_set failed: %u >= %u\n", index, max_index);
-    return RET_BAD_PARAMS;
-  }
+  return_value_if_fail(index < (uint64_t)size * TK_BITSET_BITS_PER_BYTE, RET_BAD_PARAMS);
 
   if (value) {
     TK_BITSET_OP(TK_SET_BIT, buff, index);
@@ -2353,9 +2343,15 @@ uint32_t tk_bits_to_bytes(uint32_t bits) {
 ret_t tk_bits_data_from_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* bytes,
                                    uint32_t bytes_size) {
   uint32_t i = 0;
+  return_value_if_fail(bits != NULL && bytes != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(bytes_size <= (uint64_t)bits_size * TK_BITSET_BITS_PER_BYTE, RET_BAD_PARAMS);
 
   for (i = 0; i < bytes_size; i++) {
-    bits_stream_set(bits, bits_size, i, bytes[i] != 0);
+    if (bytes[i] != 0) {
+      TK_BITSET_OP(TK_SET_BIT, bits, i);
+    } else {
+      TK_BITSET_OP(TK_CLEAR_BIT, bits, i);
+    }
   }
 
   return RET_OK;
@@ -2364,12 +2360,11 @@ ret_t tk_bits_data_from_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* b
 ret_t tk_bits_data_to_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* bytes,
                                  uint32_t bytes_size) {
   uint32_t i = 0;
-  for (i = 0; i < bytes_size; i++) {
-    bool_t value = FALSE;
+  return_value_if_fail(bits != NULL && bytes != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(bytes_size <= (uint64_t)bits_size * TK_BITSET_BITS_PER_BYTE, RET_BAD_PARAMS);
 
-    if (bits_stream_get(bits, bits_size, i, &value) == RET_OK) {
-      bytes[i] = value ? 1 : 0;
-    }
+  for (i = 0; i < bytes_size; i++) {
+    bytes[i] = TK_BITSET_OP(TK_TEST_BIT, bits, i);
   }
 
   return RET_OK;
