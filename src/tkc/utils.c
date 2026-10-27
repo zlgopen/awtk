@@ -26,6 +26,7 @@
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/object.h"
+#include "tkc/bitset.h"
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
 
@@ -1873,42 +1874,33 @@ const char* ret_code_to_name(ret_t ret) {
 }
 
 ret_t bits_stream_get(const uint8_t* buff, uint32_t size, uint32_t index, bool_t* value) {
-  uint8_t v = 0;
-  uint32_t offset = MOD_BY_POW2(index, 8);
-  uint32_t max_index = size << 3;
-  return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(value != NULL, RET_BAD_PARAMS);
+  uint32_t max_index = size * TK_BITSET_BITS_PER_BYTE;
+  return_value_if_fail(buff != NULL && value != NULL, RET_BAD_PARAMS);
+
   if (index >= max_index) {
     log_debug("bits_stream_get failed: %u >= %u\n", index, max_index);
     return RET_BAD_PARAMS;
   }
-  return_value_if_fail(index < max_index, RET_BAD_PARAMS);
 
-  v = buff[index >> 3];
-
-  *value = TK_TEST_BIT(v, offset);
+  *value = TK_BITSET_OP(TK_TEST_BIT, buff, index);
 
   return RET_OK;
 }
 
 ret_t bits_stream_set(uint8_t* buff, uint32_t size, uint32_t index, bool_t value) {
-  uint8_t v = 0;
-  uint32_t offset = MOD_BY_POW2(index, 8);
-  uint32_t max_index = size << 3;
+  uint32_t max_index = size * TK_BITSET_BITS_PER_BYTE;
   return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
+
   if (index >= max_index) {
-    log_debug("bits_stream_get failed: %u >= %u\n", index, max_index);
+    log_debug("bits_stream_set failed: %u >= %u\n", index, max_index);
     return RET_BAD_PARAMS;
   }
-  return_value_if_fail(index < max_index, RET_BAD_PARAMS);
 
-  v = buff[index >> 3];
   if (value) {
-    TK_SET_BIT(v, offset);
+    TK_BITSET_OP(TK_SET_BIT, buff, index);
   } else {
-    TK_CLEAR_BIT(v, offset);
+    TK_BITSET_OP(TK_CLEAR_BIT, buff, index);
   }
-  buff[index >> 3] = v;
 
   return RET_OK;
 }
@@ -2355,7 +2347,7 @@ ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result) {
 }
 
 uint32_t tk_bits_to_bytes(uint32_t bits) {
-  return (bits + 7) / 8;
+  return TK_BITSET_BYTES_FOR_BITS(bits);
 }
 
 ret_t tk_bits_data_from_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* bytes,
