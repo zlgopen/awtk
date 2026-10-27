@@ -233,6 +233,7 @@ TEST(Window, applet_name) {
   widget_t* b1 = button_create(w1, 0, 0, 20, 20);
   widget_t* b2 = button_create(w1, 0, 0, 20, 20);
 
+  assets_managers_set_applet_res_root("./tests/applets");
   widget_set_prop_str(w1, WIDGET_PROP_APPLET_NAME, "bar");
   widget_set_prop_str(w2, WIDGET_PROP_APPLET_NAME, "foo");
 
