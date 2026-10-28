@@ -1545,6 +1545,39 @@ TEST(Utils, bits_data_byte_data) {
   }
 }
 
+TEST(Utils, buffer_value_bad_params) {
+  value_t v;
+  uint8_t buffer[] = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
+  uint8_t snapshot[sizeof(buffer)];
+
+  value_set_int(&v, 1);
+  memcpy(snapshot, buffer, sizeof(buffer));
+
+  /*offset为负数：offset + type_size在32位下回绕成0，曾绕过检查导致越界读写*/
+  ASSERT_NE(tk_buffer_set_value(buffer, sizeof(buffer), VALUE_TYPE_INT32, -1, -1, &v), RET_OK);
+  ASSERT_EQ(memcmp(buffer, snapshot, sizeof(buffer)), 0);
+  ASSERT_NE(tk_buffer_set_value(buffer, sizeof(buffer), VALUE_TYPE_UINT8, -1, 0, &v), RET_OK);
+  ASSERT_EQ(memcmp(buffer, snapshot, sizeof(buffer)), 0);
+  ASSERT_NE(tk_buffer_get_value(buffer, sizeof(buffer), VALUE_TYPE_INT32, -1, -1, &v), RET_OK);
+  ASSERT_NE(tk_buffer_get_value(buffer, sizeof(buffer), VALUE_TYPE_UINT8, -1, 0, &v), RET_OK);
+
+  /*offset越界(跨出缓冲区)*/
+  ASSERT_NE(tk_buffer_set_value(buffer, sizeof(buffer), VALUE_TYPE_INT32, 2, -1, &v), RET_OK);
+  ASSERT_NE(tk_buffer_get_value(buffer, sizeof(buffer), VALUE_TYPE_INT32, 2, -1, &v), RET_OK);
+
+  /*bit_offset越界*/
+  ASSERT_NE(tk_buffer_set_value(buffer, sizeof(buffer), VALUE_TYPE_UINT8, 0, 8, &v), RET_OK);
+  ASSERT_NE(tk_buffer_get_value(buffer, sizeof(buffer), VALUE_TYPE_UINT8, 0, 8, &v), RET_OK);
+
+  /*value为空*/
+  ASSERT_NE(tk_buffer_set_value(buffer, sizeof(buffer), VALUE_TYPE_UINT8, 0, -1, NULL), RET_OK);
+  ASSERT_NE(tk_buffer_get_value(buffer, sizeof(buffer), VALUE_TYPE_UINT8, 0, -1, NULL), RET_OK);
+
+  /*buffer为空*/
+  ASSERT_NE(tk_buffer_set_value(NULL, sizeof(buffer), VALUE_TYPE_UINT8, 0, -1, &v), RET_OK);
+  ASSERT_NE(tk_buffer_get_value(NULL, sizeof(buffer), VALUE_TYPE_UINT8, 0, -1, &v), RET_OK);
+}
+
 TEST(Utils, buffer_get_value_int8) {
   value_t v;
   uint8_t buffer[] = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};

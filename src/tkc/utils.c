@@ -2390,25 +2390,31 @@ uint32_t tk_size_of_basic_type(value_type_t type) {
     case VALUE_TYPE_DOUBLE:
       return 8;
     default:
-      break;
+      return 0;
   }
-
-  return 0;
 }
 
-uint8_t* tk_skip_to_offset(uint8_t* data, uint32_t size, value_type_t type, int16_t index) {
-  uint32_t type_size = tk_size_of_basic_type(type);
-  uint32_t offset = index * type_size;
+inline static uint8_t* tk_skip_to_offset(uint8_t* data, uint32_t size, uint32_t type_size,
+                                         int16_t index) {
+  uint64_t offset = 0;
   return_value_if_fail(data != NULL && type_size > 0, NULL);
-  return_value_if_fail((offset + type_size) <= size, NULL);
+  /*负索引会转成极大无符号数，offset + type_size 在32位下回绕成0而绕过下面的检查*/
+  return_value_if_fail(index >= 0, NULL);
 
-  return data + offset;
+  offset = (uint64_t)index * type_size;
+  return_value_if_fail(offset + type_size <= size, NULL);
+
+  return data + (size_t)offset;
 }
 
 ret_t tk_buffer_set_value(uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset,
                           int16_t bit_offset, const value_t* value) {
-  uint32_t type_size = tk_size_of_basic_type(type);
-  uint8_t* data = tk_skip_to_offset(buffer, size, type, offset);
+  uint32_t type_size = 0;
+  uint8_t* data = NULL;
+  return_value_if_fail(buffer != NULL && value != NULL, RET_BAD_PARAMS);
+
+  type_size = tk_size_of_basic_type(type);
+  data = tk_skip_to_offset(buffer, size, type_size, offset);
   return_value_if_fail(data != NULL, RET_BAD_PARAMS);
 
   if (bit_offset >= 0) {
@@ -2484,7 +2490,7 @@ ret_t tk_buffer_set_value(uint8_t* buffer, uint32_t size, value_type_t type, int
       break;
     }
     default: {
-      log_debug("tk_buffer_set_value: not support %d\n", type);
+      log_debug("%s: not support %d\n", __FUNCTION__, type);
       return RET_NOT_IMPL;
     }
   }
@@ -2494,18 +2500,23 @@ ret_t tk_buffer_set_value(uint8_t* buffer, uint32_t size, value_type_t type, int
 
 ret_t tk_buffer_get_value(uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset,
                           int16_t bit_offset, value_t* value) {
-  bool_t v = FALSE;
-  uint32_t type_size = tk_size_of_basic_type(type);
-  uint8_t* data = tk_skip_to_offset(buffer, size, type, offset);
+  uint32_t type_size = 0;
+  uint8_t* data = NULL;
+  return_value_if_fail(buffer != NULL && value != NULL, RET_BAD_PARAMS);
+
+  type_size = tk_size_of_basic_type(type);
+  data = tk_skip_to_offset(buffer, size, type_size, offset);
   return_value_if_fail(data != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(type_size > 0, RET_BAD_PARAMS);
 
   if (bit_offset >= 0) {
+    ret_t ret = RET_OK;
+    bool_t v = FALSE;
     return_value_if_fail(bit_offset < type_size * 8, RET_BAD_PARAMS);
-    bits_stream_get(data, type_size, bit_offset, &v);
-    value_set_bool(value, v);
-
-    return RET_OK;
+    ret = bits_stream_get(data, type_size, bit_offset, &v);
+    if (RET_OK == ret) {
+      value_set_bool(value, v);
+    }
+    return ret;
   }
 
   switch (type) {
@@ -2575,7 +2586,7 @@ ret_t tk_buffer_get_value(uint8_t* buffer, uint32_t size, value_type_t type, int
       break;
     }
     default: {
-      log_debug("tk_buffer_get_value: not support %d\n", type);
+      log_debug("%s: not support %d\n", __FUNCTION__, type);
       return RET_NOT_IMPL;
     }
   }

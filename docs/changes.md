@@ -4,6 +4,7 @@
   * improve utils bits(感谢兆坤提供补丁)
   * 给 ubjson_writer 增加字符串写入缓存逻辑（用于保证plc在多线程写入字符串的原子性）(感谢智明提供补丁)
   * 修复 UTF-8 BOM（感谢陈谭发现问题)
+  * improve tk_buffer_get_value and tk_buffer_set_value(感谢兆坤提供补丁)
 
 2026/10/27
   * utils 复用 bitset(感谢兆坤提供补丁)
