@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo_vg_text_app.c
  * Author: AWTK Develop Team
  * Brief:  demo for vgcanvas text rendering

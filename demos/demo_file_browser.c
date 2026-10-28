@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo_file_browser.c
  * Author: AWTK Develop Team
  * Brief:  basic demo

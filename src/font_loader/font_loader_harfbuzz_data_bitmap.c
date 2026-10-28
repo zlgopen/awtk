@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   font_loader_harfbuzz_data_bitmap.c
  * Author: AWTK Develop Team
  * Brief:  font interface

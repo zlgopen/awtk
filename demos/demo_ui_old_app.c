@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo_ui_old_app.c
  * Author: AWTK Develop Team
  * Brief:  demoui old

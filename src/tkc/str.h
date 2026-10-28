@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   str.h
  * Author: AWTK Develop Team
  * Brief:  string

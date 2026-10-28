@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   font_stb.h
  * Author: AWTK Develop Team
  * Brief:  stb truetype font loader

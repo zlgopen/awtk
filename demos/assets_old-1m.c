@@ -1,4 +1,4 @@
-#include "awtk.h"
+﻿#include "awtk.h"
 #include "base/assets_manager.h"
 #ifndef WITH_FS_RES
 #include "../res/assets/default/inc/strings/zh_CN.data"

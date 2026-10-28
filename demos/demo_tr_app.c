@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo_tr_app.c
  * Author: AWTK Develop Team
  * Brief:  text translation

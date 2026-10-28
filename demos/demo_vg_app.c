@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo2_app.c
  * Author: AWTK Develop Team
  * Brief:  demo paint

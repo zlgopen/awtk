@@ -1,4 +1,4 @@
-#include "awtk.h"
+﻿#include "awtk.h"
 #include "base/assets_manager.h"
 
 ret_t assets_init(void) {

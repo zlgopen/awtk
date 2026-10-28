@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo_rounded_rect.c
  * Author: AWTK Develop Team
  * Brief:  rounded rect demo

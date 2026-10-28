@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo_5key_app.c
  * Author: AWTK Develop Team
  * Brief:  5key demo

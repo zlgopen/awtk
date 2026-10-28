@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   font.h
  * Author: AWTK Develop Team
  * Brief:  font interface

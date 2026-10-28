@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo1_app.c
  * Author: AWTK Develop Team
  * Brief:  basic demo

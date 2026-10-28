@@ -1,4 +1,4 @@
-#include "awtk.h"
+﻿#include "awtk.h"
 #include "base/assets_manager.h"
 #include "../res/assets/default/inc/fonts/default_18.data"
 #include "../res/assets/default/inc/images/checked.data"

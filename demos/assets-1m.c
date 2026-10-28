@@ -1,4 +1,4 @@
-#include "awtk.h"
+﻿#include "awtk.h"
 #include "base/assets_manager.h"
 
 #ifndef APP_THEME

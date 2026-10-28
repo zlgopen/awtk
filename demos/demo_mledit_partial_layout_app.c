@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo_mledit_partial_layout_app.c
  * Author: AWTK Develop Team
  * Brief:  mledit partial layout demo

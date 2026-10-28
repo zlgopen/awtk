@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo_scroll_view.c
  * Author: AWTK Develop Team
  * Brief:  test scroll view

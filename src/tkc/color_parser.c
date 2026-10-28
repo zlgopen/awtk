@@ -1,4 +1,4 @@
-#include "color_parser.h"
+﻿#include "color_parser.h"
 #include "tkc/str.h"
 #include "tkc/mem.h"
 #include "tkc/utils.h"
