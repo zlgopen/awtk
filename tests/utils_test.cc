@@ -1074,6 +1074,39 @@ TEST(Utils, bits_stream) {
 
   ASSERT_NE(bits_stream_set(buff, sizeof(buff), 10000, TRUE), RET_OK);
   ASSERT_NE(bits_stream_get(buff, sizeof(buff), 10000, &v), RET_OK);
+
+  /*最后一个合法位和第一个非法位*/
+  ASSERT_EQ(bits_stream_set(buff, sizeof(buff), n - 1, TRUE), RET_OK);
+  ASSERT_EQ(buff[sizeof(buff) - 1], 0x80);
+  ASSERT_NE(bits_stream_set(buff, sizeof(buff), n, TRUE), RET_OK);
+  ASSERT_NE(bits_stream_get(buff, sizeof(buff), n, &v), RET_OK);
+
+  /*size为0时任何位都越界；空指针返回错误*/
+  ASSERT_NE(bits_stream_get(buff, 0, 0, &v), RET_OK);
+  ASSERT_NE(bits_stream_set(buff, 0, 0, TRUE), RET_OK);
+  ASSERT_NE(bits_stream_set(NULL, sizeof(buff), 0, TRUE), RET_OK);
+  ASSERT_NE(bits_stream_get(NULL, sizeof(buff), 0, &v), RET_OK);
+  ASSERT_NE(bits_stream_get(buff, sizeof(buff), 0, NULL), RET_OK);
+
+  {
+    /*size*8超过32位可表示范围时，容量判定必须用64位算，否则回绕会误判越界*/
+    uint8_t buff[2] = {0, 0};
+    bool_t v = FALSE;
+    /*0x20000000 * 8 == 2^32，32位下回绕成0*/
+    const uint32_t size_wrap_to_zero = 0x20000000u;
+    /*0x20000001 * 8 == 2^32 + 8，32位下回绕成8*/
+    const uint32_t size_wrap_to_8 = 0x20000001u;
+
+    ASSERT_EQ(bits_stream_set(buff, size_wrap_to_zero, 0, TRUE), RET_OK);
+    ASSERT_EQ(buff[0], 0x01);
+    ASSERT_EQ(bits_stream_get(buff, size_wrap_to_zero, 0, &v), RET_OK);
+    ASSERT_EQ(v, TRUE);
+
+    ASSERT_EQ(bits_stream_set(buff, size_wrap_to_8, 9, TRUE), RET_OK);
+    ASSERT_EQ(buff[1], 0x02);
+    ASSERT_EQ(bits_stream_get(buff, size_wrap_to_8, 9, &v), RET_OK);
+    ASSERT_EQ(v, TRUE);
+  }
 }
 
 TEST(Utils, argv) {
@@ -1490,6 +1523,26 @@ TEST(Utils, bits_data_byte_data) {
   ASSERT_EQ(data, 0);
   ASSERT_NE(tk_bits_data_to_bytes_data(bits, sizeof(data), output, sizeof(bytes) + 1), RET_OK);
   ASSERT_EQ(memcmp(output, bytes, sizeof(bytes)), 0);
+
+  /*空指针*/
+  ASSERT_NE(tk_bits_data_from_bytes_data(NULL, sizeof(data), bytes, 1), RET_OK);
+  ASSERT_NE(tk_bits_data_from_bytes_data(bits, sizeof(data), NULL, 1), RET_OK);
+  ASSERT_NE(tk_bits_data_to_bytes_data(NULL, sizeof(data), output, 1), RET_OK);
+  ASSERT_NE(tk_bits_data_to_bytes_data(bits, sizeof(data), NULL, 1), RET_OK);
+
+  {
+    /*bits_size*8超过32位可表示范围时，容量判定必须用64位算*/
+    uint8_t bits[1] = {0};
+    uint8_t bytes[1] = {1};
+    uint8_t output[1] = {0};
+    const uint32_t large = 0x20000000u; /*large * 8 == 2^32*/
+
+    ASSERT_EQ(tk_bits_data_from_bytes_data(bits, large, bytes, 1), RET_OK);
+    ASSERT_EQ(bits[0], 0x01);
+
+    ASSERT_EQ(tk_bits_data_to_bytes_data(bits, large, output, 1), RET_OK);
+    ASSERT_EQ(output[0], 1);
+  }
 }
 
 TEST(Utils, buffer_get_value_int8) {
@@ -2755,6 +2808,11 @@ TEST(Utils, tk_bits_to_bytes) {
   ASSERT_EQ(tk_bits_to_bytes(8), 1u);
   ASSERT_EQ(tk_bits_to_bytes(9), 2u);
   ASSERT_EQ(tk_bits_to_bytes(16), 2u);
+
+  /*bits接近UINT32_MAX时，bits + 7会溢出32位*/
+  ASSERT_EQ(tk_bits_to_bytes(0xFFFFFFF8u), 0x1FFFFFFFu);
+  ASSERT_EQ(tk_bits_to_bytes(0xFFFFFFF9u), 0x20000000u);
+  ASSERT_EQ(tk_bits_to_bytes(0xFFFFFFFFu), 0x20000000u);
 }
 
 TEST(Utils, tk_pixel_copy) {

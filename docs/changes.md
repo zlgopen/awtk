@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/10/28
+  * improve utils bits(感谢兆坤提供补丁)
+
 2026/10/27
   * utils 复用 bitset(感谢兆坤提供补丁)
   * 调整 TK_BITSET_POS 参数顺序(感谢兆坤提供补丁)

@@ -2337,7 +2337,7 @@ ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result) {
 }
 
 uint32_t tk_bits_to_bytes(uint32_t bits) {
-  return TK_BITSET_BYTES_FOR_BITS(bits);
+  return (uint32_t)TK_BITSET_BYTES_FOR_BITS((uint64_t)bits);
 }
 
 ret_t tk_bits_data_from_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* bytes,
