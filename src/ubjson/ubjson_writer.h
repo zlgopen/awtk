@@ -281,6 +281,19 @@ ret_t ubjson_writer_write_char(ubjson_writer_t* writer, char value);
 ret_t ubjson_writer_write_str(ubjson_writer_t* writer, const char* value);
 
 /**
+ * @method ubjson_writer_write_str_by_cache
+ *
+ * 写入str。
+ * 备注：会对 valule 进行缓存，处理多线程同时操作 value 的情况
+ * 
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {const char*} value 要写入的字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ubjson_writer_write_str_by_cache(ubjson_writer_t* writer, const char* value);
+
+/**
  * @method ubjson_writer_write_str_len
  *
  * 写入str。
@@ -304,6 +317,19 @@ ret_t ubjson_writer_write_str_len(ubjson_writer_t* writer, const char* value, ui
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t ubjson_writer_write_wstr(ubjson_writer_t* writer, const wchar_t* value);
+
+/**
+ * @method ubjson_writer_write_wstr_by_cache
+ *
+ * 写入wstr。
+ * 备注：会对 valule 进行缓存，处理多线程同时操作 value 的情况
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {const wchar_t*} value 要写入的字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ubjson_writer_write_wstr_by_cache(ubjson_writer_t* writer, const wchar_t* value);
 
 /**
  * @method ubjson_writer_write_wstr_len
@@ -643,6 +669,22 @@ ret_t ubjson_writer_write_kv_bool(ubjson_writer_t* writer, const char* key, bool
 ret_t ubjson_writer_write_kv_str(ubjson_writer_t* writer, const char* key, const char* value);
 
 /**
+ * @method ubjson_writer_write_kv_str_by_cache
+ *
+ * 写入key和str的值。
+ *
+ * > 即："key": value
+ * > 备注：会对 key 和 valule 进行缓存，处理多线程同时操作 key 和 value 的情况
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {const char*} key 键名。
+ * @param {const char*} value 字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ubjson_writer_write_kv_str_by_cache(ubjson_writer_t* writer, const char* key, const char* value);
+
+/**
  * @method ubjson_writer_write_kv_str_len
  *
  * 写入key和str的值。
@@ -673,6 +715,22 @@ ret_t ubjson_writer_write_kv_str_len(ubjson_writer_t* writer, const char* key, c
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t ubjson_writer_write_kv_wstr(ubjson_writer_t* writer, const char* key, const wchar_t* value);
+
+/**
+ * @method ubjson_writer_write_kv_wstr_by_cache
+ *
+ * 写入key和wstr的值。
+ *
+ * > 即："key": value
+ * > 备注：会对 key 和 valule 进行缓存，处理多线程同时操作 key 和 value 的情况
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {const char*} key 键名。
+ * @param {const wchar_t*} value 字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ubjson_writer_write_kv_wstr_by_cache(ubjson_writer_t* writer, const char* key, const wchar_t* value);
 
 /**
  * @method ubjson_writer_write_kv_wstr_len

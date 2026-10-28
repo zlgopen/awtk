@@ -255,10 +255,36 @@ TEST(UBJsonReader, string) {
   ubjson_reader_reset(&ur);
 }
 
+TEST(UBJsonReader, string_by_cache) {
+  PREPARE_TEST();
+
+  ASSERT_EQ(ubjson_writer_write_str_by_cache(&ub, "abc"), RET_OK);
+
+  rb.capacity = wb.cursor;
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_STRING, true);
+  ASSERT_STREQ(value_str(&v), "abc");
+
+  ubjson_reader_reset(&ur);
+}
+
 TEST(UBJsonReader, wstring) {
   PREPARE_TEST();
 
   ASSERT_EQ(ubjson_writer_write_wstr(&ub, L"abc"), RET_OK);
+
+  rb.capacity = wb.cursor;
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_WSTRING, true);
+  ASSERT_EQ(wcscmp(value_wstr(&v), L"abc"), 0);
+
+  ubjson_reader_reset(&ur);
+}
+
+TEST(UBJsonReader, wstring_by_cache) {
+  PREPARE_TEST();
+
+  ASSERT_EQ(ubjson_writer_write_wstr_by_cache(&ub, L"abc"), RET_OK);
 
   rb.capacity = wb.cursor;
   ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);

@@ -1260,8 +1260,10 @@ EXPORTS
     ubjson_writer_write_float64
     ubjson_writer_write_char
     ubjson_writer_write_str
+    ubjson_writer_write_str_by_cache
     ubjson_writer_write_str_len
     ubjson_writer_write_wstr
+    ubjson_writer_write_wstr_by_cache
     ubjson_writer_write_wstr_len
     ubjson_writer_write_object
     ubjson_writer_write_array_begin
@@ -1286,8 +1288,10 @@ EXPORTS
     ubjson_writer_write_kv_double
     ubjson_writer_write_kv_bool
     ubjson_writer_write_kv_str
+    ubjson_writer_write_kv_str_by_cache
     ubjson_writer_write_kv_str_len
     ubjson_writer_write_kv_wstr
+    ubjson_writer_write_kv_wstr_by_cache
     ubjson_writer_write_kv_wstr_len
     ubjson_writer_write_kv_value
     ubjson_writer_write_array_uint8
