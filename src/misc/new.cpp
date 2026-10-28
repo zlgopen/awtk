@@ -1,4 +1,4 @@
-#include "misc/new.hpp"
+﻿#include "misc/new.hpp"
 
 /*
  * 由于mem.c中导出了malloc等函数，没有必要重载new/delete等操作符，所以去掉misc/new.cpp|.hpp中的代码，但为了兼容保留文件。

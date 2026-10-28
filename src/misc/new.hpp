@@ -1,4 +1,4 @@
-#ifndef TK_NEW_H
+﻿#ifndef TK_NEW_H
 #define TK_NEW_H
 
 #include <new>

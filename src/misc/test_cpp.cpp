@@ -1,4 +1,4 @@
-// Used to test if target platform support cpp
+﻿// Used to test if target platform support cpp
 
 #include "tkc/mem.h"
 #include "misc/new.hpp"
