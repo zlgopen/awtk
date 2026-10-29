@@ -121,7 +121,9 @@ static NVGLUframebuffer* nvgluCreateFramebufferEx(NVGcontext* ctx, int w, int h,
 	// frame buffer object
 	glGenFramebuffers(1, &fb->fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, fb->fbo);
-#if defined(NANOVG_GL3) || defined(NANOVG_GLES3)
+
+// 下面的 mass 代码兼容性比较差，在某些平台性能会比较差
+#if 0
 	fb->samples = samples;
 	if (samples > 0) { 
 		glGenRenderbuffers(1, &fb->mass_rbo);

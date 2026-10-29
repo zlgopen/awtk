@@ -144,7 +144,8 @@ nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer_ex(nvgp_context_t* ctx, int
   glGenFramebuffers(1, &fb->fbo);
   glBindFramebuffer(GL_FRAMEBUFFER, fb->fbo);
 
-#if defined(NVGP_GL3) || defined(NVGP_GLES3)
+// 下面的 mass 代码兼容性比较差，在某些平台性能会比较差
+#if 0
   fb->samples = samples;
   if (samples > 0) { 
     glGenRenderbuffers(1, &fb->mass_rbo);
