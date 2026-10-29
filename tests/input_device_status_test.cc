@@ -230,6 +230,24 @@ TEST(InputDeviceStatus, pointer) {
   input_device_status_deinit(ids);
 }
 
+TEST(InputDeviceStatus, pointer_move_when_ignore_input) {
+  pointer_event_t e;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+  input_device_status_t input_device_status;
+  input_device_status_t* ids = input_device_status_init(&input_device_status);
+
+  widget_on(w, EVT_POINTER_MOVE, on_event, w);
+
+  pointer_event_init(&e, EVT_POINTER_MOVE, NULL, 20, 30);
+  input_device_status_on_ignore_input_event(ids, w, (event_t*)(&e));
+
+  ASSERT_EQ(ids->last_x, e.x);
+  ASSERT_EQ(ids->last_y, e.y);
+
+  widget_destroy(w);
+  input_device_status_deinit(ids);
+}
+
 TEST(InputDeviceStatus, should_abort) {
   key_event_t e;
   widget_t* w = button_create(NULL, 0, 0, 0, 0);

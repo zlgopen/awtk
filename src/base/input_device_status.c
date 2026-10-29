@@ -386,10 +386,10 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
       break;
     }
     case EVT_POINTER_MOVE: {
-      if (dispatch) {
-        pointer_event_t* evt = (pointer_event_t*)e;
-        pointer_event_rotate(evt, system_info());
+      pointer_event_t* evt = (pointer_event_t*)e;
+      pointer_event_rotate(evt, system_info());
 
+      if (dispatch) {
         if (evt->x != ids->last_x || evt->y != ids->last_y || ids->pointer_has_left_window) {
           ids->last_x = evt->x;
           ids->last_y = evt->y;
@@ -399,6 +399,10 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
             widget_on_pointer_move(widget, evt);
           }
         }
+      } else {
+        /* 忽略输入时(如窗口动画播放期间)也要记录鼠标位置，否则滚轮会用到过期的坐标 */
+        ids->last_x = evt->x;
+        ids->last_y = evt->y;
       }
       break;
     }
