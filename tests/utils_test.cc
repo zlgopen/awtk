@@ -821,6 +821,18 @@ TEST(Utils, memcpy_by_align_4) {
   for (uint8_t i = 0; i < path_max_len * 2; i++) {
     ASSERT_EQ(path[i], path1[i]);
   }
+
+  /* 1~63 字节：逐长度覆盖展开拷贝分支（含 4 字节对齐断言） */
+  for (uint32_t len = 1; len < path_max_len; len++) {
+    memset(path, 0x0, sizeof(path));
+
+    tk_memcpy_by_align_4(path, path1, len);
+
+    for (uint32_t i = 0; i < len; i++) {
+      ASSERT_EQ(path[i], path1[i]);
+    }
+    ASSERT_EQ(path[len], 0x00); /* 不能写越界 */
+  }
 }
 
 TEST(Utils, tk_memcpy) {
@@ -863,6 +875,35 @@ TEST(Utils, tk_memcpy) {
   tk_memcpy(path, path1 + 1, path_max_len * 2);
 
   for (uint8_t i = 0; i < path_max_len * 2; i++) {
+    ASSERT_EQ(path[i], path1[i + 1]);
+  }
+
+  /* 两指针都 4 字节对齐：走展开拷贝分支 */
+  memset(path, 0x0, sizeof(path));
+
+  tk_memcpy(path, path1, 8);
+
+  for (uint8_t i = 0; i < 8; i++) {
+    ASSERT_EQ(path[i], path1[i]);
+  }
+  ASSERT_EQ(path[8], 0x00); /* 不能写越界 */
+
+  /* 偏移都是 1：补 3 字节对齐后，剩余 5 字节仍走展开拷贝 */
+  memset(path, 0x0, sizeof(path));
+
+  tk_memcpy(path + 1, path1 + 1, 8);
+
+  for (uint8_t i = 1; i < 9; i++) {
+    ASSERT_EQ(path[i], path1[i]);
+  }
+  ASSERT_EQ(path[9], 0x00); /* 不能写越界 */
+
+  /* 偏移不同（0/1）：直接由 memcpy 处理 */
+  memset(path, 0x0, sizeof(path));
+
+  tk_memcpy(path, path1 + 1, 8);
+
+  for (uint8_t i = 0; i < 8; i++) {
     ASSERT_EQ(path[i], path1[i + 1]);
   }
 }

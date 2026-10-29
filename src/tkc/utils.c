@@ -30,9 +30,6 @@
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
 
-#define IS_ADDRESS_ALIGN_4(addr) !((((size_t)(addr)) & 0x3) | 0x0)
-#define MOD_BY_POW2(num, div) ((num) & ((div) - 1)) /* div是2的幂次方才能用 */
-
 #ifndef WITH_WASM
 #include "tkc/thread.h"
 
@@ -437,7 +434,7 @@ uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
   uint8_t* pb = (uint8_t*)buff;
   return_value_if_fail(buff != NULL, NULL);
 
-  while (MOD_BY_POW2((uintptr_t)pb, 4) != 0 && size > 0) {
+  while ((uintptr_t)pb % 4 != 0 && size > 0) {
     *p = val;
 
     p++;
@@ -445,7 +442,7 @@ uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
     pb += 2;
   }
 
-  n = size >> 3; /*16bytes*/
+  n = size / 8; /*16bytes*/
   if (n > 0) {
     uint32_t* p32 = NULL;
     uint32_t data = val | (val << 16);
@@ -463,7 +460,7 @@ uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
     }
   }
 
-  n = MOD_BY_POW2(size, 8);
+  n = size % 8;
   if (n > 0) {
     uint32_t i = 0;
     for (i = 0, p = (uint16_t*)pb; i < n; i++) {
@@ -480,7 +477,7 @@ uint32_t* tk_memset24(uint32_t* buff, void* val, uint32_t size) {
   uint8_t* pb = (uint8_t*)buff;
   uint8_t* src = (uint8_t*)val;
 
-  while (MOD_BY_POW2((uintptr_t)pb, 4) != 0 && size > 0) {
+  while ((uintptr_t)pb % 4 != 0 && size > 0) {
     pb[0] = src[0];
     pb[1] = src[1];
     pb[2] = src[2];
@@ -826,6 +823,7 @@ ret_t default_destroy(void* data) {
 }
 
 ret_t dummy_destroy(void* data) {
+  (void)data;
   return RET_OK;
 }
 
@@ -834,6 +832,7 @@ int pointer_compare(const void* a, const void* b) {
 }
 
 int compare_always_equal(const void* a, const void* b) {
+  (void)a, (void)b;
   return 0;
 }
 
@@ -1386,18 +1385,17 @@ bool_t tk_str_is_in_array(const char* str, const char** str_array, uint32_t arra
 }
 
 void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t len) {
-#define MEMCPY_TINY_MAX_LENGTH 64
   if (dst_align_4 != NULL && src_align_4 != NULL && len > 0) {
-    if (len < MEMCPY_TINY_MAX_LENGTH) {
+    enum { MEMCPY_TINY_MAX_LEN = 64 }; /* 1..63 都有对应 case；改大这个上界会漏拷贝 */
+    if (len < MEMCPY_TINY_MAX_LEN) {
       register unsigned char* dd = (unsigned char*)dst_align_4 + len;
       register const unsigned char* ss = (const unsigned char*)src_align_4 + len;
 
-      assert(IS_ADDRESS_ALIGN_4(dst_align_4));
-      assert(IS_ADDRESS_ALIGN_4(src_align_4));
+      assert(((uintptr_t)dst_align_4 & 0x3) == 0);
+      assert(((uintptr_t)src_align_4 & 0x3) == 0);
 
       switch (len) {
-        case 64:
-          *((int*)(dd - 64)) = *((int*)(ss - 64));
+        /* len % 4 == 0 */
         case 60:
           *((int*)(dd - 60)) = *((int*)(ss - 60));
         case 56:
@@ -1429,6 +1427,7 @@ void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t 
         case 4:
           *((int*)(dd - 4)) = *((int*)(ss - 4));
           break;
+        /* len % 4 == 3 */
         case 63:
           *((int*)(dd - 63)) = *((int*)(ss - 63));
         case 59:
@@ -1463,6 +1462,7 @@ void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t 
           *((short*)(dd - 3)) = *((short*)(ss - 3));
           dd[-1] = ss[-1];
           break;
+        /* len % 4 == 2 */
         case 62:
           *((int*)(dd - 62)) = *((int*)(ss - 62));
         case 58:
@@ -1496,6 +1496,7 @@ void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t 
         case 2:
           *((short*)(dd - 2)) = *((short*)(ss - 2));
           break;
+        /* len % 4 == 1 */
         case 61:
           *((int*)(dd - 61)) = *((int*)(ss - 61));
         case 57:
@@ -1529,7 +1530,6 @@ void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t 
         case 1:
           dd[-1] = ss[-1];
           break;
-        case 0:
         default:
           break;
       }
