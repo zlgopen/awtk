@@ -8,10 +8,28 @@ TEST(Edit, time_is_valid) {
   widget_set_text_utf8(w, "18:12");
   ASSERT_EQ(edit_time_is_valid(w), TRUE);
 
+  widget_set_text_utf8(w, "18.12");
+  ASSERT_EQ(edit_time_is_valid(w), FALSE);
+
+  widget_set_text_utf8(w, "23:59");
+  ASSERT_EQ(edit_time_is_valid(w), TRUE);
+
   widget_set_text_utf8(w, "0:0:0");
   ASSERT_EQ(edit_time_is_valid(w), FALSE);
 
+  widget_set_text_utf8(w, "00:00");
+  ASSERT_EQ(edit_time_is_valid(w), TRUE);
+
+  widget_set_text_utf8(w, "00:00:00");
+  ASSERT_EQ(edit_time_is_valid(w), FALSE);
+
   widget_set_text_utf8(w, "0:0");
+  ASSERT_EQ(edit_time_is_valid(w), FALSE);
+
+  widget_set_text_utf8(w, "1:00");
+  ASSERT_EQ(edit_time_is_valid(w), FALSE);
+
+  widget_set_text_utf8(w, "00:1");
   ASSERT_EQ(edit_time_is_valid(w), FALSE);
 
   widget_set_text_utf8(w, "0");
@@ -49,6 +67,23 @@ TEST(Edit, time_fix) {
   widget_set_text_utf8(w, "180:60");
   ASSERT_EQ(edit_time_fix(w), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"18:00"), 0);
+
+  widget_set_text_utf8(w, "23:456");
+  ASSERT_EQ(edit_time_fix(w), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"23:45"), 0);
+
+  widget_set_text_utf8(w, "990:12");
+  ASSERT_EQ(edit_time_fix(w), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"00:12"), 0);
+
+  // 位数不足两位时补前导 0
+  widget_set_text_utf8(w, "0:0");
+  ASSERT_EQ(edit_time_fix(w), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"00:00"), 0);
+
+  widget_set_text_utf8(w, "5:30");
+  ASSERT_EQ(edit_time_fix(w), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"05:30"), 0);
 
   widget_destroy(w);
 }

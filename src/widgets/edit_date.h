@@ -71,6 +71,20 @@ static wchar_t* edit_date_fix_part_ctx(uint32_t index, int32_t v, wchar_t* start
       fix_value = L"2020";
     } else {
       date_ctx->year = v;
+      if (len < 4) {
+        /*年份不足四位时补前导0*/
+        int32_t i = 0;
+        int32_t gap = 4 - (int32_t)len;
+        for (i = (int32_t)len - 1; i >= 0; --i) {
+          start[gap + i] = start[i];
+        }
+        for (i = 0; i < gap; ++i) {
+          start[i] = L'0';
+        }
+        end = start + 4;
+        *end = 0;
+        return end;
+      }
     }
   } else if (index == 1) {
     if (len == 0 || v > 12 || v < 1) {

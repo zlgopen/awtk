@@ -27,6 +27,16 @@ static bool_t edit_time_part_len_is_valid(uint32_t index, uint32_t len) {
 static wchar_t* edit_time_fix_part(uint32_t index, int32_t v, wchar_t* start, wchar_t* end) {
   uint32_t len = end - start;
   const wchar_t* fix_value = NULL;
+
+  if (len == 1) {
+    /*位数不足两位时补前导0*/
+    start[1] = start[0];
+    start[0] = L'0';
+    end = start + 2;
+    *end = 0;
+    return end;
+  }
+
   if (index == 0) {
     if (len == 0 || v > 23) {
       fix_value = L"00";

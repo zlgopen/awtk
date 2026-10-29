@@ -8,13 +8,22 @@ TEST(Edit, ipv4_is_valid) {
   widget_set_text_utf8(w, "192.168.1.1");
   ASSERT_EQ(edit_ipv4_is_valid(w), TRUE);
 
+  widget_set_text_utf8(w, "192:168:1:1");
+  ASSERT_EQ(edit_ipv4_is_valid(w), FALSE);
+
   widget_set_text_utf8(w, "0.0.0.0");
+  ASSERT_EQ(edit_ipv4_is_valid(w), TRUE);
+
+  widget_set_text_utf8(w, "255.255.255.255");
   ASSERT_EQ(edit_ipv4_is_valid(w), TRUE);
 
   widget_set_text_utf8(w, "0.0");
   ASSERT_EQ(edit_ipv4_is_valid(w), FALSE);
 
   widget_set_text_utf8(w, "0");
+  ASSERT_EQ(edit_ipv4_is_valid(w), FALSE);
+
+  widget_set_text_utf8(w, "1.1.1.1.1");
   ASSERT_EQ(edit_ipv4_is_valid(w), FALSE);
 
   widget_set_text_utf8(w, "292.168.1.1");
@@ -27,6 +36,9 @@ TEST(Edit, ipv4_is_valid) {
   ASSERT_EQ(edit_ipv4_is_valid(w), FALSE);
 
   widget_set_text_utf8(w, "0001.3.1.12");
+  ASSERT_EQ(edit_ipv4_is_valid(w), FALSE);
+
+  widget_set_text_utf8(w, "..1.1");
   ASSERT_EQ(edit_ipv4_is_valid(w), FALSE);
 
   widget_destroy(w);
