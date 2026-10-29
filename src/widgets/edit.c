@@ -519,6 +519,8 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
       break;
   }
 
+  // 文本被直接修改，需要让字模缓存失效
+  text_edit_set_text_changed(edit->model);
   edit_set_cursor(WIDGET(edit), UINT32_MAX);
 
   return RET_OK;
@@ -1188,6 +1190,7 @@ ret_t edit_set_auto_fix(widget_t* widget, bool_t auto_fix) {
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->auto_fix = auto_fix;
+  edit_check_valid_value(widget);
 
   return RET_OK;
 }
@@ -2244,6 +2247,7 @@ ret_t edit_set_is_valid_value(widget_t* widget, edit_is_valid_value_t is_valid_v
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->is_valid_value = is_valid_value;
+  edit_check_valid_value(widget);
 
   return RET_OK;
 }
@@ -2253,6 +2257,7 @@ ret_t edit_set_fix_value(widget_t* widget, edit_fix_value_t fix_value) {
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->fix_value = fix_value;
+  edit_check_valid_value(widget);
 
   return RET_OK;
 }

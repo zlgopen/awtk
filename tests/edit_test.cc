@@ -95,6 +95,200 @@ TEST(Edit, uint) {
   widget_destroy(b);
 }
 
+static bool_t custom_is_upper_char(widget_t* widget, wchar_t c) {
+  edit_t* e = EDIT(widget);
+  return c >= L'A' && c <= L'Z' && widget->text.size < e->max;
+}
+
+static bool_t custom_is_upper_value(widget_t* widget) {
+  uint32_t i = 0;
+  wstr_t* text = &(widget->text);
+  edit_t* e = EDIT(widget);
+
+  if (text->size == 0 || text->size > e->max || text->size < e->min) {
+    return FALSE;
+  }
+
+  for (i = 0; i < text->size; i++) {
+    if (text->str[i] < L'A' || text->str[i] > L'Z') {
+      return FALSE;
+    }
+  }
+
+  return TRUE;
+}
+
+static ret_t custom_fix_value(widget_t* widget) {
+  wstr_t* text = &(widget->text);
+  edit_t* edit = EDIT(widget);
+  uint32_t i = 0;
+  uint32_t max = edit->max;
+  uint32_t write_pos = 0;
+
+  for (i = 0; i < text->size; i++) {
+    if (text->str[i] >= 'A' && text->str[i] <= 'Z') {
+      text->str[write_pos++] = text->str[i];
+    }
+  }
+  text->size = write_pos;
+  text->str[write_pos] = 0;
+
+  if (text->size > max) {
+    text->size = max;
+    text->str[max] = 0;
+  }
+
+  return RET_OK;
+}
+
+TEST(Edit, is_valid_pattern_custom_upper) {
+  // 自定义规则: 所以输入必须是大写字母，长度 [2,5]
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+  edit_set_input_type(e, INPUT_CUSTOM);
+  widget_set_prop_int(e, WIDGET_PROP_MIN, 2);
+  widget_set_prop_int(e, WIDGET_PROP_MAX, 5);
+  edit_set_is_valid_char(e, custom_is_upper_char);
+
+  widget_set_text(e, L"aAAaB");
+  ASSERT_STREQ(e->state, WIDGET_STATE_NORMAL);
+  ASSERT_TRUE(edit_is_valid_value(e));
+  edit_set_is_valid_value(e, custom_is_upper_value);
+  ASSERT_STREQ(e->state, WIDGET_STATE_ERROR);
+  ASSERT_FALSE(edit_is_valid_value(e));
+  edit_set_fix_value(e, custom_fix_value);
+  edit_set_auto_fix(e, TRUE);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"AAB"));
+  ASSERT_TRUE(edit_is_valid_value(e));
+
+  // 小写字母和数字不允许输入
+  widget_set_text(e, L"");
+  edit_set_auto_fix(e, FALSE);
+  ASSERT_NE(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_NE(edit_input_char(e, L'1'), RET_OK);
+  ASSERT_FALSE(edit_is_valid_value(e));
+
+  // 大写字母可以输入
+  ASSERT_EQ(edit_input_char(e, L'A'), RET_OK);
+  ASSERT_FALSE(edit_is_valid_value(e)); // 最小长度 2
+  ASSERT_EQ(edit_input_char(e, L'B'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'C'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'D'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'E'), RET_OK);
+  ASSERT_TRUE(edit_is_valid_value(e));
+  ASSERT_TRUE(wstr_eq(&(e->text), L"ABCDE"));
+  ASSERT_NE(edit_input_char(e, L'F'), RET_OK); // 最大长度 5
+  ASSERT_TRUE(wstr_eq(&(e->text), L"ABCDE"));
+
+  // 程序设置大写字母内容合法
+  widget_set_text(e, L"HELLO");
+  ASSERT_TRUE(edit_is_valid_value(e));
+
+  // 程序设置含小写的内容非法
+  widget_set_text(e, L"Hello");
+  ASSERT_FALSE(edit_is_valid_value(e));
+
+  // 程序设置含数字的内容非法
+  widget_set_text(e, L"AB1");
+  ASSERT_FALSE(edit_is_valid_value(e));
+
+  widget_destroy(e);
+}
+
+static bool_t custom_password_is_valid_char(widget_t* widget, wchar_t c) {
+  edit_t* e = EDIT(widget);
+  // 可打印 ASCII: 数字、大小写字母和特殊符号都可以输入(不含空格)
+  return c > 0x20 && c <= 0x7E && widget->text.size < e->max;
+}
+
+static bool_t custom_password_is_valid_value(widget_t* widget) {
+  uint32_t i = 0;
+  bool_t has_lower = FALSE;
+  bool_t has_upper = FALSE;
+  bool_t has_digit = FALSE;
+  wstr_t* text = &(widget->text);
+  edit_t* e = EDIT(widget);
+
+  if (text->size == 0 || text->size > e->max || text->size < e->min) {
+    return FALSE;
+  }
+
+  for (i = 0; i < text->size; i++) {
+    wchar_t c = text->str[i];
+    if (c >= L'a' && c <= L'z') {
+      has_lower = TRUE;
+    } else if (c >= L'A' && c <= L'Z') {
+      has_upper = TRUE;
+    } else if (c >= L'0' && c <= L'9') {
+      has_digit = TRUE;
+    }
+  }
+
+  // 至少包含数字、小写字母、大写字母三种符号
+  return has_lower && has_upper && has_digit;
+}
+
+TEST(Edit, is_valid_pattern_custom_password) {
+  // 自定义规则: 至少包含数字、大写字母、小写字母三种类型的符号, 长度 [4,8]
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+  edit_set_input_type(e, INPUT_CUSTOM_PASSWORD);
+  widget_set_prop_int(e, WIDGET_PROP_MIN, 4);
+  widget_set_prop_int(e, WIDGET_PROP_MAX, 8);
+  edit_set_is_valid_char(e, custom_password_is_valid_char);
+
+  widget_set_text(e, L"abcd");
+  ASSERT_STREQ(e->state, WIDGET_STATE_NORMAL);
+  ASSERT_TRUE(edit_is_valid_value(e));
+  edit_set_is_valid_value(e, custom_password_is_valid_value);
+  ASSERT_STREQ(e->state, WIDGET_STATE_ERROR);
+  ASSERT_FALSE(edit_is_valid_value(e));
+
+  ASSERT_EQ(edit_input_char(e, L'#'), RET_OK);
+
+  // 少于三种符号时非法
+  widget_set_text(e, L"abcd");
+  ASSERT_FALSE(edit_is_valid_value(e));
+
+  widget_set_text(e, L"abcd1234"); // 缺大写
+  ASSERT_FALSE(edit_is_valid_value(e));
+
+  widget_set_text(e, L"ABCD1234"); // 缺小写
+  ASSERT_FALSE(edit_is_valid_value(e));
+
+  widget_set_text(e, L"Abc#"); // 缺数字
+  ASSERT_FALSE(edit_is_valid_value(e));
+
+  // 太短
+  widget_set_text(e, L"aA1");
+  ASSERT_FALSE(edit_is_valid_value(e));
+
+  // 三种都有即合法
+  widget_set_text(e, L"aA11");
+  ASSERT_TRUE(edit_is_valid_value(e));
+
+  widget_set_text(e, L"Abcd1234");
+  ASSERT_TRUE(edit_is_valid_value(e));
+
+  widget_set_text(e, L"Abc1#");
+  ASSERT_TRUE(edit_is_valid_value(e));
+
+  widget_set_text(e, L"");
+  ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'B'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'3'), RET_OK);
+  ASSERT_NE(edit_input_char(e, L' '), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'#'), RET_OK);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"aB3#"));
+  ASSERT_TRUE(edit_is_valid_value(e));
+  ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_NE(edit_input_char(e, L'a'), RET_OK); // 太长
+  ASSERT_TRUE(wstr_eq(&(e->text), L"aB3#aaaa"));
+
+  widget_destroy(e);
+}
+
 TEST(Edit, tips) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
 
@@ -475,11 +669,16 @@ static bool_t any_char_is_valid(widget_t* widget, wchar_t c) {
   return TRUE;
 }
 
+static bool_t any_string_is_valid_value(widget_t* widget) {
+  return TRUE;
+}
+
 TEST(Edit, is_valid_chr_4_custom) {
   widget_t* e = edit_create(NULL, 10, 20, 30, 40);
 
   edit_set_input_type(e, INPUT_PHONE);
   edit_set_is_valid_char(e, any_char_is_valid);
+  edit_set_is_valid_value(e, any_string_is_valid_value);
 
   ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'1'), RET_OK);
@@ -491,6 +690,7 @@ TEST(Edit, is_valid_chr_4_custom) {
 
   ASSERT_EQ(edit_input_char(e, L'x'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_TRUE(edit_is_valid_value(e));
 
   widget_destroy(e);
 }

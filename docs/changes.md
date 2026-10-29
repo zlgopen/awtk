@@ -5,6 +5,7 @@
   * 完善了 edit_time/time_full/date 的自动修复(感谢雪飞提供补丁)
   * improve utils (感谢兆坤提供补丁) 
   * 修复动画播放期间光标 last_xy 不更新，导致滚轮事件使用旧坐标的问题(感谢雪飞提供补丁)
+  * 修复 edit 自动修复后可能显示旧文本的问题，并在设置 auto_fix/is_valid_value/fix_value 后立刻重新校验(感谢雪飞提供补丁)
 
 2026/10/28
   * improve utils bits(感谢兆坤提供补丁)
