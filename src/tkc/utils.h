@@ -1014,8 +1014,6 @@ bool_t tk_int_is_in_array(int32_t v, const int32_t* array, uint32_t array_size);
  */
 void* tk_memcpy(void* dst, const void* src, uint32_t len);
 
-void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t len);
-
 static inline int32_t tk_max_int(int32_t a, int32_t b) {
   return tk_max(a, b);
 }
@@ -1597,6 +1595,8 @@ ret_t emitter_dispatch_vlog(emitter_t* emitter, tk_log_level_t level, const char
 #endif
 
 /*public for test*/
+void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t len);
+
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 
 /* private */

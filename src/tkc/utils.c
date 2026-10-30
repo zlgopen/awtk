@@ -1385,185 +1385,191 @@ bool_t tk_str_is_in_array(const char* str, const char** str_array, uint32_t arra
 }
 
 void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t len) {
-  if (dst_align_4 != NULL && src_align_4 != NULL && len > 0) {
-    enum { MEMCPY_TINY_MAX_LEN = 64 }; /* 1..63 都有对应 case；改大这个上界会漏拷贝 */
-    if (len < MEMCPY_TINY_MAX_LEN) {
-      register unsigned char* dd = (unsigned char*)dst_align_4 + len;
-      register const unsigned char* ss = (const unsigned char*)src_align_4 + len;
+  enum { MEMCPY_TINY_MAX_LEN = 64 }; /* 1..63 都有对应 case；改大这个上界会漏复制 */
+  return_value_if_fail(dst_align_4 != NULL && src_align_4 != NULL, NULL);
 
-      assert(((uintptr_t)dst_align_4 & 0x3) == 0);
-      assert(((uintptr_t)src_align_4 & 0x3) == 0);
-
-      switch (len) {
-        /* len % 4 == 0 */
-        case 60:
-          *((int*)(dd - 60)) = *((int*)(ss - 60));
-        case 56:
-          *((int*)(dd - 56)) = *((int*)(ss - 56));
-        case 52:
-          *((int*)(dd - 52)) = *((int*)(ss - 52));
-        case 48:
-          *((int*)(dd - 48)) = *((int*)(ss - 48));
-        case 44:
-          *((int*)(dd - 44)) = *((int*)(ss - 44));
-        case 40:
-          *((int*)(dd - 40)) = *((int*)(ss - 40));
-        case 36:
-          *((int*)(dd - 36)) = *((int*)(ss - 36));
-        case 32:
-          *((int*)(dd - 32)) = *((int*)(ss - 32));
-        case 28:
-          *((int*)(dd - 28)) = *((int*)(ss - 28));
-        case 24:
-          *((int*)(dd - 24)) = *((int*)(ss - 24));
-        case 20:
-          *((int*)(dd - 20)) = *((int*)(ss - 20));
-        case 16:
-          *((int*)(dd - 16)) = *((int*)(ss - 16));
-        case 12:
-          *((int*)(dd - 12)) = *((int*)(ss - 12));
-        case 8:
-          *((int*)(dd - 8)) = *((int*)(ss - 8));
-        case 4:
-          *((int*)(dd - 4)) = *((int*)(ss - 4));
-          break;
-        /* len % 4 == 3 */
-        case 63:
-          *((int*)(dd - 63)) = *((int*)(ss - 63));
-        case 59:
-          *((int*)(dd - 59)) = *((int*)(ss - 59));
-        case 55:
-          *((int*)(dd - 55)) = *((int*)(ss - 55));
-        case 51:
-          *((int*)(dd - 51)) = *((int*)(ss - 51));
-        case 47:
-          *((int*)(dd - 47)) = *((int*)(ss - 47));
-        case 43:
-          *((int*)(dd - 43)) = *((int*)(ss - 43));
-        case 39:
-          *((int*)(dd - 39)) = *((int*)(ss - 39));
-        case 35:
-          *((int*)(dd - 35)) = *((int*)(ss - 35));
-        case 31:
-          *((int*)(dd - 31)) = *((int*)(ss - 31));
-        case 27:
-          *((int*)(dd - 27)) = *((int*)(ss - 27));
-        case 23:
-          *((int*)(dd - 23)) = *((int*)(ss - 23));
-        case 19:
-          *((int*)(dd - 19)) = *((int*)(ss - 19));
-        case 15:
-          *((int*)(dd - 15)) = *((int*)(ss - 15));
-        case 11:
-          *((int*)(dd - 11)) = *((int*)(ss - 11));
-        case 7:
-          *((int*)(dd - 7)) = *((int*)(ss - 7));
-        case 3:
-          *((short*)(dd - 3)) = *((short*)(ss - 3));
-          dd[-1] = ss[-1];
-          break;
-        /* len % 4 == 2 */
-        case 62:
-          *((int*)(dd - 62)) = *((int*)(ss - 62));
-        case 58:
-          *((int*)(dd - 58)) = *((int*)(ss - 58));
-        case 54:
-          *((int*)(dd - 54)) = *((int*)(ss - 54));
-        case 50:
-          *((int*)(dd - 50)) = *((int*)(ss - 50));
-        case 46:
-          *((int*)(dd - 46)) = *((int*)(ss - 46));
-        case 42:
-          *((int*)(dd - 42)) = *((int*)(ss - 42));
-        case 38:
-          *((int*)(dd - 38)) = *((int*)(ss - 38));
-        case 34:
-          *((int*)(dd - 34)) = *((int*)(ss - 34));
-        case 30:
-          *((int*)(dd - 30)) = *((int*)(ss - 30));
-        case 26:
-          *((int*)(dd - 26)) = *((int*)(ss - 26));
-        case 22:
-          *((int*)(dd - 22)) = *((int*)(ss - 22));
-        case 18:
-          *((int*)(dd - 18)) = *((int*)(ss - 18));
-        case 14:
-          *((int*)(dd - 14)) = *((int*)(ss - 14));
-        case 10:
-          *((int*)(dd - 10)) = *((int*)(ss - 10));
-        case 6:
-          *((int*)(dd - 6)) = *((int*)(ss - 6));
-        case 2:
-          *((short*)(dd - 2)) = *((short*)(ss - 2));
-          break;
-        /* len % 4 == 1 */
-        case 61:
-          *((int*)(dd - 61)) = *((int*)(ss - 61));
-        case 57:
-          *((int*)(dd - 57)) = *((int*)(ss - 57));
-        case 53:
-          *((int*)(dd - 53)) = *((int*)(ss - 53));
-        case 49:
-          *((int*)(dd - 49)) = *((int*)(ss - 49));
-        case 45:
-          *((int*)(dd - 45)) = *((int*)(ss - 45));
-        case 41:
-          *((int*)(dd - 41)) = *((int*)(ss - 41));
-        case 37:
-          *((int*)(dd - 37)) = *((int*)(ss - 37));
-        case 33:
-          *((int*)(dd - 33)) = *((int*)(ss - 33));
-        case 29:
-          *((int*)(dd - 29)) = *((int*)(ss - 29));
-        case 25:
-          *((int*)(dd - 25)) = *((int*)(ss - 25));
-        case 21:
-          *((int*)(dd - 21)) = *((int*)(ss - 21));
-        case 17:
-          *((int*)(dd - 17)) = *((int*)(ss - 17));
-        case 13:
-          *((int*)(dd - 13)) = *((int*)(ss - 13));
-        case 9:
-          *((int*)(dd - 9)) = *((int*)(ss - 9));
-        case 5:
-          *((int*)(dd - 5)) = *((int*)(ss - 5));
-        case 1:
-          dd[-1] = ss[-1];
-          break;
-        default:
-          break;
-      }
-      return dd;
-    }
+  if (len >= MEMCPY_TINY_MAX_LEN) {
     return memcpy(dst_align_4, src_align_4, len);
-  } else {
-    return dst_align_4;
   }
+
+  if (len > 0) {
+    register unsigned char* dd = (unsigned char*)dst_align_4 + len;
+    register const unsigned char* ss = (const unsigned char*)src_align_4 + len;
+
+    assert(((uintptr_t)dst_align_4 & 0x3) == 0);
+    assert(((uintptr_t)src_align_4 & 0x3) == 0);
+
+    switch (len) {
+      /* len % 4 == 0 */
+      case 60:
+        *((int*)(dd - 60)) = *((int*)(ss - 60));
+      case 56:
+        *((int*)(dd - 56)) = *((int*)(ss - 56));
+      case 52:
+        *((int*)(dd - 52)) = *((int*)(ss - 52));
+      case 48:
+        *((int*)(dd - 48)) = *((int*)(ss - 48));
+      case 44:
+        *((int*)(dd - 44)) = *((int*)(ss - 44));
+      case 40:
+        *((int*)(dd - 40)) = *((int*)(ss - 40));
+      case 36:
+        *((int*)(dd - 36)) = *((int*)(ss - 36));
+      case 32:
+        *((int*)(dd - 32)) = *((int*)(ss - 32));
+      case 28:
+        *((int*)(dd - 28)) = *((int*)(ss - 28));
+      case 24:
+        *((int*)(dd - 24)) = *((int*)(ss - 24));
+      case 20:
+        *((int*)(dd - 20)) = *((int*)(ss - 20));
+      case 16:
+        *((int*)(dd - 16)) = *((int*)(ss - 16));
+      case 12:
+        *((int*)(dd - 12)) = *((int*)(ss - 12));
+      case 8:
+        *((int*)(dd - 8)) = *((int*)(ss - 8));
+      case 4:
+        *((int*)(dd - 4)) = *((int*)(ss - 4));
+        break;
+      /* len % 4 == 3 */
+      case 63:
+        *((int*)(dd - 63)) = *((int*)(ss - 63));
+      case 59:
+        *((int*)(dd - 59)) = *((int*)(ss - 59));
+      case 55:
+        *((int*)(dd - 55)) = *((int*)(ss - 55));
+      case 51:
+        *((int*)(dd - 51)) = *((int*)(ss - 51));
+      case 47:
+        *((int*)(dd - 47)) = *((int*)(ss - 47));
+      case 43:
+        *((int*)(dd - 43)) = *((int*)(ss - 43));
+      case 39:
+        *((int*)(dd - 39)) = *((int*)(ss - 39));
+      case 35:
+        *((int*)(dd - 35)) = *((int*)(ss - 35));
+      case 31:
+        *((int*)(dd - 31)) = *((int*)(ss - 31));
+      case 27:
+        *((int*)(dd - 27)) = *((int*)(ss - 27));
+      case 23:
+        *((int*)(dd - 23)) = *((int*)(ss - 23));
+      case 19:
+        *((int*)(dd - 19)) = *((int*)(ss - 19));
+      case 15:
+        *((int*)(dd - 15)) = *((int*)(ss - 15));
+      case 11:
+        *((int*)(dd - 11)) = *((int*)(ss - 11));
+      case 7:
+        *((int*)(dd - 7)) = *((int*)(ss - 7));
+      case 3:
+        *((short*)(dd - 3)) = *((short*)(ss - 3));
+        dd[-1] = ss[-1];
+        break;
+      /* len % 4 == 2 */
+      case 62:
+        *((int*)(dd - 62)) = *((int*)(ss - 62));
+      case 58:
+        *((int*)(dd - 58)) = *((int*)(ss - 58));
+      case 54:
+        *((int*)(dd - 54)) = *((int*)(ss - 54));
+      case 50:
+        *((int*)(dd - 50)) = *((int*)(ss - 50));
+      case 46:
+        *((int*)(dd - 46)) = *((int*)(ss - 46));
+      case 42:
+        *((int*)(dd - 42)) = *((int*)(ss - 42));
+      case 38:
+        *((int*)(dd - 38)) = *((int*)(ss - 38));
+      case 34:
+        *((int*)(dd - 34)) = *((int*)(ss - 34));
+      case 30:
+        *((int*)(dd - 30)) = *((int*)(ss - 30));
+      case 26:
+        *((int*)(dd - 26)) = *((int*)(ss - 26));
+      case 22:
+        *((int*)(dd - 22)) = *((int*)(ss - 22));
+      case 18:
+        *((int*)(dd - 18)) = *((int*)(ss - 18));
+      case 14:
+        *((int*)(dd - 14)) = *((int*)(ss - 14));
+      case 10:
+        *((int*)(dd - 10)) = *((int*)(ss - 10));
+      case 6:
+        *((int*)(dd - 6)) = *((int*)(ss - 6));
+      case 2:
+        *((short*)(dd - 2)) = *((short*)(ss - 2));
+        break;
+      /* len % 4 == 1 */
+      case 61:
+        *((int*)(dd - 61)) = *((int*)(ss - 61));
+      case 57:
+        *((int*)(dd - 57)) = *((int*)(ss - 57));
+      case 53:
+        *((int*)(dd - 53)) = *((int*)(ss - 53));
+      case 49:
+        *((int*)(dd - 49)) = *((int*)(ss - 49));
+      case 45:
+        *((int*)(dd - 45)) = *((int*)(ss - 45));
+      case 41:
+        *((int*)(dd - 41)) = *((int*)(ss - 41));
+      case 37:
+        *((int*)(dd - 37)) = *((int*)(ss - 37));
+      case 33:
+        *((int*)(dd - 33)) = *((int*)(ss - 33));
+      case 29:
+        *((int*)(dd - 29)) = *((int*)(ss - 29));
+      case 25:
+        *((int*)(dd - 25)) = *((int*)(ss - 25));
+      case 21:
+        *((int*)(dd - 21)) = *((int*)(ss - 21));
+      case 17:
+        *((int*)(dd - 17)) = *((int*)(ss - 17));
+      case 13:
+        *((int*)(dd - 13)) = *((int*)(ss - 13));
+      case 9:
+        *((int*)(dd - 9)) = *((int*)(ss - 9));
+      case 5:
+        *((int*)(dd - 5)) = *((int*)(ss - 5));
+      case 1:
+        dd[-1] = ss[-1];
+        break;
+      default:
+        break;
+    }
+  }
+
+  return dst_align_4;
 }
 
 void* tk_memcpy(void* dst, const void* src, uint32_t len) {
-  size_t offset_src_address = ((size_t)src) & 0x3;
-  size_t offset_dst_address = ((size_t)dst) & 0x3;
+  size_t offset_src_address = 0;
+  size_t offset_dst_address = 0;
   return_value_if_fail(dst != NULL && src != NULL, NULL);
+
+  offset_src_address = ((size_t)src) & 0x3;
+  offset_dst_address = ((size_t)dst) & 0x3;
+
   if (offset_src_address == offset_dst_address) {
-    uint32_t i = 0;
     uint8_t* d = dst;
-    uint8_t* s = (uint8_t*)src;
+    const uint8_t* s = (const uint8_t*)src;
     int32_t curr_len = len;
     uint32_t offset = 0x4 - offset_src_address;
     if (offset_src_address != 0) {
-      for (i = 0; i < offset && i < len; i++) {
+      uint32_t i = 0;
+      uint32_t n = tk_min(len, offset);
+      for (i = 0; i < n; i++) {
         d[i] = s[i];
       }
-      d += offset;
-      s += offset;
-      curr_len -= offset;
+      d += n;
+      s += n;
+      curr_len -= n;
     }
     if (curr_len > 0) {
-      return tk_memcpy_by_align_4((void*)d, (const void*)s, curr_len);
-    } else {
-      return dst;
+      tk_memcpy_by_align_4(d, s, curr_len);
     }
+    return dst;
   } else {
     return memcpy(dst, src, len);
   }

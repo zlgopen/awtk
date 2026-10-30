@@ -808,7 +808,9 @@ TEST(Utils, memcpy_by_align_4) {
     path1[i] = i;
   }
 
-  tk_memcpy_by_align_4(path, path1, path_max_len);
+  ASSERT_TRUE(tk_memcpy_by_align_4(NULL, path1, 8) == NULL);
+  ASSERT_TRUE(tk_memcpy_by_align_4(path, NULL, 8) == NULL);
+  ASSERT_TRUE(tk_memcpy_by_align_4(path, path1, path_max_len) == path);
 
   for (uint8_t i = 0; i < path_max_len; i++) {
     ASSERT_EQ(path[i], path1[i]);
@@ -816,7 +818,7 @@ TEST(Utils, memcpy_by_align_4) {
 
   memset(path, 0x0, sizeof(path));
 
-  tk_memcpy_by_align_4(path, path1, path_max_len * 2);
+  ASSERT_TRUE(tk_memcpy_by_align_4(path, path1, path_max_len * 2) == path);
 
   for (uint8_t i = 0; i < path_max_len * 2; i++) {
     ASSERT_EQ(path[i], path1[i]);
@@ -826,7 +828,7 @@ TEST(Utils, memcpy_by_align_4) {
   for (uint32_t len = 1; len < path_max_len; len++) {
     memset(path, 0x0, sizeof(path));
 
-    tk_memcpy_by_align_4(path, path1, len);
+    ASSERT_TRUE(tk_memcpy_by_align_4(path, path1, len) == path);
 
     for (uint32_t i = 0; i < len; i++) {
       ASSERT_EQ(path[i], path1[i]);
@@ -840,15 +842,15 @@ TEST(Utils, tk_memcpy) {
   uint8_t path[path_max_len * 2 + 1] = {0};
   uint8_t path1[path_max_len * 2 + 1] = {0};
 
-  ASSERT_EQ(tk_memcpy(path, path1, 0) == path, true);
-  ASSERT_EQ(tk_memcpy(path, NULL, path_max_len) == NULL, true);
-  ASSERT_EQ(tk_memcpy(NULL, path1, path_max_len) == NULL, true);
+  ASSERT_TRUE(tk_memcpy(path, path1, 0) == path);
+  ASSERT_TRUE(tk_memcpy(path, NULL, path_max_len) == NULL);
+  ASSERT_TRUE(tk_memcpy(NULL, path1, path_max_len) == NULL);
 
   for (uint8_t i = 0; i < path_max_len * 2; i++) {
     path1[i] = i;
   }
 
-  tk_memcpy(path, path1, path_max_len);
+  ASSERT_TRUE(tk_memcpy(path, path1, path_max_len) == path);
 
   for (uint8_t i = 0; i < path_max_len; i++) {
     ASSERT_EQ(path[i], path1[i]);
@@ -856,7 +858,7 @@ TEST(Utils, tk_memcpy) {
 
   memset(path, 0x0, sizeof(path));
 
-  tk_memcpy(path, path1, path_max_len * 2);
+  ASSERT_TRUE(tk_memcpy(path, path1, path_max_len * 2) == path);
 
   for (uint8_t i = 0; i < path_max_len * 2; i++) {
     ASSERT_EQ(path[i], path1[i]);
@@ -864,7 +866,7 @@ TEST(Utils, tk_memcpy) {
 
   memset(path, 0x0, sizeof(path));
 
-  tk_memcpy(path + 1, path1 + 1, path_max_len * 2);
+  ASSERT_TRUE(tk_memcpy(path + 1, path1 + 1, path_max_len * 2) == path + 1);
 
   for (uint8_t i = 1; i < path_max_len * 2; i++) {
     ASSERT_EQ(path[i], path1[i]);
@@ -872,7 +874,7 @@ TEST(Utils, tk_memcpy) {
 
   memset(path, 0x0, sizeof(path));
 
-  tk_memcpy(path, path1 + 1, path_max_len * 2);
+  ASSERT_TRUE(tk_memcpy(path, path1 + 1, path_max_len * 2) == path);
 
   for (uint8_t i = 0; i < path_max_len * 2; i++) {
     ASSERT_EQ(path[i], path1[i + 1]);
@@ -881,7 +883,7 @@ TEST(Utils, tk_memcpy) {
   /* 两指针都 4 字节对齐：走展开拷贝分支 */
   memset(path, 0x0, sizeof(path));
 
-  tk_memcpy(path, path1, 8);
+  ASSERT_TRUE(tk_memcpy(path, path1, 8) == path);
 
   for (uint8_t i = 0; i < 8; i++) {
     ASSERT_EQ(path[i], path1[i]);
@@ -891,7 +893,7 @@ TEST(Utils, tk_memcpy) {
   /* 偏移都是 1：补 3 字节对齐后，剩余 5 字节仍走展开拷贝 */
   memset(path, 0x0, sizeof(path));
 
-  tk_memcpy(path + 1, path1 + 1, 8);
+  ASSERT_TRUE(tk_memcpy(path + 1, path1 + 1, 8) == path + 1);
 
   for (uint8_t i = 1; i < 9; i++) {
     ASSERT_EQ(path[i], path1[i]);
@@ -901,10 +903,24 @@ TEST(Utils, tk_memcpy) {
   /* 偏移不同（0/1）：直接由 memcpy 处理 */
   memset(path, 0x0, sizeof(path));
 
-  tk_memcpy(path, path1 + 1, 8);
+  ASSERT_TRUE(tk_memcpy(path, path1 + 1, 8) == path);
 
   for (uint8_t i = 0; i < 8; i++) {
     ASSERT_EQ(path[i], path1[i + 1]);
+  }
+
+  /* 同偏移、长度不超过补齐量：必须由前缀循环完成整段拷贝 */
+  for (uint32_t off = 1; off <= 3; off++) {
+    for (uint32_t len = 1; len <= 4; len++) {
+      memset(path, 0x0, sizeof(path));
+
+      ASSERT_TRUE(tk_memcpy(path + off, path1 + off, len) == path + off);
+
+      for (uint32_t i = 0; i < len; i++) {
+        ASSERT_EQ(path[off + i], path1[off + i]);
+      }
+      ASSERT_EQ(path[off + len], 0x00); /* 不能写越界 */
+    }
   }
 }
 
