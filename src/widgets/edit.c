@@ -230,6 +230,319 @@ static ret_t edit_hex_uint_to_str(wstr_t* text, uint32_t value) {
   return edit_hex_uint_to_str_ex(text, value, "0x");
 }
 
+static bool_t edit_is_valid_float_str(const wstr_t* text, input_type_t input_type, bool_t is_editing) {
+  int32_t i = 0;
+  const uint32_t len = text->size;
+  const wchar_t* s = text->str;
+  bool_t has_integer_digit = FALSE;   // 小数点前是否有数字
+  bool_t has_dot = FALSE;             // 是否有小数点
+  bool_t has_fraction_digit = FALSE;  // 小数点后是否有数字
+  bool_t has_exp_marker = FALSE;      // 是否有指数符号(e/E)
+  bool_t has_exp_digit = FALSE;       // 指数部分是否有数字
+
+
+  if (len == 0) {
+    return FALSE;
+  }
+
+  // 正负号
+  if (s[0] == '+' || s[0] == '-') {
+    if (s[0] == '-' && input_type == INPUT_UFLOAT) {
+      return FALSE;
+    }
+    i++;
+  }
+
+  // 整数部分
+  while (i < len && s[i] >= '0' && s[i] <= '9') {
+    has_integer_digit = TRUE;
+    i++;
+  }
+
+  // 可选小数点和小数部分
+  if (i < len && s[i] == '.') {
+    has_dot = TRUE;
+    i++;
+    while (i < len && s[i] >= '0' && s[i] <= '9') {
+      has_fraction_digit = TRUE;
+      i++;
+    }
+  }
+
+  (void)has_dot;
+
+  // 可选指数部分
+  if (i < len && (s[i] == 'e' || s[i] == 'E')) {
+    has_exp_marker = TRUE;
+    // 指数前必须有系数
+    if (!has_integer_digit && !has_fraction_digit) {
+      return FALSE;
+    }
+    i++;
+
+    // 可选指数符号
+    if (i < len && (s[i] == '+' || s[i] == '-')) {
+      i++;
+    }
+
+    // 指数数字
+    while (i < len && s[i] >= '0' && s[i] <= '9') {
+      has_exp_digit = TRUE;
+      i++;
+    }
+  }
+
+  if (i != len) {
+    return FALSE;
+  }
+
+  if (!is_editing) {
+    if (!has_integer_digit && !has_fraction_digit) {
+      return FALSE; // 既没有整数也没有小数
+    } else if (has_exp_marker && !has_exp_digit) {
+      return FALSE; // e/E 后面没有数字
+    }
+  }
+
+  return TRUE;
+}
+
+static bool_t edit_is_valid_int_str(const wstr_t* text, input_type_t input_type, bool_t is_editing) {
+  int32_t i = 0;
+  const uint32_t len = text->size;
+  const wchar_t* s = text->str;
+  bool_t has_digit = FALSE;
+
+  if (len == 0) {
+    return FALSE;
+  }
+
+  // 可选正负号
+  if (s[0] == '+' || s[0] == '-') {
+    if (s[0] == '-' && input_type == INPUT_UINT) {
+      return FALSE;
+    }
+    i++;
+  }
+
+  // 整数
+  while (i < len && s[i] >= '0' && s[i] <= '9') {
+    has_digit = TRUE;
+    i++;
+  }
+
+  if (i != len) {
+    return FALSE;
+  }
+
+  if (!is_editing && !has_digit) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+static bool_t edit_is_valid_hex_str(const wstr_t* text, bool_t is_editing) {
+  int32_t i = 0;
+  const uint32_t len = text->size;
+  const wchar_t* s = text->str;
+  bool_t has_digit = FALSE;
+  bool_t has_0x = FALSE;
+
+  if (len == 0) {
+    return FALSE;
+  }
+
+  if (len >= 2 && s[0] == '0' && (s[1] == 'x' || s[1] == 'X')) {
+    i = 2;
+    has_0x = TRUE;
+  } else if (is_editing && (s[0] == 'x' || s[0] == 'X')) {
+    i = 1;
+  }
+
+  while (i < len) {
+    if ((s[i] >= '0' && s[i] <= '9') || (s[i] >= 'a' && s[i] <= 'f') || (s[i] >= 'A' && s[i] <= 'F')) {
+      has_digit = TRUE;
+      i++;
+    } else {
+      return FALSE;
+    }
+  }
+
+  if (!is_editing && (!has_digit || !has_0x)) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+static bool_t edit_is_valid_ascii_str(const wstr_t* text) {
+  const uint32_t len = text->size;
+  const wchar_t* s = text->str;
+  uint32_t i = 0;
+
+  if (len == 0) {
+    return FALSE;
+  }
+
+  for (i = 0; i < len; i++) {
+    if (s[i] < 0x20 || s[i] > 0x7E) {
+      return FALSE;
+    }
+  }
+
+  return TRUE;
+}
+
+static bool_t edit_is_valid_email_str(const wstr_t* text, bool_t is_editing) {
+  const uint32_t len = text->size;
+  const wchar_t* s = text->str;
+  uint32_t i = 0;
+  int32_t at_pos = -1;
+
+  // 不能以 . 开头
+  if (len == 0 || s[0] == '.') {
+    return FALSE;
+  }
+
+  // local part（@ 之前）
+  for (i = 0; i < len; i++) {
+    wchar_t c = s[i];
+    if (c == '@') {
+      // 不能以 . 结尾
+      if (i >= 1 && s[i-1] == '.' && !is_editing) {
+        return FALSE;
+      }
+      at_pos = (int32_t)i;
+      break;
+    } else if (c == '.') {
+      // 不能有连续的 .
+      if (s[i-1] == '.' && !is_editing) {
+        return FALSE;
+      }
+    } else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+               (c >= '0' && c <= '9') || c == '-' || c == '_' || c == '+') {
+      // 合法字符
+    } else {
+      return FALSE;
+    }
+  }
+
+  // 没有 @
+  if (at_pos == -1) {
+    return is_editing;
+  }
+
+  // @ 前为空
+  if (at_pos == 0 && !is_editing) {
+    return FALSE;
+  }
+
+  /* domain part（@ 之后）不能为空 */
+  uint32_t domain_start = at_pos + 1;
+  if (domain_start >= len) {
+    return is_editing;
+  }
+
+  bool_t has_dot = FALSE;
+  bool_t labelStart = TRUE;
+  uint32_t labelLen = 0;
+
+  for(i = domain_start; i < len; ++i) {
+    wchar_t c = s[i];
+
+    if (c == '.') {
+      if (labelLen == 0 && !is_editing) {
+        return FALSE; // 不能以 . 开头, 不能有连续的 .
+      }
+
+      if (s[i-1] == '-' && !is_editing) {
+        return FALSE; // label 不能以 - 结尾
+      }
+
+      has_dot = TRUE;
+      labelLen = 0;
+      labelStart = TRUE;
+      continue;
+    }
+
+    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+        (c >= '0' && c <= '9') || c == '-') {
+    } else {
+      return FALSE;
+    }
+
+    if (labelStart) {
+      if (c == '-') {
+        return FALSE; // label 不能以 - 开头
+      }
+      labelStart = FALSE;
+    }
+
+    labelLen++;
+  }
+
+  if (!has_dot) {
+    return is_editing; // domain 至少一个 .
+  }
+
+  if (labelLen < 2) {
+    return is_editing; // 顶级域名至少两个字符
+  }
+
+  if (s[len-1] == '-') {
+    return FALSE; // label 不能以 - 结尾
+  }
+
+  return TRUE;
+}
+
+static bool_t edit_is_valid_phone_str(const wstr_t* text, bool_t is_editing) {
+  const uint32_t len = text->size;
+  const wchar_t* s = text->str;
+  bool_t has_plus = FALSE;
+  uint32_t digit_count = 0;
+  uint32_t i = 0;
+
+  if (len == 0) {
+    return FALSE;
+  }
+
+  // + 只能在第一个位置
+  if (s[0] == '+') {
+    if (len >= 2 && s[1] == '0' && !is_editing) {
+      return FALSE; // + 后面不能是 0
+    }
+    has_plus = TRUE;
+    i = 1;
+  } else if (s[0] == '-') {
+    return FALSE;
+  }
+
+  if (s[len - 1] == '-' && !is_editing) {
+    return FALSE; // 不能以 - 结尾
+  }
+
+  for (; i < len; i++) {
+    if (s[i] >= '0' && s[i] <= '9') {
+      digit_count++;
+    } else if (s[i] == '-') {
+      // - 的前面必须是数字
+      if (i >= 1 && (s[i - 1] < '0' || s[i - 1] > '9') && !is_editing) {
+        return FALSE;
+      }
+    } else {
+      return FALSE;
+    }
+  }
+
+  if (is_editing) {
+    return TRUE;
+  }
+
+  return digit_count >= (has_plus ? 2 : 1);
+}
+
 static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
   wstr_t tmp;
   bool_t ret = FALSE;
@@ -256,18 +569,33 @@ static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
   input_type = edit->input_type;
 
   switch (input_type) {
+    case INPUT_ASCII: {
+      if (c >= 0x20 && c <= 0x7E) {
+        ret = TRUE;
+      }
+      break;
+    }
     case INPUT_INT:
     case INPUT_UINT: {
       if (text->size >= TK_NUM_MAX_LEN) {
         break;
       } else if (c >= '0' && c <= '9') {
         ret = TRUE;
-        break;
       } else if (c == '+' || (c == '-' && input_type == INPUT_INT)) {
         if (cursor_pos == 0) {
           ret = TRUE;
         }
-        break;
+      }
+
+      if (ret) {
+        wstr_t result;
+        wstr_init(&result, text->size + 2);
+        wstr_set(&result, text->str);
+        wstr_insert(&result, cursor_pos, &c, 1);
+        if (!edit_is_valid_int_str(&result, input_type, TRUE)) {
+          ret = FALSE;
+        }
+        wstr_reset(&result);
       }
       break;
     }
@@ -277,32 +605,50 @@ static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
         break;
       } else if (c >= '0' && c <= '9') {
         ret = TRUE;
-        break;
-      } else if (c == '+' || (c == '-' && input_type == INPUT_FLOAT)) {
-        if (cursor_pos == 0) {
-          ret = TRUE;
+      } else if (c == '+' || c == '-') {
+        ret = TRUE;
+      } else if (c == '.') {
+        ret = TRUE;
+      } else if (c == 'e' || c == 'E') {
+        ret = TRUE;
+      }
+
+      if (ret) {
+        wstr_t result;
+        wstr_init(&result, text->size + 2);
+        wstr_set(&result, text->str);
+        wstr_insert(&result, cursor_pos, &c, 1);
+        if (!edit_is_valid_float_str(&result, input_type, TRUE)) {
+          ret = FALSE;
         }
-        break;
-      } else if (c == '.' || c == 'e') {
-        if (cursor_pos > 0 && wcschr(text->str, c) == NULL) {
-          ret = TRUE;
-        }
+        wstr_reset(&result);
       }
       break;
     }
     case INPUT_EMAIL: {
       if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '-' ||
-          c == '.' || c == '_' || c == ' ') {
+          c == '.' || c == '_' || c == '+') {
         ret = TRUE;
       } else if (c == '@') {
-        if (cursor_pos > 0 && wcschr(text->str, c) == NULL) {
+        if (cursor_pos > 0) {
           ret = TRUE;
         }
+      }
+
+      if (ret) {
+        wstr_t result;
+        wstr_init(&result, text->size + 2);
+        wstr_set(&result, text->str);
+        wstr_insert(&result, cursor_pos, &c, 1);
+        if (!edit_is_valid_email_str(&result, TRUE)) {
+          ret = FALSE;
+        }
+        wstr_reset(&result);
       }
       break;
     }
     case INPUT_HEX: {
-      if (text->size > 10) {
+      if (text->size >= 10) {
         break;
       } else if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) {
         ret = TRUE;
@@ -311,16 +657,41 @@ static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
           ret = TRUE;
         }
       }
+
+      if (ret) {
+        wstr_t result;
+        wstr_init(&result, text->size + 2);
+        wstr_set(&result, text->str);
+        wstr_insert(&result, cursor_pos, &c, 1);
+        if (!edit_is_valid_hex_str(&result, TRUE)) {
+          ret = FALSE;
+        }
+        wstr_reset(&result);
+      }
       break;
     }
     case INPUT_PHONE: {
       if (c >= '0' && c <= '9') {
         ret = TRUE;
-        break;
       } else if (c == '-') {
-        if (cursor_pos > 0 && wcschr(text->str, c) == NULL) {
+        if (cursor_pos > 0) {
           ret = TRUE;
         }
+      } else if (c == '+') {
+        if (cursor_pos == 0) {
+          ret = TRUE;
+        }
+      }
+
+      if (ret) {
+        wstr_t result;
+        wstr_init(&result, text->size + 2);
+        wstr_set(&result, text->str);
+        wstr_insert(&result, cursor_pos, &c, 1);
+        if (!edit_is_valid_phone_str(&result, TRUE)) {
+          ret = FALSE;
+        }
+        wstr_reset(&result);
       }
       break;
     }
@@ -436,17 +807,28 @@ static bool_t edit_is_valid_value_default(widget_t* widget) {
   text = &(widget->text);
 
   switch (edit->input_type) {
-    case INPUT_ASCII:
-    case INPUT_PHONE:
-    case INPUT_EMAIL:
     case INPUT_TEXT:
     case INPUT_PASSWORD: {
       if (edit_is_size_valid(widget)) {
-        if (edit->input_type == INPUT_EMAIL) {
-          return wstr_count_char(text, '@') == 1;
-        }
-
         return TRUE;
+      }
+      return FALSE;
+    }
+    case INPUT_ASCII: {
+      if (edit_is_size_valid(widget)) {
+        return edit_is_valid_ascii_str(text);
+      }
+      return FALSE;
+    }
+    case INPUT_EMAIL: {
+      if (edit_is_size_valid(widget)) {
+        return edit_is_valid_email_str(text, FALSE);
+      }
+      return FALSE;
+    }
+    case INPUT_PHONE: {
+      if (edit_is_size_valid(widget)) {
+        return edit_is_valid_phone_str(text, FALSE);
       }
       return FALSE;
     }
@@ -456,27 +838,17 @@ static bool_t edit_is_valid_value_default(widget_t* widget) {
       int64_t min = (int64_t)(edit->min);
       int64_t max = (int64_t)(edit->max);
 
-      if (text->size == 0 || text->size > 11) {
+      if (text->size == 0) {
         return FALSE;
       }
 
-      if (min == max) {
+      if (!edit_is_valid_int_str(text, edit->input_type, FALSE)) {
+        return FALSE;
+      } else if (min == max) {
         return TRUE;
       }
 
       wstr_to_int64(text, &v);
-      if (text->size >= 10) {
-        wstr_t str;
-        bool_t result = FALSE;
-
-        wstr_init(&str, 32);
-        wstr_from_int64(&str, v);
-        result = wstr_equal(&str, text);
-        wstr_reset(&str);
-        if (!result) {
-          return FALSE;
-        }
-      }
 
       return min <= v && v <= max;
     }
@@ -490,10 +862,32 @@ static bool_t edit_is_valid_value_default(widget_t* widget) {
         return FALSE;
       }
 
-      if (min == max) {
+      if (!edit_is_valid_float_str(text, edit->input_type, FALSE)) {
+        return FALSE;
+      } else if (tk_lfequal(min, max)) {
         return TRUE;
       }
+
       wstr_to_float(text, &v);
+
+      return min <= v && v <= max;
+    }
+    case INPUT_HEX: {
+      uint32_t v = 0;
+      uint32_t min = (uint32_t)(edit->min);
+      uint32_t max = (uint32_t)(edit->max);
+
+      if (text->size <= 2) {
+        return FALSE;
+      }
+
+      if (!edit_is_valid_hex_str(text, FALSE)) {
+        return FALSE;
+      } else if (min == max) {
+        return TRUE;
+      }
+
+      v = edit_hex_str_to_uint(text);
 
       return min <= v && v <= max;
     }
@@ -517,6 +911,26 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
       uint32_t max = edit->max;
 
       if (size > max) {
+        text->size = max;
+        text->str[max] = 0;
+      }
+
+      break;
+    }
+    case INPUT_ASCII: {
+      uint32_t i = 0;
+      uint32_t max = edit->max;
+      uint32_t write_pos = 0;
+
+      for (i = 0; i < text->size; i++) {
+        if (text->str[i] >= 0x20 && text->str[i] <= 0x7E) {
+          text->str[write_pos++] = text->str[i];
+        }
+      }
+      text->size = write_pos;
+      text->str[write_pos] = 0;
+
+      if (text->size > max) {
         text->size = max;
         text->str[max] = 0;
       }
