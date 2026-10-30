@@ -405,6 +405,32 @@ ret_t edit_set_text_limit(widget_t* widget, uint32_t min, uint32_t max);
 ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max, uint32_t step);
 
 /**
+ * @method edit_set_uint_limit
+ * 设置为非负整数输入及取值范围。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} min 最小值。
+ * @param {uint32_t} max 最大值。
+ * @param {uint32_t} step 步长。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_uint_limit(widget_t* widget, uint32_t min, uint32_t max, uint32_t step);
+
+/**
+ * @method edit_set_hex_limit
+ * 设置为十六进制数输入及取值范围。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} min 最小值。
+ * @param {uint32_t} max 最大值。
+ * @param {uint32_t} step 步长。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_hex_limit(widget_t* widget, uint32_t min, uint32_t max, uint32_t step);
+
+/**
  * @method edit_set_float_limit
  * 设置为浮点数输入及取值范围。
  * @annotation ["scriptable"]
@@ -416,6 +442,19 @@ ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max, uint32_t st
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_float_limit(widget_t* widget, double min, double max, double step);
+
+/**
+ * @method edit_set_ufloat_limit
+ * 设置为非负浮点数输入及取值范围。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {double} min 最小值。
+ * @param {double} max 最大值。
+ * @param {double} step 步长。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_ufloat_limit(widget_t* widget, double min, double max, double step);
 
 /**
  * @method edit_set_readonly

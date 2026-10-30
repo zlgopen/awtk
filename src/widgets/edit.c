@@ -51,6 +51,7 @@ static ret_t edit_check_valid_value(widget_t* widget);
 static ret_t edit_select_all_async(const idle_info_t* info);
 static ret_t edit_dispatch_value_change_event(widget_t* widget, event_base_type_t type);
 static ret_t edit_paste(widget_t* widget, const wchar_t* str, uint32_t size);
+static bool_t edit_has_uint_min_max(edit_t* edit);
 
 static ret_t edit_save_text(widget_t* widget) {
   edit_t* edit = EDIT(widget);
@@ -166,6 +167,67 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   }
 
   return text_edit_paint(edit->model, c);
+}
+
+static uint32_t edit_hex_str_to_uint(const wstr_t* text) {
+  char buff[TK_NUM_MAX_LEN + 1] = {0};
+  const wchar_t* s = text->str;
+  uint32_t i = 0;
+
+  if (text->size == 0) {
+    return 0;
+  }
+
+  // 跳过 0x/0X/x/X 前缀
+  if (text->size >= 2 && s[0] == L'0' && (s[1] == L'x' || s[1] == L'X')) {
+    i = 2;
+  } else if (s[0] == L'x' || s[0] == L'X') {
+    i = 1;
+  }
+
+  // 跳过前导0
+  while (i + 1 < text->size && s[i] == L'0') {
+    i++;
+  }
+
+  tk_utf8_from_utf16_ex(s + i, tk_min(text->size - i, TK_NUM_MAX_LEN), buff, ARRAY_SIZE(buff));
+
+  return (uint32_t)tk_strtoll(buff, NULL, 16);
+}
+
+static const char* edit_hex_str_get_prefix(const wstr_t* text) {
+  if (text == NULL || text->size == 0) {
+    return "";
+  }
+
+  if (text->size >= 2 && text->str[0] == '0' && (text->str[1] == 'x' || text->str[1] == 'X')) {
+    return text->str[1] == 'x' ? "0x" : "0X";
+  } else if (text->str[0] == 'x' || text->str[0] == 'X') {
+    return text->str[0] == 'x' ? "x" : "X";
+  }
+
+  return "";
+}
+
+static ret_t edit_hex_uint_to_str_ex(wstr_t* text, uint32_t value, const char* prefix) {
+  char hex_buff[TK_NUM_MAX_LEN + 1] = {0};
+  uint32_t n = 0;
+
+  if (prefix != NULL) {
+    n = tk_strlen(prefix);
+    tk_strncpy(hex_buff, prefix, n);
+  }
+
+  tk_snprintf(hex_buff + n, ARRAY_SIZE(hex_buff) - n, "%X", value);
+  tk_str_toupper(hex_buff + n);
+
+  wstr_set_utf8(text, hex_buff);
+
+  return RET_OK;
+}
+
+static ret_t edit_hex_uint_to_str(wstr_t* text, uint32_t value) {
+  return edit_hex_uint_to_str_ex(text, value, "0x");
 }
 
 static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
@@ -363,10 +425,6 @@ static bool_t edit_is_size_valid(widget_t* widget) {
   uint32_t min = (uint32_t)(edit->min);
   uint32_t max = (uint32_t)(edit->max);
 
-  if (min == max && min == 0) {
-    return TRUE;
-  }
-
   return (min <= size && size <= max);
 }
 
@@ -465,34 +523,15 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
 
       break;
     }
-    case INPUT_INT: {
-      int32_t v = 0;
-      int32_t min = (int32_t)(edit->min);
-      int32_t max = (int32_t)(edit->max);
-
-      wstr_to_int(text, &v);
-      if (v < min) {
-        v = min;
-      }
-
-      if (v > max) {
-        v = max;
-      }
-      wstr_from_int(text, v);
-      break;
-    }
+    case INPUT_INT:
     case INPUT_UINT: {
-      uint64_t v = 0;
-      uint32_t min = (uint32_t)(edit->min);
-      uint32_t max = (uint32_t)(edit->max);
+      int64_t v = 0;
+      int64_t min = (int64_t)(edit->min);
+      int64_t max = (int64_t)(edit->max);
 
-      wstr_to_int64(text, (int64_t*)&v);
-      if (v < min) {
-        v = min;
-      }
-
-      if (v > max) {
-        v = max;
+      wstr_to_int64(text, &v);
+      if (min < max) {
+        v = tk_clamp(v, min, max);
       }
       wstr_from_int64(text, v);
       break;
@@ -504,15 +543,23 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
       double max = edit->max;
 
       wstr_to_float(text, &v);
-      if (v < min) {
-        v = min;
-      }
-
-      if (v > max) {
-        v = max;
+      if (min < max) {
+        v = tk_clamp(v, min, max);
       }
       wstr_from_float(text, v);
       wstr_trim_float_zero(text);
+      break;
+    }
+    case INPUT_HEX: {
+      uint32_t v = 0;
+      uint32_t min = (uint32_t)(edit->min);
+      uint32_t max = (uint32_t)(edit->max);
+
+      v = edit_hex_str_to_uint(text);
+      if (min < max) {
+        v = tk_clamp(v, min, max);
+      }
+      edit_hex_uint_to_str(text, v);
       break;
     }
     default:
@@ -1120,51 +1167,69 @@ static ret_t edit_on_re_translate(widget_t* widget) {
   return RET_OK;
 }
 
-ret_t edit_set_text_limit(widget_t* widget, uint32_t min, uint32_t max) {
+static void edit_clamp_min_max(edit_t* edit) {
+  input_type_t input_type = edit->input_type;
+
+  switch (input_type) {
+    case INPUT_INT: {
+      edit->min = tk_clamp(edit->min, INT32_MIN, INT32_MAX);
+      edit->max = tk_clamp(edit->max, INT32_MIN, INT32_MAX);
+      break;
+    }
+    case INPUT_UFLOAT: {
+      edit->min = tk_max(0.0, edit->min);
+      break;
+    }
+    case INPUT_FLOAT: {
+      break;
+    }
+    default:
+      if (edit_has_uint_min_max(edit)) {
+        edit->min = tk_clamp(edit->min, 0, UINT32_MAX);
+        edit->max = tk_clamp(edit->max, 0, UINT32_MAX);
+      }
+      break;
+  }
+
+  edit->max = tk_max(edit->min, edit->max);
+}
+
+static ret_t edit_set_limit_ex(widget_t* widget, input_type_t type, double min, double max,
+                               double step) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->min = min;
   edit->max = max;
-  edit->input_type = INPUT_TEXT;
-  edit_check_valid_value(widget);
+  edit_set_input_type(widget, type);
+  edit->step = step;
   edit_update_status(widget);
 
   return RET_OK;
+}
+
+ret_t edit_set_text_limit(widget_t* widget, uint32_t min, uint32_t max) {
+  return edit_set_limit_ex(widget, INPUT_TEXT, min, max, 0);
 }
 
 ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max, uint32_t step) {
-  edit_t* edit = EDIT(widget);
-  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+  return edit_set_limit_ex(widget, INPUT_INT, min, max, step);
+}
 
-  if (edit->input_type != INPUT_UINT) {
-    edit->min = min;
-    edit->max = max;
-    edit->input_type = INPUT_INT;
-  } else {
-    edit->min = (uint32_t)min;
-    edit->max = (uint32_t)max;
-  }
-  edit->step = step;
-  edit_check_valid_value(widget);
-  edit_update_status(widget);
-  return RET_OK;
+ret_t edit_set_uint_limit(widget_t* widget, uint32_t min, uint32_t max, uint32_t step) {
+  return edit_set_limit_ex(widget, INPUT_UINT, min, max, step);
+}
+
+ret_t edit_set_hex_limit(widget_t* widget, uint32_t min, uint32_t max, uint32_t step) {
+  return edit_set_limit_ex(widget, INPUT_HEX, min, max, step);
 }
 
 ret_t edit_set_float_limit(widget_t* widget, double min, double max, double step) {
-  edit_t* edit = EDIT(widget);
-  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+  return edit_set_limit_ex(widget, INPUT_FLOAT, min, max, step);
+}
 
-  edit->min = min;
-  edit->max = max;
-  edit->step = step;
-
-  if (edit->input_type != INPUT_UFLOAT) {
-    edit->input_type = INPUT_FLOAT;
-  }
-  edit_check_valid_value(widget);
-  edit_update_status(widget);
-  return RET_OK;
+ret_t edit_set_ufloat_limit(widget_t* widget, double min, double max, double step) {
+  return edit_set_limit_ex(widget, INPUT_UFLOAT, min, max, step);
 }
 
 ret_t edit_set_readonly(widget_t* widget, bool_t readonly) {
@@ -1234,6 +1299,7 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
   edit->inc_value = NULL;
   edit->dec_value = NULL;
   edit->is_valid_value = NULL;
+  edit_clamp_min_max(edit);
 
   if (edit->step == 0.0 && (type == INPUT_INT || type == INPUT_UINT)) {
     edit->step = 1;
@@ -1348,15 +1414,15 @@ ret_t edit_set_keyboard(widget_t* widget, const char* keyboard) {
   return RET_OK;
 }
 
-static bool_t widget_has_uint_min_max(widget_t* widget) {
-  edit_t* edit = EDIT(widget);
+static bool_t edit_has_uint_min_max(edit_t* edit) {
   input_type_t input_type = INPUT_TEXT;
   return_value_if_fail(edit != NULL, FALSE);
 
   input_type = edit->input_type;
 
   return input_type == INPUT_TEXT || input_type == INPUT_ASCII || input_type == INPUT_PASSWORD ||
-         input_type == INPUT_EMAIL || input_type == INPUT_UINT;
+         input_type == INPUT_EMAIL || input_type == INPUT_PHONE || input_type == INPUT_UINT ||
+         input_type == INPUT_HEX;
 }
 
 ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
@@ -1368,7 +1434,7 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   if (tk_str_eq(name, WIDGET_PROP_MIN)) {
     if (input_type == INPUT_INT) {
       value_set_int(v, edit->min);
-    } else if (widget_has_uint_min_max(widget)) {
+    } else if (edit_has_uint_min_max(edit)) {
       value_set_uint32(v, edit->min);
     } else if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
       value_set_double(v, edit->min);
@@ -1379,7 +1445,7 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
     if (input_type == INPUT_INT) {
       value_set_int(v, edit->max);
-    } else if (widget_has_uint_min_max(widget)) {
+    } else if (edit_has_uint_min_max(edit)) {
       value_set_uint32(v, edit->max);
     } else if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
       value_set_double(v, edit->max);
@@ -1388,15 +1454,8 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_STEP)) {
-    if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
-      value_set_float(v, edit->step);
-      return RET_OK;
-    } else if (input_type == INPUT_INT || input_type == INPUT_UINT) {
-      value_set_double(v, edit->step);
-      return RET_OK;
-    } else {
-      return RET_NOT_FOUND;
-    }
+    value_set_double(v, edit->step);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_INPUT_TYPE)) {
     value_set_uint32(v, input_type);
     return RET_OK;
@@ -1488,6 +1547,11 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
         value_set_uint32(v, n);
         break;
       }
+      case INPUT_HEX: {
+        uint32_t n = edit_hex_str_to_uint(&(widget->text));
+        value_set_uint32(v, n);
+        break;
+      }
       case INPUT_FLOAT:
       case INPUT_UFLOAT: {
         double d = edit_get_double(widget);
@@ -1550,7 +1614,7 @@ ret_t edit_set_text_impl(widget_t* widget, const value_t* v, bool_t changed, boo
     uint32_t len = str.size;
     input_type_t input_type = edit->input_type;
     if (input_type == INPUT_INT || input_type == INPUT_UINT || input_type == INPUT_FLOAT ||
-        input_type == INPUT_UFLOAT) {
+        input_type == INPUT_UFLOAT || input_type == INPUT_HEX) {
       len = tk_min(str.size, 64);
     } else {
       len = edit->max > 0 ? tk_min(str.size, edit->max) : str.size;
@@ -1589,8 +1653,10 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
       edit->min = value_double(v);
     } else {
-      edit->min = value_int(v);
+      edit->min = value_int64(v);
     }
+    edit->max = tk_max(edit->min, edit->max);
+    edit_clamp_min_max(edit);
     edit_check_valid_value(widget);
     edit_update_status(widget);
     return RET_OK;
@@ -1600,6 +1666,8 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     } else {
       edit->max = value_int64(v);
     }
+    edit->min = tk_min(edit->min, edit->max);
+    edit_clamp_min_max(edit);
     edit_check_valid_value(widget);
     edit_update_status(widget);
     return RET_OK;
@@ -1732,6 +1800,8 @@ uint32_t edit_get_cursor(widget_t* widget) {
 
 static ret_t edit_add_float(edit_t* edit, double delta) {
   double v = 0;
+  double min = edit->min;
+  double max = edit->max;
   wstr_t* text = NULL;
   widget_t* widget = WIDGET(edit);
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
@@ -1740,87 +1810,63 @@ static ret_t edit_add_float(edit_t* edit, double delta) {
   return_value_if_fail(wstr_to_float(text, &v) == RET_OK, RET_FAIL);
 
   v += delta;
-  if (edit->min < edit->max) {
-    if (v < edit->min) {
-      wstr_from_float(text, edit->min);
-    } else if (v > edit->max) {
-      wstr_from_float(text, edit->max);
-    } else {
-      wstr_add_float(text, delta);
-    }
-  } else {
-    wstr_add_float(text, delta);
+  if (edit->auto_fix && min < max) {
+    v = tk_clamp(v, min, max);
   }
 
+  wstr_from_float(text, v);
   wstr_trim_float_zero(text);
 
   return RET_OK;
 }
 
 static ret_t edit_add_int(edit_t* edit, int delta) {
-  int32_t v = 0;
+  int64_t v = 0;
+  int64_t min = (int64_t)(edit->min);
+  int64_t max = (int64_t)(edit->max);
   wstr_t* text = NULL;
   widget_t* widget = WIDGET(edit);
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
   text = &(widget->text);
-  return_value_if_fail(wstr_to_int(text, &v) == RET_OK, RET_FAIL);
+  return_value_if_fail(wstr_to_int64(text, &v) == RET_OK, RET_FAIL);
 
   v += delta;
-  if (edit->auto_fix && (edit->min < edit->max)) {
-    if (v < edit->min) {
-      v = (int32_t)(edit->min);
-    }
-
-    if (v > edit->max) {
-      v = (int32_t)(edit->max);
-    }
+  if (edit->auto_fix && min < max) {
+    v = tk_clamp(v, min, max);
   }
 
-  wstr_from_int(text, v);
+  wstr_from_int64(text, v);
 
   return RET_OK;
 }
 
 static ret_t edit_add_hex(edit_t* edit, int delta) {
-  int32_t v = 0;
-  uint32_t size = 0;
+  uint32_t v = 0;
+  uint32_t min = (uint32_t)(edit->min);
+  uint32_t max = (uint32_t)(edit->max);
   wstr_t* text = NULL;
   widget_t* widget = WIDGET(edit);
-  char buff[TK_NUM_MAX_LEN + 1] = {0};
-  wchar_t wbuff[TK_NUM_MAX_LEN] = {0};
-  char hex_buff[TK_NUM_MAX_LEN + 1] = {0};
+  const char* prefix = NULL;
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
   text = &(widget->text);
   return_value_if_fail(text != NULL, RET_BAD_PARAMS);
 
-  if (text->size > 0) {
-    size = tk_min(text->size, TK_NUM_MAX_LEN) * sizeof(wchar_t);
-    tk_memcpy(wbuff, text->str, size);
-    tk_utf8_from_utf16_ex(wbuff, ARRAY_SIZE(wbuff), buff, ARRAY_SIZE(buff));
-
-    tk_sscanf(buff, "%x", &v);
-
+  v = edit_hex_str_to_uint(text);
+  if (edit->auto_fix && min < max) {
+    int64_t temp = (int64_t)v + delta;
+    v = tk_clamp(temp, min, max);
   } else {
-    v = 0;
+    v += delta;
   }
 
-  v += delta;
-  if (edit->auto_fix && (edit->min < edit->max)) {
-    if (v < edit->min) {
-      v = (int32_t)(edit->min);
-    }
-
-    if (v > edit->max) {
-      v = (int32_t)(edit->max);
-    }
+  prefix = edit_hex_str_get_prefix(text);
+  if (edit->auto_fix && !(tk_str_eq(prefix, "0x") || tk_str_eq(prefix, "0X"))) {
+    prefix = "0x";
   }
 
-  tk_snprintf(hex_buff, ARRAY_SIZE(hex_buff), "%x", v);
-  tk_str_toupper(hex_buff);
-
-  wstr_set_utf8(text, hex_buff);
+  edit_hex_uint_to_str_ex(text, v, prefix);
 
   return RET_OK;
 }
@@ -1899,10 +1945,11 @@ static ret_t edit_inc_default(edit_t* edit) {
   switch (input_type) {
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
-      float_t step = edit->step != 0.0 ? edit->step : 0.1;
+      double step = edit->step != 0.0 ? edit->step : 0.1;
       if (text->size == 0) {
         wstr_from_float(text, edit->min);
         wstr_trim_float_zero(text);
+        break;
       }
       edit_add_float(edit, step);
       break;
@@ -1911,7 +1958,8 @@ static ret_t edit_inc_default(edit_t* edit) {
     case INPUT_UINT: {
       int32_t step = edit->step != 0.0 ? edit->step : 1;
       if (text->size == 0) {
-        wstr_from_int(text, edit->min);
+        wstr_from_int64(text, (int64_t)(edit->min));
+        break;
       }
       edit_add_int(edit, step);
       break;
@@ -1919,11 +1967,8 @@ static ret_t edit_inc_default(edit_t* edit) {
     case INPUT_HEX: {
       int32_t step = edit->step != 0.0 ? edit->step : 1;
       if (text->size == 0) {
-        if (edit->min < 0) {
-          wstr_from_int(text, 0);
-        } else {
-          wstr_from_int(text, edit->min);
-        }
+        edit_hex_uint_to_str(text, (uint32_t)(edit->min));
+        break;
       }
       edit_add_hex(edit, step);
       break;
@@ -1954,10 +1999,11 @@ static ret_t edit_dec_default(edit_t* edit) {
   switch (input_type) {
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
-      float_t step = edit->step != 0.0 ? edit->step : 0.1;
+      double step = edit->step != 0.0 ? edit->step : 0.1;
       if (text->size == 0) {
         wstr_from_float(text, edit->max);
         wstr_trim_float_zero(text);
+        break;
       }
       edit_add_float(edit, -step);
       break;
@@ -1966,7 +2012,8 @@ static ret_t edit_dec_default(edit_t* edit) {
     case INPUT_UINT: {
       int32_t step = edit->step != 0.0 ? edit->step : 1;
       if (text->size == 0) {
-        wstr_from_int(text, edit->max);
+        wstr_from_int64(text, (int64_t)(edit->max));
+        break;
       }
       edit_add_int(edit, -step);
       break;
@@ -1974,11 +2021,8 @@ static ret_t edit_dec_default(edit_t* edit) {
     case INPUT_HEX: {
       int32_t step = edit->step != 0.0 ? edit->step : 1;
       if (text->size == 0) {
-        if (edit->max < 0) {
-          wstr_from_int(text, 0);
-        } else {
-          wstr_from_int(text, edit->max);
-        }
+        edit_hex_uint_to_str(text, (uint32_t)(edit->max));
+        break;
       }
       edit_add_hex(edit, -step);
       break;

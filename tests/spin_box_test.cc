@@ -55,6 +55,24 @@ TEST(SpinBox, cast) {
   widget_destroy(w);
 }
 
+TEST(SpinBox, init) {
+  value_t v;
+  widget_t* w = spin_box_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(EDIT(w)->input_type, INPUT_INT);
+
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_MIN, &v), RET_OK);
+  ASSERT_EQ(0, value_int(&v));
+
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_MAX, &v), RET_OK);
+  ASSERT_EQ(1024, value_int(&v));
+
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_STEP, &v), RET_OK);
+  ASSERT_EQ(1, value_int(&v));
+
+  widget_destroy(w);
+}
+
 TEST(SpinBox, set_value) {
   widget_t* w = spin_box_create(NULL, 10, 20, 30, 40);
 

@@ -3576,7 +3576,10 @@ EXPORTS
     edit_set_double_ex
     edit_set_text_limit
     edit_set_int_limit
+    edit_set_uint_limit
+    edit_set_hex_limit
     edit_set_float_limit
+    edit_set_ufloat_limit
     edit_set_readonly
     edit_set_cancelable
     edit_set_auto_fix

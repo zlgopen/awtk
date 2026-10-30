@@ -181,7 +181,7 @@ static ret_t spin_box_init(widget_t* widget) {
   return_value_if_fail(edit != NULL, RET_FAIL);
 
   edit->step = 1;
-  edit->input_type = INPUT_INT;
+  edit_set_input_type(widget, INPUT_INT);
 
   return RET_OK;
 }

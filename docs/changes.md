@@ -5,6 +5,7 @@
   * 完善 str 和 wstr(感谢雪飞提供补丁)
       - 修复 value_t 为 DOUBLE/UINT64/UINT32/INT64 时 str_from_value 的结果可能错误的问题
       - 修复 value_t 为 DOUBLE 时 wstr_from_value 的结果可能错误的问题，并添加了对 BOOL 的支持
+  * 完善 edit 的 limit (min / max / step)(感谢雪飞提供补丁)
 
 2026/10/29
   * 暂时关闭fbo的mass功能，主要是该功能会比较吃性能同时在虚拟机上面有可能黑屏的问题（兼 容性比较差）(感谢智明提供补丁)

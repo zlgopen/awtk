@@ -54,7 +54,7 @@ TEST(Edit, uint) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
   edit_set_input_type(b, INPUT_UINT);
 
-  ASSERT_EQ(edit_set_int_limit(b, 1, 100, 5), RET_OK);
+  ASSERT_EQ(edit_set_uint_limit(b, 1, 100, 5), RET_OK);
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
   ASSERT_EQ(1, value_int(&v2));
 
@@ -82,17 +82,95 @@ TEST(Edit, uint) {
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_STEP, &v2), RET_OK);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
 
-  ASSERT_EQ(edit_set_int_limit(b, 0, INT32_MAX, 5), RET_OK);
+  ASSERT_EQ(edit_set_uint_limit(b, 0, UINT32_MAX, 5), RET_OK);
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
-  ASSERT_EQ(0, value_int(&v2));
+  ASSERT_EQ(0, value_uint32(&v2));
 
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
-  ASSERT_EQ(INT32_MAX, value_int32(&v2));
+  ASSERT_EQ(UINT32_MAX, value_uint32(&v2));
 
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_INPUT_TYPE, &v2), RET_OK);
-  ASSERT_EQ(INPUT_UINT, value_int(&v2));
+  ASSERT_EQ(INPUT_UINT, value_uint32(&v2));
 
   widget_destroy(b);
+}
+
+TEST(Edit, set_limit_sets_input_type) {
+  widget_t* b = edit_create(NULL, 10, 20, 30, 40);
+
+  // set_xxx_limit 会同时设置 input_type
+  ASSERT_EQ(edit_set_int_limit(b, -100, 100, 1), RET_OK);
+  ASSERT_EQ(EDIT(b)->input_type, INPUT_INT);
+
+  ASSERT_EQ(edit_set_uint_limit(b, 0, 100, 1), RET_OK);
+  ASSERT_EQ(EDIT(b)->input_type, INPUT_UINT);
+
+  ASSERT_EQ(edit_set_hex_limit(b, 0x0, 0xFF, 1), RET_OK);
+  ASSERT_EQ(EDIT(b)->input_type, INPUT_HEX);
+
+  ASSERT_EQ(edit_set_float_limit(b, -100, 100, 1), RET_OK);
+  ASSERT_EQ(EDIT(b)->input_type, INPUT_FLOAT);
+
+  ASSERT_EQ(edit_set_ufloat_limit(b, -100, 100, 1), RET_OK);
+  ASSERT_EQ(EDIT(b)->input_type, INPUT_UFLOAT);
+  ASSERT_DOUBLE_EQ(EDIT(b)->min, 0.0); // ufloat 的 min < 0 自动修正为 0
+
+  ASSERT_EQ(edit_set_text_limit(b, 0, 100), RET_OK);
+  ASSERT_EQ(EDIT(b)->input_type, INPUT_TEXT);
+
+  widget_destroy(b);
+}
+
+TEST(Edit, convert_time_to_text) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_input_type(e, INPUT_TIME);
+  widget_set_text(e, L"99:99");
+  ASSERT_FALSE(edit_is_valid_value(e));
+
+  ASSERT_EQ(edit_set_text_limit(e, 0, 10), RET_OK);
+  ASSERT_EQ(EDIT(e)->input_type, INPUT_TEXT);
+
+  ASSERT_TRUE(wstr_eq(&(e->text), L"99:99"));
+  ASSERT_TRUE(edit_is_valid_value(e));
+
+  widget_destroy(e);
+}
+
+TEST(Edit, convert_between_pattern_types) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  // TIME -> TIME_FULL: "12:34" 对 TIME 合法，对 TIME_FULL 段数不足
+  edit_set_input_type(e, INPUT_TIME);
+  widget_set_text(e, L"12:34");
+  ASSERT_TRUE(edit_is_valid_value(e));
+
+  edit_set_input_type(e, INPUT_TIME_FULL);
+  ASSERT_FALSE(edit_is_valid_value(e));
+  widget_set_text(e, L"12:34:56");
+  ASSERT_TRUE(edit_is_valid_value(e));
+
+  // TIME_FULL -> DATE: 同样的内容对 DATE 非法
+  edit_set_input_type(e, INPUT_DATE);
+  ASSERT_FALSE(edit_is_valid_value(e));
+  widget_set_text(e, L"2020/01/01");
+  ASSERT_TRUE(edit_is_valid_value(e));
+
+  // DATE -> IPV4: 同样的内容对 IPV4 非法
+  edit_set_input_type(e, INPUT_IPV4);
+  ASSERT_FALSE(edit_is_valid_value(e));
+  widget_set_text(e, L"192.168.1.1");
+  ASSERT_TRUE(edit_is_valid_value(e));
+
+  // IPV4 -> INT: 文本不变，但校验和取值方式都变成 INT
+  edit_set_int_limit(e, 0, 1000, 1);
+  ASSERT_EQ(EDIT(e)->input_type, INPUT_INT);
+  ASSERT_FALSE(edit_is_valid_value(e));
+  widget_set_text(e, L"123");
+  ASSERT_TRUE(edit_is_valid_value(e));
+  ASSERT_EQ(edit_get_int(e), 123);
+
+  widget_destroy(e);
 }
 
 static bool_t custom_is_upper_char(widget_t* widget, wchar_t c) {
@@ -285,6 +363,251 @@ TEST(Edit, is_valid_pattern_custom_password) {
   ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
   ASSERT_NE(edit_input_char(e, L'a'), RET_OK); // 太长
   ASSERT_TRUE(wstr_eq(&(e->text), L"aB3#aaaa"));
+
+  widget_destroy(e);
+}
+
+TEST(Edit, clamp_min_max) {
+  value_t v1;
+  value_t v2;
+  widget_t* b = edit_create(NULL, 10, 20, 30, 40);
+
+  // INPUT_UINT: min 不能 < 0
+  edit_set_input_type(b, INPUT_UINT);
+  value_set_int(&v1, -10);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(0, value_uint32(&v2));
+
+  // INPUT_UINT: max 不能 < 0
+  value_set_int(&v1, -1);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MAX, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
+  ASSERT_EQ(0, value_uint32(&v2));
+
+  // INPUT_UINT: max 不能 > UINT32_MAX
+  value_set_int64(&v1, UINT32_MAX + 1LL);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MAX, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
+  ASSERT_EQ(UINT32_MAX, value_uint32(&v2));
+
+  // INPUT_INT: min 不能 < INT32_MIN
+  edit_set_input_type(b, INPUT_INT);
+  value_set_int64(&v1, (int64_t)INT32_MIN - 1);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(INT32_MIN, value_int(&v2));
+
+  // INPUT_INT: max 不能 > INT32_MAX
+  value_set_int64(&v1, (int64_t)INT32_MAX + 1);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MAX, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
+  ASSERT_EQ(INT32_MAX, value_int(&v2));
+
+  // INPUT_HEX: min 不能 < 0，且用 uint32 表示
+  edit_set_input_type(b, INPUT_HEX);
+  value_set_int(&v1, -5);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(0u, value_uint32(&v2));
+
+  // INPUT_UFLOAT: min 不能 < 0
+  edit_set_input_type(b, INPUT_UFLOAT);
+  value_set_double(&v1, -10.5);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(0.0, value_double(&v2));
+
+  // INPUT_TEXT: min 不能 < 0（长度限制）
+  edit_set_input_type(b, INPUT_TEXT);
+  value_set_int(&v1, -3);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(0, value_uint32(&v2));
+
+  // INPUT_EMAIL: min 不能 < 0（长度限制）
+  edit_set_input_type(b, INPUT_EMAIL);
+  value_set_int(&v1, -1);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(0, value_uint32(&v2));
+
+  // INPUT_PHONE: min 不能 < 0（长度限制）
+  edit_set_input_type(b, INPUT_PHONE);
+  value_set_int32(&v1, -1);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(0, value_uint32(&v2));
+
+  // 切换 input_type 时自动 clamp: INT → UINT
+  edit_set_int_limit(b, -100, 1000, 1);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(-100, value_int(&v2)); // -100 在 INT32 范围内，clamp 不改变
+  edit_set_input_type(b, INPUT_UINT);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(0, value_uint32(&v2)); // min=-100 clamped to 0 for UINT
+
+  edit_set_input_type(b, INPUT_INT);
+  // 设置 min 时自动修正 max
+  edit_set_int_limit(b, 0, 100, 1);
+  value_set_int(&v1, 200);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
+  ASSERT_EQ(200, value_int(&v2));
+  // 设置 max 时自动修正 min
+  edit_set_int_limit(b, 0, 100, 1);
+  value_set_int(&v1, -100);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MAX, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(-100, value_int(&v2));
+
+  // HEX: max 不能 > UINT32_MAX
+  edit_set_input_type(b, INPUT_HEX);
+  value_set_int64(&v1, UINT32_MAX + 1LL);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MAX, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
+  ASSERT_EQ(UINT32_MAX, value_uint32(&v2));
+
+  // HEX: min 用 uint32 读写
+  value_set_uint32(&v1, 0x100);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(0x100u, value_uint32(&v2));
+
+  widget_destroy(b);
+}
+
+TEST(Edit, auto_fix_uint) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  // uint 大值 auto_fix
+  edit_set_input_type(e, INPUT_UINT);
+  edit_set_uint_limit(e, 0, UINT32_MAX, 1);
+  edit_set_auto_fix(e, TRUE);
+
+  // 超出 max 应 auto_fix 到 max
+  widget_set_text_utf8(e, "12345678900");
+  ASSERT_TRUE(edit_is_valid_value(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), UINT32_MAX);
+
+  // 正常范围内的值
+  widget_set_text_utf8(e, "100");
+  ASSERT_TRUE(edit_is_valid_value(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 100u);
+
+  // min / max 小范围
+  edit_set_uint_limit(e, 300, 400, 1);
+  widget_set_text(e, L"0");
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 300u);
+  widget_set_text(e, L"1000");
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 400u);
+
+  // 分开设置 min / max 且 min 大于原来的 max
+  value_t v;
+  value_set_int64(&v, 500);
+  ASSERT_EQ(widget_set_prop(e, WIDGET_PROP_MIN, &v), RET_OK);
+  ASSERT_DOUBLE_EQ(EDIT(e)->min, EDIT(e)->max);
+  value_set_int64(&v, 600);
+  ASSERT_EQ(widget_set_prop(e, WIDGET_PROP_MAX, &v), RET_OK);
+  widget_set_text(e, L"0");
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 500u);
+  widget_set_text(e, L"1000");
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 600u);
+
+  // 超越 uint32 范围的 min/max
+  value_set_int64(&v, -1000);
+  ASSERT_EQ(widget_set_prop(e, WIDGET_PROP_MIN, &v), RET_OK);
+  value_set_int64(&v, 1e10);
+  ASSERT_EQ(widget_set_prop(e, WIDGET_PROP_MAX, &v), RET_OK);
+  ASSERT_EQ(widget_get_prop(e, WIDGET_PROP_MIN, &v), RET_OK);
+  ASSERT_EQ(0, value_int64(&v));
+  ASSERT_EQ(widget_get_prop(e, WIDGET_PROP_MAX, &v), RET_OK);
+  ASSERT_EQ(UINT32_MAX, value_int64(&v));
+  widget_set_text(e, L"-1");
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0u);
+  widget_set_text(e, L"9000000000"); // 9e9
+  ASSERT_EQ((uint32_t)edit_get_int64(e), UINT32_MAX);
+
+  edit_set_uint_limit(e, 100, 200, 1);
+  widget_set_text(e, L"-1");
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 100);
+  widget_set_text(e, L"9000000000"); // 9e9
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 200);
+
+  widget_destroy(e);
+}
+
+TEST(Edit, inc_dec_int) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+  edit_set_input_type(e, INPUT_INT);
+  edit_set_int_limit(e, -100, 100, 1);
+  edit_set_auto_fix(e, TRUE);
+
+  // 空文本 inc 时使用 min 作为初始值
+  edit_set_auto_fix(e, FALSE);
+  widget_set_text_utf8(e, ""); // 设置空文本本身可能触发auto_fix
+  edit_inc(EDIT(e));
+  ASSERT_EQ(edit_get_int(e), -100);
+  edit_set_auto_fix(e, TRUE);
+
+  // 空文本 dec 时使用 max 作为初始值
+  edit_set_auto_fix(e, FALSE);
+  widget_set_text_utf8(e, "");
+  edit_dec(EDIT(e));
+  ASSERT_EQ(edit_get_int(e), 100);
+  edit_set_auto_fix(e, TRUE);
+
+  // inc 到 max 后 auto_fix 到 max
+  widget_set_text_utf8(e, "100");
+  edit_inc(EDIT(e));
+  ASSERT_EQ(edit_get_int(e), 100);
+
+  edit_dec(EDIT(e));
+  ASSERT_EQ(edit_get_int(e), 99);
+  widget_set_prop_float(e, WIDGET_PROP_STEP, 1.9);
+  for (int i = 1; i <= 10; ++i) {
+    edit_dec(EDIT(e));
+    ASSERT_EQ(edit_get_int(e), 99 - i);
+  }
+
+  // dec 到 min 后 auto_fix 到 min
+  widget_set_text_utf8(e, "-100");
+  edit_dec(EDIT(e));
+  ASSERT_EQ(edit_get_int(e), -100);
+
+  widget_destroy(e);
+}
+
+TEST(Edit, inc_dec_uint) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  // uint 大值 inc/dec
+  edit_set_input_type(e, INPUT_UINT);
+  edit_set_uint_limit(e, 0, UINT32_MAX, 1);
+
+  // 空文本 inc 使用 min=0
+  edit_set_auto_fix(e, FALSE);
+  widget_set_text_utf8(e, ""); // 设置空文本本身可能触发auto_fix
+  edit_inc(EDIT(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0u);
+  edit_set_auto_fix(e, TRUE);
+
+  // 空文本 dec 使用 max
+  edit_set_auto_fix(e, FALSE);
+  widget_set_text_utf8(e, "");
+  edit_dec(EDIT(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), UINT32_MAX);
+  edit_set_auto_fix(e, TRUE);
+
+  // inc 超过 max 时 auto_fix 到 max
+  widget_set_text_utf8(e, "4294967295");
+  edit_inc(EDIT(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), UINT32_MAX);
+
+  // dec 到 0 后 auto_fix 到 min=0
+  widget_set_text_utf8(e, "0");
+  edit_dec(EDIT(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0u);
 
   widget_destroy(e);
 }
@@ -557,7 +880,7 @@ TEST(Edit, is_valid_chr_4_uint) {
   widget_t* e = edit_create(NULL, 10, 20, 30, 40);
 
   edit_set_input_type(e, INPUT_UINT);
-  edit_set_int_limit(e, 0, 1000, 10);
+  edit_set_uint_limit(e, 0, 1000, 10);
   ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
 
   ASSERT_NE(edit_input_char(e, L'-'), RET_OK);
@@ -597,7 +920,7 @@ TEST(Edit, is_valid_chr_4_ufloat) {
   widget_t* e = edit_create(NULL, 10, 20, 30, 40);
 
   edit_set_input_type(e, INPUT_UFLOAT);
-  edit_set_float_limit(e, 0, 1000, 10);
+  edit_set_ufloat_limit(e, 0, 1000, 10);
   ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
 
   ASSERT_NE(edit_input_char(e, L'-'), RET_OK);
@@ -758,6 +1081,28 @@ TEST(Edit, value) {
   ASSERT_EQ(widget_get_prop(w1, WIDGET_PROP_VALUE, &v), RET_OK);
   ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_DOUBLE);
   ASSERT_EQ(value_int(&v), 123);
+
+  widget_set_text(w1, L"0xABCD");
+  edit_set_input_type(w1, INPUT_HEX);
+  ASSERT_EQ(widget_get_prop(w1, WIDGET_PROP_VALUE, &v), RET_OK);
+  ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_UINT32);
+  ASSERT_EQ(value_uint32(&v), 0xABCDu);
+
+  // 所有类型的 step 都可用 double 读取
+  edit_set_int_limit(w1, -100, 100, 5);
+  ASSERT_EQ(widget_get_prop(w1, WIDGET_PROP_STEP, &v), RET_OK);
+  ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(value_int(&v), 5);
+
+  edit_set_ufloat_limit(w1, 0, 100, 0.5);
+  ASSERT_EQ(widget_get_prop(w1, WIDGET_PROP_STEP, &v), RET_OK);
+  ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(value_double(&v), 0.5);
+
+  edit_set_hex_limit(w1, 0, 0xFFFF, 7);
+  ASSERT_EQ(widget_get_prop(w1, WIDGET_PROP_STEP, &v), RET_OK);
+  ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(value_int(&v), 7);
 
   widget_destroy(w1);
 }
