@@ -316,6 +316,24 @@ TEST(WStr, value) {
   ASSERT_EQ(wstr_to_int(&str, &vi), RET_OK);
   ASSERT_EQ(value_int(&v1), vi);
 
+  value_set_double(&v1, (1LL << 53) - 1);
+  ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
+  ASSERT_EQ(wstr_to_float(&str, &vf), RET_OK);
+  ASSERT_EQ(vf, (1LL << 53) - 1);
+
+  value_set_double(&v1, INT32_MAX);
+  ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
+  ASSERT_EQ(wstr_to_float(&str, &vf), RET_OK);
+  ASSERT_EQ(vf, INT32_MAX);
+
+  value_set_bool(&v1, TRUE);
+  ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
+  ASSERT_EQ(wcs_cmp(str.str, L"true"), 0);
+
+  value_set_bool(&v1, FALSE);
+  ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
+  ASSERT_EQ(wcs_cmp(str.str, L"false"), 0);
+
   ASSERT_EQ(wstr_reset(&str), RET_OK);
 }
 

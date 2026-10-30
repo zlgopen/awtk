@@ -210,6 +210,38 @@ TEST(Str, value) {
   ASSERT_EQ(str_from_value(s, &v), RET_OK);
   ASSERT_EQ(string(s->str), string("100.000000"));
 
+  value_set_double(&v, (1LL << 53) - 1);
+  ASSERT_EQ(str_from_value(s, &v), RET_OK);
+  ASSERT_EQ(string(s->str), string("9007199254740991.000000"));
+
+  value_set_double(&v, INT32_MAX);
+  ASSERT_EQ(str_from_value(s, &v), RET_OK);
+  ASSERT_EQ(string(s->str), string("2147483647.000000"));
+
+  value_set_int64(&v, INT64_MAX);
+  ASSERT_EQ(str_from_value(s, &v), RET_OK);
+  ASSERT_EQ(string(s->str), string("9223372036854775807"));
+
+  value_set_int64(&v, INT64_MIN);
+  ASSERT_EQ(str_from_value(s, &v), RET_OK);
+  ASSERT_EQ(string(s->str), string("-9223372036854775808"));
+
+  value_set_uint64(&v, UINT64_MAX);
+  ASSERT_EQ(str_from_value(s, &v), RET_OK);
+  ASSERT_EQ(string(s->str), string("18446744073709551615"));
+
+  value_set_uint32(&v, UINT32_MAX);
+  ASSERT_EQ(str_from_value(s, &v), RET_OK);
+  ASSERT_EQ(string(s->str), string("4294967295"));
+
+  value_set_bool(&v, TRUE);
+  ASSERT_EQ(str_from_value(s, &v), RET_OK);
+  ASSERT_EQ(string(s->str), string("true"));
+
+  value_set_bool(&v, FALSE);
+  ASSERT_EQ(str_from_value(s, &v), RET_OK);
+  ASSERT_EQ(string(s->str), string("false"));
+
   str_reset(s);
 }
 

@@ -581,9 +581,16 @@ ret_t str_from_value(str_t* str, const value_t* value) {
     return str_set(str, value_str(value));
   } else if (value->type == VALUE_TYPE_WSTRING) {
     return str_from_wstr(str, value_wstr(value));
-  } else if (value->type == VALUE_TYPE_FLOAT || value->type == VALUE_TYPE_FLOAT32 ||
-             value->type == VALUE_TYPE_DOUBLE) {
+  } else if (value->type == VALUE_TYPE_FLOAT || value->type == VALUE_TYPE_FLOAT32) {
     return str_from_float(str, value_float(value));
+  } else if (value->type == VALUE_TYPE_DOUBLE) {
+    return str_from_float(str, value_double(value));
+  } else if (value->type == VALUE_TYPE_UINT64) {
+    return str_from_uint64(str, value_uint64(value));
+  } else if (value->type == VALUE_TYPE_UINT32) {
+    return str_from_uint64(str, value_uint32(value));
+  } else if (value->type == VALUE_TYPE_INT64) {
+    return str_from_int64(str, value_int64(value));
   } else if (value->type == VALUE_TYPE_BOOL) {
     return str_set(str, value_bool(value) ? "true" : "false");
   } else {

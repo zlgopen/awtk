@@ -352,15 +352,18 @@ ret_t wstr_from_value(wstr_t* str, const value_t* v) {
     return wstr_set_utf8(str, value_str(v));
   } else if (v->type == VALUE_TYPE_WSTRING) {
     return wstr_set(str, value_wstr(v));
-  } else if (v->type == VALUE_TYPE_FLOAT || v->type == VALUE_TYPE_FLOAT32 ||
-             v->type == VALUE_TYPE_DOUBLE) {
+  } else if (v->type == VALUE_TYPE_FLOAT || v->type == VALUE_TYPE_FLOAT32) {
     return wstr_from_float(str, value_float(v));
+  } else if (v->type == VALUE_TYPE_DOUBLE) {
+    return wstr_from_float(str, value_double(v));
   } else if (v->type == VALUE_TYPE_UINT64) {
     return wstr_from_uint64(str, value_uint64(v));
   } else if (v->type == VALUE_TYPE_UINT32) {
     return wstr_from_uint64(str, value_uint32(v));
   } else if (v->type == VALUE_TYPE_INT64) {
     return wstr_from_int64(str, value_int64(v));
+  } else if (v->type == VALUE_TYPE_BOOL) {
+    return wstr_set(str, value_bool(v) ? L"true" : L"false");
   } else {
     return wstr_from_int(str, value_int(v));
   }
