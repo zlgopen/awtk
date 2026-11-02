@@ -121,6 +121,58 @@ TEST(Edit, set_limit_sets_input_type) {
   widget_destroy(b);
 }
 
+TEST(Edit, auto_fix_twice_state) {
+  key_event_t key;
+  widget_t* win = window_create(NULL, 0, 0, 0, 0);
+  widget_t* e = edit_create(win, 10, 20, 30, 40);
+
+  edit_set_uint_limit(e, 0, 150, 1);
+  edit_set_auto_fix(e, TRUE);
+  widget_set_text_utf8(e, "50");
+
+  // 第一次: 50 -> 空 -> auto_fix 成 "0"，失焦
+  widget_set_focused(e, TRUE);
+  edit_set_select(e, 0, e->text.size);
+  key_event_init(&key, EVT_KEY_DOWN, e, TK_KEY_BACKSPACE);
+  widget_dispatch(e, (event_t*)&key);
+
+  widget_set_focused(e, FALSE);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"0"));
+  ASSERT_STREQ(e->state, WIDGET_STATE_NORMAL);
+
+  // 第二次: 0 -> 空 -> auto_fix 又成 "0"，失焦后状态也应正常
+  widget_set_focused(e, TRUE);
+  edit_set_select(e, 0, e->text.size);
+  key_event_init(&key, EVT_KEY_DOWN, e, TK_KEY_BACKSPACE);
+  widget_dispatch(e, (event_t*)&key);
+
+  widget_set_focused(e, FALSE);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"0"));
+  ASSERT_STREQ(e->state, WIDGET_STATE_NORMAL);
+
+  widget_destroy(win);
+}
+
+TEST(Edit, cancelable_focus_not_changed) {
+  value_t v;
+  widget_t* win = window_create(NULL, 0, 0, 0, 0);
+  widget_t* e = edit_create(win, 10, 20, 30, 40);
+
+  // 模拟 XML 加载顺序: auto_fix 先把空文本修复成 "0"，之后才应用 cancelable
+  edit_set_uint_limit(e, 0, 100, 1);
+  widget_set_prop(e, WIDGET_PROP_AUTO_FIX, value_set_bool(&v, TRUE));
+  ASSERT_TRUE(wstr_eq(&(e->text), L"0"));
+
+  widget_set_prop(e, WIDGET_PROP_CANCELABLE, value_set_bool(&v, TRUE));
+  ASSERT_STREQ(e->state, WIDGET_STATE_NORMAL);
+
+  // 没有编辑过，聚焦时不应是 changed 状态
+  widget_set_focused(e, TRUE);
+  ASSERT_STREQ(e->state, WIDGET_STATE_FOCUSED);
+
+  widget_destroy(win);
+}
+
 TEST(Edit, convert_time_to_text) {
   widget_t* e = edit_create(NULL, 10, 20, 30, 40);
 
@@ -439,6 +491,7 @@ TEST(Edit, is_valid_pattern_custom_upper) {
   edit_set_fix_value(e, custom_fix_value);
   edit_set_auto_fix(e, TRUE);
   ASSERT_TRUE(wstr_eq(&(e->text), L"AAB"));
+  ASSERT_STREQ(e->state, WIDGET_STATE_NORMAL);
   ASSERT_TRUE(edit_is_valid_value(e));
 
   // 小写字母和数字不允许输入

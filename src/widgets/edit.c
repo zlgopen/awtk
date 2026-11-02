@@ -1004,7 +1004,7 @@ static ret_t edit_update_status(widget_t* widget) {
     if (edit->cancelable) {
       if (widget->loading) {
         edit_save_text(widget);
-      } else {
+      } else if (widget->focused) {
         if (!wstr_equal(&(edit->saved_text), &(widget->text))) {
           widget_set_state(widget, WIDGET_STATE_CHANGED);
           return RET_OK;
@@ -1282,21 +1282,29 @@ static ret_t edit_select_all_async(const idle_info_t* info) {
 
 static ret_t edit_check_valid_value(widget_t* widget) {
   edit_t* edit = EDIT(widget);
+  bool_t save_is_text_error = FALSE;
+  bool_t auto_fixed = FALSE;
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+
+  save_is_text_error = edit->is_text_error;
   edit->is_text_error = FALSE;
   if (!edit_is_valid_value(widget)) {
     if (edit->auto_fix) {
       edit_auto_fix(widget);
+      auto_fixed = TRUE;
       edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
       if (widget->text.size > 0 && !edit_is_valid_value(widget)) {
         edit->is_text_error = TRUE;
-        widget_set_state(widget, WIDGET_STATE_ERROR);
       }
     } else if (widget->text.size > 0) {
       edit->is_text_error = TRUE;
-      widget_set_state(widget, WIDGET_STATE_ERROR);
     }
   }
+
+  if (auto_fixed || save_is_text_error != edit->is_text_error) {
+    edit_update_status(widget);
+  }
+
   return RET_OK;
 }
 
@@ -1487,11 +1495,11 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_FOCUS: {
+      edit_save_text(widget);
       if (keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS &&
           edit->open_im_when_focused) {
         edit_on_focused(widget);
       }
-      edit_save_text(widget);
       break;
     }
     case EVT_WHEEL: {
