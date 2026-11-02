@@ -213,6 +213,31 @@ TEST(Edit, convert_numeric_to_hex) {
   widget_destroy(e);
 }
 
+TEST(Edit, int_convert) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_uint_limit(e, 0, UINT32_MAX, 1);
+  edit_set_int(e, -1);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"-1"));
+  ASSERT_EQ(edit_get_int(e), -1);
+  widget_set_text(e, L"4294967295");
+  ASSERT_EQ(edit_get_int(e), INT32_MAX); // clamp((int64_t)v, INT32_MIN, INT32_MAX)
+
+  edit_set_hex_limit(e, 0, UINT32_MAX, 1);
+  edit_set_int(e, -1);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"0xFFFFFFFF"));
+  ASSERT_EQ(edit_get_int(e), -1);
+  ASSERT_EQ(edit_get_int64(e), UINT32_MAX);
+
+  edit_set_int_limit(e, INT32_MIN, INT32_MAX, 1);
+  widget_set_text(e, L"2147483648"); // INT32_MAX + 1
+  ASSERT_EQ(edit_get_int(e), INT32_MAX); // clamp((int64_t)v, INT32_MIN, INT32_MAX)
+  widget_set_text(e, L"-2147483649"); // INT32_MIN - 1
+  ASSERT_EQ(edit_get_int(e), INT32_MIN); // clamp((int64_t)v, INT32_MIN, INT32_MAX)
+
+  widget_destroy(e);
+}
+
 TEST(Edit, hex_value_without_prefix) {
   value_t v;
   widget_t* e = edit_create(NULL, 10, 20, 30, 40);
@@ -903,6 +928,15 @@ TEST(Edit, inc_dec_hex) {
   edit_dec(EDIT(e));
   ASSERT_EQ((uint32_t)edit_get_int64(e), 0u);
 
+  edit_set_auto_fix(e, FALSE);
+  widget_set_text(e, L"15");
+  ASSERT_FALSE(edit_is_valid_value(e));
+  edit_dec(EDIT(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0x14);
+  edit_inc(EDIT(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0x15);
+  ASSERT_FALSE(edit_is_valid_value(e));
+
   widget_destroy(e);
 }
 
@@ -942,6 +976,61 @@ TEST(Edit, set_int) {
   ASSERT_EQ(edit_get_int(b), -10);
 
   widget_destroy(b);
+}
+
+TEST(Edit, hex_get_set) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+  value_t v;
+  edit_set_hex_limit(e, 0, 0xFFFFFFFF, 1);
+
+  // edit_set_int 写入 hex 文本
+  ASSERT_EQ(edit_set_int(e, 0x1234), RET_OK);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"0x1234"));
+  ASSERT_EQ(edit_get_int(e), 0x1234);
+
+  // 各 getter 读取一致
+  ASSERT_EQ(edit_get_int64(e), 0x1234LL);
+  ASSERT_EQ(edit_get_double(e), 0x1234);
+
+  // 0xFFFFFFFF to number
+  ASSERT_EQ(edit_set_double(e, 0xFFFFFFFF), RET_OK);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"0xFFFFFFFF"));
+  ASSERT_EQ((int32_t)0xFFFFFFFF, -1);
+  ASSERT_EQ(edit_get_int(e), -1);
+  ASSERT_EQ(edit_get_int64(e), 0xFFFFFFFFLL);
+  ASSERT_EQ(edit_get_double(e), 0xFFFFFFFF);
+
+  // edit_set_double 也写入 hex 文本
+  ASSERT_EQ(edit_set_double(e, 255), RET_OK);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"0xFF"));
+  ASSERT_EQ(edit_get_int(e), 0xFF);
+
+  // 通过 WIDGET_PROP_VALUE 设置
+  value_set_int(&v, 16);
+  ASSERT_EQ(widget_set_prop(e, WIDGET_PROP_VALUE, &v), RET_OK);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"0x10"));
+  ASSERT_EQ(widget_get_value_int(e), 16);
+
+  // widget_set_value_int 走 set_prop(VALUE)
+  ASSERT_EQ(widget_set_value_int(e, 256), RET_OK);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"0x100"));
+  ASSERT_EQ(widget_get_value_int(e), 0x100);
+
+  // 负值强转
+  ASSERT_EQ(edit_set_int(e, -5), RET_OK);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"0xFFFFFFFB"));
+  ASSERT_EQ(edit_get_int(e), -5);
+
+  // 超出 uint32 范围强转
+  ASSERT_EQ(edit_set_double(e, 1e10), RET_OK);
+  ASSERT_TRUE(wstr_eq(&(e->text), L"0x540BE400"));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), (uint32_t)(uint64_t)1e10);
+
+  // 字符串按原样设置，读取仍按 hex 解析
+  widget_set_text(e, L"0xAB");
+  ASSERT_EQ(edit_get_int(e), 0xAB);
+
+  widget_destroy(e);
 }
 
 TEST(Edit, action_text) {
@@ -1650,6 +1739,14 @@ TEST(Edit, is_valid_value_hex_format) {
   widget_set_text(e, L"0X0");
   ASSERT_TRUE(edit_is_valid_value(e));
   ASSERT_EQ((uint32_t)edit_get_int64(e), 0u);
+
+  widget_set_text(e, L"345");
+  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0x345u);
+
+  widget_set_text(e, L"XffffFFFF");
+  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_EQ((uint32_t)edit_get_int(e), 0XffffFFFFu);
 
   widget_set_text(e, L"0xABCD");
   ASSERT_TRUE(edit_is_valid_value(e));

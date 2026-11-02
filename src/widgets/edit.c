@@ -52,6 +52,7 @@ static ret_t edit_select_all_async(const idle_info_t* info);
 static ret_t edit_dispatch_value_change_event(widget_t* widget, event_base_type_t type);
 static ret_t edit_paste(widget_t* widget, const wchar_t* str, uint32_t size);
 static bool_t edit_has_uint_min_max(edit_t* edit);
+static ret_t edit_set_value(widget_t* widget, const value_t* v);
 
 static ret_t edit_save_text(widget_t* widget) {
   edit_t* edit = EDIT(widget);
@@ -2158,7 +2159,10 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_KEYBOARD)) {
     edit_set_keyboard(widget, value_str(v));
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_TEXT)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    edit_set_value(widget, v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     edit_set_text(widget, v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALIDATOR)) {
@@ -2287,47 +2291,79 @@ static ret_t edit_add_hex(edit_t* edit, int delta) {
 
 int32_t edit_get_int(widget_t* widget) {
   int32_t v = 0;
-  return_value_if_fail(widget != NULL, 0);
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, 0);
 
-  wstr_to_int(&(widget->text), &v);
+  if (edit->input_type == INPUT_HEX) {
+    v = (int32_t)edit_hex_str_to_uint(&(widget->text));
+  } else {
+    wstr_to_int(&(widget->text), &v);
+  }
 
   return v;
 }
 
 int64_t edit_get_int64(widget_t* widget) {
   int64_t v = 0;
-  return_value_if_fail(widget != NULL, 0);
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, 0);
 
-  wstr_to_int64(&(widget->text), &v);
-
+  if (edit->input_type == INPUT_HEX) {
+    v = edit_hex_str_to_uint(&(widget->text));
+  } else {
+    wstr_to_int64(&(widget->text), &v);
+  }
   return v;
 }
 
 double edit_get_double(widget_t* widget) {
   double v = 0;
-  return_value_if_fail(widget != NULL, 0);
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, 0);
 
-  wstr_to_float(&(widget->text), &v);
+  if (edit->input_type == INPUT_HEX) {
+    v = edit_hex_str_to_uint(&(widget->text));
+  } else {
+    wstr_to_float(&(widget->text), &v);
+  }
 
   return v;
 }
 
+static ret_t edit_set_value(widget_t* widget, const value_t* v) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (edit->input_type == INPUT_HEX) {
+    wstr_t str;
+    value_t hv;
+
+    if (v->type == VALUE_TYPE_STRING || v->type == VALUE_TYPE_WSTRING) {
+      return edit_set_text(widget, v);
+    }
+
+    wstr_init(&str, 0);
+    edit_hex_uint_to_str(&str, (uint32_t)value_int64(v));
+    value_set_wstr(&hv, str.str);
+    edit_set_text(widget, &hv);
+    wstr_reset(&str);
+
+    return RET_OK;
+  }
+
+  return edit_set_text(widget, v);
+}
+
 ret_t edit_set_int(widget_t* widget, int32_t value) {
   value_t v;
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  value_set_int32(&v, value);
-  edit_set_text(widget, &v);
-
-  return RET_OK;
+  return edit_set_value(widget, value_set_int32(&v, value));
 }
 
 ret_t edit_set_double(widget_t* widget, double value) {
   value_t v;
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  value_set_double(&v, value);
-  return edit_set_text(widget, &v);
+  return edit_set_value(widget, value_set_double(&v, value));
 }
 
 ret_t edit_set_double_ex(widget_t* widget, const char* format, double value) {
