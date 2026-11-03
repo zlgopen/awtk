@@ -4,6 +4,7 @@
   * improve blend code gen(感谢兆坤提供补丁)
   * 删除nanovg和nanovg_plus的GL3的UBO功能的配置宏（因为UBO在英特尔显卡的某些驱动下有概率会出现崩溃的问题）(感谢智明提供补丁)
   * 修复nanovg和nanovg_plus在SW模式下缠绕填充和非零填充出现残留的问题以及改为OPENGL_ANTIALIAS默认使用SW模式（减低显存占用和提高性能））(感谢智明提供补丁)
+  * 复用 pixel_pack_unpack 宏(感谢兆坤提供补丁)
 
 2026/11/2
   * 完善了 edit 的 get/set value(感谢雪飞提供补丁)

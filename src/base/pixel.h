@@ -23,6 +23,7 @@
 #define TK_PIXEL_H
 
 #include "tkc/color.h"
+#include "base/pixel_pack_unpack.h"
 
 static inline uint8_t tk_pixel_limit_uint8(int32_t tmp) {
   if (tmp > 0xff) {
@@ -56,18 +57,15 @@ typedef struct _pixel_rgb565_t {
 
 static inline void pixel_rgb565_blend_rgba_dark(void* p, uint8_t a) {
   uint16_t v = *(uint16_t*)p;
-
-  *(uint16_t*)p = (((((v & 0xf800) >> 8) * a) >> 11) << 11) |
-                  (((((v & 0x7e0) >> 3) * a) >> 10) << 5) | ((((v & 0x1f) << 3) * a) >> 11);
+  *(uint16_t*)p = rgb_sum_to_rgb565(rgb565_to_r(v) * a, rgb565_to_g(v) * a, rgb565_to_b(v) * a);
 }
 
 static inline void pixel_rgb565_blend_rgba_premulti(void* p, rgba_t rgba) {
   uint8_t a = rgba.a;
   uint16_t v = *(uint16_t*)p;
-
-  *(uint16_t*)p = (((((v & 0xf800) >> 8) * a + (rgba.b << 8)) >> 11) << 11) |
-                  (((((v & 0x7e0) >> 3) * a + (rgba.g << 8)) >> 10) << 5) |
-                  ((((v & 0x1f) << 3) * a + (rgba.r << 8)) >> 11);
+  *(uint16_t*)p =
+      rgb_sum_to_rgb565(rgb565_to_r(v) * a + (rgba.r << 8), rgb565_to_g(v) * a + (rgba.g << 8),
+                        rgb565_to_b(v) * a + (rgba.b << 8));
 }
 
 typedef struct _pixel_bgr565_t {
@@ -91,28 +89,24 @@ typedef struct _pixel_bgr565_t {
 
 static inline void pixel_bgr565_blend_rgba_dark(void* p, uint8_t a) {
   uint16_t v = *(uint16_t*)p;
-
-  *(uint16_t*)p = (((((v & 0xf800) >> 8) * a) >> 11) << 11) |
-                  (((((v & 0x7e0) >> 3) * a) >> 10) << 5) | ((((v & 0x1f) << 3) * a) >> 11);
+  *(uint16_t*)p = rgb_sum_to_bgr565(bgr565_to_r(v) * a, bgr565_to_g(v) * a, bgr565_to_b(v) * a);
 }
 
 static inline void pixel_bgr565_blend_rgba(void* p, rgba_t rgba) {
   uint8_t a = rgba.a;
   uint8_t minus_a = 0xff - a;
   uint16_t v = *(uint16_t*)p;
-
-  *(uint16_t*)p = (((((v & 0xf800) >> 8) * minus_a + (rgba.r * a)) >> 11) << 11) |
-                  (((((v & 0x7e0) >> 3) * minus_a + (rgba.g * a)) >> 10) << 5) |
-                  ((((v & 0x1f) << 3) * minus_a + (rgba.b * a)) >> 11);
+  *(uint16_t*)p = rgb_sum_to_bgr565(bgr565_to_r(v) * minus_a + (rgba.r * a),
+                                    bgr565_to_g(v) * minus_a + (rgba.g * a),
+                                    bgr565_to_b(v) * minus_a + (rgba.b * a));
 }
 
 static inline void pixel_bgr565_blend_rgba_premulti(void* p, rgba_t rgba) {
   uint8_t a = rgba.a;
   uint16_t v = *(uint16_t*)p;
-
-  *(uint16_t*)p = (((((v & 0xf800) >> 8) * a + (rgba.r << 8)) >> 11) << 11) |
-                  (((((v & 0x7e0) >> 3) * a + (rgba.g << 8)) >> 10) << 5) |
-                  ((((v & 0x1f) << 3) * a + (rgba.b << 8)) >> 11);
+  *(uint16_t*)p =
+      rgb_sum_to_bgr565(bgr565_to_r(v) * a + (rgba.r << 8), bgr565_to_g(v) * a + (rgba.g << 8),
+                        bgr565_to_b(v) * a + (rgba.b << 8));
 }
 
 typedef struct _pixel_rgb888_t {
@@ -412,8 +406,8 @@ typedef uint8_t pixel_gray_t;
 #define pixel_gray_a(p) 0xff
 #define pixel_gray_format BITMAP_FMT_GRAY
 #define pixel_gray_to_rgba(p) {p * 0.2989, p * 0.5870, p * 0.1140, 0xff}
-#define pixel_gray_from_rgba(r, g, b, a) (((r) * 30 + (g) * 59 + (b) * 11) / 100)
-#define pixel_gray_from_rgb(r, g, b) (((r) * 30 + (g) * 59 + (b) * 11) / 100)
+#define pixel_gray_from_rgba(r, g, b, a) rgb_to_gray(r, g, b)
+#define pixel_gray_from_rgb(r, g, b) rgb_to_gray(r, g, b)
 
 #define color_to_mono(c) (((c).rgba.r))
 #define color_from_mono(p) color_init(p, 0, 0, 0xff)

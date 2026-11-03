@@ -19,14 +19,11 @@
  * 2026-11-03 从 blend_image_bgr565_bgra8888.c 中抽离出来
  */
 
-/**
- * 本文件由手工维护(gen.sh不会覆盖它)
- * 存在本文件时，gen.sh生成的 blend_image_bgr565_bgra8888.c 会包含它
- * 并且定义 blend_a 指向本文件中的实现
- */
+/* 手工维护，gen.sh不会覆盖本文件 */
 
 #include "tkc/types_def.h"
 #include "base/pixel.h"
+#include "base/pixel_pack_unpack.h"
 
 static inline void blend_a_bgr565_bgra8888(uint8_t* dst, uint8_t* src, uint8_t alpha,
                                            bool_t premulti_alpha) {
@@ -38,7 +35,7 @@ static inline void blend_a_bgr565_bgra8888(uint8_t* dst, uint8_t* src, uint8_t a
   uint8_t a = alpha > 0xf8 ? sa : ((sa * alpha) >> 8);
 
   if (a > 0xf8) {
-    *(uint16_t*)dst = ((sr >> 3) << 11) | ((sg >> 2) << 5) | (sb >> 3);
+    *(uint16_t*)dst = rgb_to_bgr565(sr, sg, sb);
   } else if (a > 8) {
     rgba_t rgba = {.a = a, .r = sr, .g = sg, .b = sb};
     if (premulti_alpha) {
