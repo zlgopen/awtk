@@ -32,15 +32,15 @@ static inline void blend_a_bgr565_rgba8888(uint8_t* dst, uint8_t* src, uint8_t a
   uint8_t sb = color >> 16;
   uint8_t sg = color >> 8;
   uint8_t sr = color & 0xff;
-  uint8_t a = alpha > 0xf8 ? sa : ((sa * alpha) >> 8);
+  uint8_t a = alpha > PIXEL_ALPHA_OPAQUE ? sa : ((sa * alpha) >> 8);
 
-  if (a > 0xf8) {
+  if (a > PIXEL_ALPHA_OPAQUE) {
     *(uint16_t*)dst = rgb_to_bgr565(sr, sg, sb);
-  } else if (a > 8) {
+  } else if (a > PIXEL_ALPHA_TRANSPARENT) {
     rgba_t rgba = {.a = a, .r = sr, .g = sg, .b = sb};
     if (premulti_alpha) {
       rgba.a = 0xff - a;
-      if (alpha <= 0xf8) {
+      if (alpha <= PIXEL_ALPHA_OPAQUE) {
         rgba.r = (sr * alpha) >> 8;
         rgba.g = (sg * alpha) >> 8;
         rgba.b = (sb * alpha) >> 8;

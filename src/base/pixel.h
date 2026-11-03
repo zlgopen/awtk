@@ -25,6 +25,10 @@
 #include "tkc/color.h"
 #include "base/pixel_pack_unpack.h"
 
+/* alpha混合的快速通道阈值：大于OPAQUE视为不透明，小于等于TRANSPARENT视为全透明 */
+#define PIXEL_ALPHA_OPAQUE 0xf8
+#define PIXEL_ALPHA_TRANSPARENT 0x08
+
 static inline uint8_t tk_pixel_limit_uint8(int32_t tmp) {
   if (tmp > 0xff) {
     tmp = 0xff;

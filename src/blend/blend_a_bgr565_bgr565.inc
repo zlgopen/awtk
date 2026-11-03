@@ -22,13 +22,14 @@
 /* 手工维护，gen.sh不会覆盖本文件 */
 
 #include "tkc/types_def.h"
+#include "base/pixel.h"
 #include "base/pixel_pack_unpack.h"
 
 static inline void blend_a_bgr565_bgr565(uint8_t* dst, uint8_t* src, uint8_t a,
                                          bool_t premulti_alpha) {
-  if (a > 0xf8) {
+  if (a > PIXEL_ALPHA_OPAQUE) {
     *(uint16_t*)dst = *(uint16_t*)src;
-  } else if (a > 8) {
+  } else if (a > PIXEL_ALPHA_TRANSPARENT) {
     uint8_t minus_a = 0xff - a;
     uint16_t sc = *(uint16_t*)src;
     uint16_t dc = *(uint16_t*)dst;

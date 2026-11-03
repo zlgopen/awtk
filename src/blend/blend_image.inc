@@ -9,20 +9,20 @@ static inline void blend_a(uint8_t* dst, uint8_t* src, uint8_t alpha, bool_t pre
   pixel_src_t s = *(pixel_src_t*)src;
   rgba_t srgba = pixel_src_to_rgba(s);
   uint8_t a = alpha == 0xff ? srgba.a : ((srgba.a * alpha) >> 8);
-  /* 前景色的透明度大于 0xf8，则可以直接使用前景色 */
-  if (a > 0xf8) {
+  /* 前景色的透明度大于 PIXEL_ALPHA_OPAQUE，则可以直接使用前景色 */
+  if (a > PIXEL_ALPHA_OPAQUE) {
     pixel_dst_t p = pixel_dst_from_rgba(srgba.r, srgba.g, srgba.b, srgba.a);
     *(pixel_dst_t*)dst = p;
 #if pixel_dst_bpp == 2
-  } else if (a > 0x08) {
+  } else if (a > PIXEL_ALPHA_TRANSPARENT) {
 #else
   } else if (a > 0x0) {
 #endif
     pixel_dst_t d = *(pixel_dst_t*)dst;
     rgba_t drgba = pixel_dst_to_rgba(d);
 #if pixel_dst_bpp == 2
-    /* 背景色的透明度小于 0x08，则可以直接使用前景色 */
-    if (drgba.a < 0x08) {
+    /* 背景色的透明度小于 PIXEL_ALPHA_TRANSPARENT，则可以直接使用前景色 */
+    if (drgba.a < PIXEL_ALPHA_TRANSPARENT) {
 #else
     if (drgba.a == 0x0) {
 #endif
@@ -30,7 +30,7 @@ static inline void blend_a(uint8_t* dst, uint8_t* src, uint8_t alpha, bool_t pre
       *(pixel_dst_t*)dst = p;
     } else {
       if (premulti_alpha) {
-        if(alpha <= 0xf8) {
+        if(alpha <= PIXEL_ALPHA_OPAQUE) {
           srgba.r = (srgba.r * alpha) >> 8;
           srgba.g = (srgba.g * alpha) >> 8;
           srgba.b = (srgba.b * alpha) >> 8;

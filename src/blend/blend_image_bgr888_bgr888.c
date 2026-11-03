@@ -49,9 +49,9 @@ ret_t blend_image_bgr888_bgr888(bitmap_t* dst, bitmap_t* src, const rectf_t* dst
   return_value_if_fail(dst->format == BITMAP_FMT_BGR888 && src->format == BITMAP_FMT_BGR888,
                        RET_BAD_PARAMS);
 
-  if (a > 0xf8) {
+  if (a > PIXEL_ALPHA_OPAQUE) {
     return blend_image_without_alpha(dst, src, dst_r, src_r);
-  } else if (a > 8) {
+  } else if (a > PIXEL_ALPHA_TRANSPARENT) {
     return blend_image_with_alpha(dst, src, dst_r, src_r, a);
   } else {
     return RET_OK;
@@ -65,7 +65,7 @@ ret_t blend_image_rotate_bgr888_bgr888(bitmap_t* dst, bitmap_t* src, const rectf
   return_value_if_fail(dst->format == BITMAP_FMT_BGR888 && src->format == BITMAP_FMT_BGR888,
                        RET_BAD_PARAMS);
 
-  if (a > 8) {
+  if (a > PIXEL_ALPHA_TRANSPARENT) {
     return blend_image_with_alpha_by_rotate(dst, src, dst_r, src_r, a, o);
   } else {
     return RET_OK;
