@@ -6,6 +6,7 @@
   * 修复nanovg和nanovg_plus在SW模式下缠绕填充和非零填充出现残留的问题以及改为OPENGL_ANTIALIAS默认使用SW模式（减低显存占用和提高性能））(感谢智明提供补丁)
   * 复用 pixel_pack_unpack 宏(感谢兆坤提供补丁)
   * 增加 PIXEL_ALPHA_OPAQUE 与 PIXEL_ALPHA_TRANSPARENT 宏(感谢兆坤提供补丁)
+  * （补充）复用 pixel_pack_unpack 宏(感谢兆坤提供补丁)
 
 2026/11/2
   * 完善了 edit 的 get/set value(感谢雪飞提供补丁)

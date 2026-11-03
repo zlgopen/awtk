@@ -23,6 +23,8 @@
 
 #ifdef WITH_STM32_G2D
 
+#include "base/pixel_pack_unpack.h"
+
 #if defined(STM32H743xx)
 #include "stm32h7xx.h"
 #include "stm32h7xx_hal.h"
@@ -79,7 +81,7 @@ ret_t g2d_fill_rect(bitmap_t* fb, const rect_t* dst, color_t c) {
   if (fb->format == BITMAP_FMT_BGR565) {
     o_pixsize = 2;
     o_format = PIXEL_FORMAT_BGR565;
-    color = ((((c.rgba.r) >> 3) << 11) | (((c.rgba.g) >> 2) << 5) | ((c.rgba.b) >> 3));
+    color = rgb_to_bgr565(c.rgba.r, c.rgba.g, c.rgba.b);
   } else {
     o_pixsize = 4;
     o_format = PIXEL_FORMAT_BGRA8888;
