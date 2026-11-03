@@ -21,10 +21,6 @@
 
 #include "nanovg_plus_gl.h"
 
-#ifdef NVGP_GL3
-#define NVGP_GL_USE_UNIFORMBUFFER 1
-#endif
-
 #define UNIFORM_OFFSET_ALIGNMENT  4
 
 #define NVGP_GL_USE_STATE_FILTER 1
