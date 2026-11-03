@@ -1728,7 +1728,7 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
     edit->step = 1;
   } else if (edit->step == 0.0 && (type == INPUT_FLOAT || type == INPUT_UFLOAT)) {
     edit->step = 1.0f;
-  } else if (type == INPUT_PASSWORD) {
+  } else if (type == INPUT_PASSWORD || type == INPUT_CUSTOM_PASSWORD) {
     edit_set_password_visible(widget, edit->password_visible);
   } else if (type == INPUT_IPV4) {
     edit->fix_value = edit_ipv4_fix;

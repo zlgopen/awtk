@@ -7,6 +7,7 @@
   * 复用 pixel_pack_unpack 宏(感谢兆坤提供补丁)
   * 增加 PIXEL_ALPHA_OPAQUE 与 PIXEL_ALPHA_TRANSPARENT 宏(感谢兆坤提供补丁)
   * （补充）复用 pixel_pack_unpack 宏(感谢兆坤提供补丁)
+  * 修复 edit 从其他类型转为 INPUT_CUSTOM_PASSWORD 时直接显示明文的问题(感谢雪飞提供补丁)
 
 2026/11/2
   * 完善了 edit 的 get/set value(感谢雪飞提供补丁)
