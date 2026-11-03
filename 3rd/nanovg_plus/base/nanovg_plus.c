@@ -59,6 +59,18 @@ typedef struct _nvgp_point_t {
   uint32_t flags;
 } nvgp_point_t;
 
+typedef struct _nvgp_fill_edge_t {
+  float angle;
+  int32_t index;
+  uint32_t winding;
+  nvgp_point_t* pt;
+} nvgp_fill_edge_t;
+
+typedef struct _nvgp_fringe_span_t {
+  int32_t edge;
+  float t0, t1;
+} nvgp_fringe_span_t;
+
 typedef struct _nvgp_path_cache_t {
   float bounds[4];
   uint32_t nverts;
@@ -66,6 +78,12 @@ typedef struct _nvgp_path_cache_t {
   nvgp_vertex_t* verts;
   nvgp_darray_t paths;
   nvgp_darray_t points;
+
+  nvgp_fill_edge_t* fill_edges;
+  int32_t cfill_edges;
+  nvgp_fringe_span_t* fringe_spans;
+  int32_t nfringe_spans;
+  int32_t cfringe_spans;
 } nvgp_path_cache_t;
 
 
@@ -290,6 +308,8 @@ void nvgp_destroy(nvgp_context_t* ctx) {
     nvgp_darray_deinit(&ctx->commands);
 
     NVGP_FREE(ctx->cache.verts);
+    NVGP_FREE(ctx->cache.fill_edges);
+    NVGP_FREE(ctx->cache.fringe_spans);
     nvgp_darray_deinit(&ctx->cache.paths);
     nvgp_darray_deinit(&ctx->cache.points);
     NVGP_FREE(ctx);
@@ -2118,6 +2138,209 @@ static nvgp_vertex_t* nvgp_bevel_join(nvgp_vertex_t* dst, nvgp_point_t* p0, nvgp
   return dst;
 }
 
+/* A hole that shares an edge with another subpath used to get a fringe on both
+   sides. Where the fill rule leaves both sides empty, that overlap shows up as
+   an extra line. Non-zero / even-odd drop the overlap. All-fill keeps the
+   earlier edge so the silhouette is still antialiased once. */
+/* Slightly above asin(0.001), the cross-product limit used for an edge pair. */
+#define NVGP_FRINGE_ANGLE_TOL 0.0011f
+
+static int nvgp_compare_fill_edge(const void* a, const void* b) {
+  float angle_a = ((const nvgp_fill_edge_t*)a)->angle;
+  float angle_b = ((const nvgp_fill_edge_t*)b)->angle;
+  return angle_a < angle_b ? -1 : (angle_a > angle_b ? 1 : 0);
+}
+
+static int nvgp_compare_fringe_span(const void* a, const void* b) {
+  const nvgp_fringe_span_t* span_a = (const nvgp_fringe_span_t*)a;
+  const nvgp_fringe_span_t* span_b = (const nvgp_fringe_span_t*)b;
+  if (span_a->edge != span_b->edge) {
+    return span_a->edge < span_b->edge ? -1 : 1;
+  }
+  return span_a->t0 < span_b->t0 ? -1 : (span_a->t0 > span_b->t0 ? 1 : 0);
+}
+
+static void nvgp_add_fringe_span(nvgp_path_cache_t* cache, int32_t edge, float t0, float t1) {
+  nvgp_fringe_span_t* span;
+  if (t1 - t0 < 0.0001f) {
+    return;
+  }
+  if (cache->nfringe_spans >= cache->cfringe_spans) {
+    int32_t cspans = cache->cfringe_spans > 0 ? cache->cfringe_spans * 2 : 64;
+    nvgp_fringe_span_t* spans = NVGP_REALLOCT(nvgp_fringe_span_t, cache->fringe_spans, cspans);
+    if (spans == NULL) {
+      return;
+    }
+    cache->fringe_spans = spans;
+    cache->cfringe_spans = cspans;
+  }
+  span = cache->fringe_spans + cache->nfringe_spans++;
+  span->edge = edge;
+  span->t0 = t0;
+  span->t1 = t1;
+}
+
+/* Drops the part of e that q runs back over when the fill rule leaves both sides empty. */
+static void nvgp_cancel_shared_edge(nvgp_path_cache_t* cache, nvgp_fill_mode_t fill_mode, float tol,
+                                    const nvgp_fill_edge_t* e, const nvgp_fill_edge_t* q) {
+  nvgp_point_t* edge = e->pt;
+  nvgp_point_t* q0 = q->pt;
+  float q1x, q1y, cross, dot, dist0, dist1, tq0, tq1, lo, hi;
+
+  cross = edge->dx * q0->dy - edge->dy * q0->dx;
+  dot = edge->dx * q0->dx + edge->dy * q0->dy;
+  if (dot > -0.999f || nvgp_abs(cross) > 0.001f) {
+    return;
+  }
+
+  q1x = q0->x + q0->dx * q0->len;
+  q1y = q0->y + q0->dy * q0->len;
+  dist0 = (q0->x - edge->x) * edge->dy - (q0->y - edge->y) * edge->dx;
+  dist1 = (q1x - edge->x) * edge->dy - (q1y - edge->y) * edge->dx;
+  if (nvgp_abs(dist0) > tol || nvgp_abs(dist1) > tol) {
+    return;
+  }
+
+  tq0 = ((q0->x - edge->x) * edge->dx + (q0->y - edge->y) * edge->dy) / edge->len;
+  tq1 = ((q1x - edge->x) * edge->dx + (q1y - edge->y) * edge->dy) / edge->len;
+  lo = nvgp_max(nvgp_min(tq0, tq1), 0.0f);
+  hi = nvgp_min(nvgp_max(tq0, tq1), 1.0f);
+  if ((hi - lo) * edge->len < 0.5f) {
+    return;
+  }
+
+  if (fill_mode == NVGP_FILLMODE_All) {
+    /* Keep the earlier edge; points are stored path by path, so index order is path order. */
+    if (q->index > e->index) {
+      return;
+    }
+  } else if (q->winding == e->winding) {
+    /* Same winding shares a filled boundary; the fringe covers the seam. */
+    return;
+  }
+  nvgp_add_fringe_span(cache, e->index, lo, hi);
+}
+
+static void nvgp_cancel_shared_edge_pair(nvgp_path_cache_t* cache, nvgp_fill_mode_t fill_mode, float tol,
+                                         const nvgp_fill_edge_t* a, const nvgp_fill_edge_t* b) {
+  nvgp_cancel_shared_edge(cache, fill_mode, tol, a, b);
+  nvgp_cancel_shared_edge(cache, fill_mode, tol, b, a);
+}
+
+/* Collects the fringe spans to drop, sorted by edge and start. Opposite edges fold to the
+   same direction in [0, pi), so after sorting by it only neighbours within the angle
+   tolerance can overlap: O(n log n) instead of comparing every pair of edges. */
+static int32_t nvgp_collect_fringe_spans(nvgp_context_t* ctx) {
+  int32_t i, j, n = 0, total = 0;
+  nvgp_path_cache_t* cache = &ctx->cache;
+  nvgp_fill_edge_t* edges;
+  nvgp_fill_mode_t fill_mode = nvgp_get_state(ctx)->fill_mode;
+  float tol = nvgp_max(ctx->dist_tol, 0.05f);
+
+  cache->nfringe_spans = 0;
+  for (i = 0; i < cache->paths.size; i++) {
+    total += nvgp_darray_get_ptr(&cache->paths, i, nvgp_path_t)->count;
+  }
+  if (total > cache->cfill_edges) {
+    edges = NVGP_REALLOCT(nvgp_fill_edge_t, cache->fill_edges, total);
+    if (edges == NULL) {
+      return 0;
+    }
+    cache->fill_edges = edges;
+    cache->cfill_edges = total;
+  }
+  edges = cache->fill_edges;
+
+  for (i = 0; i < cache->paths.size; i++) {
+    nvgp_path_t* path = nvgp_darray_get_ptr(&cache->paths, i, nvgp_path_t);
+    for (j = 0; j < (int32_t)path->count; j++) {
+      int32_t index = (int32_t)path->first + j;
+      nvgp_point_t* pt = nvgp_darray_get_ptr(&cache->points, index, nvgp_point_t);
+      float angle;
+      if (pt->len <= tol) {
+        continue;
+      }
+      angle = nvgp_atan2f(pt->dy, pt->dx);
+      if (angle < 0.0f) {
+        angle += NVGP_PI;
+      }
+      if (angle >= NVGP_PI) {
+        angle -= NVGP_PI;
+      }
+      edges[n].angle = angle;
+      edges[n].index = index;
+      edges[n].winding = path->path_winding;
+      edges[n].pt = pt;
+      n++;
+    }
+  }
+  qsort(edges, n, sizeof(nvgp_fill_edge_t), nvgp_compare_fill_edge);
+
+  for (i = 0; i < n; i++) {
+    for (j = i + 1; j < n && edges[j].angle - edges[i].angle <= NVGP_FRINGE_ANGLE_TOL; j++) {
+      nvgp_cancel_shared_edge_pair(cache, fill_mode, tol, edges + i, edges + j);
+    }
+  }
+  /* Directions just below pi are next to those just above 0. */
+  for (i = n - 1; i >= 0 && edges[i].angle > NVGP_PI - NVGP_FRINGE_ANGLE_TOL; i--) {
+    for (j = 0; j < i && edges[j].angle + NVGP_PI - edges[i].angle <= NVGP_FRINGE_ANGLE_TOL; j++) {
+      nvgp_cancel_shared_edge_pair(cache, fill_mode, tol, edges + i, edges + j);
+    }
+  }
+
+  qsort(cache->fringe_spans, cache->nfringe_spans, sizeof(nvgp_fringe_span_t), nvgp_compare_fringe_span);
+  return cache->nfringe_spans;
+}
+
+/* Edges are emitted in index order, so *cursor walks the sorted span list once. */
+static nvgp_vertex_t* nvgp_emit_cancelled_fringe(nvgp_vertex_t* dst, nvgp_context_t* ctx, int32_t* cursor,
+                                                  int32_t edge_index, nvgp_point_t* edge,
+                                                  float lw, float rw, float lu, float ru) {
+  float pad;
+  const nvgp_fringe_span_t* spans = ctx->cache.fringe_spans;
+  int32_t nspans = ctx->cache.nfringe_spans;
+
+  if (*cursor >= nspans || spans[*cursor].edge != edge_index) {
+    return dst;
+  }
+  /* Keep one fringe width at both ends: the adjoining edge's miter only
+     covers half of a right-angle corner, so the corner pixel needs this. */
+  pad = ctx->fringe_width / edge->len;
+
+  while (*cursor < nspans && spans[*cursor].edge == edge_index) {
+    float ax, ay, bx, by;
+    float nx = edge->dlx;
+    float ny = edge->dly;
+    float t0 = spans[*cursor].t0;
+    float t1 = spans[*cursor].t1;
+
+    for ((*cursor)++; *cursor < nspans && spans[*cursor].edge == edge_index &&
+                      spans[*cursor].t0 <= t1 + 0.0001f; (*cursor)++) {
+      t1 = nvgp_max(t1, spans[*cursor].t1);
+    }
+    t0 += pad;
+    t1 -= pad;
+    if (t1 <= t0) {
+      continue;
+    }
+    ax = edge->x + edge->dx * edge->len * t0;
+    ay = edge->y + edge->dy * edge->len * t0;
+    bx = edge->x + edge->dx * edge->len * t1;
+    by = edge->y + edge->dy * edge->len * t1;
+
+    /* Break the strip: collapse the cancelled interval onto the centerline. */
+    nvgp_vset(dst, ax + nx * lw, ay + ny * lw, lu, 1); dst++;
+    nvgp_vset(dst, ax - nx * rw, ay - ny * rw, ru, 1); dst++;
+    nvgp_vset(dst, ax, ay, 0.5f, 1); dst++;
+    nvgp_vset(dst, ax, ay, 0.5f, 1); dst++;
+    nvgp_vset(dst, bx, by, 0.5f, 1); dst++;
+    nvgp_vset(dst, bx, by, 0.5f, 1); dst++;
+    nvgp_vset(dst, bx + nx * lw, by + ny * lw, lu, 1); dst++;
+    nvgp_vset(dst, bx - nx * rw, by - ny * rw, ru, 1); dst++;
+  }
+  return dst;
+}
+
 static nvgp_vertex_t* nvgp_alloc_temp_verts(nvgp_context_t* ctx, int nverts) {
   if (nverts > ctx->cache.cverts) {
     nvgp_vertex_t* verts;
@@ -2138,11 +2361,16 @@ static nvgp_error_t nvgp_expand_fill(nvgp_context_t* ctx, float w, nvgp_line_joi
   int cverts, i, j;
   float aa = ctx->fringe_width;
   nvgp_path_cache_t* cache = &ctx->cache;
+  nvgp_fill_mode_t fill_mode = nvgp_get_state(ctx)->fill_mode;
+  int32_t nspans = 0, span_cursor = 0;
 
   nvgp_calculate_joins(ctx, w, lineJoin, miterLimit);
+  if (fringe && cache->paths.size > 1) {
+    nspans = nvgp_collect_fringe_spans(ctx);
+  }
 
   // Calculate max vertex usage.
-  cverts = 0;
+  cverts = nspans * 8;
   for (i = 0; i < cache->paths.size; i++) {
     nvgp_path_t* path = nvgp_darray_get_ptr(&cache->paths, i, nvgp_path_t);
     cverts += path->count + path->nbevel + 1;
@@ -2215,9 +2443,10 @@ static nvgp_error_t nvgp_expand_fill(nvgp_context_t* ctx, float w, nvgp_line_joi
       dst = verts;
       path->stroke = dst;
 
-      // Create only half a fringe for convex shapes so that
-      // the shape can be rendered without stenciling.
-      if (path->convex) {
+      /* Half fringe matches the inset fill and is only valid when this path is
+         drawn without stencil. Non-zero / even-odd with several paths are stenciled
+         and need the full fringe, or the fan/fringe seam shows up as an extra edge. */
+      if (path->convex && (cache->paths.size == 1 || fill_mode == NVGP_FILLMODE_All)) {
         lw = woff;  // This should generate the same vertex as fill inset above.
         lu = 0.5f;  // Set outline fade at middle.
       }
@@ -2232,6 +2461,9 @@ static nvgp_error_t nvgp_expand_fill(nvgp_context_t* ctx, float w, nvgp_line_joi
         } else {
           nvgp_vset(dst, p1->x + (p1->dmx * lw), p1->y + (p1->dmy * lw), lu,1); dst++;
           nvgp_vset(dst, p1->x - (p1->dmx * rw), p1->y - (p1->dmy * rw), ru,1); dst++;
+        }
+        if (nspans > 0) {
+          dst = nvgp_emit_cancelled_fringe(dst, ctx, &span_cursor, (int32_t)path->first + j, p1, lw, rw, lu, ru);
         }
         p0 = p1;
         p1 = nvgp_darray_get_ptr(&cache->points, path->first + j + 1, nvgp_point_t);

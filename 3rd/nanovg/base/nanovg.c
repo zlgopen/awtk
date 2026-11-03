@@ -103,6 +103,21 @@ struct NVGpoint {
 };
 typedef struct NVGpoint NVGpoint;
 
+#ifdef WITH_NANOVG_GPU
+struct NVGfillEdge {
+	float angle; 	// 方向角，折叠到 [0, pi)
+	int index; 		// 边对应的 point 下标
+	int winding;	// 所属子路径的实际绕向
+};
+typedef struct NVGfillEdge NVGfillEdge;
+
+struct NVGfringeSpan {
+	int edge;
+	float t0, t1;
+};
+typedef struct NVGfringeSpan NVGfringeSpan;
+#endif
+
 struct NVGpathCache {
 	NVGpoint* points;
 	int npoints;
@@ -114,6 +129,13 @@ struct NVGpathCache {
 	int nverts;
 	int cverts;
 	float bounds[4];
+#ifdef WITH_NANOVG_GPU
+	NVGfillEdge* fillEdges;
+	int cfillEdges;
+	NVGfringeSpan* fringeSpans;
+	int nfringeSpans;
+	int cfringeSpans;
+#endif
 };
 typedef struct NVGpathCache NVGpathCache;
 
@@ -178,6 +200,10 @@ static void nvg__deletePathCache(NVGpathCache* c)
 	if (c->points != NULL) free(c->points);
 	if (c->paths != NULL) free(c->paths);
 	if (c->verts != NULL) free(c->verts);
+#ifdef WITH_NANOVG_GPU
+	if (c->fillEdges != NULL) free(c->fillEdges);
+	if (c->fringeSpans != NULL) free(c->fringeSpans);
+#endif
 	free(c);
 }
 
@@ -2068,6 +2094,186 @@ static int nvg__expandStroke(NVGcontext* ctx, float w, float fringe, int lineCap
 	return 1;
 }
 
+/* A hole that shares an edge with another subpath used to get a fringe on both
+   sides. Where the fill rule leaves both sides empty, that overlap shows up as
+   an extra line. Non-zero / even-odd drop the overlap. All-fill keeps the
+   earlier edge so the silhouette is still antialiased once. */
+/* Slightly above asin(0.001), the cross-product limit used for an edge pair. */
+#define NVG_FRINGE_ANGLE_TOL 0.0011f
+
+static int nvg__compareFillEdge(const void* a, const void* b)
+{
+	float angleA = ((const NVGfillEdge*)a)->angle;
+	float angleB = ((const NVGfillEdge*)b)->angle;
+	return angleA < angleB ? -1 : (angleA > angleB ? 1 : 0);
+}
+
+static int nvg__compareFringeSpan(const void* a, const void* b)
+{
+	const NVGfringeSpan* spanA = (const NVGfringeSpan*)a;
+	const NVGfringeSpan* spanB = (const NVGfringeSpan*)b;
+	if (spanA->edge != spanB->edge) return spanA->edge < spanB->edge ? -1 : 1;
+	return spanA->t0 < spanB->t0 ? -1 : (spanA->t0 > spanB->t0 ? 1 : 0);
+}
+
+static void nvg__addFringeSpan(NVGpathCache* cache, int edge, float t0, float t1)
+{
+	NVGfringeSpan* span;
+	if (t1 - t0 < 0.0001f) return;
+	if (cache->nfringeSpans >= cache->cfringeSpans) {
+		int cspans = cache->cfringeSpans > 0 ? cache->cfringeSpans * 2 : 64;
+		NVGfringeSpan* spans = (NVGfringeSpan*)realloc(cache->fringeSpans, sizeof(NVGfringeSpan) * cspans);
+		if (spans == NULL) return;
+		cache->fringeSpans = spans;
+		cache->cfringeSpans = cspans;
+	}
+	span = &cache->fringeSpans[cache->nfringeSpans++];
+	span->edge = edge;
+	span->t0 = t0;
+	span->t1 = t1;
+}
+
+/* Drops the part of e that q runs back over when the fill rule leaves both sides empty. */
+static void nvg__cancelSharedEdge(NVGpathCache* cache, enum NVGFillMode fillMode, float tol,
+								  const NVGfillEdge* e, const NVGfillEdge* q)
+{
+	NVGpoint* edge = &cache->points[e->index];
+	NVGpoint* q0 = &cache->points[q->index];
+	float q1x, q1y, cross, dot, dist0, dist1, tq0, tq1, lo, hi;
+
+	cross = edge->dx * q0->dy - edge->dy * q0->dx;
+	dot = edge->dx * q0->dx + edge->dy * q0->dy;
+	if (dot > -0.999f || nvg__absf(cross) > 0.001f) return;
+
+	q1x = q0->x + q0->dx * q0->len;
+	q1y = q0->y + q0->dy * q0->len;
+	dist0 = (q0->x - edge->x) * edge->dy - (q0->y - edge->y) * edge->dx;
+	dist1 = (q1x - edge->x) * edge->dy - (q1y - edge->y) * edge->dx;
+	if (nvg__absf(dist0) > tol || nvg__absf(dist1) > tol) return;
+
+	tq0 = ((q0->x - edge->x) * edge->dx + (q0->y - edge->y) * edge->dy) / edge->len;
+	tq1 = ((q1x - edge->x) * edge->dx + (q1y - edge->y) * edge->dy) / edge->len;
+	lo = nvg__maxf(nvg__minf(tq0, tq1), 0.0f);
+	hi = nvg__minf(nvg__maxf(tq0, tq1), 1.0f);
+	if ((hi - lo) * edge->len < 0.5f) return;
+
+	if (fillMode == NVG_FILLMODE_All) {
+		/* Keep the earlier edge; points are stored path by path, so index order is path order. */
+		if (q->index > e->index) return;
+	} else if (q->winding == e->winding) {
+		/* Same winding shares a filled boundary; the fringe covers the seam. */
+		return;
+	}
+	nvg__addFringeSpan(cache, e->index, lo, hi);
+}
+
+static void nvg__cancelSharedEdgePair(NVGpathCache* cache, enum NVGFillMode fillMode, float tol,
+									  const NVGfillEdge* a, const NVGfillEdge* b)
+{
+	nvg__cancelSharedEdge(cache, fillMode, tol, a, b);
+	nvg__cancelSharedEdge(cache, fillMode, tol, b, a);
+}
+
+/* Collects the fringe spans to drop, sorted by edge and start. Opposite edges fold to the
+   same direction in [0, pi), so after sorting by it only neighbours within the angle
+   tolerance can overlap: O(n log n) instead of comparing every pair of edges. */
+static int nvg__collectFringeSpans(NVGcontext* ctx)
+{
+	NVGpathCache* cache = ctx->cache;
+	NVGfillEdge* edges;
+	enum NVGFillMode fillMode = nvg__getState(ctx)->fillMode;
+	float tol = nvg__maxf(ctx->distTol, 0.05f);
+	int i, j, n = 0, total = 0;
+
+	cache->nfringeSpans = 0;
+	for (i = 0; i < cache->npaths; i++)
+		total += cache->paths[i].count;
+	if (total > cache->cfillEdges) {
+		edges = (NVGfillEdge*)realloc(cache->fillEdges, sizeof(NVGfillEdge) * total);
+		if (edges == NULL) return 0;
+		cache->fillEdges = edges;
+		cache->cfillEdges = total;
+	}
+	edges = cache->fillEdges;
+
+	for (i = 0; i < cache->npaths; i++) {
+		NVGpath* path = &cache->paths[i];
+		for (j = 0; j < path->count; j++) {
+			int index = path->first + j;
+			NVGpoint* pt = &cache->points[index];
+			float angle;
+			if (pt->len <= tol) continue;
+			angle = nvg__atan2f(pt->dy, pt->dx);
+			if (angle < 0.0f) angle += NVG_PI;
+			if (angle >= NVG_PI) angle -= NVG_PI;
+			edges[n].angle = angle;
+			edges[n].index = index;
+			edges[n].winding = path->path_winding;
+			n++;
+		}
+	}
+	// 按折叠方向角来排序的候选边表
+	qsort(edges, n, sizeof(NVGfillEdge), nvg__compareFillEdge);
+
+	for (i = 0; i < n; i++) {
+		for (j = i + 1; j < n && edges[j].angle - edges[i].angle <= NVG_FRINGE_ANGLE_TOL; j++)
+			nvg__cancelSharedEdgePair(cache, fillMode, tol, &edges[i], &edges[j]);
+	}
+	/* Directions just below pi are next to those just above 0. */
+	for (i = n - 1; i >= 0 && edges[i].angle > NVG_PI - NVG_FRINGE_ANGLE_TOL; i--) {
+		for (j = 0; j < i && edges[j].angle + NVG_PI - edges[i].angle <= NVG_FRINGE_ANGLE_TOL; j++)
+			nvg__cancelSharedEdgePair(cache, fillMode, tol, &edges[i], &edges[j]);
+	}
+
+	qsort(cache->fringeSpans, cache->nfringeSpans, sizeof(NVGfringeSpan), nvg__compareFringeSpan);
+	return cache->nfringeSpans;
+}
+
+/* Edges are emitted in index order, so *cursor walks the sorted span list once. */
+static NVGvertex* nvg__emitCancelledFringe(NVGvertex* dst, NVGcontext* ctx, int* cursor, int edgeIndex,
+											float lw, float rw, float lu, float ru)
+{
+	const NVGfringeSpan* spans = ctx->cache->fringeSpans;
+	int nspans = ctx->cache->nfringeSpans;
+	NVGpoint* edge = &ctx->cache->points[edgeIndex];
+	float pad;
+
+	if (*cursor >= nspans || spans[*cursor].edge != edgeIndex) return dst;
+	/* Keep one fringe width at both ends: the adjoining edge's miter only
+	   covers half of a right-angle corner, so the corner pixel needs this. */
+	pad = ctx->fringeWidth / edge->len;
+
+	while (*cursor < nspans && spans[*cursor].edge == edgeIndex) {
+		float ax, ay, bx, by;
+		float nx = edge->dlx;
+		float ny = edge->dly;
+		float t0 = spans[*cursor].t0;
+		float t1 = spans[*cursor].t1;
+
+		for ((*cursor)++; *cursor < nspans && spans[*cursor].edge == edgeIndex &&
+						  spans[*cursor].t0 <= t1 + 0.0001f; (*cursor)++)
+			t1 = nvg__maxf(t1, spans[*cursor].t1);
+		t0 += pad;
+		t1 -= pad;
+		if (t1 <= t0) continue;
+		ax = edge->x + edge->dx * edge->len * t0;
+		ay = edge->y + edge->dy * edge->len * t0;
+		bx = edge->x + edge->dx * edge->len * t1;
+		by = edge->y + edge->dy * edge->len * t1;
+
+		/* Break the strip: collapse the cancelled interval onto the centerline. */
+		nvg__vset(dst, ax + nx * lw, ay + ny * lw, lu, 1); dst++;
+		nvg__vset(dst, ax - nx * rw, ay - ny * rw, ru, 1); dst++;
+		nvg__vset(dst, ax, ay, 0.5f, 1); dst++;
+		nvg__vset(dst, ax, ay, 0.5f, 1); dst++;
+		nvg__vset(dst, bx, by, 0.5f, 1); dst++;
+		nvg__vset(dst, bx, by, 0.5f, 1); dst++;
+		nvg__vset(dst, bx + nx * lw, by + ny * lw, lu, 1); dst++;
+		nvg__vset(dst, bx - nx * rw, by - ny * rw, ru, 1); dst++;
+	}
+	return dst;
+}
+
 static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLimit)
 {
 	NVGpathCache* cache = ctx->cache;
@@ -2076,11 +2282,16 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 	int cverts, i, j;
 	float aa = ctx->fringeWidth;
 	int fringe = w > 0.0f;
+	enum NVGFillMode fillMode = nvg__getState(ctx)->fillMode;
+	int nspans = 0, spanCursor = 0;
 
 	nvg__calculateJoins(ctx, w, lineJoin, miterLimit);
 
+	if (fringe && cache->npaths > 1)
+		nspans = nvg__collectFringeSpans(ctx);
+
 	// Calculate max vertex usage.
-	cverts = 0;
+	cverts = nspans * 8;
 	for (i = 0; i < cache->npaths; i++) {
 		NVGpath* path = &cache->paths[i];
 		cverts += path->count + path->nbevel + 1;
@@ -2150,9 +2361,10 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 			dst = verts;
 			path->stroke = dst;
 
-			// Create only half a fringe for convex shapes so that
-			// the shape can be rendered without stenciling.
-			if (path->convex) {
+			/* Half fringe matches the inset fill and is only valid when this path is
+			   drawn without stencil. Non-zero / even-odd with several paths are stenciled
+			   and need the full fringe, or the fan/fringe seam shows up as an extra edge. */
+			if (path->convex && (cache->npaths == 1 || fillMode == NVG_FILLMODE_All)) {
 				lw = woff;	// This should generate the same vertex as fill inset above.
 				lu = 0.5f;	// Set outline fade at middle.
 			}
@@ -2168,6 +2380,8 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 					nvg__vset(dst, p1->x + (p1->dmx * lw), p1->y + (p1->dmy * lw), lu,1); dst++;
 					nvg__vset(dst, p1->x - (p1->dmx * rw), p1->y - (p1->dmy * rw), ru,1); dst++;
 				}
+				if (nspans > 0)
+					dst = nvg__emitCancelledFringe(dst, ctx, &spanCursor, path->first + j, lw, rw, lu, ru);
 				p0 = p1++;
 			}
 
