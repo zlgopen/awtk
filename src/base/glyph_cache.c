@@ -76,7 +76,7 @@ static glyph_cache_item_t* glyph_cache_get_empty(glyph_cache_t* cache) {
   return item;
 }
 
-ret_t glyph_cache_add(glyph_cache_t* cache, wchar_t code, font_size_t size, glyph_t* g) {
+ret_t glyph_cache_add(glyph_cache_t* cache, uint32_t code, font_size_t size, glyph_t* g) {
   glyph_cache_item_t* item = glyph_cache_get_empty(cache);
   return_value_if_fail(cache != NULL && g != NULL && item != NULL, RET_BAD_PARAMS);
 
@@ -88,7 +88,7 @@ ret_t glyph_cache_add(glyph_cache_t* cache, wchar_t code, font_size_t size, glyp
   return RET_OK;
 }
 
-ret_t glyph_cache_lookup(glyph_cache_t* cache, wchar_t code, font_size_t size, glyph_t* g) {
+ret_t glyph_cache_lookup(glyph_cache_t* cache, uint32_t code, font_size_t size, glyph_t* g) {
   uint32_t i = 0;
   uint32_t nr = 0;
 

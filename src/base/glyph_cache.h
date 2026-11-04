@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 typedef struct _glyph_cache_item_t {
   uint64_t last_access_time;
   font_size_t size;
-  wchar_t code;
+  uint32_t code;
   glyph_t* g;
 } glyph_cache_item_t;
 
@@ -61,26 +61,26 @@ glyph_cache_t* glyph_cache_init(glyph_cache_t* cache, uint32_t capacity,
  * 增加一个glyph对象到cache。
  * 
  * @param {glyph_cache_t*} cache cache对象。
- * @param {wchar_t} code 字符。
+ * @param {uint32_t} code 字符。
  * @param {font_size_t} size 字体大小。
  * @param {glyph_t*} g glyph对象。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t glyph_cache_add(glyph_cache_t* cache, wchar_t code, font_size_t size, glyph_t* g);
+ret_t glyph_cache_add(glyph_cache_t* cache, uint32_t code, font_size_t size, glyph_t* g);
 
 /**
  * @method glyph_cache_lookup
  * 查找glyph对象。
  * 
  * @param {glyph_cache_t*} cache cache对象。
- * @param {wchar_t} code 字符。
+ * @param {uint32_t} code 字符。
  * @param {font_size_t} size 字体大小。
  * @param {glyph_t*} g glyph对象(用于返回glyph)。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t glyph_cache_lookup(glyph_cache_t* cache, wchar_t code, font_size_t size, glyph_t* g);
+ret_t glyph_cache_lookup(glyph_cache_t* cache, uint32_t code, font_size_t size, glyph_t* g);
 
 /**
  * @method glyph_cache_shrink

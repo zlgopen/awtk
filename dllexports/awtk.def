@@ -3315,6 +3315,9 @@ EXPORTS
     font_stb_create
     font_loader_stb_mono
     font_stb_mono_create
+    font_loader_get_codepoint
+    font_loader_get_str_index_from_codepoint_index
+    font_loader_get_codepoint_count
     harfbuzz_data_loader
     harfbuzz_data_loader_create
     harfbuzz_data_loader_set

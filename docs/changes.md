@@ -2,6 +2,7 @@
 
 2026/11/04
   * improve color(感谢兆坤提供补丁)
+  * font_loader 在非整形模式下支持 uint16 代理对的识别(感谢泽武提供补丁)
 
 2026/11/3
   * improve blend code gen(感谢兆坤提供补丁)

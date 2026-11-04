@@ -25,6 +25,7 @@
 #include "base/types_def.h"
 #include "base/glyph_cache.h"
 #include "harfbuzz/harfbuzz_tools.h"
+#include "font_loader/font_loader_unicode.h"
 
 #if defined(WITH_FT_FONT) && \
     (defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING) || defined(WITH_HARFBUZZ_TEXT_SHAPING))
@@ -126,8 +127,8 @@ static void font_hb_ft_apply_hb_info(glyph_t* g, const hb_info_t* info, float_t 
   return;
 }
 
-static ret_t font_hb_ft_get_glyph_impl(font_t* f, wchar_t c, font_size_t font_size,
-                                       hb_str_t* hb_str, glyph_t* g) {
+static ret_t font_hb_ft_get_glyph_impl(font_t* f, uint32_t c, font_size_t font_size,
+                                        hb_str_t* hb_str, glyph_t* g) {
   FT_Glyph glyph;
   FT_GlyphSlot glyf;
   ret_t ret = RET_OK;
@@ -211,8 +212,12 @@ static ret_t font_hb_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, g
 static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_t len,
                                           font_size_t font_size, font_raster_params_t* params) {
   bidi_t b;
-  wchar_t c = 0;
+  uint32_t c = 0;
   uint32_t i = 0;
+  uint32_t visual_index = 0;
+  uint32_t logical_index = 0;
+  uint32_t code_unit_count = 0;
+  uint32_t glyph_index = 0;
   hb_str_t hb_str = {0};
   glyphs_t* glyphs = NULL;
   uint32_t glyph_count = 0;
@@ -265,22 +270,43 @@ static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_
     }
   }
   if (!params->shaping || hb_info == NULL) {
-    bidi_init(&b, FALSE, FALSE, params->bidi_type);
+    bidi_init(&b, FALSE, TRUE, params->bidi_type);
     if (bidi_log2vis(&b, str, len) == RET_OK) {
-      glyphs = glyphs_create(b.vis_str, b.vis_str_size, len, FALSE, font_size, &vmetrics);
+      glyphs = glyphs_create((wchar_t*)str, b.vis_str_size, len, TRUE, font_size, &vmetrics);
       goto_error_if_fail(glyphs != NULL);
       glyphs->font = f;
-      for (i = 0; i < b.vis_str_size; ++i) {
-        c = b.vis_str[i];
-        if (glyph_cache_lookup(&(font->cache), c, font_size, &glyphs->glyphs[i]) != RET_OK) {
-          if (font_hb_ft_get_glyph_impl(f, c, font_size, NULL, &glyphs->glyphs[i]) != RET_OK) {
-            glyphs->glyphs[i].chr = (uint16_t)c;
-            glyphs->glyphs[i].w = 0;
-            glyphs->glyphs[i].h = 0;
+
+      for (visual_index = 0; visual_index < b.vis_str_size; visual_index += code_unit_count,
+          glyph_index++) {
+        glyph_t* g = NULL;
+        logical_index =
+            b.positions_V_to_L != NULL ? (uint32_t)b.positions_V_to_L[visual_index]
+                                       : visual_index;
+        c = font_loader_get_codepoint(str, len, &logical_index, &code_unit_count);
+        goto_error_if_fail(logical_index < len && code_unit_count > 0 &&
+                           visual_index + code_unit_count <= b.vis_str_size &&
+                           glyph_index < glyphs->length);
+
+        for (i = 0; i < code_unit_count; i++) {
+          glyphs->l2v_maps[logical_index + i] = (int32_t)glyph_index;
+        }
+        glyphs->v2l_maps[glyph_index] = (int32_t)logical_index;
+
+        g = &glyphs->glyphs[glyph_index];
+        if (glyph_cache_lookup(&(font->cache), c, font_size, g) != RET_OK) {
+          if (font_hb_ft_get_glyph_impl(f, c, font_size, NULL, g) != RET_OK) {
+            g->w = 0;
+            g->h = 0;
           }
         }
+        // chr只有16位，非BMP字符保存高代理，避免光标映射取到低代理。
+        g->chr = (uint16_t)str[logical_index];
+        g->str_count = code_unit_count;
+        g->glyph_count = 1;
       }
+      glyphs->length = glyph_index;
     }
+    bidi_deinit(&b);
   }
 
   // 设置maps表和字模的chr
@@ -290,9 +316,6 @@ static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_
 #if defined(WITH_HARFBUZZ_TEXT_SHAPING)
     harfbuzz_shape_text_destroy(hb_info);
 #endif
-  } else {
-    hb_set_normal_glyphs_chr(glyphs, &b);
-    bidi_deinit(&b);
   }
 
   return glyphs;
