@@ -27,6 +27,35 @@
 BEGIN_C_DECLS
 
 /**
+ * @enum color_channel_t
+ * @prefix COLOR_CHANNEL_
+ * 颜色通道下标。
+ */
+typedef enum _color_channel_t {
+  /**
+   * @const COLOR_CHANNEL_R
+   * 红色通道。
+   */
+  COLOR_CHANNEL_R = 0,
+  /**
+   * @const COLOR_CHANNEL_G
+   * 绿色通道。
+   */
+  COLOR_CHANNEL_G,
+  /**
+   * @const COLOR_CHANNEL_B
+   * 蓝色通道。
+   */
+  COLOR_CHANNEL_B,
+  /**
+   * @const COLOR_CHANNEL_A
+   * alpha 通道。
+   */
+  COLOR_CHANNEL_A,
+  COLOR_CHANNEL_COUNT,
+} color_channel_t;
+
+/**
  * @class rgba_t
  * 颜色的四个通道。
  *
@@ -77,6 +106,12 @@ typedef union _color_t {
    * 颜色的数值。
    */
   uint32_t color;
+  /**
+   * @property {uint8_t*} channels
+   * @annotation ["readable", "writable"]
+   * 颜色通道。
+   */
+  uint8_t channels[COLOR_CHANNEL_COUNT];
 } color_t;
 
 /**

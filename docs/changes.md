@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/11/04
+  * improve color(感谢兆坤提供补丁)
+
 2026/11/3
   * improve blend code gen(感谢兆坤提供补丁)
   * 删除nanovg和nanovg_plus的GL3的UBO功能的配置宏（因为UBO在英特尔显卡的某些驱动下有概率会出现崩溃的问题）(感谢智明提供补丁)
