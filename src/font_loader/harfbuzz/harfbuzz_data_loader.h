@@ -29,7 +29,10 @@ typedef struct _hb_str_info_t {
   const wchar_t* str;
   hb_info_t* hb_info;
   uint32_t hb_info_size;
+  // Unicode 码点数量，用于匹配生成端排序键。
   uint32_t str_len;
+  // 当前平台 wchar_t 码元数量，用于完整内容比较。
+  uint32_t str_unit_len;
 } hb_str_info_t;
 
 typedef struct _hb_ttf_info_t {

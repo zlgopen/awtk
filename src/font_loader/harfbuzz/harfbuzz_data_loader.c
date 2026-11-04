@@ -25,12 +25,13 @@
 #include "tkc/asset_info.h"
 #include "base/types_def.h"
 #include "base/assets_manager.h"
+#include "font_loader/font_loader_unicode.h"
 #include "harfbuzz_data_loader.h"
 
 /* 版本号 */
 #define VERSION_MAGIC 0x1
 
-#define BIN_SEPARATOR_LEN 1 // '\0'的长度
+#define BIN_SEPARATOR_LEN 1  // '\0'的长度
 
 #define BIN_LINEBREAK "\n"
 #define BIN_SEPARATOR "\0"
@@ -73,16 +74,15 @@ static ret_t destroy_hb_loader_from_bin(harfbuzz_data_loader_t* hb_loader) {
         if (str_info->str != NULL) {
           TKMEM_FREE(str_info->str);
         }
-  
+
         if (str_info->hb_info != NULL) {
           TKMEM_FREE(str_info->hb_info);
         }
-  
+
         str_info->hb_info_size = 0;
       }
       ttf_info->str_size = 0;
       TKMEM_FREE(ttf_info->str_info);
-
     }
     hb_loader->ttf_size = 0;
     TKMEM_FREE(hb_loader->ttf_info);
@@ -131,7 +131,8 @@ static int32_t read_table_info_size(rbuffer_t* rbuffer) {
     rbuffer_read_string(rbuffer, &ch);
   }
 
-  if (ch != NULL && tk_str_eq_with_len(ch, BIN_TABLE_INFO_SIZE_MAGIC, tk_strlen(BIN_TABLE_INFO_SIZE_MAGIC))) {
+  if (ch != NULL &&
+      tk_str_eq_with_len(ch, BIN_TABLE_INFO_SIZE_MAGIC, tk_strlen(BIN_TABLE_INFO_SIZE_MAGIC))) {
     rbuffer_read_int32(rbuffer, &table_info_size);
     rbuffer_skip(rbuffer, tk_strlen(BIN_LINEBREAK));
   }
@@ -158,6 +159,7 @@ static harfbuzz_data_loader_t* gen_harfbuzz_data_loader(rbuffer_t* rbuffer, int3
   const char* font_name = NULL;
   uint32_t str_size = 0;
   uint32_t glyph_size = 0;
+  uint32_t str_unit_len = 0;
   hb_str_info_t* str_info = NULL;
   hb_ttf_info_t* ttf_info = NULL;
   harfbuzz_data_loader_t* hb_loader = NULL;
@@ -189,7 +191,7 @@ static harfbuzz_data_loader_t* gen_harfbuzz_data_loader(rbuffer_t* rbuffer, int3
     str_info = TKMEM_CALLOC(str_size, sizeof(hb_str_info_t));
     ttf_info[i].str_info = str_info;
     ttf_info[i].str_size = str_size;
-    
+
     for (j = 0; j < str_size; ++j) {
       rbuffer_read_string(rbuffer, &ch);
       if (ch == NULL) {
@@ -199,6 +201,7 @@ static harfbuzz_data_loader_t* gen_harfbuzz_data_loader(rbuffer_t* rbuffer, int3
       }
       /* 转宽字符 */
       wstr = tk_wstr_dup_utf8(ch);
+      str_unit_len = wstr != NULL ? (uint32_t)wcslen(wstr) : 0;
 
       /* 验证0xFCFC */
       rbuffer_read_uint16(rbuffer, &check);
@@ -217,6 +220,7 @@ static harfbuzz_data_loader_t* gen_harfbuzz_data_loader(rbuffer_t* rbuffer, int3
       /* 赋值到str_info并申请内存 */
       str_info[j].str = wstr;
       str_info[j].str_len = str_len;
+      str_info[j].str_unit_len = str_unit_len;
       str_info[j].hb_info_size = glyph_size;
       if (glyph_size > 0) {
         str_info[j].hb_info = TKMEM_CALLOC(glyph_size, sizeof(hb_info_t));
@@ -234,7 +238,11 @@ static harfbuzz_data_loader_t* gen_harfbuzz_data_loader(rbuffer_t* rbuffer, int3
         rbuffer_skip(rbuffer, BIN_SEPARATOR_LEN);
 
         str_info[j].hb_info[g].glyphid = gid;
-        str_info[j].hb_info[g].cluster = cluster;
+        // bin中保存平台无关的码点序号，这里转换成当前平台的码元序号。
+        str_info[j].hb_info[g].cluster = cluster >= 0
+                                             ? font_loader_get_str_index_from_codepoint_index(
+                                                   wstr, str_unit_len, (uint32_t)cluster)
+                                             : cluster;
         str_info[j].hb_info[g].x_offset = xoffset;
         str_info[j].hb_info[g].y_offset = yoffset;
         str_info[j].hb_info[g].x_advance = xadvance;
@@ -321,14 +329,47 @@ ret_t harfbuzz_data_loader_set(harfbuzz_data_loader_t* loader) {
   return RET_OK;
 }
 
-hb_str_info_t* harfbuzz_data_loader_find_info(harfbuzz_data_loader_t* loader, const char* font_name, const wchar_t* str, uint32_t str_len) {
+// 按生成端的排序规则比较字符串，先比较 Unicode 码点数量，再比较码点内容。
+static int32_t font_loader_compare_codepoint_str(const wchar_t* str1, uint32_t str1_len,
+                                                 const wchar_t* str2, uint32_t str2_len) {
+  uint32_t index1 = 0;
+  uint32_t index2 = 0;
+
+  while (index1 < str1_len && index2 < str2_len) {
+    uint32_t pos1 = index1;
+    uint32_t pos2 = index2;
+    uint32_t count1 = 0;
+    uint32_t count2 = 0;
+    uint32_t codepoint1 = font_loader_get_codepoint(str1, str1_len, &pos1, &count1);
+    uint32_t codepoint2 = font_loader_get_codepoint(str2, str2_len, &pos2, &count2);
+
+    if (codepoint1 != codepoint2) {
+      return codepoint1 < codepoint2 ? -1 : 1;
+    }
+
+    index1 += count1;
+    index2 += count2;
+  }
+
+  if (index1 < str1_len) {
+    return 1;
+  }
+
+  if (index2 < str2_len) {
+    return -1;
+  }
+
+  return 0;
+}
+
+hb_str_info_t* harfbuzz_data_loader_find_info(harfbuzz_data_loader_t* loader, const char* font_name,
+                                              const wchar_t* str, uint32_t str_len) {
   uint32_t i = 0;
   int32_t ret = 0;
-  int32_t mid = 0;
   int32_t left = 0;
   int32_t right = 0;
+  uint32_t codepoint_len = 0;
   hb_str_info_t* info = NULL;
-  hb_str_info_t* str_info = NULL;
   hb_ttf_info_t* ttf_info = NULL;
 
   if (loader == NULL || str == NULL) {
@@ -336,29 +377,40 @@ hb_str_info_t* harfbuzz_data_loader_find_info(harfbuzz_data_loader_t* loader, co
   }
 
   ttf_info = loader->ttf_info;
+  codepoint_len = font_loader_get_codepoint_count(str, str_len);
   for (i = 0; i < loader->ttf_size; ++i) {
     if (tk_str_eq(ttf_info[i].font_name, font_name)) {
-      // 整形数据中的字符串已经按照长度排序，先用二分法匹配字符串长度
-      mid = 0;
+      // 生成端按码点数量和码点内容排序，加载端使用相同的规则做二分查找。
       left = 0;
-      right = ttf_info[i].str_size - 1;
-      while (left <= right) {
-        mid = (left + right) / 2;
-        info = &(ttf_info[i].str_info[mid]);
-        if (info != NULL && info->str_len == str_len) {
-          // 字符串长度相同情况下，整形数据的字符串按照内容大小排序，再次用二分法匹配字符串内容
-          ret = wcsncmp(info->str, str, info->str_len);
-          if (ret == 0) {
-            return info;
-          } else if (ret > 0) {
-            right = mid - 1;
-          } else {
-            left = mid + 1; 
-          }
-        } else if (info != NULL && info->str_len > str_len) {
-          right = mid - 1; 
+      right = (int32_t)ttf_info[i].str_size - 1;
+      while (left < right) {
+        int32_t mid = (left + right) / 2;
+        info = &ttf_info[i].str_info[mid];
+        if (info->str_len < codepoint_len) {
+          left = mid + 1;
+          continue;
+        }
+
+        if (info->str_len > codepoint_len) {
+          right = mid - 1;
+          continue;
+        }
+
+        ret = font_loader_compare_codepoint_str(info->str, info->str_unit_len, str, str_len);
+        if (ret == 0) {
+          return info;
+        } else if (ret < 0) {
+          left = mid + 1;
         } else {
-          left = mid + 1; 
+          right = mid - 1;
+        }
+      }
+
+      if (left == right && left >= 0 && (uint32_t)left < ttf_info[i].str_size) {
+        info = &ttf_info[i].str_info[left];
+        if (info->str_len == codepoint_len &&
+            font_loader_compare_codepoint_str(info->str, info->str_unit_len, str, str_len) == 0) {
+          return info;
         }
       }
     }
@@ -376,7 +428,6 @@ ret_t harfbuzz_data_loader_destroy(harfbuzz_data_loader_t* loader) {
 }
 
 harfbuzz_data_loader_t* harfbuzz_data_loader_ref(harfbuzz_data_loader_t* loader, const char* name) {
-  
   if (name == NULL || *name == '\0') {
     name = DEFAULT_HARFBUZZ_BIN_NAME;
   }
@@ -400,7 +451,7 @@ ret_t harfbuzz_data_loader_unref(harfbuzz_data_loader_t* loader) {
     loader->refcount--;
   } else if (loader->refcount == 1) {
     loader->refcount = 0;
-    destroy_hb_loader_from_bin(loader); 
+    destroy_hb_loader_from_bin(loader);
   }
 
   return RET_OK;

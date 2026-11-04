@@ -44,16 +44,31 @@ BIN_TABLE_INFO_SIZE_MAGIC = b"TABLE_INFO_SIZE" # 信息表总的信息数量验�
 
 
 # -------------------------- Bidi Run拆分(python-bidi) --------------------------
+def _is_arabic_indic_digit(ch):
+    return '\u0660' <= ch <= '\u0669'
+
+
+def _get_bidi_text(text):
+    # 与动态整形保持一致：数字间空格只在 BIDI 分段时按 NBSP 处理。
+    # 实际参与 shaping 的文本仍使用原始空格。
+    return ''.join(
+        '\u00A0' if i > 0 and i + 1 < len(text) and ch == ' ' and
+        _is_arabic_indic_digit(text[i - 1]) and _is_arabic_indic_digit(text[i + 1]) else ch
+        for i, ch in enumerate(text))
+
+
 def bidi_get_runs(text):
     if len(text) == 0:
         return []
+
+    bidi_text = _get_bidi_text(text)
 
     storage = get_empty_storage()
     base_level = 0  # force LTR base direction to match VSCode/Notepad
     storage["base_level"] = base_level
     storage["base_dir"] = ("L", "R")[base_level]
 
-    get_embedding_levels(text, storage)
+    get_embedding_levels(bidi_text, storage)
     explicit_embed_and_overrides(storage)
     resolve_weak_types(storage)
     resolve_neutral_types(storage, False)
@@ -64,7 +79,7 @@ def bidi_get_runs(text):
     si = 0
     ti = 0
     while ti < len(text):
-        if si < len(storage_chars) and storage_chars[si]["ch"] == text[ti]:
+        if si < len(storage_chars) and storage_chars[si]["ch"] == bidi_text[ti]:
             text_levels[ti] = storage_chars[si]["level"]
             si += 1
             ti += 1
