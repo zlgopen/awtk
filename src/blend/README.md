@@ -42,3 +42,7 @@ blend\_image\_{dst}\_{src}.c默认使用blend\_image.inc中的通用blend\_a实�
 * blend\_a\_bgr565\_bgr565.inc
 * blend\_a\_bgr565\_bgra8888.inc
 * blend\_a\_bgr565\_rgba8888.inc
+
+其中 blend\_a\_bgr565\_bgra8888.inc 和 blend\_a\_bgr565\_rgba8888.inc 共用
+blend\_a\_bgr565\_common.inc 中的实现，它们只负责把源像素转换成 rgba\_t。
+blend\_a\_bgr565\_common.inc 不是格式组合，gen.sh 不会引用它。
