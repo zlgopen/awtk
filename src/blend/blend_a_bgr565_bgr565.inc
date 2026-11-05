@@ -27,7 +27,7 @@
 
 static inline void blend_a_bgr565_bgr565(uint8_t* dst, uint8_t* src, uint8_t a,
                                          bool_t premulti_alpha) {
-  if (a > PIXEL_ALPHA_OPAQUE) {
+  if (a > PIXEL_ALPHA_SRC_OPAQUE) {
     *(uint16_t*)dst = *(uint16_t*)src;
   } else if (a > PIXEL_ALPHA_TRANSPARENT) {
     uint8_t minus_a = 0xff - a;

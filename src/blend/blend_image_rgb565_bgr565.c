@@ -49,7 +49,7 @@ ret_t blend_image_rgb565_bgr565(bitmap_t* dst, bitmap_t* src, const rectf_t* dst
   return_value_if_fail(dst->format == BITMAP_FMT_RGB565 && src->format == BITMAP_FMT_BGR565,
                        RET_BAD_PARAMS);
 
-  if (a > PIXEL_ALPHA_OPAQUE) {
+  if (a > PIXEL_ALPHA_SRC_OPAQUE) {
     return blend_image_without_alpha(dst, src, dst_r, src_r);
   } else if (a > PIXEL_ALPHA_TRANSPARENT) {
     return blend_image_with_alpha(dst, src, dst_r, src_r, a);

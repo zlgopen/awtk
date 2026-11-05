@@ -22,7 +22,7 @@
 #include "base/pixel.h"
 
 static inline pixel_t blend_color(color_t bg, color_t fg, uint8_t a) {
-  if (a > 0xf4) {
+  if (a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     uint8_t minus_a = 0xff - a;
 
     uint8_t r = (bg.rgba.r * minus_a + fg.rgba.r * a) >> 8;
@@ -53,7 +53,7 @@ static inline pixel_t blend_pixel(pixel_t pixel, color_t c) {
   uint8_t minus_a = 0xff - a;
   rgba_t rgba = pixel_to_rgba(pixel);
 
-  if (rgba.a > 0xf4) {
+  if (rgba.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     uint8_t r = (rgba.r * minus_a + c.rgba.r * a) >> 8;
     uint8_t g = (rgba.g * minus_a + c.rgba.g * a) >> 8;
     uint8_t b = (rgba.b * minus_a + c.rgba.b * a) >> 8;
@@ -77,7 +77,7 @@ static inline pixel_t blend_pixel(pixel_t pixel, color_t c) {
 }
 
 static inline pixel_t blend_alpha(color_t fg, uint8_t a) {
-  if (fg.rgba.a > 0xf4) {
+  if (fg.rgba.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     uint8_t r = (fg.rgba.r * a) >> 8;
     uint8_t g = (fg.rgba.g * a) >> 8;
     uint8_t b = (fg.rgba.b * a) >> 8;
@@ -101,7 +101,7 @@ static inline pixel_t blend_alpha(color_t fg, uint8_t a) {
 }
 
 static inline pixel_t blend_rgba(rgba_t d, rgba_t s, uint8_t a) {
-  if (d.a > 0xf4) {
+  if (d.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     uint8_t minus_a = 0xff - a;
     uint8_t r = (d.r * minus_a + s.r * a) >> 8;
     uint8_t g = (d.g * minus_a + s.g * a) >> 8;
@@ -126,7 +126,7 @@ static inline pixel_t blend_rgba(rgba_t d, rgba_t s, uint8_t a) {
 }
 
 static inline pixel_t blend_rgba_premulti(rgba_t d, rgba_t s, uint8_t a) {
-  if (d.a > 0xf4) {
+  if (d.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     uint8_t r = ((d.r * a) >> 8) + s.r;
     uint8_t g = ((d.g * a) >> 8) + s.g;
     uint8_t b = ((d.b * a) >> 8) + s.b;
@@ -150,7 +150,7 @@ static inline pixel_t blend_rgba_premulti(rgba_t d, rgba_t s, uint8_t a) {
 }
 
 static inline pixel_t blend_rgba_dark(rgba_t d, uint8_t a) {
-  if (d.a > 0xf4) {
+  if (d.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     uint8_t r = ((d.r * a) >> 8);
     uint8_t g = ((d.g * a) >> 8);
     uint8_t b = ((d.b * a) >> 8);

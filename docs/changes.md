@@ -6,6 +6,7 @@
   * add tests(感谢兆坤提供补丁)
   * format code(感谢兆坤提供补丁)
   * blend_a_bgr565 复用函数(感谢兆坤提供补丁)
+  * improve pixel const value(感谢兆坤提供补丁)
 
 2026/11/04
   * improve color(感谢兆坤提供补丁)

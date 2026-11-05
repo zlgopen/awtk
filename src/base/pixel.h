@@ -25,9 +25,27 @@
 #include "tkc/color.h"
 #include "base/pixel_pack_unpack.h"
 
-/* alpha混合的快速通道阈值：大于OPAQUE视为不透明，小于等于TRANSPARENT视为全透明 */
-#define PIXEL_ALPHA_OPAQUE 0xf8
-#define PIXEL_ALPHA_TRANSPARENT 0x08
+/**
+ * @prefix PIXEL_ALPHA_
+ * alpha 快速通道阈值
+ */
+enum {
+  /**
+   * @const PIXEL_ALPHA_SRC_OPAQUE
+   * 源(或整体) alpha 大于它，视为完全不透明，可直接覆盖目标，不做混合。
+   */
+  PIXEL_ALPHA_SRC_OPAQUE = 0xf8,
+  /**
+   * @const PIXEL_ALPHA_COMPOSITE_OPAQUE
+   * 参与合成的 alpha 大于它，合成结果 alpha 视为 255，可跳过归一化(除法)
+   */
+  PIXEL_ALPHA_COMPOSITE_OPAQUE = 0xf4,
+  /**
+   * @const PIXEL_ALPHA_TRANSPARENT
+   * alpha 小于等于它，视为全透明，可直接跳过
+   */
+  PIXEL_ALPHA_TRANSPARENT = 0x08,
+};
 
 static inline uint8_t tk_pixel_limit_uint8(int32_t tmp) {
   return (uint8_t)tk_clamp(tmp, 0, 0xff);
@@ -195,7 +213,7 @@ typedef struct _pixel_rgba8888_t {
 static inline void pixel_rgba8888_blend_rgba_dark(void* pixel, uint8_t a) {
   uint8_t* p = (uint8_t*)pixel;
 
-  if (p[3] > 0xf4) {
+  if (p[3] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     p[0] = (p[0] * a) >> 8;
     p[1] = (p[1] * a) >> 8;
     p[2] = (p[2] * a) >> 8;
@@ -216,7 +234,7 @@ static inline void pixel_rgba8888_blend_rgba_premulti(void* pixel, rgba_t rgba) 
   uint8_t a = rgba.a;
   uint8_t* p = (uint8_t*)pixel;
 
-  if (p[3] > 0xf4) {
+  if (p[3] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     p[0] = ((p[0] * a) >> 8) + rgba.r;
     p[1] = ((p[1] * a) >> 8) + rgba.g;
     p[2] = ((p[2] * a) >> 8) + rgba.b;
@@ -250,7 +268,7 @@ typedef struct _pixel_abgr8888_t {
 static inline void pixel_abgr8888_blend_rgba_dark(void* pixel, uint8_t a) {
   uint8_t* p = (uint8_t*)pixel;
 
-  if (p[0] > 0xf4) {
+  if (p[0] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     p[0] = 0xff;
     p[1] = (p[1] * a) >> 8;
     p[2] = (p[2] * a) >> 8;
@@ -271,7 +289,7 @@ static inline void pixel_abgr8888_blend_rgba_premulti(void* pixel, rgba_t rgba) 
   uint8_t a = rgba.a;
   uint8_t* p = (uint8_t*)pixel;
 
-  if (p[0] > 0xf4) {
+  if (p[0] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     p[0] = 0xff;
     p[1] = ((p[1] * a) >> 8) + rgba.b;
     p[2] = ((p[2] * a) >> 8) + rgba.g;
@@ -305,7 +323,7 @@ typedef struct _pixel_bgra8888_t {
 static inline void pixel_bgra8888_blend_rgba_dark(void* pixel, uint8_t a) {
   uint8_t* p = (uint8_t*)pixel;
 
-  if (p[3] > 0xf4) {
+  if (p[3] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     p[0] = (p[0] * a) >> 8;
     p[1] = (p[1] * a) >> 8;
     p[2] = (p[2] * a) >> 8;
@@ -326,7 +344,7 @@ static inline void pixel_bgra8888_blend_rgba_premulti(void* pixel, rgba_t rgba) 
   uint8_t a = rgba.a;
   uint8_t* p = (uint8_t*)pixel;
 
-  if (p[3] > 0xf4) {
+  if (p[3] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     p[0] = ((p[0] * a) >> 8) + rgba.b;
     p[1] = ((p[1] * a) >> 8) + rgba.g;
     p[2] = ((p[2] * a) >> 8) + rgba.r;
@@ -360,7 +378,7 @@ typedef struct _pixel_argb8888_t {
 static inline void pixel_argb8888_blend_rgba_dark(void* pixel, uint8_t a) {
   uint8_t* p = (uint8_t*)pixel;
 
-  if (p[0] > 0xf4) {
+  if (p[0] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     p[0] = 0xff;
     p[1] = (p[1] * a) >> 8;
     p[2] = (p[2] * a) >> 8;
@@ -381,7 +399,7 @@ static inline void pixel_argb8888_blend_rgba_premulti(void* pixel, rgba_t rgba) 
   uint8_t a = rgba.a;
   uint8_t* p = (uint8_t*)pixel;
 
-  if (p[0] > 0xf4) {
+  if (p[0] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
     p[0] = 0xff;
     p[1] = ((p[1] * a) >> 8) + rgba.r;
     p[2] = ((p[2] * a) >> 8) + rgba.g;

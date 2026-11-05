@@ -53,7 +53,7 @@ static ret_t clear_image(bitmap_t* dst, const rect_t* dst_r, color_t c) {
 static ret_t fill_image(bitmap_t* dst, const rect_t* dst_r, color_t c) {
   uint32_t a = c.rgba.a;
 
-  if (a > PIXEL_ALPHA_OPAQUE) {
+  if (a > PIXEL_ALPHA_SRC_OPAQUE) {
     return clear_image(dst, dst_r, c);
   } else {
     int x = 0;

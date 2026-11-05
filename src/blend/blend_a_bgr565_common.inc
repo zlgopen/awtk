@@ -26,15 +26,15 @@
 
 static inline void blend_a_bgr565_common(uint8_t* dst, rgba_t rgba, uint8_t alpha,
                                          bool_t premulti_alpha) {
-  if (alpha <= PIXEL_ALPHA_OPAQUE) {
+  if (alpha <= PIXEL_ALPHA_SRC_OPAQUE) {
     rgba.a = (rgba.a * alpha) >> 8;
   }
 
-  if (rgba.a > PIXEL_ALPHA_OPAQUE) {
+  if (rgba.a > PIXEL_ALPHA_SRC_OPAQUE) {
     *(uint16_t*)dst = rgb_to_bgr565(rgba.r, rgba.g, rgba.b);
   } else if (rgba.a > PIXEL_ALPHA_TRANSPARENT) {
     if (premulti_alpha) {
-      if (alpha <= PIXEL_ALPHA_OPAQUE) {
+      if (alpha <= PIXEL_ALPHA_SRC_OPAQUE) {
         rgba.r = (rgba.r * alpha) >> 8;
         rgba.g = (rgba.g * alpha) >> 8;
         rgba.b = (rgba.b * alpha) >> 8;
