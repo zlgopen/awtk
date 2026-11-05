@@ -84,8 +84,8 @@ static ret_t rotate_image_impl(bitmap_t* dst, bitmap_t* src, const rect_t* src_r
 }
 
 static ret_t rotate_image_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o) {
-  /* 
-  * 因为 rotate_image_impl 函数在处理不同的旋转的度数的时候，计算逻辑不太一样。（因为 dx 和 dy 我们是认为绘图的起始坐标）
+  /**
+   * 因为 rotate_image_impl 函数在处理不同的旋转的度数的时候，计算逻辑不太一样。（因为 dx 和 dy 我们是认为绘图的起始坐标）
    * 180 度：是按照 dx 和 dy 参数作为 dst 的左下角的点往右上角绘图的，所以在 180 度的时候需要再偏移一个 src_r 的宽高来解决。
    * 270 度：是按照 dx 和 dy 参数作为 dst 的左上角的点往右下角绘图的，所以在 270 度的时候需要偏移一个 src_r 的高度来解决。
    */

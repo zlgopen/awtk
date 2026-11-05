@@ -95,14 +95,15 @@ typedef struct _ffr_draw_arc_info_table_t {
 
 #define ANGLE2SIZE(angle, r) ((int)(sinf(angle) * (r)))
 
-#define FFR_SET_STANDARD_RADIUS(is_h, w, h, radius) {                   \
-  if ((is_h && *radius > h)) {                                          \
-    *radius = h;                                                        \
-  } else if ((!is_h && *radius > w))  {                                 \
-    *radius = w;                                                        \
-  }                                                                     \
-  *radius = *radius <= FFR_SUPPORT_MIN_RADIUS ? 0 : *radius;            \
-}
+#define FFR_SET_STANDARD_RADIUS(is_h, w, h, radius)            \
+  do {                                                         \
+    if ((is_h && *radius > h)) {                               \
+      *radius = h;                                             \
+    } else if ((!is_h && *radius > w)) {                       \
+      *radius = w;                                             \
+    }                                                          \
+    *radius = *radius <= FFR_SUPPORT_MIN_RADIUS ? 0 : *radius; \
+  } while (0)
 
 static ffr_point_pix_t ffr_point_pix_cache_list[FFR_POINT_PIX_CACHE_SIZE];
 

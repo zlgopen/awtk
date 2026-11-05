@@ -24,7 +24,12 @@
 
 #include "tkc/types_def.h"
 
-#define SAFE_FREE(x) if (x) { TKMEM_FREE(x); }
+#define SAFE_FREE(x) \
+  do {               \
+    if (x) {         \
+      TKMEM_FREE(x); \
+    }                \
+  } while (0)
 
 BEGIN_C_DECLS
 

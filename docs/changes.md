@@ -2,6 +2,7 @@
 
 2026/11/05
   * improve blend and pixel(感谢兆坤提供补丁)
+  * improve macro and comment(感谢兆坤提供补丁)
 
 2026/11/04
   * improve color(感谢兆坤提供补丁)

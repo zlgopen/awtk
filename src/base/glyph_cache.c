@@ -20,12 +20,12 @@
  */
 
 #define GLYPH_CACHE_FREE_ITEM(cache, item)            \
-  {                                                   \
+  do {                                                \
     if (cache->destroy_glyph && item->g != NULL) {    \
       cache->destroy_glyph(item->g);                  \
       memset(item, 0x00, sizeof(glyph_cache_item_t)); \
     }                                                 \
-  }
+  } while (0)
 
 #include "tkc/mem.h"
 #include "tkc/time_now.h"
