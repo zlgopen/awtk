@@ -1,10 +1,10 @@
 ﻿#include "base/lcd_orientation_helper.h"
+#include "base/pixel.h"
 
 #define pixel_t pixel_dst_t
 #define pixel_from_rgb pixel_dst_from_rgb
 
 #ifndef blend_a
-
 static inline void blend_a(uint8_t* dst, uint8_t* src, uint8_t alpha, bool_t premulti_alpha) {
   pixel_src_t s = *(pixel_src_t*)src;
   rgba_t srgba = pixel_src_to_rgba(s);
@@ -450,7 +450,6 @@ static ret_t blend_image_with_alpha_by_rotate(bitmap_t* dst, bitmap_t* src, cons
   case LCD_ORIENTATION_270:
     return blend_image_rotate_270_acw_with_alpha(dst, src, dst_r, src_r, a);
   default:
-    break;
+    return RET_NOT_IMPL;
   }
-  return RET_NOT_IMPL;
 }

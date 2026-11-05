@@ -1,4 +1,5 @@
 ﻿#include "tkc/rect.h"
+#include "base/bitmap.h"
 #include "base/lcd_orientation_helper.h"
 
 static ret_t rotate_image_impl(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o) {

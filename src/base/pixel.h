@@ -30,12 +30,7 @@
 #define PIXEL_ALPHA_TRANSPARENT 0x08
 
 static inline uint8_t tk_pixel_limit_uint8(int32_t tmp) {
-  if (tmp > 0xff) {
-    tmp = 0xff;
-  } else if (tmp < 0) {
-    tmp = 0;
-  }
-  return (uint8_t)tmp;
+  return (uint8_t)tk_clamp(tmp, 0, 0xff);
 }
 
 #pragma pack(push, 1)
