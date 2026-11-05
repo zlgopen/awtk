@@ -435,3 +435,29 @@ TEST(Pixel, argb8888) {
   ASSERT_EQ(rgba.b, p.b);
   ASSERT_EQ(rgba.a, 0xff);
 }
+
+TEST(Pixel, limit_uint8) {
+  ASSERT_EQ(tk_pixel_limit_uint8(0), 0);
+  ASSERT_EQ(tk_pixel_limit_uint8(1), 1);
+  ASSERT_EQ(tk_pixel_limit_uint8(0x7f), 0x7f);
+  ASSERT_EQ(tk_pixel_limit_uint8(0xfe), 0xfe);
+  ASSERT_EQ(tk_pixel_limit_uint8(0xff), 0xff);
+
+  /* min */
+  ASSERT_EQ(tk_pixel_limit_uint8(-1), 0);
+  ASSERT_EQ(tk_pixel_limit_uint8(-0xff), 0);
+  ASSERT_EQ(tk_pixel_limit_uint8(INT32_MIN), 0);
+
+  /* max */
+  ASSERT_EQ(tk_pixel_limit_uint8(0x100), 0xff);
+  ASSERT_EQ(tk_pixel_limit_uint8(0x1234), 0xff);
+  ASSERT_EQ(tk_pixel_limit_uint8(INT32_MAX), 0xff);
+
+  /* 两个半透明像素合成时，alpha 之和可能大于 0xff，必须饱和为 0xff，不能直接截断成 0 */
+  int32_t src_a = 0xf8;
+  int32_t dst_a = 0xf4;
+  int32_t sum = src_a + dst_a - ((src_a * dst_a) >> 8);
+
+  ASSERT_EQ(sum, 0x100);
+  ASSERT_EQ(tk_pixel_limit_uint8(sum), 0xff);
+}

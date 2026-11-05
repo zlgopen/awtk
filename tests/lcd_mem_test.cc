@@ -1,4 +1,5 @@
 ﻿#include "base/canvas.h"
+#include "base/pixel.h"
 #include "gtest/gtest.h"
 #include "tkc/mem.h"
 #include "lcd/lcd_mem_bgr565.h"
@@ -161,6 +162,50 @@ TEST(LCDMem, resize) {
   ASSERT_EQ(lcd->w, 200);
   ASSERT_EQ(lcd->h, 100);
   ASSERT_EQ(mem->line_length, 200u * 4u);
+
+  lcd_destroy(lcd);
+}
+
+TEST(LCDMem, blend_pixel_alpha_saturate) {
+  uint32_t x = 0;
+  uint32_t y = 0;
+  uint32_t w = 4;
+  uint32_t h = 4;
+  color_t color;
+  point_t point = {1, 1};
+  lcd_t* lcd = lcd_mem_bgra8888_create(w, h, TRUE);
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  uint8_t* fbuff = lcd_mem_get_offline_fb(mem);
+  uint32_t line_length = mem->line_length;
+
+  ASSERT_EQ(line_length, w * (uint32_t)pixel_bgra8888_BPP);
+
+  /* 目标像素的 alpha 为 0xf4，画笔的 alpha 为 0xf8，合成后的 alpha 为 0x100，必须饱和到 0xff */
+  for (y = 0; y < h; y++) {
+    for (x = 0; x < w; x++) {
+      pixel_bgra8888_t* p = (pixel_bgra8888_t*)(fbuff + y * line_length + x * pixel_bgra8888_BPP);
+      p->b = 200;
+      p->g = 150;
+      p->r = 100;
+      p->a = 0xf4;
+    }
+  }
+
+  ASSERT_EQ(lcd_set_stroke_color(lcd, color_init(10, 20, 30, 0xf8)), RET_OK);
+  ASSERT_EQ(lcd_draw_points(lcd, &point, 1), RET_OK);
+
+  color = lcd_get_point_color(lcd, point.x, point.y);
+  ASSERT_EQ(color.rgba.r, 12);
+  ASSERT_EQ(color.rgba.g, 22);
+  ASSERT_EQ(color.rgba.b, 33);
+  ASSERT_EQ(color.rgba.a, 0xff);
+
+  /* 其它的像素保持不变 */
+  color = lcd_get_point_color(lcd, 0, 0);
+  ASSERT_EQ(color.rgba.r, 100);
+  ASSERT_EQ(color.rgba.g, 150);
+  ASSERT_EQ(color.rgba.b, 200);
+  ASSERT_EQ(color.rgba.a, 0xf4);
 
   lcd_destroy(lcd);
 }
