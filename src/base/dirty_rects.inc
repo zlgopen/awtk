@@ -38,7 +38,7 @@ static inline ret_t dirty_rects_paint(dirty_rects_t* dirty_rects, widget_t* widg
     return RET_OK;
   }
 
-	(void)cost;
+  (void)cost;
   if (dirty_rects->disable_multiple || !is_support_dirty_rect) {
     full_screen = rect_init(0, 0, canvas_get_width(c), canvas_get_height(c));
     iter = is_support_dirty_rect ? &(dirty_rects->max) : &full_screen;

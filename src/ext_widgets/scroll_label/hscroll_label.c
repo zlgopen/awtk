@@ -74,7 +74,8 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
       !hscroll_label_is_running(widget)) {
     r = rect_init(left_margin, 0, w, widget->h);
 
-    ret = canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), &r, TRUE);
+    ret =
+        canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), &r, TRUE);
     goto destroy;
   }
 
@@ -98,7 +99,7 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
       canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), &r, FALSE);
     }
   }
-destroy :
+destroy:
   glyphs_destroy(glyphs);
   return ret;
 }

@@ -47,8 +47,8 @@ static ret_t gif_image_ensure_raw(widget_t* widget, const uint8_t** data, uint32
 
   theme = image->gif_am != NULL && image->gif_am->theme != NULL ? image->gif_am->theme : "default";
 
-  status = EM_ASM_INT({ return ImageLoader.getRawStatus(pointerToString($0), pointerToString($1)); },
-                      name, theme);
+  status = EM_ASM_INT(
+      { return ImageLoader.getRawStatus(pointerToString($0), pointerToString($1)); }, name, theme);
   if (status == GIF_RAW_NONE || status == GIF_RAW_LOADING) {
     int32_t req = EM_ASM_INT(
         { return ImageLoader.requestRaw(pointerToString($0), pointerToString($1)); }, name, theme);
@@ -311,8 +311,8 @@ static ret_t gif_image_paint_self_part_buffer_load(widget_t* widget, canvas_t* c
   vg = canvas_get_vgcanvas(c);
 
   if (bitmap->buffer == NULL) {
-    ret_t load_ret = gif_image_load_gif(widget, image_base->image, bitmap,
-                                        image->part_buffer_load_mode);
+    ret_t load_ret =
+        gif_image_load_gif(widget, image_base->image, bitmap, image->part_buffer_load_mode);
     if (load_ret != RET_OK) {
       widget_paint_helper(widget, c, NULL, NULL);
       return RET_OK;
@@ -349,8 +349,8 @@ static ret_t gif_image_paint_self_part_buffer_load(widget_t* widget, canvas_t* c
       timer_info_t* timer = (timer_info_t*)timer_find(image->timer_id);
       if (timer) timer->duration = image->delay;
       if (image->gif_on_end) {
-        ret_t load_ret = gif_image_load_gif(widget, image_base->image, bitmap,
-                                            image->part_buffer_load_mode);
+        ret_t load_ret =
+            gif_image_load_gif(widget, image_base->image, bitmap, image->part_buffer_load_mode);
         if (load_ret != RET_OK && load_ret != RET_BUSY) {
           return RET_BAD_PARAMS;
         }

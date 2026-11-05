@@ -137,7 +137,8 @@ static ret_t lcd_reg_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, x
   return RET_OK;
 }
 
-static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
+static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, const rect_t* src,
+                                       const rect_t* dst) {
   wh_t i = 0;
   wh_t j = 0;
   xy_t x = dst->x;
@@ -180,7 +181,8 @@ static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, const rect_t* 
   return RET_OK;
 }
 
-static ret_t lcd_reg_draw_image_8888(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
+static ret_t lcd_reg_draw_image_8888(lcd_t* lcd, bitmap_t* img, const rect_t* src,
+                                     const rect_t* dst) {
   wh_t i = 0;
   wh_t j = 0;
   uint8_t a = 0;

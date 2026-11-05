@@ -75,7 +75,8 @@ typedef struct _code_assist_t {
 
 code_assist_t* code_assist_create();
 ret_t code_assist_destroy(code_assist_t* ca);
-ret_t code_assist_visit_buffer(code_assist_t* ca, const char* full_path, const char* buffer, uint32_t len);
+ret_t code_assist_visit_buffer(code_assist_t* ca, const char* full_path, const char* buffer,
+                               uint32_t len);
 ca_symbols_t* code_assist_symbols_from_file(code_assist_t* ca, const char* full_path);
 
 END_C_DECLS

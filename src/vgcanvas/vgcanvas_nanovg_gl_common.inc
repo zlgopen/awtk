@@ -19,7 +19,6 @@
  *
  */
 
-
 #include "base/system_info.h"
 #include "base/vgcanvas_asset_manager.h"
 
@@ -87,7 +86,7 @@ typedef struct _vgcanvas_nanovg_t {
 #endif
 
 vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
-                            void* win) {
+                               void* win) {
   int32_t flags = 0;
   native_window_info_t info;
   native_window_t* window = NATIVE_WINDOW(win);

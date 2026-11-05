@@ -1057,7 +1057,7 @@ bool_t code_edit_is_comment(widget_t* widget, int64_t pos);
 #define PROP_CODE_EDITOR_FONT_SIZE \
   "CODE_EDITOR_FONT_SIZE"  // designer设置了代码编辑器的字体大小后，要设置值为字号的此属性到wm。
 #define EVT_GLOBAL_CODE_EDITOR_FONT_SIZE_CHANGED \
-  EVT_USER_START + 1  // designer设置了代码编辑器的字体大小后，要从wm派发这个事件。
+  EVT_USER_START + 1            // designer设置了代码编辑器的字体大小后，要从wm派发这个事件。
 #define _SC_MARGE_LINENUMBER 0  // 第0条marge为行号
 #define _SC_MARGE_SYBOLE 1      // 第1条marge为断点等
 #define _SC_MARGE_FOLDER 2      // 第2条marge为折叠符号

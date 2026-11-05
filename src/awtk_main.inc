@@ -140,7 +140,6 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   str_from_wstr(&str, lpcmdline);
   command_line_to_argv(str.str, argv, &argc);
 
-
   tk_pre_init();
 #ifdef ON_CMD_LINE
   ON_CMD_LINE(argc, argv);
@@ -221,7 +220,7 @@ int main(int argc, char* argv[]) {
 #endif
   tk_set_lcd_orientation(APP_LCD_ORIENTATION);
 #endif
-#endif/*TK_IS_PC*/
+#endif /*TK_IS_PC*/
 
   font_manager_set_standard_font_size(font_manager(), APP_USE_STD_FONT_SIZE);
   system_info_set_default_font(system_info(), APP_DEFAULT_FONT);
@@ -260,7 +259,7 @@ int main(int argc, char* argv[]) {
   tk_run();
   application_exit();
   custom_keys_deinit(TRUE);
-  
+
   GLOBAL_EXIT();
   tk_exit();
 

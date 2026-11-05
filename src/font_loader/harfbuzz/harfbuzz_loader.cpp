@@ -33,7 +33,7 @@
 #include "fribidi/fribidi.h"
 #endif /*WITH_BIDI_SHEEN*/
 
-#define TEXT_LEVEL_IS_RTL(level) ((level)&1)
+#define TEXT_LEVEL_IS_RTL(level) ((level) & 1)
 
 #ifdef WITH_BIDI_SHEEN
 typedef SBLevel _raqm_bidi_level_t;

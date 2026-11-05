@@ -40,7 +40,7 @@ static ret_t on_file(foreach_ctx_t* ctx, const char* filename) {
       return RET_OK;
     }
   }
-  
+
   check_api_doc(ctx->ca, filename, ctx->log_hook, ctx->log_ctx, ctx->auto_fix, &checked);
   if (checked) {
     ++ctx->nchecked;
@@ -49,7 +49,7 @@ static ret_t on_file(foreach_ctx_t* ctx, const char* filename) {
 }
 
 static int usage(const char* exe) {
-  char exename[MAX_PATH+1] = {0};
+  char exename[MAX_PATH + 1] = {0};
   path_basename_ex(exe, TRUE, exename, sizeof(exename));
   printf("e.g:\n");
   printf("%s src\n", exename);
@@ -102,11 +102,11 @@ static void set_path(const char* path, str_t* dir, str_t* file) {
 }
 
 int main(int argc, char* argv[]) {
-  char exe[MAX_PATH+1] = {0};
+  char exe[MAX_PATH + 1] = {0};
   out_info_t out = {0};
   str_t dir_path;
   str_t file_path;
-  foreach_ctx_t ctx = { .extname = ".h", .log_ctx = &out, .log_hook = log_to_str};
+  foreach_ctx_t ctx = {.extname = ".h", .log_ctx = &out, .log_hook = log_to_str};
   ctx.ca = code_assist_create();
 
   path_exe(exe);
@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
   }
   set_path(path, &dir_path, &file_path);
 
-  char path_nor[MAX_PATH+1] = {0};
+  char path_nor[MAX_PATH + 1] = {0};
   if (dir_path.size > 0) {
     path_normalize(dir_path.str, path_nor, MAX_PATH);
     printf("check dir : %s\n", path_nor);
@@ -139,7 +139,7 @@ int main(int argc, char* argv[]) {
     ctx.extname = "";
     on_file(&ctx, path_nor);
   }
-  
+
   str_reset(&dir_path);
   str_reset(&file_path);
 

@@ -752,8 +752,8 @@ static void allocator_test_composite_edges(void) {
   MEM_ALLOCATOR_FREE(allocator, ptrs[4]);
   mem_allocator_destroy(allocator);
 
-  allocator =
-      mem_allocator_composite_init(&composite, mem_a, sizeof(mem_a), mem_b, sizeof(mem_b), mem_c, sizeof(mem_c), NULL);
+  allocator = mem_allocator_composite_init(&composite, mem_a, sizeof(mem_a), mem_b, sizeof(mem_b),
+                                           mem_c, sizeof(mem_c), NULL);
   assert(mem_allocator_composite_add_mem(allocator, (char*)extra, sizeof(extra)) == RET_BAD_PARAMS);
   assert(mem_allocator_dump(allocator) == RET_OK);
   mem_allocator_destroy(allocator);

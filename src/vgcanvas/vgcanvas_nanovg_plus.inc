@@ -18,17 +18,18 @@ static ret_t vgcanvas_nanovg_plus_end_frame(vgcanvas_t* vgcanvas);
 static ret_t vgcanvas_nanovg_plus_set_antialias(vgcanvas_t* vgcanvas, bool_t value);
 static ret_t vgcanvas_nanovg_plus_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo);
 static ret_t vgcanvas_nanovg_plus_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
-                                    bitmap_format_t format, void* data);
-static ret_t vgcanvas_nanovg_plus_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects_t* dirty_rects);
+                                         bitmap_format_t format, void* data);
+static ret_t vgcanvas_nanovg_plus_begin_frame(vgcanvas_t* vgcanvas,
+                                              const dirty_rects_t* dirty_rects);
 static ret_t vgcanvas_nanovg_plus_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
-                                        bool_t custom_draw_model, framebuffer_object_t* fbo);
+                                             bool_t custom_draw_model, framebuffer_object_t* fbo);
 static ret_t vgcanvas_nanovg_plus_create_fbo_ex(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
-                                           bool_t custom_draw_model, bool_t with_depth,
-                                           framebuffer_object_t* fbo);
+                                                bool_t custom_draw_model, bool_t with_depth,
+                                                framebuffer_object_t* fbo);
 static ret_t vgcanvas_nanovg_plus_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo);
 static ret_t vgcanvas_nanovg_plus_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo);
 static ret_t vgcanvas_nanovg_plus_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
-                                           bitmap_t* img, const rect_t* r);
+                                                bitmap_t* img, const rect_t* r);
 const rectf_t* vgcanvas_nanovg_plus_get_clip_rect(vgcanvas_t* vgcanvas);
 
 static ret_t vgcanvas_nanovg_plus_on_asset_events(void* ctx, event_t* e) {
@@ -51,7 +52,8 @@ ret_t vgcanvas_nanovg_plus_init(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_set_assets_manager(vgcanvas_t* vg, assets_manager_t* assets_manager) {
+static ret_t vgcanvas_nanovg_plus_set_assets_manager(vgcanvas_t* vg,
+                                                     assets_manager_t* assets_manager) {
   return_value_if_fail(vg != NULL, RET_BAD_PARAMS);
 
   if (vg->assets_manager != NULL && vg->assets_manager != assets_manager) {
@@ -96,7 +98,7 @@ static ret_t vgcanvas_nanovg_plus_flush(vgcanvas_t* vgcanvas) {
 }
 
 static ret_t vgcanvas_nanovg_plus_clear_rect(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t w,
-                                        float_t h, color_t c) {
+                                             float_t h, color_t c) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
   color_t fill_color = vgcanvas->fill_color;
   vgcanvas_set_fill_color(vgcanvas, c);
@@ -134,7 +136,7 @@ static ret_t vgcanvas_nanovg_plus_line_to(vgcanvas_t* vgcanvas, float_t x, float
 }
 
 static ret_t vgcanvas_nanovg_plus_quad_to(vgcanvas_t* vgcanvas, float_t cpx, float_t cpy, float_t x,
-                                     float_t y) {
+                                          float_t y) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
   nvgp_quad_to(vg, cpx, cpy, x, y);
@@ -143,7 +145,7 @@ static ret_t vgcanvas_nanovg_plus_quad_to(vgcanvas_t* vgcanvas, float_t cpx, flo
 }
 
 static ret_t vgcanvas_nanovg_plus_bezier_to(vgcanvas_t* vgcanvas, float_t cp1x, float_t cp1y,
-                                       float_t cp2x, float_t cp2y, float_t x, float_t y) {
+                                            float_t cp2x, float_t cp2y, float_t x, float_t y) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
   nvgp_bezier_to(vg, cp1x, cp1y, cp2x, cp2y, x, y);
@@ -152,7 +154,7 @@ static ret_t vgcanvas_nanovg_plus_bezier_to(vgcanvas_t* vgcanvas, float_t cp1x, 
 }
 
 static ret_t vgcanvas_nanovg_plus_arc_to(vgcanvas_t* vgcanvas, float_t x1, float_t y1, float_t x2,
-                                    float_t y2, float_t r) {
+                                         float_t y2, float_t r) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
   nvgp_arc_to(vg, x1, y1, x2, y2, r);
@@ -161,7 +163,7 @@ static ret_t vgcanvas_nanovg_plus_arc_to(vgcanvas_t* vgcanvas, float_t x1, float
 }
 
 static ret_t vgcanvas_nanovg_plus_arc(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t r,
-                                 float_t start, float_t end, bool_t ccw) {
+                                      float_t start, float_t end, bool_t ccw) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
   nvgp_arc(vg, x, y, r, start, end, ccw);
@@ -205,7 +207,7 @@ static ret_t vgcanvas_nanovg_plus_translate(vgcanvas_t* vgcanvas, float_t x, flo
 }
 
 static ret_t vgcanvas_nanovg_plus_transform(vgcanvas_t* vgcanvas, float_t a, float_t b, float_t c,
-                                       float_t d, float_t e, float_t f) {
+                                            float_t d, float_t e, float_t f) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
   nvgp_transform(vg, a, b, c, d, e, f);
@@ -213,8 +215,8 @@ static ret_t vgcanvas_nanovg_plus_transform(vgcanvas_t* vgcanvas, float_t a, flo
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_set_transform(vgcanvas_t* vgcanvas, float_t a, float_t b, float_t c,
-                                           float_t d, float_t e, float_t f) {
+static ret_t vgcanvas_nanovg_plus_set_transform(vgcanvas_t* vgcanvas, float_t a, float_t b,
+                                                float_t c, float_t d, float_t e, float_t f) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
   nvgp_reset_transform(vg);
@@ -223,8 +225,8 @@ static ret_t vgcanvas_nanovg_plus_set_transform(vgcanvas_t* vgcanvas, float_t a,
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_rounded_rect(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t w,
-                                          float_t h, float_t r) {
+static ret_t vgcanvas_nanovg_plus_rounded_rect(vgcanvas_t* vgcanvas, float_t x, float_t y,
+                                               float_t w, float_t h, float_t r) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
   nvgp_rounded_rect(vg, x, y, w, h, r);
@@ -233,7 +235,7 @@ static ret_t vgcanvas_nanovg_plus_rounded_rect(vgcanvas_t* vgcanvas, float_t x, 
 }
 
 static ret_t vgcanvas_nanovg_plus_ellipse(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t rx,
-                                     float_t ry) {
+                                          float_t ry) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
   nvgp_ellipse(vg, x, y, rx, ry);
@@ -249,37 +251,41 @@ static ret_t vgcanvas_nanovg_plus_close_path(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_set_fill_mode(vgcanvas_t* vgcanvas, vgcanvas_fill_mode_t fill_mode) {
+static ret_t vgcanvas_nanovg_plus_set_fill_mode(vgcanvas_t* vgcanvas,
+                                                vgcanvas_fill_mode_t fill_mode) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
   switch (fill_mode) {
-  case VGCANVAS_FILL_MODE_ALL_FILL:
-    ncgp_set_fill_mode(vg, NVGP_FILLMODE_All);
-    break;
-  case VGCANVAS_FILL_MODE_NON_ZERO:
-    ncgp_set_fill_mode(vg, NVGP_FILLMODE_NONZERO);
-    break;
-  case VGCANVAS_FILL_MODE_EVEN_ODD:
-    ncgp_set_fill_mode(vg, NVGP_FILLMODE_EVENODD);
-    break;
-  default:
-    ncgp_set_fill_mode(vg, NVGP_FILLMODE_All);
-    break;
+    case VGCANVAS_FILL_MODE_ALL_FILL:
+      ncgp_set_fill_mode(vg, NVGP_FILLMODE_All);
+      break;
+    case VGCANVAS_FILL_MODE_NON_ZERO:
+      ncgp_set_fill_mode(vg, NVGP_FILLMODE_NONZERO);
+      break;
+    case VGCANVAS_FILL_MODE_EVEN_ODD:
+      ncgp_set_fill_mode(vg, NVGP_FILLMODE_EVENODD);
+      break;
+    default:
+      ncgp_set_fill_mode(vg, NVGP_FILLMODE_All);
+      break;
   }
   return RET_OK;
 }
 
 static ret_t vgcanvas_nanovg_plus_intersect_clip_rect(vgcanvas_t* vgcanvas, float_t* x, float_t* y,
-                                                 float_t* w, float_t* h) {
+                                                      float_t* w, float_t* h) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
   nvgp_intersect_scissor(vg, x, y, w, h);
-  nvgp_get_curr_clip_rect(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
+  nvgp_get_curr_clip_rect(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y,
+                          &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
 
   return RET_OK;
 }
 
-static bool_t vgcanvas_nanovg_plus_is_rectf_in_clip_rect(vgcanvas_t* vgcanvas, float_t left, float_t top, float_t right, float_t bottom) {
+static bool_t vgcanvas_nanovg_plus_is_rectf_in_clip_rect(vgcanvas_t* vgcanvas, float_t left,
+                                                         float_t top, float_t right,
+                                                         float_t bottom) {
   const rectf_t* clip_rect = vgcanvas_nanovg_plus_get_clip_rect(vgcanvas);
   float_t clip_left = clip_rect->x;
   float_t clip_right = clip_rect->x + clip_rect->w;
@@ -292,16 +298,18 @@ static bool_t vgcanvas_nanovg_plus_is_rectf_in_clip_rect(vgcanvas_t* vgcanvas, f
 }
 
 static ret_t vgcanvas_nanovg_plus_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t w,
-                                       float_t h) {
+                                            float_t h) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
   nvgp_scissor(vg, x, y, w, h);
-  nvgp_get_curr_clip_rect(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
+  nvgp_get_curr_clip_rect(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y,
+                          &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
   return RET_OK;
 }
 
 const rectf_t* vgcanvas_nanovg_plus_get_clip_rect(vgcanvas_t* vgcanvas) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
-  nvgp_get_curr_clip_rect(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
+  nvgp_get_curr_clip_rect(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y,
+                          &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
   return &(vgcanvas->clip_rect);
 }
 
@@ -322,13 +330,15 @@ static ret_t vgcanvas_nanovg_plus_stroke(vgcanvas_t* vgcanvas) {
 }
 
 static int vgcanvas_nanovg_plus_bitmap_flag_to_NVGimageFlags(bitmap_flag_t flags) {
-  if(flags & BITMAP_FLAG_PREMULTI_ALPHA) {
+  if (flags & BITMAP_FLAG_PREMULTI_ALPHA) {
     return NVGP_GL_IMAGE_PREMULTIPLIED;
   }
   return 0;
 }
 
-static inline uint8_t* vgcanvas_nanovg_plus_ensure_buffer(uint8_t* img_data, uint32_t img_w, uint32_t img_h, uint32_t bpp, uint32_t img_line_length) {
+static inline uint8_t* vgcanvas_nanovg_plus_ensure_buffer(uint8_t* img_data, uint32_t img_w,
+                                                          uint32_t img_h, uint32_t bpp,
+                                                          uint32_t img_line_length) {
   int32_t j = 0;
   uint32_t size = 0;
   uint8_t* data = NULL;
@@ -370,7 +380,8 @@ static int vgcanvas_nanovg_plus_ensure_image(vgcanvas_nanovg_plus_t* canvas, bit
       fbo = (framebuffer_object_t*)img->specific_ctx;
       goto create_texture_info;
     } else {
-      specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &result);
+      specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(),
+                                                           (vgcanvas_t*)canvas, img, &result);
     }
     if (result == RET_OK) {
       i = ((vgcanvas_nanovg_plus_gl_texture_t*)specific)->image_id;
@@ -462,14 +473,16 @@ static ret_t vgcanvas_nanovg_plus_set_font(vgcanvas_t* vgcanvas, const char* nam
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
   return_value_if_fail(name && *name, RET_BAD_PARAMS);
 
-  font_id = tk_pointer_to_int(vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vgcanvas, name, &result));
+  font_id = tk_pointer_to_int(
+      vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vgcanvas, name, &result));
 
   if (result != RET_OK) {
     font_id = nvgp_create_empty_font(vg, name);
     if (font_id < 0) {
       log_warn("load font %s failed\n", name);
     }
-    vgcanvas_asset_manager_add_font(vgcanvas_asset_manager(), vgcanvas, name, tk_pointer_from_int(font_id));
+    vgcanvas_asset_manager_add_font(vgcanvas_asset_manager(), vgcanvas, name,
+                                    tk_pointer_from_int(font_id));
   }
 
   canvas->font_id = font_id;
@@ -492,7 +505,8 @@ static ret_t vgcanvas_nanovg_plus_set_text_align(vgcanvas_t* vgcanvas, const cha
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_set_text_baseline(vgcanvas_t* vgcanvas, const char* text_baseline) {
+static ret_t vgcanvas_nanovg_plus_set_text_baseline(vgcanvas_t* vgcanvas,
+                                                    const char* text_baseline) {
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
 
   if (text_baseline[0] == 'b') {
@@ -506,25 +520,29 @@ static ret_t vgcanvas_nanovg_plus_set_text_baseline(vgcanvas_t* vgcanvas, const 
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_fill_text(vgcanvas_t* vgcanvas, const char* text, float_t x, float_t y,
-                                       float_t max_width) {
+static ret_t vgcanvas_nanovg_plus_fill_text(vgcanvas_t* vgcanvas, const char* text, float_t x,
+                                            float_t y, float_t max_width) {
   ret_t ret = RET_FAIL;
   glyphs_t* glyphs = NULL;
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
   nvgp_context_t* vg = canvas->vg;
-  font_t* font = font_manager_get_font(vgcanvas->c->font_manager, vgcanvas->font, vgcanvas->font_size);
+  font_t* font =
+      font_manager_get_font(vgcanvas->c->font_manager, vgcanvas->font, vgcanvas->font_size);
   return_value_if_fail(font != NULL && wstr_set_utf8(&canvas->tmp_wstr, text) == RET_OK, RET_FAIL);
-  glyphs = font_create_glyphs(font, canvas->tmp_wstr.str, canvas->tmp_wstr.size, vgcanvas->font_size, NULL);
+  glyphs = font_create_glyphs(font, canvas->tmp_wstr.str, canvas->tmp_wstr.size,
+                              vgcanvas->font_size, NULL);
   if (glyphs != NULL) {
-    ret = vgcanvas_fill_text_by_glyphs(vgcanvas, glyphs, 0, glyphs_get_length(glyphs), x, y, max_width);
+    ret = vgcanvas_fill_text_by_glyphs(vgcanvas, glyphs, 0, glyphs_get_length(glyphs), x, y,
+                                       max_width);
     glyphs_destroy(glyphs);
   }
 
   return ret;
 }
 
-static ret_t vgcanvas_nanovg_plus_fill_text_by_glyphs(vgcanvas_t* vgcanvas, glyphs_t* glyphs, uint32_t start, uint32_t len, float_t x, float_t y,
-                                                 float_t max_width) {
+static ret_t vgcanvas_nanovg_plus_fill_text_by_glyphs(vgcanvas_t* vgcanvas, glyphs_t* glyphs,
+                                                      uint32_t start, uint32_t len, float_t x,
+                                                      float_t y, float_t max_width) {
   uint32_t i = 0;
   uint32_t nr = len + start;
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
@@ -540,9 +558,10 @@ static ret_t vgcanvas_nanovg_plus_fill_text_by_glyphs(vgcanvas_t* vgcanvas, glyp
     if (g != NULL) {
       xy_t xx = x * ratio + g->x;
       xy_t yy = y * ratio + g->y + baseline;
-      nvgp_glyph(vg, g->glyph_index, font_size, (float)xx, (float)yy, (float)g->w, (float)g->h, g->data);
+      nvgp_glyph(vg, g->glyph_index, font_size, (float)xx, (float)yy, (float)g->w, (float)g->h,
+                 g->data);
       x += (g->advance / ratio);
-  } else {
+    } else {
       x += 4;
     }
   }
@@ -554,9 +573,11 @@ static float_t vgcanvas_nanovg_plus_measure_text(vgcanvas_t* vgcanvas, const cha
   glyphs_t* glyphs = NULL;
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
   nvgp_context_t* vg = canvas->vg;
-  font_t* font = font_manager_get_font(vgcanvas->c->font_manager, vgcanvas->font, vgcanvas->font_size);
+  font_t* font =
+      font_manager_get_font(vgcanvas->c->font_manager, vgcanvas->font, vgcanvas->font_size);
   return_value_if_fail(font != NULL && wstr_set_utf8(&canvas->tmp_wstr, text) == RET_OK, 0.0f);
-  glyphs = font_create_glyphs(font, canvas->tmp_wstr.str, canvas->tmp_wstr.size, vgcanvas->font_size, NULL);
+  glyphs = font_create_glyphs(font, canvas->tmp_wstr.str, canvas->tmp_wstr.size,
+                              vgcanvas->font_size, NULL);
   if (glyphs != NULL) {
     w = glyphs_measure(glyphs, 0, glyphs_get_length(glyphs));
     glyphs_destroy(glyphs);
@@ -566,7 +587,7 @@ static float_t vgcanvas_nanovg_plus_measure_text(vgcanvas_t* vgcanvas, const cha
 
 #ifdef WITH_GPU
 static ret_t vgcanvas_nanovg_plus_get_text_metrics(vgcanvas_t* vgcanvas, float_t* ascent,
-                                              float_t* descent, float_t* line_hight) {
+                                                   float_t* descent, float_t* line_hight) {
   font_vmetrics_t vmetrics = font_get_vmetrics(vgcanvas->c->font, vgcanvas->c->font_size);
   if (ascent != NULL) {
     *ascent = vmetrics.ascent;
@@ -591,21 +612,21 @@ static ret_t vgcanvas_nanovg_plus_image_orientation_matrix(nvgp_context_t* vg, b
     float_t anchor_x = img->w / 2.0f;
     float_t anchor_y = img->h / 2.0f;
     nvgp_translate(vg, anchor_x, anchor_y);
-		nvgp_rotate(vg, TK_D2R((float_t)(img->orientation)));
-		nvgp_translate(vg, -anchor_y, -anchor_x);
+    nvgp_rotate(vg, TK_D2R((float_t)(img->orientation)));
+    nvgp_translate(vg, -anchor_y, -anchor_x);
   } else if (img->orientation == LCD_ORIENTATION_180) {
     float_t anchor_x = img->w / 2.0f;
     float_t anchor_y = img->h / 2.0f;
-		nvgp_translate(vg, anchor_x, anchor_y);
-		nvgp_rotate(vg, TK_D2R(180.0f));
-		nvgp_translate(vg, -anchor_x, -anchor_y);
+    nvgp_translate(vg, anchor_x, anchor_y);
+    nvgp_rotate(vg, TK_D2R(180.0f));
+    nvgp_translate(vg, -anchor_x, -anchor_y);
   }
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
-                                        float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
-                                        float_t dh) {
+static ret_t vgcanvas_nanovg_plus_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx,
+                                             float_t sy, float_t sw, float_t sh, float_t dx,
+                                             float_t dy, float_t dw, float_t dh) {
   rectf_t r_src;
   nvgp_paint_t img_paint;
   float scaleX = (float)dw / sw;
@@ -705,21 +726,23 @@ static ret_t vgcanvas_nanovg_plus_set_fill_color(vgcanvas_t* vgcanvas, color_t c
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_set_fill_linear_gradient(vgcanvas_t* vgcanvas, float_t sx, float_t sy,
-                                                      float_t ex, float_t ey, color_t icolor,
-                                                      color_t ocolor) {
+static ret_t vgcanvas_nanovg_plus_set_fill_linear_gradient(vgcanvas_t* vgcanvas, float_t sx,
+                                                           float_t sy, float_t ex, float_t ey,
+                                                           color_t icolor, color_t ocolor) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
-  nvgp_paint_t paint = nvgp_linear_gradient(vg, sx, sy, ex, ey, to_nvgp_color(icolor), to_nvgp_color(ocolor));
+  nvgp_paint_t paint =
+      nvgp_linear_gradient(vg, sx, sy, ex, ey, to_nvgp_color(icolor), to_nvgp_color(ocolor));
   nvgp_set_fill_paint(vg, paint);
 
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_set_fill_radial_gradient(vgcanvas_t* vgcanvas, float_t cx, float_t cy,
-                                                      float_t inr, float_t outr, color_t icolor,
-                                                      color_t ocolor) {
+static ret_t vgcanvas_nanovg_plus_set_fill_radial_gradient(vgcanvas_t* vgcanvas, float_t cx,
+                                                           float_t cy, float_t inr, float_t outr,
+                                                           color_t icolor, color_t ocolor) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
-  nvgp_paint_t paint = nvgp_radial_gradient(vg, cx, cy, inr, outr, to_nvgp_color(icolor), to_nvgp_color(ocolor));
+  nvgp_paint_t paint =
+      nvgp_radial_gradient(vg, cx, cy, inr, outr, to_nvgp_color(icolor), to_nvgp_color(ocolor));
   nvgp_set_fill_paint(vg, paint);
 
   return RET_OK;
@@ -734,20 +757,22 @@ static ret_t vgcanvas_nanovg_plus_set_stroke_color(vgcanvas_t* vgcanvas, color_t
 }
 
 static ret_t vgcanvas_nanovg_plus_set_stroke_linear_gradient(vgcanvas_t* vgcanvas, float_t sx,
-                                                        float_t sy, float_t ex, float_t ey,
-                                                        color_t icolor, color_t ocolor) {
+                                                             float_t sy, float_t ex, float_t ey,
+                                                             color_t icolor, color_t ocolor) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
-  nvgp_paint_t paint = nvgp_linear_gradient(vg, sx, sy, ex, ey, to_nvgp_color(icolor), to_nvgp_color(ocolor));
+  nvgp_paint_t paint =
+      nvgp_linear_gradient(vg, sx, sy, ex, ey, to_nvgp_color(icolor), to_nvgp_color(ocolor));
   nvgp_set_stroke_paint(vg, paint);
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_nanovg_plus_set_stroke_radial_gradient(vgcanvas_t* vgcanvas, float_t cx,
-                                                        float_t cy, float_t inr, float_t outr,
-                                                        color_t icolor, color_t ocolor) {
+                                                             float_t cy, float_t inr, float_t outr,
+                                                             color_t icolor, color_t ocolor) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
-  nvgp_paint_t paint = nvgp_radial_gradient(vg, cx, cy, inr, outr, to_nvgp_color(icolor), to_nvgp_color(ocolor));
+  nvgp_paint_t paint =
+      nvgp_radial_gradient(vg, cx, cy, inr, outr, to_nvgp_color(icolor), to_nvgp_color(ocolor));
   nvgp_set_stroke_paint(vg, paint);
 
   return RET_OK;
@@ -816,7 +841,7 @@ static ret_t vgcanvas_nanovg_plus_clear_cache(vgcanvas_t* vgcanvas) {
   nvgp_delete_font_by_name(vg, NULL);
   vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), vgcanvas, NULL);
   vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager(), vgcanvas, NULL);
-  
+
   return RET_OK;
 }
 

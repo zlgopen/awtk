@@ -23,9 +23,9 @@
 #include "awtk.h"
 
 #if defined(WIN32)
-    const char* g_line_end = "\r\n";
+const char* g_line_end = "\r\n";
 #else
-    const char* g_line_end = "\n";
+const char* g_line_end = "\n";
 #endif
 
 typedef struct _mparam_t {
@@ -57,14 +57,14 @@ typedef struct _check_ctx_t {
   uint32_t file_size;
 
   ca_symbols_t* syms;
-  
+
   log_hook_t log_hook;
   void* log_ctx;
 
-  char* prefix; // 保存enum的 prefix
+  char* prefix;  // 保存enum的 prefix
 
   auto_fix_t auto_fix;
-  int32_t cur_line; // 下标开始为1
+  int32_t cur_line;  // 下标开始为1
   ca_symbol_t* last_enum;
 
   bool_t enable_auto_fix;
@@ -83,19 +83,21 @@ static const char* key_const = "@const";
 static const char* key_class = "@class";
 static const char* key_property = "@property";
 
-static inline bool_t is_id_char (char c) { return isalnum(c) || c=='_' || c=='$'; }
+static inline bool_t is_id_char(char c) {
+  return isalnum(c) || c == '_' || c == '$';
+}
 
 static bool_t is_name_end(const char* s) {
   return *s == ' ' || *s == '\r' || *s == '\n' || *s == '\t' || *s == 0;
 }
 
-static inline bool_t is_space(char c) { return c == ' ' || c == '\t'; }
-
+static inline bool_t is_space(char c) {
+  return c == ' ' || c == '\t';
+}
 
 // ---------------------------- log_hook ---------------------------------
 
-
-#if defined (WIN32) && defined (_MSC_VER)
+#if defined(WIN32) && defined(_MSC_VER)
 #define app_err(fmt, ...) app_log(ctx, LOG_LEVEL_ERROR, fmt, __VA_ARGS__)
 #define app_warn(fmt, ...) app_log(ctx, LOG_LEVEL_WARN, fmt, __VA_ARGS__)
 #else
@@ -119,9 +121,9 @@ static void default_log_hook(void* ctx, tk_log_level_t level, const char* s) {
 
 static void app_log(check_ctx_t* ctx, tk_log_level_t level, const char* fmt, ...) {
   va_list va;
-  char buf[2048+1] = {0};
+  char buf[2048 + 1] = {0};
   return_if_fail(fmt != NULL);
-  
+
   va_start(va, fmt);
   vsnprintf(buf, sizeof(buf), fmt, va);
   va_end(va);
@@ -141,15 +143,15 @@ static str_t* dump_lines(check_ctx_t* ctx) {
     str_t* l = arr[i];
     str_append_with_len(str, l->str, l->size);
   }
-  
+
   return str;
 }
 
 // push_back(lines, [beg, end])
 static void append_line(darray_t* lines, const char* beg, const char* end) {
   // 稍微多预留一点
-  uint32_t len = end-beg+1;
-  str_t* str = str_create(64+len); 
+  uint32_t len = end - beg + 1;
+  str_t* str = str_create(64 + len);
   str_append_with_len(str, beg, len);
   darray_push(lines, str);
 }
@@ -157,18 +159,18 @@ static void append_line(darray_t* lines, const char* beg, const char* end) {
 static void auto_fix_init(check_ctx_t* ctx) {
   darray_t* lines = darray_create(1024, (tk_destroy_t)str_destroy, NULL);
   ctx->auto_fix.lines = lines;
-  
+
   const char* buffer = ctx->file_content;
   const char *beg = buffer, *end = buffer;
   for (; *end; ++end) {
     if (*end == '\n') {
       append_line(lines, beg, end);
-      beg = end+1;
+      beg = end + 1;
     }
   }
 
   if (end != beg) {
-    append_line(lines, beg, end-1);
+    append_line(lines, beg, end - 1);
   }
 
 #if 0
@@ -194,14 +196,14 @@ static void auto_fix_init_sym(check_ctx_t* ctx, ca_symbol_t* sym) {
   af->comment_line_end = 0;
 
   // 我们的注释必须是 /** 开头的， 否则就不检测合法性了
-  if ( !strstr(sym->comment, "/**") ) {
+  if (!strstr(sym->comment, "/**")) {
     return;
   }
-  
+
   // 向前找注释, 先找结束符 再找开始符号
   // sym->line 是1开始的序号, lines中是0开始的  要减一
   // sym->line 对应的是 sym 的行号, 注释本来就至少在前面一行  要再减一
-  for (int32_t i = sym->line-2; i>=0; --i) {
+  for (int32_t i = sym->line - 2; i >= 0; --i) {
     str_t* line = darray_get(af->lines, i);
     if (!line) {
       log_error("%s(%d): fatal error code_assist line invalid\n", sym->file, i);
@@ -211,7 +213,7 @@ static void auto_fix_init_sym(check_ctx_t* ctx, ca_symbol_t* sym) {
       af->comment_line_begin = i;
       break;
     } else if (strstr(line->str, "*/")) {
-      af->comment_line_end = i+1; // 区间惯例 [begin, end) , end 要大一格
+      af->comment_line_end = i + 1;  // 区间惯例 [begin, end) , end 要大一格
     }
   }
 }
@@ -222,25 +224,26 @@ static void auto_fix_type_impl(check_ctx_t* ctx, const char* new_type) {
   }
 
   auto_fix_t* af = &ctx->auto_fix;
-  str_t* line = darray_get(af->lines, ctx->cur_line-1);
+  str_t* line = darray_get(af->lines, ctx->cur_line - 1);
   if (!line) {
     log_error("%s(%d) internal error, invalid cur_line \n", ctx->path, ctx->cur_line);
     return;
   }
 
-  const char* beg = strstr(line->str, "{");;
+  const char* beg = strstr(line->str, "{");
+  ;
   const char* end = strstr(beg, "}");
   if (end > beg) {
     str_t old, new_;
     str_init(&old, 128);
     str_init(&new_, 128);
 
-    str_append_with_len(&old, beg, end-beg+1);
+    str_append_with_len(&old, beg, end - beg + 1);
     str_append_more(&new_, "{", new_type, "}", NULL);
     str_replace(line, old.str, new_.str);
 
     af->dirty = TRUE;
-    
+
     str_reset(&old);
     str_reset(&new_);
   }
@@ -256,25 +259,26 @@ static void auto_fix_param_name_missing(check_ctx_t* ctx, mparam_t* param) {
   }
 
   auto_fix_t* af = &ctx->auto_fix;
-  str_t* line = darray_get(af->lines, ctx->cur_line-1);
+  str_t* line = darray_get(af->lines, ctx->cur_line - 1);
   if (!line) {
     log_error("%s(%d) internal error, invalid cur_line \n", ctx->path, ctx->cur_line);
     return;
   }
 
-  const char* beg = strstr(line->str, "{");;
+  const char* beg = strstr(line->str, "{");
+  ;
   const char* end = strstr(beg, "}");
   if (end > beg) {
     str_t old, new_;
     str_init(&old, 128);
     str_init(&new_, 128);
 
-    str_append_with_len(&old, beg, end-beg+1);
+    str_append_with_len(&old, beg, end - beg + 1);
     str_append_more(&new_, old.str, " ", param->name, NULL);
     str_replace(line, old.str, new_.str);
 
     af->dirty = TRUE;
-    
+
     str_reset(&old);
     str_reset(&new_);
   }
@@ -290,7 +294,7 @@ static void auto_fix_param_name(check_ctx_t* ctx, const char* new_name, const ch
   }
 
   auto_fix_t* af = &ctx->auto_fix;
-  str_t* line = darray_get(af->lines, ctx->cur_line-1);
+  str_t* line = darray_get(af->lines, ctx->cur_line - 1);
   if (!line) {
     log_error("%s(%d) internal error, invalid cur_line \n", ctx->path, ctx->cur_line);
     return;
@@ -303,21 +307,21 @@ static void auto_fix_param_name(check_ctx_t* ctx, const char* new_name, const ch
   const char* name_end = s;
   if (s) {
     s = strstr(s, old_name);
-    name_end = s+strlen(old_name);
+    name_end = s + strlen(old_name);
   }
-  
+
   if (s) {
     str_t old, new_;
     str_init(&old, 128);
     str_init(&new_, 128);
 
-    str_append_with_len(&old, name_beg, name_end-name_beg);
+    str_append_with_len(&old, name_beg, name_end - name_beg);
     const char* end = name_end - strlen(old_name);
-    str_append_with_len(&new_, name_beg, end-name_beg);
+    str_append_with_len(&new_, name_beg, end - name_beg);
     str_append_more(&new_, new_name, NULL);
     str_replace(line, old.str, new_.str);
     af->dirty = TRUE;
-    
+
     str_reset(&old);
     str_reset(&new_);
   }
@@ -333,7 +337,7 @@ static void auto_fix_ename(check_ctx_t* ctx, ca_symbol_t* sym, const char* old_n
   }
 
   auto_fix_t* af = &ctx->auto_fix;
-  str_t* line = darray_get(af->lines, ctx->cur_line-1);
+  str_t* line = darray_get(af->lines, ctx->cur_line - 1);
   str_replace(line, old_name, sym->name);
   af->dirty = TRUE;
 }
@@ -358,7 +362,7 @@ static void auto_fix_ename_missing(check_ctx_t* ctx, ca_symbol_t* sym) {
   }
 
   auto_fix_t* af = &ctx->auto_fix;
-  str_t* line = darray_get(af->lines, ctx->cur_line-1);
+  str_t* line = darray_get(af->lines, ctx->cur_line - 1);
   str_clear(line);
   str_append_more(line, "   * @const ", sym->name, g_line_end, NULL);
   af->dirty = TRUE;
@@ -372,11 +376,12 @@ static void auto_fix_enum_name_missing(check_ctx_t* ctx, ca_symbol_t* sym, int32
   auto_fix_t* af = &ctx->auto_fix;
   str_t* line = darray_get(af->lines, enum_line);
   str_clear(line);
-  str_append_more(line, " * @enum ", sym->name+1, "\n", NULL);
+  str_append_more(line, " * @enum ", sym->name + 1, "\n", NULL);
   af->dirty = TRUE;
 }
 
-static void auto_fix_name(check_ctx_t* ctx, const char* new_name, int32_t line_number, const char* old_name) {
+static void auto_fix_name(check_ctx_t* ctx, const char* new_name, int32_t line_number,
+                          const char* old_name) {
   if (!ctx->enable_auto_fix) {
     return;
   }
@@ -387,7 +392,8 @@ static void auto_fix_name(check_ctx_t* ctx, const char* new_name, int32_t line_n
   af->dirty = TRUE;
 }
 
-static void auto_fix_method_name(check_ctx_t* ctx, const char* new_name, int32_t line, const char* old_name) {
+static void auto_fix_method_name(check_ctx_t* ctx, const char* new_name, int32_t line,
+                                 const char* old_name) {
   auto_fix_name(ctx, new_name, line, old_name);
 }
 
@@ -403,13 +409,15 @@ static void auto_fix_method_name_missing(check_ctx_t* ctx, ca_symbol_t* sym, int
   af->dirty = TRUE;
 }
 
-static void auto_fix_enum_name(check_ctx_t* ctx, ca_symbol_t* sym, int32_t enum_line, const char* old_name) {
+static void auto_fix_enum_name(check_ctx_t* ctx, ca_symbol_t* sym, int32_t enum_line,
+                               const char* old_name) {
   // 目前的文档 enum 名字可以不匹配， 这里不能开启 这个
   return;
-  auto_fix_name(ctx, sym->name+1, enum_line, old_name);
+  auto_fix_name(ctx, sym->name + 1, enum_line, old_name);
 }
 
-static void auto_fix_enum_prefix_missing(check_ctx_t* ctx, ca_symbol_t* sym, int32_t enum_line, bool_t replace_old_line) {
+static void auto_fix_enum_prefix_missing(check_ctx_t* ctx, ca_symbol_t* sym, int32_t enum_line,
+                                         bool_t replace_old_line) {
   if (!ctx->enable_auto_fix) {
     return;
   }
@@ -418,7 +426,7 @@ static void auto_fix_enum_prefix_missing(check_ctx_t* ctx, ca_symbol_t* sym, int
   ca_symbols_t* syms = ctx->syms;
   int32_t i = 1 + sym - syms->nodes;
   for (; i < syms->size; ++i) {
-    ca_symbol_t* cs = syms->nodes+i;
+    ca_symbol_t* cs = syms->nodes + i;
     if (cs->scope && strcmp(cs->scope, sym->name)) {
       break;
     }
@@ -430,7 +438,7 @@ static void auto_fix_enum_prefix_missing(check_ctx_t* ctx, ca_symbol_t* sym, int
       }
     }
     if (last_underscore) {
-      guessed_prefix_name = tk_strndup(cs->name, 1+last_underscore-cs->name);
+      guessed_prefix_name = tk_strndup(cs->name, 1 + last_underscore - cs->name);
     }
     break;
   }
@@ -442,7 +450,7 @@ static void auto_fix_enum_prefix_missing(check_ctx_t* ctx, ca_symbol_t* sym, int
       str_clear(line);
     }
     str_append_more(line, " * @prefix ", guessed_prefix_name, g_line_end, NULL);
-    
+
     af->dirty = TRUE;
     TKMEM_FREE(guessed_prefix_name);
   }
@@ -469,7 +477,7 @@ static void auto_fix_save(check_ctx_t* ctx) {
     } else {
       file_write(ctx->path, file_content->str, file_content->size);
     }
-    
+
     str_destroy(file_content);
   }
 }
@@ -487,12 +495,12 @@ static void trim_space_of_type(char* src) {
     if (is_space(*src) && pre_is_space) {
       ++src;
       continue;
-    } 
+    }
     pre_is_space = is_space(*src);
 
     // widget_t * --> widget_t*
     if (*src == '*') {
-      if (dest > start && is_space(*(dest-1))) {
+      if (dest > start && is_space(*(dest - 1))) {
         --dest;
       }
     }
@@ -505,7 +513,7 @@ static void trim_space_of_type(char* src) {
     *dest = 0;
   }
 }
- 
+
 // 提取 @method @class @enum 后面的字符串
 // 会 去除两头的空格
 static char* load_name(const char** s) {
@@ -515,12 +523,11 @@ static char* load_name(const char** s) {
     ++start;
   }
 
-  for (end = start; !is_name_end(end); ++end)
-    ;
+  for (end = start; !is_name_end(end); ++end);
 
   if (end > start) {
     *s = end;
-    return tk_strndup(start, end-start);
+    return tk_strndup(start, end - start);
   }
   return NULL;
 }
@@ -532,18 +539,17 @@ static char* load_line(const char* s) {
     ++start;
   }
 
-  for (end = start; *end && *end != '\r' && *end != '\n'; ++end)
-    ;
+  for (end = start; *end && *end != '\r' && *end != '\n'; ++end);
 
   if (end > start) {
-    return tk_strndup(start, end-start);
+    return tk_strndup(start, end - start);
   }
   return NULL;
 }
 
 static void ignore_to_line_end(const char** s) {
   const char* p = *s;
-  while(*p && *p != '\n') {
+  while (*p && *p != '\n') {
     ++p;
   }
   *s = p;
@@ -573,8 +579,8 @@ static char* load_type(const char** s) {
   }
 
   if (end > start) {
-    char* type = tk_strndup(start, end-start);
-    char* te = type + strlen(type) - 1; // 去除尾部空格
+    char* type = tk_strndup(start, end - start);
+    char* te = type + strlen(type) - 1;  // 去除尾部空格
     while (*te == ' ' && te != type) {
       *te = 0;
     }
@@ -613,13 +619,13 @@ static bool_t load_param(const char* s, char** type, char** name, bool_t* exist_
     }*/
 
     // 判断下是否只有空格
-    for ( ; *s && (is_space(*s) || *s == '\r' || *s == '\n'); ++s);
+    for (; *s && (is_space(*s) || *s == '\r' || *s == '\n'); ++s);
 
     if (exist_desc) {
       *exist_desc = *s ? TRUE : FALSE;
     }
   }
-  
+
   return *type && *name;
 }
 
@@ -628,10 +634,9 @@ static void trim_func_type(char* src) {
   char* start = src;
   char* dest = src;
   for (; *src; ++src) {
-    if (0 == strncmp("inline", src, 6) ||
-        0 == strncmp("static", src, 6)) {
+    if (0 == strncmp("inline", src, 6) || 0 == strncmp("static", src, 6)) {
       src += 6;
-    } 
+    }
 
     *dest++ = *src;
   }
@@ -649,7 +654,7 @@ static char* sym_type(ca_symbol_t* sym) {
     return NULL;
   }
 
-  char* ret = tk_strndup(sym->line_content, s-sym->line_content);
+  char* ret = tk_strndup(sym->line_content, s - sym->line_content);
   trim_func_type(ret);
   return ret;
 }
@@ -707,21 +712,21 @@ static mparam_t* parse_param(const char* param_str) {
       *colon = 0;
     }
   }
-  
+
   const char* last = last_not_id(s);
   if (last) {
-    if (last-s > 0) {
+    if (last - s > 0) {
       str_t type;
-      str_init(&type, last-s+20);
-      str_set_with_len(&type, s, last-s+1);
+      str_init(&type, last - s + 20);
+      str_set_with_len(&type, s, last - s + 1);
       if (square_bracket) {
         str_append_char(&type, '*');
       }
       param->type = type.str;
       trim_space_of_type(param->type);
     }
-      
-    param->name = tk_strdup(last+1);
+
+    param->name = tk_strdup(last + 1);
   } else {
     param->name = tk_strdup(s);
   }
@@ -738,16 +743,16 @@ static void sym_params(const char* param_str, darray_t* o) {
   }
 
   // 去除 )
-  src[len-1] = 0;
-  for (int32_t i = len-2; i > 0 && is_space(src[i]); --i) {
-    src[i] = 0; // 过滤掉空格
+  src[len - 1] = 0;
+  for (int32_t i = len - 2; i > 0 && is_space(src[i]); --i) {
+    src[i] = 0;  // 过滤掉空格
   }
 
   tokenizer_t tokenizer;
   tokenizer_t* t = NULL;
-  
+
   // src+1 去除 (
-  t = tokenizer_init(&tokenizer, src+1, UINT32_MAX, ",");
+  t = tokenizer_init(&tokenizer, src + 1, UINT32_MAX, ",");
   while (tokenizer_has_more(t)) {
     const char* s = tokenizer_next_str(t);
     darray_push(o, parse_param(s));
@@ -765,19 +770,20 @@ static void sym_params(const char* param_str, darray_t* o) {
 }
 
 static bool_t str_same(const char* s1, const char* s2) {
-  s1 = s1 ? s1: "";
-  s2 = s2 ? s2: "";
+  s1 = s1 ? s1 : "";
+  s2 = s2 ? s2 : "";
   return 0 == strcmp(s1, s2);
 }
 
 // 是否可以自动修正 param的name
-static bool_t can_fix_param_name(auto_fix_t* af, darray_t* params, mparam_t* param, const char* type,const char* name) {
+static bool_t can_fix_param_name(auto_fix_t* af, darray_t* params, mparam_t* param,
+                                 const char* type, const char* name) {
   // 参数名字的自动修正是很危险的， 所以满足下面的条件后，才进行自动修正
 
   // 参数个数必须一样多
   if (params->size != af->param_n) {
     return FALSE;
-  } 
+  }
 
   // 类型名称必须相同
   if (!str_same(param->type, type)) {
@@ -798,7 +804,6 @@ static bool_t can_fix_param_name(auto_fix_t* af, darray_t* params, mparam_t* par
 
 static bool_t check_param(check_ctx_t* ctx, ca_symbol_t* sym, darray_t* params, int32_t param_i,
                           const char* type, const char* name) {
-  
   if (param_i >= params->size) {
     app_err("%s(%d): error: too much @param\n", sym->file, ctx->cur_line);
     return FALSE;
@@ -808,8 +813,8 @@ static bool_t check_param(check_ctx_t* ctx, ca_symbol_t* sym, darray_t* params, 
   if (!str_same(param->name, name)) {
     auto_fix_t* af = &ctx->auto_fix;
 
-    app_err("%s(%d): error: @param_%d's name invalid: %s -- %s\n", 
-      sym->file, ctx->cur_line, param_i, name, param->name);
+    app_err("%s(%d): error: @param_%d's name invalid: %s -- %s\n", sym->file, ctx->cur_line,
+            param_i, name, param->name);
 
     // 参数个数完全对的， 却类型也对的上, 再进行 名字修正
     if (can_fix_param_name(af, params, param, type, name)) {
@@ -819,8 +824,8 @@ static bool_t check_param(check_ctx_t* ctx, ca_symbol_t* sym, darray_t* params, 
   }
 
   if (!str_same(param->type, type)) {
-    app_err("%s(%d): error: @param_%d's type invalid: %s -- %s\n", 
-      sym->file, ctx->cur_line, param_i, type, param->type);
+    app_err("%s(%d): error: @param_%d's type invalid: %s -- %s\n", sym->file, ctx->cur_line,
+            param_i, type, param->type);
 
     // 名字正确, 类型错误, 可以尝试自动修正
     auto_fix_param_type(ctx, param);
@@ -855,7 +860,7 @@ static const char* handle_one_line(const char* line, check_ctx_t* ctx, doc_type_
   }
 
 #define SAME(s1, s2) 0 == strncmp(s1, s2, strlen(s2))
-  
+
   if (SAME(s, key_method)) {
     *kind = DOC_METHOD;
   } else if (SAME(s, key_annotation)) {
@@ -874,7 +879,7 @@ static const char* handle_one_line(const char* line, check_ctx_t* ctx, doc_type_
     *kind = DOC_CLASS;
   } else if (SAME(s, key_property)) {
     *kind = DOC_PROPERTY;
-  } 
+  }
 #undef SAME
 
   return s;
@@ -904,7 +909,7 @@ static void check_comment_between_param(check_ctx_t* ctx) {
     doc_type_t type;
     handle_one_line(line->str, ctx, &type);
     if (type == DOC_PARAM) {
-      if (line_first_param == -1) { 
+      if (line_first_param == -1) {
         line_first_param = i;
       }
       line_last_param = i;
@@ -923,35 +928,23 @@ static void check_comment_between_param(check_ctx_t* ctx) {
     doc_type_t type;
     handle_one_line(line->str, ctx, &type);
     if (type != DOC_PARAM) {
-      app_err("%s(%d): error: nothing can be written between @param\n",
-              ctx->path, i+1);
-    } 
+      app_err("%s(%d): error: nothing can be written between @param\n", ctx->path, i + 1);
+    }
   }
 }
 
 static bool_t is_valid_anno(const char* anno) {
-  return 
-    0 == strcmp(anno, "\"macro\"")          ||
-    0 == strcmp(anno, "\"constructor\"")    ||
-    0 == strcmp(anno, "\"gc\"")             ||
-    0 == strcmp(anno, "\"deconstructor\"")  ||
-    0 == strcmp(anno, "\"design\"")         ||
-    0 == strcmp(anno, "\"widget\"")         ||
-    0 == strcmp(anno, "\"window\"")         ||
-    0 == strcmp(anno, "\"scriptable\"")     ||
-    0 == strcmp(anno, "\"scriptable:custom\"")     ||
-    0 == strcmp(anno, "\"cast\"")           ||
-    0 == strcmp(anno, "\"fake\"")           ||
-    0 == strcmp(anno, "\"static\"")         ||
-    0 == strcmp(anno, "\"readable\"")       ||
-    0 == strcmp(anno, "\"writable\"")       ||
-    0 == strcmp(anno, "\"set_prop\"")       ||
-    0 == strcmp(anno, "\"get_prop\"")       ||
-    0 == strcmp(anno, "\"persitent\"")      ||
-    0 == strcmp(anno, "\"private\"")        ||
-    0 == strcmp(anno, "\"string\"")         ||
-    0 == strcmp(anno, "\"persistent\"")     ||
-    0 == strcmp(anno, "\"global\"");
+  return 0 == strcmp(anno, "\"macro\"") || 0 == strcmp(anno, "\"constructor\"") ||
+         0 == strcmp(anno, "\"gc\"") || 0 == strcmp(anno, "\"deconstructor\"") ||
+         0 == strcmp(anno, "\"design\"") || 0 == strcmp(anno, "\"widget\"") ||
+         0 == strcmp(anno, "\"window\"") || 0 == strcmp(anno, "\"scriptable\"") ||
+         0 == strcmp(anno, "\"scriptable:custom\"") || 0 == strcmp(anno, "\"cast\"") ||
+         0 == strcmp(anno, "\"fake\"") || 0 == strcmp(anno, "\"static\"") ||
+         0 == strcmp(anno, "\"readable\"") || 0 == strcmp(anno, "\"writable\"") ||
+         0 == strcmp(anno, "\"set_prop\"") || 0 == strcmp(anno, "\"get_prop\"") ||
+         0 == strcmp(anno, "\"persitent\"") || 0 == strcmp(anno, "\"private\"") ||
+         0 == strcmp(anno, "\"string\"") || 0 == strcmp(anno, "\"persistent\"") ||
+         0 == strcmp(anno, "\"global\"");
 }
 
 static bool_t check_anno(check_ctx_t* ctx, str_t* str) {
@@ -981,7 +974,7 @@ static bool_t check_annotation(check_ctx_t* ctx, doc_type_t type, const char* re
   str_t str;
   str_init(&str, 32);
 
-  for (const char* s = annos+1; *s; ++s) {
+  for (const char* s = annos + 1; *s; ++s) {
     if (*s == ',') {
       if (!check_anno(ctx, &str)) {
         ret = FALSE;
@@ -1025,7 +1018,7 @@ bool_t check_func(check_ctx_t* ctx, ca_symbol_t* sym) {
 
   for (int32_t i = af->comment_line_begin; i < af->comment_line_end; ++i) {
     doc_type_t type;
-    ctx->cur_line = i+1;
+    ctx->cur_line = i + 1;
     str_t* line = darray_get(af->lines, i);
     const char* rest = handle_one_line(line->str, ctx, &type);
 
@@ -1036,8 +1029,8 @@ bool_t check_func(check_ctx_t* ctx, ca_symbol_t* sym) {
       got_method = TRUE;
       if (method_name) {
         if (strcmp(method_name, sym->name)) {
-          app_err("%s(%d): error: @method name invalid, expect(%s) -- actual(%s)\n",
-                  sym->file, ctx->cur_line, sym->name, method_name);
+          app_err("%s(%d): error: @method name invalid, expect(%s) -- actual(%s)\n", sym->file,
+                  ctx->cur_line, sym->name, method_name);
           ret = FALSE;
 
           auto_fix_method_name(ctx, sym->name, i, method_name);
@@ -1059,22 +1052,20 @@ bool_t check_func(check_ctx_t* ctx, ca_symbol_t* sym) {
       got_param = TRUE;
       if (!load_param(rest + strlen(key_param) + 1, &type, &name, &exist_desc)) {
         if (type == NULL) {
-          app_err("%s(%d): error: @parem(%d) missing type\n",
-                  sym->file, ctx->cur_line, param_i);
+          app_err("%s(%d): error: @parem(%d) missing type\n", sym->file, ctx->cur_line, param_i);
         } else if (name == NULL) {
-          app_err("%s(%d): error: @parem(%d) missing name\n",
-                  sym->file, ctx->cur_line, param_i);
+          app_err("%s(%d): error: @parem(%d) missing name\n", sym->file, ctx->cur_line, param_i);
           mparam_t* param = darray_get(params, param_i);
           if (str_same(param->type, type)) {
             auto_fix_param_name_missing(ctx, param);
           }
         }
-      
+
         ret = FALSE;
       } else {
         if (!exist_desc) {
-          app_err("%s(%d): error: @parem_%d %s missing comment\n",
-                  sym->file, ctx->cur_line, param_i, name?name:"");
+          app_err("%s(%d): error: @parem_%d %s missing comment\n", sym->file, ctx->cur_line,
+                  param_i, name ? name : "");
         }
         check_param(ctx, sym, params, param_i, type, name);
       }
@@ -1093,12 +1084,11 @@ bool_t check_func(check_ctx_t* ctx, ca_symbol_t* sym) {
         app_err("%s(%d): error: @return type missing\n", sym->file, ctx->cur_line);
         ret = FALSE;
       } else if (exp_type == NULL) {
-        app_err("%s(%d): error: internal error: return info missing\n",
-                sym->file, ctx->cur_line);
+        app_err("%s(%d): error: internal error: return info missing\n", sym->file, ctx->cur_line);
         // 代码辅助内部错误， 不是 api doc 错误
       } else if (strcmp(type, exp_type)) {
-        app_err("%s(%d): error: @return type invalid %s -- %s\n",
-                sym->file, ctx->cur_line, type, exp_type);
+        app_err("%s(%d): error: @return type invalid %s -- %s\n", sym->file, ctx->cur_line, type,
+                exp_type);
         auto_fix_return_type(ctx, type, exp_type);
         ret = FALSE;
       }
@@ -1107,19 +1097,19 @@ bool_t check_func(check_ctx_t* ctx, ca_symbol_t* sym) {
       SAFE_FREE(exp_type);
     }
   }
-         
+
   if (param_i < params->size) {
     mparam_t* p = darray_tail(params);
     bool_t is_variable = (p->type && 0 == strcmp("...", p->type));
 
-    if (is_variable && param_i+1 == params->size) {
+    if (is_variable && param_i + 1 == params->size) {
       // 可变参数, 可变部分不计入 @param
     } else if (got_method) {
-      uint32_t param_n = is_variable ? params->size -1 : params->size;
+      uint32_t param_n = is_variable ? params->size - 1 : params->size;
       str_t info;
       str_init(&info, 4096);
-      str_format(&info, 4096, "%s(%d): error: not enough @param (%d / %d)\n",
-                 sym->file, sym->line, param_i, params->size);
+      str_format(&info, 4096, "%s(%d): error: not enough @param (%d / %d)\n", sym->file, sym->line,
+                 param_i, params->size);
       str_append(&info, "suggest:\n");
       for (int32_t i = param_i; i < param_n; ++i) {
         p = darray_get(params, i);
@@ -1132,7 +1122,7 @@ bool_t check_func(check_ctx_t* ctx, ca_symbol_t* sym) {
   darray_destroy(params);
 
   if (!got_method) {
-    // 没有 @method 
+    // 没有 @method
     if (got_ret || got_param || got_anno) {
       app_err("%s(%d): error: @method missing\n", sym->file, ctx->cur_line);
       ret = FALSE;
@@ -1229,14 +1219,16 @@ static bool_t check_ename(check_ctx_t* ctx, ca_symbol_t* sym) {
 
       if (ename) {
         if (strcmp(ename, sym->name)) {
-          app_err("%s(%d): error: @const name invalid %s -- %s\n", sym->file, ctx->cur_line, ename, sym->name);
+          app_err("%s(%d): error: @const name invalid %s -- %s\n", sym->file, ctx->cur_line, ename,
+                  sym->name);
           ret = FALSE;
           auto_fix_ename(ctx, sym, ename);
         } else if (ctx->prefix && !strstr(ename, ctx->prefix)) {
-          app_err("%s(%d): error: @const %s check prefix failed\n", sym->file, ctx->cur_line, ename);
+          app_err("%s(%d): error: @const %s check prefix failed\n", sym->file, ctx->cur_line,
+                  ename);
           ret = FALSE;
         }
-        
+
         TKMEM_FREE(ename);
       } else {
         app_err("%s(%d): error: @const name missing\n", sym->file, ctx->cur_line);
@@ -1246,9 +1238,7 @@ static bool_t check_ename(check_ctx_t* ctx, ca_symbol_t* sym) {
     }
   }
 
-  if (!got_const 
-      && ctx->last_enum 
-      && str_same(ctx->last_enum->name, sym->scope)) {
+  if (!got_const && ctx->last_enum && str_same(ctx->last_enum->name, sym->scope)) {
     str_t info;
     str_init(&info, 4096);
     str_format(&info, 4096, "%s(%d): @const %s missing\n", sym->file, sym->line, sym->name);
@@ -1265,18 +1255,19 @@ static bool_t check_ename(check_ctx_t* ctx, ca_symbol_t* sym) {
 
 static bool_t check_enum(check_ctx_t* ctx, ca_symbol_t* sym) {
   bool_t is_ename = sym->scope && *sym->scope;
-  
+
   if (is_ename) {
     return check_ename(ctx, sym);
-  } else { 
+  } else {
     return check_enum_impl(ctx, sym);
   }
 }
 
-static bool_t check_property(check_ctx_t* ctx, ca_symbol_t* sym, const char* type, const char* name) {
+static bool_t check_property(check_ctx_t* ctx, ca_symbol_t* sym, const char* type,
+                             const char* name) {
   if (!str_same(sym->name, name)) {
-    app_err("%s(%d): error: @property's name invalid: %s -- %s\n", 
-      sym->file, ctx->cur_line, name, sym->name);
+    app_err("%s(%d): error: @property's name invalid: %s -- %s\n", sym->file, ctx->cur_line, name,
+            sym->name);
 
     auto_fix_property_name(ctx, sym, name);
     return FALSE;
@@ -1296,19 +1287,19 @@ static bool_t check_property(check_ctx_t* ctx, ca_symbol_t* sym, const char* typ
       }
     } else if (strstr(param->type, struct_)) {
       // struct _idl_tree_node_t* -- > _idl_tree_node_t*
-      if (str_same(param->type+strlen(struct_), type)) {
+      if (str_same(param->type + strlen(struct_), type)) {
         report_error = FALSE;
       }
     } else if (strstr(param->type, union_)) {
       // union _idl_tree_node_t* -- > _idl_tree_node_t*
-      if (str_same(param->type+strlen(union_), type)) {
+      if (str_same(param->type + strlen(union_), type)) {
         report_error = FALSE;
       }
     }
 
     if (report_error) {
-      app_err("%s(%d): error: @property's type invalid: %s -- %s\n", 
-        sym->file, ctx->cur_line, type, param->type);
+      app_err("%s(%d): error: @property's type invalid: %s -- %s\n", sym->file, ctx->cur_line, type,
+              param->type);
 
       auto_fix_property_type(ctx, param->type);
       ret = FALSE;
@@ -1347,7 +1338,7 @@ static bool_t check_class_member(check_ctx_t* ctx, ca_symbol_t* sym) {
             param_free(param);
           }
         }
-      
+
         ret = FALSE;
       } else {
         check_property(ctx, sym, type, name);
@@ -1358,7 +1349,7 @@ static bool_t check_class_member(check_ctx_t* ctx, ca_symbol_t* sym) {
     } else if (type == DOC_ANNOTATION) {
       got_anno = TRUE;
       check_annotation(ctx, DOC_PROPERTY, rest);
-    } 
+    }
   }
 
   if (got_anno && !got_property) {
@@ -1385,13 +1376,13 @@ static bool_t check_class(check_ctx_t* ctx, ca_symbol_t* sym) {
       got_class = TRUE;
 
       if (class_name) {
-        const char* expect_name = sym->name+1;
+        const char* expect_name = sym->name + 1;
         if (sym->typeref) {
           expect_name = sym->name;
         }
         if (strcmp(class_name, expect_name)) {
-          app_err("%s(%d): error: @class name invalid, expect(%s) -- actual(%s)\n",
-                  sym->file, ctx->cur_line, expect_name, class_name);
+          app_err("%s(%d): error: @class name invalid, expect(%s) -- actual(%s)\n", sym->file,
+                  ctx->cur_line, expect_name, class_name);
           ret = FALSE;
         }
         TKMEM_FREE(class_name);
@@ -1402,7 +1393,7 @@ static bool_t check_class(check_ctx_t* ctx, ca_symbol_t* sym) {
     } else if (type == DOC_ANNOTATION) {
       got_anno = TRUE;
       check_annotation(ctx, DOC_CLASS, rest);
-    } 
+    }
   }
 
   if (got_anno && !got_class) {
@@ -1413,9 +1404,8 @@ static bool_t check_class(check_ctx_t* ctx, ca_symbol_t* sym) {
 }
 
 bool_t is_empty_line(const char* s) {
-  for(; *s; ++s) {
+  for (; *s; ++s) {
     if (is_space(*s) || *s == '\r' || *s == '\n') {
-      
     } else {
       return FALSE;
     }
@@ -1437,7 +1427,7 @@ static void try_update_prefix(check_ctx_t* ctx, ca_symbol_t* sym) {
       enum_begin = i;
       break;
     } else if (strstr(line->str, "*/")) {
-      enum_end = i+1; // 区间惯例 [begin, end) , end 要大一格
+      enum_end = i + 1;  // 区间惯例 [begin, end) , end 要大一格
       in_comment = TRUE;
     }
 
@@ -1455,7 +1445,7 @@ static void try_update_prefix(check_ctx_t* ctx, ca_symbol_t* sym) {
     str_t* line = darray_get(af->lines, i);
     doc_type_t type;
     const char* rest = handle_one_line(line->str, ctx, &type);
-    ctx->cur_line = i+1;
+    ctx->cur_line = i + 1;
 
     if (type == DOC_ENUM) {
       got_enum = TRUE;
@@ -1467,12 +1457,12 @@ static void try_update_prefix(check_ctx_t* ctx, ca_symbol_t* sym) {
       ctx->prefix = load_name(&rest);
       if (NULL == ctx->prefix) {
         app_err("%s(%d): error: @prefix name missing\n", sym->file, ctx->cur_line);
-        
+
         auto_fix_enum_prefix_missing(ctx, sym, i, TRUE);
       }
     } else if (type == DOC_ANNOTATION) {
       check_annotation(ctx, DOC_ENUM, rest);
-    } 
+    }
   }
   if (got_enum && !got_prefix) {
     app_warn("%s(%d): warning: @prefix missing\n", sym->file, enum_line + 1);
@@ -1502,14 +1492,16 @@ static bool_t check_define(check_ctx_t* ctx, ca_symbol_t* sym) {
 
       if (ename) {
         if (strcmp(ename, sym->name)) {
-          app_err("%s(%d): error: @const name invalid %s -- %s\n", sym->file, ctx->cur_line, ename, sym->name);
+          app_err("%s(%d): error: @const name invalid %s -- %s\n", sym->file, ctx->cur_line, ename,
+                  sym->name);
           ret = FALSE;
           auto_fix_ename(ctx, sym, ename);
         } else if (ctx->prefix && !strstr(ename, ctx->prefix)) {
-          app_err("%s(%d): error: @const %s check prefix failed\n", sym->file, ctx->cur_line, ename);
+          app_err("%s(%d): error: @const %s check prefix failed\n", sym->file, ctx->cur_line,
+                  ename);
           ret = FALSE;
         }
-        
+
         TKMEM_FREE(ename);
       } else {
         app_err("%s(%d): error: @const name missing\n", sym->file, ctx->cur_line);
@@ -1526,11 +1518,9 @@ static bool_t check_api_doc_impl(check_ctx_t* ctx) {
   bool_t ret = TRUE;
   ca_symbols_t* syms = ctx->syms;
   for (uint32_t i = 0; i < syms->size; ++i) {
-    ca_symbol_t* sym = syms->nodes+i;
+    ca_symbol_t* sym = syms->nodes + i;
     // 有注释的才需要验证
-    if (sym->comment == NULL ||
-        sym->comment[0] == 0 ||
-        NULL == strstr(sym->comment, "/**")) {
+    if (sym->comment == NULL || sym->comment[0] == 0 || NULL == strstr(sym->comment, "/**")) {
       continue;
     }
 
@@ -1564,11 +1554,15 @@ static bool_t check_api_doc_impl(check_ctx_t* ctx) {
   return ret;
 }
 
-bool_t check_api_doc2(code_assist_t* ca, const char* filename, log_hook_t hook, void* log_ctx, 
+bool_t check_api_doc2(code_assist_t* ca, const char* filename, log_hook_t hook, void* log_ctx,
                       bool_t auto_fix, auto_fix_hook_t fix_hook, bool_t* checked) {
-  check_ctx_t ctx = { .ca = ca, .path = filename, .log_hook = hook, .log_ctx = log_ctx, 
-    .enable_auto_fix = auto_fix, .fix_hook = fix_hook };
-  if (checked) { 
+  check_ctx_t ctx = {.ca = ca,
+                     .path = filename,
+                     .log_hook = hook,
+                     .log_ctx = log_ctx,
+                     .enable_auto_fix = auto_fix,
+                     .fix_hook = fix_hook};
+  if (checked) {
     *checked = FALSE;
   }
 
@@ -1592,7 +1586,7 @@ bool_t check_api_doc2(code_assist_t* ca, const char* filename, log_hook_t hook, 
       auto_fix_save(&ctx);
       auto_fix_finit(&ctx);
     }
-    if (checked) { 
+    if (checked) {
       *checked = TRUE;
     }
   }
@@ -1602,6 +1596,7 @@ bool_t check_api_doc2(code_assist_t* ca, const char* filename, log_hook_t hook, 
   return ret;
 }
 
-bool_t check_api_doc(code_assist_t* ca, const char* filename, log_hook_t hook, void* log_ctx, bool_t auto_fix, bool_t* checked) {
+bool_t check_api_doc(code_assist_t* ca, const char* filename, log_hook_t hook, void* log_ctx,
+                     bool_t auto_fix, bool_t* checked) {
   return check_api_doc2(ca, filename, hook, log_ctx, auto_fix, NULL, checked);
 }

@@ -231,7 +231,8 @@ static ret_t edit_hex_uint_to_str(wstr_t* text, uint32_t value) {
   return edit_hex_uint_to_str_ex(text, value, "0x");
 }
 
-static bool_t edit_is_valid_float_str(const wstr_t* text, input_type_t input_type, bool_t is_editing) {
+static bool_t edit_is_valid_float_str(const wstr_t* text, input_type_t input_type,
+                                      bool_t is_editing) {
   int32_t i = 0;
   const uint32_t len = text->size;
   const wchar_t* s = text->str;
@@ -240,7 +241,6 @@ static bool_t edit_is_valid_float_str(const wstr_t* text, input_type_t input_typ
   bool_t has_fraction_digit = FALSE;  // 小数点后是否有数字
   bool_t has_exp_marker = FALSE;      // 是否有指数符号(e/E)
   bool_t has_exp_digit = FALSE;       // 指数部分是否有数字
-
 
   if (len == 0) {
     return FALSE;
@@ -299,16 +299,17 @@ static bool_t edit_is_valid_float_str(const wstr_t* text, input_type_t input_typ
 
   if (!is_editing) {
     if (!has_integer_digit && !has_fraction_digit) {
-      return FALSE; // 既没有整数也没有小数
+      return FALSE;  // 既没有整数也没有小数
     } else if (has_exp_marker && !has_exp_digit) {
-      return FALSE; // e/E 后面没有数字
+      return FALSE;  // e/E 后面没有数字
     }
   }
 
   return TRUE;
 }
 
-static bool_t edit_is_valid_int_str(const wstr_t* text, input_type_t input_type, bool_t is_editing) {
+static bool_t edit_is_valid_int_str(const wstr_t* text, input_type_t input_type,
+                                    bool_t is_editing) {
   int32_t i = 0;
   const uint32_t len = text->size;
   const wchar_t* s = text->str;
@@ -362,7 +363,8 @@ static bool_t edit_is_valid_hex_str(const wstr_t* text, bool_t is_editing) {
   }
 
   while (i < len) {
-    if ((s[i] >= '0' && s[i] <= '9') || (s[i] >= 'a' && s[i] <= 'f') || (s[i] >= 'A' && s[i] <= 'F')) {
+    if ((s[i] >= '0' && s[i] <= '9') || (s[i] >= 'a' && s[i] <= 'f') ||
+        (s[i] >= 'A' && s[i] <= 'F')) {
       has_digit = TRUE;
       i++;
     } else {
@@ -411,18 +413,18 @@ static bool_t edit_is_valid_email_str(const wstr_t* text, bool_t is_editing) {
     wchar_t c = s[i];
     if (c == '@') {
       // 不能以 . 结尾
-      if (i >= 1 && s[i-1] == '.' && !is_editing) {
+      if (i >= 1 && s[i - 1] == '.' && !is_editing) {
         return FALSE;
       }
       at_pos = (int32_t)i;
       break;
     } else if (c == '.') {
       // 不能有连续的 .
-      if (s[i-1] == '.' && !is_editing) {
+      if (s[i - 1] == '.' && !is_editing) {
         return FALSE;
       }
-    } else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
-               (c >= '0' && c <= '9') || c == '-' || c == '_' || c == '+') {
+    } else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') ||
+               c == '-' || c == '_' || c == '+') {
       // 合法字符
     } else {
       return FALSE;
@@ -449,16 +451,16 @@ static bool_t edit_is_valid_email_str(const wstr_t* text, bool_t is_editing) {
   bool_t labelStart = TRUE;
   uint32_t labelLen = 0;
 
-  for(i = domain_start; i < len; ++i) {
+  for (i = domain_start; i < len; ++i) {
     wchar_t c = s[i];
 
     if (c == '.') {
       if (labelLen == 0 && !is_editing) {
-        return FALSE; // 不能以 . 开头, 不能有连续的 .
+        return FALSE;  // 不能以 . 开头, 不能有连续的 .
       }
 
-      if (s[i-1] == '-' && !is_editing) {
-        return FALSE; // label 不能以 - 结尾
+      if (s[i - 1] == '-' && !is_editing) {
+        return FALSE;  // label 不能以 - 结尾
       }
 
       has_dot = TRUE;
@@ -467,15 +469,14 @@ static bool_t edit_is_valid_email_str(const wstr_t* text, bool_t is_editing) {
       continue;
     }
 
-    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
-        (c >= '0' && c <= '9') || c == '-') {
+    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '-') {
     } else {
       return FALSE;
     }
 
     if (labelStart) {
       if (c == '-') {
-        return FALSE; // label 不能以 - 开头
+        return FALSE;  // label 不能以 - 开头
       }
       labelStart = FALSE;
     }
@@ -484,15 +485,15 @@ static bool_t edit_is_valid_email_str(const wstr_t* text, bool_t is_editing) {
   }
 
   if (!has_dot) {
-    return is_editing; // domain 至少一个 .
+    return is_editing;  // domain 至少一个 .
   }
 
   if (labelLen < 2) {
-    return is_editing; // 顶级域名至少两个字符
+    return is_editing;  // 顶级域名至少两个字符
   }
 
-  if (s[len-1] == '-') {
-    return FALSE; // label 不能以 - 结尾
+  if (s[len - 1] == '-') {
+    return FALSE;  // label 不能以 - 结尾
   }
 
   return TRUE;
@@ -512,7 +513,7 @@ static bool_t edit_is_valid_phone_str(const wstr_t* text, bool_t is_editing) {
   // + 只能在第一个位置
   if (s[0] == '+') {
     if (len >= 2 && s[1] == '0' && !is_editing) {
-      return FALSE; // + 后面不能是 0
+      return FALSE;  // + 后面不能是 0
     }
     has_plus = TRUE;
     i = 1;
@@ -521,7 +522,7 @@ static bool_t edit_is_valid_phone_str(const wstr_t* text, bool_t is_editing) {
   }
 
   if (s[len - 1] == '-' && !is_editing) {
-    return FALSE; // 不能以 - 结尾
+    return FALSE;  // 不能以 - 结尾
   }
 
   for (; i < len; i++) {

@@ -128,7 +128,7 @@ static void font_hb_ft_apply_hb_info(glyph_t* g, const hb_info_t* info, float_t 
 }
 
 static ret_t font_hb_ft_get_glyph_impl(font_t* f, uint32_t c, font_size_t font_size,
-                                        hb_str_t* hb_str, glyph_t* g) {
+                                       hb_str_t* hb_str, glyph_t* g) {
   FT_Glyph glyph;
   FT_GlyphSlot glyf;
   ret_t ret = RET_OK;
@@ -276,12 +276,11 @@ static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_
       goto_error_if_fail(glyphs != NULL);
       glyphs->font = f;
 
-      for (visual_index = 0; visual_index < b.vis_str_size; visual_index += code_unit_count,
-          glyph_index++) {
+      for (visual_index = 0; visual_index < b.vis_str_size;
+           visual_index += code_unit_count, glyph_index++) {
         glyph_t* g = NULL;
         logical_index =
-            b.positions_V_to_L != NULL ? (uint32_t)b.positions_V_to_L[visual_index]
-                                       : visual_index;
+            b.positions_V_to_L != NULL ? (uint32_t)b.positions_V_to_L[visual_index] : visual_index;
         c = font_loader_get_codepoint(str, len, &logical_index, &code_unit_count);
         goto_error_if_fail(logical_index < len && code_unit_count > 0 &&
                            visual_index + code_unit_count <= b.vis_str_size &&

@@ -299,12 +299,14 @@ static ret_t debugger_fscript_get_code(debugger_t* debugger, binary_data_t* code
   return RET_OK;
 }
 
-static ret_t debugger_fscript_set_var_data(debugger_t* debugger, const char* path, const value_t* value) {
+static ret_t debugger_fscript_set_var_data(debugger_t* debugger, const char* path,
+                                           const value_t* value) {
   uint32_t index = 0;
   ret_t ret = RET_FAIL;
   call_stack_frame_t* frame = NULL;
   debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
-  return_value_if_fail(d != NULL && d->fscript != NULL && path != NULL && value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(d != NULL && d->fscript != NULL && path != NULL && value != NULL,
+                       RET_BAD_PARAMS);
 
   if (strncmp(path, FSCRIPT_STR_GLOBAL_PREFIX, FSCRIPT_GLOBAL_PREFIX_LEN) == 0) {
     tk_object_t* global = fscript_get_global_object();

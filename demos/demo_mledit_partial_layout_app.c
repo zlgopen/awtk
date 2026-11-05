@@ -164,12 +164,11 @@ ret_t application_init() {
   insert_status = widget_lookup(win, "insert_status", TRUE);
   performance_status = widget_lookup(win, "performance_status", TRUE);
 
-  return_value_if_fail(s_mledit != NULL && toggle_partial_layout != NULL &&
-                       toggle_overwrite != NULL && toggle_insert != NULL &&
-                       toggle_performance != NULL && partial_layout_status != NULL &&
-                       overwrite_status != NULL && insert_status != NULL &&
-                       performance_status != NULL,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(
+      s_mledit != NULL && toggle_partial_layout != NULL && toggle_overwrite != NULL &&
+          toggle_insert != NULL && toggle_performance != NULL && partial_layout_status != NULL &&
+          overwrite_status != NULL && insert_status != NULL && performance_status != NULL,
+      RET_BAD_PARAMS);
 
   widget_on(toggle_partial_layout, EVT_CLICK, on_partial_layout_clicked, partial_layout_status);
   widget_on(toggle_overwrite, EVT_CLICK, on_overwrite_clicked, overwrite_status);

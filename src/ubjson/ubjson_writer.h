@@ -682,7 +682,8 @@ ret_t ubjson_writer_write_kv_str(ubjson_writer_t* writer, const char* key, const
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t ubjson_writer_write_kv_str_by_cache(ubjson_writer_t* writer, const char* key, const char* value);
+ret_t ubjson_writer_write_kv_str_by_cache(ubjson_writer_t* writer, const char* key,
+                                          const char* value);
 
 /**
  * @method ubjson_writer_write_kv_str_len
@@ -730,7 +731,8 @@ ret_t ubjson_writer_write_kv_wstr(ubjson_writer_t* writer, const char* key, cons
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t ubjson_writer_write_kv_wstr_by_cache(ubjson_writer_t* writer, const char* key, const wchar_t* value);
+ret_t ubjson_writer_write_kv_wstr_by_cache(ubjson_writer_t* writer, const char* key,
+                                           const wchar_t* value);
 
 /**
  * @method ubjson_writer_write_kv_wstr_len

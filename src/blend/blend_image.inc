@@ -30,13 +30,13 @@ static inline void blend_a(uint8_t* dst, uint8_t* src, uint8_t alpha, bool_t pre
       *(pixel_dst_t*)dst = p;
     } else {
       if (premulti_alpha) {
-        if(alpha <= PIXEL_ALPHA_OPAQUE) {
+        if (alpha <= PIXEL_ALPHA_OPAQUE) {
           srgba.r = (srgba.r * alpha) >> 8;
           srgba.g = (srgba.g * alpha) >> 8;
           srgba.b = (srgba.b * alpha) >> 8;
         }
         *(pixel_dst_t*)dst = blend_rgba_premulti(drgba, srgba, 0xff - a);
-      } else  {
+      } else {
         *(pixel_dst_t*)dst = blend_rgba(drgba, srgba, a);
       }
     }
@@ -44,10 +44,10 @@ static inline void blend_a(uint8_t* dst, uint8_t* src, uint8_t alpha, bool_t pre
 }
 #endif /*blend_a*/
 
-#define BLEND_SCALE_IS_SAME_OFFSET(t) (((t) & 0xff) >= (1<<8) + 2 || ((t) & 0xff) <= 0x2)
+#define BLEND_SCALE_IS_SAME_OFFSET(t) (((t) & 0xff) >= (1 << 8) + 2 || ((t) & 0xff) <= 0x2)
 
-static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
-                                    uint8_t a) {
+static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
+                                    const rectf_t* src_r, uint8_t a) {
   wh_t i = 0;
   wh_t j = 0;
   xy_t sx = (xy_t)(src_r->x);
@@ -117,7 +117,7 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, const rectf_t*
       start_x = (uint32_t)((src_r->x - sx) * 256.0f);
     }
     if (src_r->y != 0) {
-      start_y =  (uint32_t)((src_r->y - sy) * 256.0f);
+      start_y = (uint32_t)((src_r->y - sy) * 256.0f);
     }
 
     dstp += (dy * dst_line_length + dx * dst_bpp);
@@ -139,12 +139,14 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, const rectf_t*
   return RET_OK;
 }
 
-static ret_t blend_image_without_alpha(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r) {
+static ret_t blend_image_without_alpha(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
+                                       const rectf_t* src_r) {
   return blend_image_with_alpha(dst, src, dst_r, src_r, 0xff);
 }
 
-static ret_t blend_image_rotate_90_acw_with_alpha(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
-                                    uint8_t a) {
+static ret_t blend_image_rotate_90_acw_with_alpha(bitmap_t* dst, bitmap_t* src,
+                                                  const rectf_t* dst_r, const rectf_t* src_r,
+                                                  uint8_t a) {
   wh_t i = 0;
   wh_t j = 0;
   wh_t sw = (wh_t)(src_r->w);
@@ -165,8 +167,9 @@ static ret_t blend_image_rotate_90_acw_with_alpha(bitmap_t* dst, bitmap_t* src, 
   uint32_t src_line_length = bitmap_get_physical_line_length(src);
   uint32_t dst_line_length = bitmap_get_physical_line_length(dst);
   bool_t premulti_alpha = src->flags & BITMAP_FLAG_PREMULTI_ALPHA;
-  rectf_t r_dst = lcd_orientation_rectf_rotate_by_anticlockwise(dst_r, LCD_ORIENTATION_90, dst_ih, dst_iw);
-  
+  rectf_t r_dst =
+      lcd_orientation_rectf_rotate_by_anticlockwise(dst_r, LCD_ORIENTATION_90, dst_ih, dst_iw);
+
   dx = (xy_t)(r_dst.x);
   dy = (xy_t)(r_dst.y);
   dw = (wh_t)(r_dst.w);
@@ -216,7 +219,7 @@ static ret_t blend_image_rotate_90_acw_with_alpha(bitmap_t* dst, bitmap_t* src, 
       start_x = (uint32_t)((src_r->x - sx) * 256.0f);
     }
     if (src_r->y != 0) {
-      start_y =  (uint32_t)((src_r->y - sy) * 256.0f);
+      start_y = (uint32_t)((src_r->y - sy) * 256.0f);
     }
 
     dstp += ((dy + dh - 1) * dst_line_length + dx * dst_bpp);
@@ -241,8 +244,9 @@ static ret_t blend_image_rotate_90_acw_with_alpha(bitmap_t* dst, bitmap_t* src, 
   return RET_OK;
 }
 
-static ret_t blend_image_rotate_180_acw_with_alpha(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
-                                    uint8_t a) {
+static ret_t blend_image_rotate_180_acw_with_alpha(bitmap_t* dst, bitmap_t* src,
+                                                   const rectf_t* dst_r, const rectf_t* src_r,
+                                                   uint8_t a) {
   wh_t i = 0;
   wh_t j = 0;
   wh_t sw = (wh_t)(src_r->w);
@@ -263,8 +267,9 @@ static ret_t blend_image_rotate_180_acw_with_alpha(bitmap_t* dst, bitmap_t* src,
   uint32_t src_line_length = bitmap_get_physical_line_length(src);
   uint32_t dst_line_length = bitmap_get_physical_line_length(dst);
   bool_t premulti_alpha = src->flags & BITMAP_FLAG_PREMULTI_ALPHA;
-  rectf_t r_dst = lcd_orientation_rectf_rotate_by_anticlockwise(dst_r, LCD_ORIENTATION_180, dst_iw, dst_ih);
-  
+  rectf_t r_dst =
+      lcd_orientation_rectf_rotate_by_anticlockwise(dst_r, LCD_ORIENTATION_180, dst_iw, dst_ih);
+
   dx = (xy_t)(r_dst.x);
   dy = (xy_t)(r_dst.y);
   dw = (wh_t)(r_dst.w);
@@ -285,7 +290,8 @@ static ret_t blend_image_rotate_180_acw_with_alpha(bitmap_t* dst, bitmap_t* src,
   dstp = dst_data;
   if (sw == (wh_t)dst_r->w && sh == (wh_t)dst_r->h) {
     pixel_src_t* src_p = (pixel_src_t*)(srcp + sy * src_line_length + sx * src_bpp);
-    pixel_dst_t* dst_p = (pixel_dst_t*)(dstp + (dy + dh - 1) * dst_line_length + (dx + dw - 1) * dst_bpp);
+    pixel_dst_t* dst_p =
+        (pixel_dst_t*)(dstp + (dy + dh - 1) * dst_line_length + (dx + dw - 1) * dst_bpp);
 
     for (i = 0; i < sh && i < dh; i++) {
       pixel_src_t* s = src_p;
@@ -314,7 +320,7 @@ static ret_t blend_image_rotate_180_acw_with_alpha(bitmap_t* dst, bitmap_t* src,
       start_x = (uint32_t)((src_r->x - sx) * 256.0f);
     }
     if (src_r->y != 0) {
-      start_y =  (uint32_t)((src_r->y - sy) * 256.0f);
+      start_y = (uint32_t)((src_r->y - sy) * 256.0f);
     }
 
     dstp += ((dy + dh - 1) * dst_line_length + (dx + dw - 1) * dst_bpp);
@@ -338,8 +344,9 @@ static ret_t blend_image_rotate_180_acw_with_alpha(bitmap_t* dst, bitmap_t* src,
   return RET_OK;
 }
 
-static ret_t blend_image_rotate_270_acw_with_alpha(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
-                                    uint8_t a) {
+static ret_t blend_image_rotate_270_acw_with_alpha(bitmap_t* dst, bitmap_t* src,
+                                                   const rectf_t* dst_r, const rectf_t* src_r,
+                                                   uint8_t a) {
   wh_t i = 0;
   wh_t j = 0;
   wh_t sw = (wh_t)(src_r->w);
@@ -360,8 +367,9 @@ static ret_t blend_image_rotate_270_acw_with_alpha(bitmap_t* dst, bitmap_t* src,
   uint32_t src_line_length = bitmap_get_physical_line_length(src);
   uint32_t dst_line_length = bitmap_get_physical_line_length(dst);
   bool_t premulti_alpha = src->flags & BITMAP_FLAG_PREMULTI_ALPHA;
-  rectf_t r_dst = lcd_orientation_rectf_rotate_by_anticlockwise(dst_r, LCD_ORIENTATION_270, dst_ih, dst_iw);
-  
+  rectf_t r_dst =
+      lcd_orientation_rectf_rotate_by_anticlockwise(dst_r, LCD_ORIENTATION_270, dst_ih, dst_iw);
+
   dx = (xy_t)(r_dst.x);
   dy = (xy_t)(r_dst.y);
   dw = (wh_t)(r_dst.w);
@@ -411,7 +419,7 @@ static ret_t blend_image_rotate_270_acw_with_alpha(bitmap_t* dst, bitmap_t* src,
       start_x = (uint32_t)((src_r->x - sx) * 256.0f);
     }
     if (src_r->y != 0) {
-      start_y =  (uint32_t)((src_r->y - sy) * 256.0f);
+      start_y = (uint32_t)((src_r->y - sy) * 256.0f);
     }
 
     dstp += (dy * dst_line_length + (dx + dw - 1) * dst_bpp);
@@ -436,20 +444,19 @@ static ret_t blend_image_rotate_270_acw_with_alpha(bitmap_t* dst, bitmap_t* src,
   return RET_OK;
 }
 
-
-static ret_t blend_image_with_alpha_by_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
-                                    uint8_t a, lcd_orientation_t o) {
-  switch (o)
-  {
-  case LCD_ORIENTATION_0:
-    return blend_image_with_alpha(dst, src, dst_r, src_r, a);
-  case LCD_ORIENTATION_90 :
-    return blend_image_rotate_90_acw_with_alpha(dst, src, dst_r, src_r, a);
-  case LCD_ORIENTATION_180:
-    return blend_image_rotate_180_acw_with_alpha(dst, src, dst_r, src_r, a);
-  case LCD_ORIENTATION_270:
-    return blend_image_rotate_270_acw_with_alpha(dst, src, dst_r, src_r, a);
-  default:
-    return RET_NOT_IMPL;
+static ret_t blend_image_with_alpha_by_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
+                                              const rectf_t* src_r, uint8_t a,
+                                              lcd_orientation_t o) {
+  switch (o) {
+    case LCD_ORIENTATION_0:
+      return blend_image_with_alpha(dst, src, dst_r, src_r, a);
+    case LCD_ORIENTATION_90:
+      return blend_image_rotate_90_acw_with_alpha(dst, src, dst_r, src_r, a);
+    case LCD_ORIENTATION_180:
+      return blend_image_rotate_180_acw_with_alpha(dst, src, dst_r, src_r, a);
+    case LCD_ORIENTATION_270:
+      return blend_image_rotate_270_acw_with_alpha(dst, src, dst_r, src_r, a);
+    default:
+      return RET_NOT_IMPL;
   }
 }

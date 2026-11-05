@@ -6,7 +6,7 @@
   p.x = (X);                                                      \
   p.y = (Y);                                                      \
   if (p.x >= xmin && p.x <= xmax && p.y >= ymin && p.y <= ymax) { \
-    color->rgba.a = (D)*0xff;                                     \
+    color->rgba.a = (D) * 0xff;                                   \
     lcd_draw_points(lcd, &p, 1);                                  \
   }
 

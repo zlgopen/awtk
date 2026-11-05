@@ -23,7 +23,8 @@
 #include "tkc/mem.h"
 #include "vg_gradient.h"
 
-vg_gradient_t* vg_gradient_init_radial(vg_gradient_t* gradient, float x0, float y0, float r0, float x1, float y1, float r1) {
+vg_gradient_t* vg_gradient_init_radial(vg_gradient_t* gradient, float x0, float y0, float r0,
+                                       float x1, float y1, float r1) {
   vg_gradient_radial_info_t* info = NULL;
   return_value_if_fail(gradient != NULL, NULL);
 
@@ -40,14 +41,16 @@ vg_gradient_t* vg_gradient_init_radial(vg_gradient_t* gradient, float x0, float 
   return gradient;
 }
 
-vg_gradient_t* vg_gradient_create_radial(float x0, float y0, float r0, float x1, float y1, float r1) {
+vg_gradient_t* vg_gradient_create_radial(float x0, float y0, float r0, float x1, float y1,
+                                         float r1) {
   vg_gradient_t* gradient = TKMEM_ZALLOC(vg_gradient_t);
   return_value_if_fail(gradient != NULL, NULL);
 
   return vg_gradient_init_radial(gradient, x0, y0, r0, x1, y1, r1);
 }
 
-vg_gradient_t* vg_gradient_init_with_gradient(vg_gradient_t* gradient, const rect_t* rect, const gradient_t* g) {
+vg_gradient_t* vg_gradient_init_with_gradient(vg_gradient_t* gradient, const rect_t* rect,
+                                              const gradient_t* g) {
   vg_gradient_linear_info_t* info = NULL;
   return_value_if_fail(gradient != NULL, NULL);
 
@@ -59,7 +62,7 @@ vg_gradient_t* vg_gradient_init_with_gradient(vg_gradient_t* gradient, const rec
       info->sx = rect->x;
       info->sy = rect->y + rect->h * g->stops[0].offset;
       info->ex = rect->x;
-      info->ey = rect->y + rect->h * g->stops[1].offset; 
+      info->ey = rect->y + rect->h * g->stops[1].offset;
       if (info->sy > info->ey) {
         info->ey = info->sy;
       }
@@ -69,7 +72,8 @@ vg_gradient_t* vg_gradient_init_with_gradient(vg_gradient_t* gradient, const rec
   return gradient;
 }
 
-vg_gradient_t* vg_gradient_init_linear(vg_gradient_t* gradient, float sx, float sy, float ex, float ey) {
+vg_gradient_t* vg_gradient_init_linear(vg_gradient_t* gradient, float sx, float sy, float ex,
+                                       float ey) {
   vg_gradient_linear_info_t* info = NULL;
   return_value_if_fail(gradient != NULL, NULL);
 
@@ -106,4 +110,3 @@ ret_t vg_gradient_destroy(vg_gradient_t* gradient) {
 
   return RET_OK;
 }
-

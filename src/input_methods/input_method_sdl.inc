@@ -37,7 +37,7 @@ static ret_t input_method_sdl_request(input_method_t* im, widget_t* widget) {
     r.x = p.x;
     r.y = p.y;
     r.w = widget->w;
-    r.h = 16; // 默认预编辑区字号，作为兜底
+    r.h = 16;  // 默认预编辑区字号，作为兜底
 
 #ifdef AWTK_SDL3
     {

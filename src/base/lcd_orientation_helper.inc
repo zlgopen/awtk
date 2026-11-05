@@ -104,7 +104,8 @@
     }                                                                                            \
   } while (0)
 
-ret_t lcd_orientation_point_rotate_by_clockwise(xy_t* x, xy_t* y, lcd_orientation_t o, wh_t src_limit_w, wh_t src_limit_h) {
+ret_t lcd_orientation_point_rotate_by_clockwise(xy_t* x, xy_t* y, lcd_orientation_t o,
+                                                wh_t src_limit_w, wh_t src_limit_h) {
   xy_t tmp_x = *x;
   xy_t tmp_y = *y;
   return_value_if_fail(x != NULL && y != NULL, RET_BAD_PARAMS);
@@ -112,7 +113,8 @@ ret_t lcd_orientation_point_rotate_by_clockwise(xy_t* x, xy_t* y, lcd_orientatio
   return RET_OK;
 }
 
-ret_t lcd_orientation_pointf_rotate_by_clockwise(float_t* x, float_t* y, lcd_orientation_t o, wh_t src_limit_w, wh_t src_limit_h) {
+ret_t lcd_orientation_pointf_rotate_by_clockwise(float_t* x, float_t* y, lcd_orientation_t o,
+                                                 wh_t src_limit_w, wh_t src_limit_h) {
   float_t tmp_x = *x;
   float_t tmp_y = *y;
   return_value_if_fail(x != NULL && y != NULL, RET_BAD_PARAMS);
@@ -120,15 +122,17 @@ ret_t lcd_orientation_pointf_rotate_by_clockwise(float_t* x, float_t* y, lcd_ori
   return RET_OK;
 }
 
-ret_t lcd_orientation_point_rotate_by_anticlockwise(xy_t* x, xy_t* y, lcd_orientation_t o, wh_t src_limit_w, wh_t src_limit_h) {
+ret_t lcd_orientation_point_rotate_by_anticlockwise(xy_t* x, xy_t* y, lcd_orientation_t o,
+                                                    wh_t src_limit_w, wh_t src_limit_h) {
   xy_t tmp_x = *x;
   xy_t tmp_y = *y;
   return_value_if_fail(x != NULL && y != NULL, RET_BAD_PARAMS);
-  LCD_ORIENTATION_POINT_ROTATE_BY_ACW();        
+  LCD_ORIENTATION_POINT_ROTATE_BY_ACW();
   return RET_OK;
 }
 
-ret_t lcd_orientation_pointf_rotate_by_anticlockwise(float_t* x, float_t* y, lcd_orientation_t o, wh_t src_limit_w, wh_t src_limit_h) {
+ret_t lcd_orientation_pointf_rotate_by_anticlockwise(float_t* x, float_t* y, lcd_orientation_t o,
+                                                     wh_t src_limit_w, wh_t src_limit_h) {
   float_t tmp_x = *x;
   float_t tmp_y = *y;
   return_value_if_fail(x != NULL && y != NULL, RET_BAD_PARAMS);
@@ -154,7 +158,8 @@ rect_t lcd_orientation_rect_init_by_point(const point_t* tl, const point_t* br) 
   return r;
 }
 
-rect_t lcd_orientation_rect_rotate_by_anticlockwise(const rect_t* rect, lcd_orientation_t o, wh_t src_limit_w, wh_t src_limit_h) {
+rect_t lcd_orientation_rect_rotate_by_anticlockwise(const rect_t* rect, lcd_orientation_t o,
+                                                    wh_t src_limit_w, wh_t src_limit_h) {
   rect_t rr = *rect;
   rect_t ret = *rect;
   point_t new_tl, new_br, old_tl, old_br;
@@ -163,7 +168,8 @@ rect_t lcd_orientation_rect_rotate_by_anticlockwise(const rect_t* rect, lcd_orie
   return ret;
 }
 
-rectf_t lcd_orientation_rectf_rotate_by_anticlockwise(const rectf_t* rect, lcd_orientation_t o, wh_t src_limit_w, wh_t src_limit_h) {
+rectf_t lcd_orientation_rectf_rotate_by_anticlockwise(const rectf_t* rect, lcd_orientation_t o,
+                                                      wh_t src_limit_w, wh_t src_limit_h) {
   rectf_t rr = *rect;
   rectf_t ret = *rect;
   pointf_t new_tl, new_br, old_tl, old_br;

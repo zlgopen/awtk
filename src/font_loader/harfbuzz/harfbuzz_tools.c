@@ -59,8 +59,7 @@ ret_t hb_set_glyphs_maps(glyphs_t* glyphs, hb_info_t* info, uint32_t len) {
   int32_t cur_cluster = 0;
   int32_t last_cluster = -1;
 
-  if (glyphs == NULL || glyphs->l2v_maps == NULL ||
-    glyphs->v2l_maps == NULL || info == NULL) {
+  if (glyphs == NULL || glyphs->l2v_maps == NULL || glyphs->v2l_maps == NULL || info == NULL) {
     return RET_FAIL;
   }
 
@@ -139,7 +138,7 @@ ret_t hb_set_glyphs_maps(glyphs_t* glyphs, hb_info_t* info, uint32_t len) {
 }
 
 ret_t hb_set_hb_glyphs_chr(glyphs_t* glyphs, hb_info_t* info, uint32_t glyph_len) {
-  return_value_if_fail(glyphs!= NULL, RET_BAD_PARAMS);
+  return_value_if_fail(glyphs != NULL, RET_BAD_PARAMS);
   uint32_t i = 0;
   glyph_t* g = NULL;
   int32_t cur_cluster = 0;
@@ -161,7 +160,7 @@ ret_t hb_set_hb_glyphs_chr(glyphs_t* glyphs, hb_info_t* info, uint32_t glyph_len
 }
 
 ret_t hb_set_normal_glyphs_chr(glyphs_t* glyphs, bidi_t* b) {
-  return_value_if_fail(glyphs!= NULL, RET_BAD_PARAMS);
+  return_value_if_fail(glyphs != NULL, RET_BAD_PARAMS);
   uint32_t i = 0;
   glyph_t* g = NULL;
   int32_t cur_cluster = 0;
@@ -188,7 +187,7 @@ ret_t hb_set_normal_glyphs_chr(glyphs_t* glyphs, bidi_t* b) {
   return RET_OK;
 }
 
-#else 
+#else
 ret_t hb_set_glyphs_maps(glyphs_t* glyphs, hb_info_t* info, uint32_t len) {
   return RET_NOT_IMPL;
 }
@@ -198,6 +197,6 @@ ret_t hb_set_hb_glyphs_chr(glyphs_t* glyphs, hb_info_t* info, uint32_t len) {
 }
 
 ret_t hb_set_normal_glyphs_chr(glyphs_t* glyphs, bidi_t* b) {
-  return RET_NOT_IMPL; 
+  return RET_NOT_IMPL;
 }
 #endif /*WITH_HARFBUZZ_DATA_STB_FONT || WITH_HARFBUZZ_DATA_FREETYPE_FONT*/

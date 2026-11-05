@@ -8,14 +8,15 @@ typedef struct _vgcanvas_nanovg_gl_texture_t {
 } vgcanvas_nanovg_gl_texture_t;
 
 static int vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags(bitmap_flag_t flags) {
-
-  if(flags & BITMAP_FLAG_PREMULTI_ALPHA) {
+  if (flags & BITMAP_FLAG_PREMULTI_ALPHA) {
     return NVG_IMAGE_PREMULTIPLIED;
   }
   return 0;
 }
 
-static inline uint8_t* vgcanvas_nanovg_ensure_buffer(uint8_t* img_data, uint32_t img_w, uint32_t img_h, uint32_t bpp, uint32_t img_line_length) {
+static inline uint8_t* vgcanvas_nanovg_ensure_buffer(uint8_t* img_data, uint32_t img_w,
+                                                     uint32_t img_h, uint32_t bpp,
+                                                     uint32_t img_line_length) {
   int32_t j = 0;
   uint32_t size = 0;
   uint8_t* data = NULL;
@@ -56,7 +57,8 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
       fbo = (framebuffer_object_t*)img->specific_ctx;
       goto create_texture_info;
     } else {
-      specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &result);
+      specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(),
+                                                           (vgcanvas_t*)canvas, img, &result);
     }
     if (result == RET_OK) {
       i = ((vgcanvas_nanovg_gl_texture_t*)specific)->image_id;

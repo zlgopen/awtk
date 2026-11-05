@@ -30,18 +30,16 @@
  * 
  */
 
-
 #include "tkc/darray.h"
 #include "base/dialog.h"
 #include "base/main_loop.h"
 #include "base/window_manager.h"
 
-
 typedef struct _dialog_toast_message_t {
   uint32_t duration;
   uint64_t start_time;
   char text[4];
-}dialog_toast_message_t;
+} dialog_toast_message_t;
 
 typedef struct _dialog_toast_t {
   widget_t* toast;
@@ -51,9 +49,9 @@ typedef struct _dialog_toast_t {
   bool_t is_closing;
   darray_t message_list;
   uint32_t curr_timer_id;
-}dialog_toast_t;
+} dialog_toast_t;
 
-#define DIALOG_TOAST(v)((dialog_toast_t*)(v))
+#define DIALOG_TOAST(v) ((dialog_toast_t*)(v))
 
 static dialog_toast_t* s_dialog_toast = NULL;
 static ret_t dialog_toast_close(dialog_toast_t* dialog_toast);
@@ -62,7 +60,9 @@ static ret_t dialog_toast_set_label_self_layout(widget_t* toast, widget_t* label
 static ret_t dialog_get_size_limits(rect_t* r);
 static ret_t dialog_toast_on_destroy(void* ctx, event_t* e);
 static ret_t dialog_toast_on_ui_event_to_quit(void* ctx, event_t* e);
-static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast, dialog_toast_message_t* message, uint32_t duration, bool_t add_timer);
+static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast,
+                                           dialog_toast_message_t* message, uint32_t duration,
+                                           bool_t add_timer);
 
 static ret_t dialog_toast_on_dialog_will_open(void* ctx, event_t* e) {
   dialog_toast_t* dialog_toast = DIALOG_TOAST(ctx);
@@ -71,7 +71,7 @@ static ret_t dialog_toast_on_dialog_will_open(void* ctx, event_t* e) {
     rect_t r;
     widget_t* label = WIDGET(dialog_toast->toast->children->elms[0]);
     dialog_get_size_limits(&r);
-    
+
     label_set_line_wrap(label, TRUE);
     widget_update_style(label);
     label_resize_to_content(label, r.x, r.w, r.y, r.h);
@@ -86,14 +86,14 @@ static ret_t dialog_toast_on_dialog_open(void* ctx, event_t* e) {
   dialog_toast->is_opening = FALSE;
   /* 播放完打开窗口动画后，重新显示信息，同时解决有可能在播放动画期间加入信息导致播放动画不正确的问题 */
   if (dialog_toast->message_list.size > 0) {
-    dialog_toast_message_t* message = (dialog_toast_message_t*)darray_tail(&(dialog_toast->message_list));
+    dialog_toast_message_t* message =
+        (dialog_toast_message_t*)darray_tail(&(dialog_toast->message_list));
     dialog_toast_set_curr_message(dialog_toast, message, message->duration, TRUE);
   }
   return RET_REMOVE;
 }
 
 static ret_t dialog_toast_init(dialog_toast_t* dialog_toast, bool_t init_list) {
-
   return_value_if_fail(dialog_toast != NULL, RET_BAD_PARAMS);
 
   dialog_toast->is_opened = FALSE;
@@ -116,11 +116,12 @@ static ret_t dialog_toast_init(dialog_toast_t* dialog_toast, bool_t init_list) {
     widget_on(dialog_toast->toast, EVT_WINDOW_OPEN, dialog_toast_on_dialog_open, dialog_toast);
     widget_on(dialog_toast->toast, EVT_KEY_UP, dialog_toast_on_ui_event_to_quit, dialog_toast);
     widget_on(dialog_toast->toast, EVT_POINTER_UP, dialog_toast_on_ui_event_to_quit, dialog_toast);
-    widget_on(dialog_toast->toast, EVT_WINDOW_WILL_OPEN, dialog_toast_on_dialog_will_open, dialog_toast);
+    widget_on(dialog_toast->toast, EVT_WINDOW_WILL_OPEN, dialog_toast_on_dialog_will_open,
+              dialog_toast);
 
     return RET_OK;
   }
-  
+
   return RET_OOM;
 }
 
@@ -132,7 +133,8 @@ static ret_t dialog_toast_on_idle_create_dialog(const idle_info_t* info) {
   return_value_if_fail(ret == RET_OK, ret);
   /* 检查是否在关闭窗口动画的过程中加入新的信息 */
   if (dialog_toast->message_list.size > 0) {
-    dialog_toast_message_t* message = (dialog_toast_message_t*)darray_tail(&(dialog_toast->message_list));
+    dialog_toast_message_t* message =
+        (dialog_toast_message_t*)darray_tail(&(dialog_toast->message_list));
     dialog_toast_set_curr_message(dialog_toast, message, message->duration, FALSE);
   } else {
     dialog_toast_close(dialog_toast);
@@ -162,7 +164,7 @@ static ret_t dialog_toast_quit(dialog_toast_t* dialog_toast, bool_t time_up) {
   uint64_t now = timer_manager()->get_time();
   darray_t* message_list = &(dialog_toast->message_list);
   return_value_if_fail(message_list->size > 0, RET_FAIL);
-  /*dialog_toast有可能异步销毁，加个容错处理*/ 
+  /*dialog_toast有可能异步销毁，加个容错处理*/
   return_value_if_fail(message_list->destroy == default_destroy, RET_BAD_PARAMS);
 
   do {
@@ -193,7 +195,7 @@ static ret_t dialog_toast_quit(dialog_toast_t* dialog_toast, bool_t time_up) {
       first = FALSE;
     }
     dialog_toast->is_empty = dialog_toast->message_list.size == 0;
-  }while (message_list->size > 0);
+  } while (message_list->size > 0);
 
   if (dialog_toast->is_empty) {
     dialog_toast_close(dialog_toast);
@@ -214,7 +216,6 @@ static ret_t dialog_toast_on_ui_event_to_quit(void* ctx, event_t* e) {
 }
 
 static dialog_toast_t* dialog_toast_manager() {
-  
   if (s_dialog_toast != NULL) {
     return s_dialog_toast;
   }
@@ -237,7 +238,7 @@ static ret_t dialog_toast_on_idle_close(const idle_info_t* info) {
   if (!dialog_toast->is_opened) {
     return RET_REPEAT;
   }
-  
+
   if (window_manager_get_top_window(window_manager()) == dialog_toast->toast) {
     return window_manager_close_window(dialog_toast->toast->parent, dialog_toast->toast);
   } else {
@@ -262,7 +263,7 @@ static widget_t* dialog_toast_create_label(widget_t* parent, const char* text) {
 
   label = label_create(parent, 0, 0, 0, 0);
   return_value_if_fail(label != NULL, NULL);
-  
+
   label_set_line_wrap(label, TRUE);
   widget_update_style(label);
 
@@ -300,19 +301,20 @@ static ret_t dialog_toast_set_label_self_layout(widget_t* toast, widget_t* label
   h = label->h + margin_top + margin_bottom;
   x = (toast->parent->w - w) >> 1;
   y = (toast->parent->h - h) >> 1;
-  
+
   widget_move_resize(toast, x, y, w, h);
 
-  tk_snprintf(params, sizeof(params) - 1, "default(x=%d, y=%d, w=%d, h=%d)", margin_left, margin_top,
-              label->w, label->h);
-  
+  tk_snprintf(params, sizeof(params) - 1, "default(x=%d, y=%d, w=%d, h=%d)", margin_left,
+              margin_top, label->w, label->h);
+
   return widget_set_self_layout(label, params);
 }
 
-static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast, dialog_toast_message_t* message, uint32_t duration, bool_t add_timer) {
-
+static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast,
+                                           dialog_toast_message_t* message, uint32_t duration,
+                                           bool_t add_timer) {
   widget_t* label = NULL;
- 
+
   return_value_if_fail(dialog_toast != NULL && message != NULL && duration != 0, RET_BAD_PARAMS);
 
   /* 移除前一个显示信息的计时器 */
@@ -339,10 +341,10 @@ static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast, dialog_
     widget_set_tr_text(label, message->text);
     return RET_OK;
   }
- 
 }
 
-static dialog_toast_message_t* dialog_toast_push_message(dialog_toast_t* dialog_toast, const char* text, uint32_t duration) {
+static dialog_toast_message_t* dialog_toast_push_message(dialog_toast_t* dialog_toast,
+                                                         const char* text, uint32_t duration) {
   uint32_t size = 0;
   ret_t ret = RET_FAIL;
   darray_t* list = NULL;

@@ -299,9 +299,10 @@ ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
   return vg->vt->fill_text(vg, text, x, y, max_width);
 }
 
-ret_t vgcanvas_fill_text_by_glyphs(vgcanvas_t* vg, glyphs_t* glyphs, uint32_t start, uint32_t len, float_t x, float_t y,
-                                   float_t max_width) {
-  return_value_if_fail(vg != NULL && vg->vt->fill_text_by_glyphs != NULL && glyphs != NULL, RET_BAD_PARAMS);
+ret_t vgcanvas_fill_text_by_glyphs(vgcanvas_t* vg, glyphs_t* glyphs, uint32_t start, uint32_t len,
+                                   float_t x, float_t y, float_t max_width) {
+  return_value_if_fail(vg != NULL && vg->vt->fill_text_by_glyphs != NULL && glyphs != NULL,
+                       RET_BAD_PARAMS);
 
   return vg->vt->fill_text_by_glyphs(vg, glyphs, start, len, x, y, max_width);
 }

@@ -36,12 +36,12 @@ static ret_t vgcanvas_nanovg_soft_text_set_font(vgcanvas_t* vgcanvas, const char
 static ret_t vgcanvas_nanovg_soft_text_set_font_size(vgcanvas_t* vgcanvas, float_t size);
 static ret_t vgcanvas_nanovg_soft_text_set_text_align(vgcanvas_t* vgcanvas, const char* text_align);
 static ret_t vgcanvas_nanovg_soft_text_set_text_baseline(vgcanvas_t* vgcanvas,
-                                                          const char* text_baseline);
+                                                         const char* text_baseline);
 static ret_t vgcanvas_nanovg_soft_text_fill_text(vgcanvas_t* vgcanvas, const char* text, float_t x,
-                                                  float_t y, float_t max_width);
+                                                 float_t y, float_t max_width);
 static float_t vgcanvas_nanovg_soft_text_measure_text(vgcanvas_t* vgcanvas, const char* text);
 static ret_t vgcanvas_nanovg_soft_text_get_text_metrics(vgcanvas_t* vgcanvas, float_t* ascent,
-                                                         float_t* descent, float_t* line_hight);
+                                                        float_t* descent, float_t* line_hight);
 static ret_t vgcanvas_nanovg_soft_text_on_clear_cache(vgcanvas_t* vgcanvas);
 #endif /*WITH_NANOVG_GPU*/
 
@@ -267,18 +267,18 @@ static ret_t vgcanvas_nanovg_set_fill_mode(vgcanvas_t* vgcanvas, vgcanvas_fill_m
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   switch (fill_mode) {
-  case VGCANVAS_FILL_MODE_ALL_FILL:
-    nvgFillMode(vg, NVG_FILLMODE_All);
-    break;
-  case VGCANVAS_FILL_MODE_NON_ZERO:
-    nvgFillMode(vg, NVG_FILLMODE_NONZERO);
-    break;
-  case VGCANVAS_FILL_MODE_EVEN_ODD:
-    nvgFillMode(vg, NVG_FILLMODE_EVENODD);
-    break;
-  default:
-    nvgFillMode(vg, NVG_FILLMODE_All);
-    break;
+    case VGCANVAS_FILL_MODE_ALL_FILL:
+      nvgFillMode(vg, NVG_FILLMODE_All);
+      break;
+    case VGCANVAS_FILL_MODE_NON_ZERO:
+      nvgFillMode(vg, NVG_FILLMODE_NONZERO);
+      break;
+    case VGCANVAS_FILL_MODE_EVEN_ODD:
+      nvgFillMode(vg, NVG_FILLMODE_EVENODD);
+      break;
+    default:
+      nvgFillMode(vg, NVG_FILLMODE_All);
+      break;
   }
   return RET_OK;
 }
@@ -288,7 +288,8 @@ static ret_t vgcanvas_nanovg_intersect_clip_rect(vgcanvas_t* vgcanvas, float_t* 
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   nvgIntersectScissor_ex(vg, x, y, w, h);
-  nvgGetCurrScissor(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
+  nvgGetCurrScissor(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w,
+                    &vgcanvas->clip_rect.h);
   return RET_OK;
 }
 
@@ -296,11 +297,13 @@ static ret_t vgcanvas_nanovg_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t 
                                        float_t h) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
   nvgScissor(vg, x, y, w, h);
-  nvgGetCurrScissor(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
+  nvgGetCurrScissor(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w,
+                    &vgcanvas->clip_rect.h);
   return RET_OK;
 }
 
-static bool_t vgcanvas_nanovg_is_rectf_in_clip_rect(vgcanvas_t* vgcanvas, float_t left, float_t top, float_t right, float_t bottom) {
+static bool_t vgcanvas_nanovg_is_rectf_in_clip_rect(vgcanvas_t* vgcanvas, float_t left, float_t top,
+                                                    float_t right, float_t bottom) {
   const rectf_t* clip_rect = vgcanvas_nanovg_get_clip_rect(vgcanvas);
   float_t clip_left = clip_rect->x;
   float_t clip_right = clip_rect->x + clip_rect->w - 1;
@@ -314,7 +317,8 @@ static bool_t vgcanvas_nanovg_is_rectf_in_clip_rect(vgcanvas_t* vgcanvas, float_
 
 static const rectf_t* vgcanvas_nanovg_get_clip_rect(vgcanvas_t* vgcanvas) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
-  nvgGetCurrScissor(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
+  nvgGetCurrScissor(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w,
+                    &vgcanvas->clip_rect.h);
   return &(vgcanvas->clip_rect);
 }
 
@@ -371,14 +375,15 @@ static ret_t vgcanvas_nanovg_set_font_size(vgcanvas_t* vgcanvas, float_t size) {
 }
 
 static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
-#ifdef WITH_NANOVG_GPU  
+#ifdef WITH_NANOVG_GPU
   int font_id = 0;
   ret_t result = RET_FAIL;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   return_value_if_fail(name && *name, RET_BAD_PARAMS);
 
-  font_id = tk_pointer_to_int(vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vgcanvas, name, &result));
+  font_id = tk_pointer_to_int(
+      vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vgcanvas, name, &result));
 
   if (result != RET_OK) {
     font_id = nvgCreateEmptyFont(vg, name);
@@ -387,7 +392,8 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
     }
 
     if (font_id >= 0) {
-      vgcanvas_asset_manager_add_font(vgcanvas_asset_manager(), vgcanvas, name, tk_pointer_from_int(font_id));
+      vgcanvas_asset_manager_add_font(vgcanvas_asset_manager(), vgcanvas, name,
+                                      tk_pointer_from_int(font_id));
     }
   }
 
@@ -443,11 +449,14 @@ static ret_t vgcanvas_nanovg_fill_text(vgcanvas_t* vgcanvas, const char* text, f
   glyphs_t* glyphs = NULL;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
-  font_t* font = font_manager_get_font(vgcanvas->c->font_manager, vgcanvas->font, vgcanvas->font_size);
+  font_t* font =
+      font_manager_get_font(vgcanvas->c->font_manager, vgcanvas->font, vgcanvas->font_size);
   return_value_if_fail(font != NULL && wstr_set_utf8(&canvas->tmp_wstr, text) == RET_OK, RET_FAIL);
-  glyphs = font_create_glyphs(font, canvas->tmp_wstr.str, canvas->tmp_wstr.size, vgcanvas->font_size, NULL);
+  glyphs = font_create_glyphs(font, canvas->tmp_wstr.str, canvas->tmp_wstr.size,
+                              vgcanvas->font_size, NULL);
   if (glyphs != NULL) {
-    ret = vgcanvas_fill_text_by_glyphs(vgcanvas, glyphs, 0, glyphs_get_length(glyphs), x, y, max_width);
+    ret = vgcanvas_fill_text_by_glyphs(vgcanvas, glyphs, 0, glyphs_get_length(glyphs), x, y,
+                                       max_width);
     glyphs_destroy(glyphs);
   }
 
@@ -457,7 +466,8 @@ static ret_t vgcanvas_nanovg_fill_text(vgcanvas_t* vgcanvas, const char* text, f
 #endif
 }
 
-static ret_t vgcanvas_nanovg_fill_text_by_glyphs(vgcanvas_t* vgcanvas, glyphs_t* glyphs, uint32_t start, uint32_t len, float_t x, float_t y,
+static ret_t vgcanvas_nanovg_fill_text_by_glyphs(vgcanvas_t* vgcanvas, glyphs_t* glyphs,
+                                                 uint32_t start, uint32_t len, float_t x, float_t y,
                                                  float_t max_width) {
   uint32_t i = 0;
   uint32_t nr = len + start;
@@ -474,7 +484,8 @@ static ret_t vgcanvas_nanovg_fill_text_by_glyphs(vgcanvas_t* vgcanvas, glyphs_t*
     if (g != NULL) {
       xy_t xx = x * ratio + g->x;
       xy_t yy = y * ratio + g->y + baseline;
-      nvgGlyph(vg, g->glyph_index, font_size, (float)xx, (float)yy, (float)g->w, (float)g->h, g->data);
+      nvgGlyph(vg, g->glyph_index, font_size, (float)xx, (float)yy, (float)g->w, (float)g->h,
+               g->data);
       x += (g->advance / ratio);
     } else {
       x += 4;
@@ -489,9 +500,11 @@ static float_t vgcanvas_nanovg_measure_text(vgcanvas_t* vgcanvas, const char* te
   glyphs_t* glyphs = NULL;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
-  font_t* font = font_manager_get_font(vgcanvas->c->font_manager, vgcanvas->font, vgcanvas->font_size);
+  font_t* font =
+      font_manager_get_font(vgcanvas->c->font_manager, vgcanvas->font, vgcanvas->font_size);
   return_value_if_fail(font != NULL && wstr_set_utf8(&canvas->tmp_wstr, text) == RET_OK, 0.0f);
-  glyphs = font_create_glyphs(font, canvas->tmp_wstr.str, canvas->tmp_wstr.size, vgcanvas->font_size, NULL);
+  glyphs = font_create_glyphs(font, canvas->tmp_wstr.str, canvas->tmp_wstr.size,
+                              vgcanvas->font_size, NULL);
   if (glyphs != NULL) {
     w = glyphs_measure(glyphs, 0, glyphs_get_length(glyphs));
     glyphs_destroy(glyphs);
@@ -530,14 +543,14 @@ static ret_t vgcanvas_nanovg_image_orientation_matrix(NVGcontext* vg, bitmap_t* 
     float_t anchor_x = img->w / 2.0f;
     float_t anchor_y = img->h / 2.0f;
     nvgTranslate(vg, anchor_x, anchor_y);
-		nvgRotate(vg, TK_D2R((float_t)(img->orientation)));
-		nvgTranslate(vg, -anchor_y, -anchor_x);
+    nvgRotate(vg, TK_D2R((float_t)(img->orientation)));
+    nvgTranslate(vg, -anchor_y, -anchor_x);
   } else if (img->orientation == LCD_ORIENTATION_180) {
     float_t anchor_x = img->w / 2.0f;
     float_t anchor_y = img->h / 2.0f;
-		nvgTranslate(vg, anchor_x, anchor_y);
-		nvgRotate(vg, TK_D2R(180.0f));
-		nvgTranslate(vg, -anchor_x, -anchor_y);
+    nvgTranslate(vg, anchor_x, anchor_y);
+    nvgRotate(vg, TK_D2R(180.0f));
+    nvgTranslate(vg, -anchor_x, -anchor_y);
   }
   return RET_OK;
 }
@@ -732,7 +745,7 @@ static ret_t vgcanvas_nanovg_clear_cache(vgcanvas_t* vgcanvas) {
 #ifndef WITH_NANOVG_GPU
   vgcanvas_nanovg_soft_text_on_clear_cache(vgcanvas);
 #endif
-  
+
   return RET_OK;
 }
 

@@ -131,8 +131,9 @@ typedef ret_t (*vgcanvas_get_text_metrics_t)(vgcanvas_t* vg, float_t* ascent, fl
                                              float_t* line_hight);
 typedef ret_t (*vgcanvas_fill_text_t)(vgcanvas_t* vg, const char* text, float_t x, float_t y,
                                       float_t max_width);
-typedef ret_t (*vgcanvas_fill_text_by_glyphs_t)(vgcanvas_t* vg, glyphs_t* glyphs, uint32_t start, uint32_t len, float_t x, float_t y,
-                                      float_t max_width);
+typedef ret_t (*vgcanvas_fill_text_by_glyphs_t)(vgcanvas_t* vg, glyphs_t* glyphs, uint32_t start,
+                                                uint32_t len, float_t x, float_t y,
+                                                float_t max_width);
 typedef float_t (*vgcanvas_measure_text_t)(vgcanvas_t* vg, const char* text);
 typedef ret_t (*vgcanvas_draw_image_t)(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
                                        float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
@@ -1029,8 +1030,8 @@ ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_fill_text_by_glyphs(vgcanvas_t* vg, glyphs_t* glyphs, uint32_t start, uint32_t len, float_t x, float_t y,
-                                   float_t max_width);
+ret_t vgcanvas_fill_text_by_glyphs(vgcanvas_t* vg, glyphs_t* glyphs, uint32_t start, uint32_t len,
+                                   float_t x, float_t y, float_t max_width);
 
 /**
  * @method vgcanvas_measure_text

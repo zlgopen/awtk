@@ -102,7 +102,6 @@ static XmlBuilder* builder_init(xml_str_builder_t& b, StrGen* sg) {
   memset(&b.builder, 0x00, sizeof(XmlBuilder));
   b.level = 0;
   b.sg = NULL;
-  
 
   b.sg = sg;
   b.level = 0;

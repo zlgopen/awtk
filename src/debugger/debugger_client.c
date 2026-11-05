@@ -276,7 +276,7 @@ static ret_t debugger_client_write_obj_data(debugger_t* debugger, uint32_t code,
 
   ubjson_writer_init(&writer, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
   ret = ubjson_writer_write_object(&writer, obj);
-  if(ret == RET_OK) {
+  if (ret == RET_OK) {
     req.code = code;
     req.size = wb.cursor;
     req.version = DEBUGGER_VERSION;
@@ -382,7 +382,8 @@ static tk_object_t* debugger_client_variables_to_dap_format(tk_object_t* obj) {
   return obj;
 }
 
-static ret_t debugger_client_set_var_data(debugger_t* debugger, const char* path, const value_t* value){
+static ret_t debugger_client_set_var_data(debugger_t* debugger, const char* path,
+                                          const value_t* value) {
   ret_t ret = RET_OK;
   tk_object_t* obj = object_default_create();
   return_value_if_fail(obj != NULL, RET_OOM);

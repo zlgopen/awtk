@@ -39,7 +39,7 @@ gradient_t* gradient_init_simple(gradient_t* gradient, uint32_t color) {
   c.color = color;
   gradient_init(gradient);
   gradient->type = GRADIENT_LINEAR;
-  gradient_add_stop(gradient, c, 0); 
+  gradient_add_stop(gradient, c, 0);
 
   return gradient;
 }
@@ -120,7 +120,7 @@ static gradient_t* gradient_parse_linear(gradient_t* gradient, tokenizer_t* t) {
   gradient_set_type(gradient, GRADIENT_LINEAR);
   if (tk_isdigit(*token)) {
     if (strstr(token, "deg") != NULL) {
-    /*
+      /*
      * linear-gradient(0deg, blue, green 40%, red);
      */
       degree = tk_atoi(token);
@@ -366,8 +366,7 @@ color_t gradient_get_color(gradient_t* gradient, float offset) {
     uint32_t i = 0;
     for (i = 0; i < gradient->nr; i++) {
       gradient_stop_t* iter = gradient->stops + i;
-      if (iter->offset == offset || (i + 1) == gradient->nr ||
-          (offset < iter->offset && i == 0)) {
+      if (iter->offset == offset || (i + 1) == gradient->nr || (offset < iter->offset && i == 0)) {
         return iter->color;
       } else if (offset > iter->offset) {
         gradient_stop_t* next = gradient->stops + i + 1;

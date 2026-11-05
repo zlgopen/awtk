@@ -73,7 +73,8 @@ typedef ret_t (*debugger_step_in_t)(debugger_t* debugger);
 typedef ret_t (*debugger_step_out_t)(debugger_t* debugger);
 typedef ret_t (*debugger_step_loop_over_t)(debugger_t* debugger);
 typedef ret_t (*debugger_continue_t)(debugger_t* debugger);
-typedef ret_t (*debugger_set_var_data_t)(debugger_t* debugger, const char* name, const value_t* value);
+typedef ret_t (*debugger_set_var_data_t)(debugger_t* debugger, const char* name,
+                                         const value_t* value);
 typedef tk_object_t* (*debugger_get_local_t)(debugger_t* debugger, uint32_t frame_index);
 typedef tk_object_t* (*debugger_get_self_t)(debugger_t* debugger);
 typedef tk_object_t* (*debugger_get_global_t)(debugger_t* debugger);

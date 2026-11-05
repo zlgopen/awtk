@@ -2167,7 +2167,7 @@ static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHAR
 #define STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, n) text_edit_get_glyphs_str_num(str, n)
 #define STB_TEXTEDIT_GET_GLYPHS_GLYPH_NUM(str, n) text_edit_get_glyphs_glyph_num(str, n)
 #define STB_TEXTEDIT_GETBIDITYPE(str, n) text_edit_get_bidi_type(str, n)
-#define STB_TEXTEDIT_KEYTOTEXT(key) (((key)&KEYDOWN_BIT) ? 0 : ((uint16_t)key))
+#define STB_TEXTEDIT_KEYTOTEXT(key) (((key) & KEYDOWN_BIT) ? 0 : ((uint16_t)key))
 #define STB_TEXTEDIT_GETCHAR(str, i) text_edit_get_char(str, i)
 #define STB_TEXTEDIT_IS_SPACE(ch) iswspace(ch)
 #define STB_TEXTEDIT_DELETECHARS text_edit_remove

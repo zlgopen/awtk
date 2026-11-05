@@ -81,7 +81,8 @@ typedef ret_t (*lcd_stroke_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*lcd_draw_glyph_t)(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y);
 typedef float_t (*lcd_measure_text_t)(lcd_t* lcd, const wchar_t* str, uint32_t nr);
 typedef ret_t (*lcd_draw_text_t)(lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y);
-typedef ret_t (*lcd_draw_text_by_glyphs_t)(lcd_t* lcd, glyphs_t* glyphs, uint32_t start, uint32_t len, xy_t x, xy_t y);
+typedef ret_t (*lcd_draw_text_by_glyphs_t)(lcd_t* lcd, glyphs_t* glyphs, uint32_t start,
+                                           uint32_t len, xy_t x, xy_t y);
 
 typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, const rectf_t* src,
                                   const rectf_t* dst);
@@ -554,7 +555,8 @@ ret_t lcd_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_draw_text_by_glyphs(lcd_t* lcd, glyphs_t* glyphs, uint32_t start, uint32_t len, xy_t x, xy_t y);
+ret_t lcd_draw_text_by_glyphs(lcd_t* lcd, glyphs_t* glyphs, uint32_t start, uint32_t len, xy_t x,
+                              xy_t y);
 
 /**
  * @method lcd_draw_image

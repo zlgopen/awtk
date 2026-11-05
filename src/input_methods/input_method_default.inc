@@ -193,9 +193,9 @@ static ret_t input_method_default_update_keyboard_close_anim_hint(input_method_t
 
     if (cur_index >= 0) {
       tk_snprintf(anim_hint, sizeof(anim_hint),
-          "vtranslate(" WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_Y_RANGE
-          "=%d," WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_INDEX "=%d)",
-          im->win_delta_y, cur_index);
+                  "vtranslate(" WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_Y_RANGE
+                  "=%d," WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_INDEX "=%d)",
+                  im->win_delta_y, cur_index);
       value_set_str(&v, anim_hint);
       widget_set_prop(keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
     }
@@ -547,7 +547,7 @@ static ret_t input_method_default_on_keyboard_close(void* ctx, event_t* e) {
   }
 
   if (im->keyboard == NULL) {
-   im->busy = FALSE;
+    im->busy = FALSE;
   }
 
   if (im->timer_close_id != TK_INVALID_ID) {

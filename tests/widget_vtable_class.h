@@ -41,7 +41,6 @@ widget_t* empty_class_cast(widget_t* widget);
 widget_t* base_class_cast(widget_t* widget);
 widget_t* sun_class_cast(widget_t* widget);
 
-
 const char* const* all_base_class_get_clone_properties();
 const char* const* base_class_get_clone_properties();
 

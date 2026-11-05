@@ -39,7 +39,8 @@ typedef struct _lcd_vgcanvas_t {
 static wh_t lcd_vgcanvas_get_physical_width(lcd_t* lcd) {
   system_info_t* info = system_info();
   if (info != NULL && info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
-    if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+    if (info->lcd_orientation == LCD_ORIENTATION_90 ||
+        info->lcd_orientation == LCD_ORIENTATION_270) {
       return lcd->h;
     }
   }
@@ -49,7 +50,8 @@ static wh_t lcd_vgcanvas_get_physical_width(lcd_t* lcd) {
 static wh_t lcd_vgcanvas_get_physical_height(lcd_t* lcd) {
   system_info_t* info = system_info();
   if (info != NULL && info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
-    if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+    if (info->lcd_orientation == LCD_ORIENTATION_90 ||
+        info->lcd_orientation == LCD_ORIENTATION_270) {
       return lcd->w;
     }
   }
@@ -69,7 +71,8 @@ static ret_t lcd_vgcanvas_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_lengt
   return RET_OK;
 }
 
-static ret_t lcd_vgcanvas_set_orientation(lcd_t* lcd, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+static ret_t lcd_vgcanvas_set_orientation(lcd_t* lcd, lcd_orientation_t old_orientation,
+                                          lcd_orientation_t new_orientation) {
   if (tk_is_swap_size_by_orientation(old_orientation, new_orientation)) {
     return lcd_vgcanvas_resize(lcd, lcd->h, lcd->w, 0);
   }
@@ -92,9 +95,11 @@ static ret_t lcd_vgcanvas_set_clip_rect(lcd_t* lcd, const rect_t* r) {
   return vgcanvas_clip_rect(LCD(lcd)->canvas, r->x, r->y, r->w, r->h);
 }
 
-static bool_t lcd_vgcanvas_is_rect_in_clip_rect(lcd_t* lcd, xy_t left, xy_t top, xy_t right, xy_t bottom) {
+static bool_t lcd_vgcanvas_is_rect_in_clip_rect(lcd_t* lcd, xy_t left, xy_t top, xy_t right,
+                                                xy_t bottom) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
-  return vgcanvas_is_rectf_in_clip_rect(canvas, (float_t)left, (float_t)top, (float_t)right, (float_t)bottom);
+  return vgcanvas_is_rectf_in_clip_rect(canvas, (float_t)left, (float_t)top, (float_t)right,
+                                        (float_t)bottom);
 }
 
 static ret_t lcd_vgcanvas_get_clip_rect(lcd_t* lcd, rect_t* r) {
@@ -107,7 +112,8 @@ static ret_t lcd_vgcanvas_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
   return vgcanvas_set_global_alpha(LCD(lcd)->canvas, (float_t)alpha / 255.0);
 }
 
-static ret_t lcd_vgcanvas_draw_vline_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t h, color_t stroke_color) {
+static ret_t lcd_vgcanvas_draw_vline_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t h,
+                                                color_t stroke_color) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
   vgcanvas_save(canvas);
@@ -130,7 +136,8 @@ static ret_t lcd_vgcanvas_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   return lcd_vgcanvas_draw_vline_with_color(lcd, x, y, h, lcd->stroke_color);
 }
 
-static ret_t lcd_vgcanvas_draw_hline_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t w, color_t stroke_color) {
+static ret_t lcd_vgcanvas_draw_hline_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t w,
+                                                color_t stroke_color) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
   vgcanvas_save(canvas);
@@ -219,7 +226,8 @@ static ret_t lcd_vgcanvas_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) 
   return RET_OK;
 }
 
-static ret_t lcd_vgcanvas_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst) {
+static ret_t lcd_vgcanvas_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src,
+                                     const rectf_t* dst) {
   float_t sx = src->x;
   float_t sy = src->y;
   float_t sw = src->w;
@@ -240,7 +248,8 @@ static ret_t lcd_vgcanvas_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* s
   return ret;
 }
 
-static ret_t lcd_vgcanvas_draw_image_repeat(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst, wh_t dst_w, wh_t dst_h) {
+static ret_t lcd_vgcanvas_draw_image_repeat(lcd_t* lcd, bitmap_t* img, const rect_t* src,
+                                            const rect_t* dst, wh_t dst_w, wh_t dst_h) {
   float_t sx = src->x;
   float_t sy = src->y;
   float_t sw = src->w;
@@ -254,10 +263,10 @@ static ret_t lcd_vgcanvas_draw_image_repeat(lcd_t* lcd, bitmap_t* img, const rec
   if (canvas != NULL && canvas->vt->draw_image_repeat != NULL) {
     vgcanvas_save(canvas);
     vgcanvas_set_antialias(canvas, FALSE);
-    ret = vgcanvas_draw_image_repeat(canvas, img, sx, sy, sw, sh, dx, dy, dw, dh, (float_t)dst_w, (float_t)dst_h);
+    ret = vgcanvas_draw_image_repeat(canvas, img, sx, sy, sw, sh, dx, dy, dw, dh, (float_t)dst_w,
+                                     (float_t)dst_h);
     vgcanvas_set_antialias(canvas, TRUE);
     vgcanvas_restore(canvas);
-
   }
   return ret;
 }
@@ -300,7 +309,8 @@ static ret_t lcd_vgcanvas_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr,
   return vgcanvas_fill_text(canvas, text->str, x, y, 0xffff);
 }
 
-static ret_t lcd_vgcanvas_draw_text_by_glyphs(lcd_t* lcd, glyphs_t* glyphs, uint32_t start, uint32_t len, xy_t x, xy_t y) {
+static ret_t lcd_vgcanvas_draw_text_by_glyphs(lcd_t* lcd, glyphs_t* glyphs, uint32_t start,
+                                              uint32_t len, xy_t x, xy_t y) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
   return_value_if_fail(canvas != NULL, RET_BAD_PARAMS);
 
@@ -347,8 +357,8 @@ static bitmap_format_t lcd_vgcanvas_get_desired_bitmap_format(lcd_t* lcd) {
   return BITMAP_FMT_RGBA8888;
 }
 
-static ret_t lcd_vgcanvas_get_text_metrics(lcd_t* lcd, float_t* ascender, 
-                                      float_t* descender, float_t* lineh) {
+static ret_t lcd_vgcanvas_get_text_metrics(lcd_t* lcd, float_t* ascender, float_t* descender,
+                                           float_t* lineh) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
   return vgcanvas_get_text_metrics(canvas, ascender, descender, lineh);
 }
@@ -405,6 +415,6 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
 
   str_init(&(lcd->temp_text), 100);
   lcd->canvas = canvas;
-  
+
   return base;
 }

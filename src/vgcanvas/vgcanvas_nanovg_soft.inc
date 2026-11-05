@@ -1,10 +1,11 @@
 #include "tkc/utils.h"
 #include "base/types_def.h"
-#include "vgcanvas_nanovg.inc" 
+#include "vgcanvas_nanovg.inc"
 #include "vgcanvas_nanovg_soft_text.inc"
 #include "base/vgcanvas_asset_manager.h"
 
-static ret_t vgcanvas_asset_manager_nanovg_font_destroy(void* vg, const char* font_name, void* specific) {
+static ret_t vgcanvas_asset_manager_nanovg_font_destroy(void* vg, const char* font_name,
+                                                        void* specific) {
   int32_t id = tk_pointer_to_int(specific);
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vg;
   if (canvas != NULL && canvas->vg != NULL && id >= 0) {
@@ -58,24 +59,26 @@ static enum NVGtexture bitmap_format_to_nanovg(bitmap_format_t format) {
   return f;
 }
 
-static enum NVGorientation vgcanvas_nanovg_bitmap_orientation_to_NVGorientation(lcd_orientation_t orientation) {
+static enum NVGorientation vgcanvas_nanovg_bitmap_orientation_to_NVGorientation(
+    lcd_orientation_t orientation) {
   switch (orientation) {
-  case LCD_ORIENTATION_0:
-    return NVG_ORIENTATION_0;
-  case LCD_ORIENTATION_90:
-    return NVG_ORIENTATION_90;
-  case LCD_ORIENTATION_180:
-    return NVG_ORIENTATION_180;
-  case LCD_ORIENTATION_270:
-    return NVG_ORIENTATION_270;
-  default :
-    assert(!"not find orientation");
-    break;
+    case LCD_ORIENTATION_0:
+      return NVG_ORIENTATION_0;
+    case LCD_ORIENTATION_90:
+      return NVG_ORIENTATION_90;
+    case LCD_ORIENTATION_180:
+      return NVG_ORIENTATION_180;
+    case LCD_ORIENTATION_270:
+      return NVG_ORIENTATION_270;
+    default:
+      assert(!"not find orientation");
+      break;
   }
   return NVG_ORIENTATION_0;
 }
 
-static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, bool_t custom_draw_model, framebuffer_object_t* fbo) {
+static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
+                                        bool_t custom_draw_model, framebuffer_object_t* fbo) {
   return RET_NOT_IMPL;
 }
 
@@ -125,13 +128,13 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects
 
 #ifdef WITH_FAST_LCD_PORTRAIT
   if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
-    nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio, vgcanvas_nanovg_bitmap_orientation_to_NVGorientation(info->lcd_orientation));
-  } else 
+    nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio,
+                  vgcanvas_nanovg_bitmap_orientation_to_NVGorientation(info->lcd_orientation));
+  } else
 #endif
   {
     nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio, NVG_ORIENTATION_0);
   }
-
 
   return RET_OK;
 }
@@ -149,11 +152,10 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
 typedef struct _vgcanvas_nanovg_soft_texture_t {
   int32_t id;
   void* data;
-}vgcanvas_nanovg_soft_texture_t;
+} vgcanvas_nanovg_soft_texture_t;
 
 static int vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags(bitmap_flag_t flags) {
-
-  if(flags & BITMAP_FLAG_PREMULTI_ALPHA) {
+  if (flags & BITMAP_FLAG_PREMULTI_ALPHA) {
     return NVG_IMAGE_PREMULTIPLIED;
   }
   return NVG_IMAGE_NEAREST;
@@ -179,7 +181,8 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   if (img->flags & BITMAP_FLAG_TEXTURE) {
     if (img->specific != 0) {
       ret_t result = RET_FAIL;
-      const void* specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &result);
+      const void* specific = vgcanvas_asset_manager_get_image_specific(
+          vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &result);
       if (result == RET_OK && specific != NULL) {
         const vgcanvas_nanovg_soft_texture_t* tmp = (const vgcanvas_nanovg_soft_texture_t*)specific;
         i = nvgFindTextureRaw(canvas->vg, tmp->data);
@@ -191,7 +194,8 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   }
 
 #ifdef WITH_FAST_LCD_PORTRAIT
-  if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT && img->orientation != LCD_ORIENTATION_0) {
+  if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT &&
+      img->orientation != LCD_ORIENTATION_0) {
     assert(img->orientation == system_info()->lcd_orientation);
   }
 #endif
@@ -221,14 +225,14 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
     }
     default: {
       log_error("not supported format:%d \n", img->format);
-      assert(!"not supported format"); 
+      assert(!"not supported format");
     }
   }
 
   img_data = bitmap_lock_buffer_for_read(img);
 
-  i = nvgCreateImageRaw(canvas->vg, bitmap_get_physical_width(img), bitmap_get_physical_height(img), f, bitmap_get_physical_line_length(img), 
-                        flag, NVG_ORIENTATION_0, img_data);
+  i = nvgCreateImageRaw(canvas->vg, bitmap_get_physical_width(img), bitmap_get_physical_height(img),
+                        f, bitmap_get_physical_line_length(img), flag, NVG_ORIENTATION_0, img_data);
 
   if (i >= 0) {
     texture = TKMEM_ZALLOC(vgcanvas_nanovg_soft_texture_t);
@@ -245,7 +249,9 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 
 static ret_t vgcanvas_nanovg_soft_set_asset_manager(vgcanvas_t* vg) {
   return_value_if_fail(vg != NULL, RET_BAD_PARAMS);
-  vgcanvas_asset_manager_add_vg(vgcanvas_asset_manager(), vg, vgcanvas_asset_manager_nanovg_bitmap_destroy, vgcanvas_asset_manager_nanovg_font_destroy);
+  vgcanvas_asset_manager_add_vg(vgcanvas_asset_manager(), vg,
+                                vgcanvas_asset_manager_nanovg_bitmap_destroy,
+                                vgcanvas_asset_manager_nanovg_font_destroy);
   return RET_OK;
 }
 
@@ -254,7 +260,6 @@ static ret_t vgcanvas_nanovg_soft_close_asset_manager(vgcanvas_t* vg) {
   vgcanvas_asset_manager_remove_vg(vgcanvas_asset_manager(), vg);
   return RET_OK;
 }
-
 
 static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;

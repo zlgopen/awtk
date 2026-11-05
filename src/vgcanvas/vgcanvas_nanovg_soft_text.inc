@@ -52,7 +52,8 @@ static ret_t vgcanvas_nanovg_soft_text_release_cache(vgcanvas_t* vgcanvas, bool_
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_soft_text_ensure_font(vgcanvas_nanovg_t* canvas, const char* name_hint) {
+static ret_t vgcanvas_nanovg_soft_text_ensure_font(vgcanvas_nanovg_t* canvas,
+                                                   const char* name_hint) {
   font_manager_t* fm = font_manager();
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
 
@@ -70,7 +71,8 @@ static ret_t vgcanvas_nanovg_soft_text_ensure_font(vgcanvas_nanovg_t* canvas, co
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_soft_text_get_glyph(vgcanvas_nanovg_t* canvas, wchar_t chr, glyph_t* glyph) {
+static ret_t vgcanvas_nanovg_soft_text_get_glyph(vgcanvas_nanovg_t* canvas, wchar_t chr,
+                                                 glyph_t* glyph) {
   ret_t ret = RET_FAIL;
   font_t* font = canvas->awtk_font;
 
@@ -112,7 +114,8 @@ static uint32_t vgcanvas_nanovg_soft_text_get_row_pitch(const glyph_t* glyph) {
   }
 }
 
-static uint8_t vgcanvas_nanovg_soft_text_alpha_from_glyph(const glyph_t* glyph, int32_t x, int32_t y) {
+static uint8_t vgcanvas_nanovg_soft_text_alpha_from_glyph(const glyph_t* glyph, int32_t x,
+                                                          int32_t y) {
   uint32_t row_pitch = vgcanvas_nanovg_soft_text_get_row_pitch(glyph);
   const uint8_t* row = glyph->data + y * row_pitch;
 
@@ -142,9 +145,10 @@ static uint8_t vgcanvas_nanovg_soft_text_alpha_from_glyph(const glyph_t* glyph, 
 }
 
 static ret_t vgcanvas_nanovg_soft_text_render_runs(vgcanvas_nanovg_t* canvas,
-                                                    const vgcanvas_soft_text_run_t* runs,
-                                                    uint32_t nr, int32_t min_x, int32_t min_y,
-                                                    int32_t max_x, int32_t max_y, int32_t* image_id) {
+                                                   const vgcanvas_soft_text_run_t* runs,
+                                                   uint32_t nr, int32_t min_x, int32_t min_y,
+                                                   int32_t max_x, int32_t max_y,
+                                                   int32_t* image_id) {
   vgcanvas_nanovg_soft_text_cache_item_t* item = NULL;
   uint32_t i = 0;
   uint32_t row = 0;
@@ -194,9 +198,8 @@ static ret_t vgcanvas_nanovg_soft_text_render_runs(vgcanvas_nanovg_t* canvas,
     }
   }
 
-  text_image_id =
-      nvgCreateImageRaw(canvas->vg, width, height, NVG_TEXTURE_ALPHA, stride, NVG_IMAGE_NEAREST,
-                        NVG_ORIENTATION_0, text_image_data);
+  text_image_id = nvgCreateImageRaw(canvas->vg, width, height, NVG_TEXTURE_ALPHA, stride,
+                                    NVG_IMAGE_NEAREST, NVG_ORIENTATION_0, text_image_data);
   return_value_if_fail(text_image_id > 0, RET_FAIL);
 
   for (row = 0; row < (uint32_t)height; row++) {
@@ -256,7 +259,8 @@ static ret_t vgcanvas_nanovg_soft_text_set_font(vgcanvas_t* vgcanvas, const char
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_soft_text_set_text_align(vgcanvas_t* vgcanvas, const char* text_align) {
+static ret_t vgcanvas_nanovg_soft_text_set_text_align(vgcanvas_t* vgcanvas,
+                                                      const char* text_align) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
 
   if (text_align[0] == 'r') {
@@ -271,7 +275,7 @@ static ret_t vgcanvas_nanovg_soft_text_set_text_align(vgcanvas_t* vgcanvas, cons
 }
 
 static ret_t vgcanvas_nanovg_soft_text_set_text_baseline(vgcanvas_t* vgcanvas,
-                                                          const char* text_baseline) {
+                                                         const char* text_baseline) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
 
   if (text_baseline[0] == 'b') {
@@ -312,14 +316,15 @@ static float_t vgcanvas_nanovg_soft_text_measure_text(vgcanvas_t* vgcanvas, cons
 }
 
 static ret_t vgcanvas_nanovg_soft_text_get_text_metrics(vgcanvas_t* vgcanvas, float_t* ascent,
-                                                         float_t* descent, float_t* line_hight) {
+                                                        float_t* descent, float_t* line_hight) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   font_vmetrics_t metrics;
   ret_t ret = vgcanvas_nanovg_soft_text_ensure_font(canvas, vgcanvas->font);
   return_value_if_fail(ret == RET_OK, RET_FAIL);
 
-  metrics = font_get_vmetrics(canvas->awtk_font != NULL ? canvas->awtk_font : canvas->awtk_fallback_font,
-                              canvas->awtk_font_size);
+  metrics =
+      font_get_vmetrics(canvas->awtk_font != NULL ? canvas->awtk_font : canvas->awtk_fallback_font,
+                        canvas->awtk_font_size);
   if (ascent != NULL) {
     *ascent = (float_t)metrics.ascent;
   }
@@ -334,7 +339,7 @@ static ret_t vgcanvas_nanovg_soft_text_get_text_metrics(vgcanvas_t* vgcanvas, fl
 }
 
 static ret_t vgcanvas_nanovg_soft_text_fill_text(vgcanvas_t* vgcanvas, const char* text, float_t x,
-                                                  float_t y, float_t max_width) {
+                                                 float_t y, float_t max_width) {
   int32_t pen_x = 0;
   int32_t min_x = 0;
   int32_t min_y = 0;
@@ -409,7 +414,7 @@ static ret_t vgcanvas_nanovg_soft_text_fill_text(vgcanvas_t* vgcanvas, const cha
   }
 
   ret = vgcanvas_nanovg_soft_text_render_runs(canvas, runs, run_nr, min_x, min_y, max_x, max_y,
-                                               &image_id);
+                                              &image_id);
   if (ret == RET_OK) {
     int32_t draw_x = base_x + min_x;
     int32_t draw_y = base_y + min_y;
@@ -423,8 +428,8 @@ static ret_t vgcanvas_nanovg_soft_text_fill_text(vgcanvas_t* vgcanvas, const cha
     nvgSave(vg);
     nvgGlobalAlpha(vg, alpha);
     paint = nvgImagePattern(vg, draw_x, draw_y, max_x - min_x, max_y - min_y, 0, image_id, 1.0f);
-    paint.innerColor = paint.outerColor = nvgRGBAf(c.rgba.r / 255.0f, c.rgba.g / 255.0f,
-                                                   c.rgba.b / 255.0f, c.rgba.a / 255.0f);
+    paint.innerColor = paint.outerColor =
+        nvgRGBAf(c.rgba.r / 255.0f, c.rgba.g / 255.0f, c.rgba.b / 255.0f, c.rgba.a / 255.0f);
     nvgBeginPath(vg);
     nvgRect(vg, draw_x, draw_y, max_x - min_x, max_y - min_y);
     nvgClosePath(vg);

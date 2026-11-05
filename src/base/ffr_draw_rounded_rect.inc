@@ -30,10 +30,10 @@ typedef enum _ffr_quadrant_t {
 } ffr_quadrant_t;
 
 typedef enum _ffr_vertex_type_t {
-  FFR_VERTEXT_TYPE_TOP_REIGHT = 0,    //右上角
-  FFR_VERTEXT_TYPE_TOP_LEFT,          //左上角
-  FFR_VERTEXT_TYPE_BOTTOM_LEFT,       //左下角
-  FFR_VERTEXT_TYPE_BOTTOM_REIGHT,     //右下角
+  FFR_VERTEXT_TYPE_TOP_REIGHT = 0,  //右上角
+  FFR_VERTEXT_TYPE_TOP_LEFT,        //左上角
+  FFR_VERTEXT_TYPE_BOTTOM_LEFT,     //左下角
+  FFR_VERTEXT_TYPE_BOTTOM_REIGHT,   //右下角
 
   FFR_VERTEXT_TYPE_COUNT = FFR_VERTEXT_TYPE_BOTTOM_REIGHT + 1,
 } ffr_vertex_type_t;
@@ -119,9 +119,9 @@ static void ffr_draw_antialiasing_for_point(canvas_t* c, int px, int py, float_t
   canvas_draw_vline(c, px, py, 1);
 }
 
-static bool_t ffr_get_circluar_point_to_quadrant(int32_t xc, int32_t yc, int32_t px,
-                                                           int32_t py, ffr_quadrant_t type,
-                                                           int32_t* out_x, int32_t* out_y) {
+static bool_t ffr_get_circluar_point_to_quadrant(int32_t xc, int32_t yc, int32_t px, int32_t py,
+                                                 ffr_quadrant_t type, int32_t* out_x,
+                                                 int32_t* out_y) {
   int32_t tmp_x = 0;
   int32_t tmp_y = 0;
   switch (type) {
@@ -167,9 +167,9 @@ static bool_t ffr_get_circluar_point_to_quadrant(int32_t xc, int32_t yc, int32_t
   return TRUE;
 }
 
-static int32_t ffr_draw_circluar_point_to_quadrant(canvas_t* c,
-                                                  int32_t x_h, int32_t y_v, int32_t x,
-                                                  int32_t y, float_t e, color_t color, int32_t limit_y) {
+static int32_t ffr_draw_circluar_point_to_quadrant(canvas_t* c, int32_t x_h, int32_t y_v, int32_t x,
+                                                   int32_t y, float_t e, color_t color,
+                                                   int32_t limit_y) {
   int32_t w = 0;
   int32_t h = 0;
   if (x_h > x) {
@@ -195,9 +195,11 @@ static int32_t ffr_draw_circluar_point_to_quadrant(canvas_t* c,
   return -1;
 }
 
-static int32_t ffr_draw_circluar_point_to_quadrant_hline(canvas_t* c, const rect_t* rect, int32_t x_h,
-                                                      int32_t y_v, int32_t x, int32_t y,
-                                                      float_t e, const gradient_t* gradient, int32_t limit_y, int32_t* last_y) {
+static int32_t ffr_draw_circluar_point_to_quadrant_hline(canvas_t* c, const rect_t* rect,
+                                                         int32_t x_h, int32_t y_v, int32_t x,
+                                                         int32_t y, float_t e,
+                                                         const gradient_t* gradient,
+                                                         int32_t limit_y, int32_t* last_y) {
   int32_t w = 0;
   int32_t h = 0;
   if (x_h > x) {
@@ -230,8 +232,7 @@ static int32_t ffr_draw_circluar_point_to_quadrant_hline(canvas_t* c, const rect
   return -1;
 }
 
-static void Wu_D_Circle(int32_t r, darray_t* point_list,
-                               ffr_point_pix_t* point_pix_cache_list) {
+static void Wu_D_Circle(int32_t r, darray_t* point_list, ffr_point_pix_t* point_pix_cache_list) {
   int32_t x = 0;
   int32_t y = r;
   uint32_t i = 0;
@@ -254,10 +255,10 @@ static void Wu_D_Circle(int32_t r, darray_t* point_list,
   }
 }
 
-static int32_t ffr_draw_stroke_arc_point_list(canvas_t* c, int32_t x_h,
-                                              int32_t y_v, int32_t xc, int32_t yc,
-                                              ffr_quadrant_t type, color_t color,
-                                              darray_t* point_list, bool_t is_last_antialiasing, int32_t limit_y) {
+static int32_t ffr_draw_stroke_arc_point_list(canvas_t* c, int32_t x_h, int32_t y_v, int32_t xc,
+                                              int32_t yc, ffr_quadrant_t type, color_t color,
+                                              darray_t* point_list, bool_t is_last_antialiasing,
+                                              int32_t limit_y) {
   uint32_t i = 0;
   int32_t end_y = 0;
   void** elms = point_list->elms;
@@ -288,8 +289,9 @@ static int32_t ffr_draw_stroke_arc_point_list(canvas_t* c, int32_t x_h,
 }
 
 static int32_t ffr_draw_fill_arc_point_list(canvas_t* c, const rect_t* rect, int32_t x_h,
-                                            int32_t y_v, int32_t xc, int32_t yc, ffr_quadrant_t type,
-                                            const gradient_t* gradient, darray_t* point_list, int32_t limit_y) {
+                                            int32_t y_v, int32_t xc, int32_t yc,
+                                            ffr_quadrant_t type, const gradient_t* gradient,
+                                            darray_t* point_list, int32_t limit_y) {
   uint32_t i = 0;
   int32_t end_y = 0;
   int32_t last_y = -1;
@@ -304,7 +306,8 @@ static int32_t ffr_draw_fill_arc_point_list(canvas_t* c, const rect_t* rect, int
       if (limit_y >= 0 && limit_y == y) {
         break;
       }
-      tmp = ffr_draw_circluar_point_to_quadrant_hline(c, rect, x_h, y_v, x, y, 1 - iter->e, gradient, limit_y, &last_y);
+      tmp = ffr_draw_circluar_point_to_quadrant_hline(c, rect, x_h, y_v, x, y, 1 - iter->e,
+                                                      gradient, limit_y, &last_y);
       if (tmp >= 0) {
         end_y = tmp;
       }
@@ -314,7 +317,7 @@ static int32_t ffr_draw_fill_arc_point_list(canvas_t* c, const rect_t* rect, int
 }
 
 static void ffr_push_arc_point_list(float_t angle_1, float_t angle_2, int32_t r,
-                                       darray_t* point_list, darray_t* point_list_45) {
+                                    darray_t* point_list, darray_t* point_list_45) {
   uint32_t i = 0;
   void** elms = point_list_45->elms;
 
@@ -331,11 +334,10 @@ static void ffr_push_arc_point_list(float_t angle_1, float_t angle_2, int32_t r,
   }
 }
 
-static void ffr_draw_arc_point_list(canvas_t* c, const rect_t* rect, int32_t x_h,
-                                       int32_t y_v, int32_t xc, int32_t yc, float_t angle_h,
-                                       float_t angle_v, int32_t r, uint32_t quadrant_id,
-                                       const gradient_t* gradient, darray_t* point_list,
-                                       darray_t* point_list_45, bool_t is_fill) {
+static void ffr_draw_arc_point_list(canvas_t* c, const rect_t* rect, int32_t x_h, int32_t y_v,
+                                    int32_t xc, int32_t yc, float_t angle_h, float_t angle_v,
+                                    int32_t r, uint32_t quadrant_id, const gradient_t* gradient,
+                                    darray_t* point_list, darray_t* point_list_45, bool_t is_fill) {
   int32_t end_y = -1;
   float_t angle_v_1 = 0.0f;
   float_t angle_h_1 = 0.0f;
@@ -363,13 +365,13 @@ static void ffr_draw_arc_point_list(canvas_t* c, const rect_t* rect, int32_t x_h
     ffr_push_arc_point_list(angle_v_1, angle_v_2, r, point_list, point_list_45);
     if (is_fill) {
       end_y = ffr_draw_fill_arc_point_list(c, rect, x_h, y_v, xc, yc,
-                                          WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_v, gradient,
-                                          point_list, -1);
+                                           WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_v,
+                                           gradient, point_list, -1);
     } else {
       color_t color = gradient_get_first_color((gradient_t*)gradient);
       end_y = ffr_draw_stroke_arc_point_list(c, x_h, y_v, xc, yc,
-                                            WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_v, color,
-                                            point_list, TRUE,  -1);
+                                             WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_v,
+                                             color, point_list, TRUE, -1);
     }
     point_list->size = 0;
   }
@@ -378,32 +380,37 @@ static void ffr_draw_arc_point_list(canvas_t* c, const rect_t* rect, int32_t x_h
     ffr_push_arc_point_list(angle_h_1, angle_h_2, r, point_list, point_list_45);
     if (is_fill) {
       ffr_draw_fill_arc_point_list(c, rect, x_h, y_v, xc, yc,
-                                      WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_h, gradient,
-                                      point_list, end_y);
+                                   WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_h, gradient,
+                                   point_list, end_y);
     } else {
       color_t color = gradient_get_first_color((gradient_t*)gradient);
       ffr_draw_stroke_arc_point_list(c, x_h, y_v, xc, yc,
-                                        WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_h, color,
-                                        point_list, angle_v <= M_FFR_PI_4, end_y);
+                                     WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_h, color,
+                                     point_list, angle_v <= M_FFR_PI_4, end_y);
     }
     point_list->size = 0;
   }
 }
 
-static inline bool_t ffr_draw_rounded_radius_equal(uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br) {
+static inline bool_t ffr_draw_rounded_radius_equal(uint32_t radius_tl, uint32_t radius_tr,
+                                                   uint32_t radius_bl, uint32_t radius_br) {
   if (radius_tl == radius_tr && radius_tr == radius_bl && radius_bl == radius_br) {
     return TRUE;
   }
   return FALSE;
 }
 
-static float_t ffr_draw_rounded_get_vertex_angle_by_border_model(int32_t border_model, ffr_vertex_type_t type, bool_t is_h, float_t default_angle) {
-
+static float_t ffr_draw_rounded_get_vertex_angle_by_border_model(int32_t border_model,
+                                                                 ffr_vertex_type_t type,
+                                                                 bool_t is_h,
+                                                                 float_t default_angle) {
   int32_t num = (int32_t)type;
-  const static border_type_t s_angle_type_to_border_model[] = { BORDER_TOP, BORDER_RIGHT, BORDER_TOP, BORDER_LEFT, BORDER_BOTTOM, BORDER_LEFT, BORDER_BOTTOM, BORDER_RIGHT};
+  const static border_type_t s_angle_type_to_border_model[] = {
+      BORDER_TOP,    BORDER_RIGHT, BORDER_TOP,    BORDER_LEFT,
+      BORDER_BOTTOM, BORDER_LEFT,  BORDER_BOTTOM, BORDER_RIGHT};
 
   return_value_if_fail(type < FFR_VERTEXT_TYPE_COUNT, default_angle);
-  
+
   num = num * 2 + (is_h ? 0 : 1);
 
   if (s_angle_type_to_border_model[num] & border_model) {
@@ -413,11 +420,12 @@ static float_t ffr_draw_rounded_get_vertex_angle_by_border_model(int32_t border_
   }
 }
 
-static void ffr_draw_rounded_rect_draw_fill_with_vg(canvas_t* c, vgcanvas_t* vg, const gradient_t* gradient, const rect_t* r, ffr_draw_info_t draw_infos[FFR_VERTEXT_TYPE_COUNT]) {
-
+static void ffr_draw_rounded_rect_draw_fill_with_vg(
+    canvas_t* c, vgcanvas_t* vg, const gradient_t* gradient, const rect_t* r,
+    ffr_draw_info_t draw_infos[FFR_VERTEXT_TYPE_COUNT]) {
   vgcanvas_save(vg);
   vgcanvas_set_global_alpha(vg, c->global_alpha / 255.0f);
-  if (gradient->nr > 1) {  
+  if (gradient->nr > 1) {
     vg_gradient_t vg_gradient;
     vg_gradient_init_with_gradient(&vg_gradient, r, gradient);
     vgcanvas_set_fill_gradient(vg, &vg_gradient);
@@ -428,32 +436,48 @@ static void ffr_draw_rounded_rect_draw_fill_with_vg(canvas_t* c, vgcanvas_t* vg,
   vgcanvas_translate(vg, (float_t)c->ox, (float_t)c->oy);
   vgcanvas_begin_path(vg);
 
-  if (draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius > 0) { // 右上角
-    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, 
-                  M_PI + M_FFR_PI_2 + draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].angle_v, M_PI + M_PI - draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].angle_h, TRUE);
+  if (draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius > 0) {  // 右上角
+    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                 draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y,
+                 draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius,
+                 M_PI + M_FFR_PI_2 + draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].angle_v,
+                 M_PI + M_PI - draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].angle_h, TRUE);
   } else {
-    vgcanvas_move_to(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y);
+    vgcanvas_move_to(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                     draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y);
   }
 
-  if (draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius > 0) { // 左上角
-    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius, 
-                M_PI + draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].angle_h, M_PI + M_FFR_PI_2 - draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].angle_v, TRUE); 
+  if (draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius > 0) {  // 左上角
+    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x,
+                 draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y,
+                 draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius,
+                 M_PI + draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].angle_h,
+                 M_PI + M_FFR_PI_2 - draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].angle_v, TRUE);
   } else {
-    vgcanvas_line_to(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y);
+    vgcanvas_line_to(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x,
+                     draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y);
   }
 
-  if (draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius > 0) { // 左下角
-    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius, 
-                M_FFR_PI_2 + draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].angle_v, M_PI - draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].angle_h, TRUE); 
+  if (draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius > 0) {  // 左下角
+    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x,
+                 draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y,
+                 draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius,
+                 M_FFR_PI_2 + draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].angle_v,
+                 M_PI - draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].angle_h, TRUE);
   } else {
-    vgcanvas_line_to(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y);
+    vgcanvas_line_to(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x,
+                     draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y);
   }
 
-  if (draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius > 0) { // 右下角
-    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius, 
-                draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].angle_h, M_FFR_PI_2 - draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].angle_v, TRUE); 
+  if (draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius > 0) {  // 右下角
+    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x,
+                 draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y,
+                 draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius,
+                 draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].angle_h,
+                 M_FFR_PI_2 - draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].angle_v, TRUE);
   } else {
-    vgcanvas_line_to(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y);
+    vgcanvas_line_to(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x,
+                     draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y);
   }
 
   vgcanvas_close_path(vg);
@@ -463,42 +487,64 @@ static void ffr_draw_rounded_rect_draw_fill_with_vg(canvas_t* c, vgcanvas_t* vg,
   vgcanvas_restore(vg);
 }
 
-static pointf_t ffr_draw_rounded_rect_draw_stroke_top_right_with_vg(vgcanvas_t* vg, ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], uint32_t border_width, int32_t border_model) {
+static pointf_t ffr_draw_rounded_rect_draw_stroke_top_right_with_vg(
+    vgcanvas_t* vg, ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], uint32_t border_width,
+    int32_t border_model) {
   pointf_t start_pos = {-1, -1};
   int32_t radius = draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius - border_width;
   radius = tk_max(radius, 0);
   if (radius > 0) {
     if ((border_model & (BORDER_TOP | BORDER_RIGHT)) == (BORDER_TOP | BORDER_RIGHT)) {
-      start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y - radius);
+      start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                              draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y - radius);
       vgcanvas_move_to(vg, start_pos.x, start_pos.y);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y, radius, 
-                    M_PI + M_FFR_PI_2, 0, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y, radius, M_PI + M_FFR_PI_2, 0, FALSE);
     } else if ((border_model & (BORDER_TOP | BORDER_RIGHT)) == 0) {
-      start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y - draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius);
+      start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                              draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y -
+                                  draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius);
       vgcanvas_move_to(vg, start_pos.x, start_pos.y);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, 
-                    M_PI + M_FFR_PI_2, 0, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, M_PI + M_FFR_PI_2, 0, FALSE);
     } else if ((border_model & BORDER_TOP) != 0) {
-      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_TOP_REIGHT, FALSE, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].angle_v);
-      start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y - radius);
+      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(
+          border_model, FFR_VERTEXT_TYPE_TOP_REIGHT, FALSE,
+          draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].angle_v);
+      start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                              draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y - radius);
       vgcanvas_move_to(vg, start_pos.x, start_pos.y);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y, radius, 
-                    M_PI + M_FFR_PI_2, M_PI + M_FFR_PI_2 + tmp_angle, FALSE);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, 
-                    M_PI + M_FFR_PI_2 + tmp_angle, 0, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y, radius, M_PI + M_FFR_PI_2,
+                   M_PI + M_FFR_PI_2 + tmp_angle, FALSE);
+      vgcanvas_arc(
+          vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y,
+          draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, M_PI + M_FFR_PI_2 + tmp_angle, 0, FALSE);
     } else if ((border_model & BORDER_RIGHT) != 0) {
-      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_TOP_REIGHT, TRUE, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].angle_h);
-      start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y - draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius);
+      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(
+          border_model, FFR_VERTEXT_TYPE_TOP_REIGHT, TRUE,
+          draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].angle_h);
+      start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                              draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y -
+                                  draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius);
       vgcanvas_move_to(vg, start_pos.x, start_pos.y);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, 
-                    M_PI + M_FFR_PI_2, M_PI + M_FFR_PI_2 + tmp_angle, FALSE);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y, radius, 
-                   M_PI + M_FFR_PI_2 + tmp_angle, 0, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, M_PI + M_FFR_PI_2,
+                   M_PI + M_FFR_PI_2 + tmp_angle, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y, radius, M_PI + M_FFR_PI_2 + tmp_angle,
+                   0, FALSE);
     }
   } else {
-    start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y);
+    start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                            draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y);
     if (draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius > 0) {
-      start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x + draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y - draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius);
+      start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x +
+                                  draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius,
+                              draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y -
+                                  draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius);
     }
     if ((border_model & (BORDER_TOP | BORDER_RIGHT)) == (BORDER_TOP | BORDER_RIGHT)) {
       start_pos.x -= border_width;
@@ -511,9 +557,12 @@ static pointf_t ffr_draw_rounded_rect_draw_stroke_top_right_with_vg(vgcanvas_t* 
       start_pos.x -= border_width;
       vgcanvas_move_to(vg, start_pos.x, start_pos.y);
     } else if (draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius > 0) {
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, 
-                    M_PI + M_FFR_PI_2, 0, FALSE);
-      start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y - draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, M_PI + M_FFR_PI_2, 0, FALSE);
+      start_pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                              draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y -
+                                  draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius);
     } else {
       vgcanvas_move_to(vg, start_pos.x, start_pos.y);
     }
@@ -521,33 +570,46 @@ static pointf_t ffr_draw_rounded_rect_draw_stroke_top_right_with_vg(vgcanvas_t* 
   return start_pos;
 }
 
-static void ffr_draw_rounded_rect_draw_stroke_top_left_with_vg(vgcanvas_t* vg, ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], uint32_t border_width, int32_t border_model) {
+static void ffr_draw_rounded_rect_draw_stroke_top_left_with_vg(
+    vgcanvas_t* vg, ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], uint32_t border_width,
+    int32_t border_model) {
   int32_t radius = draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius - border_width;
   radius = tk_max(radius, 0);
   if (radius > 0) {
     if ((border_model & (BORDER_TOP | BORDER_LEFT)) == (BORDER_TOP | BORDER_LEFT)) {
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y, radius, 
-                    M_PI, M_PI + M_FFR_PI_2, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y, radius, M_PI, M_PI + M_FFR_PI_2, FALSE);
     } else if ((border_model & (BORDER_TOP | BORDER_LEFT)) == 0) {
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius, 
-                    M_PI, M_PI + M_FFR_PI_2, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius, M_PI, M_PI + M_FFR_PI_2, FALSE);
     } else if ((border_model & BORDER_TOP) != 0) {
-      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_TOP_LEFT, FALSE, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].angle_v);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius, 
-                    M_PI, M_PI + tmp_angle, FALSE);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y, radius, 
-                    M_PI + tmp_angle, M_PI + M_FFR_PI_2, FALSE);
+      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(
+          border_model, FFR_VERTEXT_TYPE_TOP_LEFT, FALSE,
+          draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].angle_v);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius, M_PI, M_PI + tmp_angle, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y, radius, M_PI + tmp_angle,
+                   M_PI + M_FFR_PI_2, FALSE);
     } else if ((border_model & BORDER_LEFT) != 0) {
-      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_TOP_LEFT, TRUE, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].angle_h);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y, radius, 
-                    M_PI, M_PI + tmp_angle, FALSE);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius, 
-                    M_PI + tmp_angle, M_PI + M_FFR_PI_2, FALSE);
+      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(
+          border_model, FFR_VERTEXT_TYPE_TOP_LEFT, TRUE,
+          draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].angle_h);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y, radius, M_PI, M_PI + tmp_angle, FALSE);
+      vgcanvas_arc(
+          vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y,
+          draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius, M_PI + tmp_angle, M_PI + M_FFR_PI_2, FALSE);
     }
   } else {
-    pointf_t pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y);
+    pointf_t pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x,
+                               draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y);
     if (draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius > 0) {
-      pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x - draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y - draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius);
+      pos = pointf_init(
+          draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x - draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius,
+          draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y - draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius);
     }
     if ((border_model & (BORDER_TOP | BORDER_LEFT)) == (BORDER_TOP | BORDER_LEFT)) {
       pos.x += border_width;
@@ -560,41 +622,59 @@ static void ffr_draw_rounded_rect_draw_stroke_top_left_with_vg(vgcanvas_t* vg, f
       pos.x += border_width;
       vgcanvas_line_to(vg, pos.x, pos.y);
     } else if (draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius > 0) {
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius, 
-                    M_PI, M_PI + M_FFR_PI_2, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius, M_PI, M_PI + M_FFR_PI_2, FALSE);
     } else {
       vgcanvas_line_to(vg, pos.x, pos.y);
     }
   }
 }
 
-static void ffr_draw_rounded_rect_draw_stroke_bottom_left_with_vg(vgcanvas_t* vg, ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], uint32_t border_width, int32_t border_model) {
+static void ffr_draw_rounded_rect_draw_stroke_bottom_left_with_vg(
+    vgcanvas_t* vg, ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], uint32_t border_width,
+    int32_t border_model) {
   int32_t radius = draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius - border_width;
   radius = tk_max(radius, 0);
   if (radius > 0) {
     if ((border_model & (BORDER_BOTTOM | BORDER_LEFT)) == (BORDER_BOTTOM | BORDER_LEFT)) {
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y, radius, 
-                    M_FFR_PI_2, M_PI, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y, radius, M_FFR_PI_2, M_PI, FALSE);
     } else if ((border_model & (BORDER_BOTTOM | BORDER_LEFT)) == 0) {
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius, 
-                    M_FFR_PI_2, M_PI, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius, M_FFR_PI_2, M_PI, FALSE);
     } else if ((border_model & BORDER_BOTTOM) != 0) {
-      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_BOTTOM_LEFT, FALSE, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].angle_v);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y, radius, 
-                    M_FFR_PI_2, M_FFR_PI_2 + tmp_angle, FALSE);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius, 
-                    M_FFR_PI_2 + tmp_angle, M_PI, FALSE);
+      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(
+          border_model, FFR_VERTEXT_TYPE_BOTTOM_LEFT, FALSE,
+          draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].angle_v);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y, radius, M_FFR_PI_2,
+                   M_FFR_PI_2 + tmp_angle, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius, M_FFR_PI_2 + tmp_angle, M_PI,
+                   FALSE);
     } else if ((border_model & BORDER_LEFT) != 0) {
-      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_BOTTOM_LEFT, TRUE, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].angle_h);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius, 
-                    M_FFR_PI_2, M_FFR_PI_2 + tmp_angle, FALSE);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y, radius, 
-                    M_FFR_PI_2 + tmp_angle, M_PI, FALSE);
+      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(
+          border_model, FFR_VERTEXT_TYPE_BOTTOM_LEFT, TRUE,
+          draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].angle_h);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius, M_FFR_PI_2,
+                   M_FFR_PI_2 + tmp_angle, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y, radius, M_FFR_PI_2 + tmp_angle, M_PI,
+                   FALSE);
     }
   } else {
-    pointf_t pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y);
+    pointf_t pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x,
+                               draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y);
     if (draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius > 0) {
-      pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x - draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y + draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius);
+      pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x -
+                            draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius,
+                        draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y +
+                            draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius);
     }
     if ((border_model & (BORDER_BOTTOM | BORDER_LEFT)) == (BORDER_BOTTOM | BORDER_LEFT)) {
       pos.x += border_width;
@@ -607,41 +687,56 @@ static void ffr_draw_rounded_rect_draw_stroke_bottom_left_with_vg(vgcanvas_t* vg
       pos.x += border_width;
       vgcanvas_line_to(vg, pos.x, pos.y);
     } else if (draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius > 0) {
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius, 
-                    M_FFR_PI_2, M_PI, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius, M_FFR_PI_2, M_PI, FALSE);
     } else {
       vgcanvas_line_to(vg, pos.x, pos.y);
     }
   }
 }
 
-static void ffr_draw_rounded_rect_draw_stroke_bottom_right_with_vg(vgcanvas_t* vg, ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], uint32_t border_width, int32_t border_model) {
+static void ffr_draw_rounded_rect_draw_stroke_bottom_right_with_vg(
+    vgcanvas_t* vg, ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], uint32_t border_width,
+    int32_t border_model) {
   int32_t radius = draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius - border_width;
   radius = tk_max(radius, 0);
   if (radius > 0) {
     if ((border_model & (BORDER_BOTTOM | BORDER_RIGHT)) == (BORDER_BOTTOM | BORDER_RIGHT)) {
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y, radius, 
-                    0, M_FFR_PI_2, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y, radius, 0, M_FFR_PI_2, FALSE);
     } else if ((border_model & (BORDER_BOTTOM | BORDER_RIGHT)) == 0) {
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius, 
-                    0, M_FFR_PI_2, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius, 0, M_FFR_PI_2, FALSE);
     } else if ((border_model & BORDER_BOTTOM) != 0) {
-      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_BOTTOM_REIGHT, FALSE, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].angle_v);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius, 
-                    0, tmp_angle, FALSE);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y, radius, 
-                    tmp_angle, M_FFR_PI_2, FALSE);
+      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(
+          border_model, FFR_VERTEXT_TYPE_BOTTOM_REIGHT, FALSE,
+          draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].angle_v);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius, 0, tmp_angle, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y, radius, tmp_angle, M_FFR_PI_2,
+                   FALSE);
     } else if ((border_model & BORDER_RIGHT) != 0) {
-      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_BOTTOM_REIGHT, TRUE, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].angle_h);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y, radius, 
-                    0, tmp_angle, FALSE);
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius, 
-                    tmp_angle, M_FFR_PI_2, FALSE);
+      float_t tmp_angle = ffr_draw_rounded_get_vertex_angle_by_border_model(
+          border_model, FFR_VERTEXT_TYPE_BOTTOM_REIGHT, TRUE,
+          draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].angle_h);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y, radius, 0, tmp_angle, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius, tmp_angle, M_FFR_PI_2, FALSE);
     }
   } else {
-    pointf_t pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y);
+    pointf_t pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x,
+                               draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y);
     if (draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius > 0) {
-      pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x + draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y + draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius);
+      pos = pointf_init(draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x +
+                            draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius,
+                        draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y +
+                            draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius);
     }
     if ((border_model & (BORDER_BOTTOM | BORDER_RIGHT)) == (BORDER_BOTTOM | BORDER_RIGHT)) {
       pos.x -= border_width;
@@ -654,15 +749,18 @@ static void ffr_draw_rounded_rect_draw_stroke_bottom_right_with_vg(vgcanvas_t* v
       pos.x -= border_width;
       vgcanvas_line_to(vg, pos.x, pos.y);
     } else if (draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius > 0) {
-      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius, 
-                    0, M_FFR_PI_2, FALSE);
+      vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y,
+                   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius, 0, M_FFR_PI_2, FALSE);
     } else {
       vgcanvas_line_to(vg, pos.x, pos.y);
     }
   }
 }
 
-static void ffr_draw_rounded_rect_draw_stroke_with_vg(canvas_t* c, vgcanvas_t* vg, uint32_t border_width, color_t color, ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], int32_t border_model) {
+static void ffr_draw_rounded_rect_draw_stroke_with_vg(
+    canvas_t* c, vgcanvas_t* vg, uint32_t border_width, color_t color,
+    ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], int32_t border_model) {
   pointf_t start_pos1 = {0, 0};
   pointf_t start_pos2 = {0, 0};
   vgcanvas_save(vg);
@@ -670,41 +768,54 @@ static void ffr_draw_rounded_rect_draw_stroke_with_vg(canvas_t* c, vgcanvas_t* v
   vgcanvas_set_fill_color(vg, color);
   vgcanvas_translate(vg, (float_t)c->ox, (float_t)c->oy);
   vgcanvas_begin_path(vg);
-  
+
   if (draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius > 0) {
-    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, 
-                 0, M_PI + M_FFR_PI_2, TRUE);
-    start_pos1 = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x + draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y);
+    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                 draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y,
+                 draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius, 0, M_PI + M_FFR_PI_2, TRUE);
+    start_pos1 = pointf_init(
+        draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x + draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].radius,
+        draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y);
   } else {
-    vgcanvas_move_to(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y);
-    start_pos1 = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y);
+    vgcanvas_move_to(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                     draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y);
+    start_pos1 = pointf_init(draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].x,
+                             draw_infos[FFR_VERTEXT_TYPE_TOP_REIGHT].y);
   }
 
   if (draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius > 0) {
-    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius, 
-                  M_PI + M_FFR_PI_2, M_PI, TRUE);
+    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x,
+                 draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y,
+                 draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].radius, M_PI + M_FFR_PI_2, M_PI, TRUE);
   } else {
-    vgcanvas_line_to(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y);
+    vgcanvas_line_to(vg, draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].x,
+                     draw_infos[FFR_VERTEXT_TYPE_TOP_LEFT].y);
   }
 
   if (draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius > 0) {
-    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius, 
-                  M_PI, M_FFR_PI_2, TRUE);
+    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x,
+                 draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y,
+                 draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].radius, M_PI, M_FFR_PI_2, TRUE);
   } else {
-    vgcanvas_line_to(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y);
+    vgcanvas_line_to(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x,
+                     draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y);
   }
 
   if (draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius > 0) {
-    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius, 
-                  M_FFR_PI_2, 0, TRUE);
+    vgcanvas_arc(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x,
+                 draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y,
+                 draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].radius, M_FFR_PI_2, 0, TRUE);
   } else {
-    vgcanvas_line_to(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y);
+    vgcanvas_line_to(vg, draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x,
+                     draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y);
   }
   vgcanvas_line_to(vg, start_pos1.x, start_pos1.y);
   vgcanvas_close_path(vg);
 
-  start_pos2 = ffr_draw_rounded_rect_draw_stroke_top_right_with_vg(vg, draw_infos, border_width, border_model);
-  ffr_draw_rounded_rect_draw_stroke_bottom_right_with_vg(vg, draw_infos, border_width, border_model);
+  start_pos2 = ffr_draw_rounded_rect_draw_stroke_top_right_with_vg(vg, draw_infos, border_width,
+                                                                   border_model);
+  ffr_draw_rounded_rect_draw_stroke_bottom_right_with_vg(vg, draw_infos, border_width,
+                                                         border_model);
   ffr_draw_rounded_rect_draw_stroke_bottom_left_with_vg(vg, draw_infos, border_width, border_model);
   ffr_draw_rounded_rect_draw_stroke_top_left_with_vg(vg, draw_infos, border_width, border_model);
   vgcanvas_line_to(vg, start_pos2.x, start_pos2.y);
@@ -717,8 +828,9 @@ static void ffr_draw_rounded_rect_draw_stroke_with_vg(canvas_t* c, vgcanvas_t* v
   vgcanvas_restore(vg);
 }
 
-static void ffr_get_standard_rounded_rect_radius(const rect_t* r, uint32_t* radius_tl, uint32_t* radius_tr, 
-                                                    uint32_t* radius_bl, uint32_t* radius_br) {
+static void ffr_get_standard_rounded_rect_radius(const rect_t* r, uint32_t* radius_tl,
+                                                 uint32_t* radius_tr, uint32_t* radius_bl,
+                                                 uint32_t* radius_br) {
   int32_t w = r->w / 2;
   int32_t h = r->h / 2;
   bool_t is_h = w > h;
@@ -728,8 +840,9 @@ static void ffr_get_standard_rounded_rect_radius(const rect_t* r, uint32_t* radi
   FFR_SET_STANDARD_RADIUS(is_h, w, h, radius_br);
 }
 
-static void ffr_get_standard_rounded_rect_radius_f(const rectf_t* r, float_t* radius_tl, float_t* radius_tr, 
-                                                    float_t* radius_bl, float_t* radius_br) {
+static void ffr_get_standard_rounded_rect_radius_f(const rectf_t* r, float_t* radius_tl,
+                                                   float_t* radius_tr, float_t* radius_bl,
+                                                   float_t* radius_br) {
   float_t w = r->w / 2;
   float_t h = r->h / 2;
   bool_t is_h = w > h;
@@ -739,9 +852,8 @@ static void ffr_get_standard_rounded_rect_radius_f(const rectf_t* r, float_t* ra
   FFR_SET_STANDARD_RADIUS(is_h, w, h, radius_br);
 }
 
-static int32_t ffr_get_rounded_rect_mid_length(uint32_t radius, uint32_t total_length,
-                                                  float_t* l1, float_t* l2, float_t* angle,
-                                                  bool_t is_add) {
+static int32_t ffr_get_rounded_rect_mid_length(uint32_t radius, uint32_t total_length, float_t* l1,
+                                               float_t* l2, float_t* angle, bool_t is_add) {
   float_t a = M_FFR_PI_2;
   int32_t mid_lenght = 0;
   if (total_length > radius * 2) {
@@ -766,7 +878,10 @@ static int32_t ffr_get_rounded_rect_mid_length(uint32_t radius, uint32_t total_l
   return mid_lenght;
 }
 
-static void ffr_draw_rounded_rect_draw_info_init(ffr_draw_info_t draw_infos[FFR_VERTEXT_TYPE_COUNT], const rect_t* r, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br) {
+static void ffr_draw_rounded_rect_draw_info_init(ffr_draw_info_t draw_infos[FFR_VERTEXT_TYPE_COUNT],
+                                                 const rect_t* r, uint32_t radius_tl,
+                                                 uint32_t radius_tr, uint32_t radius_bl,
+                                                 uint32_t radius_br) {
   int32_t i = 0;
   int32_t j = 0;
   int32_t x = r->x;
@@ -788,8 +903,10 @@ static void ffr_draw_rounded_rect_draw_info_init(ffr_draw_info_t draw_infos[FFR_
   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x = x + radius_list[FFR_VERTEXT_TYPE_BOTTOM_LEFT];
   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y = y + r->h - radius_list[FFR_VERTEXT_TYPE_BOTTOM_LEFT];
 
-  draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x = x + r->w - radius_list[FFR_VERTEXT_TYPE_BOTTOM_REIGHT];
-  draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y = y + r->h - radius_list[FFR_VERTEXT_TYPE_BOTTOM_REIGHT];
+  draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x =
+      x + r->w - radius_list[FFR_VERTEXT_TYPE_BOTTOM_REIGHT];
+  draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y =
+      y + r->h - radius_list[FFR_VERTEXT_TYPE_BOTTOM_REIGHT];
 
   for (i = 0; i < FFR_VERTEXT_TYPE_COUNT; i++) {
     uint32_t radius = radius_list[i];
@@ -800,7 +917,7 @@ static void ffr_draw_rounded_rect_draw_info_init(ffr_draw_info_t draw_infos[FFR_
     ffr_get_rounded_rect_mid_length(radius, r->h, &w1, &h1, &(draw_infos[i].angle_v), TRUE);
     ffr_get_rounded_rect_mid_length(radius, r->w, &h2, &w2, &(draw_infos[i].angle_h), TRUE);
 
-    for(j = i; j < FFR_VERTEXT_TYPE_COUNT; j++) {
+    for (j = i; j < FFR_VERTEXT_TYPE_COUNT; j++) {
       if (i != j && radius_list[j] == radius) {
         draw_infos[j].radius = radius;
         draw_infos[j].angle_v = draw_infos[i].angle_v;
@@ -810,7 +927,9 @@ static void ffr_draw_rounded_rect_draw_info_init(ffr_draw_info_t draw_infos[FFR_
   }
 }
 
-static void ffr_draw_rounded_rect_draw_info_f_init(ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], const rectf_t* r, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br) {
+static void ffr_draw_rounded_rect_draw_info_f_init(
+    ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT], const rectf_t* r, uint32_t radius_tl,
+    uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br) {
   int32_t i = 0;
   int32_t j = 0;
   float_t x = r->x;
@@ -832,8 +951,10 @@ static void ffr_draw_rounded_rect_draw_info_f_init(ffr_draw_info_f_t draw_infos[
   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].x = x + radius_list[FFR_VERTEXT_TYPE_BOTTOM_LEFT];
   draw_infos[FFR_VERTEXT_TYPE_BOTTOM_LEFT].y = y + r->h - radius_list[FFR_VERTEXT_TYPE_BOTTOM_LEFT];
 
-  draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x = x + r->w - radius_list[FFR_VERTEXT_TYPE_BOTTOM_REIGHT];
-  draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y = y + r->h - radius_list[FFR_VERTEXT_TYPE_BOTTOM_REIGHT];
+  draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].x =
+      x + r->w - radius_list[FFR_VERTEXT_TYPE_BOTTOM_REIGHT];
+  draw_infos[FFR_VERTEXT_TYPE_BOTTOM_REIGHT].y =
+      y + r->h - radius_list[FFR_VERTEXT_TYPE_BOTTOM_REIGHT];
 
   for (i = 0; i < FFR_VERTEXT_TYPE_COUNT; i++) {
     uint32_t radius = radius_list[i];
@@ -844,7 +965,7 @@ static void ffr_draw_rounded_rect_draw_info_f_init(ffr_draw_info_f_t draw_infos[
     ffr_get_rounded_rect_mid_length(radius, r->h, &w1, &h1, &(draw_infos[i].angle_v), TRUE);
     ffr_get_rounded_rect_mid_length(radius, r->w, &h2, &w2, &(draw_infos[i].angle_h), TRUE);
 
-    for(j = i; j < FFR_VERTEXT_TYPE_COUNT; j++) {
+    for (j = i; j < FFR_VERTEXT_TYPE_COUNT; j++) {
       if (i != j && radius_list[j] == radius) {
         draw_infos[j].radius = radius;
         draw_infos[j].angle_v = draw_infos[i].angle_v;
@@ -854,7 +975,9 @@ static void ffr_draw_rounded_rect_draw_info_f_init(ffr_draw_info_f_t draw_infos[
   }
 }
 
-static void ffr_draw_rounded_rect_draw_fill_gradient(canvas_t* c, const rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h, const gradient_t* gradient) {
+static void ffr_draw_rounded_rect_draw_fill_gradient(canvas_t* c, const rect_t* rect, xy_t x,
+                                                     xy_t y, wh_t w, wh_t h,
+                                                     const gradient_t* gradient) {
   if (gradient->nr == 1) {
     color_t color = gradient_get_first_color((gradient_t*)gradient);
     canvas_set_fill_color(c, color);
@@ -870,7 +993,10 @@ static void ffr_draw_rounded_rect_draw_fill_gradient(canvas_t* c, const rect_t* 
   }
 }
 
-static void ffr_draw_rounded_rect_draw_fill_with_canvas(canvas_t* c, const rect_t* r, const gradient_t* gradient, uint32_t radius, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br) {
+static void ffr_draw_rounded_rect_draw_fill_with_canvas(canvas_t* c, const rect_t* r,
+                                                        const gradient_t* gradient, uint32_t radius,
+                                                        uint32_t radius_tl, uint32_t radius_tr,
+                                                        uint32_t radius_bl, uint32_t radius_br) {
   float_t w1 = 0.0f;
   float_t w2 = 0.0f;
   float_t h1 = 0.0f;
@@ -891,7 +1017,7 @@ static void ffr_draw_rounded_rect_draw_fill_with_canvas(canvas_t* c, const rect_
   int32_t v_y1 = y + (int32_t)h1;
   int32_t v_x2 = x + (int32_t)w2 + mid_lenght_h;
   int32_t v_y2 = y + (int32_t)h1 + mid_lenght_v;
-  
+
   darray_t point_list_45 = {0};
   darray_t tmp_point_list_45 = {0};
   ffr_point_pix_t* point_pix_cache_list = NULL;
@@ -909,31 +1035,38 @@ static void ffr_draw_rounded_rect_draw_fill_with_canvas(canvas_t* c, const rect_
   Wu_D_Circle(radius, &point_list_45, point_pix_cache_list);
 
   if (radius_tr > 0) {
-    ffr_draw_arc_point_list(c, r, v_x2, v_y1, x2, y1, angle_h, angle_v, radius, FFR_VERTEXT_TYPE_TOP_REIGHT, gradient,
-                            &tmp_point_list_45, &point_list_45, TRUE);  // 右上角
+    ffr_draw_arc_point_list(c, r, v_x2, v_y1, x2, y1, angle_h, angle_v, radius,
+                            FFR_VERTEXT_TYPE_TOP_REIGHT, gradient, &tmp_point_list_45,
+                            &point_list_45, TRUE);  // 右上角
   }
 
   if (radius_tl > 0) {
-    ffr_draw_arc_point_list(c, r, v_x1, v_y1, x1, y1, angle_h, angle_v, radius, FFR_VERTEXT_TYPE_TOP_LEFT, gradient,
-                            &tmp_point_list_45, &point_list_45, TRUE);  // 左上角
+    ffr_draw_arc_point_list(c, r, v_x1, v_y1, x1, y1, angle_h, angle_v, radius,
+                            FFR_VERTEXT_TYPE_TOP_LEFT, gradient, &tmp_point_list_45, &point_list_45,
+                            TRUE);  // 左上角
   }
 
   if (radius_bl > 0) {
-    ffr_draw_arc_point_list(c, r, v_x1, v_y2, x1, y2, angle_h, angle_v, radius, FFR_VERTEXT_TYPE_BOTTOM_LEFT, gradient,
-                            &tmp_point_list_45, &point_list_45, TRUE);  // 左下角
+    ffr_draw_arc_point_list(c, r, v_x1, v_y2, x1, y2, angle_h, angle_v, radius,
+                            FFR_VERTEXT_TYPE_BOTTOM_LEFT, gradient, &tmp_point_list_45,
+                            &point_list_45, TRUE);  // 左下角
   }
 
   if (radius_br > 0) {
-    ffr_draw_arc_point_list(c, r, v_x2, v_y2, x2, y2, angle_h, angle_v, radius, FFR_VERTEXT_TYPE_BOTTOM_REIGHT, gradient,
-                            &tmp_point_list_45, &point_list_45, TRUE);  // 右下角
+    ffr_draw_arc_point_list(c, r, v_x2, v_y2, x2, y2, angle_h, angle_v, radius,
+                            FFR_VERTEXT_TYPE_BOTTOM_REIGHT, gradient, &tmp_point_list_45,
+                            &point_list_45, TRUE);  // 右下角
   }
 
   if (mid_lenght_v != 0) {
-    ffr_draw_rounded_rect_draw_fill_gradient(c, r, x, v_y1, (wh_t)w2, mid_lenght_v, gradient);                  //左边矩形
+    ffr_draw_rounded_rect_draw_fill_gradient(c, r, x, v_y1, (wh_t)w2, mid_lenght_v,
+                                             gradient);  //左边矩形
     if (mid_lenght_h == 0 && w2 + w2 > r->w) {
-      ffr_draw_rounded_rect_draw_fill_gradient(c, r, v_x2, v_y1, (wh_t)(r->w - w2), mid_lenght_v, gradient);    //右边矩形
+      ffr_draw_rounded_rect_draw_fill_gradient(c, r, v_x2, v_y1, (wh_t)(r->w - w2), mid_lenght_v,
+                                               gradient);  //右边矩形
     } else {
-      ffr_draw_rounded_rect_draw_fill_gradient(c, r, v_x2, v_y1, (wh_t)w2, mid_lenght_v, gradient);             //右边矩形
+      ffr_draw_rounded_rect_draw_fill_gradient(c, r, v_x2, v_y1, (wh_t)w2, mid_lenght_v,
+                                               gradient);  //右边矩形
     }
   }
 
@@ -948,7 +1081,7 @@ static void ffr_draw_rounded_rect_draw_fill_with_canvas(canvas_t* c, const rect_
       tmp_w += radius;
     }
 
-    ffr_draw_rounded_rect_draw_fill_gradient(c, r, tmp_x, y, tmp_w, (wh_t)h1, gradient);                         //上边矩形
+    ffr_draw_rounded_rect_draw_fill_gradient(c, r, tmp_x, y, tmp_w, (wh_t)h1, gradient);  //上边矩形
 
     tmp_x = v_x1;
     tmp_w = mid_lenght_h;
@@ -960,14 +1093,17 @@ static void ffr_draw_rounded_rect_draw_fill_with_canvas(canvas_t* c, const rect_
       tmp_w += radius;
     }
     if (mid_lenght_v == 0 && h1 + h1 > r->h) {
-      ffr_draw_rounded_rect_draw_fill_gradient(c, r, tmp_x, v_y2, tmp_w, (wh_t)(r->h - h1), gradient);            //下边矩形
+      ffr_draw_rounded_rect_draw_fill_gradient(c, r, tmp_x, v_y2, tmp_w, (wh_t)(r->h - h1),
+                                               gradient);  //下边矩形
     } else {
-      ffr_draw_rounded_rect_draw_fill_gradient(c, r, tmp_x, v_y2, tmp_w, (wh_t)h1, gradient);                     //下边矩形
+      ffr_draw_rounded_rect_draw_fill_gradient(c, r, tmp_x, v_y2, tmp_w, (wh_t)h1,
+                                               gradient);  //下边矩形
     }
   }
 
   if (mid_lenght_v != 0 && mid_lenght_h != 0) {
-    ffr_draw_rounded_rect_draw_fill_gradient(c, r, v_x1, v_y1, (wh_t)mid_lenght_h, (wh_t)mid_lenght_v, gradient);  //中间矩形
+    ffr_draw_rounded_rect_draw_fill_gradient(c, r, v_x1, v_y1, (wh_t)mid_lenght_h,
+                                             (wh_t)mid_lenght_v, gradient);  //中间矩形
   }
 
   darray_deinit(&point_list_45);
@@ -979,13 +1115,20 @@ static void ffr_draw_rounded_rect_draw_fill_with_canvas(canvas_t* c, const rect_
   }
 }
 
-static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, const rect_t* r, const gradient_t* gradient, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br) {
+static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, const rect_t* r, const gradient_t* gradient,
+                                        uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl,
+                                        uint32_t radius_br) {
   lcd_type_t lcd_type = lcd_get_type(c->lcd);
   bool_t is_cpu_lcd = lcd_type != LCD_VGCANVAS && lcd_type != LCD_REGISTER;
-  uint32_t radius = radius_tl != 0 ? radius_tl : (radius_tr != 0 ? radius_tr : (radius_bl != 0 ? radius_bl : radius_br));
-  if (is_cpu_lcd && radius != 0 && (gradient->nr == 1 || (gradient->nr == 2 && gradient->degree == 180)) && ffr_draw_rounded_radius_equal(radius_tl, radius_tr, radius_bl, radius_br)) {
-    ffr_draw_rounded_rect_draw_fill_with_canvas(c, r, gradient, radius, radius_tl, radius_tr, radius_bl, radius_br);
-  } else {  
+  uint32_t radius = radius_tl != 0
+                        ? radius_tl
+                        : (radius_tr != 0 ? radius_tr : (radius_bl != 0 ? radius_bl : radius_br));
+  if (is_cpu_lcd && radius != 0 &&
+      (gradient->nr == 1 || (gradient->nr == 2 && gradient->degree == 180)) &&
+      ffr_draw_rounded_radius_equal(radius_tl, radius_tr, radius_bl, radius_br)) {
+    ffr_draw_rounded_rect_draw_fill_with_canvas(c, r, gradient, radius, radius_tl, radius_tr,
+                                                radius_bl, radius_br);
+  } else {
     vgcanvas_t* vg = canvas_get_vgcanvas(c);
     if (radius != 0 && vg != NULL) {
 #if defined(AWTK_WEB)
@@ -995,7 +1138,8 @@ static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, const rect_t* r, const grad
 #endif
       ffr_draw_info_t draw_infos[FFR_VERTEXT_TYPE_COUNT];
       memset(draw_infos, 0x0, sizeof(draw_infos));
-      ffr_draw_rounded_rect_draw_info_init(draw_infos, r, radius_tl, radius_tr, radius_bl, radius_br);
+      ffr_draw_rounded_rect_draw_info_init(draw_infos, r, radius_tl, radius_tr, radius_bl,
+                                           radius_br);
       ffr_draw_rounded_rect_draw_fill_with_vg(c, vg, gradient, &rect, draw_infos);
     } else {
       return RET_FAIL;
@@ -1004,8 +1148,12 @@ static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, const rect_t* r, const grad
   return RET_OK;
 }
 
-static void ffr_draw_rounded_rect_draw_stroke_with_canvas(canvas_t* c, const rect_t* r, color_t color, uint32_t radius, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br,
-                                            uint32_t border_width, int32_t border_model) {
+static void ffr_draw_rounded_rect_draw_stroke_with_canvas(canvas_t* c, const rect_t* r,
+                                                          color_t color, uint32_t radius,
+                                                          uint32_t radius_tl, uint32_t radius_tr,
+                                                          uint32_t radius_bl, uint32_t radius_br,
+                                                          uint32_t border_width,
+                                                          int32_t border_model) {
   float_t w1 = 0.0f;
   float_t w2 = 0.0f;
   float_t h1 = 0.0f;
@@ -1049,29 +1197,41 @@ static void ffr_draw_rounded_rect_draw_stroke_with_canvas(canvas_t* c, const rec
   canvas_set_stroke_color(c, color);
 
   if (radius_tr > 0) {
-    float_t tmp_angle_h = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_TOP_REIGHT, TRUE, angle_h);
-    float_t tmp_angle_v = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_TOP_REIGHT, FALSE, angle_v);
-    ffr_draw_arc_point_list(c, r, v_x2, v_y1, x2, y1, tmp_angle_h, tmp_angle_v, radius, FFR_VERTEXT_TYPE_TOP_REIGHT,
-                              &gradient, &tmp_point_list_45, &point_list_45, FALSE);  // 右上角
+    float_t tmp_angle_h = ffr_draw_rounded_get_vertex_angle_by_border_model(
+        border_model, FFR_VERTEXT_TYPE_TOP_REIGHT, TRUE, angle_h);
+    float_t tmp_angle_v = ffr_draw_rounded_get_vertex_angle_by_border_model(
+        border_model, FFR_VERTEXT_TYPE_TOP_REIGHT, FALSE, angle_v);
+    ffr_draw_arc_point_list(c, r, v_x2, v_y1, x2, y1, tmp_angle_h, tmp_angle_v, radius,
+                            FFR_VERTEXT_TYPE_TOP_REIGHT, &gradient, &tmp_point_list_45,
+                            &point_list_45, FALSE);  // 右上角
   }
   if (radius_tl > 0) {
-    float_t tmp_angle_h = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_TOP_LEFT, TRUE, angle_h);
-    float_t tmp_angle_v = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_TOP_LEFT, FALSE, angle_v);
-    ffr_draw_arc_point_list(c, r, v_x1, v_y1, x1, y1, tmp_angle_h, tmp_angle_v, radius, FFR_VERTEXT_TYPE_TOP_LEFT,
-                                 &gradient, &tmp_point_list_45, &point_list_45, FALSE);  // 左上角
+    float_t tmp_angle_h = ffr_draw_rounded_get_vertex_angle_by_border_model(
+        border_model, FFR_VERTEXT_TYPE_TOP_LEFT, TRUE, angle_h);
+    float_t tmp_angle_v = ffr_draw_rounded_get_vertex_angle_by_border_model(
+        border_model, FFR_VERTEXT_TYPE_TOP_LEFT, FALSE, angle_v);
+    ffr_draw_arc_point_list(c, r, v_x1, v_y1, x1, y1, tmp_angle_h, tmp_angle_v, radius,
+                            FFR_VERTEXT_TYPE_TOP_LEFT, &gradient, &tmp_point_list_45,
+                            &point_list_45, FALSE);  // 左上角
   }
   if (radius_bl > 0) {
-    float_t tmp_angle_h = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_BOTTOM_LEFT, TRUE, angle_h);
-    float_t tmp_angle_v = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_BOTTOM_LEFT, FALSE, angle_v);
-    ffr_draw_arc_point_list(c, r, v_x1, v_y2, x1, y2, tmp_angle_h, tmp_angle_v, radius, FFR_VERTEXT_TYPE_BOTTOM_LEFT,
-                               &gradient, &tmp_point_list_45, &point_list_45, FALSE);  // 左下角
+    float_t tmp_angle_h = ffr_draw_rounded_get_vertex_angle_by_border_model(
+        border_model, FFR_VERTEXT_TYPE_BOTTOM_LEFT, TRUE, angle_h);
+    float_t tmp_angle_v = ffr_draw_rounded_get_vertex_angle_by_border_model(
+        border_model, FFR_VERTEXT_TYPE_BOTTOM_LEFT, FALSE, angle_v);
+    ffr_draw_arc_point_list(c, r, v_x1, v_y2, x1, y2, tmp_angle_h, tmp_angle_v, radius,
+                            FFR_VERTEXT_TYPE_BOTTOM_LEFT, &gradient, &tmp_point_list_45,
+                            &point_list_45, FALSE);  // 左下角
   }
 
   if (radius_br > 0) {
-    float_t tmp_angle_h = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_BOTTOM_REIGHT, TRUE, angle_h);
-    float_t tmp_angle_v = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FFR_VERTEXT_TYPE_BOTTOM_REIGHT, FALSE, angle_v);
-    ffr_draw_arc_point_list(c, r, v_x2, v_y2, x2, y2, tmp_angle_h, tmp_angle_v, radius, FFR_VERTEXT_TYPE_BOTTOM_REIGHT,
-                               &gradient, &tmp_point_list_45, &point_list_45, FALSE);  // 右下角
+    float_t tmp_angle_h = ffr_draw_rounded_get_vertex_angle_by_border_model(
+        border_model, FFR_VERTEXT_TYPE_BOTTOM_REIGHT, TRUE, angle_h);
+    float_t tmp_angle_v = ffr_draw_rounded_get_vertex_angle_by_border_model(
+        border_model, FFR_VERTEXT_TYPE_BOTTOM_REIGHT, FALSE, angle_v);
+    ffr_draw_arc_point_list(c, r, v_x2, v_y2, x2, y2, tmp_angle_h, tmp_angle_v, radius,
+                            FFR_VERTEXT_TYPE_BOTTOM_REIGHT, &gradient, &tmp_point_list_45,
+                            &point_list_45, FALSE);  // 右下角
   }
 
   canvas_set_stroke_color(c, color);
@@ -1114,7 +1274,7 @@ static void ffr_draw_rounded_rect_draw_stroke_with_canvas(canvas_t* c, const rec
       }
     }
     if (border_model & BORDER_LEFT && tmp_h1 != 0) {
-      canvas_draw_vline(c, x, tmp_y1, tmp_h1);                      //左边边
+      canvas_draw_vline(c, x, tmp_y1, tmp_h1);  //左边边
     }
     if (border_model & BORDER_RIGHT && tmp_h2 != 0) {
       canvas_draw_vline(c, (xy_t)(v_x2 + w2 - 1), tmp_y2, tmp_h2);  //右边边
@@ -1144,7 +1304,7 @@ static void ffr_draw_rounded_rect_draw_stroke_with_canvas(canvas_t* c, const rec
     }
 
     if (border_model & BORDER_TOP && tmp_w1 != 0) {
-      canvas_draw_hline(c, tmp_x1, y, tmp_w1);                      //上边边
+      canvas_draw_hline(c, tmp_x1, y, tmp_w1);  //上边边
     }
     if (border_model & BORDER_BOTTOM && tmp_w2 != 0) {
       canvas_draw_hline(c, tmp_x2, (xy_t)(v_y2 + h1 - 1), tmp_w2);  //下边边
@@ -1160,14 +1320,19 @@ static void ffr_draw_rounded_rect_draw_stroke_with_canvas(canvas_t* c, const rec
   }
 }
 
-static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rectf_t* r, color_t color, float_t radius_tl, float_t radius_tr, float_t radius_bl, float_t radius_br,
-                                            uint32_t border_width, int32_t border_model) {
-  uint32_t radius = radius_tl != 0 ? radius_tl : (radius_tr != 0 ? radius_tr : (radius_bl != 0 ? radius_bl : radius_br));
+static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rectf_t* r, color_t color,
+                                          float_t radius_tl, float_t radius_tr, float_t radius_bl,
+                                          float_t radius_br, uint32_t border_width,
+                                          int32_t border_model) {
+  uint32_t radius = radius_tl != 0
+                        ? radius_tl
+                        : (radius_tr != 0 ? radius_tr : (radius_bl != 0 ? radius_bl : radius_br));
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   if (radius != 0 && vg != NULL) {
     ffr_draw_info_f_t draw_infos[FFR_VERTEXT_TYPE_COUNT];
     memset(draw_infos, 0x0, sizeof(draw_infos));
-    ffr_draw_rounded_rect_draw_info_f_init(draw_infos, r, radius_tl, radius_tr, radius_bl, radius_br);
+    ffr_draw_rounded_rect_draw_info_f_init(draw_infos, r, radius_tl, radius_tr, radius_bl,
+                                           radius_br);
 
     ffr_draw_rounded_rect_draw_stroke_with_vg(c, vg, border_width, color, draw_infos, border_model);
   } else {
@@ -1177,8 +1342,9 @@ static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rectf_t* r, color_t
 }
 
 static ret_t ffr_draw_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
-                                                  const gradient_t* gradient, uint32_t radius_tl, uint32_t radius_tr, 
-                                                  uint32_t radius_bl, uint32_t radius_br) {
+                                           const gradient_t* gradient, uint32_t radius_tl,
+                                           uint32_t radius_tr, uint32_t radius_bl,
+                                           uint32_t radius_br) {
   uint32_t radius = 0;
   xy_t x = r->x + c->ox;
   xy_t y = r->y + c->oy;
@@ -1189,7 +1355,7 @@ static ret_t ffr_draw_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const r
   if (!canvas_is_rect_in_clip_rect(c, x, y, x2, y2)) {
     return RET_OK;
   }
-  
+
   if (bg_r == NULL) {
     ffr_get_standard_rounded_rect_radius(r, &radius_tl, &radius_tr, &radius_bl, &radius_br);
   } else {
@@ -1205,8 +1371,10 @@ static ret_t ffr_draw_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const r
 }
 
 static ret_t ffr_draw_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
-                                                    const color_t* color, uint32_t radius_tl, uint32_t radius_tr, 
-                                                    uint32_t radius_bl, uint32_t radius_br, uint32_t border_width, int32_t border_model) {
+                                             const color_t* color, uint32_t radius_tl,
+                                             uint32_t radius_tr, uint32_t radius_bl,
+                                             uint32_t radius_br, uint32_t border_width,
+                                             int32_t border_model) {
   color_t tc;
   uint32_t radius = 0;
   xy_t x = r->x + c->ox - ((border_width + 1) >> 1);
@@ -1237,6 +1405,6 @@ static ret_t ffr_draw_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const
   }
   border_width = tk_min(border_width, r->w >> 1);
   border_width = tk_min(border_width, r->h >> 1);
-  return ffr_draw_stroke_rounded_rect(c, &rf, tc, radius_tl, radius_tr, radius_bl, radius_br, border_width, border_model);
+  return ffr_draw_stroke_rounded_rect(c, &rf, tc, radius_tl, radius_tr, radius_bl, radius_br,
+                                      border_width, border_model);
 }
-

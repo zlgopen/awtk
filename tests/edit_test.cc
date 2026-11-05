@@ -113,7 +113,7 @@ TEST(Edit, set_limit_sets_input_type) {
 
   ASSERT_EQ(edit_set_ufloat_limit(b, -100, 100, 1), RET_OK);
   ASSERT_EQ(EDIT(b)->input_type, INPUT_UFLOAT);
-  ASSERT_DOUBLE_EQ(EDIT(b)->min, 0.0); // ufloat 的 min < 0 自动修正为 0
+  ASSERT_DOUBLE_EQ(EDIT(b)->min, 0.0);  // ufloat 的 min < 0 自动修正为 0
 
   ASSERT_EQ(edit_set_text_limit(b, 0, 100), RET_OK);
   ASSERT_EQ(EDIT(b)->input_type, INPUT_TEXT);
@@ -273,7 +273,7 @@ TEST(Edit, int_convert) {
   ASSERT_TRUE(wstr_eq(&(e->text), L"-1"));
   ASSERT_EQ(edit_get_int(e), -1);
   widget_set_text(e, L"4294967295");
-  ASSERT_EQ(edit_get_int(e), INT32_MAX); // clamp((int64_t)v, INT32_MIN, INT32_MAX)
+  ASSERT_EQ(edit_get_int(e), INT32_MAX);  // clamp((int64_t)v, INT32_MIN, INT32_MAX)
 
   edit_set_hex_limit(e, 0, UINT32_MAX, 1);
   edit_set_int(e, -1);
@@ -282,10 +282,10 @@ TEST(Edit, int_convert) {
   ASSERT_EQ(edit_get_int64(e), UINT32_MAX);
 
   edit_set_int_limit(e, INT32_MIN, INT32_MAX, 1);
-  widget_set_text(e, L"2147483648"); // INT32_MAX + 1
-  ASSERT_EQ(edit_get_int(e), INT32_MAX); // clamp((int64_t)v, INT32_MIN, INT32_MAX)
-  widget_set_text(e, L"-2147483649"); // INT32_MIN - 1
-  ASSERT_EQ(edit_get_int(e), INT32_MIN); // clamp((int64_t)v, INT32_MIN, INT32_MAX)
+  widget_set_text(e, L"2147483648");      // INT32_MAX + 1
+  ASSERT_EQ(edit_get_int(e), INT32_MAX);  // clamp((int64_t)v, INT32_MIN, INT32_MAX)
+  widget_set_text(e, L"-2147483649");     // INT32_MIN - 1
+  ASSERT_EQ(edit_get_int(e), INT32_MIN);  // clamp((int64_t)v, INT32_MIN, INT32_MAX)
 
   widget_destroy(e);
 }
@@ -503,14 +503,14 @@ TEST(Edit, is_valid_pattern_custom_upper) {
 
   // 大写字母可以输入
   ASSERT_EQ(edit_input_char(e, L'A'), RET_OK);
-  ASSERT_FALSE(edit_is_valid_value(e)); // 最小长度 2
+  ASSERT_FALSE(edit_is_valid_value(e));  // 最小长度 2
   ASSERT_EQ(edit_input_char(e, L'B'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'C'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'D'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'E'), RET_OK);
   ASSERT_TRUE(edit_is_valid_value(e));
   ASSERT_TRUE(wstr_eq(&(e->text), L"ABCDE"));
-  ASSERT_NE(edit_input_char(e, L'F'), RET_OK); // 最大长度 5
+  ASSERT_NE(edit_input_char(e, L'F'), RET_OK);  // 最大长度 5
   ASSERT_TRUE(wstr_eq(&(e->text), L"ABCDE"));
 
   // 程序设置大写字母内容合法
@@ -582,13 +582,13 @@ TEST(Edit, is_valid_pattern_custom_password) {
   widget_set_text(e, L"abcd");
   ASSERT_FALSE(edit_is_valid_value(e));
 
-  widget_set_text(e, L"abcd1234"); // 缺大写
+  widget_set_text(e, L"abcd1234");  // 缺大写
   ASSERT_FALSE(edit_is_valid_value(e));
 
-  widget_set_text(e, L"ABCD1234"); // 缺小写
+  widget_set_text(e, L"ABCD1234");  // 缺小写
   ASSERT_FALSE(edit_is_valid_value(e));
 
-  widget_set_text(e, L"Abc#"); // 缺数字
+  widget_set_text(e, L"Abc#");  // 缺数字
   ASSERT_FALSE(edit_is_valid_value(e));
 
   // 太短
@@ -617,7 +617,7 @@ TEST(Edit, is_valid_pattern_custom_password) {
   ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
-  ASSERT_NE(edit_input_char(e, L'a'), RET_OK); // 太长
+  ASSERT_NE(edit_input_char(e, L'a'), RET_OK);  // 太长
   ASSERT_TRUE(wstr_eq(&(e->text), L"aB3#aaaa"));
 
   widget_destroy(e);
@@ -698,10 +698,10 @@ TEST(Edit, clamp_min_max) {
   // 切换 input_type 时自动 clamp: INT → UINT
   edit_set_int_limit(b, -100, 1000, 1);
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
-  ASSERT_EQ(-100, value_int(&v2)); // -100 在 INT32 范围内，clamp 不改变
+  ASSERT_EQ(-100, value_int(&v2));  // -100 在 INT32 范围内，clamp 不改变
   edit_set_input_type(b, INPUT_UINT);
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
-  ASSERT_EQ(0, value_uint32(&v2)); // min=-100 clamped to 0 for UINT
+  ASSERT_EQ(0, value_uint32(&v2));  // min=-100 clamped to 0 for UINT
 
   edit_set_input_type(b, INPUT_INT);
   // 设置 min 时自动修正 max
@@ -788,7 +788,7 @@ TEST(Edit, min_eq_max) {
   ASSERT_TRUE(edit_is_valid_value(e));
   widget_set_text(e, L"123456");
   ASSERT_TRUE(edit_is_valid_value(e));
-  ASSERT_TRUE(wstr_eq(&(e->text), L"12345")); // edit_set_text_impl 截断字符串不受 auto_fix 控制
+  ASSERT_TRUE(wstr_eq(&(e->text), L"12345"));  // edit_set_text_impl 截断字符串不受 auto_fix 控制
 
   widget_destroy(e);
 }
@@ -841,13 +841,13 @@ TEST(Edit, auto_fix_uint) {
   ASSERT_EQ(UINT32_MAX, value_int64(&v));
   widget_set_text(e, L"-1");
   ASSERT_EQ((uint32_t)edit_get_int64(e), 0u);
-  widget_set_text(e, L"9000000000"); // 9e9
+  widget_set_text(e, L"9000000000");  // 9e9
   ASSERT_EQ((uint32_t)edit_get_int64(e), UINT32_MAX);
 
   edit_set_uint_limit(e, 100, 200, 1);
   widget_set_text(e, L"-1");
   ASSERT_EQ((uint32_t)edit_get_int64(e), 100);
-  widget_set_text(e, L"9000000000"); // 9e9
+  widget_set_text(e, L"9000000000");  // 9e9
   ASSERT_EQ((uint32_t)edit_get_int64(e), 200);
 
   widget_destroy(e);
@@ -885,7 +885,7 @@ TEST(Edit, inc_dec_int) {
 
   // 空文本 inc 时使用 min 作为初始值
   edit_set_auto_fix(e, FALSE);
-  widget_set_text_utf8(e, ""); // 设置空文本本身可能触发auto_fix
+  widget_set_text_utf8(e, "");  // 设置空文本本身可能触发auto_fix
   edit_inc(EDIT(e));
   ASSERT_EQ(edit_get_int(e), -100);
   edit_set_auto_fix(e, TRUE);
@@ -927,7 +927,7 @@ TEST(Edit, inc_dec_uint) {
 
   // 空文本 inc 使用 min=0
   edit_set_auto_fix(e, FALSE);
-  widget_set_text_utf8(e, ""); // 设置空文本本身可能触发auto_fix
+  widget_set_text_utf8(e, "");  // 设置空文本本身可能触发auto_fix
   edit_inc(EDIT(e));
   ASSERT_EQ((uint32_t)edit_get_int64(e), 0u);
   edit_set_auto_fix(e, TRUE);
@@ -959,7 +959,7 @@ TEST(Edit, inc_dec_hex) {
 
   // 空文本 inc 使用 min
   edit_set_auto_fix(e, FALSE);
-  widget_set_text_utf8(e, ""); // 设置空文本本身可能触发auto_fix
+  widget_set_text_utf8(e, "");  // 设置空文本本身可能触发auto_fix
   edit_inc(EDIT(e));
   ASSERT_EQ((uint32_t)edit_get_int64(e), 0u);
   edit_set_auto_fix(e, TRUE);
@@ -1713,26 +1713,26 @@ TEST(Edit, is_valid_chr_4_float_prevent_invalid) {
 
   widget_set_text(e, L"1e");
   edit_set_cursor(e, 2);
-  ASSERT_NE(edit_input_char(e, L'.'), RET_OK); // 1e.
+  ASSERT_NE(edit_input_char(e, L'.'), RET_OK);  // 1e.
 
   widget_set_text(e, L"1.");
   edit_set_cursor(e, 2);
-  ASSERT_EQ(edit_input_char(e, L'e'), RET_OK); // 1.e
-  ASSERT_EQ(edit_input_char(e, L'3'), RET_OK); // 1.e3
+  ASSERT_EQ(edit_input_char(e, L'e'), RET_OK);  // 1.e
+  ASSERT_EQ(edit_input_char(e, L'3'), RET_OK);  // 1.e3
   ASSERT_FLOAT_EQ(1.e3, edit_get_double(e));
 
   widget_set_text(e, L"1");
   edit_set_cursor(e, 0);
-  ASSERT_EQ(edit_input_char(e, L'+'), RET_OK); // +1
+  ASSERT_EQ(edit_input_char(e, L'+'), RET_OK);  // +1
 
   widget_set_text(e, L"1");
   edit_set_cursor(e, 0);
-  ASSERT_EQ(edit_input_char(e, L'-'), RET_OK); // -1
+  ASSERT_EQ(edit_input_char(e, L'-'), RET_OK);  // -1
 
   widget_set_text(e, L"1");
   edit_set_cursor(e, 1);
-  ASSERT_NE(edit_input_char(e, L'-'), RET_OK); // 1-
-  ASSERT_NE(edit_input_char(e, L'+'), RET_OK); // 1+
+  ASSERT_NE(edit_input_char(e, L'-'), RET_OK);  // 1-
+  ASSERT_NE(edit_input_char(e, L'+'), RET_OK);  // 1+
 
   widget_destroy(e);
 }
@@ -1929,7 +1929,9 @@ TEST(Edit, is_valid_value_ascii_format) {
   widget_set_prop_int(e, WIDGET_PROP_MIN, 0);
   widget_set_prop_int(e, WIDGET_PROP_MAX, 100);
 
-  widget_set_text(e, L"\x01" L"abc");
+  widget_set_text(e,
+                  L"\x01"
+                  L"abc");
   ASSERT_FALSE(edit_is_valid_value(e));
 
   widget_set_text(e, L"abc\x7F");
@@ -2019,13 +2021,13 @@ TEST(Edit, is_valid_chr_4_email) {
   ASSERT_NE(edit_input_char(e, L'-'), RET_OK);
   // 输入过程中 domain 的 . 前面能输入 -
   edit_set_cursor(e, e->text.size - 1);
-  ASSERT_EQ(edit_input_char(e, L'-'), RET_OK); // u@1-.
-  ASSERT_EQ(edit_input_char(e, L'a'), RET_OK); // u@1-a.
-  ASSERT_EQ(edit_input_char(e, L'b'), RET_OK); // u@1-ab.
+  ASSERT_EQ(edit_input_char(e, L'-'), RET_OK);  // u@1-.
+  ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);  // u@1-a.
+  ASSERT_EQ(edit_input_char(e, L'b'), RET_OK);  // u@1-ab.
   ASSERT_FALSE(edit_is_valid_value(e));
   edit_set_cursor(e, e->text.size);
-  ASSERT_EQ(edit_input_char(e, L'c'), RET_OK); // u@1-ab.c
-  ASSERT_EQ(edit_input_char(e, L'n'), RET_OK); // u@1-ab.cn
+  ASSERT_EQ(edit_input_char(e, L'c'), RET_OK);  // u@1-ab.c
+  ASSERT_EQ(edit_input_char(e, L'n'), RET_OK);  // u@1-ab.cn
   ASSERT_TRUE(edit_is_valid_value(e));
 
   edit_clear((edit_t*)e);
@@ -2096,7 +2098,7 @@ TEST(Edit, is_valid_chr_4_phone) {
   edit_set_cursor(e, 0);
   ASSERT_EQ(edit_input_char(e, L'+'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
-  ASSERT_FALSE(edit_is_valid_value(e)); // + 后面在输入时允许 0，但最终的号码不允许 + 后面出现 0
+  ASSERT_FALSE(edit_is_valid_value(e));  // + 后面在输入时允许 0，但最终的号码不允许 + 后面出现 0
   key_event_t key;
   key_event_init(&key, EVT_KEY_DOWN, e, TK_KEY_BACKSPACE);
   widget_dispatch(e, (event_t*)&key);
@@ -2127,7 +2129,7 @@ TEST(Edit, is_valid_chr_4_ascii) {
   ASSERT_EQ(EDIT(e)->min, 0);
   ASSERT_EQ(EDIT(e)->max, UINT32_MAX);
 
-  widget_set_text(e, L"《》"); // 有非法字符也应该能继续输入
+  widget_set_text(e, L"《》");  // 有非法字符也应该能继续输入
   uint32_t save_size = e->text.size;
   edit_set_cursor(e, save_size);
   ASSERT_EQ(edit_input_char(e, L'A'), RET_OK);

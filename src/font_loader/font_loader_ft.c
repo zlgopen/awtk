@@ -160,11 +160,11 @@ static glyphs_t* font_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_t l
     goto_error_if_fail(glyphs != NULL);
     glyphs->font = f;
 
-    for (visual_index = 0; visual_index < b.vis_str_size; visual_index += code_unit_count,
-        glyph_index++) {
+    for (visual_index = 0; visual_index < b.vis_str_size;
+         visual_index += code_unit_count, glyph_index++) {
       glyph_t* g = NULL;
-      logical_index = b.positions_V_to_L != NULL ? (uint32_t)b.positions_V_to_L[visual_index]
-                                                 : visual_index;
+      logical_index =
+          b.positions_V_to_L != NULL ? (uint32_t)b.positions_V_to_L[visual_index] : visual_index;
       uint32_t c = font_loader_get_codepoint(str, len, &logical_index, &code_unit_count);
       goto_error_if_fail(logical_index < len && code_unit_count > 0 &&
                          visual_index + code_unit_count <= b.vis_str_size &&

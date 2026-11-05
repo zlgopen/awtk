@@ -108,7 +108,7 @@ static char* ubjson_writer_backup_str(const char* value) {
           break;
         }
       }
-    } while(!tk_str_eq(value, temp_data));
+    } while (!tk_str_eq(value, temp_data));
     return temp_data;
   }
 }
@@ -176,7 +176,7 @@ static wchar_t* ubjson_writer_backup_wstr(const wchar_t* value) {
         }
       }
       size = wcslen(value);
-    } while(!tk_wstr_eq(value, temp_data));
+    } while (!tk_wstr_eq(value, temp_data));
     return temp_data;
   }
 }
@@ -454,7 +454,8 @@ ret_t ubjson_writer_write_kv_str(ubjson_writer_t* writer, const char* key, const
   return ubjson_writer_write_str(writer, value);
 }
 
-ret_t ubjson_writer_write_kv_str_by_cache(ubjson_writer_t* writer, const char* key, const char* value) {
+ret_t ubjson_writer_write_kv_str_by_cache(ubjson_writer_t* writer, const char* key,
+                                          const char* value) {
   ret_t ret = RET_OOM;
   char* temp_key = NULL;
   char* temp_value = NULL;
@@ -494,7 +495,8 @@ ret_t ubjson_writer_write_kv_wstr(ubjson_writer_t* writer, const char* key, cons
   return ubjson_writer_write_wstr(writer, value);
 }
 
-ret_t ubjson_writer_write_kv_wstr_by_cache(ubjson_writer_t* writer, const char* key, const wchar_t* value) {
+ret_t ubjson_writer_write_kv_wstr_by_cache(ubjson_writer_t* writer, const char* key,
+                                           const wchar_t* value) {
   ret_t ret = RET_OOM;
   char* temp_key = NULL;
   wchar_t* temp_value = NULL;

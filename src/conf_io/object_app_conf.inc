@@ -44,7 +44,7 @@ static int32_t object_app_conf_compare(tk_object_t* obj, tk_object_t* other) {
 static ret_t object_app_conf_remove_prop(tk_object_t* obj, const char* name) {
   object_app_conf_t* o = OBJECT_APP_CONF(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  
+
   return tk_object_remove_prop(o->user_obj, name);
 }
 
@@ -90,29 +90,30 @@ static ret_t object_app_conf_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, 
 static bool_t object_app_conf_can_exec(tk_object_t* obj, const char* name, const char* args) {
   object_app_conf_t* o = OBJECT_APP_CONF(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  
+
   return tk_object_can_exec(o->user_obj, name, args);
 }
 
 static ret_t object_app_conf_exec(tk_object_t* obj, const char* name, const char* args) {
   object_app_conf_t* o = OBJECT_APP_CONF(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-    
+
   return tk_object_exec(o->user_obj, name, args);
 }
 
-static const object_vtable_t s_object_app_conf_vtable = {.type = OBJECT_APP_CONF_TYPE,
-                                                       .desc = OBJECT_APP_CONF_TYPE,
-                                                       .size = sizeof(object_app_conf_t),
-                                                       .is_collection = FALSE,
-                                                       .on_destroy = object_app_conf_on_destroy,
-                                                       .exec = object_app_conf_exec,
-                                                       .can_exec = object_app_conf_can_exec,
-                                                       .compare = object_app_conf_compare,
-                                                       .get_prop = object_app_conf_get_prop,
-                                                       .set_prop = object_app_conf_set_prop,
-                                                       .remove_prop = object_app_conf_remove_prop,
-                                                       .foreach_prop = object_app_conf_foreach_prop};
+static const object_vtable_t s_object_app_conf_vtable = {
+    .type = OBJECT_APP_CONF_TYPE,
+    .desc = OBJECT_APP_CONF_TYPE,
+    .size = sizeof(object_app_conf_t),
+    .is_collection = FALSE,
+    .on_destroy = object_app_conf_on_destroy,
+    .exec = object_app_conf_exec,
+    .can_exec = object_app_conf_can_exec,
+    .compare = object_app_conf_compare,
+    .get_prop = object_app_conf_get_prop,
+    .set_prop = object_app_conf_set_prop,
+    .remove_prop = object_app_conf_remove_prop,
+    .foreach_prop = object_app_conf_foreach_prop};
 
 static ret_t object_app_conf_forward_events(void* ctx, event_t* e) {
   object_app_conf_t* o = OBJECT_APP_CONF(ctx);

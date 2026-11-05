@@ -70,7 +70,8 @@ static widget_t* default_focused_child_save_target_from_string(str_t* tag, widge
   return save_target;
 }
 
-static str_t* default_focused_child_save_target_to_string(str_t* tag, widget_t* target, widget_t* view) {
+static str_t* default_focused_child_save_target_to_string(str_t* tag, widget_t* target,
+                                                          widget_t* view) {
   int32_t i = 0;
   darray_t ptrs;
   widget_t* parent = NULL;
@@ -99,7 +100,8 @@ static widget_t* default_focused_child_get_save_target(widget_t* widget, widget_
   widget_t* target = NULL;
   return_value_if_fail(widget != NULL && active_view != NULL, NULL);
   str_init(&str_tag, DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGTH);
-  const char* str_target = widget_get_prop_str(active_view, DEFAULT_FOCUSED_CHILD_SAVE_TARGET_STRING, NULL);
+  const char* str_target =
+      widget_get_prop_str(active_view, DEFAULT_FOCUSED_CHILD_SAVE_TARGET_STRING, NULL);
   if (str_target != NULL) {
     str_set(&str_tag, str_target);
     target = default_focused_child_save_target_from_string(&str_tag, widget);
@@ -120,7 +122,8 @@ static widget_t* default_focused_child_get_save_target(widget_t* widget, widget_
   return target;
 }
 
-static ret_t default_focused_child_set_save_target(widget_t* widget, widget_t* active_view, is_target_type_t is_target_type) {
+static ret_t default_focused_child_set_save_target(widget_t* widget, widget_t* active_view,
+                                                   is_target_type_t is_target_type) {
   widget_t* target = active_view;
   return_value_if_fail(widget != NULL && active_view != NULL, RET_BAD_PARAMS);
   while (target->key_target != NULL) {
@@ -154,9 +157,10 @@ static ret_t default_focused_child_set_target_focused(str_t* tag, widget_t* widg
       if (target == target->parent->target) {
         break;
       }
-      pointer_event_init(&event, EVT_POINTER_LEAVE, target->parent->target, ids->last_x, ids->last_y);
+      pointer_event_init(&event, EVT_POINTER_LEAVE, target->parent->target, ids->last_x,
+                         ids->last_y);
       widget_dispatch_leave_event(target->parent->target, &event);
-      
+
       target->parent->target = target;
       target = target->parent;
 

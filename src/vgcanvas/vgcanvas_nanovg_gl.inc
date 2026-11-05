@@ -1,19 +1,20 @@
 ﻿#include "tkc/utils.h"
-#include "vgcanvas_nanovg.inc" 
+#include "vgcanvas_nanovg.inc"
 
-static enum NVGorientation vgcanvas_nanovg_lcd_orientation_to_NVGorientation(lcd_orientation_t orientation) {
+static enum NVGorientation vgcanvas_nanovg_lcd_orientation_to_NVGorientation(
+    lcd_orientation_t orientation) {
   switch (orientation) {
-  case LCD_ORIENTATION_0:
-    return NVG_ORIENTATION_0;
-  case LCD_ORIENTATION_90:
-    return NVG_ORIENTATION_90;
-  case LCD_ORIENTATION_180:
-    return NVG_ORIENTATION_180;
-  case LCD_ORIENTATION_270:
-    return NVG_ORIENTATION_270;
-  default :
-    assert(!"not find orientation");
-    break;
+    case LCD_ORIENTATION_0:
+      return NVG_ORIENTATION_0;
+    case LCD_ORIENTATION_90:
+      return NVG_ORIENTATION_90;
+    case LCD_ORIENTATION_180:
+      return NVG_ORIENTATION_180;
+    case LCD_ORIENTATION_270:
+      return NVG_ORIENTATION_270;
+    default:
+      assert(!"not find orientation");
+      break;
   }
   return NVG_ORIENTATION_0;
 }
@@ -46,7 +47,8 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects
     }
   }
 
-  nvgBeginFrame(canvas->vg, info->lcd_w, info->lcd_h, info->device_pixel_ratio, vgcanvas_nanovg_lcd_orientation_to_NVGorientation(info->lcd_orientation));
+  nvgBeginFrame(canvas->vg, info->lcd_w, info->lcd_h, info->device_pixel_ratio,
+                vgcanvas_nanovg_lcd_orientation_to_NVGorientation(info->lcd_orientation));
 
   return RET_OK;
 }
@@ -70,8 +72,8 @@ static ret_t vgcanvas_nanovg_create_fbo_ex(vgcanvas_t* vgcanvas, uint32_t w, uin
   NVGcontext* vg = nanovg->vg;
   int samples = nanovg->supported_opengl_antialias_hw ? 4 : 0;
 
-  handle = nvgluCreateFramebufferEx(vg, (int)(w * vgcanvas->ratio),
-                                    (int)(h * vgcanvas->ratio), 0, samples, with_depth ? 1 : 0);
+  handle = nvgluCreateFramebufferEx(vg, (int)(w * vgcanvas->ratio), (int)(h * vgcanvas->ratio), 0,
+                                    samples, with_depth ? 1 : 0);
   return_value_if_fail(handle != NULL, RET_FAIL);
 
   fbo->w = w;
@@ -87,7 +89,8 @@ static ret_t vgcanvas_nanovg_create_fbo_ex(vgcanvas_t* vgcanvas, uint32_t w, uin
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, bool_t custom_draw_model, framebuffer_object_t* fbo) {
+static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
+                                        bool_t custom_draw_model, framebuffer_object_t* fbo) {
   return vgcanvas_nanovg_create_fbo_ex(vgcanvas, w, h, custom_draw_model, FALSE, fbo);
 }
 
@@ -102,16 +105,17 @@ static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_objec
 
 static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   NVGcontext* vg = NULL;
-	float anchor_x = 0.0f;
-	float anchor_y = 0.0f;
+  float anchor_x = 0.0f;
+  float anchor_y = 0.0f;
   enum NVGorientation orientation = NVG_ORIENTATION_0;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
-  
+
   vg = canvas->vg;
 
   fbo->online_fbo = nvgluGetCurrFramebuffer();
-  fbo->online_dirty_rect = rect_init(vgcanvas->dirty_rect.x, vgcanvas->dirty_rect.y, vgcanvas->dirty_rect.w, vgcanvas->dirty_rect.h);
+  fbo->online_dirty_rect = rect_init(vgcanvas->dirty_rect.x, vgcanvas->dirty_rect.y,
+                                     vgcanvas->dirty_rect.w, vgcanvas->dirty_rect.h);
 
   fbo->online_w = nvgGetWidth(vg);
   fbo->online_h = nvgGetHeight(vg);
@@ -153,7 +157,8 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
 
   nvgluBindFramebuffer(handle);
 
-  vgcanvas->dirty_rect = rect_init(fbo->online_dirty_rect.x, fbo->online_dirty_rect.y, fbo->online_dirty_rect.w, fbo->online_dirty_rect.h);
+  vgcanvas->dirty_rect = rect_init(fbo->online_dirty_rect.x, fbo->online_dirty_rect.y,
+                                   fbo->online_dirty_rect.w, fbo->online_dirty_rect.h);
   w = fbo->online_w;
   h = fbo->online_h;
 
@@ -199,19 +204,19 @@ static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_obj
     uint8_t* src_data = p;
     uint8_t* dst_data = img_data;
     for (i = 0; i < img->w; i++) {
-        if (0x0 < src_data[3] && src_data[3] < 0xff) {
-          dst_data[0] = src_data[0] == src_data[3] ? 0xff : (src_data[0] << 8) / src_data[3];
-          dst_data[1] = src_data[1] == src_data[3] ? 0xff : (src_data[1] << 8) / src_data[3];
-          dst_data[2] = src_data[2] == src_data[3] ? 0xff : (src_data[2] << 8) / src_data[3];
-        } else {
-          dst_data[0] = src_data[0];
-          dst_data[1] = src_data[1];
-          dst_data[2] = src_data[2];
-        }
-        dst_data[3] = src_data[3];
+      if (0x0 < src_data[3] && src_data[3] < 0xff) {
+        dst_data[0] = src_data[0] == src_data[3] ? 0xff : (src_data[0] << 8) / src_data[3];
+        dst_data[1] = src_data[1] == src_data[3] ? 0xff : (src_data[1] << 8) / src_data[3];
+        dst_data[2] = src_data[2] == src_data[3] ? 0xff : (src_data[2] << 8) / src_data[3];
+      } else {
+        dst_data[0] = src_data[0];
+        dst_data[1] = src_data[1];
+        dst_data[2] = src_data[2];
+      }
+      dst_data[3] = src_data[3];
 
-        src_data += 4;
-        dst_data += 4;
+      src_data += 4;
+      dst_data += 4;
     }
     if (p == data) {
       break;

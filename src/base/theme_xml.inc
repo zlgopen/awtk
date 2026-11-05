@@ -360,7 +360,7 @@ static ret_t write_string_props(void* ctx, const void* data) {
   named_value_t* nv = (named_value_t*)data;
   wbuffer_t* wb = (wbuffer_t*)ctx;
   value_t* v = &(nv->value);
-  if (v->type != VALUE_TYPE_STRING && v->type !=  VALUE_TYPE_GRADIENT) {
+  if (v->type != VALUE_TYPE_STRING && v->type != VALUE_TYPE_GRADIENT) {
     return RET_OK;
   }
 

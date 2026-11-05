@@ -614,8 +614,8 @@ ret_t object_fifo_npush_head(object_t* obj, const void* data, uint32_t nr) {
     size = OBJECT_FIFO_GET_SIZE(obj);
     capacity = OBJECT_FIFO_GET_CAPACITY(obj);
 
-    ret = object_fifo_dispatch_push_head_event(object_fifo, EVT_OBJECT_FIFO_WILL_PUSH_HEAD, data,
-                                               nr);
+    ret =
+        object_fifo_dispatch_push_head_event(object_fifo, EVT_OBJECT_FIFO_WILL_PUSH_HEAD, data, nr);
     if (ret == RET_STOP) {
       ret = RET_OK;
     } else {

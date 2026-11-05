@@ -85,7 +85,8 @@ ret_t harfbuzz_data_loader_set(harfbuzz_data_loader_t* loader);
  *
  * @return {hb_str_info_t*} 成功返回该字符串对应的信息，失败返回NULL。
  */
-hb_str_info_t* harfbuzz_data_loader_find_info(harfbuzz_data_loader_t* loader, const char* font_name, const wchar_t* str, uint32_t str_len);
+hb_str_info_t* harfbuzz_data_loader_find_info(harfbuzz_data_loader_t* loader, const char* font_name,
+                                              const wchar_t* str, uint32_t str_len);
 
 /**
  * @method harfbuzz_data_loader_destroy

@@ -255,7 +255,8 @@ ret_t lcd_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y)
   return lcd->draw_text(lcd, str, nr, x, y);
 }
 
-ret_t lcd_draw_text_by_glyphs(lcd_t* lcd, glyphs_t* glyphs, uint32_t start, uint32_t len, xy_t x, xy_t y) {
+ret_t lcd_draw_text_by_glyphs(lcd_t* lcd, glyphs_t* glyphs, uint32_t start, uint32_t len, xy_t x,
+                              xy_t y) {
   uint32_t nr = len + start;
 
   return_value_if_fail(lcd != NULL && lcd->draw_text_by_glyphs != NULL && glyphs != NULL, RET_OK);

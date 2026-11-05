@@ -796,8 +796,7 @@ TEST(ObjectEvtRouter, publish_does_not_fire_other_topic) {
   tk_object_t* router = object_evt_router_create();
 
   ASSERT_EQ(object_evt_router_subscribe(router, "topic_a", test_subscribe_callback, NULL), RET_OK);
-  ASSERT_EQ(object_evt_router_subscribe(router, "topic_b", test_subscribe_callback2, NULL),
-            RET_OK);
+  ASSERT_EQ(object_evt_router_subscribe(router, "topic_b", test_subscribe_callback2, NULL), RET_OK);
 
   event_t e = event_init(EVT_VALUE_CHANGED, NULL);
   s_callback_called = 0;
@@ -817,9 +816,8 @@ TEST(ObjectEvtRouter, publish_bypasses_evt_filter) {
   reg_opt.evt_filter = test_evt_filter_reject;  // 过滤器一律拒绝
 
   // 注册一个 reject 过滤器 + EVT_PROP_CHANGED 的发布者
-  ASSERT_EQ(
-      object_evt_router_register(router, "filtered", publisher, EVT_PROP_CHANGED, &reg_opt),
-      RET_OK);
+  ASSERT_EQ(object_evt_router_register(router, "filtered", publisher, EVT_PROP_CHANGED, &reg_opt),
+            RET_OK);
   ASSERT_EQ(object_evt_router_subscribe(router, "filtered", test_subscribe_callback, NULL), RET_OK);
 
   value_t v;
@@ -860,9 +858,9 @@ TEST(ObjectEvtRouter, publish_priority_order) {
   memset(&opt_high, 0, sizeof(opt_high));
   opt_high.priority = 100;
   opt_high.callback_ctx = &test_ctx;
-  ASSERT_EQ(object_evt_router_subscribe(router, "priority_topic", test_priority_callback_high,
-                                        &opt_high),
-            RET_OK);
+  ASSERT_EQ(
+      object_evt_router_subscribe(router, "priority_topic", test_priority_callback_high, &opt_high),
+      RET_OK);
 
   object_evt_router_subscribe_opt_t opt_medium;
   memset(&opt_medium, 0, sizeof(opt_medium));
@@ -919,9 +917,8 @@ TEST(ObjectEvtRouter, publish_ret_remove_behavior) {
   object_evt_router_subscribe_opt_t remove_opt;
   memset(&remove_opt, 0, sizeof(remove_opt));
   remove_opt.callback_ctx = &remove_called;
-  ASSERT_EQ(
-      object_evt_router_subscribe(router, "remove_topic", test_remove_callback, &remove_opt),
-      RET_OK);
+  ASSERT_EQ(object_evt_router_subscribe(router, "remove_topic", test_remove_callback, &remove_opt),
+            RET_OK);
 
   object_evt_router_subscribe_opt_t after_opt;
   memset(&after_opt, 0, sizeof(after_opt));

@@ -78,4 +78,3 @@ typedef enum _foo_msg_code_t {
 END_C_DECLS
 
 #endif /*TK_FOO_COMMON_TYPES_DEF_H*/
-

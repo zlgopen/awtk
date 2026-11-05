@@ -57,12 +57,12 @@ typedef struct _canvas_offline_gpu_t {
 
 #ifdef LINUX
 #define WITH_LCD_RGB888 1
-#endif/*LINUX*/
+#endif /*LINUX*/
 
 #ifdef WITH_LCD_RGB888
 #include "../lcd/lcd_mem_rgb888.h"
 #include "../lcd/lcd_mem_bgr888.h"
-#endif/*WITH_LCD_RGB888*/
+#endif /*WITH_LCD_RGB888*/
 
 #endif
 
@@ -86,7 +86,8 @@ canvas_t* canvas_offline_create_by_widget(widget_t* widget, bitmap_format_t form
   h = widget->h;
 #if defined(WITH_FAST_LCD_PORTRAIT)
   if (info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
-    if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+    if (info->lcd_orientation == LCD_ORIENTATION_90 ||
+        info->lcd_orientation == LCD_ORIENTATION_270) {
       w = widget->h;
       h = widget->w;
     }
@@ -104,7 +105,8 @@ static ret_t canvas_offline_bitmap_fbo_destroy(bitmap_t* img) {
   canvas_t* c = NULL;
   vgcanvas_t* vg = NULL;
   framebuffer_object_t* fbo = (framebuffer_object_t*)(img->specific_ctx);
-  native_window_t* native_window = (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
+  native_window_t* native_window =
+      (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
   return_value_if_fail(native_window != NULL, RET_NOT_FOUND);
 
   c = native_window_get_canvas(native_window);
@@ -262,7 +264,8 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   return (canvas_t*)canvas;
 }
 
-ret_t canvas_offline_set_canvas_orientation(canvas_t* canvas, lcd_orientation_t canvas_orientation) {
+ret_t canvas_offline_set_canvas_orientation(canvas_t* canvas,
+                                            lcd_orientation_t canvas_orientation) {
   system_info_t* info = system_info();
   canvas_offline_t* canvas_offline = (canvas_offline_t*)canvas;
   return_value_if_fail(canvas_offline != NULL, RET_BAD_PARAMS);
@@ -275,8 +278,7 @@ ret_t canvas_offline_set_canvas_orientation(canvas_t* canvas, lcd_orientation_t 
 #ifndef WITH_GPU
         lcd_set_orientation(canvas->lcd, canvas_offline->canvas_orientation, canvas_orientation);
 #endif
-        if (canvas_orientation == LCD_ORIENTATION_90 ||
-            canvas_orientation == LCD_ORIENTATION_270) {
+        if (canvas_orientation == LCD_ORIENTATION_90 || canvas_orientation == LCD_ORIENTATION_270) {
           canvas_offline->bitmap->w = canvas_offline->physical_height;
           canvas_offline->bitmap->h = canvas_offline->physical_width;
         }
@@ -291,7 +293,7 @@ ret_t canvas_offline_set_canvas_orientation(canvas_t* canvas, lcd_orientation_t 
       }
     }
 #else
-  (void)info;
+    (void)info;
 #endif
     canvas_offline->canvas_orientation = canvas_orientation;
   }
@@ -329,8 +331,8 @@ ret_t canvas_offline_clear_canvas(canvas_t* canvas) {
   glDisable(GL_SCISSOR_TEST);
 #else
   canvas_offline = (canvas_offline_t*)canvas;
-  rect = rect_init(0, 0, bitmap_get_physical_width(canvas_offline->bitmap), 
-                         bitmap_get_physical_height(canvas_offline->bitmap));
+  rect = rect_init(0, 0, bitmap_get_physical_width(canvas_offline->bitmap),
+                   bitmap_get_physical_height(canvas_offline->bitmap));
   image_clear(canvas_offline->bitmap, &rect, color_init(0x0, 0x0, 0x0, 0x0));
 #endif
   return RET_OK;
@@ -524,7 +526,8 @@ ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitma
   }
 #ifdef WITH_GPU
   bitmap_set_dirty(bitmap, FALSE);
-  graphic_buffer_attach(bitmap->buffer, NULL, bitmap_get_physical_width(bitmap), bitmap_get_physical_height(bitmap));
+  graphic_buffer_attach(bitmap->buffer, NULL, bitmap_get_physical_width(bitmap),
+                        bitmap_get_physical_height(bitmap));
 #endif
   bitmap->flags |= BITMAP_FLAG_IMMUTABLE;
   ((canvas_offline_t*)canvas)->bitmap = NULL;
@@ -562,7 +565,8 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas) {
     }
     r = rect_init(0, 0, bitmap->w, bitmap->h);
 
-    graphic_buffer_attach(bitmap->buffer, data, bitmap_get_physical_width(bitmap), bitmap_get_physical_height(bitmap));
+    graphic_buffer_attach(bitmap->buffer, data, bitmap_get_physical_width(bitmap),
+                          bitmap_get_physical_height(bitmap));
     vgcanvas_fbo_to_bitmap(vg, fbo, bitmap, &r);
     bitmap_set_dirty(bitmap, FALSE);
   }

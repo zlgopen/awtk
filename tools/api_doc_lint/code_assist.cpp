@@ -48,21 +48,33 @@ struct compile_unit {
     symbols.clear();
   }
 
-  ~compile_unit() { clear(); }
+  ~compile_unit() {
+    clear();
+  }
 };
 
 ca_symbol_type_t sym_type_from_ctags_kind(char kind) {
   switch (kind) {
-    case 'd': return CA_DEF;
-    case 'f': return CA_FUNC_DEF;
-    case 'p': return CA_FUNC_PROTOTYPE;
-    case 'c': return CA_TYPE;
-    case 's': return CA_TYPE;
-    case 'u': return CA_TYPE;
-    case 'i': return CA_INCLUDE;
-    case 'e': return CA_ENUM;
-    case 't': return CA_TYPE;
-    case 'g': return CA_ENUM;
+    case 'd':
+      return CA_DEF;
+    case 'f':
+      return CA_FUNC_DEF;
+    case 'p':
+      return CA_FUNC_PROTOTYPE;
+    case 'c':
+      return CA_TYPE;
+    case 's':
+      return CA_TYPE;
+    case 'u':
+      return CA_TYPE;
+    case 'i':
+      return CA_INCLUDE;
+    case 'e':
+      return CA_ENUM;
+    case 't':
+      return CA_TYPE;
+    case 'g':
+      return CA_ENUM;
   }
   return CA_GENERAL;
 }
@@ -90,10 +102,10 @@ static bool is_valid_comment(const char* buffer, int sym_pos, int comment_pos, i
 
 // 反向查找 并把注释填充到 comment 中
 static void reverse_get_comment(string& comment, const char* end, const char* buffer_begin) {
-  const char* s = end-2;
+  const char* s = end - 2;
   comment = "/*";
-  for (; s >= buffer_begin;--s) {
-    if (*s == '*' && s > buffer_begin && *(s-1) == '/') {
+  for (; s >= buffer_begin; --s) {
+    if (*s == '*' && s > buffer_begin && *(s - 1) == '/') {
       comment += "*/";
       break;
     }
@@ -107,7 +119,7 @@ static void find_comment(const char* buffer, ca_symbol_t& node) {
 
   const char* s = buffer + node.pos - 1;
   for (; s >= buffer; --s) {
-    if (*s == '/' && s > buffer && *(s-1) == '*') {
+    if (*s == '/' && s > buffer && *(s - 1) == '*') {
       string comment;
       reverse_get_comment(comment, s, buffer);
       CLONE_STR(node.comment, comment.c_str());
@@ -121,13 +133,13 @@ static void find_comment(const char* buffer, ca_symbol_t& node) {
 }
 
 struct ca_impl {
-  ctags_export_t *ctagsp;
+  ctags_export_t* ctagsp;
 
   const char* current_buffer;
 
   compile_unit* current_unit;
   map<string, compile_unit*> units;
-  
+
   struct ctags_comment_t {
     int32_t line;
     string name;
@@ -161,7 +173,7 @@ struct ca_impl {
     last_comment_clear();
     current_unit->clear();
 
-    current_buffer = buffer; 
+    current_buffer = buffer;
     ctagsp->parse_buffer(full_path, current_buffer, len);
     current_buffer = NULL;
   }
@@ -193,10 +205,10 @@ struct ca_impl {
 
     if (line_diff < 0) {
       find_comment(current_buffer, node);
-    } else if (line_diff < 4 && !last_comment.name.empty() 
-      && is_valid_comment(current_buffer, node.pos, last_comment.pos, line_diff)) {
+    } else if (line_diff < 4 && !last_comment.name.empty() &&
+               is_valid_comment(current_buffer, node.pos, last_comment.pos, line_diff)) {
       CLONE_STR(node.comment, last_comment.name.c_str());
-    } 
+    }
   }
 
   static void tcb_ctags_callback(const tagEntryInfo* const tag, char* const line, void* param) {
@@ -242,8 +254,7 @@ struct ca_impl {
     } else if (tag->kind == 't') {
       CLONE_STR(node.typeref, tag->extensionFields.typeRef[1]);
     } else if (tag->kind == 'd' && !tag->extensionFields.signature) {
-      if (tag->extensionFields.typeRef[1])
-        CLONE_STR(node.typeref, tag->extensionFields.typeRef[1]);
+      if (tag->extensionFields.typeRef[1]) CLONE_STR(node.typeref, tag->extensionFields.typeRef[1]);
     }
 
     set_node_comment(node);
@@ -260,9 +271,8 @@ void code_assist_symbols_destroy(ca_symbols_t* symbols) {
 static ca_symbols_t* nodes_from_node_vector(const vector<ca_symbol_t>& nodes) {
   ca_symbols_t* ret = NULL;
   size_t len = nodes.size();
-  if (len == 0)
-    return NULL;
-  
+  if (len == 0) return NULL;
+
   uint32_t size = len * sizeof(ca_symbol_t) + sizeof(*ret);
   ret = (ca_symbols_t*)TKMEM_ALLOC(size);
   if (ret == NULL) {
@@ -293,7 +303,8 @@ ret_t code_assist_destroy(code_assist_t* ca) {
   return RET_OK;
 }
 
-ret_t code_assist_visit_buffer(code_assist_t* ca, const char* full_path, const char* buffer, uint32_t len) {
+ret_t code_assist_visit_buffer(code_assist_t* ca, const char* full_path, const char* buffer,
+                               uint32_t len) {
   return_value_if_fail(ca != NULL && full_path != NULL && buffer != NULL, RET_BAD_PARAMS);
   ca_impl* impl = (ca_impl*)ca->impl;
   impl->visit_buffer(full_path, buffer, len);
