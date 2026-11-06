@@ -4,6 +4,7 @@
   * 修复 edit_ex 按 tab 切换焦点后，由于失焦时没有将key_downing置为FALSE，在下次打开suggest_words_popup后key_downing恒为TRUE，导致suggest_words_popup无法操作的问题(感谢兆坤提供补丁) 
   * 修复 edit_ex 在启用accept_button的窗口下，打开了suggest_words_popup后键入enter会退出窗口的问题(感谢兆坤提供补丁)
   * improve pixel macros(感谢兆坤提供补丁)
+  * text_edit 计算位置时添加边框宽度的计算，防止光标位置错误(感谢泽武提供补丁)
 
 2026/11/05
   * improve blend and pixel(感谢兆坤提供补丁)

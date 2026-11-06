@@ -268,6 +268,9 @@ static align_h_t widget_get_text_align_h(widget_t* widget) {
 
 static ret_t widget_get_text_layout_info(widget_t* widget, text_layout_info_t* info) {
   style_t* style = widget->astyle;
+  color_t border_color;
+  int32_t border_width = 0;
+  int32_t border = BORDER_NONE;
   return_value_if_fail(widget != NULL && info != NULL && style != NULL, RET_BAD_PARAMS);
 
   info->widget_w = widget->w;
@@ -279,6 +282,20 @@ static ret_t widget_get_text_layout_info(widget_t* widget, text_layout_info_t* i
   TEXT_EDIT_GET_WIDGET_MARGIN(widget, style, info->margin_r, RIGHT);
   TEXT_EDIT_GET_WIDGET_MARGIN(widget, style, info->margin_t, TOP);
   TEXT_EDIT_GET_WIDGET_MARGIN(widget, style, info->margin_b, BOTTOM);
+
+  border = style_get_int(style, STYLE_ID_BORDER, BORDER_ALL);
+  border_width = style_get_int(style, STYLE_ID_BORDER_WIDTH, 1);
+  border_color = style_get_color(style, STYLE_ID_BORDER_COLOR, color_init(0, 0, 0, 0));
+
+  // 只扣减可见边框，避免默认透明边框影响所有编辑框的文本位置。
+  if (border_color.rgba.a != 0 && border_width > 0) {
+    if (border & BORDER_TOP) {
+      info->margin_t += border_width;
+    }
+    if (border & BORDER_BOTTOM) {
+      info->margin_b += border_width;
+    }
+  }
 
   info->w = info->widget_w - info->margin_l - info->margin_r;
   info->h = info->widget_h - info->margin_t - info->margin_b;
