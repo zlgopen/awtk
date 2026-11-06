@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/11/06 
+  * 修复 edit_ex 按 tab 切换焦点后，由于失焦时没有将key_downing置为FALSE，在下次打开suggest_words_popup后key_downing恒为TRUE，导致suggest_words_popup无法操作的问题(感谢兆坤提供补丁) 
+
 2026/11/05
   * improve blend and pixel(感谢兆坤提供补丁)
   * improve macro and comment(感谢兆坤提供补丁)

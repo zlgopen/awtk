@@ -222,6 +222,7 @@ static ret_t edit_ex_on_event(widget_t* widget, event_t* e) {
       return ret;
     } break;
     case EVT_BLUR: {
+      edit_ex->key_downing = FALSE;
       edit_ex_close_multiline_popup(edit_ex);
       edit_ex_close_suggest_words_popup(edit_ex);
     } break;
