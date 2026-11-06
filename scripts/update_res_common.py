@@ -799,7 +799,17 @@ def gen_res_all_harfbuzz(out_folder):
         update_hb.uharfbuzz_gen_bin(json_path, bin_path)
     if IS_GENERATE_INC_RES or IS_GENERATE_INC_BITMAP:
         wait_exec_cmds()
-        resgen(raw, inc, THEME, '.data')
+        if out_folder:
+            raw = out_folder
+            for name in ('_s_harfbuzz_data_info_bin.data',
+                         '_s_harfbuzz_data_info_json.data'):
+                output = join_path(inc, name)
+                if os.path.exists(output):
+                    os.remove(output)
+        tmp_root, shard = _make_input_shard(raw, ['_s_harfbuzz_data_info.bin'])
+        # inc 中只生成 harfbuzz 的 bin 资源，避免打包多余的 JSON 数据。
+        resgen(shard, inc, THEME, '.data')
+        wait_exec_cmds()
 
 def gen_res_all_data():
     if not THEME_PACKAGED and THEME != 'default':
