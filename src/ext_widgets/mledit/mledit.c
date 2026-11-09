@@ -409,8 +409,7 @@ static ret_t mledit_set_text(widget_t* widget, const value_t* v) {
   return_value_if_fail(wstr_from_value(&str, v) == RET_OK, RET_BAD_PARAMS);
 
   if (!wstr_equal(&(widget->text), &str)) {
-    wstr_set(&(widget->text), str.str);
-    text_edit_set_text_changed(mledit->model);
+    text_edit_replace_text(mledit->model, 0, widget->text.size, str.str, str.size);
     mledit_update_text(widget);
     mledit_reset_text_edit_layout(mledit->model);
     mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
@@ -677,8 +676,7 @@ ret_t mledit_clear(mledit_t* mledit) {
   widget_t* widget = WIDGET(mledit);
   return_value_if_fail(widget != NULL && mledit != NULL, RET_BAD_PARAMS);
 
-  widget->text.size = 0;
-  text_edit_set_text_changed(mledit->model);
+  text_edit_replace_text(mledit->model, 0, widget->text.size, NULL, 0);
   mledit_set_cursor(WIDGET(mledit), 0);
 
   return widget_invalidate_force(widget, NULL);

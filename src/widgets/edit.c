@@ -901,20 +901,24 @@ static bool_t edit_is_valid_value_default(widget_t* widget) {
 }
 
 static ret_t edit_auto_fix_default(widget_t* widget) {
-  wstr_t* text = NULL;
+  wstr_t fixed;
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
-  text = &(widget->text);
+  /* 先修正到临时串，再整体替换 */
+  wstr_init(&fixed, widget->text.size + 1);
+  if (widget->text.size > 0) {
+    wstr_set_with_len(&fixed, widget->text.str, widget->text.size);
+  }
 
   switch (edit->input_type) {
     case INPUT_TEXT: {
-      uint32_t size = text->size;
+      uint32_t size = fixed.size;
       uint32_t max = edit->max;
 
       if (size > max) {
-        text->size = max;
-        text->str[max] = 0;
+        fixed.size = max;
+        fixed.str[max] = 0;
       }
 
       break;
@@ -924,17 +928,17 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
       uint32_t max = edit->max;
       uint32_t write_pos = 0;
 
-      for (i = 0; i < text->size; i++) {
-        if (text->str[i] >= 0x20 && text->str[i] <= 0x7E) {
-          text->str[write_pos++] = text->str[i];
+      for (i = 0; i < fixed.size; i++) {
+        if (fixed.str[i] >= 0x20 && fixed.str[i] <= 0x7E) {
+          fixed.str[write_pos++] = fixed.str[i];
         }
       }
-      text->size = write_pos;
-      text->str[write_pos] = 0;
+      fixed.size = write_pos;
+      fixed.str[write_pos] = 0;
 
-      if (text->size > max) {
-        text->size = max;
-        text->str[max] = 0;
+      if (fixed.size > max) {
+        fixed.size = max;
+        fixed.str[max] = 0;
       }
 
       break;
@@ -945,11 +949,11 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
       int64_t min = (int64_t)(edit->min);
       int64_t max = (int64_t)(edit->max);
 
-      wstr_to_int64(text, &v);
+      wstr_to_int64(&fixed, &v);
       if (min < max) {
         v = tk_clamp(v, min, max);
       }
-      wstr_from_int64(text, v);
+      wstr_from_int64(&fixed, v);
       break;
     }
     case INPUT_FLOAT:
@@ -958,12 +962,12 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
       double min = edit->min;
       double max = edit->max;
 
-      wstr_to_float(text, &v);
+      wstr_to_float(&fixed, &v);
       if (min < max) {
         v = tk_clamp(v, min, max);
       }
-      wstr_from_float(text, v);
-      wstr_trim_float_zero(text);
+      wstr_from_float(&fixed, v);
+      wstr_trim_float_zero(&fixed);
       break;
     }
     case INPUT_HEX: {
@@ -971,19 +975,22 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
       uint32_t min = (uint32_t)(edit->min);
       uint32_t max = (uint32_t)(edit->max);
 
-      v = edit_hex_str_to_uint(text);
+      v = edit_hex_str_to_uint(&fixed);
       if (min < max) {
         v = tk_clamp(v, min, max);
       }
-      edit_hex_uint_to_str(text, v);
+      edit_hex_uint_to_str(&fixed, v);
       break;
     }
     default:
       break;
   }
 
-  // 文本被直接修改，需要让字模缓存失效
-  text_edit_set_text_changed(edit->model);
+  if (!wstr_equal(&fixed, &(widget->text))) {
+    text_edit_replace_text(edit->model, 0, widget->text.size, fixed.str, fixed.size);
+  }
+  wstr_reset(&fixed);
+
   edit_set_cursor(WIDGET(edit), UINT32_MAX);
 
   return RET_OK;
@@ -2043,7 +2050,7 @@ ret_t edit_set_text_impl(widget_t* widget, const value_t* v, bool_t changed, boo
     } else {
       len = edit->max > 0 ? tk_min(str.size, edit->max) : str.size;
     }
-    wstr_set_with_len(&(widget->text), str.str, len);
+    text_edit_replace_text(edit->model, 0, widget->text.size, str.str, len);
 
     edit_set_cursor(WIDGET(edit), 0);
     text_edit_layout(edit->model);
@@ -2502,7 +2509,7 @@ ret_t edit_clear(edit_t* edit) {
   widget_t* widget = WIDGET(edit);
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
-  wstr_set(&(widget->text), L"");
+  text_edit_replace_text(edit->model, 0, widget->text.size, NULL, 0);
   edit_set_cursor(WIDGET(edit), UINT32_MAX);
   edit_update_status(widget);
 

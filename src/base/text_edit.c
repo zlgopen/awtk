@@ -1939,7 +1939,6 @@ ret_t text_edit_paint(text_edit_t* text_edit, canvas_t* c) {
 static uint32_t text_edit_count_line_breaks(const wstr_t* text) {
   uint32_t count = 0;
   uint32_t i = 0;
-
   return_value_if_fail(text != NULL && text->str != NULL, 0);
 
   for (i = 0; i + 1 < text->size; i++) {
@@ -1961,11 +1960,11 @@ static int text_edit_remove(STB_TEXTEDIT_STRING* str, int pos, int num) {
 
   if (num > 0) {
     text_edit_invalidate_row_flags_cache_from_offset(impl, pos < 0 ? 0 : (uint32_t)pos);
+    wstr_remove(text, pos, num);
+    impl->index_dirty = TRUE;
+    impl->incremental_edit = TRUE;
+    impl->last_row_number = text_edit_count_line_breaks(text);
   }
-  wstr_remove(text, pos, num);
-  impl->index_dirty = TRUE;
-  impl->incremental_edit = TRUE;
-  impl->last_row_number = text_edit_count_line_breaks(text);
 
   return TRUE;
 }
@@ -2136,15 +2135,13 @@ static int32_t text_edit_glyph_to_str(STB_TEXTEDIT_STRING* str, int g) {
   return (int32_t)(row_start + glyphs_get_str_index_from_glyph_index(glyphs, (uint32_t)g));
 }
 
-// insert 时更新 insert 位置后续的行信息
-static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHARTYPE* newtext,
-                            int num) {
-  wstr_t* text = &(str->widget->text);
-  DECL_IMPL(str);
-  uint32_t line_break_num = impl->rows->capacity > impl->last_row_number
-                                ? impl->rows->capacity - impl->last_row_number
-                                : 0;
+/* 按 max_chars/max_lines 限制计算最多能插入的字符数。 */
+static uint32_t text_edit_calc_insert_num(text_edit_impl_t* impl, uint32_t text_size,
+                                          uint32_t line_breaks, const wchar_t* newtext,
+                                          uint32_t num) {
   uint32_t i = 0;
+  uint32_t line_break_num =
+      impl->rows->capacity > line_breaks ? impl->rows->capacity - line_breaks : 0;
 
   for (i = 0; i < num; i++) {
     if ((i + 1) < num && (TWINS_WCHAR_IS_LINE_BREAK(newtext[i], newtext[i + 1]))) {
@@ -2160,9 +2157,18 @@ static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHAR
   }
 
   if (impl->max_chars > 0) {
-    uint32_t surplus_char = impl->max_chars > text->size ? impl->max_chars - text->size : 0;
+    uint32_t surplus_char = impl->max_chars > text_size ? impl->max_chars - text_size : 0;
     num = tk_min(num, surplus_char);
   }
+
+  return num;
+}
+
+/* 直接写入文本，num 需已按 text_edit_calc_insert_num() 裁剪。 */
+static int text_edit_insert_impl(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHARTYPE* newtext,
+                                 int num) {
+  wstr_t* text = &(str->widget->text);
+  DECL_IMPL(str);
 
   if (num > 0) {
     text_edit_invalidate_row_flags_cache_from_offset(impl, pos < 0 ? 0 : (uint32_t)pos);
@@ -2173,6 +2179,17 @@ static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHAR
   }
 
   return num;
+}
+
+static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHARTYPE* newtext,
+                            int num) {
+  wstr_t* text = &(str->widget->text);
+  DECL_IMPL(str);
+
+  num = (int)(text_edit_calc_insert_num(impl, text->size, impl->last_row_number, newtext,
+                                        (uint32_t)num));
+
+  return text_edit_insert_impl(str, pos, newtext, num);
 }
 
 #define KEYDOWN_BIT 0x80000000
@@ -2235,6 +2252,93 @@ text_edit_t* text_edit_create(widget_t* widget, bool_t single_line) {
   }
 
   return (text_edit_t*)impl;
+}
+
+/* 统计删除 [offset, offset + del_len) 之后的换行次数。 */
+static uint32_t text_edit_count_line_breaks_after_remove(const wstr_t* text, uint32_t offset,
+                                                         uint32_t del_len) {
+  uint32_t i = 0;
+  uint32_t size = 0;
+  uint32_t count = 0;
+
+  if (text == NULL || text->str == NULL) {
+    return 0;
+  }
+  if (del_len > text->size || offset > text->size - del_len) {
+    return 0;
+  }
+
+  size = text->size - del_len;
+
+  for (i = 0; i + 1 < size; i++) {
+    uint32_t i1 = i < offset ? i : i + del_len;
+    uint32_t i2 = (i + 1) < offset ? (i + 1) : (i + 1) + del_len;
+
+    if (TWINS_WCHAR_IS_LINE_BREAK(text->str[i1], text->str[i2])) {
+      count++;
+      i++;
+    } else if (WCHAR_IS_LINE_BREAK(text->str[i1])) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+ret_t text_edit_replace_text(text_edit_t* text_edit, uint32_t offset, uint32_t del_len,
+                             const wchar_t* text, uint32_t len) {
+  wstr_t str;
+  uint32_t size = 0;
+  uint32_t insert_len = 0;
+  STB_TexteditState* state = NULL;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL && text_edit->widget != NULL, RET_BAD_PARAMS);
+
+  state = &(impl->state);
+  size = text_edit->widget->text.size;
+  offset = tk_min(offset, size);
+  del_len = tk_min(del_len, size - offset);
+
+  wstr_init(&str, 0);
+  if (text != NULL && len > 0) {
+    wstr_set_with_len(&str, text, len);
+  }
+
+  /* 先算实际插入长度，保证与撤销记录一致；没有新文本时无需计算 */
+  if (str.size > 0) {
+    insert_len = text_edit_calc_insert_num(
+        impl, size - del_len,
+        text_edit_count_line_breaks_after_remove(&(text_edit->widget->text), offset, del_len),
+        str.str, str.size);
+  }
+
+  if (del_len == 0 && insert_len == 0) {
+    /* 保持“空文本也是有效字符串”，避免调用方拿到 str == NULL */
+    if (text_edit->widget->text.str == NULL) {
+      wstr_set_with_len(&(text_edit->widget->text), L"", 0);
+    }
+    goto done;
+  }
+
+  /* 先记：由 stb 写入 replace 记录，撤销时恢复旧文本 */
+  stb_text_makeundo_replace(text_edit, state, (int)offset, (int)del_len, (int)insert_len);
+
+  /* 再改：插入长度与记录一致 */
+  text_edit_remove(text_edit, (int)offset, (int)del_len);
+  text_edit_insert_impl(text_edit, (int)offset, str.str, (int)insert_len);
+
+  state->cursor = offset + insert_len;
+  state->select_start = state->cursor;
+  state->select_end = state->cursor;
+
+  /* 整段替换才需要全量置脏 */
+  if (offset == 0 && del_len == size) {
+    text_edit_set_text_changed(text_edit);
+  }
+
+done:
+  wstr_reset(&str);
+  return RET_OK;
 }
 
 ret_t text_edit_set_caret_visible(text_edit_t* text_edit, bool_t caret_visible) {
@@ -3678,43 +3782,40 @@ ret_t text_edit_preedit_abort(text_edit_t* text_edit) {
 
 static ret_t text_edit_insert_wtext_with_len(text_edit_t* text_edit, uint32_t offset,
                                              const wchar_t* wtext, uint32_t len) {
-  ret_t ret = RET_FAIL;
-  DECL_IMPL(text_edit);
   uint32_t size = 0;
+  uint32_t old_size = 0;
+  uint32_t inserted = 0;
+  DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL && text_edit->widget != NULL && wtext != NULL,
                        RET_BAD_PARAMS);
 
   size = wcslen(wtext);
   len = tk_min(len, size);
   offset = tk_min(offset, text_edit->widget->text.size);
-
-  len = text_edit_insert(text_edit, offset, (wchar_t*)wtext, len);
-
-  ret = len > 0 ? RET_OK : RET_SKIP;
-
-  if (ret == RET_OK) {
-    bool_t cursor_changed = offset + len != text_edit_get_cursor(text_edit);
-
-    if (cursor_changed) {
-      text_edit_set_cursor(text_edit, offset + len);
-    }
-    if (impl->single_line) {
-      text_edit_layout(text_edit);
-    } else {
-      // set_cursor 在部分 layout 下已经完成跳转 layout。
-      if (!(cursor_changed && impl->partial_layout && !impl->lock_scrollbar_value)) {
-        if (!cursor_changed) {
-          text_edit_update_caret_pos(text_edit);
-        }
-        if (impl->partial_layout && !impl->lock_scrollbar_value) {
-          impl->caret_jump_layout = TRUE;
-        }
-        text_edit_multi_line_insert_text_layout(text_edit, offset, len, wtext, FALSE, 0);
-      }
-    }
+  if (len == 0) {
+    return RET_SKIP;
   }
 
-  return ret;
+  old_size = text_edit->widget->text.size;
+
+  text_edit_replace_text(text_edit, offset, 0, wtext, len);
+
+  inserted = text_edit->widget->text.size - old_size;
+  if (inserted == 0) {
+    return RET_SKIP;
+  }
+
+  if (impl->single_line) {
+    text_edit_layout(text_edit);
+  } else {
+    text_edit_update_caret_pos(text_edit);
+    if (impl->partial_layout && !impl->lock_scrollbar_value) {
+      impl->caret_jump_layout = TRUE;
+    }
+    text_edit_multi_line_insert_text_layout(text_edit, offset, inserted, wtext, FALSE, 0);
+  }
+
+  return RET_OK;
 }
 
 static ret_t text_edit_insert_text_with_len(text_edit_t* text_edit, uint32_t offset,

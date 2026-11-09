@@ -588,6 +588,28 @@ ret_t text_edit_preedit_abort(text_edit_t* text_edit);
 ret_t text_edit_insert_text(text_edit_t* text_edit, uint32_t offset, const char* text);
 
 /**
+ * @method text_edit_replace_text
+ * 用 text 替换 [offset, offset + del_len) 这段文本，并记录一次可撤销的替换操作。
+ *
+ * - del_len == 0 且 len > 0：插入
+ * - del_len > 0 且 len == 0：删除（text 可以为 NULL）
+ * - 两者都大于 0：替换（offset 为 0、del_len 为文本长度时即设置整段文本）
+ *
+ * 撤销时恢复被替换/删除的文本并移除新插入的文本，重做与之相反。
+ * 本函数只修改文本、光标和选区并失效行缓存，排版和事件由调用方负责。
+ *
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {uint32_t} offset 替换起始偏移（超出文本长度时取文本长度）。
+ * @param {uint32_t} del_len 被删除的长度（超出剩余长度时取剩余长度）。
+ * @param {const wchar_t*} text 新文本（NULL 表示只删除）。
+ * @param {uint32_t} len 新文本长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_replace_text(text_edit_t* text_edit, uint32_t offset, uint32_t del_len,
+                             const wchar_t* text, uint32_t len);
+
+/**
  * @method text_edit_show_context_menu
  * 显示上下文菜单。
  * @param {text_edit_t*} text_edit text_edit对象。
