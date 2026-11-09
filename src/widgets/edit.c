@@ -2053,6 +2053,7 @@ ret_t edit_set_text_impl(widget_t* widget, const value_t* v, bool_t changed, boo
     text_edit_replace_text(edit->model, 0, widget->text.size, str.str, len);
 
     edit_set_cursor(WIDGET(edit), 0);
+    edit_set_select(WIDGET(edit), 0, 0);
     text_edit_layout(edit->model);
     if (changing) {
       edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);

@@ -135,3 +135,57 @@ TEST(Mledit, undo_set_text_exceed_max_chars) {
 
   widget_destroy(w);
 }
+
+/* 撤销后恢复操作前的选区，重做后恢复撤销前的选区 */
+TEST(Edit, undo_restore_selection) {
+  widget_t* w = edit_create(NULL, 0, 0, 100, 30);
+  text_edit_t* te = EDIT(w)->model;
+  text_edit_state_t state;
+
+  widget_set_text(w, L"AWTK");
+  ASSERT_EQ(text_edit_set_cursor(te, 4), RET_OK);
+  ASSERT_EQ(text_edit_set_select(te, 1, 4), RET_OK);
+
+  widget_set_text(w, L"aa");
+  ASSERT_STREQ(w->text.str, L"aa");
+
+  undo_key(te, w, TK_KEY_z);
+  ASSERT_STREQ(w->text.str, L"AWTK");
+  ASSERT_EQ(text_edit_get_state(te, &state), RET_OK);
+  ASSERT_EQ(state.cursor, 4u);
+  ASSERT_EQ(state.select_start, 1u);
+  ASSERT_EQ(state.select_end, 4u);
+
+  undo_key(te, w, TK_KEY_y);
+  ASSERT_STREQ(w->text.str, L"aa");
+  ASSERT_EQ(text_edit_get_state(te, &state), RET_OK);
+  ASSERT_EQ(state.cursor, 0u);
+  ASSERT_EQ(state.select_start, 0u);
+  ASSERT_EQ(state.select_end, 0u);
+
+  widget_destroy(w);
+}
+
+/* 编辑次数超过可保存的历史深度时，全部撤销后再全部重做，文本应完全恢复 */
+TEST(Edit, undo_many) {
+  uint32_t i = 0;
+  widget_t* w = edit_create(NULL, 0, 0, 100, 30);
+  text_edit_t* te = EDIT(w)->model;
+
+  for (i = 0; i < 120; i++) {
+    ASSERT_EQ(text_edit_insert_text(te, w->text.size, "x"), RET_OK);
+  }
+  ASSERT_EQ(w->text.size, 120u);
+
+  for (i = 0; i < 120; i++) {
+    undo_key(te, w, TK_KEY_z);
+  }
+  ASSERT_TRUE(w->text.size < 120u);
+
+  for (i = 0; i < 120; i++) {
+    undo_key(te, w, TK_KEY_y);
+  }
+  ASSERT_EQ(w->text.size, 120u);
+
+  widget_destroy(w);
+}

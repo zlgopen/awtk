@@ -1,4 +1,4 @@
-// stb_textedit.h - v1.13  - public domain - Sean Barrett
+﻿// stb_textedit.h - v1.13  - public domain - Sean Barrett
 // Development of this library was sponsored by RAD Game Tools
 //
 // This C header file implements the guts of a multi-line text-editing
@@ -295,11 +295,14 @@
 typedef struct
 {
    // private data
-   STB_TEXTEDIT_POSITIONTYPE  where;
-   STB_TEXTEDIT_POSITIONTYPE  insert_length;
-   STB_TEXTEDIT_POSITIONTYPE  delete_length;
-   int                        char_storage;
-   int                        cursor_at_end;
+   STB_TEXTEDIT_POSITIONTYPE  where;          // 操作的起始偏移
+   STB_TEXTEDIT_POSITIONTYPE  insert_length;  // 撤销时要插回的字符数（等于本次操作删掉的字符数）
+   STB_TEXTEDIT_POSITIONTYPE  delete_length;  // 撤销时要删除的字符数（等于本次操作插入的字符数）
+   int                        char_storage;   // 被删字符在 undo_char[] 中的起始下标，-1 表示不持有字符
+   // AWTK 添加：撤销/重做后要恢复的光标和选区
+   int                        cursor;         // 光标位置
+   int                        select_start;   // 选区起点（可能大于 select_end）
+   int                        select_end;     // 选区终点
 } StbUndoRecord;
 
 typedef struct
@@ -514,7 +517,7 @@ static void stb_textedit_drag(STB_TEXTEDIT_STRING *str, STB_TexteditState *state
 // forward declarations
 static void stb_text_undo(STB_TEXTEDIT_STRING *str, STB_TexteditState *state);
 static void stb_text_redo(STB_TEXTEDIT_STRING *str, STB_TexteditState *state);
-static void stb_text_makeundo_delete(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, int where, int length, int cursor_at_end);
+static void stb_text_makeundo_delete(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, int where, int length);
 static void stb_text_makeundo_insert(STB_TexteditState *state, int where, int length);
 static void stb_text_makeundo_replace(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, int where, int old_length, int new_length);
 
@@ -646,24 +649,33 @@ static void stb_textedit_clamp(STB_TEXTEDIT_STRING *str, STB_TexteditState *stat
    if (state->cursor > n) state->cursor = n;
 }
 
-// delete characters while updating undo
-static void stb_textedit_delete(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, int where, int len, int cursor_at_end)
+// 把记录里的光标和选区恢复到状态上，并夹到文本范围内（AWTK 添加）
+static void stb_text_restore_state(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, StbUndoRecord *r)
 {
-   stb_text_makeundo_delete(str, state, where, len, cursor_at_end);
+   int n = STB_TEXTEDIT_STRINGLEN(str);
+   state->cursor = r->cursor < 0 ? 0 : (r->cursor > n ? n : r->cursor);
+   state->select_start = r->select_start < 0 ? 0 : (r->select_start > n ? n : r->select_start);
+   state->select_end = r->select_end < 0 ? 0 : (r->select_end > n ? n : r->select_end);
+}
+
+// delete characters while updating undo
+static void stb_textedit_delete(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, int where, int len)
+{
+   stb_text_makeundo_delete(str, state, where, len);
    STB_TEXTEDIT_DELETECHARS(str, where, len);
    state->has_preferred_x = 0;
 }
 
 // delete the section
-static void stb_textedit_delete_selection(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, int cursor_at_end)
+static void stb_textedit_delete_selection(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
 {
    stb_textedit_clamp(str, state);
    if (STB_TEXT_HAS_SELECTION(state)) {
       if (state->select_start < state->select_end) {
-         stb_textedit_delete(str, state, state->select_start, state->select_end - state->select_start, cursor_at_end);
+         stb_textedit_delete(str, state, state->select_start, state->select_end - state->select_start);
          state->select_end = state->cursor = state->select_start;
       } else {
-         stb_textedit_delete(str, state, state->select_end, state->select_start - state->select_end, cursor_at_end);
+         stb_textedit_delete(str, state, state->select_end, state->select_start - state->select_end);
          state->select_start = state->cursor = state->select_end;
       }
       state->has_preferred_x = 0;
@@ -755,7 +767,7 @@ static void stb_textedit_prep_selection_at_cursor(STB_TexteditState *state)
 static int stb_textedit_cut(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
 {
    if (STB_TEXT_HAS_SELECTION(state)) {
-      stb_textedit_delete_selection(str, state, 1); // implicitly clamps
+      stb_textedit_delete_selection(str, state); // implicitly clamps
       state->has_preferred_x = 0;
       return 1;
    }
@@ -767,7 +779,7 @@ static int stb_textedit_paste_internal(STB_TEXTEDIT_STRING *str, STB_TexteditSta
 {
    // if there's a selection, the paste should delete it
    stb_textedit_clamp(str, state);
-   stb_textedit_delete_selection(str, state, 1);
+   stb_textedit_delete_selection(str, state);
    // try to insert the characters
    if (STB_TEXTEDIT_INSERTCHARS(str, state->cursor, text, len)) {
       stb_text_makeundo_insert(state, state->cursor, len);
@@ -807,7 +819,7 @@ retry:
                   state->has_preferred_x = 0;
                }
             } else {
-               stb_textedit_delete_selection(str, state, 1); // implicitly clamps
+               stb_textedit_delete_selection(str, state); // implicitly clamps
                if (STB_TEXTEDIT_INSERTCHARS(str, state->cursor, &ch, 1)) {
                   stb_text_makeundo_insert(state, state->cursor, 1);
                   ++state->cursor;
@@ -1126,11 +1138,11 @@ retry:
       case STB_TEXTEDIT_K_DELETE:
       case STB_TEXTEDIT_K_DELETE | STB_TEXTEDIT_K_SHIFT:
          if (STB_TEXT_HAS_SELECTION(state))
-            stb_textedit_delete_selection(str, state, 0);
+            stb_textedit_delete_selection(str, state);
          else {
             int n = STB_TEXTEDIT_STRINGLEN(str);
             if (state->cursor < n)
-               stb_textedit_delete(str, state, state->cursor, 1, 0);
+               stb_textedit_delete(str, state, state->cursor, 1);
          }
          state->has_preferred_x = 0;
          break;
@@ -1138,11 +1150,11 @@ retry:
       case STB_TEXTEDIT_K_BACKSPACE:
       case STB_TEXTEDIT_K_BACKSPACE | STB_TEXTEDIT_K_SHIFT:
          if (STB_TEXT_HAS_SELECTION(state))
-            stb_textedit_delete_selection(str, state, 1);
+            stb_textedit_delete_selection(str, state);
          else {
             stb_textedit_clamp(str, state);
             if (state->cursor > 0) {
-               stb_textedit_delete(str, state, state->cursor-1, 1, 1);
+               stb_textedit_delete(str, state, state->cursor-1, 1);
                --state->cursor;
             }
          }
@@ -1331,24 +1343,27 @@ static StbUndoRecord *stb_text_create_undo_record(StbUndoState *state, int numch
    return &state->undo_rec[state->undo_point++];
 }
 
-static STB_TEXTEDIT_CHARTYPE *stb_text_createundo(StbUndoState *state, int pos, int insert_len, int delete_len, int cursor_at_end)
+static STB_TEXTEDIT_CHARTYPE *stb_text_createundo(STB_TexteditState *state, int pos, int insert_len, int delete_len)
 {
-   StbUndoRecord *r = stb_text_create_undo_record(state, insert_len);
+   StbUndoState *s = &state->undostate;
+   StbUndoRecord *r = stb_text_create_undo_record(s, insert_len);
    if (r == NULL)
       return NULL;
 
    r->where = pos;
    r->insert_length = (STB_TEXTEDIT_POSITIONTYPE) insert_len;
    r->delete_length = (STB_TEXTEDIT_POSITIONTYPE) delete_len;
-   r->cursor_at_end = cursor_at_end;
+   r->cursor = state->cursor;
+   r->select_start = state->select_start;
+   r->select_end = state->select_end;
 
    if (insert_len == 0) {
       r->char_storage = -1;
       return NULL;
    } else {
-      r->char_storage = state->undo_char_point;
-      state->undo_char_point += insert_len;
-      return &state->undo_char[r->char_storage];
+      r->char_storage = s->undo_char_point;
+      s->undo_char_point += insert_len;
+      return &s->undo_char[r->char_storage];
    }
 }
 
@@ -1367,7 +1382,10 @@ static void stb_text_undo(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
    r->insert_length = u.delete_length;
    r->delete_length = u.insert_length;
    r->where = u.where;
-   r->cursor_at_end = u.cursor_at_end;
+   // 记录撤销前的光标和选区，供重做时恢复
+   r->cursor = state->cursor;
+   r->select_start = state->select_start;
+   r->select_end = state->select_end;
 
    if (u.delete_length) {
       // if the undo record says to delete characters, then the redo record will
@@ -1415,12 +1433,8 @@ static void stb_text_undo(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
       s->undo_char_point -= u.insert_length;
    }
 
-   if (u.cursor_at_end) {
-      state->cursor = u.where + u.insert_length;
-   } else {
-      state->cursor = u.where;
-   }
-   
+   // 恢复操作前的光标和选区
+   stb_text_restore_state(str, state, &u);
 
    s->undo_point--;
    s->redo_point--;
@@ -1444,6 +1458,10 @@ static void stb_text_redo(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
    u->insert_length = r.delete_length;
    u->where = r.where;
    u->char_storage = -1;
+   // 记录重做前的光标和选区，供撤销时恢复
+   u->cursor = state->cursor;
+   u->select_start = state->select_start;
+   u->select_end = state->select_end;
 
    if (r.delete_length) {
       // the redo record requires us to delete characters, so the undo record
@@ -1471,11 +1489,8 @@ static void stb_text_redo(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
       s->redo_char_point += r.insert_length;
    }
 
-   if (r.cursor_at_end) { 
-      state->cursor = r.where + r.insert_length;
-   } else {
-      state->cursor = r.where;
-   }
+   // 恢复重做前的光标和选区
+   stb_text_restore_state(str, state, &r);
 
    s->undo_point++;
    s->redo_point++;
@@ -1483,13 +1498,13 @@ static void stb_text_redo(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
 
 static void stb_text_makeundo_insert(STB_TexteditState *state, int where, int length)
 {
-   stb_text_createundo(&state->undostate, where, 0, length, 1);
+   stb_text_createundo(state, where, 0, length);
 }
 
-static void stb_text_makeundo_delete(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, int where, int length, int cursor_at_end)
+static void stb_text_makeundo_delete(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, int where, int length)
 {
    int i;
-   STB_TEXTEDIT_CHARTYPE *p = stb_text_createundo(&state->undostate, where, length, 0, cursor_at_end);
+   STB_TEXTEDIT_CHARTYPE *p = stb_text_createundo(state, where, length, 0);
    if (p) {
       for (i=0; i < length; ++i)
          p[i] = STB_TEXTEDIT_GETCHAR(str, where+i);
@@ -1499,7 +1514,7 @@ static void stb_text_makeundo_delete(STB_TEXTEDIT_STRING *str, STB_TexteditState
 static void stb_text_makeundo_replace(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, int where, int old_length, int new_length)
 {
    int i;
-   STB_TEXTEDIT_CHARTYPE *p = stb_text_createundo(&state->undostate, where, old_length, new_length, 1);
+   STB_TEXTEDIT_CHARTYPE *p = stb_text_createundo(state, where, old_length, new_length);
    if (p) {
       for (i=0; i < old_length; ++i)
          p[i] = STB_TEXTEDIT_GETCHAR(str, where+i);
