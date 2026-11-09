@@ -5,6 +5,7 @@
   * fix edit and mledit undo(感谢兆坤提供补丁)
   * edit mledit撤回后恢复光标和选区(感谢兆坤提供补丁)
   * 修复 edit undo test 在 MAC 下失败的问题(感谢兆坤提供补丁)
+  * 修复 edit mledit undo redo 在“字符缓冲不足”时会记录错位(感谢兆坤提供补丁) 
 
 2026/11/06 
   * 修复 edit_ex 按 tab 切换焦点后，由于失焦时没有将key_downing置为FALSE，在下次打开suggest_words_popup后key_downing恒为TRUE，导致suggest_words_popup无法操作的问题(感谢兆坤提供补丁) 

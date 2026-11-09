@@ -193,3 +193,53 @@ TEST(Edit, undo_many) {
 
   widget_destroy(w);
 }
+
+#if defined(WITH_SDL)
+#define UNDO_TEST_CHAR_BUDGET 999
+#else
+#define UNDO_TEST_CHAR_BUDGET 32
+#endif
+
+/* 重做字符缓冲不足时会丢弃最老的重做记录；剩余记录的重做必须仍然正确 */
+TEST(Edit, undo_redo_chars) {
+  static char big[UNDO_TEST_CHAR_BUDGET + 1];
+  const uint32_t chunk = UNDO_TEST_CHAR_BUDGET / 4;
+  uint32_t i = 0;
+  widget_t* w = edit_create(NULL, 0, 0, 100, 30);
+  text_edit_t* te = EDIT(w)->model;
+
+  for (i = 0; i < 5; i++) {
+    memset(big, (int)('a' + i), chunk);
+    big[chunk] = 0;
+    ASSERT_EQ(text_edit_insert_text(te, w->text.size, big), RET_OK);
+  }
+  ASSERT_EQ(w->text.size, 5 * chunk);
+
+  for (i = 0; i < 5; i++) {
+    undo_key(te, w, TK_KEY_z);
+  }
+  ASSERT_EQ(w->text.size, 0u);
+
+  /* 第 5 次撤销时字符缓冲不够，最老的一条重做记录被丢弃 */
+  undo_key(te, w, TK_KEY_y);
+  ASSERT_EQ(w->text.size, chunk);
+  ASSERT_EQ(w->text.str[0], L'a');
+
+  undo_key(te, w, TK_KEY_y);
+  ASSERT_EQ(w->text.size, 2 * chunk);
+
+  undo_key(te, w, TK_KEY_y);
+  ASSERT_EQ(w->text.size, 3 * chunk);
+
+  undo_key(te, w, TK_KEY_y);
+  ASSERT_EQ(w->text.size, 4 * chunk);
+  ASSERT_EQ(w->text.str[chunk - 1], L'a');
+  ASSERT_EQ(w->text.str[chunk], L'b');
+  ASSERT_EQ(w->text.str[4 * chunk - 1], L'd');
+
+  /* 被丢弃的记录不再重做 */
+  undo_key(te, w, TK_KEY_y);
+  ASSERT_EQ(w->text.size, 4 * chunk);
+
+  widget_destroy(w);
+}

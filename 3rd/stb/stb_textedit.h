@@ -1312,8 +1312,11 @@ static void stb_textedit_discard_redo(StbUndoState *state)
             if (state->undo_rec[i].char_storage >= 0)
                state->undo_rec[i].char_storage += n;
       }
-      // now move all the redo records towards the end of the buffer; the first one is at 'redo_point'
-      STB_TEXTEDIT_memmove(state->undo_rec + state->redo_point+1, state->undo_rec + state->redo_point, (size_t) ((STB_TEXTEDIT_UNDOSTATECOUNT - state->redo_point)*sizeof(state->undo_rec[0])));
+      // 丢弃最老的一条（下标 k），把 [redo_point, k-1] 上移一格，空出槽位 redo_point
+      STB_TEXTEDIT_memmove(state->undo_rec + state->redo_point + 1,
+                           state->undo_rec + state->redo_point,
+                           (size_t)((STB_TEXTEDIT_UNDOSTATECOUNT - 1 - state->redo_point) *
+                                    sizeof(state->undo_rec[0])));
       // now move redo_point to point to the new one
       ++state->redo_point;
    }
@@ -1371,15 +1374,32 @@ static void stb_text_undo(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
 {
    StbUndoState *s = &state->undostate;
    StbUndoRecord u, *r;
+   int has_char_space = 0;
    if (s->undo_point == 0)
       return;
 
    // we need to do two things: apply the undo record, and create a redo record
    u = s->undo_rec[s->undo_point-1];
+
+   // 撤销记录要删除字符时，重做记录需要把这些字符存下来，以便重做时插回。
+   // 分三种情况：字符缓冲够用；被其它重做记录占满（可以丢弃最老的重做记录）；
+   // 被撤销记录本身占满（这时只能放弃保存，重做就无法恢复这些字符）。
+   //
+   // 注意：腾空间时丢弃重做记录会移动槽位，必须先把空间腾好，再一次性写入记录。
+   if (u.delete_length && s->undo_char_point + u.delete_length < STB_TEXTEDIT_UNDOCHARCOUNT) {
+      while (s->undo_char_point + u.delete_length > s->redo_char_point) {
+         // 正常不会发生：已没有可丢弃的重做记录
+         if (s->redo_point == STB_TEXTEDIT_UNDOSTATECOUNT)
+            return;
+         // 空间不够，丢弃最老的一条重做记录
+         stb_textedit_discard_redo(s);
+      }
+      has_char_space = 1;
+   }
+
    r = &s->undo_rec[s->redo_point-1];
    r->char_storage = -1;
-
-   r->insert_length = u.delete_length;
+   r->insert_length = has_char_space ? u.delete_length : 0;
    r->delete_length = u.insert_length;
    r->where = u.where;
    // 记录撤销前的光标和选区，供重做时恢复
@@ -1387,42 +1407,19 @@ static void stb_text_undo(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
    r->select_start = state->select_start;
    r->select_end = state->select_end;
 
+   if (has_char_space) {
+      int i;
+
+      r->char_storage = s->redo_char_point - u.delete_length;
+      s->redo_char_point = s->redo_char_point - u.delete_length;
+
+      // 保存被删掉的字符，供重做时插回
+      for (i=0; i < u.delete_length; ++i)
+         s->undo_char[r->char_storage + i] = STB_TEXTEDIT_GETCHAR(str, u.where + i);
+   }
+
    if (u.delete_length) {
-      // if the undo record says to delete characters, then the redo record will
-      // need to re-insert the characters that get deleted, so we need to store
-      // them.
-
-      // there are three cases:
-      //    there's enough room to store the characters
-      //    characters stored for *redoing* don't leave room for redo
-      //    characters stored for *undoing* don't leave room for redo
-      // if the last is true, we have to bail
-
-      if (s->undo_char_point + u.delete_length >= STB_TEXTEDIT_UNDOCHARCOUNT) {
-         // the undo records take up too much character space; there's no space to store the redo characters
-         r->insert_length = 0;
-      } else {
-         int i;
-
-         // there's definitely room to store the characters eventually
-         while (s->undo_char_point + u.delete_length > s->redo_char_point) {
-            // should never happen:
-            if (s->redo_point == STB_TEXTEDIT_UNDOSTATECOUNT)
-               return;
-            // there's currently not enough room, so discard a redo record
-            stb_textedit_discard_redo(s);
-         }
-         r = &s->undo_rec[s->redo_point-1];
-
-         r->char_storage = s->redo_char_point - u.delete_length;
-         s->redo_char_point = s->redo_char_point - u.delete_length;
-
-         // now save the characters
-         for (i=0; i < u.delete_length; ++i)
-            s->undo_char[r->char_storage + i] = STB_TEXTEDIT_GETCHAR(str, u.where + i);
-      }
-
-      // now we can carry out the deletion
+      // 执行删除
       STB_TEXTEDIT_DELETECHARS(str, u.where, u.delete_length);
    }
 
