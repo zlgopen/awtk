@@ -42,7 +42,7 @@ typedef struct _edit_ex_t {
 
   /**
    * @property {tk_object_t*} suggest_words
-   * @annotation ["set_prop","get_prop","readable","persitent","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","scriptable"]
    * 输入建议词。
    */
   tk_object_t* suggest_words;

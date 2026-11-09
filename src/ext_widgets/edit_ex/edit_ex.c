@@ -36,12 +36,12 @@ ret_t edit_ex_set_multiline(widget_t* widget, bool_t multiline) {
   edit_ex_t* edit_ex = EDIT_EX(widget);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
-  edit_ex->multiline = multiline;
   if (!multiline) {
     edit_ex_close_multiline_popup(edit_ex);
   } else {
     return_value_if_fail(NULL == edit_ex->suggest_words, RET_FAIL);
   }
+  edit_ex->multiline = multiline;
 
   return RET_OK;
 }
@@ -86,32 +86,35 @@ ret_t edit_ex_set_suggest_words_item_formats(widget_t* widget, const char* forma
   if (TK_STR_IS_EMPTY(formats)) {
     if (edit_ex->suggest_words_model_items != NULL) {
       darray_destroy(edit_ex->suggest_words_model_items);
+      edit_ex->suggest_words_model_items = NULL;
     }
     TKMEM_FREE(edit_ex->suggest_words_item_formats);
     return RET_OK;
   }
 
   if (widget->loading) {
+    uint32_t id = TK_INVALID_ID;
     char* dup_formats = tk_strdup(formats);
     return_value_if_fail(dup_formats != NULL, RET_OOM);
 
-    return widget_on(widget, EVT_WIDGET_LOAD, edit_ex_set_suggest_words_item_formats_on_load,
-                     dup_formats);
+    id = widget_on(widget, EVT_WIDGET_LOAD, edit_ex_set_suggest_words_item_formats_on_load,
+                   dup_formats);
+    return_value_if_fail(id != TK_INVALID_ID, (tk_free(dup_formats), RET_FAIL));
+    return RET_OK;
   }
 
   model_item = darray_create(4, (tk_destroy_t)widget_unref, NULL);
   return_value_if_fail(model_item != NULL, RET_OOM);
 
   ret = edit_ex_suggest_words_item_formats_parse(edit_ex, formats, model_item);
+  return_value_if_fail(ret == RET_OK, (darray_destroy(model_item), ret));
 
-  if (RET_OK == ret) {
-    edit_ex->suggest_words_item_formats = tk_str_copy(edit_ex->suggest_words_item_formats, formats);
+  edit_ex->suggest_words_item_formats = tk_str_copy(edit_ex->suggest_words_item_formats, formats);
 
-    if (edit_ex->suggest_words_model_items != NULL) {
-      darray_destroy(edit_ex->suggest_words_model_items);
-    }
-    edit_ex->suggest_words_model_items = model_item;
+  if (edit_ex->suggest_words_model_items != NULL) {
+    darray_destroy(edit_ex->suggest_words_model_items);
   }
+  edit_ex->suggest_words_model_items = model_item;
 
   return ret;
 }
@@ -145,7 +148,7 @@ static ret_t edit_ex_set_prop(widget_t* widget, const char* name, const value_t*
     return edit_ex_set_multiline(widget, value_bool(v));
   } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS)) {
     return edit_ex_set_suggest_words(widget, value_object(v));
-  } else if (tk_str_start_with(name, EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS)) {
+  } else if (tk_str_start_with(name, EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS_PREFIX)) {
     const char* sub_name = name + sizeof(EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS_PREFIX) - 1;
     return tk_object_set_prop(edit_ex->suggest_words_ui_props, sub_name, v);
   } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS_ITEM_FORMATS)) {
@@ -170,7 +173,7 @@ static ret_t edit_ex_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS)) {
     value_set_object(v, edit_ex->suggest_words);
     return RET_OK;
-  } else if (tk_str_start_with(name, EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS)) {
+  } else if (tk_str_start_with(name, EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS_PREFIX)) {
     const char* sub_name = name + sizeof(EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS_PREFIX) - 1;
     return tk_object_get_prop(edit_ex->suggest_words_ui_props, sub_name, v);
   } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS_ITEM_FORMATS)) {
@@ -304,7 +307,12 @@ static ret_t edit_ex_on_copy(widget_t* widget, widget_t* other) {
   ret = widget_vtable_on_copy_by_parent(widget, other, WIDGET_VTABLE_GET_VTABLE(edit_ex));
 
   if (RET_OK == ret) {
-    ret_t result = edit_ex_set_suggest_words(widget, edit_ex_other->suggest_words);
+    ret_t result = RET_OK;
+
+    result = edit_ex_set_multiline(widget, edit_ex_other->multiline);
+    ret = tk_max(ret, result);
+
+    result = edit_ex_set_suggest_words(widget, edit_ex_other->suggest_words);
     ret = tk_max(ret, result);
 
     result = edit_ex_set_suggest_words_input_name(widget, edit_ex_other->suggest_words_input_name);
@@ -361,11 +369,21 @@ static ret_t edit_ex_init(widget_t* widget) {
   return RET_OK;
 }
 
+static const char* const s_edit_ex_properties[] = {
+    TK_EDIT_PROPS,
+    EDIT_EX_PROP_MULTILINE,
+    EDIT_EX_PROP_SUGGEST_WORDS_ITEM_FORMATS,
+    EDIT_EX_PROP_SUGGEST_WORDS_INPUT_NAME,
+    NULL,
+};
+
 TK_DECL_VTABLE(edit_ex) = {
     .size = sizeof(edit_ex_t),
     .type = WIDGET_TYPE_EDIT_EX,
     .focusable = TRUE,
     .inputable = TRUE,
+    .clone_properties = s_edit_ex_properties,
+    .persistent_properties = s_edit_ex_properties,
     .get_parent_vt = TK_GET_PARENT_VTABLE(edit),
     .init = edit_ex_init,
     .create = edit_ex_create,
