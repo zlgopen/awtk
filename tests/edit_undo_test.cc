@@ -7,7 +7,11 @@
 static void undo_key(text_edit_t* te, widget_t* w, uint32_t key) {
   key_event_t e;
   key_event_init(&e, EVT_KEY_DOWN, w, key);
+#ifdef MACOS
+  e.cmd = TRUE;
+#else
   e.ctrl = TRUE;
+#endif
   text_edit_key_down(te, &e);
 }
 
