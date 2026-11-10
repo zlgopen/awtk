@@ -21,108 +21,85 @@
 
 #include "base/pixel.h"
 
-static inline pixel_t blend_color(color_t bg, color_t fg, uint8_t a) {
-  if (a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    uint8_t minus_a = 0xff - a;
+/**
+ * 目标不透明时的快路径：前景 s 和背景 d 的线性插值 linear interpolation(lerp)，
+ * 前景权重为 a/256：a 为 0 时近似取背景、为 0xff 时近似取前景，
+ * 即 (d * (0xff - a) + s * a) >> 8
+ */
+static inline pixel_t blend_rgb_lerp(rgba_t d, rgba_t s, uint8_t a) {
+  uint8_t minus_a = 0xff - a;
+  uint8_t r = (d.r * minus_a + s.r * a) >> 8;
+  uint8_t g = (d.g * minus_a + s.g * a) >> 8;
+  uint8_t b = (d.b * minus_a + s.b * a) >> 8;
+  pixel_t p = pixel_from_rgb(r, g, b);
+  return p;
+}
 
-    uint8_t r = (bg.rgba.r * minus_a + fg.rgba.r * a) >> 8;
-    uint8_t g = (bg.rgba.g * minus_a + fg.rgba.g * a) >> 8;
-    uint8_t b = (bg.rgba.b * minus_a + fg.rgba.b * a) >> 8;
-    pixel_t p = pixel_from_rgb(r, g, b);
-
+/* 按合成 alpha 归一化，out_a 为 0 时返回全透明 */
+static inline pixel_t blend_rgb_div(uint32_t r, uint32_t g, uint32_t b, uint8_t out_a) {
+  if (out_a > 0) {
+    uint8_t r8 = (uint8_t)(r / out_a);
+    uint8_t g8 = (uint8_t)(g / out_a);
+    uint8_t b8 = (uint8_t)(b / out_a);
+    pixel_t p = pixel_from_rgba(r8, g8, b8, out_a);
     return p;
   } else {
-    uint8_t fg_a = (fg.rgba.a * a) >> 8;
-    uint8_t out_a = tk_pixel_limit_uint8(bg.rgba.a + fg_a - ((bg.rgba.a * fg_a) >> 8));
-    if (out_a > 0) {
-      uint8_t d_a = (bg.rgba.a * (0xff - fg_a)) >> 8;
-      uint8_t r = (bg.rgba.r * d_a + fg.rgba.r * fg_a) / out_a;
-      uint8_t g = (bg.rgba.g * d_a + fg.rgba.g * fg_a) / out_a;
-      uint8_t b = (bg.rgba.b * d_a + fg.rgba.b * fg_a) / out_a;
-      pixel_t p = pixel_from_rgba(r, g, b, out_a);
-      return p;
-    } else {
-      pixel_t p = pixel_from_rgba(0x0, 0x0, 0x0, 0x0);
-      return p;
-    }
+    pixel_t p = pixel_from_rgba(0x0, 0x0, 0x0, 0x0);
+    return p;
   }
 }
 
+/* 前景色按 s.a 覆盖背景色（背景按 1 - s.a 保留），s.a 为前景的有效 alpha */
+static inline pixel_t blend_rgba_over(rgba_t d, rgba_t s) {
+  uint8_t out_a = pixel_out_alpha(s.a, d.a);
+  uint8_t d_a = (d.a * (0xff - s.a)) >> 8;
+  uint32_t r = d.r * d_a + s.r * s.a;
+  uint32_t g = d.g * d_a + s.g * s.a;
+  uint32_t b = d.b * d_a + s.b * s.a;
+
+  return blend_rgb_div(r, g, b, out_a);
+}
+
+/****************************************************************************************/
+
+static inline pixel_t blend_rgba(rgba_t d, rgba_t s, uint8_t a) {
+  if (d.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
+    return blend_rgb_lerp(d, s, a);
+  }
+  return blend_rgba_over(d, s);
+}
+
+static inline pixel_t blend_color(color_t bg, color_t fg, uint8_t a) {
+  if (a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
+    return blend_rgb_lerp(bg.rgba, fg.rgba, a);
+  }
+  fg.rgba.a = (fg.rgba.a * a) >> 8;
+
+  return blend_rgba_over(bg.rgba, fg.rgba);
+}
+
 static inline pixel_t blend_pixel(pixel_t pixel, color_t c) {
-  uint8_t a = c.rgba.a;
-  uint8_t minus_a = 0xff - a;
-  rgba_t rgba = pixel_to_rgba(pixel);
+  rgba_t d = pixel_to_rgba(pixel);
+  return blend_rgba(d, c.rgba, c.rgba.a);
+}
 
-  if (rgba.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    uint8_t r = (rgba.r * minus_a + c.rgba.r * a) >> 8;
-    uint8_t g = (rgba.g * minus_a + c.rgba.g * a) >> 8;
-    uint8_t b = (rgba.b * minus_a + c.rgba.b * a) >> 8;
+static inline pixel_t blend_rgba_dark(rgba_t d, uint8_t a) {
+  if (d.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
+    uint8_t r = (d.r * a) >> 8;
+    uint8_t g = (d.g * a) >> 8;
+    uint8_t b = (d.b * a) >> 8;
     pixel_t p = pixel_from_rgb(r, g, b);
-
     return p;
   } else {
-    uint8_t out_a = tk_pixel_limit_uint8(c.rgba.a + rgba.a - ((c.rgba.a * rgba.a) >> 8));
-    if (out_a > 0) {
-      uint8_t d_a = (rgba.a * (0xff - c.rgba.a)) >> 8;
-      uint8_t r = (rgba.r * d_a + c.rgba.r * c.rgba.a) / out_a;
-      uint8_t g = (rgba.g * d_a + c.rgba.g * c.rgba.a) / out_a;
-      uint8_t b = (rgba.b * d_a + c.rgba.b * c.rgba.a) / out_a;
-      pixel_t p = pixel_from_rgba(r, g, b, out_a);
-      return p;
-    } else {
-      pixel_t p = pixel_from_rgba(0x0, 0x0, 0x0, 0x0);
-      return p;
-    }
+    uint8_t out_a = pixel_out_alpha(a, d.a);
+    uint8_t d_a = (d.a * (0xff - a)) >> 8;
+
+    return blend_rgb_div(d.r * d_a, d.g * d_a, d.b * d_a, out_a);
   }
 }
 
 static inline pixel_t blend_alpha(color_t fg, uint8_t a) {
-  if (fg.rgba.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    uint8_t r = (fg.rgba.r * a) >> 8;
-    uint8_t g = (fg.rgba.g * a) >> 8;
-    uint8_t b = (fg.rgba.b * a) >> 8;
-    pixel_t p = pixel_from_rgb(r, g, b);
-
-    return p;
-  } else {
-    uint8_t out_a = tk_pixel_limit_uint8(a + fg.rgba.a - ((a * fg.rgba.a) >> 8));
-    if (out_a > 0) {
-      uint8_t d_a = (fg.rgba.a * (0xff - a)) >> 8;
-      uint8_t r = (fg.rgba.r * d_a) / out_a;
-      uint8_t g = (fg.rgba.g * d_a) / out_a;
-      uint8_t b = (fg.rgba.b * d_a) / out_a;
-      pixel_t p = pixel_from_rgba(r, g, b, out_a);
-      return p;
-    } else {
-      pixel_t p = pixel_from_rgba(0x0, 0x0, 0x0, 0x0);
-      return p;
-    }
-  }
-}
-
-static inline pixel_t blend_rgba(rgba_t d, rgba_t s, uint8_t a) {
-  if (d.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    uint8_t minus_a = 0xff - a;
-    uint8_t r = (d.r * minus_a + s.r * a) >> 8;
-    uint8_t g = (d.g * minus_a + s.g * a) >> 8;
-    uint8_t b = (d.b * minus_a + s.b * a) >> 8;
-
-    pixel_t p = pixel_from_rgb(r, g, b);
-    return p;
-  } else {
-    uint8_t out_a = tk_pixel_limit_uint8(s.a + d.a - ((s.a * d.a) >> 8));
-    if (out_a > 0) {
-      uint8_t d_a = (d.a * (0xff - s.a)) >> 8;
-      uint8_t r = (d.r * d_a + s.r * s.a) / out_a;
-      uint8_t g = (d.g * d_a + s.g * s.a) / out_a;
-      uint8_t b = (d.b * d_a + s.b * s.a) / out_a;
-      pixel_t p = pixel_from_rgba(r, g, b, out_a);
-      return p;
-    } else {
-      pixel_t p = pixel_from_rgba(0x0, 0x0, 0x0, 0x0);
-      return p;
-    }
-  }
+  return blend_rgba_dark(fg.rgba, a);
 }
 
 static inline pixel_t blend_rgba_premulti(rgba_t d, rgba_t s, uint8_t a) {
@@ -130,46 +107,15 @@ static inline pixel_t blend_rgba_premulti(rgba_t d, rgba_t s, uint8_t a) {
     uint8_t r = ((d.r * a) >> 8) + s.r;
     uint8_t g = ((d.g * a) >> 8) + s.g;
     uint8_t b = ((d.b * a) >> 8) + s.b;
-
     pixel_t p = pixel_from_rgb(r, g, b);
     return p;
   } else {
-    uint8_t out_a = tk_pixel_limit_uint8(s.a + d.a - ((s.a * d.a) >> 8));
-    if (out_a > 0) {
-      uint8_t d_a = (d.a * (0xff - s.a)) >> 8;
-      uint8_t r = (d.r * d_a + s.r) / out_a;
-      uint8_t g = (d.g * d_a + s.g) / out_a;
-      uint8_t b = (d.b * d_a + s.b) / out_a;
-      pixel_t p = pixel_from_rgba(r, g, b, out_a);
-      return p;
-    } else {
-      pixel_t p = pixel_from_rgba(0x0, 0x0, 0x0, 0x0);
-      return p;
-    }
-  }
-}
+    uint8_t out_a = pixel_out_alpha(s.a, d.a);
+    uint8_t d_a = (d.a * (0xff - s.a)) >> 8;
+    uint32_t r = d.r * d_a + s.r;
+    uint32_t g = d.g * d_a + s.g;
+    uint32_t b = d.b * d_a + s.b;
 
-static inline pixel_t blend_rgba_dark(rgba_t d, uint8_t a) {
-  if (d.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    uint8_t r = ((d.r * a) >> 8);
-    uint8_t g = ((d.g * a) >> 8);
-    uint8_t b = ((d.b * a) >> 8);
-
-    pixel_t p = pixel_from_rgb(r, g, b);
-
-    return p;
-  } else {
-    uint8_t out_a = tk_pixel_limit_uint8(a + d.a - ((a * d.a) >> 8));
-    if (out_a > 0) {
-      uint8_t d_a = (d.a * (0xff - a)) >> 8;
-      uint8_t r = (d.r * d_a) / out_a;
-      uint8_t g = (d.g * d_a) / out_a;
-      uint8_t b = (d.b * d_a) / out_a;
-      pixel_t p = pixel_from_rgba(r, g, b, out_a);
-      return p;
-    } else {
-      pixel_t p = pixel_from_rgba(0x0, 0x0, 0x0, 0x0);
-      return p;
-    }
+    return blend_rgb_div(r, g, b, out_a);
   }
 }

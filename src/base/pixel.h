@@ -51,6 +51,58 @@ static inline uint8_t tk_pixel_limit_uint8(int32_t tmp) {
   return (uint8_t)tk_clamp(tmp, 0, 0xff);
 }
 
+/* 前景叠到背景上之后的不透明度：sa + da * (1 - sa/256)，即 sa + da - ((sa*da) >> 8) */
+static inline uint8_t pixel_out_alpha(uint8_t sa, uint8_t da) {
+  int32_t alpha = sa + da - ((sa * da) >> 8);
+  return tk_pixel_limit_uint8(alpha);
+}
+
+/**
+ * 按 rgba 逻辑通道做像素运算，供各 8888 格式复用
+ * （字节顺序由 pixel_xxx8888_to_rgba / _from_rgba 处理）
+ */
+
+/* 整体收缩 alpha（变暗） */
+static inline rgba_t rgba_blend_dark(rgba_t c, uint8_t a) {
+  if (c.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
+    c.r = (c.r * a) >> 8;
+    c.g = (c.g * a) >> 8;
+    c.b = (c.b * a) >> 8;
+    c.a = 0xff;
+  } else {
+    uint8_t out_a = pixel_out_alpha(0xff - a, c.a);
+    if (out_a > 0) {
+      c.r = (c.r * out_a) >> 8;
+      c.g = (c.g * out_a) >> 8;
+      c.b = (c.b * out_a) >> 8;
+    }
+    c.a = out_a;
+  }
+
+  return c;
+}
+
+/* 预乘源色叠加到背景上 */
+static inline rgba_t rgba_blend_premulti(rgba_t c, rgba_t s, uint8_t a) {
+  if (c.a > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
+    c.r = ((c.r * a) >> 8) + s.r;
+    c.g = ((c.g * a) >> 8) + s.g;
+    c.b = ((c.b * a) >> 8) + s.b;
+    c.a = 0xff;
+  } else {
+    uint8_t out_a = pixel_out_alpha(0xff - a, c.a);
+    if (out_a > 0) {
+      uint8_t d_a = (c.a * a) >> 8;
+      c.r = (c.r * d_a + (s.r << 8)) / out_a;
+      c.g = (c.g * d_a + (s.g << 8)) / out_a;
+      c.b = (c.b * d_a + (s.b << 8)) / out_a;
+    }
+    c.a = out_a;
+  }
+
+  return c;
+}
+
 #pragma pack(push, 1)
 typedef struct _pixel_rgb565_t {
   uint16_t r : 5;
@@ -211,44 +263,22 @@ typedef struct _pixel_rgba8888_t {
 #define pixel_rgba8888_from_rgba(r, g, b, a) {r, g, b, a}
 #define pixel_rgba8888_from_rgb(r, g, b) {r, g, b, 0xff}
 static inline void pixel_rgba8888_blend_rgba_dark(void* pixel, uint8_t a) {
-  uint8_t* p = (uint8_t*)pixel;
-
-  if (p[3] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    p[0] = (p[0] * a) >> 8;
-    p[1] = (p[1] * a) >> 8;
-    p[2] = (p[2] * a) >> 8;
-    p[3] = 0xff;
-  } else {
-    uint8_t s_a = 0xff - a;
-    uint8_t out_a = tk_pixel_limit_uint8(p[3] + s_a - ((p[3] * s_a) >> 8));
-    if (out_a > 0) {
-      p[0] = (p[0] * out_a) >> 8;
-      p[1] = (p[1] * out_a) >> 8;
-      p[2] = (p[2] * out_a) >> 8;
-    }
-    p[3] = out_a;
+  pixel_rgba8888_t* p = (pixel_rgba8888_t*)pixel;
+  rgba_t c = pixel_rgba8888_to_rgba(*p);
+  c = rgba_blend_dark(c, a);
+  {
+    pixel_rgba8888_t q = pixel_rgba8888_from_rgba(c.r, c.g, c.b, c.a);
+    *p = q;
   }
 }
 
 static inline void pixel_rgba8888_blend_rgba_premulti(void* pixel, rgba_t rgba) {
-  uint8_t a = rgba.a;
-  uint8_t* p = (uint8_t*)pixel;
-
-  if (p[3] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    p[0] = ((p[0] * a) >> 8) + rgba.r;
-    p[1] = ((p[1] * a) >> 8) + rgba.g;
-    p[2] = ((p[2] * a) >> 8) + rgba.b;
-    p[3] = 0xff;
-  } else {
-    uint8_t s_a = 0xff - a;
-    uint8_t out_a = tk_pixel_limit_uint8(p[3] + s_a - ((p[3] * s_a) >> 8));
-    if (out_a > 0) {
-      uint8_t d_a = (p[3] * (0xff - s_a)) >> 8;
-      p[0] = (p[0] * d_a + (rgba.r << 8)) / out_a;
-      p[1] = (p[1] * d_a + (rgba.g << 8)) / out_a;
-      p[2] = (p[2] * d_a + (rgba.b << 8)) / out_a;
-    }
-    p[3] = out_a;
+  pixel_rgba8888_t* p = (pixel_rgba8888_t*)pixel;
+  rgba_t c = pixel_rgba8888_to_rgba(*p);
+  c = rgba_blend_premulti(c, rgba, rgba.a);
+  {
+    pixel_rgba8888_t q = pixel_rgba8888_from_rgba(c.r, c.g, c.b, c.a);
+    *p = q;
   }
 }
 
@@ -266,44 +296,22 @@ typedef struct _pixel_abgr8888_t {
 #define pixel_abgr8888_from_rgb(r, g, b) {0xff, b, g, r}
 #define pixel_abgr8888_from_rgba(r, g, b, a) {a, b, g, r}
 static inline void pixel_abgr8888_blend_rgba_dark(void* pixel, uint8_t a) {
-  uint8_t* p = (uint8_t*)pixel;
-
-  if (p[0] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    p[0] = 0xff;
-    p[1] = (p[1] * a) >> 8;
-    p[2] = (p[2] * a) >> 8;
-    p[3] = (p[3] * a) >> 8;
-  } else {
-    uint8_t s_a = 0xff - a;
-    uint8_t out_a = tk_pixel_limit_uint8(p[0] + s_a - ((p[0] * s_a) >> 8));
-    if (out_a > 0) {
-      p[1] = (p[1] * out_a) >> 8;
-      p[2] = (p[2] * out_a) >> 8;
-      p[3] = (p[3] * out_a) >> 8;
-    }
-    p[0] = out_a;
+  pixel_abgr8888_t* p = (pixel_abgr8888_t*)pixel;
+  rgba_t c = pixel_abgr8888_to_rgba(*p);
+  c = rgba_blend_dark(c, a);
+  {
+    pixel_abgr8888_t q = pixel_abgr8888_from_rgba(c.r, c.g, c.b, c.a);
+    *p = q;
   }
 }
 
 static inline void pixel_abgr8888_blend_rgba_premulti(void* pixel, rgba_t rgba) {
-  uint8_t a = rgba.a;
-  uint8_t* p = (uint8_t*)pixel;
-
-  if (p[0] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    p[0] = 0xff;
-    p[1] = ((p[1] * a) >> 8) + rgba.b;
-    p[2] = ((p[2] * a) >> 8) + rgba.g;
-    p[3] = ((p[3] * a) >> 8) + rgba.r;
-  } else {
-    uint8_t s_a = 0xff - a;
-    uint8_t out_a = tk_pixel_limit_uint8(p[0] + s_a - ((p[0] * s_a) >> 8));
-    if (out_a > 0) {
-      uint8_t d_a = (p[0] * (0xff - s_a)) >> 8;
-      p[1] = (p[1] * d_a + (rgba.b << 8)) / out_a;
-      p[2] = (p[2] * d_a + (rgba.g << 8)) / out_a;
-      p[3] = (p[3] * d_a + (rgba.r << 8)) / out_a;
-    }
-    p[0] = out_a;
+  pixel_abgr8888_t* p = (pixel_abgr8888_t*)pixel;
+  rgba_t c = pixel_abgr8888_to_rgba(*p);
+  c = rgba_blend_premulti(c, rgba, rgba.a);
+  {
+    pixel_abgr8888_t q = pixel_abgr8888_from_rgba(c.r, c.g, c.b, c.a);
+    *p = q;
   }
 }
 
@@ -321,44 +329,22 @@ typedef struct _pixel_bgra8888_t {
 #define pixel_bgra8888_from_rgba(r, g, b, a) {b, g, r, a}
 #define pixel_bgra8888_from_rgb(r, g, b) {b, g, r, 0xff}
 static inline void pixel_bgra8888_blend_rgba_dark(void* pixel, uint8_t a) {
-  uint8_t* p = (uint8_t*)pixel;
-
-  if (p[3] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    p[0] = (p[0] * a) >> 8;
-    p[1] = (p[1] * a) >> 8;
-    p[2] = (p[2] * a) >> 8;
-    p[3] = 0xff;
-  } else {
-    uint8_t s_a = 0xff - a;
-    uint8_t out_a = tk_pixel_limit_uint8(p[3] + s_a - ((p[3] * s_a) >> 8));
-    if (out_a > 0) {
-      p[0] = (p[0] * out_a) >> 8;
-      p[1] = (p[1] * out_a) >> 8;
-      p[2] = (p[2] * out_a) >> 8;
-    }
-    p[3] = out_a;
+  pixel_bgra8888_t* p = (pixel_bgra8888_t*)pixel;
+  rgba_t c = pixel_bgra8888_to_rgba(*p);
+  c = rgba_blend_dark(c, a);
+  {
+    pixel_bgra8888_t q = pixel_bgra8888_from_rgba(c.r, c.g, c.b, c.a);
+    *p = q;
   }
 }
 
 static inline void pixel_bgra8888_blend_rgba_premulti(void* pixel, rgba_t rgba) {
-  uint8_t a = rgba.a;
-  uint8_t* p = (uint8_t*)pixel;
-
-  if (p[3] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    p[0] = ((p[0] * a) >> 8) + rgba.b;
-    p[1] = ((p[1] * a) >> 8) + rgba.g;
-    p[2] = ((p[2] * a) >> 8) + rgba.r;
-    p[3] = 0xff;
-  } else {
-    uint8_t s_a = 0xff - a;
-    uint8_t out_a = tk_pixel_limit_uint8(p[3] + s_a - ((p[3] * s_a) >> 8));
-    if (out_a > 0) {
-      uint8_t d_a = (p[3] * (0xff - s_a)) >> 8;
-      p[0] = (p[0] * d_a + (rgba.b << 8)) / out_a;
-      p[1] = (p[1] * d_a + (rgba.g << 8)) / out_a;
-      p[2] = (p[2] * d_a + (rgba.r << 8)) / out_a;
-    }
-    p[3] = out_a;
+  pixel_bgra8888_t* p = (pixel_bgra8888_t*)pixel;
+  rgba_t c = pixel_bgra8888_to_rgba(*p);
+  c = rgba_blend_premulti(c, rgba, rgba.a);
+  {
+    pixel_bgra8888_t q = pixel_bgra8888_from_rgba(c.r, c.g, c.b, c.a);
+    *p = q;
   }
 }
 
@@ -376,44 +362,22 @@ typedef struct _pixel_argb8888_t {
 #define pixel_argb8888_from_rgba(r, g, b, a) {a, r, g, b}
 #define pixel_argb8888_from_rgb(r, g, b) {0xff, r, g, b}
 static inline void pixel_argb8888_blend_rgba_dark(void* pixel, uint8_t a) {
-  uint8_t* p = (uint8_t*)pixel;
-
-  if (p[0] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    p[0] = 0xff;
-    p[1] = (p[1] * a) >> 8;
-    p[2] = (p[2] * a) >> 8;
-    p[3] = (p[3] * a) >> 8;
-  } else {
-    uint8_t s_a = 0xff - a;
-    uint8_t out_a = tk_pixel_limit_uint8(p[0] + s_a - ((p[0] * s_a) >> 8));
-    if (out_a > 0) {
-      p[1] = (p[1] * out_a) >> 8;
-      p[2] = (p[2] * out_a) >> 8;
-      p[3] = (p[3] * out_a) >> 8;
-    }
-    p[0] = out_a;
+  pixel_argb8888_t* p = (pixel_argb8888_t*)pixel;
+  rgba_t c = pixel_argb8888_to_rgba(*p);
+  c = rgba_blend_dark(c, a);
+  {
+    pixel_argb8888_t q = pixel_argb8888_from_rgba(c.r, c.g, c.b, c.a);
+    *p = q;
   }
 }
 
 static inline void pixel_argb8888_blend_rgba_premulti(void* pixel, rgba_t rgba) {
-  uint8_t a = rgba.a;
-  uint8_t* p = (uint8_t*)pixel;
-
-  if (p[0] > PIXEL_ALPHA_COMPOSITE_OPAQUE) {
-    p[0] = 0xff;
-    p[1] = ((p[1] * a) >> 8) + rgba.r;
-    p[2] = ((p[2] * a) >> 8) + rgba.g;
-    p[3] = ((p[3] * a) >> 8) + rgba.b;
-  } else {
-    uint8_t s_a = 0xff - a;
-    uint8_t out_a = tk_pixel_limit_uint8(p[0] + s_a - ((p[0] * s_a) >> 8));
-    if (out_a > 0) {
-      uint8_t d_a = (p[0] * (0xff - s_a)) >> 8;
-      p[1] = (p[1] * d_a + (rgba.r << 8)) / out_a;
-      p[2] = (p[2] * d_a + (rgba.g << 8)) / out_a;
-      p[3] = (p[3] * d_a + (rgba.b << 8)) / out_a;
-    }
-    p[0] = out_a;
+  pixel_argb8888_t* p = (pixel_argb8888_t*)pixel;
+  rgba_t c = pixel_argb8888_to_rgba(*p);
+  c = rgba_blend_premulti(c, rgba, rgba.a);
+  {
+    pixel_argb8888_t q = pixel_argb8888_from_rgba(c.r, c.g, c.b, c.a);
+    *p = q;
   }
 }
 
