@@ -1,5 +1,8 @@
 # 最新动态
 
+2026/11/10
+  * 补充 pixel 测试(感谢兆坤提供补丁) 
+
 2026/11/09
   * improve edit_ex (感谢兆坤提供补丁)
   * fix edit and mledit undo(感谢兆坤提供补丁)

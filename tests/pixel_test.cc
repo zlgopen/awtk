@@ -352,6 +352,73 @@ TEST(Pixel, bgr888_premulti255) {
   ASSERT_EQ(p.b, 71);
 }
 
+TEST(Pixel, rgba8888_premulti128) {
+  color_t c = color_init(50, 60, 30, 128);
+  pixel_rgba8888_t p = pixel_rgba8888_from_rgb(100, 200, 160);
+  pixel_rgba8888_blend_rgba_premulti(&p, c.rgba);
+
+  ASSERT_EQ(p.r, 100);
+  ASSERT_EQ(p.g, 160);
+  ASSERT_EQ(p.b, 110);
+  ASSERT_EQ(p.a, 0xff);
+}
+
+TEST(Pixel, abgr8888_premulti128) {
+  color_t c = color_init(50, 60, 30, 128);
+  pixel_abgr8888_t p = pixel_abgr8888_from_rgb(100, 200, 160);
+  pixel_abgr8888_blend_rgba_premulti(&p, c.rgba);
+
+  ASSERT_EQ(p.r, 100);
+  ASSERT_EQ(p.g, 160);
+  ASSERT_EQ(p.b, 110);
+  ASSERT_EQ(p.a, 0xff);
+}
+
+TEST(Pixel, bgra8888_premulti128) {
+  color_t c = color_init(50, 60, 30, 128);
+  pixel_bgra8888_t p = pixel_bgra8888_from_rgb(100, 200, 160);
+  pixel_bgra8888_blend_rgba_premulti(&p, c.rgba);
+
+  ASSERT_EQ(p.r, 100);
+  ASSERT_EQ(p.g, 160);
+  ASSERT_EQ(p.b, 110);
+  ASSERT_EQ(p.a, 0xff);
+}
+
+TEST(Pixel, argb8888_premulti128) {
+  color_t c = color_init(50, 60, 30, 128);
+  pixel_argb8888_t p = pixel_argb8888_from_rgb(100, 200, 160);
+  pixel_argb8888_blend_rgba_premulti(&p, c.rgba);
+
+  ASSERT_EQ(p.r, 100);
+  ASSERT_EQ(p.g, 160);
+  ASSERT_EQ(p.b, 110);
+  ASSERT_EQ(p.a, 0xff);
+}
+
+TEST(Pixel, rgba8888_dark_translucent) {
+  /* 目标像素 alpha 小于 PIXEL_ALPHA_COMPOSITE_OPAQUE，走精确合成(归一化 + 除法) */
+  pixel_rgba8888_t p = {20, 30, 40, 0x40};
+  pixel_rgba8888_blend_rgba_dark(&p, 128);
+
+  ASSERT_EQ(p.r, 12);
+  ASSERT_EQ(p.g, 18);
+  ASSERT_EQ(p.b, 25);
+  ASSERT_EQ(p.a, 160);
+}
+
+TEST(Pixel, rgba8888_premulti_translucent) {
+  /* 目标像素 alpha 小于 PIXEL_ALPHA_COMPOSITE_OPAQUE，走精确合成(归一化 + 除法) */
+  color_t c = color_init(50, 60, 30, 128);
+  pixel_rgba8888_t p = {20, 30, 40, 0x40};
+  pixel_rgba8888_blend_rgba_premulti(&p, c.rgba);
+
+  ASSERT_EQ(p.r, 84);
+  ASSERT_EQ(p.g, 102);
+  ASSERT_EQ(p.b, 56);
+  ASSERT_EQ(p.a, 160);
+}
+
 TEST(Pixel, rgb888) {
   pixel_rgb888_t p = pixel_rgb888_from_rgb(1, 2, 3);
   ASSERT_EQ(p.r, 1);
