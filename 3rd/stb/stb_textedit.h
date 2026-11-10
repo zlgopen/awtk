@@ -981,7 +981,7 @@ retry:
                   if (i >= row.num_glyph) {
                      state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1]);
                   } else {
-                     // for LTR get directly, for RTL neeed add str_num
+                     // for LTR get directly, for RTL need add str_num
                      if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 1 ||
                          STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 0) {
                         state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i]);
@@ -1000,7 +1000,7 @@ retry:
                   state->cursor = start;
                } else {
                   if (i >= row.num_glyph) {
-                     // for LTR get directly, for RTL neeed add str_num
+                     // for LTR get directly, for RTL need add str_num
                      if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 1 ||
                          STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 0) {
                         if (text->str[STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1])] == L'\n') {
@@ -1013,7 +1013,7 @@ retry:
                         state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1]);
                      }
                   } else {
-                     // for RTL get directly, for LTR neeed add str_num
+                     // for RTL get directly, for LTR need add str_num
                      if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 1 ||
                          STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 0) {
                         state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i]) + STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, row.glyph_arr[i]);
@@ -1079,7 +1079,7 @@ retry:
                if (i >= row.num_glyph) {
                   state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1]);
                } else {
-                  // for LTR get directly, for RTL neeed add str_num
+                  // for LTR get directly, for RTL need add str_num
                   if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 1 ||
                       STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 0) {
                      state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i]);
@@ -1094,7 +1094,7 @@ retry:
                }
             } else {
                if (i >= row.num_glyph) {
-                  // for LTR get directly, for RTL neeed add str_num
+                  // for LTR get directly, for RTL need add str_num
                   if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 1 ||
                       STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 0) {
                      if (text->str[STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1])] == L'\n') {
@@ -1107,7 +1107,7 @@ retry:
                      state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i - 1]);   
                   }
                } else {
-                  // for RTL get directly, for LTR neeed add str_num
+                  // for RTL get directly, for LTR need add str_num
                   if (STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 1 ||
                       STB_TEXTEDIT_GETBIDITYPE(str, row.glyph_arr[i]) == 0) {
                      state->cursor = STB_TEXTEDIT_GLYPH_TO_STR(str, row.glyph_arr[i]) + STB_TEXTEDIT_GET_GLYPHS_STR_NUM(str, row.glyph_arr[i]);
