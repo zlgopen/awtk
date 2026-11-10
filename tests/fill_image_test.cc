@@ -68,3 +68,18 @@ TEST(FillImage, BITMAP_FMT_BGR565_stride) {
 TEST(FillImage, BITMAP_FMT_RGB565_stride) {
   test_fill_image(2, BITMAP_FMT_RGB565);
 }
+
+/* 目标位图是新建的（像素全 0、alpha 为 0），半透明填充会走精确合成(归一化 + 除法) */
+TEST(FillImage, premulti_translucent) {
+  uint32_t w = 8;
+  uint32_t h = 8;
+  bitmap_t* b = bitmap_create_ex(w, h, 4 * w, BITMAP_FMT_BGRA8888);
+  rect_t r = rect_init(2, 2, 3, 3);
+  rgba_t expected = {50, 60, 30, 128};
+
+  ASSERT_EQ(image_fill(b, &r, color_init(50, 60, 30, 0x80)), RET_OK);
+  bitmap_dump(b);
+  bitmap_check(b, &r, expected);
+
+  bitmap_destroy(b);
+}
