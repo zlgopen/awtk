@@ -93,9 +93,12 @@ static inline rgba_t rgba_blend_premulti(rgba_t c, rgba_t s, uint8_t a) {
     uint8_t out_a = pixel_out_alpha(0xff - a, c.a);
     if (out_a > 0) {
       uint8_t d_a = (c.a * a) >> 8;
-      c.r = (c.r * d_a + (s.r << 8)) / out_a;
-      c.g = (c.g * d_a + (s.g << 8)) / out_a;
-      c.b = (c.b * d_a + (s.b << 8)) / out_a;
+      int32_t r = (c.r * d_a + (s.r << 8)) / out_a;
+      int32_t g = (c.g * d_a + (s.g << 8)) / out_a;
+      int32_t b = (c.b * d_a + (s.b << 8)) / out_a;
+      c.r = tk_pixel_limit_uint8(r);
+      c.g = tk_pixel_limit_uint8(g);
+      c.b = tk_pixel_limit_uint8(b);
     }
     c.a = out_a;
   }

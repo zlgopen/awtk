@@ -419,6 +419,76 @@ TEST(Pixel, rgba8888_premulti_translucent) {
   ASSERT_EQ(p.a, 160);
 }
 
+/* 预乘源色叠加：目标全透明且源通道饱和到 alpha 时，结果必须饱和到 255（不能回绕成 0） */
+TEST(Pixel, rgba8888_premulti_saturate) {
+  color_t c = color_init(255, 255, 255, 0);
+  pixel_rgba8888_t p = pixel_rgba8888_from_rgba(20, 30, 40, 0x00);
+  pixel_rgba8888_blend_rgba_premulti(&p, c.rgba);
+
+  ASSERT_EQ(p.r, 255);
+  ASSERT_EQ(p.g, 255);
+  ASSERT_EQ(p.b, 255);
+  ASSERT_EQ(p.a, 0xff);
+}
+
+/* 只有饱和的通道饱和到 255，其余通道保持归一化结果 */
+TEST(Pixel, rgba8888_premulti_saturate_partial) {
+  color_t c = color_init(128, 64, 128, 127);
+  pixel_rgba8888_t p = pixel_rgba8888_from_rgba(20, 30, 40, 0x00);
+  pixel_rgba8888_blend_rgba_premulti(&p, c.rgba);
+
+  ASSERT_EQ(p.r, 255);
+  ASSERT_EQ(p.g, 128);
+  ASSERT_EQ(p.b, 255);
+  ASSERT_EQ(p.a, 128);
+}
+
+/* 目标半透明、合成 alpha 饱和到 255 时同样不能回绕（out_a 由 256 饱和到 255 会把商顶到 256） */
+TEST(Pixel, rgba8888_premulti_saturate_opaque_src) {
+  color_t c = color_init(255, 255, 255, 0);
+  pixel_rgba8888_t p = pixel_rgba8888_from_rgba(120, 60, 0, 0x40);
+  pixel_rgba8888_blend_rgba_premulti(&p, c.rgba);
+
+  ASSERT_EQ(p.r, 255);
+  ASSERT_EQ(p.g, 255);
+  ASSERT_EQ(p.b, 255);
+  ASSERT_EQ(p.a, 0xff);
+}
+
+/* abgr/bgra/argb 复用同一套 rgba_blend_premulti，同样必须饱和而不是回绕 */
+TEST(Pixel, abgr8888_premulti_saturate) {
+  color_t c = color_init(255, 255, 255, 0);
+  pixel_abgr8888_t p = pixel_abgr8888_from_rgba(20, 30, 40, 0x00);
+  pixel_abgr8888_blend_rgba_premulti(&p, c.rgba);
+
+  ASSERT_EQ(p.r, 255);
+  ASSERT_EQ(p.g, 255);
+  ASSERT_EQ(p.b, 255);
+  ASSERT_EQ(p.a, 0xff);
+}
+
+TEST(Pixel, bgra8888_premulti_saturate) {
+  color_t c = color_init(255, 255, 255, 0);
+  pixel_bgra8888_t p = pixel_bgra8888_from_rgba(20, 30, 40, 0x00);
+  pixel_bgra8888_blend_rgba_premulti(&p, c.rgba);
+
+  ASSERT_EQ(p.r, 255);
+  ASSERT_EQ(p.g, 255);
+  ASSERT_EQ(p.b, 255);
+  ASSERT_EQ(p.a, 0xff);
+}
+
+TEST(Pixel, argb8888_premulti_saturate) {
+  color_t c = color_init(255, 255, 255, 0);
+  pixel_argb8888_t p = pixel_argb8888_from_rgba(20, 30, 40, 0x00);
+  pixel_argb8888_blend_rgba_premulti(&p, c.rgba);
+
+  ASSERT_EQ(p.r, 255);
+  ASSERT_EQ(p.g, 255);
+  ASSERT_EQ(p.b, 255);
+  ASSERT_EQ(p.a, 0xff);
+}
+
 TEST(Pixel, rgb888) {
   pixel_rgb888_t p = pixel_rgb888_from_rgb(1, 2, 3);
   ASSERT_EQ(p.r, 1);
