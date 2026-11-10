@@ -45,6 +45,10 @@ TEST(FillImage, BITMAP_FMT_BGR888) {
   test_fill_image(0, BITMAP_FMT_BGR888);
 }
 
+TEST(FillImage, BITMAP_FMT_RGB888) {
+  test_fill_image(0, BITMAP_FMT_RGB888);
+}
+
 TEST(FillImage, BITMAP_FMT_BGR565) {
   test_fill_image(0, BITMAP_FMT_BGR565);
 }
@@ -59,6 +63,10 @@ TEST(FillImage, BITMAP_FMT_BGRA8888_stride) {
 
 TEST(FillImage, BITMAP_FMT_BGR888_stride) {
   test_fill_image(2, BITMAP_FMT_BGR888);
+}
+
+TEST(FillImage, BITMAP_FMT_RGB888_stride) {
+  test_fill_image(2, BITMAP_FMT_RGB888);
 }
 
 TEST(FillImage, BITMAP_FMT_BGR565_stride) {

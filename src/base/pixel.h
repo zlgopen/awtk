@@ -201,20 +201,20 @@ typedef struct _pixel_rgb888_t {
 #endif
 
 static inline void pixel_rgb888_blend_rgba_dark(void* pixel, uint8_t a) {
-  uint8_t* p = (uint8_t*)pixel;
+  pixel_rgb888_t* p = (pixel_rgb888_t*)pixel;
 
-  p[0] = (p[0] * a) >> 8;
-  p[1] = (p[1] * a) >> 8;
-  p[2] = (p[2] * a) >> 8;
+  p->r = (p->r * a) >> 8;
+  p->g = (p->g * a) >> 8;
+  p->b = (p->b * a) >> 8;
 }
 
 static inline void pixel_rgb888_blend_rgba_premulti(void* pixel, rgba_t rgba) {
   uint8_t a = rgba.a;
-  uint8_t* p = (uint8_t*)pixel;
+  pixel_rgb888_t* p = (pixel_rgb888_t*)pixel;
 
-  p[0] = ((p[0] * a) >> 8) + rgba.r;
-  p[1] = ((p[1] * a) >> 8) + rgba.g;
-  p[2] = ((p[2] * a) >> 8) + rgba.b;
+  p->r = ((p->r * a) >> 8) + rgba.r;
+  p->g = ((p->g * a) >> 8) + rgba.g;
+  p->b = ((p->b * a) >> 8) + rgba.b;
 }
 
 typedef struct _pixel_bgr888_t {
@@ -236,20 +236,20 @@ typedef struct _pixel_bgr888_t {
 #endif
 
 static inline void pixel_bgr888_blend_rgba_dark(void* pixel, uint8_t a) {
-  uint8_t* p = (uint8_t*)pixel;
+  pixel_bgr888_t* p = (pixel_bgr888_t*)pixel;
 
-  p[0] = (p[0] * a) >> 8;
-  p[1] = (p[1] * a) >> 8;
-  p[2] = (p[2] * a) >> 8;
+  p->b = (p->b * a) >> 8;
+  p->g = (p->g * a) >> 8;
+  p->r = (p->r * a) >> 8;
 }
 
 static inline void pixel_bgr888_blend_rgba_premulti(void* pixel, rgba_t rgba) {
   uint8_t a = rgba.a;
-  uint8_t* p = (uint8_t*)pixel;
+  pixel_bgr888_t* p = (pixel_bgr888_t*)pixel;
 
-  p[0] = ((p[0] * a) >> 8) + rgba.b;
-  p[1] = ((p[1] * a) >> 8) + rgba.g;
-  p[2] = ((p[2] * a) >> 8) + rgba.r;
+  p->b = ((p->b * a) >> 8) + rgba.b;
+  p->g = ((p->g * a) >> 8) + rgba.g;
+  p->r = ((p->r * a) >> 8) + rgba.r;
 }
 
 typedef struct _pixel_rgba8888_t {
