@@ -110,6 +110,7 @@ class compile_helper :
     'TEXT_SHAPING': { 'value' : None, 'type' : str.__name__,'str_enum' : ['no_text_shaping', 'harfbuzz', 'harfbuzz_data'], 'desc' : ['TEXT_SHAPING is no_text_shaping/harfbuzz'], 'help_info' : 'text shaping engine in none or harfbuzz.' },
     'BIDI_BACKEND' : { 'value' : None, 'type' : str.__name__, 'str_enum' : ['sheenbidi', 'fribidi'], 'desc' : ['Unicode bidi implementation: sheenbidi (default) or fribidi'], 'help_info' : 'set bidi backend, BIDI_BACKEND=sheenbidi|fribidi, default is sheenbidi' },
     'WITH_FS_RES' : { 'value' : True, 'type' : bool.__name__, 'desc' : ['with fs res'], 'help_info' : 'is build with WITH_FS_RES, value is true or false' },
+    'FLAGS' : { 'value' : None, 'type' : str.__name__, 'desc' : ['compile flags'], 'help_info' : 'set compile\'s flags, so care of system and compile tools'},
   })
 
   def try_load_default_config(self) :
