@@ -5,6 +5,7 @@
   * 增加 flags 的命令行编译参数(感谢智明提供补丁)
   * 增加nanovg支持repeat的逻辑以及lcd支持repeat的函数指针重载(感谢智明提供补丁)
   * hex edit 的前缀改为可选的(感谢雪飞提供补丁)
+  * 回退 edit 的 edit_get_prop(VALUE) 与 edit_is_size_valid()(感谢雪飞提供补丁)
 
 2026/11/10
   * 补充 pixel 测试(感谢兆坤提供补丁) 

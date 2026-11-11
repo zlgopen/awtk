@@ -796,6 +796,10 @@ static bool_t edit_is_size_valid(widget_t* widget) {
   uint32_t min = (uint32_t)(edit->min);
   uint32_t max = (uint32_t)(edit->max);
 
+  if (min == max && min == 0) {
+    return TRUE;
+  }
+
   return (min <= size && size <= max);
 }
 
@@ -1969,11 +1973,6 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
       }
       case INPUT_UINT: {
         uint32_t n = (uint32_t)edit_get_int64(widget);
-        value_set_uint32(v, n);
-        break;
-      }
-      case INPUT_HEX: {
-        uint32_t n = edit_hex_str_to_uint(&(widget->text));
         value_set_uint32(v, n);
         break;
       }

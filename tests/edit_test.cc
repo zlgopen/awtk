@@ -292,7 +292,6 @@ TEST(Edit, int_convert) {
 }
 
 TEST(Edit, hex_value_without_prefix) {
-  value_t v;
   widget_t* e = edit_create(NULL, 10, 20, 30, 40);
 
   edit_set_hex_limit(e, 0, 0xFFFFFFFF, 1);
@@ -300,25 +299,25 @@ TEST(Edit, hex_value_without_prefix) {
   // 0x前缀始终可选：带不带前缀都合法
   widget_set_text(e, L"123");
   ASSERT_TRUE(edit_is_valid_value(e));
-  ASSERT_EQ(widget_get_prop(e, WIDGET_PROP_VALUE, &v), RET_OK);
-  ASSERT_EQ(0x123u, value_uint32(&v));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0x123u);
 
   widget_set_text(e, L"FF");
   ASSERT_TRUE(edit_is_valid_value(e));
-  ASSERT_EQ(widget_get_prop(e, WIDGET_PROP_VALUE, &v), RET_OK);
-  ASSERT_EQ(0xFFu, value_uint32(&v));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0xFFu);
+
+  widget_set_text(e, L"F");
+  ASSERT_TRUE(edit_is_valid_value(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0xFu);
 
   // 前导0不影响解析
   widget_set_text(e, L"000000000000000000000000000FF");
   ASSERT_TRUE(edit_is_valid_value(e));
-  ASSERT_EQ(widget_get_prop(e, WIDGET_PROP_VALUE, &v), RET_OK);
-  ASSERT_EQ(0xFFu, value_uint32(&v));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0xFFu);
 
   // 带前缀时前导0合法
   widget_set_text(e, L"0x00000000000000000000000000000000000000000123");
   ASSERT_TRUE(edit_is_valid_value(e));
-  ASSERT_EQ(widget_get_prop(e, WIDGET_PROP_VALUE, &v), RET_OK);
-  ASSERT_EQ(0x123u, value_uint32(&v));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0x123u);
 
   // 单独的 x/X 不是有效前缀，始终非法
   widget_set_text(e, L"xFA");
@@ -1794,7 +1793,6 @@ TEST(Edit, is_valid_chr_4_ufloat_exponent) {
 }
 
 TEST(Edit, is_valid_value_hex_format) {
-  value_t v;
   widget_t* e = edit_create(NULL, 10, 20, 30, 40);
   edit_set_input_type(e, INPUT_HEX);
   edit_set_hex_limit(e, 0, 0xFFFF, 1);
@@ -1817,8 +1815,7 @@ TEST(Edit, is_valid_value_hex_format) {
 
   widget_set_text(e, L"0XFf");
   ASSERT_TRUE(edit_is_valid_value(e));
-  ASSERT_EQ(widget_get_prop(e, WIDGET_PROP_VALUE, &v), RET_OK);
-  ASSERT_EQ(value_uint32(&v), 0xFfu);
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0xFfu);
 
   widget_set_text(e, L"0x01");
   ASSERT_TRUE(edit_is_valid_value(e));
@@ -1838,8 +1835,7 @@ TEST(Edit, is_valid_value_hex_format) {
 
   widget_set_text(e, L"0xABCD");
   ASSERT_TRUE(edit_is_valid_value(e));
-  ASSERT_EQ(widget_get_prop(e, WIDGET_PROP_VALUE, &v), RET_OK);
-  ASSERT_EQ(value_uint32(&v), 0xABCDu);
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0xABCDu);
 
   // 大值 hex: 0xFFFFFFFF
   edit_set_hex_limit(e, 0, 0xFFFFFFFF, 1);
@@ -2284,8 +2280,8 @@ TEST(Edit, value) {
   widget_set_text(w1, L"0xABCD");
   edit_set_input_type(w1, INPUT_HEX);
   ASSERT_EQ(widget_get_prop(w1, WIDGET_PROP_VALUE, &v), RET_OK);
-  ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_UINT32);
-  ASSERT_EQ(value_uint32(&v), 0xABCDu);
+  ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_WSTRING);
+  ASSERT_TRUE(wstr_eq(&(w1->text), L"0xABCD"));
 
   // 所有类型的 step 都可用 double 读取
   edit_set_int_limit(w1, -100, 100, 5);
