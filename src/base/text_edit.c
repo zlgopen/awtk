@@ -1481,9 +1481,14 @@ static ret_t text_edit_paint_caret(text_edit_t* text_edit, canvas_t* c) {
   color_t caret_color = style_get_color(style, STYLE_ID_TEXT_COLOR, black);
   uint32_t x = layout_info->margin_l + impl->caret.x - layout_info->ox;
   uint32_t y = layout_info->margin_t + impl->caret.y - layout_info->oy;
+  uint32_t caret_height = c->font_size;
+
+  if (!impl->single_line && impl->line_height > 0) {
+    caret_height = impl->line_height;
+  }
 
   canvas_set_stroke_color(c, caret_color);
-  canvas_draw_vline(c, x, y, c->font_size);
+  canvas_draw_vline(c, x, y, caret_height);
 
   return RET_OK;
 }
@@ -1625,6 +1630,11 @@ static ret_t text_edit_paint_line_background(text_edit_t* text_edit, canvas_t* c
   color_t select_bg_color = style_get_color(style, STYLE_ID_SELECTED_BG_COLOR, white);
   uint32_t select_start = tk_min(state->select_start, state->select_end);
   uint32_t select_end = tk_max(state->select_start, state->select_end);
+  uint32_t background_height = c->font_size;
+
+  if (!impl->single_line && impl->line_height > 0) {
+    background_height = impl->line_height;
+  }
 
   if (!text_edit_need_paint_line_background(text_edit, iter)) {
     return RET_OK;
@@ -1673,7 +1683,7 @@ static ret_t text_edit_paint_line_background(text_edit_t* text_edit, canvas_t* c
       if (selected || preedit) {
         if (g != NULL) {
           canvas_fill_rect(c, rx, ry, g->next_glyph != NULL ? char_w : char_w + CHAR_SPACING,
-                           c->font_size);
+                           background_height);
         }
       }
 
