@@ -50,6 +50,9 @@ struct NVGpaint {
 	NVGcolor innerColor;
 	NVGcolor outerColor;
 	int image;
+  int drawType;
+  float drawImageRect[4];
+  float drawInfo[2];
 };
 typedef struct NVGpaint NVGpaint;
 
@@ -142,6 +145,11 @@ enum NVGimageFlags {
 	NVG_IMAGE_FLIPY				= 1<<3,		// Flips (inverses) image in Y direction when rendered.
 	NVG_IMAGE_PREMULTIPLIED		= 1<<4,		// Image data has premultiplied alpha.
 	NVG_IMAGE_NEAREST			= 1<<5,		// Image interpolation is Nearest instead Linear
+};
+
+enum NVGdrawImageType {
+  NVG_IMAGE_DRAW_DEFAULT = 0,
+  NVG_IMAGE_DRAW_REPEAT
 };
 
 enum NVGorientation {
@@ -439,6 +447,14 @@ NVGpaint nvgRadialGradient(NVGcontext* ctx, float cx, float cy, float inr, float
 // The gradient is transformed by the current transform when it is passed to nvgFillPaint() or nvgStrokePaint().
 NVGpaint nvgImagePattern(NVGcontext* ctx, float ox, float oy, float ex, float ey,
 						 float angle, int image, float alpha);
+
+// Creates a repeated image pattern. Parameters (sx,sy,sw,sh) specify the source rectangle,
+// (dw,dh) specify the destination size, (image_w,image_h) specify the image size, angle is
+// rotation around the top-left corner, image is the image handle, and alpha is the opacity.
+// Output parameter: the returned NVGpaint is used by nvgFillPaint() or nvgStrokePaint().
+NVGpaint nvgImagePatternRepeat(NVGcontext* ctx, float sx, float sy, float sw, float sh,
+                               float dw, float dh, float image_w, float image_h,
+                               float angle, int image, float alpha);
 
 // get xfrom data
 void nvgGetStateXfrom(NVGcontext* ctx, float* xform);

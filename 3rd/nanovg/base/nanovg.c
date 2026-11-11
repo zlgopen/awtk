@@ -1100,6 +1100,37 @@ NVGpaint nvgImagePattern(NVGcontext* ctx,
 	return p;
 }
 
+/**
+ * Create a repeated image pattern.
+ * Input parameters: ctx is the NanoVG context, sx/sy/sw/sh describe the source
+ * rectangle, dw/dh describe the destination size, image_w/image_h describe the
+ * image size, angle is the rotation, image is the image handle, and alpha is
+ * the opacity. Output parameter: the returned NVGpaint describes the repeat.
+ */
+NVGpaint nvgImagePatternRepeat(NVGcontext* ctx, float sx, float sy, float sw, float sh,
+                               float dw, float dh, float image_w, float image_h,
+                               float angle, int image, float alpha) {
+  NVGpaint p;
+
+  NVG_NOTUSED(ctx);
+  memset(&p, 0, sizeof(p));
+
+  nvgTransformRotate(p.xform, angle);
+  p.extent[0] = image_w;
+  p.extent[1] = image_h;
+  p.image = image;
+  p.drawType = NVG_IMAGE_DRAW_REPEAT;
+  p.drawImageRect[0] = sx;
+  p.drawImageRect[1] = sy;
+  p.drawImageRect[2] = sw;
+  p.drawImageRect[3] = sh;
+  p.drawInfo[0] = sw > 0.0f ? dw / sw : 1.0f;
+  p.drawInfo[1] = sh > 0.0f ? dh / sh : 1.0f;
+  p.innerColor = p.outerColor = nvgRGBAf(1, 1, 1, alpha);
+
+  return p;
+}
+
 // Scissoring
 void nvgScissor(NVGcontext* ctx, float x, float y, float w, float h)
 {

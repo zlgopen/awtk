@@ -658,8 +658,8 @@ static ret_t vgcanvas_nanovg_plus_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img
   return RET_OK;
 }
 
-#if 0
-// 在快速旋转的兼容性上面有问题，而且原来的实现在 dst_w/dst_h 比 image 宽/高 大的时候，出来的效果和 agge 的不一样，所以暂时禁用。
+#ifndef WITH_FAST_LCD_PORTRAIT
+// 在快速旋转的兼容性上面有问题，而且原来的实现在 dst_w/dst_h 比 image 宽/高 大的时候，出来的效果和 agge 的不一样，所以改为用宏启用。
 static ret_t vgcanvas_nanovg_plus_draw_image_repeat(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                                     float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
                                                     float_t dh, float_t dst_w, float_t dst_h) {
@@ -668,7 +668,9 @@ static ret_t vgcanvas_nanovg_plus_draw_image_repeat(vgcanvas_t* vgcanvas, bitmap
   float scaleY = (float)dh / sh;
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
-
+  if (sw != dst_w || sh != dst_h) {
+    return RET_FAIL;
+  }
   int id = vgcanvas_nanovg_plus_ensure_image(canvas, img);
   return_value_if_fail(id >= 0, RET_BAD_PARAMS);
   (void)dst_w;
@@ -885,6 +887,9 @@ static const vgcanvas_vtable_t vt = {
     .fill_text_by_glyphs = vgcanvas_nanovg_plus_fill_text_by_glyphs,
     .measure_text = vgcanvas_nanovg_plus_measure_text,
     .draw_image = vgcanvas_nanovg_plus_draw_image,
+#ifndef WITH_FAST_LCD_PORTRAIT
+    .draw_image_repeat = vgcanvas_nanovg_plus_draw_image_repeat,
+#endif
     .set_antialias = vgcanvas_nanovg_plus_set_antialias,
     .set_global_alpha = vgcanvas_nanovg_plus_set_global_alpha,
     .set_line_width = vgcanvas_nanovg_plus_set_line_width,

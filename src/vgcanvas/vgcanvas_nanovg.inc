@@ -555,6 +555,58 @@ static ret_t vgcanvas_nanovg_image_orientation_matrix(NVGcontext* vg, bitmap_t* 
   return RET_OK;
 }
 
+#ifndef WITH_FAST_LCD_PORTRAIT
+/**
+ * Draw an image repeatedly in the destination rectangle.
+ * Input parameters: vgcanvas is the VG canvas, img is the source bitmap,
+ * sx/sy/sw/sh describe the source rectangle, dx/dy/dw/dh describe the
+ * destination rectangle, and dst_w/dst_h describe the destination tile size.
+ * Output parameter: returns RET_OK on success, RET_NOT_IMPL on software
+ * rendering, RET_FAIL on unsupported sizes, or RET_BAD_PARAMS on errors.
+ */
+static ret_t vgcanvas_nanovg_draw_image_repeat(vgcanvas_t* vgcanvas, bitmap_t* img,
+                                               float_t sx, float_t sy, float_t sw, float_t sh,
+                                               float_t dx, float_t dy, float_t dw, float_t dh,
+                                               float_t dst_w, float_t dst_h) {
+  NVGpaint imgPaint;
+  float scaleX = (float)dw / sw;
+  float scaleY = (float)dh / sh;
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+#ifndef WITH_NANOVG_GPU
+  return RET_NOT_IMPL;
+#endif
+  if (sw != dst_w || sh != dst_h) {
+    return RET_FAIL;
+  }
+  int id = vgcanvas_nanovg_ensure_image(canvas, img);
+  return_value_if_fail(id >= 0, RET_BAD_PARAMS);
+
+#ifdef WITH_NANOVG_GPU
+  imgPaint = nvgImagePatternRepeat(vg, sx, sy, sw, sh, dw, dh,
+                                   bitmap_get_physical_width(img),
+                                   bitmap_get_physical_height(img), 0, id, 1);
+#else
+  imgPaint = nvgImagePattern(vg, dx, dy, dst_w, dst_h, 0, id, 1);
+#endif
+
+  nvgSave(vg);
+  nvgBeginPath(vg);
+#ifdef WITH_NANOVG_GPU
+  nvgTranslate(vg, dx - (sx * scaleX), dy - (sy * scaleY));
+  nvgScale(vg, scaleX, scaleY);
+  nvgRect(vg, sx, sy, sw, sh);
+#else
+  nvgRect(vg, dx, dy, dw, dh);
+#endif
+  nvgFillPaint(vg, imgPaint);
+  nvgFill(vg);
+  nvgRestore(vg);
+
+  return RET_OK;
+}
+#endif
+
 static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                         float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
                                         float_t dh) {
@@ -789,6 +841,9 @@ static const vgcanvas_vtable_t vt = {
     .fill_text_by_glyphs = vgcanvas_nanovg_fill_text_by_glyphs,
     .measure_text = vgcanvas_nanovg_measure_text,
     .draw_image = vgcanvas_nanovg_draw_image,
+#ifndef WITH_FAST_LCD_PORTRAIT
+    .draw_image_repeat = vgcanvas_nanovg_draw_image_repeat,
+#endif
     .set_antialias = vgcanvas_nanovg_set_antialias,
     .set_global_alpha = vgcanvas_nanovg_set_global_alpha,
     .set_line_width = vgcanvas_nanovg_set_line_width,

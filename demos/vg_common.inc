@@ -124,6 +124,27 @@ static inline ret_t on_paint_patch3_v(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static inline ret_t on_paint_repeat_test(void* ctx, event_t* e) {
+  rect_t r;
+  bitmap_t img;
+  uint32_t offset_h = 0;
+  paint_event_t* evt = (paint_event_t*)e;
+  canvas_t* c = evt->c;
+  image_manager_get_bitmap(image_manager(), "bricks", &img);
+
+  offset_h = img.h * 2;
+  r = rect_init(10, 0, img.w * 2, img.h * 2);
+  canvas_draw_image_repeat_x(c, &img, &r);
+
+  r = rect_init(10, 10 + offset_h, img.w * 2, img.h * 2);
+  canvas_draw_image_repeat_y(c, &img, &r);
+
+  r = rect_init(10, (10 + offset_h) * 2, img.w * 2, img.h * 2);
+  canvas_draw_image_repeat(c, &img, &r);
+
+  return RET_OK;
+}
+
 static inline ret_t on_paint_repeat_x(void* ctx, event_t* e) {
   rect_t r;
   bitmap_t img;

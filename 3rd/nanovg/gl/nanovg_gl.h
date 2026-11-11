@@ -123,6 +123,7 @@ enum GLNVGshaderType {
   NSVG_SHADER_FAST_FILLIMG,
   NSVG_SHADER_FILLCOLOR,
   NSVG_SHADER_FAST_FILLGLYPH,
+  NSVG_SHADER_FILLIMG_REPEAT,
 };
 
 #if NANOVG_GL_USE_UNIFORMBUFFER
@@ -579,6 +580,8 @@ static int glnvg__renderCreate(void* uptr) {
       " #define texType int(frag[10].z)\n"
       " #define type int(frag[10].w)\n"
       "#endif\n"
+      " #define drawInfo vec2(radius, feather)\n"
+      " #define drawImageRect outerCol\n"
       "\n"
       "float sdroundrect(vec2 pt, vec2 ext, float rad) {\n"
       " vec2 ext2 = ext - vec2(rad,rad);\n"
@@ -654,6 +657,21 @@ static int glnvg__renderCreate(void* uptr) {
       "   // Apply color tint and alpha.\n"
       "   color *= innerCol;\n"
       "   // Combine alpha\n"
+      "   float scissor = scissorMask(fpos);\n"
+      "   color *= strokeAlpha * scissor;\n"
+      "   result = color;\n"
+      " } else if (type == 9) {   // repeated image\n"
+      "   strokeAlpha = strokeMask();\n"
+      "   if (strokeAlpha < strokeThr) discard;\n"
+      "   vec2 rpt = ((paintMat * vec3(fpos,1.0)).xy - drawImageRect.xy) * drawInfo;\n"
+      "   rpt = (mod(rpt, drawImageRect.zw) + drawImageRect.xy) / extent;\n"
+      "#ifdef NANOVG_GL3\n"
+      "   vec4 color = texture(tex, rpt);\n"
+      "#else\n"
+      "   vec4 color = texture2D(tex, rpt);\n"
+      "#endif\n"
+      "   if (texType == 1) color = vec4(color.xyz*color.w,color.w);"
+      "   color *= innerCol;\n"
       "   float scissor = scissorMask(fpos);\n"
       "   color *= strokeAlpha * scissor;\n"
       "   result = color;\n"
@@ -951,7 +969,8 @@ static int glnvg__convertPaint(GLNVGcontext* gl, GLNVGfragUniforms* frag, NVGpai
     } else {
       nvgTransformInverse(invxform, paint->xform);
     }
-    frag->type = NSVG_SHADER_FILLIMG;
+    frag->type = paint->drawType == NVG_IMAGE_DRAW_REPEAT ?
+                 NSVG_SHADER_FILLIMG_REPEAT : NSVG_SHADER_FILLIMG;
 
 #if NANOVG_GL_USE_UNIFORMBUFFER
     if (tex->type == NVG_TEXTURE_RGBA)
@@ -964,6 +983,11 @@ static int glnvg__convertPaint(GLNVGcontext* gl, GLNVGfragUniforms* frag, NVGpai
     else
       frag->texType = 2.0f;
 #endif
+    if (paint->drawType == NVG_IMAGE_DRAW_REPEAT) {
+      memcpy(&frag->outerCol, paint->drawImageRect, sizeof(frag->outerCol));
+      frag->radius = paint->drawInfo[0];
+      frag->feather = paint->drawInfo[1];
+    }
     //    printf("frag->texType = %d\n", frag->texType);
   } else {
     frag->type = is_gradient ? NSVG_SHADER_FILLGRAD : NSVG_SHADER_FILLCOLOR;
@@ -1520,7 +1544,7 @@ static void glnvg__renderFill(void* uptr, NVGpaint* paint,
 
   if (frag->type != NSVG_SHADER_SIMPLE) {
     if (support_fast_draw) {
-      if (paint->image != 0) {
+      if (paint->image != 0 && paint->drawType != NVG_IMAGE_DRAW_REPEAT) {
         frag->type = NSVG_SHADER_FAST_FILLIMG;
       } else if (!is_gradient) {
         frag->type = NSVG_SHADER_FAST_FILLCOLOR;
