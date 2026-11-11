@@ -36,16 +36,18 @@
 
 static ret_t on_ok_to_quit(void* ctx, event_t* e) {
   widget_t* dlg = WIDGET(ctx);
-  dialog_quit(dlg, RET_OK);
-
-  return RET_REMOVE;
+  if (dialog_quit(dlg, RET_OK) == RET_OK) {
+    return RET_REMOVE;
+  }
+  return RET_FAIL;
 }
 
 static ret_t on_cancel_to_quit(void* ctx, event_t* e) {
   widget_t* dlg = WIDGET(ctx);
-  dialog_quit(dlg, RET_FAIL);
-
-  return RET_REMOVE;
+  if (dialog_quit(dlg, RET_FAIL) == RET_OK) {
+    return RET_REMOVE;
+  }
+  return RET_FAIL;
 }
 
 static ret_t dialog_get_size_limits(rect_t* r) {
