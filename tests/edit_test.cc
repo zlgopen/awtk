@@ -228,14 +228,15 @@ TEST(Edit, convert_between_pattern_types) {
 TEST(Edit, convert_numeric_to_hex) {
   widget_t* e = edit_create(NULL, 10, 20, 30, 40);
 
-  // INT "123" -> HEX: "123" 不是合法 hex(缺 0x 前缀)
+  // INT "123" -> HEX: "123" 按16进制解析为0x123(0x前缀是可选的)
   edit_set_int_limit(e, -1000, 1000, 1);
   widget_set_text(e, L"123");
   ASSERT_TRUE(edit_is_valid_value(e));
 
   edit_set_hex_limit(e, 0, 0xFFFF, 1);
   ASSERT_EQ(EDIT(e)->input_type, INPUT_HEX);
-  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_TRUE(edit_is_valid_value(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0x123u);
 
   widget_set_text(e, L"0x123");
   ASSERT_TRUE(edit_is_valid_value(e));
@@ -296,20 +297,20 @@ TEST(Edit, hex_value_without_prefix) {
 
   edit_set_hex_limit(e, 0, 0xFFFFFFFF, 1);
 
-  // 只有带 0x/0X 前缀的文本合法
+  // 0x前缀始终可选：带不带前缀都合法
   widget_set_text(e, L"123");
-  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_TRUE(edit_is_valid_value(e));
   ASSERT_EQ(widget_get_prop(e, WIDGET_PROP_VALUE, &v), RET_OK);
   ASSERT_EQ(0x123u, value_uint32(&v));
 
   widget_set_text(e, L"FF");
-  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_TRUE(edit_is_valid_value(e));
   ASSERT_EQ(widget_get_prop(e, WIDGET_PROP_VALUE, &v), RET_OK);
   ASSERT_EQ(0xFFu, value_uint32(&v));
 
-  // 前导0不影响解析，但没有前缀仍然非法
+  // 前导0不影响解析
   widget_set_text(e, L"000000000000000000000000000FF");
-  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_TRUE(edit_is_valid_value(e));
   ASSERT_EQ(widget_get_prop(e, WIDGET_PROP_VALUE, &v), RET_OK);
   ASSERT_EQ(0xFFu, value_uint32(&v));
 
@@ -318,6 +319,37 @@ TEST(Edit, hex_value_without_prefix) {
   ASSERT_TRUE(edit_is_valid_value(e));
   ASSERT_EQ(widget_get_prop(e, WIDGET_PROP_VALUE, &v), RET_OK);
   ASSERT_EQ(0x123u, value_uint32(&v));
+
+  // 单独的 x/X 不是有效前缀，始终非法
+  widget_set_text(e, L"xFA");
+  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0xFAu);
+
+  widget_set_text(e, L"XFA");
+  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0xFAu);
+
+  // 只有前缀没有数字仍然非法
+  widget_set_text(e, L"x");
+  ASSERT_FALSE(edit_is_valid_value(e));
+  widget_set_text(e, L"0x");
+  ASSERT_FALSE(edit_is_valid_value(e));
+
+  widget_destroy(e);
+}
+
+TEST(Edit, hex_input_char) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_hex_limit(e, 0, 0xFFFFFFFF, 1);
+
+  // x/X 只能在 0 之后输入(构成 0x 前缀)，不能作为文本开头
+  widget_set_text(e, L"");
+  edit_set_cursor(e, 0);
+  ASSERT_FALSE(edit_is_valid_char(e, L'x'));
+  widget_set_text(e, L"0");
+  edit_set_cursor(e, 1);
+  ASSERT_TRUE(edit_is_valid_char(e, L'x'));
 
   widget_destroy(e);
 }
@@ -337,7 +369,7 @@ TEST(Edit, leading_zeros) {
   ASSERT_TRUE(edit_is_valid_value(e));
   ASSERT_EQ((uint32_t)edit_get_int64(e), 123u);
 
-  // HEX: 必须带 0x/0X 前缀
+  // HEX: 不强制 0x/0X 前缀
   edit_set_hex_limit(e, 0, 0xFFFF, 1);
   widget_set_text(e, L"0x000000000000000000000000000123");
   ASSERT_TRUE(edit_is_valid_value(e));
@@ -347,7 +379,8 @@ TEST(Edit, leading_zeros) {
   ASSERT_FALSE(edit_is_valid_value(e));
 
   widget_set_text(e, L"000000000000000000000000000123");
-  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_TRUE(edit_is_valid_value(e));
+  ASSERT_EQ((uint32_t)edit_get_int64(e), 0x123u);
 
   // 超过范围
   widget_set_text(e, L"0x0000000000000000000000000010000");
@@ -769,7 +802,7 @@ TEST(Edit, min_eq_max) {
   // HEX: min == max
   edit_set_hex_limit(e, 0xFF, 0xFF, 1);
   widget_set_text(e, L"1");
-  ASSERT_TRUE(wstr_eq(&(e->text), L"0x1"));
+  ASSERT_TRUE(wstr_eq(&(e->text), L"1"));
   ASSERT_TRUE(edit_is_valid_value(e));
   ASSERT_EQ((uint32_t)edit_get_int64(e), 0x1u);
 
@@ -983,12 +1016,13 @@ TEST(Edit, inc_dec_hex) {
 
   edit_set_auto_fix(e, FALSE);
   widget_set_text(e, L"15");
-  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_TRUE(edit_is_valid_value(e));
   edit_dec(EDIT(e));
   ASSERT_EQ((uint32_t)edit_get_int64(e), 0x14);
   edit_inc(EDIT(e));
   ASSERT_EQ((uint32_t)edit_get_int64(e), 0x15);
-  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_TRUE(wstr_eq(&(e->text), L"15"));
+  ASSERT_TRUE(edit_is_valid_value(e));
 
   widget_destroy(e);
 }
@@ -1766,14 +1800,15 @@ TEST(Edit, is_valid_value_hex_format) {
   edit_set_hex_limit(e, 0, 0xFFFF, 1);
 
   widget_set_text(e, L"abc");
-  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_TRUE(edit_is_valid_value(e));
 
   widget_set_text(e, L"0x");
   ASSERT_FALSE(edit_is_valid_value(e));
 
   widget_set_text(e, L"123");
-  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_TRUE(edit_is_valid_value(e));
 
+  // 只有一半前缀 x/X，始终非法
   widget_set_text(e, L"X1");
   ASSERT_FALSE(edit_is_valid_value(e));
 
@@ -1794,7 +1829,7 @@ TEST(Edit, is_valid_value_hex_format) {
   ASSERT_EQ((uint32_t)edit_get_int64(e), 0u);
 
   widget_set_text(e, L"345");
-  ASSERT_FALSE(edit_is_valid_value(e));
+  ASSERT_TRUE(edit_is_valid_value(e));
   ASSERT_EQ((uint32_t)edit_get_int64(e), 0x345u);
 
   widget_set_text(e, L"XffffFFFF");

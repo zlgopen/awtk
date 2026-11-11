@@ -349,7 +349,6 @@ static bool_t edit_is_valid_hex_str(const wstr_t* text, bool_t is_editing) {
   const uint32_t len = text->size;
   const wchar_t* s = text->str;
   bool_t has_digit = FALSE;
-  bool_t has_0x = FALSE;
 
   if (len == 0) {
     return FALSE;
@@ -357,7 +356,6 @@ static bool_t edit_is_valid_hex_str(const wstr_t* text, bool_t is_editing) {
 
   if (len >= 2 && s[0] == '0' && (s[1] == 'x' || s[1] == 'X')) {
     i = 2;
-    has_0x = TRUE;
   } else if (is_editing && (s[0] == 'x' || s[0] == 'X')) {
     i = 1;
   }
@@ -372,7 +370,7 @@ static bool_t edit_is_valid_hex_str(const wstr_t* text, bool_t is_editing) {
     }
   }
 
-  if (!is_editing && (!has_digit || !has_0x)) {
+  if (!is_editing && !has_digit) {
     return FALSE;
   }
 
@@ -878,10 +876,6 @@ static bool_t edit_is_valid_value_default(widget_t* widget) {
       uint32_t v = 0;
       uint32_t min = (uint32_t)(edit->min);
       uint32_t max = (uint32_t)(edit->max);
-
-      if (text->size <= 2) {
-        return FALSE;
-      }
 
       if (!edit_is_valid_hex_str(text, FALSE)) {
         return FALSE;
