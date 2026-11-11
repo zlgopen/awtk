@@ -446,7 +446,7 @@ static hb_info_t* harfbuzz_do_shape(const wchar_t* text, uint32_t text_len, cons
   size_t run_count = 0;
   hb_info_t* hb_info = NULL;
   raqm_bidi_run_t* runs = NULL;
-  uint32_t cur_glyph_size = 0;
+  unsigned int cur_glyph_size = 0;
   uint32_t total_glyph_size = 0;
   hb_feature_t features[3];
   hb_codepoint_t glyphid = 0;
