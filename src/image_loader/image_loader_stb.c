@@ -82,7 +82,7 @@ static uint8_t* convert_1_to_4(uint8_t* src, uint32_t w, uint32_t h) {
 
 ret_t stb_load_gif_next_frame(bitmap_t* bitmap, void** gif_context, void** gif_msg,
                               void** gif_cache, int* gif_delays, const uint8_t* buff,
-                              uint32_t buff_size, int* layers, bool_t* is_end) {
+                              uint32_t buff_size, int32_t* layers, bool_t* is_end) {
   int comp;
   int stride;
   int req_comp = 0;

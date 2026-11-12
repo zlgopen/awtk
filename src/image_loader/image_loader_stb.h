@@ -82,14 +82,14 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
  * @param {int*} gif_delays gif_delays对象。
  * @param {const uint8_t*} buff 资源数据。
  * @param {uint32_t} buff_size 资源数据长度。
- * @param {int*} layers 图层数量。
+ * @param {int32_t*} layers 图层数量。
  * @param {bool_t*} on_end 是否结束。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t stb_load_gif_next_frame(bitmap_t* bitmap, void** gif_context, void** gif_msg,
                               void** gif_cache, int* gif_delays, const uint8_t* buff,
-                              uint32_t buff_size, int* layers, bool_t* on_end);
+                              uint32_t buff_size, int32_t* layers, bool_t* on_end);
 
 /**
  * @method stb_gif_frame_create
