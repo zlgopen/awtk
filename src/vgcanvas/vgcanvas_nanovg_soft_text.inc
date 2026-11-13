@@ -78,14 +78,14 @@ static ret_t vgcanvas_nanovg_soft_text_get_glyph(vgcanvas_nanovg_t* canvas, wcha
 
   if (font != NULL) {
     ret = font_get_glyph(font, chr, canvas->awtk_font_size, glyph);
-    if (ret == RET_OK && glyph->data != NULL) {
+    if (ret == RET_OK && glyph->data != NULL || chr == L' ') {
       return RET_OK;
     }
   }
 
   if (canvas->awtk_fallback_font != NULL && canvas->awtk_fallback_font != font) {
     ret = font_get_glyph(canvas->awtk_fallback_font, chr, canvas->awtk_font_size, glyph);
-    if (ret == RET_OK && glyph->data != NULL) {
+    if ((ret == RET_OK && glyph->data != NULL) || chr == L' ') {
       return RET_OK;
     }
   }
@@ -353,10 +353,14 @@ static ret_t vgcanvas_nanovg_soft_text_fill_text(vgcanvas_t* vgcanvas, const cha
   int32_t image_id = 0;
   wchar_t* ws = NULL;
   NVGpaint paint;
+  font_vmetrics_t metrics;
   vgcanvas_soft_text_run_t* runs = NULL;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   ret_t ret = vgcanvas_nanovg_soft_text_ensure_font(canvas, vgcanvas->font);
   return_value_if_fail(ret == RET_OK && text != NULL, RET_BAD_PARAMS);
+  metrics = font_get_vmetrics(canvas->awtk_font != NULL ? canvas->awtk_font
+                                                        : canvas->awtk_fallback_font,
+                              canvas->awtk_font_size);
   (void)max_width;
 
   text_len = (uint32_t)strlen(text);
@@ -405,12 +409,13 @@ static ret_t vgcanvas_nanovg_soft_text_fill_text(vgcanvas_t* vgcanvas, const cha
     base_x -= min_x;
   }
 
+  // 垂直对齐基于字体度量，避免不同字符的实际像素范围影响基线位置。
   if (canvas->text_align_v == VGCANVAS_SOFT_TEXT_BASELINE_MIDDLE) {
-    base_y -= (min_y + max_y) / 2;
+    base_y += (metrics.ascent + metrics.descent) / 2;
   } else if (canvas->text_align_v == VGCANVAS_SOFT_TEXT_BASELINE_BOTTOM) {
-    base_y -= max_y;
+    base_y += metrics.descent;
   } else {
-    base_y -= min_y;
+    base_y += metrics.ascent;
   }
 
   ret = vgcanvas_nanovg_soft_text_render_runs(canvas, runs, run_nr, min_x, min_y, max_x, max_y,
