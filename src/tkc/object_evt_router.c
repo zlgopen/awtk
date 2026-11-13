@@ -642,6 +642,10 @@ ret_t object_evt_router_publish(tk_object_t* obj, const char* topic, event_t* e)
   object_evt_router_dispatch_log(evt_router, LOG_LEVEL_DEBUG, NULL, "Publish topic: \"%s\"\n",
                                  topic);
 
+  if (!(e->time)) {
+    e->time = time_now_ms();
+  }
+
   return object_evt_router_publish_impl(evt_router, e, NULL,
                                         object_evt_router_publish_matched_callback, (void*)topic);
 }

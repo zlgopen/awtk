@@ -1,4 +1,7 @@
 # 最新动态
+  
+2026/11/13
+  * improve object_evt_router_publish(感谢兆坤提供补丁)
 
 2026/11/12
   * 修复 gif_image 的编译警告(感谢泽武提供补丁)
