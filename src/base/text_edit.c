@@ -168,6 +168,8 @@ static ret_t text_edit_select_word_impl(text_edit_t* text_edit, uint32_t cursor,
                                         int32_t* end);
 static wh_t text_edit_measure_char(STB_TEXTEDIT_STRING* str, canvas_t* c,
                                    STB_TEXTEDIT_CHARTYPE* iter, STB_TEXTEDIT_CHARTYPE* chr);
+static ret_t text_edit_paste_impl(text_edit_t* text_edit, const wchar_t* str, uint32_t size,
+                                  bool_t merge_with_prev);
 
 ret_t text_edit_adjust_ime_rect(rect_t* r, float_t device_pixel_ratio) {
   return_value_if_fail(r != NULL, RET_BAD_PARAMS);
@@ -2224,6 +2226,20 @@ static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHAR
 
 #include "stb/stb_textedit.h"
 
+/* 打断当前的撤销分组：光标/选区变化或整段命令之后调用 */
+inline static void text_edit_break_undo_group(text_edit_t* text_edit) {
+  DECL_IMPL(text_edit);
+  return_if_fail(impl != NULL);
+  stb_text_end_undo_group(&(impl->state));
+}
+
+/* 编辑动作收尾：记下“编辑之后”的光标/选区，重做时用它恢复 */
+inline static void text_edit_update_undo_after(text_edit_t* text_edit) {
+  DECL_IMPL(text_edit);
+  return_if_fail(impl != NULL);
+  stb_text_update_undo_after(&(impl->state));
+}
+
 text_edit_t* text_edit_create(widget_t* widget, bool_t single_line) {
   text_edit_impl_t* impl = NULL;
   return_value_if_fail(widget != NULL, NULL);
@@ -2864,6 +2880,8 @@ ret_t text_edit_click(text_edit_t* text_edit, xy_t x, xy_t y) {
     input_method_request(im, text_edit->widget);
   }
 
+  /* 点击改变了光标/选区，撤销分组到此为止 */
+  text_edit_break_undo_group(text_edit);
   text_edit_update_input_rect(text_edit);
 
   return RET_OK;
@@ -2894,6 +2912,9 @@ ret_t text_edit_drag(text_edit_t* text_edit, xy_t x, xy_t y) {
     text_edit_update_caret_pos(text_edit);
   }
 
+  /* 拖动改变了光标/选区，撤销分组到此为止 */
+  text_edit_break_undo_group(text_edit);
+
   return RET_OK;
 }
 
@@ -2907,7 +2928,8 @@ static ret_t text_edit_paste_from_clip_board(text_edit_t* text_edit) {
     wstr_init(&str, 0);
     wstr_from_value(&str, &v);
     wstr_normalize_newline(&str, impl->single_line ? L' ' : STB_TEXTEDIT_NEWLINE);
-    text_edit_paste(text_edit, str.str, str.size);
+    /* 剪贴板粘贴是独立的用户操作，不与上一次粘贴合并成一条撤销记录 */
+    text_edit_paste_impl(text_edit, str.str, str.size, FALSE);
     wstr_reset(&str);
   }
 
@@ -3056,7 +3078,7 @@ inline static ret_t text_edit_key_down_delete_word_prepare(text_edit_t* text_edi
 #endif
   DECL_IMPL(text_edit);
   STB_TexteditState* state = &(impl->state);
-  ret_t ret = RET_OK;
+  ret_t ret = RET_SKIP;
 
   if (is_control && state->select_start == state->select_end) {
     uint32_t cursor = text_edit_get_cursor(text_edit);
@@ -3070,6 +3092,36 @@ inline static ret_t text_edit_key_down_delete_word_prepare(text_edit_t* text_edi
   }
 
   return ret;
+}
+
+static ret_t text_edit_key_down_delete_word(text_edit_t* text_edit, key_event_t* evt,
+                                            bool_t is_prev) {
+  int32_t from = 0, to = 0;
+  DECL_IMPL(text_edit);
+  STB_TexteditState* state = &(impl->state);
+
+  if (text_edit_key_down_delete_word_prepare(text_edit, evt, is_prev) != RET_OK) {
+    return RET_SKIP;
+  }
+  if (state->select_start == state->select_end) {
+    return RET_SKIP;
+  }
+
+  from = tk_min(state->select_start, state->select_end);
+  to = tk_max(state->select_start, state->select_end);
+
+  /* 收掉内部选区（光标保持删除前的位置，用它标明删除方向），再按范围删除 */
+  state->select_start = state->select_end = state->cursor;
+  stb_textedit_delete(text_edit, state, from, to - from);
+  state->cursor = from;
+  state->select_start = state->select_end = from;
+  state->has_preferred_x = 0;
+
+  /* 删词是独立的命令：后面紧跟的退格/Delete 要另起一条记录（对齐 VS Code） */
+  text_edit_update_undo_after(text_edit);
+  text_edit_break_undo_group(text_edit);
+
+  return RET_OK;
 }
 
 ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
@@ -3147,13 +3199,19 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
       break;
     }
     case TK_KEY_DELETE: {
-      text_edit_key_down_delete_word_prepare(text_edit, evt, FALSE);
-      key = STB_TEXTEDIT_K_DELETE;
+      if (text_edit_key_down_delete_word(text_edit, evt, FALSE) == RET_OK) {
+        goto layout;
+      } else {
+        key = STB_TEXTEDIT_K_DELETE;
+      }
       break;
     }
     case TK_KEY_BACKSPACE: {
-      text_edit_key_down_delete_word_prepare(text_edit, evt, TRUE);
-      key = STB_TEXTEDIT_K_BACKSPACE;
+      if (text_edit_key_down_delete_word(text_edit, evt, TRUE) == RET_OK) {
+        goto layout;
+      } else {
+        key = STB_TEXTEDIT_K_BACKSPACE;
+      }
       break;
     }
     case TK_KEY_INSERT: {
@@ -3275,6 +3333,12 @@ on_text_will_delete_end:
 
   stb_textedit_key(text_edit, state, key);
 layout:
+  if (move_caret_pos) {
+    /* 用方向键等移动光标之后，撤销分组到此为止 */
+    text_edit_break_undo_group(text_edit);
+  }
+  /* 记下“编辑之后”的光标/选区，供重做时恢复 */
+  text_edit_update_undo_after(text_edit);
   if (!impl->single_line && impl->partial_layout && !impl->lock_scrollbar_value) {
     // 先更新一次光标位置和 oy，再进行 layout 后重新更新一次 oy
     text_edit_update_caret_pos(text_edit);
@@ -3357,6 +3421,9 @@ ret_t text_edit_cut(text_edit_t* text_edit) {
       }
       text_edit_layout(text_edit);
     }
+    /* 剪切是独立的用户操作，后面的删除不能并进这一条 */
+    text_edit_update_undo_after(text_edit);
+    text_edit_break_undo_group(text_edit);
   }
 
   return RET_OK;
@@ -3399,36 +3466,75 @@ inline static bool_t text_edit_str_is_delete_key(const wchar_t* str, uint32_t si
   return FALSE;
 }
 
-ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size) {
+/* 用 on_char_will_input 过滤待插入的字符，返回保留的字符数；filtered 由调用方 wstr_reset */
+static uint32_t text_edit_paste_filter_chars(text_edit_t* text_edit, const wchar_t* str,
+                                             uint32_t size, wstr_t* filtered) {
+  uint32_t i = 0;
   DECL_IMPL(text_edit);
-  return_value_if_fail(text_edit != NULL && str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(impl != NULL, 0);
 
-  if (text_edit_str_is_delete_key(str, size, NULL, NULL)) {
-    /* input_method 发过来的，text_edit_key_down 已经处理了，所以这里跳过 */
-    return RET_SKIP;
+  wstr_init(filtered, size + 1);
+  for (i = 0; i < size; i++) {
+    if (impl->on_char_will_input(impl->on_char_will_input_ctx, str[i]) == RET_STOP) {
+      continue;
+    }
+    wstr_push(filtered, str[i]);
   }
 
-  if (impl->on_text_will_delete) {
-    if (impl->on_text_will_delete(impl->on_text_will_delete_ctx, DELETE_BY_INPUT) == RET_STOP) {
-      return RET_STOP;
-    }
+  return filtered->size;
+}
+
+/* 按 max_chars/max_lines 算最多能插入多少字符；粘贴会先删掉选区，按删掉之后的长度算 */
+static uint32_t text_edit_paste_calc_num(text_edit_t* text_edit, const wchar_t* text,
+                                         uint32_t size) {
+  int32_t from = 0;
+  int32_t to = 0;
+  uint32_t text_size = text_edit->widget->text.size;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(impl != NULL, 0);
+
+  from = tk_min(impl->state.select_start, impl->state.select_end);
+  to = tk_max(impl->state.select_start, impl->state.select_end);
+  to = tk_min(to, (int32_t)text_size);
+  from = tk_max(from, 0);
+  if (from < to) {
+    text_size -= (uint32_t)(to - from);
   }
-  if (impl->on_char_will_input) {
-    uint32_t i, count;
-    for (i = 0, count = 0; i < size; i++) {
-      if (impl->on_char_will_input(impl->on_char_will_input_ctx, str[i]) == RET_STOP) {
-        continue;
-      }
-      stb_textedit_paste(text_edit, &(impl->state), str + i, 1);
-      count++;
-    }
-    if (count == 0) {
-      return RET_SKIP;
-    }
-    size = count;
-  } else {
-    stb_textedit_paste(text_edit, &(impl->state), str, size);
+
+  return text_edit_calc_insert_num(impl, text_size, impl->last_row_number, text, size);
+}
+
+/* 过滤 → 按上限裁剪 → 整串一次插入（一次粘贴只产生一条撤销记录），返回实际插入的字符数 */
+static uint32_t text_edit_paste_filtered(text_edit_t* text_edit, const wchar_t* str, uint32_t size,
+                                         stb_text_merge_t kind) {
+  uint32_t num = 0;
+  unsigned char can_merge = 0;
+  wstr_t filtered;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(impl != NULL, 0);
+
+  can_merge = impl->state.can_merge;
+  if (text_edit_paste_filter_chars(text_edit, str, size, &filtered) == 0) {
+    wstr_reset(&filtered);
+    return 0;
   }
+
+  /* 过滤回调可能移动光标/选区（如带掩码的输入），这里恢复分组标记 */
+  impl->state.can_merge = can_merge;
+
+  num = text_edit_paste_calc_num(text_edit, filtered.str, filtered.size);
+  if (num > 0) {
+    stb_textedit_paste(text_edit, &(impl->state), filtered.str, num, kind);
+  }
+  wstr_reset(&filtered);
+
+  return num;
+}
+
+/* 插入完成后的收尾：preedit 计数、单字符提示、光标位置和 layout */
+static void text_edit_paste_update(text_edit_t* text_edit, uint32_t size) {
+  DECL_IMPL(text_edit);
+  return_if_fail(impl != NULL);
 
   if (impl->preedit) {
     impl->preedit_chars_nr += size;
@@ -3446,8 +3552,53 @@ ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size)
     }
   }
   text_edit_layout(text_edit);
+}
+
+/* 粘贴/提交一段文本：merge_with_prev 为 TRUE 时与相邻输入合并成一条撤销记录 */
+static ret_t text_edit_paste_impl(text_edit_t* text_edit, const wchar_t* str, uint32_t size,
+                                  bool_t merge_with_prev) {
+  stb_text_merge_t kind = merge_with_prev ? STB_TEXT_MERGE_TYPING : STB_TEXT_MERGE_PASTE;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(impl != NULL && str != NULL, RET_BAD_PARAMS);
+
+  if (size == 0) {
+    return RET_SKIP;
+  }
+
+  if (!merge_with_prev) {
+    /* 让本次粘贴单独成组，避免与上一条粘贴记录合并成一次撤销 */
+    impl->state.can_merge = STB_TEXT_MERGE_NONE;
+  }
+
+  if (text_edit_str_is_delete_key(str, size, NULL, NULL)) {
+    /* input_method 发过来的，text_edit_key_down 已经处理了，所以这里跳过 */
+    return RET_SKIP;
+  }
+
+  if (impl->on_text_will_delete) {
+    if (impl->on_text_will_delete(impl->on_text_will_delete_ctx, DELETE_BY_INPUT) == RET_STOP) {
+      return RET_STOP;
+    }
+  }
+
+  if (impl->on_char_will_input) {
+    size = text_edit_paste_filtered(text_edit, str, size, kind);
+    if (size == 0) {
+      return RET_SKIP;
+    }
+  } else {
+    stb_textedit_paste(text_edit, &(impl->state), str, size, kind);
+  }
+
+  text_edit_paste_update(text_edit, size);
+  text_edit_update_undo_after(text_edit);
 
   return RET_OK;
+}
+
+ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size) {
+  /* 输入法提交/逐字符输入：与相邻的连续输入合并成一条撤销记录 */
+  return text_edit_paste_impl(text_edit, str, size, TRUE);
 }
 
 ret_t text_edit_set_cursor(text_edit_t* text_edit, uint32_t cursor) {
@@ -3463,6 +3614,8 @@ ret_t text_edit_set_cursor(text_edit_t* text_edit, uint32_t cursor) {
 
   if (impl->state.cursor != cursor) {
     impl->state.cursor = cursor;
+    /* 光标变了，撤销分组到此为止 */
+    text_edit_break_undo_group(text_edit);
     if (impl->single_line) {
       text_edit_layout(text_edit);
     } else {
@@ -3546,6 +3699,8 @@ ret_t text_edit_set_select(text_edit_t* text_edit, uint32_t start, uint32_t end)
 
   impl->state.select_start = start;
   impl->state.select_end = tk_min(end, text_edit->widget->text.size);
+  /* 选区变了，撤销分组到此为止 */
+  text_edit_break_undo_group(text_edit);
 
   if (impl->single_line) {
     text_edit_layout(text_edit);
