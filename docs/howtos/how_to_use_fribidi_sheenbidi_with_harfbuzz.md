@@ -51,6 +51,8 @@ FriBidi 和 SheenBidi 均是用于处理双向文本的开源库，但二者的�
 
 ## AWTK + FriBidi / SheenBidi + HarfBuzz 的方案介绍
 
+### 动态字符串整形
+
 动态整形方案使用 C/C++ 版本的 HarfBuzz 库，AWTK 内部已对其进行了适配，在编译 AWTK 时会一同加入编译。在绘制字符串过程中，AWTK 内部会调用 FriBidi/SheenBidi + HarfBuzz 库获取文本整形数据，最后调用字体渲染库 stb_truetype 或 FreeType 进行显示。
 
 当前方案使用的 bidi + HarfBuzz 的规则是：bidi 的段落基准方向固定为 LTR，HarfBuzz 的 OpenType feature为关闭标准连字、上下文连字和上下文备选字形。
@@ -66,6 +68,20 @@ FriBidi 和 SheenBidi 均是用于处理双向文本的开源库，但二者的�
 2. 由于 HarfBuzz 本身代码逻辑较为复杂，在获取字模前都会调用 HarfBuzz 库函数，即使在少量文本的场景下效率也会受到影响。
 
 注意：使用动态字符串方案时需要编译 HarfBuzz，而 HarfBuzz 的编译对编译器有一定要求。使用 MSVC 编译时，最低版本为 14.0.25420.1；使用 gcc 编译时，最低需要 4.8 版本。
+
+### 静态字符串整形
+
+静态整形方案使用了 HarfBuzz 的 Python 库 uharfbuzz 和 python-bidi 作为生成文本整形数据的工具，可以做到在使用 AWStudio 设计应用界面时就能通过脚本把指定文本整形数据生成好，并跟随着其它资源文件打包，最后在运行应用时遍历这些数据匹配字符串并显示整形后的字符串样式。
+
+这种方案对低资源平台友好，不需要额外编译 HarfBuzz 库文件，只需在运行时加载提前生成好的整形数据资源即可。
+
+相对应的，缺点有如下几点：
+
+1．只适合界面固定文本的场景，不适合文本需要动态变化或者需要动态输入场景，一旦某个字符串文本有变化（例如增删字符），该字符串的整形效果就会失效；
+
+2．不适合大量字符串场景，该方案在显示文本时都会遍历一次整形数据匹配字符串，若界面有大量字符串会因为匹配次数过多造成性能上的损耗。另外，一旦字符串数量较多，生成的文本整形数据文件占用空间也会很大。
+
+注意：使用 uharfbuzz 需求 3.8 以上的 python；在 win7 平台，请安装 0.4.2 版本的 python-bidi，高版本的无法正常使用，若使用终端手动打包出现报错，请修改终端的输出格式。
 
 ## AWTK + FriBidi / SheenBidi + HarfBuzz 从零开始配置与使用
 
@@ -100,13 +116,14 @@ scons BIDI_BACKEND=fribidi
 
 #### 配置
 
-在 awtk_config.py 中新增了 TEXT_SHAPING 设置，`no_text_shaping`、`harfbuzz` 分别代表不使用 HarfBuzz 整形和使用 HarfBuzz 动态整形两种模式（默认不使用整形）。
+在 awtk_config.py 中新增了 TEXT_SHAPING 设置，`no_text_shaping`、`harfbuzz`、`harfbuzz_data` 分别代表不使用 HarfBuzz 整形、使用 HarfBuzz 动态整形，使用 Harfbuzz 静态整形三种模式（默认不使用整形）。
 
 ```python
 # awtk_config.py
 
 TEXT_SHAPING = 'no_text_shaping'
 #TEXT_SHAPING = 'harfbuzz'
+#TEXT_SHAPING = 'harfbuzz_data'
 ```
 
 一般**不建议直接修改 awtk_config.py** 的配置。若需要编译某个 TEXT_SHAPING 模式，可在输入 scons 命令时加入选项。下面举例说明如何选择并编译动态字符串整形方案。
@@ -118,6 +135,66 @@ scons TEXT_SHAPING=harfbuzz
 #### 使用
 
 在完成配置并编译后，可运行 AWTK 自带的示例（路径：awtk/bin/demo_harfbuzz）查看动态整形效果。
+
+### 静态字符串方案的配置和使用
+
+#### 配置
+
+与动态字符串整形方案一样，需要在 AWTK 编译前选择整形方案，可以用以下命令对 AWTK 进行编译来启用静态字符串整形方案
+
+```shell
+scons TEXT_SHAPING=harfbuzz_data
+```
+
+#### 使用
+
+编译完 AWTK 后，还需要对项目本身做一些处理，需要将待整形的文本写入一个 json 配置文件中，在打包时通过这个文件来生成整形数据。可以在 AWTK 的资源目录找到该配置文件的模板（design/default/data/ _s_harfbuzz_data_info.json.in），将该配置文件复制到自己工程的 design/default/data 目录下，并将名字末尾的 `.in` 删除。
+
+导入该模板后，在此模板的基础上修改成自己工程所需要整形配置。json 文件示例如下，每个字体文件分为一组，在同一个字体文件中可以添加多个字符串。其中 `ttf_path` 属性为字体文件的路径（可以填绝对路径，也可以填相对于配置文件的相对路径），`text` 属性为需要进行整形的字符串集合。如果需要添加新的字体分组，需要以 “ttf + 数字序号” 的形式作为新的对象名称（数字序号从0开始），如下方的 “ttf0”和 “ttf1”。
+
+```json
+{
+    "ttf0": {
+        "ttf_path": "../fonts/trado.ttf",
+        "text": [
+            "يٌ",
+            "مُABC",
+            "لا A",
+            "بختیا",
+            "عصمتیں",
+            "فنکشکنو",
+            "بسیما",
+            "بقچیا",
+            "تشخیصِ اِعْ‌ًٌَُراب ناهمخوان از وظایف حروفْ‌چین است.",
+            "الأساسيَّةُ",
+            "رمز عبور",
+            "تکرار رمز عبور",
+            "تبلغ المساحة الإجمالية 920 كيلومترًا مربعًا",
+            "سلام دنیا",
+            "سلام",
+            "شكراً",
+            "صباح الخير",
+            "مساء الخير"
+        ]
+    },
+    "ttf1": {
+        "ttf_path": "../fonts/default.ttf",
+        "text": [
+            "bca",
+            "ABC",
+            "abd"
+        ]
+    }
+}
+```
+
+完成 json 文件后，通过 AWTK 的 SDK 包中的脚本将 json 文件中的字符串进行整形并生成对应的整形数据，并把整形数据打包到 res 文件中，命令如下：
+
+```shell
+python ./scripts/update_res.py all --awtk_root=(AWTK源码绝对路径)
+```
+
+填写 json 文件时有一些注意事项：在 rich_text 控件中，获取字模是以标签为单位获取的，所以 json 文件需要以标签为单位填写字符串；在 mledit 控件中，获取字模是以行为单行获取的，所以 json 文件需要以行为单位填写字符串（行尾包括换行符）。
 
 ## 如何在 Linux 平台使用
 
@@ -131,6 +208,18 @@ Linux 平台与 Windows 平台类似，也添加了 BIDI_BACKEND 与 TEXT_SHAPIN
 scons TEXT_SHAPING=harfbuzz
 ```
 
+编译完 AWTK 后再编译项目即可。
+
+### 使用静态字符串整形方案编译
+
+在终端中进入 awtk-linux-fb 文件夹，输入以下命令进行编译：
+
+```shell
+scons TEXT_SHAPING=harfbuzz_data
+```
+
+编译完 AWTK 后再编译项目即可。
+
 ## 如何在 RTOS 平台使用
 
 在 RTOS 平台编译时，需要手动加入宏和第三方文件。
@@ -141,6 +230,7 @@ scons TEXT_SHAPING=harfbuzz
 
 ```
 3rd/harfbuzz
+src/font_loader
 src/font_loader/harfbuzz
 
 // 根据选择的 bidi 类型决定加入编译的 bidi 文件
@@ -163,11 +253,63 @@ src/font_loader/harfbuzz
 #define WITH_HARFBUZZ_TEXT_SHAPING 1
 ```
 
-完成以上两步后再进行编译，即可使用动态字符串整形方案。
+并将以下目录加入 Include 目录
+
+```
+3rd/harfbuzz
+
+// 根据选择的 bidi 类型决定加入 Include 的目录
+3rd/SheenBidi-3.0.0
+3rd/fribidi
+```
+
+完成以上三步后再进行编译，即可使用动态字符串整形方案。
+
+### 使用静态字符串整形方案编译
+
+将以下目录的所有文件加入编译
+
+```
+src/font_loader
+src/font_loader/harfbuzz
+
+// 根据选择的 bidi 类型决定加入编译的 bidi 文件
+3rd/SheenBidi-3.0.0
+3rd/fribidi
+```
+
+在项目的 awtk_config.py 加入以下宏定义
+
+```c
+// 以下两个字体渲染引擎选择其中一个
+#define WITH_STB_FONT 1
+#define WITH_FT_FONT 1
+
+// 启用 bidi
+#define WITH_BIDI_SHEEN 1
+#define WITH_BIDI_FRIBIDI 1
+
+// 定义启用 harfbuzz 静态整形
+#define WITH_HARFBUZZ_DATA_TEXT_SHAPING 1
+```
+
+并将以下目录加入 Include 目录
+
+```
+3rd/harfbuzz
+
+// 根据选择的 bidi 类型决定加入 Include 的目录
+3rd/SheenBidi-3.0.0
+3rd/fribidi
+```
+
+完成以上三步后再进行编译，即可启用静态字符串整形方案。
 
 ## 如何在 AWTK-Android 平台使用
 
-AWTK-Android 平台也同步适配了 harfbuzz 的使用，只要在编译前修改一下编译配置即可：
+### 使用动态字符串整形方案编译
+
+AWTK-Android 平台也同步适配了动态整形的使用，只要在编译前修改一下编译配置即可：
 
 ```cmake
 # awtk-android/android-project/app/src/main/cpp/CMakeLists.txt 
@@ -178,11 +320,28 @@ set(WITH_HARFBUZZ TRUE)
 # set(WITH_HARFBUZZ FALSE)
 ```
 
-完成修改后进行编译即可使用 harfbuzz 功能。
+完成修改后进行编译即可使用动态整形功能。
+
+### 使用静态字符串整形方案编译
+
+AWTK-Android 平台也同步适配了静态整形的使用，只要在编译前修改一下编译配置即可：
+
+```cmake
+# awtk-android/android-project/app/src/main/cpp/CMakeLists.txt 
+
+# 将 WITH_HARFBUZZ_DATA 置为 TRUE
+# enable harfbuzz_data
+set(WITH_HARFBUZZ_DATA TRUE)
+# set(WITH_HARFBUZZ_DATA FALSE)
+```
+
+完成修改后进行编译即可使用静态整形功能。
 
 ## 如何在 AWTK-Web 平台使用
 
-AWTK-Web 平台也适配了 harfbuzz 的应用，与 AWTK-Android 类似，只需要修改一下编译配置即可：
+### 使用动态字符串整形方案
+
+AWTK-Web 平台也适配了动态整形的应用，与 AWTK-Android 类似，只需要修改一下编译配置即可：
 
 ```cmake
 # awtk-web/web-project/CMakeLists.txt
@@ -193,4 +352,19 @@ set(WITH_HARFBUZZ TRUE)
 # set(WITH_HARFBUZZ FALSE)
 ```
 
-完成修改后进行编译即可使用 harfbuzz 功能。
+完成修改后进行编译即可使用动态整形功能。
+
+### 使用静态字符串整形方案
+
+AWTK-Web 平台也适配了静态整形的应用，与 AWTK-Android 类似，只需要修改一下编译配置即可：
+
+```cmake
+# awtk-web/web-project/CMakeLists.txt
+
+# 将 WITH_HARFBUZZ_DATA 置为 TRUE
+# enable harfbuzz_data
+set(WITH_HARFBUZZ_DATA TRUE)
+# set(WITH_HARFBUZZ_DATA FALSE)
+```
+
+完成修改后进行编译即可使用静态整形功能。

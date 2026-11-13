@@ -3,6 +3,7 @@
 2026/11/13
   * improve object_evt_router_publish(感谢兆坤提供补丁)
   * text edit undo记录合并(感谢兆坤提供补丁)
+  * harfbuzz 帮助文档添加静态字符整形方案相关内容(感谢泽武提供补丁)
 
 2026/11/12
   * 修复 gif_image 的编译警告(感谢泽武提供补丁)
