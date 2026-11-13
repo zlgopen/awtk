@@ -549,10 +549,25 @@ static ret_t vgcanvas_nanovg_plus_fill_text_by_glyphs(vgcanvas_t* vgcanvas, glyp
   nvgp_context_t* vg = canvas->vg;
 
   float font_size = (float)glyphs_get_physical_font_size(glyphs);
-  int32_t baseline = glyphs_get_physical_font_ascent(glyphs);
+  int16_t ascent = glyphs_get_physical_font_ascent(glyphs);
+  int16_t descent = glyphs_get_physical_font_descent(glyphs);
+  int32_t baseline = ascent;
   float_t ratio = system_info()->device_pixel_ratio;
+  float_t text_width = glyphs_measure(glyphs, start, len) / ratio;
 
-  nvgp_text_align(vg, canvas->text_align_v | canvas->text_align_h);
+  // nvgp_glyph 不消费 textAlign，需要在 AWTK 层先计算水平和垂直对齐。
+  if (canvas->text_align_h == NVGP_ALIGN_CENTER) {
+    x -= text_width / 2;
+  } else if (canvas->text_align_h == NVGP_ALIGN_RIGHT) {
+    x -= text_width;
+  }
+
+  if (canvas->text_align_v == NVGP_ALIGN_MIDDLE) {
+    baseline = (ascent + descent) / 2;
+  } else if (canvas->text_align_v == NVGP_ALIGN_BOTTOM) {
+    baseline = descent;
+  }
+
   for (i = start; i < nr; i++) {
     const glyph_t* g = glyphs_get(glyphs, i);
     if (g != NULL) {

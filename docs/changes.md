@@ -5,6 +5,7 @@
   * text edit undo记录合并(感谢兆坤提供补丁)
   * harfbuzz 帮助文档添加静态字符整形方案相关内容(感谢泽武提供补丁)
   * 修复 agge 模式下vgcanvas_fill_text 没有绘制空格和底部对齐的方式不正确的问题(感谢泽武提供补丁)
+  * 修复 gl 模式下vgcanvas_fill_text 对齐不生效的问题(感谢泽武提供补丁)
 
 2026/11/12
   * 修复 gif_image 的编译警告(感谢泽武提供补丁)

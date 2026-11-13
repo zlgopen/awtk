@@ -445,6 +445,7 @@ EXPORTS
     glyphs_get
     glyphs_get_font_ascent
     glyphs_get_physical_font_ascent
+    glyphs_get_physical_font_descent
     glyphs_measure
     glyphs_get_height
     font_get_vmetrics

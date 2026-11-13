@@ -417,6 +417,16 @@ int16_t glyphs_get_font_ascent(glyphs_t* glyphs);
 int16_t glyphs_get_physical_font_ascent(glyphs_t* glyphs);
 
 /**
+ * @method glyphs_get_physical_font_descent
+ * 获取字体物理 descent。
+ * @annotation ["deconstructor"]
+ * @param {glyphs_t*} glyphs glyphs 对象。
+ *
+ * @return {int16_t} 返回 descent 。
+ */
+int16_t glyphs_get_physical_font_descent(glyphs_t* glyphs);
+
+/**
  * @method glyphs_measure
  * 计算字模长度。
  * @annotation ["deconstructor"]

@@ -335,6 +335,11 @@ int16_t glyphs_get_physical_font_ascent(glyphs_t* glyphs) {
   return glyphs->ascent;
 }
 
+int16_t glyphs_get_physical_font_descent(glyphs_t* glyphs) {
+  return_value_if_fail(glyphs != NULL && glyphs->valid == TRUE, 0);
+  return glyphs->descent;
+}
+
 int32_t glyphs_get_height(glyphs_t* glyphs) {
   int16_t h = 0;
   return_value_if_fail(glyphs != NULL && glyphs->valid == TRUE, -1);
