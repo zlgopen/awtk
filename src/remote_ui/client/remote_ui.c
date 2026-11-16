@@ -104,6 +104,7 @@ remote_ui_t* remote_ui_create(tk_iostream_t* io) {
   tk_client_init(&(ui->client), io, (tk_client_on_notify_t)remote_ui_on_notify);
   darray_init(&(ui->pending_events), 100, (tk_destroy_t)my_rbuffer_destroy, NULL);
   darray_init(&(ui->dispatching_events), 100, (tk_destroy_t)my_rbuffer_destroy, NULL);
+  wbuffer_init_extendable(&(ui->pending_props));
 
   return ui;
 }
@@ -487,6 +488,68 @@ ret_t remote_ui_set_prop(remote_ui_t* ui, const char* target, const char* name,
   return tk_client_request(&(ui->client), REMOTE_UI_SET_PROP, MSG_DATA_TYPE_BINARY, wb);
 }
 
+ret_t remote_ui_push_set_props_list(remote_ui_t* ui, const char* target, const char* name,
+                                    const value_t* value) {
+  ret_t ret = RET_OK;
+  uint32_t cursor = 0;
+  wbuffer_t* wb = NULL;
+  return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(target != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(value != NULL, RET_BAD_PARAMS);
+
+  wb = &(ui->pending_props);
+  cursor = wb->cursor;
+
+  ret = wbuffer_write_string(wb, target);
+  if (ret == RET_OK) {
+    ret = wbuffer_write_string(wb, name);
+  }
+  if (ret == RET_OK) {
+    ret = wbuffer_write_value(wb, value);
+  }
+
+  if (ret != RET_OK) {
+    wb->cursor = cursor;
+    return ret;
+  }
+
+  ui->pending_props_nr++;
+
+  return RET_OK;
+}
+
+ret_t remote_ui_clear_set_props_list(remote_ui_t* ui) {
+  return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
+
+  ui->pending_props_nr = 0;
+  wbuffer_rewind(&(ui->pending_props));
+
+  return RET_OK;
+}
+
+ret_t remote_ui_flush_set_props_list(remote_ui_t* ui) {
+  ret_t ret = RET_OK;
+  wbuffer_t* wb = NULL;
+  return_value_if_fail(ui != NULL && ui->client.io != NULL, RET_BAD_PARAMS);
+
+  if (ui->pending_props_nr == 0) {
+    return RET_OK;
+  }
+
+  wb = &(ui->client.wb);
+  wbuffer_rewind(wb);
+  return_value_if_fail(wbuffer_write_uint32(wb, ui->pending_props_nr) == RET_OK, RET_OOM);
+  return_value_if_fail(wbuffer_write_binary(wb, ui->pending_props.data,
+                                            ui->pending_props.cursor) == RET_OK,
+                       RET_OOM);
+
+  ret = tk_client_request(&(ui->client), REMOTE_UI_SET_PROPS, MSG_DATA_TYPE_BINARY, wb);
+  remote_ui_clear_set_props_list(ui);
+
+  return ret;
+}
+
 ret_t remote_ui_get_prop(remote_ui_t* ui, const char* target, const char* name, value_t* value) {
   ret_t ret = RET_OK;
   wbuffer_t* wb = NULL;
@@ -829,6 +892,7 @@ ret_t remote_ui_destroy(remote_ui_t* ui) {
   TK_OBJECT_UNREF(ui->event_handlers);
   darray_deinit(&(ui->pending_events));
   darray_deinit(&(ui->dispatching_events));
+  wbuffer_deinit(&(ui->pending_props));
   tk_client_deinit(&(ui->client));
   TKMEM_FREE(ui);
 

@@ -851,6 +851,45 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
       wbuffer_rewind(wb);
       break;
     }
+    case REMOTE_UI_SET_PROPS: {
+      uint32_t i = 0;
+      uint32_t count = 0;
+      ret_t first_ret = RET_OK;
+
+      resp.data_type = MSG_DATA_TYPE_NONE;
+      wbuffer_rewind(wb);
+
+      if (rbuffer_read_uint32(&rb, &count) != RET_OK) {
+        resp.resp_code = RET_BAD_PARAMS;
+        break;
+      }
+
+      for (i = 0; i < count; i++) {
+        value_t v;
+        ret_t ret = RET_OK;
+        const char* target = NULL;
+        const char* name = NULL;
+
+        value_set_int(&v, 0);
+        if (rbuffer_read_string(&rb, &target) != RET_OK ||
+            rbuffer_read_string(&rb, &name) != RET_OK ||
+            rbuffer_read_value(&rb, &v) != RET_OK) {
+          value_reset(&v);
+          first_ret = RET_BAD_PARAMS;
+          break;
+        }
+
+        ret = remote_ui_service_set_prop(ui, target, name, &v);
+        value_reset(&v);
+
+        if (ret != RET_OK && first_ret == RET_OK) {
+          first_ret = ret;
+        }
+      }
+
+      resp.resp_code = first_ret;
+      break;
+    }
     case REMOTE_UI_GET_PROP: {
       const char* target = NULL;
       const char* name = NULL;

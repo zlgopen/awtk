@@ -148,7 +148,12 @@ typedef enum _remote_ui_msg_code_t {
    * @const REMOTE_UI_UNHOOK_LOG
    * 接管日志。
   */
-  REMOTE_UI_UNHOOK_LOG
+  REMOTE_UI_UNHOOK_LOG,
+  /**
+   * @const REMOTE_UI_SET_PROPS
+   * 批量设置属性请求。
+   */
+  REMOTE_UI_SET_PROPS
 } remote_ui_msg_code_t;
 
 /**

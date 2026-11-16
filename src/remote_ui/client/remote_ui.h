@@ -55,6 +55,8 @@ typedef struct _remote_ui_t {
   tk_object_t* event_handlers;
   darray_t pending_events;
   darray_t dispatching_events;
+  wbuffer_t pending_props;
+  uint32_t pending_props_nr;
   remote_ui_on_log_message_t log_hook;
   void* log_hook_ctx;
   remote_ui_on_event_func_t fallback_on_event;
@@ -371,6 +373,44 @@ ret_t remote_ui_back_to_home(remote_ui_t* ui);
  */
 ret_t remote_ui_set_prop(remote_ui_t* ui, const char* target, const char* name,
                          const value_t* value);
+
+/**
+ * @method remote_ui_push_set_props_list
+ * 设置属性(先写入缓存区，不立即发送)。
+ *
+ *> 调用 remote_ui_flush_set_props_list 时才真正发送。
+ *
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {const char*} target 目标。
+ * @param {const char*} name 属性名称。
+ * @param {const value_t*} value 属性值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_push_set_props_list(remote_ui_t* ui, const char* target, const char* name,
+                                    const value_t* value);
+
+/**
+ * @method remote_ui_clear_set_props_list
+ * 清空缓存区中尚未发送的属性。
+ *
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_clear_set_props_list(remote_ui_t* ui);
+
+/**
+ * @method remote_ui_flush_set_props_list
+ * 发送缓存区中的属性。
+ *
+ *> 发送后缓存区被清空。
+ *
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_flush_set_props_list(remote_ui_t* ui);
 
 /**
  * @method remote_ui_get_prop

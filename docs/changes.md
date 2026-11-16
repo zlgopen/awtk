@@ -1,5 +1,8 @@
 # 最新动态
   
+2026/11/16
+  * 修改remote_ui添加一次发送多个属性的接口(感谢福明提供以下补丁)
+
 2026/11/13
   * improve object_evt_router_publish(感谢兆坤提供补丁)
   * text edit undo记录合并(感谢兆坤提供补丁)

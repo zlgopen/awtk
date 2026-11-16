@@ -1647,6 +1647,9 @@ EXPORTS
     remote_ui_back_to_prev
     remote_ui_back_to_home
     remote_ui_set_prop
+    remote_ui_push_set_props_list
+    remote_ui_clear_set_props_list
+    remote_ui_flush_set_props_list
     remote_ui_get_prop
     remote_ui_set_theme
     remote_ui_set_language
