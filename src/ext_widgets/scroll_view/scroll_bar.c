@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   scroll_bar.h
  * Author: AWTK Develop Team
  * Brief:  scroll_bar
@@ -647,6 +647,10 @@ static ret_t scroll_bar_desktop_on_parent_wheel_event(void* ctx, event_t* e) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
   return_value_if_equal(widget_on_wheel_children(widget->parent, evt), RET_STOP);
+
+  if (evt->dy == 0) {
+    return RET_OK; /* 精密触控板会产生大量 dy 为 0 的事件，不处理，避免误判为向下滚动 */
+  }
 
   if (widget->enable && widget->sensitive && scroll_bar->wheel_scroll &&
       scroll_bar_desktop_on_parent_wheel_event_modifier_key_is_match(scroll_bar, evt)) {
