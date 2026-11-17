@@ -564,10 +564,10 @@ static ret_t vgcanvas_nanovg_image_orientation_matrix(NVGcontext* vg, bitmap_t* 
  * Output parameter: returns RET_OK on success, RET_NOT_IMPL on software
  * rendering, RET_FAIL on unsupported sizes, or RET_BAD_PARAMS on errors.
  */
-static ret_t vgcanvas_nanovg_draw_image_repeat(vgcanvas_t* vgcanvas, bitmap_t* img,
-                                               float_t sx, float_t sy, float_t sw, float_t sh,
-                                               float_t dx, float_t dy, float_t dw, float_t dh,
-                                               float_t dst_w, float_t dst_h) {
+static ret_t vgcanvas_nanovg_draw_image_repeat(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx,
+                                               float_t sy, float_t sw, float_t sh, float_t dx,
+                                               float_t dy, float_t dw, float_t dh, float_t dst_w,
+                                               float_t dst_h) {
   NVGpaint imgPaint;
   float scaleX = (float)dw / sw;
   float scaleY = (float)dh / sh;
@@ -583,8 +583,7 @@ static ret_t vgcanvas_nanovg_draw_image_repeat(vgcanvas_t* vgcanvas, bitmap_t* i
   return_value_if_fail(id >= 0, RET_BAD_PARAMS);
 
 #ifdef WITH_NANOVG_GPU
-  imgPaint = nvgImagePatternRepeat(vg, sx, sy, sw, sh, dw, dh,
-                                   bitmap_get_physical_width(img),
+  imgPaint = nvgImagePatternRepeat(vg, sx, sy, sw, sh, dw, dh, bitmap_get_physical_width(img),
                                    bitmap_get_physical_height(img), 0, id, 1);
 #else
   imgPaint = nvgImagePattern(vg, dx, dy, dst_w, dst_h, 0, id, 1);

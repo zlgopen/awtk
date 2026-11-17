@@ -540,9 +540,9 @@ ret_t remote_ui_flush_set_props_list(remote_ui_t* ui) {
   wb = &(ui->client.wb);
   wbuffer_rewind(wb);
   return_value_if_fail(wbuffer_write_uint32(wb, ui->pending_props_nr) == RET_OK, RET_OOM);
-  return_value_if_fail(wbuffer_write_binary(wb, ui->pending_props.data,
-                                            ui->pending_props.cursor) == RET_OK,
-                       RET_OOM);
+  return_value_if_fail(
+      wbuffer_write_binary(wb, ui->pending_props.data, ui->pending_props.cursor) == RET_OK,
+      RET_OOM);
 
   ret = tk_client_request(&(ui->client), REMOTE_UI_SET_PROPS, MSG_DATA_TYPE_BINARY, wb);
   remote_ui_clear_set_props_list(ui);

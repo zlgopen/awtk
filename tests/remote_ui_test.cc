@@ -699,16 +699,17 @@ TEST_F(RemoteUITest, global_language_and_unknown_prop) {
   ASSERT_EQ(remote_ui_flush_set_props_list(ui_), RET_OK);
 
   value_set_int(&got, 0);
-  ASSERT_EQ(remote_ui_get_prop(ui_, REMOTE_UI_TARGET_GLOBAL, REMOTE_UI_PROP_LANGUAGE, &got), RET_OK);
+  ASSERT_EQ(remote_ui_get_prop(ui_, REMOTE_UI_TARGET_GLOBAL, REMOTE_UI_PROP_LANGUAGE, &got),
+            RET_OK);
   ASSERT_STREQ(value_str(&got), next);
   value_reset(&got);
   ASSERT_EQ(locale_info_change(locale_info(), prev_language, prev_country), RET_OK);
 
   tk_strncpy(theme_name, widget_get_theme_name(window_manager()), TK_NAME_LEN);
   value_set_str(&language, theme_name);
-  ASSERT_EQ(remote_ui_push_set_props_list(ui_, REMOTE_UI_TARGET_GLOBAL, REMOTE_UI_PROP_THEME,
-                                          &language),
-            RET_OK);
+  ASSERT_EQ(
+      remote_ui_push_set_props_list(ui_, REMOTE_UI_TARGET_GLOBAL, REMOTE_UI_PROP_THEME, &language),
+      RET_OK);
   ASSERT_EQ(remote_ui_push_set_props_list(ui_, REMOTE_UI_TARGET_GLOBAL, "no_such", &language),
             RET_OK);
   ASSERT_EQ(remote_ui_flush_set_props_list(ui_), RET_NOT_FOUND);

@@ -358,9 +358,9 @@ static ret_t vgcanvas_nanovg_soft_text_fill_text(vgcanvas_t* vgcanvas, const cha
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   ret_t ret = vgcanvas_nanovg_soft_text_ensure_font(canvas, vgcanvas->font);
   return_value_if_fail(ret == RET_OK && text != NULL, RET_BAD_PARAMS);
-  metrics = font_get_vmetrics(canvas->awtk_font != NULL ? canvas->awtk_font
-                                                        : canvas->awtk_fallback_font,
-                              canvas->awtk_font_size);
+  metrics =
+      font_get_vmetrics(canvas->awtk_font != NULL ? canvas->awtk_font : canvas->awtk_fallback_font,
+                        canvas->awtk_font_size);
   (void)max_width;
 
   text_len = (uint32_t)strlen(text);

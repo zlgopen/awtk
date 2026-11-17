@@ -872,8 +872,7 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
 
         value_set_int(&v, 0);
         if (rbuffer_read_string(&rb, &target) != RET_OK ||
-            rbuffer_read_string(&rb, &name) != RET_OK ||
-            rbuffer_read_value(&rb, &v) != RET_OK) {
+            rbuffer_read_string(&rb, &name) != RET_OK || rbuffer_read_value(&rb, &v) != RET_OK) {
           value_reset(&v);
           first_ret = RET_BAD_PARAMS;
           break;
