@@ -9,6 +9,7 @@ if [ -z "$CLANG_FORMAT" ]; then
 fi
 
 #不带参数时格式化整个工程，带参数时只格式化指定的文件或目录(如: ./format.sh src/base)
+#tools/api_doc_lint 是第三方 ctags 代码，不参与格式化
 if [ $# -eq 0 ]; then
   TARGETS="src tools demos tests"
 else
@@ -19,7 +20,11 @@ FILES=()
 while IFS= read -r f
 do
   FILES+=("$f")
-done < <(find $TARGETS \( -name '*.c' -o -name '*.h' -o -name '*.cc' -o -name '*.cpp' -o -name '*.inc' \) 2>/dev/null)
+done < <(find $TARGETS \
+  \( -path 'tools/api_doc_lint' -o -path 'tools/api_doc_lint/*' \
+     -o -path '*/tools/api_doc_lint' -o -path '*/tools/api_doc_lint/*' \) -prune \
+  -o \( -name '*.c' -o -name '*.h' -o -name '*.cc' -o -name '*.cpp' -o -name '*.inc' \) -print \
+  2>/dev/null)
 
 TOTAL=${#FILES[@]}
 echo "using $CLANG_FORMAT"
