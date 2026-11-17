@@ -25,9 +25,6 @@
 
 #include "tkc/object_hash.h"
 
-#define OBJECT_HASH_FIND_PROP_BY_NAME_PROPS_SIZE_THRESHOLD 8
-#define OBJECT_HASH_FIND_PROP_BY_NAME_LEN_THRESHOLD 16
-
 inline static uint64_t object_hash_gen_name_hash(object_hash_t* o, const char* name) {
   if (o->name_case_insensitive) {
     return named_value_hash_get_hash_from_str_with_conv(name, tolower);
@@ -46,6 +43,10 @@ inline static tk_compare_t object_hash_get_cmp_by_name(object_hash_t* o) {
 
 static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char* name,
                                                    bool_t* p_is_gen_hash, uint64_t* p_hash) {
+  enum {
+    OBJECT_HASH_FIND_PROP_BY_NAME_PROPS_SIZE_THRESHOLD = 8,
+    OBJECT_HASH_FIND_PROP_BY_NAME_LEN_THRESHOLD = 16
+  };
   int32_t ret = -1;
   object_hash_t* o = OBJECT_HASH(obj);
   return_value_if_fail(o != NULL && name != NULL, -1);
