@@ -1,4 +1,4 @@
-#include "base/dialog.h"
+﻿#include "base/dialog.h"
 #include "base/self_layouter.h"
 #include "tkc/path.h"
 #include "ui_loader/ui_builder_default.h"

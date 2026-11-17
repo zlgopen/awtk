@@ -1,4 +1,4 @@
-#include "conf_io/conf_xml.h"
+﻿#include "conf_io/conf_xml.h"
 #include "tkc/fs.h"
 #include "tkc/utils.h"
 #include "tkc/platform.h"

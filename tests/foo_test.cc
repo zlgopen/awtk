@@ -1,4 +1,4 @@
-#include "foo_client.h"
+﻿#include "foo_client.h"
 #include "foo_service.h"
 #include "tkc/thread.h"
 #include "tkc/platform.h"

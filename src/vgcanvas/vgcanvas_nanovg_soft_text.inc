@@ -1,4 +1,4 @@
-#ifndef TK_VGCANVAS_NANOVG_SOFT_TEXT_INC
+﻿#ifndef TK_VGCANVAS_NANOVG_SOFT_TEXT_INC
 #define TK_VGCANVAS_NANOVG_SOFT_TEXT_INC
 
 typedef enum _vgcanvas_soft_text_align_h_t {

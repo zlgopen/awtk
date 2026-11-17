@@ -1,4 +1,4 @@
-/*
+﻿/*
  * conversion functions between pg_wchar and multibyte streams.
  * Tatsuo Ishii
  * src/backend/utils/mb/wchar.c

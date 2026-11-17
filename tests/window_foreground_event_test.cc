@@ -1,4 +1,4 @@
-#include "awtk.h"
+﻿#include "awtk.h"
 #include "base/dialog.h"
 #include "base/idle.h"
 #include "base/window.h"

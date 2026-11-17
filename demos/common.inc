@@ -1,4 +1,4 @@
-#include "base/timer.h"
+﻿#include "base/timer.h"
 
 static inline ret_t on_timer(const timer_info_t* timer) {
   widget_t* progress_bar = (widget_t*)timer->ctx;

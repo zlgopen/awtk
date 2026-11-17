@@ -1,4 +1,4 @@
-#include "tkc/utils.h"
+﻿#include "tkc/utils.h"
 #include "base/types_def.h"
 #include "vgcanvas_nanovg.inc"
 #include "vgcanvas_nanovg_soft_text.inc"

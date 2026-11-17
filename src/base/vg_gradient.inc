@@ -1,4 +1,4 @@
-
+﻿
 /**
  * File: vg_gradient.c
  * Author: AWTK Develop Team

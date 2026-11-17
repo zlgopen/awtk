@@ -1,4 +1,4 @@
-#include "tkc/object_default.h"
+﻿#include "tkc/object_default.h"
 #include "tkc/object_array.h"
 #include "tkc/data_reader_mem.h"
 #include "conf_io/conf_utils.h"

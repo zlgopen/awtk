@@ -1,4 +1,4 @@
-#include <string.h>
+﻿#include <string.h>
 #include "base/vgcanvas.h"
 #include "gtest/gtest.h"
 

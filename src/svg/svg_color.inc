@@ -1,4 +1,4 @@
-#include "svg_color.h"
+﻿#include "svg_color.h"
 
 uint32_t svg_color_size(svg_color_type_t type) {
   uint32_t size = 0;

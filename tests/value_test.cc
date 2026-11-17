@@ -1,4 +1,4 @@
-#include "tkc/value.h"
+﻿#include "tkc/value.h"
 #include "gtest/gtest.h"
 #include "tkc/object_default.h"
 #include <cmath>

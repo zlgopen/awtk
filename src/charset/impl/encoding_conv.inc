@@ -1,4 +1,4 @@
-#include "wchar.inc"
+﻿#include "wchar.inc"
 #include "conv_common.inc"
 #include "Unicode/gbk_to_utf8.map"
 #include "Unicode/utf8_to_gbk.map"

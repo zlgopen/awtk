@@ -1,4 +1,4 @@
-#include "base/locale_info.h"
+﻿#include "base/locale_info.h"
 #include "base/window.h"
 #include "base/window_manager.h"
 #include "gtest/gtest.h"

@@ -1,4 +1,4 @@
-
+﻿
 static ret_t vgcanvas_asset_manager_nanovg_font_destroy(void* vg, const char* font_name,
                                                         void* specific) {
   int32_t id = tk_pointer_to_int(specific);

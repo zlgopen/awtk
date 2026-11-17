@@ -1,4 +1,4 @@
-#include "awtk.h"
+﻿#include "awtk.h"
 #include "demos/assets.h"
 
 static void create_destroy_test1(void) {

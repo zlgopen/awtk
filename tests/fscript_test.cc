@@ -1,4 +1,4 @@
-#include "tkc/utf8.h"
+﻿#include "tkc/utf8.h"
 #include "tkc/fscript.h"
 #include "tkc/object_default.h"
 #include "gtest/gtest.h"

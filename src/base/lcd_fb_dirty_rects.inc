@@ -1,4 +1,4 @@
-#include "base/lcd_fb_dirty_rects.h"
+﻿#include "base/lcd_fb_dirty_rects.h"
 
 typedef struct _lcd_fb_info_t {
   uint8_t* fb;

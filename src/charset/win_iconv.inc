@@ -1,4 +1,4 @@
-/*
+﻿/*
  * iconv implementation using Win32 API to convert.
  *
  * This file is placed in the public domain.

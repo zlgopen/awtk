@@ -1,4 +1,4 @@
-#include "tkc/wchar32.h"
+﻿#include "tkc/wchar32.h"
 #include "tkc/mem.h"
 #include "gtest/gtest.h"
 

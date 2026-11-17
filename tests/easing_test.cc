@@ -1,4 +1,4 @@
-#include "tkc/easing.h"
+﻿#include "tkc/easing.h"
 #include "gtest/gtest.h"
 #include "widgets/button.h"
 #include "widget_animators/widget_animator_prop.h"

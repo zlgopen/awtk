@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+﻿#include "gtest/gtest.h"
 
 #define TK_MAX_DIRTY_RECT_NR 3
 #include "base/dirty_rects.h"

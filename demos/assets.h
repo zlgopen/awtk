@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   asset.h
  * Author: AWTK Develop Team
  * Brief:  asset init

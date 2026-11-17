@@ -1,4 +1,4 @@
-#include "tkc/rect.h"
+﻿#include "tkc/rect.h"
 #include "base/bitmap.h"
 #include "base/events.h"
 #include "base/widget.h"

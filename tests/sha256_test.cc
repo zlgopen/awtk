@@ -1,4 +1,4 @@
-#include "tkc/sha256.h"
+﻿#include "tkc/sha256.h"
 #include "gtest/gtest.h"
 
 TEST(SHA256, basic) {

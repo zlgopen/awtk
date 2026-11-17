@@ -1,4 +1,4 @@
-
+﻿
 #include <string>
 using std::string;
 static string s_log;

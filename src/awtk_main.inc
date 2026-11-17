@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   awtk_main.c
  * Author: AWTK Develop Team
  * Brief:  awtk main

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   theme_xml.c
  * Author: AWTK Develop Team
  * Brief:  load theme data from xml

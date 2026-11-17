@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   edit_ex_multiline_helper.inc
  * Author: AWTK Develop Team
  * Brief: edit_ex多行编辑帮助函数 

@@ -1,4 +1,4 @@
-
+﻿
 #include "base/gradient.h"
 #include "gtest/gtest.h"
 

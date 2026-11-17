@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd_mem_fragment.h
  * Author: AWTK Develop Team
  * Brief:  mem fragment based implemented lcd interface

@@ -1,4 +1,4 @@
-#include "base/lcd.h"
+﻿#include "base/lcd.h"
 #include "base/widget_vtable.h"
 #include "base/dirty_rects.h"
 

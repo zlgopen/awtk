@@ -1,4 +1,4 @@
-#include "tkc/str.h"
+﻿#include "tkc/str.h"
 #include "tkc/utils.h"
 #include "tkc/object_default.h"
 #include "gtest/gtest.h"

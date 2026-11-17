@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   multi_gesture.inc
  * Author: AWTK Develop Team
  * Brief:  multi_gesture

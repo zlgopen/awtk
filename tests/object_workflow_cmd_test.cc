@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   object_workflow_cmd_test.cc
  * Brief:  object_workflow_cmd（对象命令工作流）单元测试。
  *

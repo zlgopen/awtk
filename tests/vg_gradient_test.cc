@@ -1,4 +1,4 @@
-
+﻿
 #include "base/vg_gradient.h"
 #include "gtest/gtest.h"
 

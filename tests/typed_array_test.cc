@@ -1,4 +1,4 @@
-#include "tkc/typed_array.h"
+﻿#include "tkc/typed_array.h"
 #include "tkc/object_typed_array.h"
 #include "gtest/gtest.h"
 

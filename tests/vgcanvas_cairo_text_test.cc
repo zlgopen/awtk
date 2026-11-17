@@ -1,4 +1,4 @@
-#include <vector>
+﻿#include <vector>
 
 #include "base/dirty_rects.h"
 #include "base/vgcanvas.h"
