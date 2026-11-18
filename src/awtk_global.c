@@ -228,11 +228,7 @@ ret_t tk_init_internal(void) {
 #ifdef WITH_TRUETYPE_FONT
   font_loader = font_loader_truetype();
 #elif defined(WITH_BITMAP_FONT)
-#ifdef WITH_NO_TEXT_SHAPING
   font_loader = font_loader_bitmap();
-#elif defined(WITH_HARFBUZZ_DATA_TEXT_SHAPING)
-  font_loader = font_loader_harfbuzz_data_bitmap();
-#endif /*WITH_HARFBUZZ_TEXT_SHAPING*/
 #endif /*WITH_TRUETYPE_FONT*/
 
   return_value_if_fail(easing_init() == RET_OK, RET_FAIL);
