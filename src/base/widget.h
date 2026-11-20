@@ -2002,6 +2002,23 @@ ret_t widget_draw_text_in_rect_with_glyphs(widget_t* widget, canvas_t* c, glyphs
 glyphs_t* widget_create_glyphs(widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size);
 
 /**
+ * @method widget_init_glyphs
+ * 初始化字模列表对象，结果写入调用方提供的 glyphs 对象。
+ * 备注：
+ * 1.该函数会按控件的 shaping/bidi 属性设置字体的光栅参数。
+ * 2.返回 RET_OK 后，需要用户调用 glyphs_deinit 函数释放。
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param {glyphs_t*} glyphs 返回的字模列表对象。
+ * @param {const wchar_t*} str 文本。
+ * @param {uint32_t} size 文本长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_init_glyphs(widget_t* widget, canvas_t* c, glyphs_t* glyphs, const wchar_t* str,
+                         uint32_t size);
+
+/**
  * @method widget_dispatch
  * 分发一个事件。
  * @param {widget_t*} widget 控件对象。

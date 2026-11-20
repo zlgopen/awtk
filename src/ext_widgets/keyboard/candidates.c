@@ -137,12 +137,13 @@ static ret_t candidates_ensure_children(widget_t* widget, uint32_t nr) {
 
 static uint32_t candidates_calc_child_width(canvas_t* c, widget_t* widget) {
   uint32_t w = 0;
-  glyphs_t* glyphs = NULL;
+  glyphs_t glyphs;
+  ret_t ret = RET_OK;
   wstr_t* str = &(widget->text);
-  glyphs = widget_create_glyphs(widget, c, str->str, str->size);
-  return_value_if_fail(glyphs != NULL, 0);
-  w = glyphs_measure(glyphs, 0, glyphs_get_length(glyphs));
-  glyphs_destroy(glyphs);
+  ret = widget_init_glyphs(widget, c, &glyphs, str->str, str->size);
+  return_value_if_fail(ret == RET_OK, 0);
+  w = glyphs_measure(&glyphs, 0, glyphs_get_length(&glyphs));
+  glyphs_deinit(&glyphs);
   return w;
 }
 

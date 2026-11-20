@@ -125,14 +125,14 @@ static ret_t font_harfbuzz_data_bitmap_get_glyph(font_t* f, wchar_t c, font_size
   return font_harfbuzz_data_bitmap_get_glyph_impl(f, c, font_size, NULL, g);
 }
 
-static glyphs_t* font_harfbuzz_data_bitmap_create_glyphs(font_t* f, const wchar_t* str,
-                                                         uint32_t len, font_size_t font_size,
-                                                         font_raster_params_t* params) {
+static ret_t font_harfbuzz_data_bitmap_init_glyphs(font_t* f, glyphs_t* glyphs,
+                                                   const wchar_t* str, uint32_t len,
+                                                   font_size_t font_size,
+                                                   font_raster_params_t* params) {
   bidi_t b;
   uint32_t i = 0;
-  ret_t ret = RET_OK;
+  ret_t ret = RET_FAIL;
   hb_str_t hb_str = {0};
-  glyphs_t* glyphs = NULL;
   font_vmetrics_t vmetrics;
   hb_info_t* hb_info = NULL;
   hb_str_info_t* str_info = NULL;
@@ -153,9 +153,9 @@ static glyphs_t* font_harfbuzz_data_bitmap_create_glyphs(font_t* f, const wchar_
   str_info = harfbuzz_data_loader_find_info(harfbuzz_manager, f->name, str, len);
 
   if (str_info != NULL) {
-    glyphs = glyphs_create((wchar_t*)str_info->str, str_info->hb_info_size, len, TRUE, font_size,
-                           &vmetrics);
-    return_value_if_fail(glyphs != NULL, NULL);
+    ret = glyphs_init(glyphs, (wchar_t*)str_info->str, str_info->hb_info_size, len, TRUE,
+                      font_size, &vmetrics);
+    return_value_if_fail(ret == RET_OK, RET_FAIL);
     glyphs->font = f;
     hb_str.str = str;
     hb_info = str_info->hb_info;
@@ -171,11 +171,12 @@ static glyphs_t* font_harfbuzz_data_bitmap_create_glyphs(font_t* f, const wchar_
         glyphs->glyphs[i].h = 0;
       }
     }
+    ret = RET_OK;
   } else {
     bidi_init(&b, FALSE, FALSE, params->bidi_type);
     if (bidi_log2vis(&b, str, len) == RET_OK) {
-      glyphs = glyphs_create(b.vis_str, b.vis_str_size, len, FALSE, font_size, &vmetrics);
-      goto_error_if_fail(glyphs != NULL);
+      ret = glyphs_init(glyphs, b.vis_str, b.vis_str_size, len, FALSE, font_size, &vmetrics);
+      goto_error_if_fail(ret == RET_OK);
       glyphs->font = f;
       for (i = 0; i < b.vis_str_size; i++) {
         wchar_t c = b.vis_str[i];
@@ -187,6 +188,7 @@ static glyphs_t* font_harfbuzz_data_bitmap_create_glyphs(font_t* f, const wchar_
           glyphs->glyphs[i].h = 0;
         }
       }
+      ret = RET_OK;
     }
   }
 
@@ -198,10 +200,11 @@ static glyphs_t* font_harfbuzz_data_bitmap_create_glyphs(font_t* f, const wchar_
     hb_set_normal_glyphs_chr(glyphs, &b);
     bidi_deinit(&b);
   }
-  return glyphs;
+  return ret;
 error:
   bidi_deinit(&b);
-  return glyphs;
+  glyphs_deinit(glyphs);
+  return RET_FAIL;
 }
 
 static bool_t font_harfbuzz_data_bitmap_match(font_t* f, const char* name, font_size_t font_size) {
@@ -254,7 +257,7 @@ font_t* font_harfbuzz_data_bitmap_init(font_harfbuzz_data_bitmap_t* f, const cha
   f->base.match = font_harfbuzz_data_bitmap_match;
   f->base.get_vmetrics = font_harfbuzz_data_bitmap_get_vmetrics;
   f->base.get_glyph = font_harfbuzz_data_bitmap_get_glyph;
-  f->base.create_glyphs = font_harfbuzz_data_bitmap_create_glyphs;
+  f->base.init_glyphs = font_harfbuzz_data_bitmap_init_glyphs;
   f->base.destroy = font_harfbuzz_data_bitmap_destroy;
   f->base.desc = "bitmap with harfbuzz font";
   tk_strncpy(f->base.name, name, MAX_PATH);

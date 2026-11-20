@@ -57,11 +57,12 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
   wstr_t* text = &(widget->text);
   uint32_t w = widget->w - left_margin - right_margin;
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
-  glyphs_t* glyphs = widget_create_glyphs(widget, c, text->str, text->size);
+  glyphs_t glyphs = {0};
   ENSURE(hscroll_label);
-  return_value_if_fail(glyphs != NULL, RET_FAIL);
+  ret = widget_init_glyphs(widget, c, &glyphs, text->str, text->size);
+  return_value_if_fail(ret == RET_OK, RET_FAIL);
 
-  hscroll_label->text_w = glyphs_measure(glyphs, 0, glyphs_get_length(glyphs));
+  hscroll_label->text_w = glyphs_measure(&glyphs, 0, glyphs_get_length(&glyphs));
   if (hscroll_label->text_w != hscroll_label->old_text_w) {
     if (tk_str_eq(widget->state, WIDGET_STATE_FOCUSED)) {
       hscroll_label_start(widget);
@@ -75,7 +76,7 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
     r = rect_init(left_margin, 0, w, widget->h);
 
     ret =
-        canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), &r, TRUE);
+        canvas_draw_text_bidi_in_rect_by_glyphs(c, &glyphs, 0, glyphs_get_length(&glyphs), &r, TRUE);
     goto destroy;
   }
 
@@ -88,7 +89,7 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
   }
 
   r = rect_init(left_margin - hscroll_label->xoffset, 0, w, widget->h);
-  canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), &r, FALSE);
+  canvas_draw_text_bidi_in_rect_by_glyphs(c, &glyphs, 0, glyphs_get_length(&glyphs), &r, FALSE);
 
   if (hscroll_label->stop_at_begin) {
     int32_t range = hscroll_label_get_range(widget, FALSE);
@@ -96,11 +97,13 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
         hscroll_label->xoffset - range - hscroll_label_get_loop_end_and_begin_distance(widget);
     if (offset > 0) {
       r = rect_init(w - offset + left_margin, 0, w, widget->h);
-      canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), &r, FALSE);
+      canvas_draw_text_bidi_in_rect_by_glyphs(c, &glyphs, 0, glyphs_get_length(&glyphs), &r, FALSE);
     }
   }
 destroy:
-  glyphs_destroy(glyphs);
+  if (glyphs_get_valid(&glyphs)) {
+    glyphs_deinit(&glyphs);
+  }
   return ret;
 }
 

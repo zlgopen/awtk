@@ -356,13 +356,14 @@ ret_t canvas_set_text_align(canvas_t* c, align_h_t align_h, align_v_t align_v) {
 
 static float_t canvas_measure_text_default(canvas_t* c, const wchar_t* str, uint32_t nr) {
   float_t w = 0;
-  glyphs_t* glyphs = NULL;
+  glyphs_t glyphs;
+  ret_t ret = RET_OK;
   return_value_if_fail(c != NULL && str != NULL && c->font != NULL, 0);
 
-  glyphs = font_create_glyphs(c->font, str, nr, c->font_size, NULL);
-  return_value_if_fail(glyphs != NULL, 0);
-  w = glyphs_measure(glyphs, 0, nr);
-  glyphs_destroy(glyphs);
+  ret = font_init_glyphs(c->font, &glyphs, str, nr, c->font_size, NULL);
+  return_value_if_fail(ret == RET_OK, 0);
+  w = glyphs_measure(&glyphs, 0, nr);
+  glyphs_deinit(&glyphs);
   return w;
 }
 
@@ -835,14 +836,14 @@ ret_t canvas_draw_text_by_glyphs(canvas_t* c, glyphs_t* glyphs, uint32_t start, 
 
 ret_t canvas_draw_text(canvas_t* c, const wchar_t* str, uint32_t nr, xy_t x, xy_t y) {
   ret_t ret = RET_OK;
-  glyphs_t* glyphs = NULL;
+  glyphs_t glyphs;
   return_value_if_fail(c != NULL && str != NULL, RET_BAD_PARAMS);
 
-  glyphs = font_create_glyphs(c->font, str, nr, c->font_size, NULL);
-  return_value_if_fail(glyphs != NULL, RET_FAIL);
+  ret = font_init_glyphs(c->font, &glyphs, str, nr, c->font_size, NULL);
+  return_value_if_fail(ret == RET_OK, RET_FAIL);
 
-  ret = canvas_draw_text_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), x, y);
-  glyphs_destroy(glyphs);
+  ret = canvas_draw_text_by_glyphs(c, &glyphs, 0, glyphs_get_length(&glyphs), x, y);
+  glyphs_deinit(&glyphs);
 
   return ret;
 }
@@ -2056,14 +2057,14 @@ ret_t canvas_draw_text_in_rect_by_glyphs(canvas_t* c, glyphs_t* glyphs, uint32_t
 
 ret_t canvas_draw_text_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, const rect_t* r_in) {
   ret_t ret = RET_OK;
-  glyphs_t* glyphs = NULL;
+  glyphs_t glyphs;
   return_value_if_fail(c != NULL && str != NULL && nr > 0 && r_in != NULL, RET_BAD_PARAMS);
 
-  glyphs = font_create_glyphs(c->font, str, nr, c->font_size, NULL);
-  return_value_if_fail(glyphs != NULL, RET_FAIL);
+  ret = font_init_glyphs(c->font, &glyphs, str, nr, c->font_size, NULL);
+  return_value_if_fail(ret == RET_OK, RET_FAIL);
 
-  ret = canvas_draw_text_in_rect_by_glyphs(c, glyphs, 0, nr, r_in);
-  glyphs_destroy(glyphs);
+  ret = canvas_draw_text_in_rect_by_glyphs(c, &glyphs, 0, nr, r_in);
+  glyphs_deinit(&glyphs);
   return ret;
 }
 
@@ -2076,12 +2077,13 @@ static ret_t canvas_draw_text_in_rect_ellipses(canvas_t* c, glyphs_t* glyphs, ui
   float_t text_w = 0;
   float_t ellipses_w = 0;
   uint32_t nr = start + len;
-  glyphs_t* ellipse_glyphs = NULL;
+  glyphs_t ellipse_glyphs = {0};
   return_value_if_fail(nr <= glyphs_get_length(glyphs), RET_BAD_PARAMS);
 
-  ellipse_glyphs =
-      font_create_glyphs(c->font, STR_ELLIPSES, ARRAY_SIZE(STR_ELLIPSES) - 1, c->font_size, NULL);
-  ellipses_w = glyphs_measure(ellipse_glyphs, 0, glyphs_get_length(ellipse_glyphs));
+  if (font_init_glyphs(c->font, &ellipse_glyphs, STR_ELLIPSES, ARRAY_SIZE(STR_ELLIPSES) - 1,
+                       c->font_size, NULL) == RET_OK) {
+    ellipses_w = glyphs_measure(&ellipse_glyphs, 0, glyphs_get_length(&ellipse_glyphs));
+  }
 
   for (; i < nr; i++) {
     float_t char_w = glyphs_measure(glyphs, i, 1);
@@ -2096,10 +2098,10 @@ static ret_t canvas_draw_text_in_rect_ellipses(canvas_t* c, glyphs_t* glyphs, ui
   canvas_draw_text_in_rect_by_glyphs(c, glyphs, 0, i, &r);
   r.x += text_w;
   r.w = ellipses_w;
-  canvas_draw_text_in_rect_by_glyphs(c, ellipse_glyphs, 0, glyphs_get_length(ellipse_glyphs), &r);
-
-  if (ellipse_glyphs != NULL) {
-    glyphs_destroy(ellipse_glyphs);
+  if (glyphs_get_valid(&ellipse_glyphs)) {
+    canvas_draw_text_in_rect_by_glyphs(c, &ellipse_glyphs, 0, glyphs_get_length(&ellipse_glyphs),
+                                      &r);
+    glyphs_deinit(&ellipse_glyphs);
   }
   return RET_OK;
 }
@@ -2122,7 +2124,7 @@ ret_t canvas_draw_text_bidi_in_rect_by_glyphs(canvas_t* c, glyphs_t* glyphs, uin
 ret_t canvas_draw_text_bidi_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr,
                                     const rect_t* r_in, const char* bidi_type, bool_t ellipses) {
   ret_t ret = RET_FAIL;
-  glyphs_t* glyphs = NULL;
+  glyphs_t glyphs;
   font_raster_params_t params;
   return_value_if_fail(c != NULL && str != NULL && r_in != NULL, RET_BAD_PARAMS);
 
@@ -2132,12 +2134,12 @@ ret_t canvas_draw_text_bidi_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr
   font_get_raster_params(c->font, &params);
   params.bidi_type = bidi_type_from_name(bidi_type);
 
-  glyphs = font_create_glyphs(c->font, str, nr, c->font_size, &params);
+  ret = font_init_glyphs(c->font, &glyphs, str, nr, c->font_size, &params);
 
-  if (glyphs != NULL) {
-    ret = canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_get_length(glyphs), r_in,
-                                                  ellipses);
-    glyphs_destroy(glyphs);
+  if (ret == RET_OK) {
+    ret = canvas_draw_text_bidi_in_rect_by_glyphs(c, &glyphs, 0, glyphs_get_length(&glyphs),
+                                                  r_in, ellipses);
+    glyphs_deinit(&glyphs);
   }
   return ret;
 }

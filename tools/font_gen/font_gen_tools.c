@@ -100,14 +100,15 @@ static ret_t font_gen_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, 
   return g->data != NULL ? RET_OK : RET_NOT_FOUND;
 }
 
-static glyphs_t* font_gen_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_t len,
-                                           font_size_t font_size, font_raster_params_t* params) {
+static ret_t font_gen_ft_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t* str, uint32_t len,
+                                     font_size_t font_size, font_raster_params_t* params) {
   (void)f;
+  (void)glyphs;
   (void)str;
   (void)len;
   (void)font_size;
   (void)params;
-  return NULL;
+  return RET_NOT_IMPL;
 }
 
 /* 镜像 font_loader_ft.c 的 font_ft_get_vmetrics。 */
@@ -185,7 +186,7 @@ static font_t* font_gen_ft_create(const char* name, const uint8_t* buff, uint32_
   f->base.match = font_gen_ft_match;
   f->base.destroy = font_gen_ft_destroy;
   f->base.get_glyph = font_gen_ft_get_glyph;
-  f->base.create_glyphs = font_gen_ft_create_glyphs;
+  f->base.init_glyphs = font_gen_ft_init_glyphs;
   f->base.get_vmetrics = font_gen_ft_get_vmetrics;
   f->base.shrink_cache = font_gen_ft_shrink_cache;
   f->base.desc = mono ? "mono(freetype)" : "truetype(freetype)";

@@ -186,22 +186,23 @@ static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, gly
   return font_stb_get_glyph_impl(f, c, font_size, g) != NULL || c == ' ' ? RET_OK : RET_NOT_FOUND;
 }
 
-static glyphs_t* font_stb_create_glyphs(font_t* f, const wchar_t* str, uint32_t len,
-                                        font_size_t font_size, font_raster_params_t* params) {
+static ret_t font_stb_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t* str, uint32_t len,
+                                  font_size_t font_size, font_raster_params_t* params) {
   bidi_t b;
+  ret_t ret = RET_FAIL;
   uint32_t i = 0;
   uint32_t visual_index = 0;
   uint32_t logical_index = 0;
   uint32_t code_unit_count = 0;
   uint32_t glyph_index = 0;
-  glyphs_t* glyphs = NULL;
   font_stb_t* font = (font_stb_t*)f;
   font_vmetrics_t vmetrics = font_get_vmetrics(f, font_size);
   bidi_init(&b, FALSE, TRUE, params->bidi_type);
   if (bidi_log2vis(&b, str, len) == RET_OK) {
-    glyphs = glyphs_create(b.vis_str, b.vis_str_size, len, TRUE, font_size, &vmetrics);
-    goto_error_if_fail(glyphs != NULL);
+    ret = glyphs_init(glyphs, b.vis_str, b.vis_str_size, len, TRUE, font_size, &vmetrics);
+    goto_error_if_fail(ret == RET_OK);
     glyphs->font = f;
+    ret = RET_FAIL;
 
     for (visual_index = 0; visual_index < b.vis_str_size;
          visual_index += code_unit_count, glyph_index++) {
@@ -231,10 +232,14 @@ static glyphs_t* font_stb_create_glyphs(font_t* f, const wchar_t* str, uint32_t 
       g->glyph_count = 1;
     }
     glyphs->length = glyph_index;
+    ret = RET_OK;
   }
 error:
   bidi_deinit(&b);
-  return glyphs;
+  if (ret != RET_OK) {
+    glyphs_deinit(glyphs);
+  }
+  return ret;
 }
 
 static ret_t font_stb_shrink_cache(font_t* f, uint32_t cache_nr) {
@@ -274,7 +279,7 @@ static font_t* font_stb_create_ex(const char* name, const uint8_t* buff, uint32_
   f->base.match = font_stb_match;
   f->base.destroy = font_stb_destroy;
   f->base.get_glyph = font_stb_get_glyph;
-  f->base.create_glyphs = font_stb_create_glyphs;
+  f->base.init_glyphs = font_stb_init_glyphs;
   f->base.get_vmetrics = font_stb_get_vmetrics;
   f->base.shrink_cache = font_stb_shrink_cache;
   f->base.desc = mono ? "mono(stb)" : "truetype(stb)";

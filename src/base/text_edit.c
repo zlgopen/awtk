@@ -1546,30 +1546,31 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
   text_layout_info_t* layout_info = &(impl->layout_info);
 
   if (text->size > 0) {
-    glyphs_t* glyphs = widget_create_glyphs(widget, c, (const wchar_t*)text->str, text->size);
-    if (glyphs != NULL) {
-      glyphs_length = glyphs_get_length(glyphs);
+    glyphs_t glyphs;
+    ret_t ret = widget_init_glyphs(widget, c, &glyphs, text->str, text->size);
+    if (ret == RET_OK) {
+      glyphs_length = glyphs_get_length(&glyphs);
       if (impl->tips_is_mlines) {
         line_parser_t p;
-        line_parser_init(&p, glyphs, c->font_size, layout_info->w, TRUE, TRUE);
+        line_parser_init(&p, &glyphs, c->font_size, layout_info->w, TRUE, TRUE);
         if (p.total_lines > 1) {
-          text_edit_paint_tips_mlines_text(text_edit, c, &p, glyphs);
+          text_edit_paint_tips_mlines_text(text_edit, c, &p, &glyphs);
         } else {
           align_h_t align_h = c->text_align_h;
           align_v_t align_v = c->text_align_v;
           rect_t r = rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w,
                                layout_info->h);
           canvas_set_text_align(c, align_h, ALIGN_V_TOP);
-          canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_length, &r, FALSE);
+          canvas_draw_text_bidi_in_rect_by_glyphs(c, &glyphs, 0, glyphs_length, &r, FALSE);
           canvas_set_text_align(c, align_h, align_v);
         }
         line_parser_deinit(&p);
       } else {
         rect_t r =
             rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
-        canvas_draw_text_bidi_in_rect_by_glyphs(c, glyphs, 0, glyphs_length, &r, FALSE);
+        canvas_draw_text_bidi_in_rect_by_glyphs(c, &glyphs, 0, glyphs_length, &r, FALSE);
       }
-      glyphs_destroy(glyphs);
+      glyphs_deinit(&glyphs);
     }
   }
 

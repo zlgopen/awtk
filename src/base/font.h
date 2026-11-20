@@ -260,13 +260,43 @@ typedef struct _glyphs_t {
 } glyphs_t;
 
 /**
+ * @method glyphs_init
+ * 创建glyphs对象。
+ * 备注：内部函数
+ *
+ * @param {glyphs_t*} glyphs glyphs对象。
+ * @param {wchar_t*} str 字符串。
+ * @param {uint32_t} glyph_len 字模长度。
+ * @param {uint32_t} str_length 字符串长度。
+ * @param {bool_t} has_maps 是否有映射。
+ * @param {font_size_t} font_size 字号。
+ * @param {const font_vmetrics_t*} vmetrics 字体度量信息。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t glyphs_init(glyphs_t* glyphs, wchar_t* str, uint32_t glyph_len, uint32_t str_length,
+                  bool_t has_maps, font_size_t font_size, const font_vmetrics_t* vmetrics);
+
+/**
+ * @method glyphs_deinit
+ * 反初始化glyphs对象。
+ *
+ * @param {glyphs_t*} glyphs glyphs对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t glyphs_deinit(glyphs_t* glyphs);
+
+/**
  * @method glyphs_create
  * 创建glyphs对象。
  * 备注：内部函数
  * @annotation ["constructor"]
+ *
  * @param {wchar_t*} str 字符串。
  * @param {uint32_t} glyph_len 字模长度。
  * @param {uint32_t} str_length 字符串长度。
+ * @param {bool_t} has_maps 是否有映射。
  * @param {font_size_t} font_size 字号。
  * @param {const font_vmetrics_t*} vmetrics 字体度量信息。
  *
@@ -279,6 +309,7 @@ glyphs_t* glyphs_create(wchar_t* str, uint32_t glyph_len, uint32_t str_length, b
  * @method glyphs_destroy
  * 销毁glyphs对象。
  * @annotation ["deconstructor"]
+ *
  * @param {glyphs_t*} glyphs glyphs对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -288,7 +319,7 @@ ret_t glyphs_destroy(glyphs_t* glyphs);
 /**
  * @method glyphs_get_str
  * 获取 glyphs 对象的字符串。
- * @annotation ["deconstructor"]
+ *
  * @param {glyphs_t*} glyphs glyphs对象。
  *
  * @return {const wchar_t*} 返回字符串。
@@ -298,7 +329,7 @@ const wchar_t* glyphs_get_str(glyphs_t* glyphs);
 /**
  * @method glyphs_get_str_length
  * 获取 glyphs 对象的字符串个数。
- * @annotation ["deconstructor"]
+ *
  * @param {glyphs_t*} glyphs glyphs对象。
  *
  * @return {uint32_t} 返回个数。
@@ -308,7 +339,7 @@ uint32_t glyphs_get_str_length(glyphs_t* glyphs);
 /**
  * @method glyphs_get_length
  * 获取 glyphs 对象的字模个数。
- * @annotation ["deconstructor"]
+ *
  * @param {glyphs_t*} glyphs glyphs对象。
  *
  * @return {uint32_t} 返回个数。
@@ -318,7 +349,7 @@ uint32_t glyphs_get_length(glyphs_t* glyphs);
 /**
  * @method glyphs_get_valid
  * 获取 glyphs 对象的是否合法。
- * @annotation ["deconstructor"]
+ *
  * @param {glyphs_t*} glyphs glyphs对象。
  *
  * @return {bool_t} 返回是否合法。
@@ -328,7 +359,7 @@ bool_t glyphs_get_valid(glyphs_t* glyphs);
 /**
  * @method glyphs_get_glyph_index_from_str_index
  * 根据字符串序号获取 glyphs 对象的对应字模的序号。
- * @annotation ["deconstructor"]
+ *
  * @param {glyphs_t*} glyphs glyphs对象。
  * @param {uint32_t} str_index 字符串序号。
  *
@@ -341,7 +372,7 @@ int32_t glyphs_get_glyph_index_from_str_index(glyphs_t* glyphs, uint32_t str_ind
  * 根据子串获取 glyphs 对象的对应字模的序号集合。
  * 要求 dst 为 NULL 或者数组首地址，调用后 dst 可能无效，请保留返回的地址。
  * 该函数会自动申请内存，调用后需要使用TKMEM_FREE释放。
- * @annotation ["deconstructor"]
+ *
  * @param {glyphs_t*} glyphs glyphs对象。
  * @param {uint32_t} str_start 字符串序号。
  * @param {uint32_t} len 字符串长度。
@@ -357,7 +388,6 @@ int32_t* glyphs_get_glyph_indexs_from_str_indexs(glyphs_t* glyphs, uint32_t str_
 /**
  * @method glyphs_get_str_index_from_glyph_index
  * 根据字模序号获取 glyphs 对象的对应字符串的序号。
- * @annotation ["deconstructor"]
  * @param {glyphs_t*} glyphs glyphs对象。
  * @param {uint32_t} glyph_index 字模序号。
  *
@@ -368,7 +398,6 @@ int32_t glyphs_get_str_index_from_glyph_index(glyphs_t* glyphs, uint32_t glyph_i
 /**
  * @method glyphs_get_font_size
  * 获取 glyphs 对象的逻辑字号。
- * @annotation ["deconstructor"]
  * @param {glyphs_t*} glyphs glyphs对象。
  *
  * @return {font_size_t} 返回字号。
@@ -378,7 +407,6 @@ font_size_t glyphs_get_font_size(glyphs_t* glyphs);
 /**
  * @method glyphs_get_physical_font_size
  * 获取 glyphs 对象的物理字号。
- * @annotation ["deconstructor"]
  * @param {glyphs_t*} glyphs glyphs对象。
  *
  * @return {font_size_t} 返回字号。
@@ -388,7 +416,6 @@ font_size_t glyphs_get_physical_font_size(glyphs_t* glyphs);
 /**
  * @method glyphs_get
  * 根据 index 获取字模。
- * @annotation ["deconstructor"]
  * @param {glyphs_t*} glyphs glyphs对象。
  * @param {uint32_t} index 字模序号。
  *
@@ -399,7 +426,6 @@ const glyph_t* glyphs_get(glyphs_t* glyphs, uint32_t index);
 /**
  * @method glyphs_get_font_ascent
  * 获取字体逻辑 ascent。
- * @annotation ["deconstructor"]
  * @param {glyphs_t*} glyphs glyphs对象。
  *
  * @return {int16_t} 返回 ascent 。
@@ -409,7 +435,6 @@ int16_t glyphs_get_font_ascent(glyphs_t* glyphs);
 /**
  * @method glyphs_get_physical_font_ascent
  * 获取字体物理 ascent。
- * @annotation ["deconstructor"]
  * @param {glyphs_t*} glyphs glyphs对象。
  *
  * @return {int16_t} 返回 ascent 。
@@ -419,7 +444,6 @@ int16_t glyphs_get_physical_font_ascent(glyphs_t* glyphs);
 /**
  * @method glyphs_get_physical_font_descent
  * 获取字体物理 descent。
- * @annotation ["deconstructor"]
  * @param {glyphs_t*} glyphs glyphs 对象。
  *
  * @return {int16_t} 返回 descent 。
@@ -429,7 +453,6 @@ int16_t glyphs_get_physical_font_descent(glyphs_t* glyphs);
 /**
  * @method glyphs_measure
  * 计算字模长度。
- * @annotation ["deconstructor"]
  * @param {glyphs_t*} glyphs glyphs对象。
  * @param {uint32_t} start 字模开始序号。
  * @param {uint32_t} len 字模长度。
@@ -441,7 +464,6 @@ float_t glyphs_measure(glyphs_t* glyphs, uint32_t start, uint32_t len);
 /**
  * @method glyphs_get_height
  * 计算字模高度。
- * @annotation ["deconstructor"]
  * @param {glyphs_t*} glyphs glyphs对象。
  *
  * @return {int32_t} 成功返回高度，失败返回 -1。
@@ -469,8 +491,8 @@ typedef font_vmetrics_t (*font_get_vmetrics_t)(font_t* f, font_size_t font_size)
 typedef bool_t (*font_match_t)(font_t* f, const char* name, font_size_t font_size);
 typedef ret_t (*font_get_glyph_t)(font_t* f, wchar_t chr, font_size_t font_size, glyph_t* g);
 typedef ret_t (*font_shrink_cache_t)(font_t* f, uint32_t cache_size);
-typedef glyphs_t* (*font_create_glyphs_t)(font_t* f, const wchar_t* str, uint32_t len,
-                                          font_size_t font_size, font_raster_params_t* params);
+typedef ret_t (*font_init_glyphs_t)(font_t* f, glyphs_t* glyphs, const wchar_t* str, uint32_t len,
+                                    font_size_t font_size, font_raster_params_t* params);
 
 typedef ret_t (*font_destroy_t)(font_t* f);
 
@@ -485,7 +507,7 @@ struct _font_t {
   font_get_glyph_t get_glyph;
   font_get_vmetrics_t get_vmetrics;
   font_shrink_cache_t shrink_cache;
-  font_create_glyphs_t create_glyphs;
+  font_init_glyphs_t init_glyphs;
   font_destroy_t destroy;
   const char* desc;
   font_raster_params_t params;
@@ -526,6 +548,26 @@ bool_t font_match(font_t* font, const char* font_name, font_size_t font_size);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t font_get_glyph(font_t* font, wchar_t chr, font_size_t font_size, glyph_t* glyph);
+
+/**
+ * @method font_init_glyphs
+ * 初始化字模列表对象（根据指定字符），结果写入调用方提供的 glyphs 对象，不分配 glyphs_t。
+ * 备注：
+ * 1.该函数会根据 font_raster_params_t 对象来处理和提取字模列表（包括字体整形等操作）
+ * 2.返回 RET_OK 后，需要用户调用 glyphs_deinit 函数释放。
+ * 3.glyphs 可以是栈上的临时对象，也可以是结构体成员，声明时请零初始化（glyphs_t glyphs = {0};）。
+ * 4.失败时 glyphs_get_valid 返回 FALSE，成功后用完必须 glyphs_deinit。
+ * @param {font_t*} font font对象。
+ * @param {glyphs_t*} glyphs 返回的字模列表对象。
+ * @param {const wchar_t*} str 字符串。
+ * @param {uint32_t} len 字符串长度。
+ * @param {font_size_t} font_size 字体大小。
+ * @param {font_raster_params_t*} params 属性。（如果该参数为 NULL，就使用 font_t 对象的 params 属性）
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t font_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t* str, uint32_t len,
+                       font_size_t font_size, font_raster_params_t* params);
 
 /**
  * @method font_create_glyphs

@@ -209,9 +209,11 @@ static ret_t font_hb_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, g
   return font_hb_ft_get_glyph_impl(f, c, font_size, NULL, g);
 }
 
-static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_t len,
-                                          font_size_t font_size, font_raster_params_t* params) {
+static ret_t font_hb_ft_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t* str,
+                                    uint32_t len, font_size_t font_size,
+                                    font_raster_params_t* params) {
   bidi_t b;
+  ret_t ret = RET_FAIL;
   uint32_t c = 0;
   uint32_t i = 0;
   uint32_t visual_index = 0;
@@ -219,7 +221,6 @@ static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_
   uint32_t code_unit_count = 0;
   uint32_t glyph_index = 0;
   hb_str_t hb_str = {0};
-  glyphs_t* glyphs = NULL;
   uint32_t glyph_count = 0;
   hb_info_t* hb_info = NULL;
   ret_t has_glyph_cache = RET_FAIL;
@@ -233,9 +234,9 @@ static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_
     hb_str_info_t* str_info =
         harfbuzz_data_loader_find_info(harfbuzz_data_loader(), f->name, str, len);
     if (str_info != NULL) {
-      glyphs = glyphs_create((wchar_t*)str_info->str, str_info->hb_info_size, len, TRUE, font_size,
-                             &vmetrics);
-      return_value_if_fail(glyphs != NULL, NULL);
+      ret = glyphs_init(glyphs, (wchar_t*)str_info->str, str_info->hb_info_size, len, TRUE,
+                        font_size, &vmetrics);
+      return_value_if_fail(ret == RET_OK, RET_FAIL);
       glyphs->font = f;
       hb_info = str_info->hb_info;
       hb_str.hb_info = str_info->hb_info;
@@ -244,10 +245,10 @@ static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_
     hb_info = harfbuzz_shape_text(str, len, f->name, &glyph_count, font->font);
     // 构造glyphs_t对象
     if (hb_info != NULL && glyph_count > 0) {
-      glyphs = glyphs_create((wchar_t*)str, glyph_count, len, TRUE, font_size, &vmetrics);
-      if (glyphs == NULL) {
+      ret = glyphs_init(glyphs, (wchar_t*)str, glyph_count, len, TRUE, font_size, &vmetrics);
+      if (ret != RET_OK) {
         harfbuzz_shape_text_destroy(hb_info);
-        return NULL;
+        return RET_FAIL;
       }
       glyphs->font = f;
       hb_str.hb_info = hb_info;
@@ -267,14 +268,16 @@ static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_
         // 同一个 glyph 在不同字符上的 offset/advance 可能不同，不能随位图一起缓存。
         font_hb_ft_apply_hb_info(&glyphs->glyphs[i], &hb_info[i], scale);
       }
+      ret = RET_OK;
     }
   }
   if (!params->shaping || hb_info == NULL) {
     bidi_init(&b, FALSE, TRUE, params->bidi_type);
     if (bidi_log2vis(&b, str, len) == RET_OK) {
-      glyphs = glyphs_create((wchar_t*)str, b.vis_str_size, len, TRUE, font_size, &vmetrics);
-      goto_error_if_fail(glyphs != NULL);
+      ret = glyphs_init(glyphs, (wchar_t*)str, b.vis_str_size, len, TRUE, font_size, &vmetrics);
+      goto_error_if_fail(ret == RET_OK);
       glyphs->font = f;
+      ret = RET_FAIL;
 
       for (visual_index = 0; visual_index < b.vis_str_size;
            visual_index += code_unit_count, glyph_index++) {
@@ -304,7 +307,9 @@ static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_
         g->glyph_count = 1;
       }
       glyphs->length = glyph_index;
+      ret = RET_OK;
     }
+
     bidi_deinit(&b);
   }
 
@@ -317,10 +322,11 @@ static glyphs_t* font_hb_ft_create_glyphs(font_t* f, const wchar_t* str, uint32_
 #endif
   }
 
-  return glyphs;
+  return ret;
 error:
   bidi_deinit(&b);
-  return glyphs;
+  glyphs_deinit(glyphs);
+  return RET_FAIL;
 }
 
 static font_vmetrics_t font_hb_ft_get_vmetrics(font_t* f, font_size_t font_size) {
@@ -422,7 +428,7 @@ static font_t* font_hb_ft_create_ex(const char* name, const uint8_t* buff, uint3
   f->base.match = font_hb_ft_match;
   f->base.destroy = font_hb_ft_destroy;
   f->base.get_glyph = font_hb_ft_get_glyph;
-  f->base.create_glyphs = font_hb_ft_create_glyphs;
+  f->base.init_glyphs = font_hb_ft_init_glyphs;
   f->base.get_vmetrics = font_hb_ft_get_vmetrics;
   f->base.shrink_cache = font_hb_ft_shrink_cache;
   f->base.desc = mono ? "mono(freetype)" : "truetype(freetype)";

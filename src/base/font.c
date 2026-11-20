@@ -56,22 +56,41 @@ ret_t font_get_glyph(font_t* f, wchar_t chr, font_size_t font_size, glyph_t* g) 
   return f->get_glyph(f, chr, font_size, g);
 }
 
-glyphs_t* font_create_glyphs(font_t* f, const wchar_t* str, uint32_t len, font_size_t font_size,
-                             font_raster_params_t* params) {
-  glyphs_t* glyphs = NULL;
-  return_value_if_fail(f != NULL && f->create_glyphs != NULL && str != NULL && len > 0, NULL);
+ret_t font_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t* str, uint32_t len,
+                       font_size_t font_size, font_raster_params_t* params) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(f != NULL && glyphs != NULL && str != NULL && len > 0, RET_BAD_PARAMS);
+  return_value_if_fail(f->init_glyphs != NULL, RET_NOT_IMPL);
+
+  /*允许复用已 deinit 的对象，同时保证钩子内的错误路径可以安全调用 glyphs_deinit*/
+  memset(glyphs, 0x00, sizeof(glyphs_t));
   if (params == NULL) {
     params = &f->params;
   }
 #ifdef WITH_GPU
   if (system_info() != NULL) font_size *= system_info()->device_pixel_ratio;
 #endif
-  glyphs = f->create_glyphs(f, str, len, font_size, params);
-  if (glyphs != NULL) {
+  ret = f->init_glyphs(f, glyphs, str, len, font_size, params);
+
+  if (ret == RET_OK) {
     int32_t id =
         emitter_on(EMITTER(f->fm), EVT_ASSET_MANAGER_UNLOAD_ASSET, glyphs_on_unload_font, glyphs);
     emitter_set_on_destroy(EMITTER(f->fm), id, glyphs_on_destroy_emitter, glyphs);
   }
+
+  return ret;
+}
+
+glyphs_t* font_create_glyphs(font_t* f, const wchar_t* str, uint32_t len, font_size_t font_size,
+                             font_raster_params_t* params) {
+  glyphs_t* glyphs = TKMEM_ZALLOC(glyphs_t);
+  return_value_if_fail(glyphs != NULL, NULL);
+
+  if (font_init_glyphs(f, glyphs, str, len, font_size, params) != RET_OK) {
+    TKMEM_FREE(glyphs);
+    return NULL;
+  }
+
   return glyphs;
 }
 
@@ -141,25 +160,26 @@ ret_t glyph_destroy(glyph_t* g) {
   return RET_OK;
 }
 
-glyphs_t* glyphs_create(wchar_t* str, uint32_t glyph_len, uint32_t str_length, bool_t has_maps,
-                        font_size_t font_size, const font_vmetrics_t* vmetrics) {
-  glyphs_t* glyphs = NULL;
-  return_value_if_fail(glyph_len > 0, NULL);
+ret_t glyphs_init(glyphs_t* glyphs, wchar_t* str, uint32_t glyph_len, uint32_t str_length,
+                  bool_t has_maps, font_size_t font_size, const font_vmetrics_t* vmetrics) {
+  return_value_if_fail(glyphs != NULL && str != NULL && glyph_len > 0, RET_BAD_PARAMS);
 
-  glyphs = TKMEM_ZALLOC(glyphs_t);
-  return_value_if_fail(glyphs != NULL, NULL);
+  memset(glyphs, 0, sizeof(glyphs_t));
 
   glyphs->glyphs = TKMEM_ZALLOCN(glyph_t, glyph_len);
   goto_error_if_fail(glyphs->glyphs != NULL);
 
   glyphs->str_length = tk_min(wcslen(str), str_length);
-  glyphs->str = TKMEM_CALLOC(glyphs->str_length + 1, sizeof(wchar_t));
+  glyphs->str = (wchar_t*)TKMEM_ALLOC((glyphs->str_length + 1) * sizeof(wchar_t));
   goto_error_if_fail(glyphs->str != NULL);
+
   memcpy(glyphs->str, str, glyphs->str_length * sizeof(wchar_t));
+  glyphs->str[glyphs->str_length] = L'\0';
 
   if (has_maps) {
     glyphs->l2v_maps = TKMEM_ZALLOCN(int32_t, glyphs->str_length);
     goto_error_if_fail(glyphs->l2v_maps != NULL);
+
     glyphs->v2l_maps = TKMEM_ZALLOCN(int32_t, glyph_len);
     goto_error_if_fail(glyphs->v2l_maps != NULL);
   }
@@ -169,9 +189,27 @@ glyphs_t* glyphs_create(wchar_t* str, uint32_t glyph_len, uint32_t str_length, b
   glyphs->font_size = font_size;
   glyphs->length = glyph_len;
   glyphs->valid = TRUE;
+
+  return RET_OK;
+error:
+  glyphs_deinit(glyphs);
+  return RET_FAIL;
+}
+
+glyphs_t* glyphs_create(wchar_t* str, uint32_t glyph_len, uint32_t str_length, bool_t has_maps,
+                        font_size_t font_size, const font_vmetrics_t* vmetrics) {
+  glyphs_t* glyphs = NULL;
+  return_value_if_fail(glyph_len > 0, NULL);
+
+  glyphs = TKMEM_ZALLOC(glyphs_t);
+  return_value_if_fail(glyphs != NULL, NULL);
+
+  goto_error_if_fail(
+      RET_OK == glyphs_init(glyphs, str, glyph_len, str_length, has_maps, font_size, vmetrics));
+
   return glyphs;
 error:
-  glyphs_destroy(glyphs);
+  TKMEM_FREE(glyphs);
   return NULL;
 }
 
@@ -373,28 +411,27 @@ float_t glyphs_measure(glyphs_t* glyphs, uint32_t start, uint32_t len) {
 #endif
 }
 
-ret_t glyphs_destroy(glyphs_t* glyphs) {
+ret_t glyphs_deinit(glyphs_t* glyphs) {
   return_value_if_fail(glyphs != NULL, RET_BAD_PARAMS);
+
+  glyphs->valid = FALSE;
+
   if (glyphs->font != NULL) {
     emitter_off_by_func(EMITTER(glyphs->font->fm), EVT_ASSET_MANAGER_UNLOAD_ASSET,
                         glyphs_on_unload_font, glyphs);
   }
-  if (glyphs->l2v_maps != NULL) {
-    TKMEM_FREE(glyphs->l2v_maps);
-    glyphs->l2v_maps = NULL;
-  }
-  if (glyphs->v2l_maps != NULL) {
-    TKMEM_FREE(glyphs->v2l_maps);
-    glyphs->v2l_maps = NULL;
-  }
-  if (glyphs->glyphs != NULL) {
-    TKMEM_FREE(glyphs->glyphs);
-    glyphs->glyphs = NULL;
-  }
-  if (glyphs->str != NULL) {
-    TKMEM_FREE(glyphs->str);
-    glyphs->str = NULL;
-  }
+
+  TKMEM_FREE(glyphs->l2v_maps);
+  TKMEM_FREE(glyphs->v2l_maps);
+  TKMEM_FREE(glyphs->glyphs);
+  TKMEM_FREE(glyphs->str);
+
+  return RET_OK;
+}
+
+ret_t glyphs_destroy(glyphs_t* glyphs) {
+  return_value_if_fail(glyphs != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(RET_OK == glyphs_deinit(glyphs), RET_FAIL);
   TKMEM_FREE(glyphs);
   return RET_OK;
 }

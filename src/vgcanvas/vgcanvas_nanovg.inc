@@ -446,18 +446,18 @@ static ret_t vgcanvas_nanovg_fill_text(vgcanvas_t* vgcanvas, const char* text, f
                                        float_t max_width) {
 #ifdef WITH_NANOVG_GPU
   ret_t ret = RET_FAIL;
-  glyphs_t* glyphs = NULL;
+  glyphs_t glyphs;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
   font_t* font =
       font_manager_get_font(vgcanvas->c->font_manager, vgcanvas->font, vgcanvas->font_size);
   return_value_if_fail(font != NULL && wstr_set_utf8(&canvas->tmp_wstr, text) == RET_OK, RET_FAIL);
-  glyphs = font_create_glyphs(font, canvas->tmp_wstr.str, canvas->tmp_wstr.size,
-                              vgcanvas->font_size, NULL);
-  if (glyphs != NULL) {
-    ret = vgcanvas_fill_text_by_glyphs(vgcanvas, glyphs, 0, glyphs_get_length(glyphs), x, y,
+  ret = font_init_glyphs(font, &glyphs, canvas->tmp_wstr.str, canvas->tmp_wstr.size,
+                         vgcanvas->font_size, NULL);
+  if (ret == RET_OK) {
+    ret = vgcanvas_fill_text_by_glyphs(vgcanvas, &glyphs, 0, glyphs_get_length(&glyphs), x, y,
                                        max_width);
-    glyphs_destroy(glyphs);
+    glyphs_deinit(&glyphs);
   }
 
   return ret;
@@ -497,17 +497,16 @@ static ret_t vgcanvas_nanovg_fill_text_by_glyphs(vgcanvas_t* vgcanvas, glyphs_t*
 static float_t vgcanvas_nanovg_measure_text(vgcanvas_t* vgcanvas, const char* text) {
 #ifdef WITH_NANOVG_GPU
   float_t w = 0.0f;
-  glyphs_t* glyphs = NULL;
+  glyphs_t glyphs;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
   font_t* font =
       font_manager_get_font(vgcanvas->c->font_manager, vgcanvas->font, vgcanvas->font_size);
   return_value_if_fail(font != NULL && wstr_set_utf8(&canvas->tmp_wstr, text) == RET_OK, 0.0f);
-  glyphs = font_create_glyphs(font, canvas->tmp_wstr.str, canvas->tmp_wstr.size,
-                              vgcanvas->font_size, NULL);
-  if (glyphs != NULL) {
-    w = glyphs_measure(glyphs, 0, glyphs_get_length(glyphs));
-    glyphs_destroy(glyphs);
+  if (font_init_glyphs(font, &glyphs, canvas->tmp_wstr.str, canvas->tmp_wstr.size,
+                       vgcanvas->font_size, NULL) == RET_OK) {
+    w = glyphs_measure(&glyphs, 0, glyphs_get_length(&glyphs));
+    glyphs_deinit(&glyphs);
   }
   return w;
 #else

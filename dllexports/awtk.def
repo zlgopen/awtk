@@ -431,6 +431,8 @@ EXPORTS
     glyph_create
     glyph_clone
     glyph_destroy
+    glyphs_init
+    glyphs_deinit
     glyphs_create
     glyphs_destroy
     glyphs_get_str
@@ -451,6 +453,7 @@ EXPORTS
     font_get_vmetrics
     font_match
     font_get_glyph
+    font_init_glyphs
     font_create_glyphs
     font_set_raster_params
     font_get_raster_params
@@ -1074,6 +1077,7 @@ EXPORTS
     widget_draw_text_in_rect
     widget_draw_text_in_rect_with_glyphs
     widget_create_glyphs
+    widget_init_glyphs
     widget_dispatch
     widget_dispatch_async
     widget_dispatch_simple_event

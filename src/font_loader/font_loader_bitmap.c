@@ -63,11 +63,12 @@ static ret_t font_bitmap_get_glyph(font_t* f, wchar_t c, font_size_t font_size, 
   return RET_OK;
 }
 
-static glyphs_t* font_bitmap_create_glyphs(font_t* f, const wchar_t* str, uint32_t len,
-                                           font_size_t font_size, font_raster_params_t* params) {
+static ret_t font_bitmap_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t* str,
+                                     uint32_t len, font_size_t font_size,
+                                     font_raster_params_t* params) {
   bidi_t b;
+  ret_t ret = RET_FAIL;
   uint32_t i = 0;
-  glyphs_t* glyphs = NULL;
   font_vmetrics_t vmetrics;
   font_bitmap_t* font = (font_bitmap_t*)f;
   font_bitmap_header_t* header = (font_bitmap_header_t*)(font->buff);
@@ -77,8 +78,8 @@ static glyphs_t* font_bitmap_create_glyphs(font_t* f, const wchar_t* str, uint32
   vmetrics.line_gap = header->line_gap;
   bidi_init(&b, FALSE, FALSE, params->bidi_type);
   if (bidi_log2vis(&b, str, len) == RET_OK) {
-    glyphs = glyphs_create(b.vis_str, b.vis_str_size, len, FALSE, font_size, &vmetrics);
-    goto_error_if_fail(glyphs != NULL);
+    ret = glyphs_init(glyphs, b.vis_str, b.vis_str_size, len, FALSE, font_size, &vmetrics);
+    goto_error_if_fail(ret == RET_OK);
     glyphs->font = f;
     for (i = 0; i < b.vis_str_size; i++) {
       wchar_t c = b.vis_str[i];
@@ -91,10 +92,14 @@ static glyphs_t* font_bitmap_create_glyphs(font_t* f, const wchar_t* str, uint32
       glyphs->glyphs[i].str_count = 1;
       glyphs->glyphs[i].glyph_count = 1;
     }
+    ret = RET_OK;
   }
 error:
   bidi_deinit(&b);
-  return glyphs;
+  if (ret != RET_OK) {
+    glyphs_deinit(glyphs);
+  }
+  return ret;
 }
 
 static bool_t font_bitmap_match(font_t* f, const char* name, font_size_t font_size) {
@@ -136,7 +141,7 @@ font_t* font_bitmap_init(font_bitmap_t* f, const char* name, const uint8_t* buff
   f->base.match = font_bitmap_match;
   f->base.get_vmetrics = font_bitmap_get_vmetrics;
   f->base.get_glyph = font_bitmap_get_glyph;
-  f->base.create_glyphs = font_bitmap_create_glyphs;
+  f->base.init_glyphs = font_bitmap_init_glyphs;
   f->base.destroy = font_bitmap_destroy;
   f->base.desc = "bitmap font";
   tk_strncpy(f->base.name, name, MAX_PATH);
