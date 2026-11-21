@@ -362,7 +362,7 @@ static float_t canvas_measure_text_default(canvas_t* c, const wchar_t* str, uint
 
   ret = font_init_glyphs(c->font, &glyphs, str, nr, c->font_size, NULL);
   return_value_if_fail(ret == RET_OK, 0);
-  w = glyphs_measure(&glyphs, 0, nr);
+  w = glyphs_measure(&glyphs, 0, glyphs_get_length(&glyphs));
   glyphs_deinit(&glyphs);
   return w;
 }
@@ -2063,7 +2063,7 @@ ret_t canvas_draw_text_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, con
   ret = font_init_glyphs(c->font, &glyphs, str, nr, c->font_size, NULL);
   return_value_if_fail(ret == RET_OK, RET_FAIL);
 
-  ret = canvas_draw_text_in_rect_by_glyphs(c, &glyphs, 0, nr, r_in);
+  ret = canvas_draw_text_in_rect_by_glyphs(c, &glyphs, 0, glyphs_get_length(&glyphs), r_in);
   glyphs_deinit(&glyphs);
   return ret;
 }
@@ -2095,7 +2095,7 @@ static ret_t canvas_draw_text_in_rect_ellipses(canvas_t* c, glyphs_t* glyphs, ui
   }
 
   r.w = text_w;
-  canvas_draw_text_in_rect_by_glyphs(c, glyphs, 0, i, &r);
+  canvas_draw_text_in_rect_by_glyphs(c, glyphs, start, i - start, &r);
   r.x += text_w;
   r.w = ellipses_w;
   if (glyphs_get_valid(&ellipse_glyphs)) {
