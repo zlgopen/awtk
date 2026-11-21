@@ -56,6 +56,32 @@ ret_t font_get_glyph(font_t* f, wchar_t chr, font_size_t font_size, glyph_t* g) 
   return f->get_glyph(f, chr, font_size, g);
 }
 
+static ret_t font_init_glyphs_without_shaping(font_t* f, glyphs_t* glyphs, const wchar_t* str,
+                                              uint32_t len, font_size_t font_size) {
+  uint32_t i = 0;
+  return_value_if_fail(f->get_glyph != NULL, RET_NOT_IMPL);
+
+  font_vmetrics_t vmetrics = font_get_vmetrics(f, font_size);
+  ret_t ret = glyphs_init(glyphs, (wchar_t*)str, len, len, FALSE, font_size, &vmetrics);
+  return_value_if_fail(ret == RET_OK, RET_FAIL);
+
+  glyphs->font = f;
+
+  for (i = 0; i < len; i++) {
+    glyph_t* g = &glyphs->glyphs[i];
+    wchar_t c = str[i];
+    if (f->get_glyph(f, c, font_size, g) != RET_OK) {
+      g->w = 0;
+      g->h = 0;
+    }
+    g->chr = (uint16_t)c;
+    g->str_count = 1;
+    g->glyph_count = 1;
+  }
+
+  return RET_OK;
+}
+
 ret_t font_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t* str, uint32_t len,
                        font_size_t font_size, font_raster_params_t* params) {
   ret_t ret = RET_OK;
@@ -70,7 +96,12 @@ ret_t font_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t* str, uint32_t
 #ifdef WITH_GPU
   if (system_info() != NULL) font_size *= system_info()->device_pixel_ratio;
 #endif
-  ret = f->init_glyphs(f, glyphs, str, len, font_size, params);
+
+  if (!params->shaping) {
+    ret = font_init_glyphs_without_shaping(f, glyphs, str, len, font_size);
+  } else {
+    ret = f->init_glyphs(f, glyphs, str, len, font_size, params);
+  }
 
   if (ret == RET_OK) {
     int32_t id =
