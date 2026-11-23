@@ -980,6 +980,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         mledit_start_update_caret(mledit);
 
         if (widget->target == NULL) {
+          mledit->is_open_input_method = TRUE;
           widget_add_idle(widget, mledit_focus_request_input_method);
         }
       }
