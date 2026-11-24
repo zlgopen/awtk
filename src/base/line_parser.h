@@ -176,7 +176,7 @@ static ret_t line_parser_next_impl(line_parser_t* parser) {
     // 判断是否换行，如果有 word_wrap 就将部分数据还原回去
     if (parser->line_wrap) {
       if ((w + char_w) > parser->width) {
-        if (parser->word_wrap && last_breakable > 0) {
+        if (parser->word_wrap && last_breakable > parser->line_index) {
           w = last_break_w;
           index = last_breakable;
         }
