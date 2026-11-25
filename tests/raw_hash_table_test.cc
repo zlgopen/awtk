@@ -9,6 +9,31 @@ static void* raw_hash_table_test_value(size_t i) {
   return (void*)(uintptr_t)(i * 10 + 1);
 }
 
+/* 依次加入n个元素(键和值都由下标换算)，并校验元素个数逐个加1。 */
+static void raw_hash_table_test_fill(tk_raw_hash_table_t* table, size_t n) {
+  size_t i = 0;
+
+  for (i = 0; i < n; i++) {
+    ASSERT_EQ(tk_raw_hash_table_add(table, i, raw_hash_table_test_value(i)), RET_OK);
+    ASSERT_EQ(tk_raw_hash_table_size(table), i + 1);
+  }
+}
+
+/* 校验表里正好是填充的n个元素(键和值都对)，且第n个键不存在。 */
+static void raw_hash_table_test_expect(tk_raw_hash_table_t* table, size_t n) {
+  size_t i = 0;
+
+  ASSERT_EQ(tk_raw_hash_table_size(table), n);
+  for (i = 0; i < n; i++) {
+    tk_raw_hash_table_entry_t* entry = tk_raw_hash_table_find(table, i);
+
+    ASSERT_TRUE(entry != NULL);
+    ASSERT_EQ(entry->key, i);
+    ASSERT_EQ(entry->value, raw_hash_table_test_value(i));
+  }
+  ASSERT_TRUE(tk_raw_hash_table_find(table, n) == NULL);
+}
+
 static ret_t raw_hash_table_test_sum_key(void* ctx, const void* data) {
   const tk_raw_hash_table_entry_t* entry = (const tk_raw_hash_table_entry_t*)data;
   *(size_t*)ctx += entry->key;
@@ -147,7 +172,6 @@ TEST(RawHashTable, init) {
 
   index = tk_raw_hash_table_bucket_index(&table, 11);
   ASSERT_EQ(index, tk_raw_hash_table_bucket_index(&table, 11));
-  ASSERT_EQ(index, tk_raw_hash_table_bucket_index(&table, 11));
 
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
   ASSERT_TRUE(table.buckets == NULL);
@@ -165,19 +189,20 @@ TEST(RawHashTable, init) {
   ASSERT_TRUE(table.buckets == NULL);
 }
 
-TEST(RawHashTable, lazy_bucket) {
+/* 桶是懒创建的：只有加入过元素的桶才分配；删元素后桶保留(复用同一块)，clear时才回收。 */
+TEST(RawHashTable, bucket_lifecycle) {
   size_t i = 0;
   size_t index = 0;
   size_t non_null = 0;
+  tk_raw_hash_table_bucket_t bucket = NULL;
   tk_raw_hash_table_t table;
   ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
 
+  index = tk_raw_hash_table_bucket_index(&table, 11);
   ASSERT_EQ(tk_raw_hash_table_add(&table, 11, raw_hash_table_test_value(11)), RET_OK);
   ASSERT_EQ(tk_raw_hash_table_size(&table), 1u);
 
   /* 只有加入元素的那个桶才创建raw_darray。 */
-  index = tk_raw_hash_table_bucket_index(&table, 11);
   for (i = 0; i < TK_RAW_HASH_TABLE_BUCKET_COUNT(&table); i++) {
     if (table.buckets[i] != NULL) {
       non_null++;
@@ -188,73 +213,54 @@ TEST(RawHashTable, lazy_bucket) {
     }
   }
   ASSERT_EQ(non_null, 1u);
+  bucket = table.buckets[index];
+  ASSERT_TRUE(bucket != NULL);
 
   /* 删除元素后桶保留（回收只在clear/deinit时做），只是桶里没有元素了。 */
   ASSERT_EQ(tk_raw_hash_table_remove(&table, 11), RET_OK);
-  ASSERT_TRUE(table.buckets[index] != NULL);
+  ASSERT_TRUE(table.buckets[index] == bucket);
   ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[index]), 0u);
   ASSERT_EQ(tk_raw_hash_table_size(&table), 0u);
+
+  /* 再次加入同一个键，复用同一个桶，不重新分配。 */
+  ASSERT_EQ(tk_raw_hash_table_add(&table, 11, raw_hash_table_test_value(2)), RET_OK);
+  ASSERT_TRUE(table.buckets[index] == bucket);
+  ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[index]), 1u);
+
+  /* clear时才回收桶。 */
+  ASSERT_EQ(tk_raw_hash_table_clear(&table), RET_OK);
+  ASSERT_TRUE(table.buckets[index] == NULL);
+  ASSERT_EQ(TK_RAW_HASH_TABLE_BUCKET_COUNT(&table), 15u);
 
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
 }
 
 TEST(RawHashTable, basic) {
-  size_t i = 0;
   tk_raw_hash_table_t table;
   ASSERT_EQ(tk_raw_hash_table_init(&table, 200, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
   ASSERT_EQ(TK_RAW_HASH_TABLE_BUCKET_COUNT(&table), 300u);
 
-  for (i = 0; i < 100; i++) {
-    ASSERT_EQ(tk_raw_hash_table_add(&table, i, raw_hash_table_test_value(i)), RET_OK);
-    ASSERT_EQ(tk_raw_hash_table_size(&table), i + 1);
-  }
-  ASSERT_GT(tk_raw_hash_table_size(&table), 0u);
-
-  for (i = 0; i < 100; i++) {
-    tk_raw_hash_table_entry_t* entry = tk_raw_hash_table_find(&table, i);
-    ASSERT_TRUE(entry != NULL);
-    ASSERT_EQ(entry->key, i);
-    ASSERT_EQ(entry->value, raw_hash_table_test_value(i));
-  }
-
-  ASSERT_TRUE(tk_raw_hash_table_find(&table, 100) == NULL);
+  raw_hash_table_test_fill(&table, 100);
+  raw_hash_table_test_expect(&table, 100);
 
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
 }
 
-TEST(RawHashTable, unique_key) {
+/* 单键上的各种操作：重复add失败、modify改值/键不存在失败、replace替换/键不存在时加入。 */
+TEST(RawHashTable, one_key_ops) {
   tk_raw_hash_table_t table;
   ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
-
-  ASSERT_EQ(tk_raw_hash_table_add(&table, 5, raw_hash_table_test_value(1)), RET_OK);
-  ASSERT_EQ(tk_raw_hash_table_size(&table), 1u);
 
   /* 键已存在时加入失败，原来的元素不受影响。 */
+  ASSERT_EQ(tk_raw_hash_table_add(&table, 5, raw_hash_table_test_value(1)), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_size(&table), 1u);
+  ASSERT_EQ(tk_raw_hash_table_find(&table, 5)->value, raw_hash_table_test_value(1));
   ASSERT_EQ(tk_raw_hash_table_add(&table, 5, raw_hash_table_test_value(2)), RET_FAIL);
   ASSERT_EQ(tk_raw_hash_table_size(&table), 1u);
   ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[tk_raw_hash_table_bucket_index(&table, 5)]), 1u);
   ASSERT_EQ(tk_raw_hash_table_find(&table, 5)->value, raw_hash_table_test_value(1));
 
-  ASSERT_EQ(tk_raw_hash_table_remove(&table, 5), RET_OK);
-  ASSERT_EQ(tk_raw_hash_table_size(&table), 0u);
-  ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[tk_raw_hash_table_bucket_index(&table, 5)]), 0u);
-  ASSERT_EQ(tk_raw_hash_table_remove(&table, 5), RET_NOT_FOUND);
-
-  ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
-}
-
-TEST(RawHashTable, modify) {
-  tk_raw_hash_table_t table;
-  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
-
-  ASSERT_EQ(tk_raw_hash_table_add(&table, 5, raw_hash_table_test_value(1)), RET_OK);
-  ASSERT_EQ(tk_raw_hash_table_size(&table), 1u);
-  ASSERT_EQ(tk_raw_hash_table_find(&table, 5)->value, raw_hash_table_test_value(1));
-
-  /* 修改已有的值，元素个数不变。 */
+  /* 修改已有的值：元素个数和桶里元素个数都不变。 */
   ASSERT_EQ(tk_raw_hash_table_modify(&table, 5, raw_hash_table_test_value(2)), RET_OK);
   ASSERT_EQ(tk_raw_hash_table_size(&table), 1u);
   ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[tk_raw_hash_table_bucket_index(&table, 5)]), 1u);
@@ -265,38 +271,31 @@ TEST(RawHashTable, modify) {
   ASSERT_EQ(tk_raw_hash_table_size(&table), 1u);
   ASSERT_TRUE(tk_raw_hash_table_find(&table, 6) == NULL);
 
-  ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
-}
-
-TEST(RawHashTable, replace) {
-  tk_raw_hash_table_t table;
-  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
-
-  /* 键不存在时加入。 */
-  ASSERT_EQ(tk_raw_hash_table_replace(&table, 5, raw_hash_table_test_value(1)), RET_OK);
-  ASSERT_EQ(tk_raw_hash_table_size(&table), 1u);
-  ASSERT_EQ(tk_raw_hash_table_find(&table, 5)->value, raw_hash_table_test_value(1));
-
   /* 键存在时替换，元素个数不变，桶里仍然只有一个元素。 */
-  ASSERT_EQ(tk_raw_hash_table_replace(&table, 5, raw_hash_table_test_value(2)), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_replace(&table, 5, raw_hash_table_test_value(3)), RET_OK);
   ASSERT_EQ(tk_raw_hash_table_size(&table), 1u);
   ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[tk_raw_hash_table_bucket_index(&table, 5)]), 1u);
-  ASSERT_EQ(tk_raw_hash_table_find(&table, 5)->value, raw_hash_table_test_value(2));
+  ASSERT_EQ(tk_raw_hash_table_find(&table, 5)->value, raw_hash_table_test_value(3));
+
+  ASSERT_EQ(tk_raw_hash_table_remove(&table, 5), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_size(&table), 0u);
+  ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[tk_raw_hash_table_bucket_index(&table, 5)]), 0u);
+  ASSERT_EQ(tk_raw_hash_table_remove(&table, 5), RET_NOT_FOUND);
+
+  /* 键不存在时replace加入。 */
+  ASSERT_EQ(tk_raw_hash_table_replace(&table, 7, raw_hash_table_test_value(4)), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_size(&table), 1u);
+  ASSERT_EQ(tk_raw_hash_table_find(&table, 7)->value, raw_hash_table_test_value(4));
 
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
 }
 
 TEST(RawHashTable, remove) {
-  size_t i = 0;
   size_t sum = 0;
   tk_raw_hash_table_t table;
   ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
 
-  for (i = 0; i < 20; i++) {
-    ASSERT_EQ(tk_raw_hash_table_add(&table, i, raw_hash_table_test_value(i)), RET_OK);
-  }
+  raw_hash_table_test_fill(&table, 20);
 
   ASSERT_EQ(tk_raw_hash_table_remove(&table, 7), RET_OK);
   ASSERT_EQ(tk_raw_hash_table_size(&table), 19u);
@@ -310,46 +309,13 @@ TEST(RawHashTable, remove) {
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
 }
 
-TEST(RawHashTable, bucket_reuse) {
-  size_t index = 0;
-  tk_raw_hash_table_t table;
-  tk_raw_hash_table_bucket_t bucket = NULL;
-  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
-
-  index = tk_raw_hash_table_bucket_index(&table, 5);
-  ASSERT_EQ(tk_raw_hash_table_add(&table, 5, raw_hash_table_test_value(1)), RET_OK);
-  bucket = table.buckets[index];
-  ASSERT_TRUE(bucket != NULL);
-
-  /* 删除元素后桶保留（回收只在clear/deinit时做）。 */
-  ASSERT_EQ(tk_raw_hash_table_remove(&table, 5), RET_OK);
-  ASSERT_TRUE(table.buckets[index] == bucket);
-  ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[index]), 0u);
-
-  /* 再次加入同一个键，复用同一个桶，不重新分配。 */
-  ASSERT_EQ(tk_raw_hash_table_add(&table, 5, raw_hash_table_test_value(2)), RET_OK);
-  ASSERT_TRUE(table.buckets[index] == bucket);
-  ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[index]), 1u);
-
-  /* clear时才回收桶。 */
-  ASSERT_EQ(tk_raw_hash_table_clear(&table), RET_OK);
-  ASSERT_TRUE(table.buckets[index] == NULL);
-  ASSERT_EQ(TK_RAW_HASH_TABLE_BUCKET_COUNT(&table), 15u);
-
-  ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
-}
-
 TEST(RawHashTable, foreach_add) {
   size_t i = 0;
   raw_hash_table_visit_add_ctx_t ctx;
   tk_raw_hash_table_t table;
   ASSERT_EQ(tk_raw_hash_table_init(&table, 100, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
 
-  for (i = 0; i < 10; i++) {
-    ASSERT_EQ(tk_raw_hash_table_add(&table, i, raw_hash_table_test_value(i)), RET_OK);
-  }
+  raw_hash_table_test_fill(&table, 10);
 
   ctx.table = &table;
   ctx.nr = 0;
@@ -367,16 +333,13 @@ TEST(RawHashTable, foreach_add) {
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
 }
 
-TEST(RawHashTable, null_table) {
+/* 非法用法：NULL指针、没init/已deinit的表、越界的桶下标。这些只断言"不是RET_OK"。 */
+TEST(RawHashTable, invalid_usage) {
   size_t sum = 0;
   tk_raw_hash_table_t table;
 
-  memset(&table, 0x00, sizeof(table));
-
-  /* table指针本身为NULL */
-  ASSERT_NE(tk_raw_hash_table_init(NULL, 10, NULL), RET_OK);
-
   /* table还没init：查询按空表处理，修改类操作返回错误 */
+  memset(&table, 0x00, sizeof(table));
   ASSERT_NE(tk_raw_hash_table_add(&table, 1, NULL), RET_OK);
   ASSERT_NE(tk_raw_hash_table_modify(&table, 1, NULL), RET_OK);
   ASSERT_NE(tk_raw_hash_table_replace(&table, 1, NULL), RET_OK);
@@ -388,19 +351,39 @@ TEST(RawHashTable, null_table) {
   ASSERT_NE(tk_raw_hash_table_foreach(&table, raw_hash_table_test_sum_key, &sum), RET_OK);
   ASSERT_EQ(sum, 0u);
 
-  /* 初始化之后还没有元素：遍历直接返回RET_OK */
+  /* table指针本身为NULL */
+  ASSERT_NE(tk_raw_hash_table_init(NULL, 10, NULL), RET_OK);
+  ASSERT_NE(tk_raw_hash_table_add(NULL, 1, NULL), RET_OK);
+  ASSERT_TRUE(tk_raw_hash_table_find(NULL, 1) == NULL);
+  ASSERT_NE(tk_raw_hash_table_modify(NULL, 1, NULL), RET_OK);
+  ASSERT_NE(tk_raw_hash_table_replace(NULL, 1, NULL), RET_OK);
+  ASSERT_NE(tk_raw_hash_table_remove(NULL, 1), RET_OK);
+  ASSERT_NE(tk_raw_hash_table_clear(NULL), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_size(NULL), 0u);
+  ASSERT_NE(tk_raw_hash_table_foreach(NULL, raw_hash_table_test_sum_key, NULL), RET_OK);
+
+  /* 内部函数：NULL表、NULL桶地址 */
+  ASSERT_NE(tk_raw_hash_table_bucket_add(NULL, 0, 1, NULL), RET_OK);
+  ASSERT_NE(tk_raw_hash_table_shrink(NULL), RET_OK);
+  ASSERT_NE(tk_raw_hash_table_bucket_shrink(NULL, 0), RET_OK);
+
+  /* 初始化之后还没有元素：遍历直接返回RET_OK；遍历函数为NULL要报错 */
   ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
   ASSERT_EQ(tk_raw_hash_table_foreach(&table, raw_hash_table_test_sum_key, &sum), RET_OK);
   ASSERT_EQ(sum, 0u);
   ASSERT_EQ(tk_raw_hash_table_size(&table), 0u);
-
-  /* 遍历函数为NULL */
   ASSERT_NE(tk_raw_hash_table_foreach(&table, NULL, NULL), RET_OK);
 
-  /* deinit之后可以重新init，且table为NULL时修改类操作失败 */
-  ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
-  ASSERT_NE(tk_raw_hash_table_add(&table, 1, NULL), RET_OK);
+  /* 内部函数：桶下标越界 */
+  ASSERT_NE(tk_raw_hash_table_bucket_shrink(&table, TK_RAW_HASH_TABLE_BUCKET_COUNT(&table)),
+            RET_OK);
 
+  ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
+
+  /* deinit之后桶数组为NULL：修改类操作和shrink都返回错误，不能崩；重新init后可以继续用 */
+  ASSERT_NE(tk_raw_hash_table_shrink(&table), RET_OK);
+  ASSERT_NE(tk_raw_hash_table_bucket_shrink(&table, 0), RET_OK);
+  ASSERT_NE(tk_raw_hash_table_add(&table, 1, NULL), RET_OK);
   ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
 }
@@ -412,7 +395,6 @@ TEST(RawHashTable, stress) {
   tk_raw_hash_table_t table;
 
   ASSERT_EQ(tk_raw_hash_table_init(&table, 200, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
   ASSERT_EQ(TK_RAW_HASH_TABLE_BUCKET_COUNT(&table), 300u);
   memset(expect, 0, sizeof(expect));
   memset(expect_val, 0, sizeof(expect_val));
@@ -491,11 +473,8 @@ TEST(RawHashTable, clear) {
   size_t i = 0;
   tk_raw_hash_table_t table;
   ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
 
-  for (i = 0; i < 20; i++) {
-    ASSERT_EQ(tk_raw_hash_table_add(&table, i, raw_hash_table_test_value(i)), RET_OK);
-  }
+  raw_hash_table_test_fill(&table, 20);
   ASSERT_EQ(tk_raw_hash_table_size(&table), 20u);
 
   /* 清空后桶数不变，但所有桶都被回收。 */
@@ -514,15 +493,11 @@ TEST(RawHashTable, clear) {
 }
 
 TEST(RawHashTable, foreach_remove) {
-  size_t i = 0;
   size_t sum = 0;
   tk_raw_hash_table_t table;
   ASSERT_EQ(tk_raw_hash_table_init(&table, 100, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
 
-  for (i = 0; i < 100; i++) {
-    ASSERT_EQ(tk_raw_hash_table_add(&table, i, raw_hash_table_test_value(i)), RET_OK);
-  }
+  raw_hash_table_test_fill(&table, 100);
 
   ASSERT_EQ(tk_raw_hash_table_foreach(&table, raw_hash_table_test_remove_even_key, NULL), RET_OK);
   ASSERT_EQ(tk_raw_hash_table_size(&table), 50u);
@@ -538,7 +513,6 @@ TEST(RawHashTable, foreach_visit_result) {
   size_t count = 0;
   tk_raw_hash_table_t table;
   ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
 
   for (i = 0; i < 10; i++) {
     ASSERT_EQ(tk_raw_hash_table_add(&table, i, NULL), RET_OK);
@@ -568,13 +542,10 @@ TEST(RawHashTable, many_in_one_bucket) {
   size_t i = 0;
   tk_raw_hash_table_t table;
   ASSERT_EQ(tk_raw_hash_table_init(&table, 1, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
   ASSERT_EQ(TK_RAW_HASH_TABLE_BUCKET_COUNT(&table), 1u);
 
   /* 只有一个桶，元素全挤在一起，桶内数组会扩容。 */
-  for (i = 0; i < 200; i++) {
-    ASSERT_EQ(tk_raw_hash_table_add(&table, i, raw_hash_table_test_value(i)), RET_OK);
-  }
+  raw_hash_table_test_fill(&table, 200);
   ASSERT_EQ(tk_raw_hash_table_size(&table), 200u);
 
   for (i = 0; i < 200; i++) {
@@ -591,7 +562,6 @@ TEST(RawHashTable, hash) {
 
   /* 连续的键要散开到很多桶里，不能挤在少数几个桶里。 */
   ASSERT_EQ(tk_raw_hash_table_init(&table, 1000, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
   for (i = 0; i < 1000; i++) {
     ASSERT_EQ(tk_raw_hash_table_add(&table, i, NULL), RET_OK);
   }
@@ -606,32 +576,6 @@ TEST(RawHashTable, hash) {
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
 }
 
-TEST(RawHashTable, error) {
-  tk_raw_hash_table_t table;
-  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
-
-  ASSERT_NE(tk_raw_hash_table_add(NULL, 1, NULL), RET_OK);
-  ASSERT_TRUE(tk_raw_hash_table_find(NULL, 1) == NULL);
-  ASSERT_NE(tk_raw_hash_table_modify(NULL, 1, NULL), RET_OK);
-  ASSERT_NE(tk_raw_hash_table_replace(NULL, 1, NULL), RET_OK);
-  ASSERT_NE(tk_raw_hash_table_remove(NULL, 1), RET_OK);
-  ASSERT_NE(tk_raw_hash_table_clear(NULL), RET_OK);
-  ASSERT_EQ(tk_raw_hash_table_size(NULL), 0u);
-  ASSERT_NE(tk_raw_hash_table_foreach(NULL, raw_hash_table_test_sum_key, NULL), RET_OK);
-  ASSERT_NE(tk_raw_hash_table_foreach(&table, NULL, NULL), RET_OK);
-
-  /* 内部函数：桶的地址为NULL */
-  ASSERT_NE(tk_raw_hash_table_bucket_add(NULL, 1, NULL), RET_OK);
-  ASSERT_NE(tk_raw_hash_table_shrink(NULL), RET_OK);
-
-  ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
-
-  /* deinit之后桶数组为NULL：shrink返回错误，不能崩 */
-  ASSERT_NE(tk_raw_hash_table_shrink(&table), RET_OK);
-}
-
-/* shrink：空桶整块回收、桶内数组缩到实际大小，元素及其值都不变 */
 TEST(RawHashTable, shrink) {
   size_t i = 0;
   size_t n = 200;
@@ -642,9 +586,7 @@ TEST(RawHashTable, shrink) {
 
   ASSERT_EQ(tk_raw_hash_table_init(&table, n, NULL), RET_OK);
   buckets = TK_RAW_HASH_TABLE_BUCKET_COUNT(&table);
-  for (i = 0; i < n; i++) {
-    ASSERT_EQ(tk_raw_hash_table_add(&table, i, raw_hash_table_test_value(i)), RET_OK);
-  }
+  raw_hash_table_test_fill(&table, n);
 
   /* 删掉一半：桶里会留下空桶和闲置槽位 */
   for (i = 0; i < n; i += 2) {
@@ -690,6 +632,73 @@ TEST(RawHashTable, shrink) {
     ASSERT_EQ(tk_raw_hash_table_add(&table, i, raw_hash_table_test_value(i)), RET_OK);
   }
   ASSERT_EQ(tk_raw_hash_table_size(&table), (size_t)(n / 2 + 20));
+
+  ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
+}
+
+TEST(RawHashTable, bucket_shrink) {
+  size_t i = 0;
+  size_t n = 200;
+  size_t index = 0;
+  size_t buckets = 0;
+  size_t key0 = 0;
+  size_t key1 = 0;
+  tk_raw_hash_table_entry_t* entry = NULL;
+  tk_raw_hash_table_bucket_t bucket = NULL;
+  tk_raw_hash_table_t table;
+
+  ASSERT_EQ(tk_raw_hash_table_init(&table, n, NULL), RET_OK);
+  buckets = TK_RAW_HASH_TABLE_BUCKET_COUNT(&table);
+  raw_hash_table_test_fill(&table, n);
+
+  /* 找一个只有一个元素的桶：删掉它的键以后桶就空了(remove自己不回收，桶槽位还在) */
+  for (index = 0; index < buckets; index++) {
+    if (TK_RAW_DARRAY_SIZE(table.buckets[index]) == 1) {
+      break;
+    }
+  }
+  ASSERT_LT(index, buckets);
+  key0 = table.buckets[index][0].key;
+  ASSERT_EQ(tk_raw_hash_table_remove(&table, key0), RET_OK);
+  ASSERT_TRUE(table.buckets[index] != NULL);
+  ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[index]), 0u);
+  ASSERT_EQ(tk_raw_hash_table_size(&table), (size_t)(n - 1));
+
+  /* 空桶：整块回收，槽位恢复成没用过；重复调用是no-op */
+  ASSERT_EQ(tk_raw_hash_table_bucket_shrink(&table, index), RET_OK);
+  ASSERT_TRUE(table.buckets[index] == NULL);
+  ASSERT_EQ(tk_raw_hash_table_bucket_shrink(&table, index), RET_OK);
+
+  /* 非空桶：缩到实际大小 */
+  for (index = 0; index < buckets; index++) {
+    if (TK_RAW_DARRAY_SIZE(table.buckets[index]) >= 2) {
+      break;
+    }
+  }
+  ASSERT_LT(index, buckets);
+  bucket = table.buckets[index];
+  key1 = bucket[0].key;
+  ASSERT_EQ(tk_raw_hash_table_remove(&table, key1), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_size(&table), (size_t)(n - 2));
+
+  /* 删元素不会收缩桶内数组：容量仍然比实际大小大 */
+  ASSERT_TRUE(TK_RAW_DARRAY_CAPACITY(table.buckets[index]) >
+              TK_RAW_DARRAY_SIZE(table.buckets[index]));
+  ASSERT_EQ(tk_raw_hash_table_bucket_shrink(&table, index), RET_OK);
+  ASSERT_EQ(TK_RAW_DARRAY_CAPACITY(table.buckets[index]), TK_RAW_DARRAY_SIZE(table.buckets[index]));
+
+  /* 桶的个数不变，元素和值都不动 */
+  ASSERT_EQ(TK_RAW_HASH_TABLE_BUCKET_COUNT(&table), buckets);
+  for (i = 0; i < n; i++) {
+    entry = tk_raw_hash_table_find(&table, i);
+
+    if (i == key0 || i == key1) {
+      ASSERT_TRUE(entry == NULL);
+    } else {
+      ASSERT_TRUE(entry != NULL);
+      ASSERT_EQ(entry->value, raw_hash_table_test_value(i));
+    }
+  }
 
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
 }

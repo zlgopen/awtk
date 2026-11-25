@@ -221,8 +221,11 @@ inline static ret_t tk_raw_hash_table_destroy_value(tk_raw_hash_table_t* table,
   return RET_OK;
 }
 
+/********************************************************************************************/
+/* 给用户使用的函数 */
+
 /**
- * @method tk_raw_hash_table_set_value
+ * @method tk_raw_hash_table_entry_set_value
  * @annotation ["static"]
  * @export none
  * 替换元素的值：新值和旧值不同时才用value_destroy销毁旧值。
@@ -233,100 +236,14 @@ inline static ret_t tk_raw_hash_table_destroy_value(tk_raw_hash_table_t* table,
  * @param {tk_raw_hash_table_entry_t*} entry 元素。
  * @param {TK_RAW_HASH_TABLE_ENTRY_VALUE_T} value 新值。
  */
-inline static void tk_raw_hash_table_set_value(tk_raw_hash_table_t* table,
-                                               tk_raw_hash_table_entry_t* entry,
-                                               TK_RAW_HASH_TABLE_ENTRY_VALUE_T value) {
+inline static void tk_raw_hash_table_entry_set_value(tk_raw_hash_table_t* table,
+                                                     tk_raw_hash_table_entry_t* entry,
+                                                     TK_RAW_HASH_TABLE_ENTRY_VALUE_T value) {
   if (0 != TK_RAW_HASH_TABLE_VALUE_COMPARE(entry->value, value)) {
     tk_raw_hash_table_destroy_value(table, entry->value);
   }
   entry->value = value;
 }
-
-/**
- * @method tk_raw_hash_table_bucket_add
- * @annotation ["static"]
- * @export none
- * 往桶里加入一个元素，桶还没创建时先创建它。
- * @param {tk_raw_hash_table_bucket_t*} p_bucket 桶的地址。
- * @param {TK_RAW_HASH_TABLE_ENTRY_KEY_T} key 键。
- * @param {TK_RAW_HASH_TABLE_ENTRY_VALUE_T} value 值。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-inline static ret_t tk_raw_hash_table_bucket_add(tk_raw_hash_table_bucket_t* p_bucket,
-                                                 TK_RAW_HASH_TABLE_ENTRY_KEY_T key,
-                                                 TK_RAW_HASH_TABLE_ENTRY_VALUE_T value) {
-  tk_raw_hash_table_entry_t entry;
-  return_value_if_fail(p_bucket != NULL, RET_BAD_PARAMS);
-
-  entry.key = key;
-  entry.value = value;
-
-  if (*p_bucket == NULL) {
-    *p_bucket = TK_RAW_DARRAY_CREATE(tk_raw_hash_table_entry_t, 1);
-    return_value_if_fail(*p_bucket != NULL, RET_OOM);
-  }
-
-  return_value_if_fail(TK_RAW_DARRAY_PUSH(*p_bucket, entry) == RET_OK, RET_OOM);
-
-  return RET_OK;
-}
-
-/**
- * @method tk_raw_hash_table_bucket_remove
- * @annotation ["static"]
- * @export none
- * 删除桶里第idx个元素：先从桶里移除，再销毁键和值。
- * 销毁函数里可以安全地再访问表(此时元素已经不在桶里了)。
- *
- * @param {tk_raw_hash_table_t*} table 哈希表。
- * @param {tk_raw_hash_table_bucket_t} bucket 桶。
- * @param {size_t} idx 元素下标。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败(失败时不销毁)。
- */
-inline static ret_t tk_raw_hash_table_bucket_remove(tk_raw_hash_table_t* table,
-                                                    tk_raw_hash_table_bucket_t bucket, size_t idx) {
-  tk_raw_hash_table_entry_t entry;
-  return_value_if_fail(idx < TK_RAW_DARRAY_SIZE(bucket), RET_BAD_PARAMS);
-
-  entry = bucket[idx];
-  return_value_if_fail(RET_OK == TK_RAW_DARRAY_REMOVE(bucket, idx), RET_FAIL);
-
-  TK_RAW_HASH_TABLE_KEY_DESTROY(entry.key);
-  tk_raw_hash_table_destroy_value(table, entry.value);
-
-  return RET_OK;
-}
-
-/**
- * @method tk_raw_hash_table_bucket_clear
- * @annotation ["static"]
- * @export none
- * 销毁桶里的全部元素，并回收桶。
- * @param {tk_raw_hash_table_t*} table 哈希表。
- * @param {tk_raw_hash_table_bucket_t*} p_bucket 桶的地址。
- */
-inline static void tk_raw_hash_table_bucket_clear(tk_raw_hash_table_t* table,
-                                                  tk_raw_hash_table_bucket_t* p_bucket) {
-  size_t i = 0, n = 0;
-
-  /* 空桶是正常情况。 */
-  if (p_bucket == NULL || *p_bucket == NULL) {
-    return;
-  }
-
-  n = TK_RAW_DARRAY_SIZE(*p_bucket);
-  for (i = 0; i < n; i++) {
-    TK_RAW_HASH_TABLE_KEY_DESTROY((*p_bucket)[i].key);
-    tk_raw_hash_table_destroy_value(table, (*p_bucket)[i].value);
-  }
-
-  TK_RAW_DARRAY_DESTROY(*p_bucket);
-}
-
-/********************************************************************************************/
-/* 给用户使用的函数 */
 
 /**
  * @method tk_raw_hash_table_bucket_index
@@ -352,15 +269,22 @@ inline static size_t tk_raw_hash_table_bucket_index(tk_raw_hash_table_t* table,
  * @method tk_raw_hash_table_bucket_find
  * @annotation ["static"]
  * @export none
- * 在桶里查找第一个键匹配的元素。
- * @param {tk_raw_hash_table_bucket_t} bucket 桶。
+ * 在第index个桶里查找第一个键匹配的元素。
+ * @param {tk_raw_hash_table_t*} table 哈希表。
+ * @param {size_t} index 桶下标。
  * @param {TK_RAW_HASH_TABLE_ENTRY_KEY_T} key 键。
  *
  * @return {tk_raw_hash_table_entry_t*} 返回元素，没有找到返回NULL。
  */
 inline static tk_raw_hash_table_entry_t* tk_raw_hash_table_bucket_find(
-    tk_raw_hash_table_bucket_t bucket, TK_RAW_HASH_TABLE_ENTRY_KEY_T key) {
-  size_t i = 0, n = TK_RAW_DARRAY_SIZE(bucket);
+    tk_raw_hash_table_t* table, size_t index, TK_RAW_HASH_TABLE_ENTRY_KEY_T key) {
+  size_t i = 0, n = 0;
+  tk_raw_hash_table_bucket_t bucket = NULL;
+  return_value_if_fail(table != NULL && table->buckets != NULL, NULL);
+  return_value_if_fail(index < TK_RAW_HASH_TABLE_BUCKET_COUNT(table), NULL);
+
+  bucket = table->buckets[index];
+  n = TK_RAW_DARRAY_SIZE(bucket);
 
   for (i = 0; i < n; i++) {
     if (0 == TK_RAW_HASH_TABLE_KEY_COMPARE(bucket[i].key, key)) {
@@ -369,6 +293,121 @@ inline static tk_raw_hash_table_entry_t* tk_raw_hash_table_bucket_find(
   }
 
   return NULL;
+}
+
+/**
+ * @method tk_raw_hash_table_bucket_add
+ * @annotation ["static"]
+ * @export none
+ * 往第index个桶里加入一个元素，桶还没创建时先创建它。
+ * @param {tk_raw_hash_table_t*} table 哈希表。
+ * @param {size_t} index 桶下标。
+ * @param {TK_RAW_HASH_TABLE_ENTRY_KEY_T} key 键。
+ * @param {TK_RAW_HASH_TABLE_ENTRY_VALUE_T} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+inline static ret_t tk_raw_hash_table_bucket_add(tk_raw_hash_table_t* table, size_t index,
+                                                 TK_RAW_HASH_TABLE_ENTRY_KEY_T key,
+                                                 TK_RAW_HASH_TABLE_ENTRY_VALUE_T value) {
+  tk_raw_hash_table_entry_t entry;
+  tk_raw_hash_table_bucket_t* p_bucket = NULL;
+  return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(index < TK_RAW_HASH_TABLE_BUCKET_COUNT(table), RET_BAD_PARAMS);
+
+  entry.key = key;
+  entry.value = value;
+  p_bucket = table->buckets + index;
+
+  if (*p_bucket == NULL) {
+    *p_bucket = TK_RAW_DARRAY_CREATE(tk_raw_hash_table_entry_t, 1);
+    return_value_if_fail(*p_bucket != NULL, RET_OOM);
+  }
+
+  return_value_if_fail(TK_RAW_DARRAY_PUSH(*p_bucket, entry) == RET_OK, RET_OOM);
+
+  return RET_OK;
+}
+
+/**
+ * @method tk_raw_hash_table_bucket_remove
+ * @annotation ["static"]
+ * @export none
+ * 删除第index个桶里第pos个元素：先从桶里移除，再销毁键和值。
+ * 销毁函数里可以安全地再访问表(此时元素已经不在桶里了)。
+ *
+ * @param {tk_raw_hash_table_t*} table 哈希表。
+ * @param {size_t} index 桶下标。
+ * @param {size_t} pos 桶内元素下标。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败(失败时不销毁)。
+ */
+inline static ret_t tk_raw_hash_table_bucket_remove(tk_raw_hash_table_t* table, size_t index,
+                                                    size_t pos) {
+  tk_raw_hash_table_entry_t entry;
+  return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(index < TK_RAW_HASH_TABLE_BUCKET_COUNT(table), RET_BAD_PARAMS);
+  return_value_if_fail(pos < TK_RAW_DARRAY_SIZE(table->buckets[index]), RET_BAD_PARAMS);
+
+  entry = table->buckets[index][pos];
+  return_value_if_fail(RET_OK == TK_RAW_DARRAY_REMOVE(table->buckets[index], pos), RET_FAIL);
+
+  TK_RAW_HASH_TABLE_KEY_DESTROY(entry.key);
+  tk_raw_hash_table_destroy_value(table, entry.value);
+
+  return RET_OK;
+}
+
+/**
+ * @method tk_raw_hash_table_bucket_clear
+ * @annotation ["static"]
+ * @export none
+ * 销毁第index个桶里的全部元素，并回收桶。
+ * @param {tk_raw_hash_table_t*} table 哈希表。
+ * @param {size_t} index 桶下标。
+ */
+inline static void tk_raw_hash_table_bucket_clear(tk_raw_hash_table_t* table, size_t index) {
+  size_t i = 0, n = 0;
+  return_if_fail(table != NULL && table->buckets != NULL);
+  return_if_fail(index < TK_RAW_HASH_TABLE_BUCKET_COUNT(table));
+
+  /* 空桶是正常情况。 */
+  if (table->buckets[index] == NULL) {
+    return;
+  }
+
+  n = TK_RAW_DARRAY_SIZE(table->buckets[index]);
+  for (i = 0; i < n; i++) {
+    TK_RAW_HASH_TABLE_KEY_DESTROY(table->buckets[index][i].key);
+    tk_raw_hash_table_destroy_value(table, table->buckets[index][i].value);
+  }
+
+  TK_RAW_DARRAY_DESTROY(table->buckets[index]);
+}
+
+/**
+ * @method tk_raw_hash_table_bucket_shrink
+ * @annotation ["static"]
+ * @export none
+ * 回收第index个桶的闲置空间：空桶直接销毁，否则缩到实际用到的个数。
+ * @param {tk_raw_hash_table_t*} table 哈希表。
+ * @param {size_t} index 桶下标。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+inline static ret_t tk_raw_hash_table_bucket_shrink(tk_raw_hash_table_t* table, size_t index) {
+  return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(index < TK_RAW_HASH_TABLE_BUCKET_COUNT(table), RET_BAD_PARAMS);
+
+  if (table->buckets[index] == NULL) {
+    return RET_OK;
+  }
+
+  if (0 == TK_RAW_DARRAY_SIZE(table->buckets[index])) {
+    return TK_RAW_DARRAY_DESTROY(table->buckets[index]);
+  }
+
+  return TK_RAW_DARRAY_SHRINK(table->buckets[index]);
 }
 
 /**
@@ -424,7 +463,7 @@ inline static ret_t tk_raw_hash_table_clear(tk_raw_hash_table_t* table) {
   return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
 
   for (index = 0, n = TK_RAW_HASH_TABLE_BUCKET_COUNT(table); index < n; index++) {
-    tk_raw_hash_table_bucket_clear(table, &(table->buckets[index]));
+    tk_raw_hash_table_bucket_clear(table, index);
   }
 
   return RET_OK;
@@ -434,9 +473,8 @@ inline static ret_t tk_raw_hash_table_clear(tk_raw_hash_table_t* table) {
  * @method tk_raw_hash_table_shrink
  * @annotation ["static"]
  * @export none
- * 回收桶里闲置的槽位：桶内数组缩到实际用到的个数，空桶直接销毁。
- * 桶内数组是按需增长、从不收缩的，反复插入/删除(churn)后常驻内存会比实际需要的大；
- * 调用本函数把多余的内存还给分配器。桶的个数不变，元素及其键值都不动。
+ * 回收所有桶的闲置空间：空桶直接销毁，非空桶缩到实际用到的个数。
+ * 桶内数组只按需增长、从不收缩，反复增删(churn)后用本函数把多余的内存还给分配器。
  * @param {tk_raw_hash_table_t*} table 哈希表。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -446,18 +484,7 @@ inline static ret_t tk_raw_hash_table_shrink(tk_raw_hash_table_t* table) {
   return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
 
   for (index = 0, n = TK_RAW_HASH_TABLE_BUCKET_COUNT(table); index < n; index++) {
-    /* 没用过的桶 */
-    if (table->buckets[index] == NULL) {
-      continue;
-    }
-
-    /* 用过又空了的桶：整块回收，桶槽位恢复成"没用过" */
-    if (TK_RAW_DARRAY_SIZE(table->buckets[index]) == 0) {
-      TK_RAW_DARRAY_DESTROY(table->buckets[index]);
-      continue;
-    }
-
-    return_value_if_fail(RET_OK == TK_RAW_DARRAY_SHRINK(table->buckets[index]), RET_FAIL);
+    return_value_if_fail(RET_OK == tk_raw_hash_table_bucket_shrink(table, index), RET_FAIL);
   }
 
   return RET_OK;
@@ -496,17 +523,15 @@ inline static ret_t tk_raw_hash_table_add(tk_raw_hash_table_t* table,
                                           TK_RAW_HASH_TABLE_ENTRY_KEY_T key,
                                           TK_RAW_HASH_TABLE_ENTRY_VALUE_T value) {
   size_t index = 0;
-  tk_raw_hash_table_bucket_t bucket = NULL;
   return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
 
   index = tk_raw_hash_table_bucket_index(table, key);
-  bucket = table->buckets[index];
 
-  if (bucket != NULL && tk_raw_hash_table_bucket_find(bucket, key) != NULL) {
+  if (tk_raw_hash_table_bucket_find(table, index, key) != NULL) {
     return RET_FAIL;
   }
 
-  return tk_raw_hash_table_bucket_add(&(table->buckets[index]), key, value);
+  return tk_raw_hash_table_bucket_add(table, index, key, value);
 }
 
 /**
@@ -527,7 +552,7 @@ inline static tk_raw_hash_table_entry_t* tk_raw_hash_table_find(tk_raw_hash_tabl
 
   index = tk_raw_hash_table_bucket_index(table, key);
 
-  return tk_raw_hash_table_bucket_find(table->buckets[index], key);
+  return tk_raw_hash_table_bucket_find(table, index, key);
 }
 
 /**
@@ -552,7 +577,7 @@ inline static ret_t tk_raw_hash_table_modify(tk_raw_hash_table_t* table,
     return RET_NOT_FOUND;
   }
 
-  tk_raw_hash_table_set_value(table, entry, value);
+  tk_raw_hash_table_entry_set_value(table, entry, value);
 
   return RET_OK;
 }
@@ -596,19 +621,17 @@ inline static ret_t tk_raw_hash_table_remove(tk_raw_hash_table_t* table,
                                              TK_RAW_HASH_TABLE_ENTRY_KEY_T key) {
   size_t index = 0, i = 0;
   tk_raw_hash_table_entry_t* entry = NULL;
-  tk_raw_hash_table_bucket_t bucket = NULL;
   return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
 
   index = tk_raw_hash_table_bucket_index(table, key);
-  bucket = table->buckets[index];
-  entry = tk_raw_hash_table_bucket_find(bucket, key);
+  entry = tk_raw_hash_table_bucket_find(table, index, key);
   if (entry == NULL) {
     return RET_NOT_FOUND;
   }
 
-  i = (size_t)(entry - bucket);
+  i = (size_t)(entry - table->buckets[index]);
 
-  return tk_raw_hash_table_bucket_remove(table, bucket, i);
+  return tk_raw_hash_table_bucket_remove(table, index, i);
 }
 
 /**
@@ -658,12 +681,10 @@ inline static ret_t tk_raw_hash_table_foreach(tk_raw_hash_table_t* table, tk_vis
       tk_raw_hash_table_bucket_t bucket = table->buckets[index];
       ret = visit(ctx, bucket + i);
 
-      /* 遍历函数可能加了元素，桶内数组可能被realloc，重新取。 */
-      bucket = table->buckets[index];
-
+      /* 遍历函数可能加了元素，桶内数组可能被realloc，移除时按桶下标重新取。 */
       TK_FOREACH_VISIT_RESULT_PROCESSING(
           ret,
-          continue_if_fail_ex(RET_OK == tk_raw_hash_table_bucket_remove(table, bucket, i), i++));
+          continue_if_fail_ex(RET_OK == tk_raw_hash_table_bucket_remove(table, index, i), i++));
 
       i++;
     }
