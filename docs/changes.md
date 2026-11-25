@@ -5,6 +5,7 @@
   * improve raw_hash_table (感谢兆坤提供补丁)
   * add cache_clock(感谢兆坤提供补丁)
   * glyph_cache_init to glyph_cache_create(感谢兆坤提供补丁)
+  * improve glyph_cache_test(感谢兆坤提供补丁)
 
 2026/11/24
   * 完善 line_parser 中对 line_break 的记录时机(感谢泽武提供补丁)
