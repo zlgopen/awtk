@@ -42,7 +42,7 @@
 typedef struct _font_stb_t {
   font_t base;
   stbtt_fontinfo stb_font;
-  glyph_cache_t cache;
+  glyph_cache_t* cache;
   int ascent;
   int descent;
   int line_gap;
@@ -163,7 +163,7 @@ static glyph_t* font_stb_get_glyph_impl(font_t* f, uint32_t c, font_size_t font_
 
     gg = glyph_clone(g);
     if (gg != NULL) {
-      if (glyph_cache_add(&(font->cache), c, font_size, gg) != RET_OK) {
+      if (glyph_cache_add(font->cache, c, font_size, gg) != RET_OK) {
         TKMEM_FREE(gg);
         gg = NULL;
       }
@@ -180,7 +180,7 @@ static glyph_t* font_stb_get_glyph_impl(font_t* f, uint32_t c, font_size_t font_
 
 static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
   font_stb_t* font = (font_stb_t*)f;
-  if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
+  if (glyph_cache_lookup(font->cache, c, font_size, g) == RET_OK) {
     return RET_OK;
   }
   return font_stb_get_glyph_impl(f, c, font_size, g) != NULL || c == ' ' ? RET_OK : RET_NOT_FOUND;
@@ -220,7 +220,7 @@ static ret_t font_stb_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t* st
       glyphs->v2l_maps[glyph_index] = (int32_t)logical_index;
 
       g = &glyphs->glyphs[glyph_index];
-      if (glyph_cache_lookup(&(font->cache), c, font_size, g) != RET_OK) {
+      if (glyph_cache_lookup(font->cache, c, font_size, g) != RET_OK) {
         if (font_stb_get_glyph_impl(f, c, font_size, g) == NULL) {
           g->w = 0;
           g->h = 0;
@@ -245,12 +245,12 @@ error:
 static ret_t font_stb_shrink_cache(font_t* f, uint32_t cache_nr) {
   font_stb_t* font = (font_stb_t*)f;
 
-  return glyph_cache_shrink(&(font->cache), cache_nr);
+  return glyph_cache_shrink(font->cache, cache_nr);
 }
 
 static ret_t font_stb_destroy(font_t* f) {
   font_stb_t* font = (font_stb_t*)f;
-  glyph_cache_deinit(&(font->cache));
+  glyph_cache_destroy(font->cache);
 
   TKMEM_FREE(f);
 
@@ -275,6 +275,12 @@ static font_t* font_stb_create_ex(const char* name, const uint8_t* buff, uint32_
   f = TKMEM_ZALLOC(font_stb_t);
   return_value_if_fail(f != NULL, NULL);
 
+  f->cache = glyph_cache_create(TK_GLYPH_CACHE_NR, destroy_glyph);
+  if (f->cache == NULL) {
+    TKMEM_FREE(f);
+    return NULL;
+  }
+
   f->mono = mono;
   f->base.match = font_stb_match;
   f->base.destroy = font_stb_destroy;
@@ -286,7 +292,6 @@ static font_t* font_stb_create_ex(const char* name, const uint8_t* buff, uint32_
 
   tk_strncpy(f->base.name, name, MAX_PATH);
 
-  glyph_cache_init(&(f->cache), TK_GLYPH_CACHE_NR, destroy_glyph);
   stbtt_InitFont(&(f->stb_font), buff, stbtt_GetFontOffsetForIndex(buff, 0));
   stbtt_GetFontVMetrics(&(f->stb_font), &(f->ascent), &(f->descent), &(f->line_gap));
 

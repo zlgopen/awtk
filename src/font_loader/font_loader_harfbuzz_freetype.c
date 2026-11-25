@@ -66,8 +66,8 @@ typedef struct {
 typedef struct _font_ft_t {
   font_t base;
   ft_fontinfo ft_font;
-  glyph_cache_t hb_cache;
-  glyph_cache_t cache;
+  glyph_cache_t* hb_cache;
+  glyph_cache_t* cache;
   bool_t mono;
 #ifdef WITH_HARFBUZZ_TEXT_SHAPING
   hb_blob_t* blob;
@@ -179,9 +179,9 @@ static ret_t font_hb_ft_get_glyph_impl(font_t* f, uint32_t c, font_size_t font_s
         g_ft->glyph = *g;
         g_ft->handle = glyph;
         if (hb_info != NULL) {
-          ret = glyph_cache_add(&(font->hb_cache), hb_str->cur_gid, font_size, (glyph_t*)(g_ft));
+          ret = glyph_cache_add(font->hb_cache, hb_str->cur_gid, font_size, (glyph_t*)(g_ft));
         } else {
-          ret = glyph_cache_add(&(font->cache), c, font_size, (glyph_t*)(g_ft));
+          ret = glyph_cache_add(font->cache, c, font_size, (glyph_t*)(g_ft));
         }
         if (ret != RET_OK) {
           TKMEM_FREE(g_ft);
@@ -203,7 +203,7 @@ static ret_t font_hb_ft_get_glyph_impl(font_t* f, uint32_t c, font_size_t font_s
 
 static ret_t font_hb_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
   font_ft_t* font = (font_ft_t*)f;
-  if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
+  if (glyph_cache_lookup(font->cache, c, font_size, g) == RET_OK) {
     return RET_OK;
   }
   return font_hb_ft_get_glyph_impl(f, c, font_size, NULL, g);
@@ -258,7 +258,7 @@ static ret_t font_hb_ft_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t* 
         wchar_t c = cluster < len ? str[cluster] : 0;
         hb_str.cur_index = i;
         hb_str.cur_gid = hb_info[i].glyphid;
-        if (glyph_cache_lookup(&(font->hb_cache), hb_info[i].glyphid, font_size,
+        if (glyph_cache_lookup(font->hb_cache, hb_info[i].glyphid, font_size,
                                &glyphs->glyphs[i]) != RET_OK) {
           if (font_hb_ft_get_glyph_impl(f, c, font_size, &hb_str, &glyphs->glyphs[i]) != RET_OK) {
             glyphs->glyphs[i].w = 0;
@@ -295,7 +295,7 @@ static ret_t font_hb_ft_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t* 
         glyphs->v2l_maps[glyph_index] = (int32_t)logical_index;
 
         g = &glyphs->glyphs[glyph_index];
-        if (glyph_cache_lookup(&(font->cache), c, font_size, g) != RET_OK) {
+        if (glyph_cache_lookup(font->cache, c, font_size, g) != RET_OK) {
           if (font_hb_ft_get_glyph_impl(f, c, font_size, NULL, g) != RET_OK) {
             g->w = 0;
             g->h = 0;
@@ -356,8 +356,8 @@ static font_vmetrics_t font_hb_ft_get_vmetrics(font_t* f, font_size_t font_size)
 static ret_t font_hb_ft_shrink_cache(font_t* f, uint32_t cache_nr) {
   font_ft_t* font = (font_ft_t*)f;
 
-  glyph_cache_shrink(&(font->hb_cache), cache_nr);
-  return glyph_cache_shrink(&(font->cache), cache_nr);
+  glyph_cache_shrink(font->hb_cache, cache_nr);
+  return glyph_cache_shrink(font->cache, cache_nr);
 }
 
 static ret_t font_hb_ft_destroy(font_t* f) {
@@ -378,8 +378,8 @@ static ret_t font_hb_ft_destroy(font_t* f) {
   log_debug("harfbuzz loader unref\n");
 #endif /* WITH_HARFBUZZ_DATA_TEXT_SHAPING */
 
-  glyph_cache_deinit(&(font->cache));
-  glyph_cache_deinit(&(font->hb_cache));
+  glyph_cache_destroy(font->cache);
+  glyph_cache_destroy(font->hb_cache);
 #ifdef WITH_HARFBUZZ_TEXT_SHAPING
   hb_font_destroy(font->font);
   hb_face_destroy(font->face);
@@ -425,6 +425,20 @@ static font_t* font_hb_ft_create_ex(const char* name, const uint8_t* buff, uint3
     FT_Select_Charmap(f->ft_font.face, FT_ENCODING_ADOBE_LATIN_1);
   }
 
+  f->cache = glyph_cache_create(TK_GLYPH_CACHE_NR, destroy_glyph);
+  if (f->cache == NULL) {
+    FT_Done_FreeType(f->ft_font.library);
+    TKMEM_FREE(f);
+    return NULL;
+  }
+  f->hb_cache = glyph_cache_create(TK_GLYPH_CACHE_NR, destroy_glyph);
+  if (f->hb_cache == NULL) {
+    FT_Done_FreeType(f->ft_font.library);
+    glyph_cache_destroy(f->cache);
+    TKMEM_FREE(f);
+    return NULL;
+  }
+
   f->base.match = font_hb_ft_match;
   f->base.destroy = font_hb_ft_destroy;
   f->base.get_glyph = font_hb_ft_get_glyph;
@@ -442,9 +456,6 @@ static font_t* font_hb_ft_create_ex(const char* name, const uint8_t* buff, uint3
 #endif /*WITH_HARFBUZZ_TEXT_SHAPING*/
 
   tk_strncpy(f->base.name, name, MAX_PATH);
-
-  glyph_cache_init(&(f->cache), TK_GLYPH_CACHE_NR, destroy_glyph);
-  glyph_cache_init(&(f->hb_cache), TK_GLYPH_CACHE_NR, destroy_glyph);
 
   return &(f->base);
 }

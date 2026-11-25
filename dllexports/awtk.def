@@ -459,11 +459,11 @@ EXPORTS
     font_get_raster_params
     font_shrink_cache
     font_destroy
-    glyph_cache_init
+    glyph_cache_create
     glyph_cache_add
     glyph_cache_lookup
     glyph_cache_shrink
-    glyph_cache_deinit
+    glyph_cache_destroy
     gradient_init
     gradient_init_simple
     gradient_init_from_str

@@ -37,7 +37,7 @@ typedef struct {
 typedef struct _font_ft_t {
   font_t base;
   ft_fontinfo ft_font;
-  glyph_cache_t cache;
+  glyph_cache_t* cache;
   bool_t mono;
 } font_ft_t;
 
@@ -117,7 +117,7 @@ static ret_t font_ft_get_glyph_impl(font_t* f, uint32_t c, font_size_t font_size
 
         g_ft->glyph = *g;
         g_ft->handle = glyph;
-        if (glyph_cache_add(&(font->cache), c, font_size, (glyph_t*)(g_ft)) != RET_OK) {
+        if (glyph_cache_add(font->cache, c, font_size, (glyph_t*)(g_ft)) != RET_OK) {
           TKMEM_FREE(g_ft);
           g_ft = NULL;
         }
@@ -137,7 +137,7 @@ static ret_t font_ft_get_glyph_impl(font_t* f, uint32_t c, font_size_t font_size
 
 static ret_t font_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
   font_ft_t* font = (font_ft_t*)f;
-  if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
+  if (glyph_cache_lookup(font->cache, c, font_size, g) == RET_OK) {
     return RET_OK;
   }
   return font_ft_get_glyph_impl(f, c, font_size, g);
@@ -177,7 +177,7 @@ static ret_t font_ft_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t* str
       glyphs->v2l_maps[glyph_index] = (int32_t)logical_index;
 
       g = &glyphs->glyphs[glyph_index];
-      if (glyph_cache_lookup(&(font->cache), c, font_size, g) != RET_OK) {
+      if (glyph_cache_lookup(font->cache, c, font_size, g) != RET_OK) {
         if (font_ft_get_glyph_impl(f, c, font_size, g) != RET_OK) {
           g->w = 0;
           g->h = 0;
@@ -226,12 +226,12 @@ static font_vmetrics_t font_ft_get_vmetrics(font_t* f, font_size_t font_size) {
 static ret_t font_ft_shrink_cache(font_t* f, uint32_t cache_nr) {
   font_ft_t* font = (font_ft_t*)f;
 
-  return glyph_cache_shrink(&(font->cache), cache_nr);
+  return glyph_cache_shrink(font->cache, cache_nr);
 }
 
 static ret_t font_ft_destroy(font_t* f) {
   font_ft_t* font = (font_ft_t*)f;
-  glyph_cache_deinit(&(font->cache));
+  glyph_cache_destroy(font->cache);
 
   FT_Done_FreeType(font->ft_font.library);
 
@@ -278,7 +278,12 @@ static font_t* font_ft_create_ex(const char* name, const uint8_t* buff, uint32_t
 
   tk_strncpy(f->base.name, name, MAX_PATH);
 
-  glyph_cache_init(&(f->cache), TK_GLYPH_CACHE_NR, destroy_glyph);
+  f->cache = glyph_cache_create(TK_GLYPH_CACHE_NR, destroy_glyph);
+  if (f->cache == NULL) {
+    FT_Done_FreeType(f->ft_font.library);
+    TKMEM_FREE(f);
+    return NULL;
+  }
 
   return &(f->base);
 }

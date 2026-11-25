@@ -19,6 +19,24 @@
  *
  */
 
+#include "tkc/mem.h"
+#include "base/glyph_cache.h"
+#include "tkc/time_now.h"
+
+typedef struct _glyph_cache_item_t {
+  uint64_t last_access_time;
+  font_size_t size;
+  uint32_t code;
+  glyph_t* g;
+} glyph_cache_item_t;
+
+struct _glyph_cache_t {
+  uint32_t size;
+  uint32_t capacity;
+  glyph_cache_item_t* items;
+  tk_destroy_t destroy_glyph;
+};
+
 #define GLYPH_CACHE_FREE_ITEM(cache, item)            \
   do {                                                \
     if (cache->destroy_glyph && item->g != NULL) {    \
@@ -27,22 +45,24 @@
     }                                                 \
   } while (0)
 
-#include "tkc/mem.h"
-#include "tkc/time_now.h"
-#include "base/glyph_cache.h"
+glyph_cache_t* glyph_cache_create(uint32_t capacity, tk_destroy_t destroy_glyph) {
+  glyph_cache_t* cache = NULL;
+  return_value_if_fail(capacity > 0, NULL);
 
-glyph_cache_t* glyph_cache_init(glyph_cache_t* cache, uint32_t capacity,
-                                tk_destroy_t destroy_glyph) {
-  return_value_if_fail(cache != NULL && capacity > 0, NULL);
+  cache = TKMEM_ZALLOC(glyph_cache_t);
+  return_value_if_fail(cache != NULL, NULL);
 
   cache->items = TKMEM_ZALLOCN(glyph_cache_item_t, capacity);
-  return_value_if_fail(cache->items != NULL, NULL);
+  goto_error_if_fail(cache->items != NULL);
 
   cache->size = 0;
   cache->capacity = capacity;
   cache->destroy_glyph = destroy_glyph;
 
   return cache;
+error:
+  TKMEM_FREE(cache);
+  return NULL;
 }
 
 static glyph_cache_item_t* glyph_cache_get_empty(glyph_cache_t* cache) {
@@ -106,26 +126,6 @@ ret_t glyph_cache_lookup(glyph_cache_t* cache, uint32_t code, font_size_t size, 
   return RET_NOT_FOUND;
 }
 
-ret_t glyph_cache_deinit(glyph_cache_t* cache) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
-
-  return_value_if_fail(cache != NULL, RET_BAD_PARAMS);
-
-  if (cache->destroy_glyph != NULL) {
-    for (i = 0, nr = cache->size; i < nr; i++) {
-      glyph_cache_item_t* item = cache->items + i;
-
-      GLYPH_CACHE_FREE_ITEM(cache, item);
-    }
-  }
-
-  TKMEM_FREE(cache->items);
-  memset(cache, 0x00, sizeof(glyph_cache_t));
-
-  return RET_OK;
-}
-
 static int glyph_cache_item_compare_by_time(const void* a, const void* b) {
   glyph_cache_item_t* aa = (glyph_cache_item_t*)a;
   glyph_cache_item_t* bb = (glyph_cache_item_t*)b;
@@ -147,6 +147,26 @@ ret_t glyph_cache_shrink(glyph_cache_t* cache, uint32_t cache_size) {
 
     cache->size = cache_size;
   }
+
+  return RET_OK;
+}
+
+ret_t glyph_cache_destroy(glyph_cache_t* cache) {
+  uint32_t i = 0;
+  uint32_t nr = 0;
+
+  return_value_if_fail(cache != NULL, RET_BAD_PARAMS);
+
+  if (cache->destroy_glyph != NULL) {
+    for (i = 0, nr = cache->size; i < nr; i++) {
+      glyph_cache_item_t* item = cache->items + i;
+
+      GLYPH_CACHE_FREE_ITEM(cache, item);
+    }
+  }
+
+  TKMEM_FREE(cache->items);
+  TKMEM_FREE(cache);
 
   return RET_OK;
 }

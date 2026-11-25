@@ -54,8 +54,8 @@ typedef struct _hb_str_t {
 typedef struct _font_hb_stb_t {
   font_t base;
   stbtt_fontinfo stb_font;
-  glyph_cache_t cache;
-  glyph_cache_t hb_cache;
+  glyph_cache_t* cache;
+  glyph_cache_t* hb_cache;
   int ascent;
   int descent;
   int line_gap;
@@ -209,12 +209,12 @@ static glyph_t* font_hb_stb_get_glyph_impl(font_t* f, uint32_t c, font_size_t fo
     gg = glyph_clone(g);
     if (gg != NULL) {
       if (hb_str != NULL) {
-        if (glyph_cache_add(&(font->hb_cache), hb_str->cur_gid, font_size, gg) != RET_OK) {
+        if (glyph_cache_add(font->hb_cache, hb_str->cur_gid, font_size, gg) != RET_OK) {
           TKMEM_FREE(gg);
           gg = NULL;
         }
       } else {
-        if (glyph_cache_add(&(font->cache), c, font_size, gg) != RET_OK) {
+        if (glyph_cache_add(font->cache, c, font_size, gg) != RET_OK) {
           TKMEM_FREE(gg);
           gg = NULL;
         }
@@ -232,7 +232,7 @@ static glyph_t* font_hb_stb_get_glyph_impl(font_t* f, uint32_t c, font_size_t fo
 
 static ret_t font_hb_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
   font_hb_stb_t* font = (font_hb_stb_t*)f;
-  if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
+  if (glyph_cache_lookup(font->cache, c, font_size, g) == RET_OK) {
     return RET_OK;
   }
   return font_hb_stb_get_glyph_impl(f, c, font_size, NULL, g) != NULL || c == ' ' ? RET_OK
@@ -289,7 +289,7 @@ static ret_t font_hb_stb_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t*
         wchar_t c = cluster < len ? str[cluster] : 0;
         hb_str.cur_index = i;
         hb_str.cur_gid = hb_info[i].glyphid;
-        if (glyph_cache_lookup(&(font->hb_cache), hb_info[i].glyphid, font_size,
+        if (glyph_cache_lookup(font->hb_cache, hb_info[i].glyphid, font_size,
                                &glyphs->glyphs[i]) != RET_OK) {
           if (font_hb_stb_get_glyph_impl(f, c, font_size, &hb_str, &glyphs->glyphs[i]) == NULL) {
             glyphs->glyphs[i].w = 0;
@@ -327,7 +327,7 @@ static ret_t font_hb_stb_init_glyphs(font_t* f, glyphs_t* glyphs, const wchar_t*
         glyphs->v2l_maps[glyph_index] = (int32_t)logical_index;
 
         g = &glyphs->glyphs[glyph_index];
-        if (glyph_cache_lookup(&(font->cache), c, font_size, g) != RET_OK) {
+        if (glyph_cache_lookup(font->cache, c, font_size, g) != RET_OK) {
           if (font_hb_stb_get_glyph_impl(f, c, font_size, NULL, g) == NULL) {
             g->w = 0;
             g->h = 0;
@@ -363,8 +363,8 @@ error:
 static ret_t font_hb_stb_shrink_cache(font_t* f, uint32_t cache_nr) {
   font_hb_stb_t* font = (font_hb_stb_t*)f;
 
-  glyph_cache_shrink(&(font->hb_cache), cache_nr);
-  return glyph_cache_shrink(&(font->cache), cache_nr);
+  glyph_cache_shrink(font->hb_cache, cache_nr);
+  return glyph_cache_shrink(font->cache, cache_nr);
 }
 
 static ret_t font_hb_stb_destroy(font_t* f) {
@@ -385,8 +385,8 @@ static ret_t font_hb_stb_destroy(font_t* f) {
   log_debug("harfbuzz loader unref\n");
 #endif /* WITH_HARFBUZZ_DATA_TEXT_SHAPING */
 
-  glyph_cache_deinit(&(font->cache));
-  glyph_cache_deinit(&(font->hb_cache));
+  glyph_cache_destroy(font->cache);
+  glyph_cache_destroy(font->hb_cache);
 #ifdef WITH_HARFBUZZ_TEXT_SHAPING
   hb_font_destroy(font->font);
   hb_face_destroy(font->face);
@@ -420,6 +420,18 @@ static font_t* font_hb_stb_create_ex(const char* name, const uint8_t* buff, uint
   f = TKMEM_ZALLOC(font_hb_stb_t);
   return_value_if_fail(f != NULL, NULL);
 
+  f->cache = glyph_cache_create(TK_GLYPH_CACHE_NR, destroy_glyph);
+  if (f->cache == NULL) {
+    TKMEM_FREE(f);
+    return NULL;
+  }
+  f->hb_cache = glyph_cache_create(TK_GLYPH_CACHE_NR, destroy_glyph);
+  if (f->hb_cache == NULL) {
+    glyph_cache_destroy(f->cache);
+    TKMEM_FREE(f);
+    return NULL;
+  }
+
   f->mono = mono;
   f->base.match = font_hb_stb_match;
   f->base.destroy = font_hb_stb_destroy;
@@ -431,8 +443,6 @@ static font_t* font_hb_stb_create_ex(const char* name, const uint8_t* buff, uint
 
   tk_strncpy(f->base.name, name, MAX_PATH);
 
-  glyph_cache_init(&(f->cache), TK_GLYPH_CACHE_NR, destroy_glyph);
-  glyph_cache_init(&(f->hb_cache), TK_GLYPH_CACHE_NR, destroy_glyph);
   stbtt_InitFont(&(f->stb_font), buff, stbtt_GetFontOffsetForIndex(buff, 0));
   stbtt_GetFontVMetrics(&(f->stb_font), &(f->ascent), &(f->descent), &(f->line_gap));
 #ifdef WITH_HARFBUZZ_TEXT_SHAPING
