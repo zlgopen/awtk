@@ -21,6 +21,95 @@
 
 #include "tkc/mem.h"
 #include "base/glyph_cache.h"
+
+#ifdef WITH_SDL
+typedef struct _glyph_cache_key_t {
+  font_size_t size;
+  uint32_t code;
+} glyph_cache_key_t;
+
+#define TK_CACHE_CLOCK_KEY_T glyph_cache_key_t
+#define TK_CACHE_CLOCK_DATA_T glyph_t*
+
+inline static uint64_t glyph_cache_key_hash(const glyph_cache_key_t key) {
+  uint64_t ret = ((uint64_t)(key.size) << 32) | key.code;
+  return ret;
+}
+#define TK_CACHE_CLOCK_KEY_HASH(key) glyph_cache_key_hash(key)
+
+inline static int32_t glyph_cache_key_compare(const glyph_cache_key_t a,
+                                              const glyph_cache_key_t b) {
+  if (a.code != b.code) {
+    return a.code > b.code ? 1 : -1;
+  }
+  return a.size > b.size ? 1 : (a.size < b.size ? -1 : 0);
+}
+#define TK_CACHE_CLOCK_KEY_COMPARE(a, b) glyph_cache_key_compare(a, b)
+
+#include "tkc/cache_clock.h"
+
+struct _glyph_cache_t {
+  tk_cache_clock_t cache;
+};
+
+glyph_cache_t* glyph_cache_create(uint32_t capacity, tk_destroy_t destroy_glyph) {
+  glyph_cache_t* cache = NULL;
+  return_value_if_fail(capacity > 0, NULL);
+
+  cache = TKMEM_ZALLOC(glyph_cache_t);
+  return_value_if_fail(cache != NULL, NULL);
+
+  goto_error_if_fail(RET_OK == tk_cache_clock_init(&(cache->cache), capacity,
+                                                (tk_raw_hash_table_value_destroy_t)destroy_glyph));
+
+  return cache;
+error:
+  TKMEM_FREE(cache);
+  return NULL;
+}
+
+ret_t glyph_cache_add(glyph_cache_t* cache, uint32_t code, font_size_t size, glyph_t* g) {
+  glyph_cache_key_t key;
+  return_value_if_fail(cache != NULL && g != NULL, RET_BAD_PARAMS);
+
+  key.size = size;
+  key.code = code;
+
+  return tk_cache_clock_put(&(cache->cache), key, g);
+}
+
+ret_t glyph_cache_lookup(glyph_cache_t* cache, uint32_t code, font_size_t size, glyph_t* g) {
+  glyph_t* found = NULL;
+  glyph_cache_key_t key;
+  return_value_if_fail(cache != NULL && g != NULL, RET_BAD_PARAMS);
+
+  key.size = size;
+  key.code = code;
+
+  if (tk_cache_clock_get(&(cache->cache), key, &found) != RET_OK) {
+    return RET_NOT_FOUND;
+  }
+
+  *g = *found;
+
+  return RET_OK;
+}
+
+ret_t glyph_cache_shrink(glyph_cache_t* cache, uint32_t cache_size) {
+  return_value_if_fail(cache != NULL, RET_BAD_PARAMS);
+
+  return tk_cache_clock_shrink(&(cache->cache), cache_size);
+}
+
+ret_t glyph_cache_destroy(glyph_cache_t* cache) {
+  return_value_if_fail(cache != NULL, RET_BAD_PARAMS);
+
+  tk_cache_clock_deinit(&(cache->cache));
+  TKMEM_FREE(cache);
+
+  return RET_OK;
+}
+#else
 #include "tkc/time_now.h"
 
 typedef struct _glyph_cache_item_t {
@@ -170,3 +259,4 @@ ret_t glyph_cache_destroy(glyph_cache_t* cache) {
 
   return RET_OK;
 }
+#endif /*WITH_SDL*/
