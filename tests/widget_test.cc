@@ -1,6 +1,7 @@
 ﻿
 #include "base/canvas.h"
 #include "base/widget.h"
+#include "base/system_info.h"
 #include "widgets/view.h"
 #include "widgets/button.h"
 #include "widgets/label.h"
@@ -943,6 +944,13 @@ TEST(Widget, calc_icon_text_rect_icon_right) {
   uint32_t img_w1 = 100;
   uint32_t img_w2 = 300;
   rect_t ir = rect_init(10, 20, 200, 80);
+  system_info_t* info = system_info();
+  float_t old_ratio = info != NULL ? info->device_pixel_ratio : 1;
+
+  /* 前面的窗口测试可能把全局倍率改成 2，这里按 1 倍图断言。 */
+  if (info != NULL) {
+    system_info_set_device_pixel_ratio(info, 1);
+  }
 
   widget_calc_icon_text_rect(&ir, font_size, 10.0f, ICON_AT_RIGHT, 10, 10, spacer, &r_text,
                              &r_icon);
@@ -972,6 +980,10 @@ TEST(Widget, calc_icon_text_rect_icon_right) {
   ASSERT_EQ(r_icon.y, ir.y);
   ASSERT_EQ(r_icon.w, ir.w);
   ASSERT_EQ(r_icon.h, ir.h);
+
+  if (info != NULL) {
+    system_info_set_device_pixel_ratio(info, old_ratio);
+  }
 }
 
 TEST(Widget, calc_icon_text_rect_icon_centre) {

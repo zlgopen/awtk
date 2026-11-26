@@ -1274,6 +1274,7 @@ TEST(Canvas, draw_image_icon_ex2) {
 
   img.w = 32;
   img.h = 32;
+  img.image_ratio = 1;
   r = rect_init(0, 0, 320, 480);
   dirty_rects_t dr;
   dirty_rects_init(&dr);
