@@ -2,6 +2,7 @@
 
 2026/11/26
   * 修复 MSVC wWinMain 在参数个数达到 MAX_ARGV-1 时会崩溃的问题(感谢兆坤提供补丁)
+  * improve cache_clock and raw_hash_table(感谢兆坤提供补丁)
 
 2026/11/25
   * add raw_hash_table (感谢兆坤提供补丁)

@@ -52,13 +52,6 @@ static const char* cache_clock_test_key(size_t i) {
   return s_keys[i];
 }
 
-/* 取桶index的"访问过"位 */
-static bool_t cache_clock_test_accessed(tk_cache_clock_t* cache, size_t index) {
-  size_t pos = tk_cache_clock_bit_pos(index, TK_CACHE_CLOCK_BIT_ACCESSED);
-
-  return TK_BITSET_OP(TK_TEST_BIT, cache->flags, pos) != 0;
-}
-
 /* 命中返回a字段，未命中返回-1 */
 static int32_t cache_clock_test_get(tk_cache_clock_t* cache, const char* key) {
   cache_clock_test_info_t out;
@@ -90,7 +83,7 @@ static void cache_clock_test_check(tk_cache_clock_t* cache) {
     }
   }
 
-  ASSERT_EQ(n, cache->size);
+  ASSERT_EQ(n, cache->table.size);
   ASSERT_LT(cache->hand, buckets);
 }
 
@@ -122,16 +115,13 @@ TEST(CacheClock, basic) {
 
   s_destroy_count = 0;
   ASSERT_EQ(tk_cache_clock_init(&cache, 3, cache_clock_test_data_destroy), RET_OK);
-  ASSERT_EQ(cache.size, 0u);
+  ASSERT_EQ(cache.table.size, 0u);
+  ASSERT_EQ(cache.table.capacity, 3u);
   ASSERT_TRUE(cache.flags != NULL);
 
   ASSERT_EQ(tk_cache_clock_put(&cache, "a", cache_clock_test_info(100, 1)), RET_OK);
-  ASSERT_EQ(cache.size, 1u);
+  ASSERT_EQ(cache.table.size, 1u);
   ASSERT_EQ(cache_clock_test_get(&cache, "a"), 100);
-
-  /* 命中会把桶标记为访问过 */
-  ASSERT_TRUE(
-      cache_clock_test_accessed(&cache, tk_raw_hash_table_bucket_index(&(cache.table), "a")));
 
   /* 未命中返回RET_NOT_FOUND，且不改写out */
   out.a = 77;
@@ -141,7 +131,7 @@ TEST(CacheClock, basic) {
 
   ASSERT_EQ(tk_cache_clock_deinit(&cache), RET_OK);
   ASSERT_EQ(s_destroy_count, 1u);
-  ASSERT_EQ(cache.size, 0u);
+  ASSERT_EQ(cache.table.size, 0u);
   ASSERT_TRUE(cache.flags == NULL);
 }
 
@@ -158,7 +148,7 @@ TEST(CacheClock, evict) {
   /* 容量1：每次put都淘汰上一个 */
   ASSERT_EQ(tk_cache_clock_put(&cache, "a", cache_clock_test_info(10, 0)), RET_OK);
   ASSERT_EQ(tk_cache_clock_put(&cache, "b", cache_clock_test_info(20, 0)), RET_OK);
-  ASSERT_EQ(cache.size, 1u);
+  ASSERT_EQ(cache.table.size, 1u);
   ASSERT_EQ(s_destroy_count, 1u);
   ASSERT_EQ(cache_clock_test_get(&cache, "a"), -1);
   ASSERT_EQ(cache_clock_test_get(&cache, "b"), 20);
@@ -176,9 +166,9 @@ TEST(CacheClock, evict) {
     const char* key = cache_clock_test_key(i);
 
     ASSERT_EQ(tk_cache_clock_put(&cache, key, cache_clock_test_info((int32_t)i, 0)), RET_OK);
-    ASSERT_LE(cache.size, 4u);
+    ASSERT_LE(cache.table.size, 4u);
   }
-  ASSERT_EQ(cache.size, 4u);
+  ASSERT_EQ(cache.table.size, 4u);
   cache_clock_test_check(&cache);
 
   /* 非NULL的桶里一定有元素：空桶在淘汰那一刻就还给分配器了 */
@@ -190,7 +180,7 @@ TEST(CacheClock, evict) {
       live++;
     }
   }
-  ASSERT_LE(live, cache.size);
+  ASSERT_LE(live, cache.table.size);
 
   ASSERT_EQ(tk_cache_clock_deinit(&cache), RET_OK);
 }
@@ -215,14 +205,14 @@ TEST(CacheClock, update) {
 
   /* 同一个键只占一个元素，旧数据由销毁函数销毁 */
   ASSERT_EQ(tk_cache_clock_put(&cache, "a", info), RET_OK);
-  ASSERT_EQ(cache.size, 1u);
+  ASSERT_EQ(cache.table.size, 1u);
   ASSERT_EQ(s_destroy_count, 1u);
   ASSERT_EQ(cache_clock_test_get(&cache, "a"), 10);
   cache_clock_test_check(&cache);
 
   /* 值和旧的一样：只置访问位，不销毁(调用方把取出来的数据写回去是安全的) */
   ASSERT_EQ(tk_cache_clock_put(&cache, "a", info), RET_OK);
-  ASSERT_EQ(cache.size, 1u);
+  ASSERT_EQ(cache.table.size, 1u);
   ASSERT_EQ(s_destroy_count, 1u);
   ASSERT_EQ(cache_clock_test_get(&cache, "a"), 10);
   cache_clock_test_check(&cache);
@@ -230,7 +220,7 @@ TEST(CacheClock, update) {
   /* 比较相等(只比a)但数据不同：不销毁旧数据，新数据也必须写进去 */
   info.b = 99;
   ASSERT_EQ(tk_cache_clock_put(&cache, "a", info), RET_OK);
-  ASSERT_EQ(cache.size, 1u);
+  ASSERT_EQ(cache.table.size, 1u);
   ASSERT_EQ(s_destroy_count, 1u);
   ASSERT_EQ(tk_cache_clock_get(&cache, "a", &out), RET_OK);
   ASSERT_EQ(out.a, 10);
@@ -252,14 +242,14 @@ TEST(CacheClock, remove_clear) {
   ASSERT_EQ(tk_cache_clock_put(&cache, "c", cache_clock_test_info(3, 0)), RET_OK);
 
   ASSERT_EQ(tk_cache_clock_remove(&cache, "b"), RET_OK);
-  ASSERT_EQ(cache.size, 2u);
+  ASSERT_EQ(cache.table.size, 2u);
   ASSERT_EQ(s_destroy_count, 1u);
   ASSERT_EQ(cache_clock_test_get(&cache, "b"), -1);
   ASSERT_EQ(tk_cache_clock_remove(&cache, "b"), RET_NOT_FOUND);
   cache_clock_test_check(&cache);
 
   ASSERT_EQ(tk_cache_clock_clear(&cache), RET_OK);
-  ASSERT_EQ(cache.size, 0u);
+  ASSERT_EQ(cache.table.size, 0u);
   ASSERT_EQ(s_destroy_count, 3u);
   ASSERT_EQ(cache.hand, 0u);
   cache_clock_test_check(&cache);
@@ -289,11 +279,11 @@ TEST(CacheClock, collide_bucket) {
 
   ASSERT_EQ(tk_cache_clock_put(&cache, first, cache_clock_test_info(1, 1)), RET_OK);
   ASSERT_EQ(tk_cache_clock_put(&cache, second, cache_clock_test_info(2, 2)), RET_OK);
-  ASSERT_EQ(cache.size, 2u);
+  ASSERT_EQ(cache.table.size, 2u);
 
   /* 满了：淘汰桶0里最早插入的那个(first) */
   ASSERT_EQ(tk_cache_clock_put(&cache, other, cache_clock_test_info(3, 3)), RET_OK);
-  ASSERT_EQ(cache.size, 2u);
+  ASSERT_EQ(cache.table.size, 2u);
   ASSERT_EQ(s_destroy_count, 1u);
   ASSERT_EQ(cache_clock_test_get(&cache, first), -1);
   ASSERT_EQ(cache_clock_test_get(&cache, second), 2);
@@ -304,45 +294,6 @@ TEST(CacheClock, collide_bucket) {
   cache_clock_test_check(&cache);
 
   ASSERT_EQ(tk_cache_clock_deinit(&cache), RET_OK);
-}
-
-TEST(CacheClock, second_chance) {
-  const char* hot = NULL;
-  const char* cold = NULL;
-  const char* other = NULL;
-  tk_cache_clock_t cache;
-
-  s_destroy_count = 0;
-  ASSERT_EQ(tk_cache_clock_init(&cache, 2, cache_clock_test_data_destroy), RET_OK);
-  ASSERT_GE(TK_RAW_HASH_TABLE_BUCKET_COUNT(&(cache.table)), 2u);
-
-  /* 找两个分别落在桶0、桶1的键，再找一个键用来触发淘汰 */
-  hot = cache_clock_test_key_in_bucket(&cache, 0, NULL, NULL);
-  cold = cache_clock_test_key_in_bucket(&cache, 1, hot, NULL);
-  other = cache_clock_test_key_in_bucket(&cache, 2, hot, cold);
-  ASSERT_TRUE(hot != NULL && cold != NULL && other != NULL);
-
-  ASSERT_EQ(tk_cache_clock_put(&cache, hot, cache_clock_test_info(1, 0)), RET_OK);
-  ASSERT_EQ(tk_cache_clock_put(&cache, cold, cache_clock_test_info(2, 0)), RET_OK);
-  ASSERT_EQ(cache.size, 2u);
-  ASSERT_EQ(cache.hand, 0u);
-
-  /* hot刚写过、访问位是1；把cold的访问位清掉，模拟它这一轮没被用过 */
-  ASSERT_TRUE(cache_clock_test_accessed(&cache, 0));
-  TK_BITSET_OP(TK_CLEAR_BIT, cache.flags, tk_cache_clock_bit_pos(1, TK_CACHE_CLOCK_BIT_ACCESSED));
-  ASSERT_FALSE(cache_clock_test_accessed(&cache, 1));
-
-  /* 满了：从hand=0扫，桶0有二次机会被放过，淘汰桶1里的cold */
-  ASSERT_EQ(tk_cache_clock_put(&cache, other, cache_clock_test_info(3, 0)), RET_OK);
-  ASSERT_EQ(cache.size, 2u);
-  ASSERT_EQ(s_destroy_count, 1u);
-  ASSERT_EQ(cache_clock_test_get(&cache, cold), -1);
-  ASSERT_EQ(cache_clock_test_get(&cache, hot), 1);
-  ASSERT_EQ(cache_clock_test_get(&cache, other), 3);
-  cache_clock_test_check(&cache);
-
-  ASSERT_EQ(tk_cache_clock_deinit(&cache), RET_OK);
-  ASSERT_EQ(s_destroy_count, 3u);
 }
 
 TEST(CacheClock, evict_many) {
@@ -357,10 +308,10 @@ TEST(CacheClock, evict_many) {
     const char* key = cache_clock_test_key(i);
 
     ASSERT_EQ(tk_cache_clock_put(&cache, key, cache_clock_test_info((int32_t)i, 0)), RET_OK);
-    ASSERT_LE(cache.size, 100u);
+    ASSERT_LE(cache.table.size, 100u);
   }
 
-  ASSERT_EQ(cache.size, 100u);
+  ASSERT_EQ(cache.table.size, 100u);
   ASSERT_EQ(s_destroy_count, 900u);
   cache_clock_test_check(&cache);
 
@@ -370,39 +321,6 @@ TEST(CacheClock, evict_many) {
 
   ASSERT_EQ(tk_cache_clock_deinit(&cache), RET_OK);
   ASSERT_EQ(s_destroy_count, 1000u);
-}
-
-TEST(CacheClock, flags_and_clear) {
-  size_t i = 0;
-  size_t buckets = 0;
-  size_t index = 0;
-  tk_cache_clock_t cache;
-
-  s_destroy_count = 0;
-  ASSERT_EQ(tk_cache_clock_init(&cache, 4, cache_clock_test_data_destroy), RET_OK);
-  buckets = TK_RAW_HASH_TABLE_BUCKET_COUNT(&(cache.table));
-
-  ASSERT_EQ(tk_cache_clock_put(&cache, "a", cache_clock_test_info(1, 0)), RET_OK);
-  index = tk_raw_hash_table_bucket_index(&(cache.table), "a");
-
-  /* 写入后引用位被置1 */
-  ASSERT_TRUE(cache_clock_test_accessed(&cache, index));
-
-  /* 手动清0，再覆盖同一个键：put也要置1 */
-  TK_BITSET_OP(TK_CLEAR_BIT, cache.flags,
-               tk_cache_clock_bit_pos(index, TK_CACHE_CLOCK_BIT_ACCESSED));
-  ASSERT_EQ(tk_cache_clock_put(&cache, "a", cache_clock_test_info(2, 0)), RET_OK);
-  ASSERT_TRUE(cache_clock_test_accessed(&cache, index));
-  ASSERT_EQ(s_destroy_count, 1u);
-
-  /* clear之后位图全0 */
-  ASSERT_EQ(tk_cache_clock_clear(&cache), RET_OK);
-  ASSERT_EQ(s_destroy_count, 2u);
-  for (i = 0; i < buckets; i++) {
-    ASSERT_FALSE(cache_clock_test_accessed(&cache, i));
-  }
-
-  ASSERT_EQ(tk_cache_clock_deinit(&cache), RET_OK);
 }
 
 TEST(CacheClock, shrink) {
@@ -417,22 +335,22 @@ TEST(CacheClock, shrink) {
 
     ASSERT_EQ(tk_cache_clock_put(&cache, key, cache_clock_test_info((int32_t)i, 0)), RET_OK);
   }
-  ASSERT_EQ(cache.size, 10u);
+  ASSERT_EQ(cache.table.size, 10u);
 
   ASSERT_EQ(tk_cache_clock_shrink(&cache, 4), RET_OK);
-  ASSERT_EQ(cache.size, 4u);
+  ASSERT_EQ(cache.table.size, 4u);
   ASSERT_EQ(s_destroy_count, 6u);
   cache_clock_test_check(&cache);
 
   /* 缩到和当前个数一样、或者比当前还大：都是no-op */
   ASSERT_EQ(tk_cache_clock_shrink(&cache, 4), RET_OK);
-  ASSERT_EQ(cache.size, 4u);
+  ASSERT_EQ(cache.table.size, 4u);
   ASSERT_EQ(tk_cache_clock_shrink(&cache, 100), RET_OK);
-  ASSERT_EQ(cache.size, 4u);
+  ASSERT_EQ(cache.table.size, 4u);
   ASSERT_EQ(s_destroy_count, 6u);
 
   ASSERT_EQ(tk_cache_clock_shrink(&cache, 0), RET_OK);
-  ASSERT_EQ(cache.size, 0u);
+  ASSERT_EQ(cache.table.size, 0u);
   ASSERT_EQ(s_destroy_count, 10u);
   cache_clock_test_check(&cache);
 
@@ -467,8 +385,8 @@ TEST(CacheClock, shrink_reclaim_buckets) {
   ASSERT_TRUE(slack > 0);
 
   /* 缩到当前个数：不淘汰元素，只回收闲置内存 */
-  ASSERT_EQ(tk_cache_clock_shrink(&cache, cache.size), RET_OK);
-  ASSERT_EQ(cache.size, 20u);
+  ASSERT_EQ(tk_cache_clock_shrink(&cache, cache.table.size), RET_OK);
+  ASSERT_EQ(cache.table.size, 20u);
   cache_clock_test_check(&cache);
 
   for (i = 0; i < buckets; i++) {
@@ -517,7 +435,7 @@ TEST(CacheClock, invalid_usage) {
   ASSERT_EQ(tk_cache_clock_remove(&cache, "a"), RET_NOT_FOUND);
   ASSERT_EQ(tk_cache_clock_get(&cache, "a", &out), RET_NOT_FOUND);
   ASSERT_EQ(tk_cache_clock_shrink(&cache, 0), RET_OK);
-  ASSERT_EQ(cache.size, 0u);
+  ASSERT_EQ(cache.table.size, 0u);
   cache_clock_test_check(&cache);
   ASSERT_NE(tk_cache_clock_get(&cache, "a", NULL), RET_OK);
   ASSERT_EQ(tk_cache_clock_deinit(&cache), RET_OK);

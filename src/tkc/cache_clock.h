@@ -89,6 +89,7 @@ BEGIN_C_DECLS
 /**
  * @enum tk_cache_clock_bit_t
  * @prefix TK_CACHE_CLOCK_BIT_
+ * @annotation ["private"]
  * 每个hash桶的标志位。
  */
 typedef enum _tk_cache_clock_bit_t {
@@ -102,6 +103,7 @@ typedef enum _tk_cache_clock_bit_t {
 
 /**
  * @class tk_cache_clock_t
+ * @annotation ["private"]
  * @export none
  * CLOCK(二次机会)缓存。
  *
@@ -145,20 +147,6 @@ typedef struct _tk_cache_clock_t {
    * 时钟指针，淘汰从这里开始扫桶。
    */
   size_t hand;
-
-  /**
-   * @property {size_t} size
-   * @annotation ["readable"]
-   * 当前缓存了多少个元素。
-   */
-  size_t size;
-
-  /**
-   * @property {size_t} capacity
-   * @annotation ["readable"]
-   * 最多缓存多少个元素。
-   */
-  size_t capacity;
 } tk_cache_clock_t;
 
 /********************************************************************************************/
@@ -166,7 +154,7 @@ typedef struct _tk_cache_clock_t {
 
 /**
  * @method tk_cache_clock_bit_pos
- * @annotation ["static"]
+ * @annotation ["private", "static"]
  * @export none
  * 返回第index个桶的bit标志位在位图里的位序号。
  * @param {size_t} index 桶下标。
@@ -180,7 +168,7 @@ inline static size_t tk_cache_clock_bit_pos(size_t index, tk_cache_clock_bit_t b
 
 /**
  * @method tk_cache_clock_touch_index
- * @annotation ["static"]
+ * @annotation ["private"]
  * @export none
  * 把第index个桶标记为访问过(给二次机会)。
  * @param {tk_cache_clock_t*} cache 缓存对象。
@@ -193,7 +181,7 @@ inline static void tk_cache_clock_touch_index(tk_cache_clock_t* cache, size_t in
 
 /**
  * @method tk_cache_clock_next_index
- * @annotation ["static"]
+ * @annotation ["private", "static"]
  * @export none
  * 桶下标前移一个，到末尾回绕到0(不用对桶数取模)。
  * @param {size_t} index 当前桶下标。
@@ -208,9 +196,9 @@ inline static size_t tk_cache_clock_next_index(size_t index, size_t n) {
 
 /**
  * @method tk_cache_clock_evict_bucket
- * @annotation ["static"]
+ * @annotation ["private"]
  * @export none
- * 从桶里删掉最早插入的元素，hand前移，元素个数减1。
+ * 从桶里删掉最早插入的元素，hand前移。
  *
  * @param {tk_cache_clock_t*} cache 缓存对象。
  * @param {size_t} index 桶下标。
@@ -226,7 +214,6 @@ inline static ret_t tk_cache_clock_evict_bucket(tk_cache_clock_t* cache, size_t 
   return_value_if_fail(ret == RET_OK, ret);
 
   cache->hand = tk_cache_clock_next_index(index, n);
-  cache->size--;
 
   if (TK_RAW_DARRAY_SIZE(cache->table.buckets[index]) == 0) {
     tk_raw_hash_table_bucket_shrink(&(cache->table), index);
@@ -237,7 +224,7 @@ inline static ret_t tk_cache_clock_evict_bucket(tk_cache_clock_t* cache, size_t 
 
 /**
  * @method tk_cache_clock_evict
- * @annotation ["static"]
+ * @annotation ["private"]
  * @export none
  * 淘汰一个元素：从hand开始扫桶，给被访问过的桶一次机会，然后从选中的桶里删掉一个元素。
  *
@@ -274,7 +261,6 @@ inline static ret_t tk_cache_clock_evict(tk_cache_clock_t* cache) {
 
 /**
  * @method tk_cache_clock_clear
- * @annotation ["static"]
  * @export none
  * 删除全部元素，保留桶数组和位图。
  * @param {tk_cache_clock_t*} cache 缓存对象。
@@ -289,7 +275,6 @@ inline static ret_t tk_cache_clock_clear(tk_cache_clock_t* cache) {
                                                 TK_CACHE_CLOCK_BIT_NR);
     memset(cache->flags, 0, bits_size);
   }
-  cache->size = 0;
   cache->hand = 0;
 
   return tk_raw_hash_table_clear(&(cache->table));
@@ -297,7 +282,6 @@ inline static ret_t tk_cache_clock_clear(tk_cache_clock_t* cache) {
 
 /**
  * @method tk_cache_clock_deinit
- * @annotation ["static"]
  * @export none
  * 释放全部元素和位图，之后cache需要重新init才能用。
  * @param {tk_cache_clock_t*} cache 缓存对象。
@@ -312,14 +296,12 @@ inline static ret_t tk_cache_clock_deinit(tk_cache_clock_t* cache) {
     tk_raw_hash_table_deinit(&cache->table);
   }
   TKMEM_FREE(cache->flags);
-  cache->capacity = 0;
 
   return RET_OK;
 }
 
 /**
  * @method tk_cache_clock_init
- * @annotation ["static"]
  * @export none
  * 初始化缓存。
  * @param {tk_cache_clock_t*} cache 缓存对象。
@@ -339,8 +321,6 @@ inline static ret_t tk_cache_clock_init(tk_cache_clock_t* cache, size_t capacity
   ret = tk_raw_hash_table_init(&(cache->table), capacity, data_destroy);
   return_value_if_fail(RET_OK == ret, ret);
 
-  cache->capacity = capacity;
-
   n = TK_RAW_HASH_TABLE_BUCKET_COUNT(&(cache->table));
   cache->flags = TKMEM_ZALLOCN(uint8_t, TK_BITSET_BYTES_FOR_BITS(n * TK_CACHE_CLOCK_BIT_NR));
   goto_error_if_fail_ex(cache->flags != NULL, ret = RET_OOM);
@@ -353,7 +333,6 @@ error:
 
 /**
  * @method tk_cache_clock_get
- * @annotation ["static"]
  * @export none
  * 获取键对应的数据，命中时把它的桶标记为访问过(给二次机会)。
  * @param {tk_cache_clock_t*} cache 缓存对象。
@@ -383,7 +362,6 @@ inline static ret_t tk_cache_clock_get(tk_cache_clock_t* cache, TK_CACHE_CLOCK_K
 
 /**
  * @method tk_cache_clock_put
- * @annotation ["static"]
  * @export none
  * 写入元素并标记为访问过；超出capacity时先淘汰一个元素。
  *
@@ -410,7 +388,7 @@ inline static ret_t tk_cache_clock_put(tk_cache_clock_t* cache, TK_CACHE_CLOCK_K
     return RET_OK;
   }
 
-  if (cache->size >= cache->capacity) {
+  if (cache->table.size >= cache->table.capacity) {
     /* 满了：先淘汰一个，腾出位置 */
     ret = tk_cache_clock_evict(cache);
     return_value_if_fail(ret == RET_OK, ret);
@@ -421,14 +399,12 @@ inline static ret_t tk_cache_clock_put(tk_cache_clock_t* cache, TK_CACHE_CLOCK_K
   return_value_if_fail(ret == RET_OK, ret);
 
   tk_cache_clock_touch_index(cache, index);
-  cache->size++;
 
   return RET_OK;
 }
 
 /**
  * @method tk_cache_clock_remove
- * @annotation ["static"]
  * @export none
  * 删除键对应的元素。
  * @param {tk_cache_clock_t*} cache 缓存对象。
@@ -447,14 +423,11 @@ inline static ret_t tk_cache_clock_remove(tk_cache_clock_t* cache, TK_CACHE_CLOC
   }
   return_value_if_fail(ret == RET_OK, ret);
 
-  cache->size--;
-
   return RET_OK;
 }
 
 /**
  * @method tk_cache_clock_shrink
- * @annotation ["static"]
  * @export none
  * 按二次机会逐个淘汰，把元素个数缩到cache_size个；最后回收桶里闲置的槽位和空桶。
  * @param {tk_cache_clock_t*} cache 缓存对象。
@@ -465,7 +438,7 @@ inline static ret_t tk_cache_clock_remove(tk_cache_clock_t* cache, TK_CACHE_CLOC
 inline static ret_t tk_cache_clock_shrink(tk_cache_clock_t* cache, size_t cache_size) {
   return_value_if_fail(cache != NULL && cache->flags != NULL, RET_BAD_PARAMS);
 
-  while (cache->size > cache_size) {
+  while (cache->table.size > cache_size) {
     ret_t ret = tk_cache_clock_evict(cache);
     return_value_if_fail(ret == RET_OK, ret);
   }

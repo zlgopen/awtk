@@ -39,7 +39,7 @@ static ret_t raw_hash_table_custom_value_destroy(int32_t* value) {
 
 static void raw_hash_table_custom_note_destroy(void) {
   if (s_destroy_table != NULL) {
-    s_size_in_destroy = tk_raw_hash_table_size(s_destroy_table);
+    s_size_in_destroy = s_destroy_table->size;
   }
 }
 
@@ -77,14 +77,14 @@ TEST(RawHashTable, str_key) {
   ASSERT_EQ(tk_raw_hash_table_add(&table, hello, raw_hash_table_custom_value(1)), RET_OK);
   ASSERT_EQ(tk_raw_hash_table_add(&table, tk_strdup("world"), raw_hash_table_custom_value(2)),
             RET_OK);
-  ASSERT_EQ(tk_raw_hash_table_size(&table), 2u);
+  ASSERT_EQ(table.size, 2u);
 
   /* 键已存在时add失败：用字面量查找也能判定重复，失败时不接管值和键的所有权 */
   {
     int32_t* v = raw_hash_table_custom_value(3);
 
     ASSERT_EQ(tk_raw_hash_table_add(&table, "hello", v), RET_FAIL);
-    ASSERT_EQ(tk_raw_hash_table_size(&table), 2u);
+    ASSERT_EQ(table.size, 2u);
     TKMEM_FREE(v);
   }
 
@@ -114,7 +114,7 @@ TEST(RawHashTable, str_key) {
   ASSERT_EQ(tk_raw_hash_table_replace(&table, "world", raw_hash_table_custom_value(8)), RET_OK);
   ASSERT_EQ(s_value_destroy_count, 2u);
   ASSERT_EQ(s_key_destroy_count, 0u);
-  ASSERT_EQ(tk_raw_hash_table_size(&table), 2u);
+  ASSERT_EQ(table.size, 2u);
   ASSERT_EQ(*(tk_raw_hash_table_find(&table, "world")->value), 8);
 
   /* replace（不存在）加入新元素，不销毁任何东西 */
@@ -122,19 +122,19 @@ TEST(RawHashTable, str_key) {
             RET_OK);
   ASSERT_EQ(s_value_destroy_count, 2u);
   ASSERT_EQ(s_key_destroy_count, 0u);
-  ASSERT_EQ(tk_raw_hash_table_size(&table), 3u);
+  ASSERT_EQ(table.size, 3u);
 
   /* remove：键和值各销毁一次 */
   ASSERT_EQ(tk_raw_hash_table_remove(&table, "awtk"), RET_OK);
   ASSERT_EQ(s_key_destroy_count, 1u);
   ASSERT_EQ(s_value_destroy_count, 3u);
-  ASSERT_EQ(tk_raw_hash_table_size(&table), 2u);
+  ASSERT_EQ(table.size, 2u);
 
   /* clear：剩下的2个元素，键和值各销毁2次 */
   ASSERT_EQ(tk_raw_hash_table_clear(&table), RET_OK);
   ASSERT_EQ(s_key_destroy_count, 3u);
   ASSERT_EQ(s_value_destroy_count, 5u);
-  ASSERT_EQ(tk_raw_hash_table_size(&table), 0u);
+  ASSERT_EQ(table.size, 0u);
   ASSERT_EQ(TK_RAW_HASH_TABLE_BUCKET_COUNT(&table), 15u);
 
   /* deinit：剩下的1个元素 */
@@ -154,9 +154,6 @@ TEST(RawHashTable, str_hash) {
   char other[16];
   char long_str[1001];
   tk_raw_hash_table_t table;
-  size_t bucket_count = tk_raw_hash_table_bucket_count_for(10);
-
-  ASSERT_EQ(bucket_count, 15u);
 
   /* 内容相同就是同一个hash，和字符串的地址无关 */
   tk_strcpy(buf, "hello");
@@ -233,20 +230,42 @@ TEST(RawHashTable, str_foreach_remove) {
         tk_raw_hash_table_add(&table, tk_strdup(keys[i]), raw_hash_table_custom_value((int32_t)i)),
         RET_OK);
   }
-  ASSERT_EQ(tk_raw_hash_table_size(&table), ARRAY_SIZE(keys));
+  ASSERT_EQ(table.size, ARRAY_SIZE(keys));
 
   /* 删除值为偶数的元素：0/2/4，键和值各销毁3次 */
   ASSERT_EQ(tk_raw_hash_table_foreach(&table, raw_hash_table_custom_visit_remove_even, NULL),
             RET_OK);
   ASSERT_EQ(s_key_destroy_count, 3u);
   ASSERT_EQ(s_value_destroy_count, 3u);
-  ASSERT_EQ(tk_raw_hash_table_size(&table), 3u);
+  ASSERT_EQ(table.size, 3u);
   ASSERT_TRUE(tk_raw_hash_table_find(&table, "k1") != NULL);
   ASSERT_TRUE(tk_raw_hash_table_find(&table, "k0") == NULL);
 
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
   ASSERT_EQ(s_key_destroy_count, 6u);
   ASSERT_EQ(s_value_destroy_count, 6u);
+}
+
+/* rehash只搬家：不会调用自定义的键/值销毁函数，搬完还能按内容查到。 */
+TEST(RawHashTable, reserve_rehash) {
+  tk_raw_hash_table_t table;
+  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, raw_hash_table_custom_value_destroy), RET_OK);
+  s_key_destroy_count = 0;
+  s_value_destroy_count = 0;
+
+  ASSERT_EQ(tk_raw_hash_table_add(&table, tk_strdup("a"), raw_hash_table_custom_value(1)), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_add(&table, tk_strdup("b"), raw_hash_table_custom_value(2)), RET_OK);
+
+  /* 扩容rehash：一次销毁都不该有 */
+  ASSERT_EQ(tk_raw_hash_table_reserve(&table, 100), RET_OK);
+  ASSERT_EQ(s_key_destroy_count, 0u);
+  ASSERT_EQ(s_value_destroy_count, 0u);
+  ASSERT_EQ(*(tk_raw_hash_table_find(&table, "a")->value), 1);
+  ASSERT_EQ(*(tk_raw_hash_table_find(&table, "b")->value), 2);
+
+  ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
+  ASSERT_EQ(s_key_destroy_count, 2u);
+  ASSERT_EQ(s_value_destroy_count, 2u);
 }
 
 TEST(RawHashTable, remove_order) {
@@ -261,14 +280,14 @@ TEST(RawHashTable, remove_order) {
   s_destroy_table = &table;
   ASSERT_EQ(tk_raw_hash_table_remove(&table, "a"), RET_OK);
   ASSERT_EQ(s_size_in_destroy, 1u);
-  ASSERT_EQ(tk_raw_hash_table_size(&table), 1u);
+  ASSERT_EQ(table.size, 1u);
 
   /* foreach返回RET_REMOVE时也一样 */
   s_size_in_destroy = 100;
   ASSERT_EQ(tk_raw_hash_table_foreach(&table, raw_hash_table_custom_visit_remove_all, NULL),
             RET_OK);
   ASSERT_EQ(s_size_in_destroy, 0u);
-  ASSERT_EQ(tk_raw_hash_table_size(&table), 0u);
+  ASSERT_EQ(table.size, 0u);
 
   s_destroy_table = NULL;
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);

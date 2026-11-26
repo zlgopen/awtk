@@ -41,6 +41,7 @@ BEGIN_C_DECLS
 
 /**
  * @class tk_raw_hash_table_entry_t
+ * @annotation ["private"]
  * @export none
  * 哈希表的一个元素。
  */
@@ -109,7 +110,32 @@ typedef ret_t (*tk_raw_hash_table_value_destroy_t)(TK_RAW_HASH_TABLE_ENTRY_VALUE
 typedef TK_RAW_DARRAY_T(tk_raw_hash_table_entry_t) tk_raw_hash_table_bucket_t;
 
 /**
+ * @enum tk_raw_hash_table_capacity_policy_t
+ * @prefix TK_RAW_HASH_TABLE_CAPACITY_POLICY_
+ * @annotation ["private"]
+ * 元素个数将要超过capacity时的处理策略。
+ */
+typedef enum _tk_raw_hash_table_capacity_policy_t {
+  /**
+   * @const TK_RAW_HASH_TABLE_CAPACITY_POLICY_IGNORE
+   * 忽略：照样加入，桶内会多挂几个元素(默认)。
+   */
+  TK_RAW_HASH_TABLE_CAPACITY_POLICY_IGNORE = 0,
+  /**
+   * @const TK_RAW_HASH_TABLE_CAPACITY_POLICY_FAIL
+   * 返回失败：加不进去，表不变。
+   */
+  TK_RAW_HASH_TABLE_CAPACITY_POLICY_FAIL,
+  /**
+   * @const TK_RAW_HASH_TABLE_CAPACITY_POLICY_GROW
+   * 自动扩容：先用更大的容量reserve(必要时rehash)，再加入。
+   */
+  TK_RAW_HASH_TABLE_CAPACITY_POLICY_GROW,
+} tk_raw_hash_table_capacity_policy_t;
+
+/**
  * @class tk_raw_hash_table_t
+ * @annotation ["private"]
  * @export none
  * 原生哈希表。
  *
@@ -133,11 +159,33 @@ typedef struct _tk_raw_hash_table_t {
   TK_RAW_DARRAY_T(tk_raw_hash_table_bucket_t) buckets;
 
   /**
+   * @property {size_t} size
+   * @annotation ["readable"]
+   * 当前元素个数，加入/删除/清空时维护。
+   */
+  size_t size;
+
+  /**
+   * @property {size_t} capacity
+   * @annotation ["readable"]
+   * 期望容量(元素个数)。
+   * 桶数按它换算；它只是记录调用方的期望值，不是硬上限。
+   */
+  size_t capacity;
+
+  /**
    * @property {tk_raw_hash_table_value_destroy_t} value_destroy
    * @annotation ["readable"]
    * 值的销毁函数，可以为NULL。
    */
   tk_raw_hash_table_value_destroy_t value_destroy;
+
+  /**
+   * @property {tk_raw_hash_table_capacity_policy_t} capacity_policy
+   * @annotation ["readable"]
+   * 元素个数将要超过capacity时的处理策略。
+   */
+  tk_raw_hash_table_capacity_policy_t capacity_policy;
 } tk_raw_hash_table_t;
 
 /**
@@ -157,7 +205,7 @@ typedef struct _tk_raw_hash_table_t {
 
 /**
  * @method tk_raw_hash_table_mix
- * @annotation ["static"]
+ * @annotation ["private", "static"]
  * @export none
  * 把任意值打散成均匀分布的hash值(容器内部会用它混合用户的hash输出)。
  * @param {uint64_t} hash 输入值。
@@ -180,13 +228,13 @@ inline static uint64_t tk_raw_hash_table_mix(uint64_t hash) {
 
 /**
  * @method tk_raw_hash_table_bucket_count_for
- * @annotation ["static"]
+ * @annotation ["private", "static"]
  * @export none
  * 由期望容量计算桶数(负载因子2/3，可以是任意值)。
  * 因为桶下标用乘法算(见tk_raw_hash_table_bucket_index)，不需要凑2的幂或质数。
  * @param {size_t} capacity 期望容量(元素个数)。
  *
- * @return {size_t} 返回桶数，capacity为0时返回0。
+ * @return {size_t} 返回桶数。
  */
 inline static size_t tk_raw_hash_table_bucket_count_for(size_t capacity) {
   size_t half_cap = 0;
@@ -205,7 +253,7 @@ inline static size_t tk_raw_hash_table_bucket_count_for(size_t capacity) {
 
 /**
  * @method tk_raw_hash_table_destroy_value
- * @annotation ["static"]
+ * @annotation ["private"]
  * @export none
  * 按table的配置销毁一个值，没有配置销毁函数时什么也不做。
  * @param {tk_raw_hash_table_t*} table 哈希表。
@@ -221,12 +269,116 @@ inline static ret_t tk_raw_hash_table_destroy_value(tk_raw_hash_table_t* table,
   return RET_OK;
 }
 
+inline static size_t tk_raw_hash_table_bucket_index(tk_raw_hash_table_t* table,
+                                                    TK_RAW_HASH_TABLE_ENTRY_KEY_T key);
+inline static ret_t tk_raw_hash_table_bucket_add(tk_raw_hash_table_t* table, size_t index,
+                                                 TK_RAW_HASH_TABLE_ENTRY_KEY_T key,
+                                                 TK_RAW_HASH_TABLE_ENTRY_VALUE_T value);
+inline static ret_t tk_raw_hash_table_reserve(tk_raw_hash_table_t* table, size_t capacity);
+
+/**
+ * @method tk_raw_hash_table_rehash
+ * @annotation ["private"]
+ * @export none
+ * 按count个桶重建桶数组并重新计算哈希值。
+ * 只改桶数，不动capacity字段。重新计算哈希值后元素所在的桶会变，之前查到的元素地址都失效。
+ *
+ * @param {tk_raw_hash_table_t*} table 哈希表。
+ * @param {size_t} count 新的桶数，必须大于0。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+TK_MAYBE_UNUSED static ret_t tk_raw_hash_table_rehash(tk_raw_hash_table_t* table, size_t count) {
+  ret_t ret = RET_OK;
+  size_t i = 0;
+  size_t tmp_size = 0;
+  tk_raw_hash_table_bucket_t* tmp_buckets = NULL;
+  return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(count > 0, RET_BAD_PARAMS);
+
+  tmp_buckets = TK_RAW_DARRAY_CREATE(tk_raw_hash_table_bucket_t, count);
+  return_value_if_fail(tmp_buckets != NULL, RET_OOM);
+  return_value_if_fail(RET_OK == TK_RAW_DARRAY_RESIZE(tmp_buckets, count),
+                       (TK_RAW_DARRAY_DESTROY(tmp_buckets), RET_OOM));
+
+  for (i = 0; i < TK_RAW_DARRAY_SIZE(tmp_buckets); i++) {
+    tmp_buckets[i] = NULL;
+  }
+
+  tk_swap(table->buckets, tmp_buckets, tk_raw_hash_table_bucket_t*);
+  tk_swap(table->size, tmp_size, size_t);
+
+  /* 只拷贝键和值，不碰任何销毁函数；桶下标按新桶数算。 */
+  for (i = 0; i < TK_RAW_DARRAY_SIZE(tmp_buckets); i++) {
+    size_t j = 0;
+    for (j = 0; j < TK_RAW_DARRAY_SIZE(tmp_buckets[i]); j++) {
+      size_t index = tk_raw_hash_table_bucket_index(table, tmp_buckets[i][j].key);
+      ret = tk_raw_hash_table_bucket_add(table, index, tmp_buckets[i][j].key,
+                                         tmp_buckets[i][j].value);
+      goto_error_if_fail(RET_OK == ret);
+    }
+  }
+
+  ENSURE(tmp_size == table->size);
+error:
+  if (RET_OK != ret) {
+    /* 新表里只是刚搬过去的副本，整块丢掉，换回没动过的旧桶数组，表就恢复成rehash之前的样子。 */
+    tk_swap(table->buckets, tmp_buckets, tk_raw_hash_table_bucket_t*);
+    tk_swap(table->size, tmp_size, size_t);
+  }
+
+  for (i = 0; i < TK_RAW_DARRAY_SIZE(tmp_buckets); i++) {
+    if (tmp_buckets[i] != NULL) {
+      TK_RAW_DARRAY_DESTROY(tmp_buckets[i]);
+    }
+  }
+  TK_RAW_DARRAY_DESTROY(tmp_buckets);
+
+  return ret;
+}
+
+/**
+ * @method tk_raw_hash_table_check_capacity
+ * @annotation ["private"]
+ * @export none
+ * 检查能否容纳size个元素：size > capacity时按table->capacity_policy忽略、失败或者扩容。
+ * @param {tk_raw_hash_table_t*} table 哈希表。
+ * @param {size_t} size 需要容纳的元素个数(加入之后/当前的元素个数)。
+ *
+ * @return {ret_t} 返回RET_OK表示可以加入，否则表示失败。
+ */
+inline static ret_t tk_raw_hash_table_check_capacity(tk_raw_hash_table_t* table, size_t size) {
+  return_value_if_fail(table != NULL, RET_BAD_PARAMS);
+
+  if (size <= table->capacity) {
+    return RET_OK;
+  }
+
+  switch (table->capacity_policy) {
+    case TK_RAW_HASH_TABLE_CAPACITY_POLICY_GROW: {
+      /* 翻倍，免得每加一个元素就rehash一次；至少要放得下需要的个数。 */
+      size_t capacity = table->capacity;
+      if (capacity <= (SIZE_MAX / 2)) {
+        capacity += capacity;
+      }
+      if (capacity <= size) {
+        capacity = size + 1;
+      }
+      return tk_raw_hash_table_reserve(table, capacity);
+    }
+    case TK_RAW_HASH_TABLE_CAPACITY_POLICY_FAIL:
+      return RET_EXCEED_RANGE;
+    case TK_RAW_HASH_TABLE_CAPACITY_POLICY_IGNORE:
+    default:
+      return RET_OK;
+  }
+}
+
 /********************************************************************************************/
 /* 给用户使用的函数 */
 
 /**
  * @method tk_raw_hash_table_entry_set_value
- * @annotation ["static"]
  * @export none
  * 替换元素的值：新值和旧值不同时才用value_destroy销毁旧值。
  *
@@ -247,7 +399,6 @@ inline static void tk_raw_hash_table_entry_set_value(tk_raw_hash_table_t* table,
 
 /**
  * @method tk_raw_hash_table_bucket_index
- * @annotation ["static"]
  * @export none
  * 计算键所在的桶下标：先用tk_raw_hash_table_mix把用户的hash混合成64位，取低32位，
  * 再乘桶数取乘积的高位(fastrange)映射到[0, 桶数)，比取余快几倍，桶数取任意值都行。
@@ -267,7 +418,6 @@ inline static size_t tk_raw_hash_table_bucket_index(tk_raw_hash_table_t* table,
 
 /**
  * @method tk_raw_hash_table_bucket_find
- * @annotation ["static"]
  * @export none
  * 在第index个桶里查找第一个键匹配的元素。
  * @param {tk_raw_hash_table_t*} table 哈希表。
@@ -284,9 +434,8 @@ inline static tk_raw_hash_table_entry_t* tk_raw_hash_table_bucket_find(
   return_value_if_fail(index < TK_RAW_HASH_TABLE_BUCKET_COUNT(table), NULL);
 
   bucket = table->buckets[index];
-  n = TK_RAW_DARRAY_SIZE(bucket);
 
-  for (i = 0; i < n; i++) {
+  for (i = 0, n = TK_RAW_DARRAY_SIZE(bucket); i < n; i++) {
     if (0 == TK_RAW_HASH_TABLE_KEY_COMPARE(bucket[i].key, key)) {
       return bucket + i;
     }
@@ -297,7 +446,6 @@ inline static tk_raw_hash_table_entry_t* tk_raw_hash_table_bucket_find(
 
 /**
  * @method tk_raw_hash_table_bucket_add
- * @annotation ["static"]
  * @export none
  * 往第index个桶里加入一个元素，桶还没创建时先创建它。
  * @param {tk_raw_hash_table_t*} table 哈希表。
@@ -325,13 +473,13 @@ inline static ret_t tk_raw_hash_table_bucket_add(tk_raw_hash_table_t* table, siz
   }
 
   return_value_if_fail(TK_RAW_DARRAY_PUSH(*p_bucket, entry) == RET_OK, RET_OOM);
+  table->size++;
 
   return RET_OK;
 }
 
 /**
  * @method tk_raw_hash_table_bucket_remove
- * @annotation ["static"]
  * @export none
  * 删除第index个桶里第pos个元素：先从桶里移除，再销毁键和值。
  * 销毁函数里可以安全地再访问表(此时元素已经不在桶里了)。
@@ -352,6 +500,7 @@ inline static ret_t tk_raw_hash_table_bucket_remove(tk_raw_hash_table_t* table, 
   entry = table->buckets[index][pos];
   return_value_if_fail(RET_OK == TK_RAW_DARRAY_REMOVE(table->buckets[index], pos), RET_FAIL);
 
+  table->size--;
   TK_RAW_HASH_TABLE_KEY_DESTROY(entry.key);
   tk_raw_hash_table_destroy_value(table, entry.value);
 
@@ -360,7 +509,6 @@ inline static ret_t tk_raw_hash_table_bucket_remove(tk_raw_hash_table_t* table, 
 
 /**
  * @method tk_raw_hash_table_bucket_clear
- * @annotation ["static"]
  * @export none
  * 销毁第index个桶里的全部元素，并回收桶。
  * @param {tk_raw_hash_table_t*} table 哈希表。
@@ -376,8 +524,8 @@ inline static void tk_raw_hash_table_bucket_clear(tk_raw_hash_table_t* table, si
     return;
   }
 
-  n = TK_RAW_DARRAY_SIZE(table->buckets[index]);
-  for (i = 0; i < n; i++) {
+  for (i = 0, n = TK_RAW_DARRAY_SIZE(table->buckets[index]); i < n; i++) {
+    table->size--;
     TK_RAW_HASH_TABLE_KEY_DESTROY(table->buckets[index][i].key);
     tk_raw_hash_table_destroy_value(table, table->buckets[index][i].value);
   }
@@ -387,7 +535,6 @@ inline static void tk_raw_hash_table_bucket_clear(tk_raw_hash_table_t* table, si
 
 /**
  * @method tk_raw_hash_table_bucket_shrink
- * @annotation ["static"]
  * @export none
  * 回收第index个桶的闲置空间：空桶直接销毁，否则缩到实际用到的个数。
  * @param {tk_raw_hash_table_t*} table 哈希表。
@@ -412,7 +559,6 @@ inline static ret_t tk_raw_hash_table_bucket_shrink(tk_raw_hash_table_t* table, 
 
 /**
  * @method tk_raw_hash_table_init
- * @annotation ["static"]
  * @export none
  * 初始化哈希表，桶数由capacity换算得到。
  * 会先把table清零，所以重复init之前要先deinit(否则原来的元素会漏掉)。
@@ -441,6 +587,7 @@ inline static ret_t tk_raw_hash_table_init(tk_raw_hash_table_t* table, size_t ca
   for (i = 0; i < count; i++) {
     table->buckets[i] = NULL;
   }
+  table->capacity = capacity;
   table->value_destroy = value_destroy;
 
   return RET_OK;
@@ -451,7 +598,6 @@ error:
 
 /**
  * @method tk_raw_hash_table_clear
- * @annotation ["static"]
  * @export none
  * 销毁全部元素，并回收所有桶，桶数不变。
  * @param {tk_raw_hash_table_t*} table 哈希表。
@@ -465,13 +611,13 @@ inline static ret_t tk_raw_hash_table_clear(tk_raw_hash_table_t* table) {
   for (index = 0, n = TK_RAW_HASH_TABLE_BUCKET_COUNT(table); index < n; index++) {
     tk_raw_hash_table_bucket_clear(table, index);
   }
+  ENSURE(0 == table->size);
 
   return RET_OK;
 }
 
 /**
  * @method tk_raw_hash_table_shrink
- * @annotation ["static"]
  * @export none
  * 回收所有桶的闲置空间：空桶直接销毁，非空桶缩到实际用到的个数。
  * 桶内数组只按需增长、从不收缩，反复增删(churn)后用本函数把多余的内存还给分配器。
@@ -492,7 +638,6 @@ inline static ret_t tk_raw_hash_table_shrink(tk_raw_hash_table_t* table) {
 
 /**
  * @method tk_raw_hash_table_deinit
- * @annotation ["static"]
  * @export none
  * 释放全部元素和桶数组，并把table复位。
  * @param {tk_raw_hash_table_t*} table 哈希表。
@@ -504,39 +649,47 @@ inline static ret_t tk_raw_hash_table_deinit(tk_raw_hash_table_t* table) {
 
   tk_raw_hash_table_clear(table);
   TK_RAW_DARRAY_DESTROY(table->buckets);
+  table->capacity = 0;
 
   return RET_OK;
 }
 
 /**
  * @method tk_raw_hash_table_add
- * @annotation ["static"]
  * @export none
  * 加入一个元素，键已存在时返回失败(用modify修改已有的元素)。
  * @param {tk_raw_hash_table_t*} table 哈希表。
  * @param {TK_RAW_HASH_TABLE_ENTRY_KEY_T} key 键。
  * @param {TK_RAW_HASH_TABLE_ENTRY_VALUE_T} value 值。
  *
- * @return {ret_t} 返回RET_OK表示成功，键已存在返回RET_FAIL(不接管value)，否则表示失败。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 inline static ret_t tk_raw_hash_table_add(tk_raw_hash_table_t* table,
                                           TK_RAW_HASH_TABLE_ENTRY_KEY_T key,
                                           TK_RAW_HASH_TABLE_ENTRY_VALUE_T value) {
   size_t index = 0;
+  ret_t ret = RET_OK;
   return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
 
   index = tk_raw_hash_table_bucket_index(table, key);
 
   if (tk_raw_hash_table_bucket_find(table, index, key) != NULL) {
+    /* 键已存在：不增长，按原语义返回失败(用modify改值)，也不该触发容量策略。 */
     return RET_FAIL;
   }
+
+  /* 新键才可能超过capacity。 */
+  ret = tk_raw_hash_table_check_capacity(table, table->size + 1);
+  return_value_if_fail(RET_OK == ret, ret);
+
+  /* 自动扩容可能rehash，桶数变了，下标要重算。 */
+  index = tk_raw_hash_table_bucket_index(table, key);
 
   return tk_raw_hash_table_bucket_add(table, index, key, value);
 }
 
 /**
  * @method tk_raw_hash_table_find
- * @annotation ["static"]
  * @export none
  * 查找第一个键匹配的元素。
  * 返回的是桶内元素的地址，add可能让桶内数组扩容，之后不要再用它。
@@ -557,7 +710,6 @@ inline static tk_raw_hash_table_entry_t* tk_raw_hash_table_find(tk_raw_hash_tabl
 
 /**
  * @method tk_raw_hash_table_modify
- * @annotation ["static"]
  * @export none
  * 修改键对应的值(旧值和新值不同时由value_destroy销毁)，键不存在时返回失败(用add加入)。
  * @param {tk_raw_hash_table_t*} table 哈希表。
@@ -584,7 +736,6 @@ inline static ret_t tk_raw_hash_table_modify(tk_raw_hash_table_t* table,
 
 /**
  * @method tk_raw_hash_table_replace
- * @annotation ["static"]
  * @export none
  * 键存在时替换值(旧值和新值不同时由value_destroy销毁)，不存在时加入。
  * @param {tk_raw_hash_table_t*} table 哈希表。
@@ -609,7 +760,6 @@ inline static ret_t tk_raw_hash_table_replace(tk_raw_hash_table_t* table,
 
 /**
  * @method tk_raw_hash_table_remove
- * @annotation ["static"]
  * @export none
  * 删除键对应的元素，键和值交给销毁函数处理，桶保留。
  * @param {tk_raw_hash_table_t*} table 哈希表。
@@ -635,28 +785,7 @@ inline static ret_t tk_raw_hash_table_remove(tk_raw_hash_table_t* table,
 }
 
 /**
- * @method tk_raw_hash_table_size
- * @annotation ["static"]
- * @export none
- * 返回元素个数，需要遍历所有桶。
- * @param {tk_raw_hash_table_t*} table 哈希表。
- *
- * @return {size_t} 返回元素个数。
- */
-inline static size_t tk_raw_hash_table_size(tk_raw_hash_table_t* table) {
-  size_t index = 0, count = 0, n = 0;
-  return_value_if_fail(table != NULL && table->buckets != NULL, 0);
-
-  for (index = 0, n = TK_RAW_HASH_TABLE_BUCKET_COUNT(table); index < n; index++) {
-    count += TK_RAW_DARRAY_SIZE(table->buckets[index]);
-  }
-
-  return count;
-}
-
-/**
  * @method tk_raw_hash_table_foreach
- * @annotation ["static"]
  * @export none
  * 遍历全部元素，返回值按TK\_FOREACH\_VISIT\_RESULT\_PROCESSING处理(RET\_REMOVE会删除当前元素)。
  *
@@ -691,6 +820,53 @@ inline static ret_t tk_raw_hash_table_foreach(tk_raw_hash_table_t* table, tk_vis
   }
 
   return ret;
+}
+
+/**
+ * @method tk_raw_hash_table_set_capacity_policy
+ * @export none
+ * 设置size > capacity 时的处理策略(策略变化时立即按新策略处理当前的size)。
+ * @param {tk_raw_hash_table_t*} table 哈希表。
+ * @param {tk_raw_hash_table_capacity_policy_t} capacity_policy 处理策略。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+inline static ret_t tk_raw_hash_table_set_capacity_policy(
+    tk_raw_hash_table_t* table, tk_raw_hash_table_capacity_policy_t capacity_policy) {
+  return_value_if_fail(table != NULL, RET_BAD_PARAMS);
+
+  if (capacity_policy != table->capacity_policy) {
+    table->capacity_policy = capacity_policy;
+    tk_raw_hash_table_check_capacity(table, table->size);
+  }
+
+  return RET_OK;
+}
+
+/**
+ * @method tk_raw_hash_table_reserve
+ * @export none
+ * 预留容量(元素个数)：扩容到能装下capacity个元素。
+ * @param {tk_raw_hash_table_t*} table 哈希表。
+ * @param {size_t} capacity 期望容量(元素个数)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+inline static ret_t tk_raw_hash_table_reserve(tk_raw_hash_table_t* table, size_t capacity) {
+  size_t count = 0;
+  return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(capacity > 0, RET_BAD_PARAMS);
+  return_value_if_fail(capacity >= table->size, RET_FAIL);
+
+  count = tk_raw_hash_table_bucket_count_for(capacity);
+  if (count > TK_RAW_HASH_TABLE_BUCKET_COUNT(table)) {
+    ret_t ret = tk_raw_hash_table_rehash(table, count);
+    return_value_if_fail(RET_OK == ret, ret);
+
+    table->capacity = capacity;
+  }
+
+  return RET_OK;
 }
 
 END_C_DECLS
