@@ -821,7 +821,6 @@ static void nvgp_gl_flush_by_convex_fill_by_color(nvgp_gl_context_t* gl, nvgp_gl
   int32_t i;
   nvgp_gl_shader_t* shader = &gl->shader_list[call_base->shader_type];
   nvgp_gl_call_convex_fill_t* call = (nvgp_gl_call_convex_fill_t*)call_base;
-  nvgp_gl_path_t* paths = nvgp_darray_get_ptr(&gl->paths, call->path_index, nvgp_gl_path_t);
   int32_t is_same_shader_prog = nvgp_gl_is_same_shader_prog(gl, shader);
 
   nvgp_gl_use_shader_prog(gl, shader);
@@ -831,15 +830,19 @@ static void nvgp_gl_flush_by_convex_fill_by_color(nvgp_gl_context_t* gl, nvgp_gl
   nvgp_gl_check_error(gl, "convex fill");
 
   for (i = 0; i < call->path_count; i++) {
-    if (paths[i].winding == NVGP_CW) {
+    nvgp_gl_path_t* path = nvgp_darray_get_ptr(&gl->paths, call->path_index + i, nvgp_gl_path_t);
+    if (path == NULL) {
+      continue;
+    }
+    if (path->winding == NVGP_CW) {
       glFrontFace(GL_CW);
     } else {
       glFrontFace(GL_CCW);
     }
-    glDrawArrays(GL_TRIANGLE_FAN, paths[i].fill_offset, paths[i].fill_count);
+    glDrawArrays(GL_TRIANGLE_FAN, path->fill_offset, path->fill_count);
     // Draw fringes
-    if (paths[i].stroke_count > 0) {
-      glDrawArrays(GL_TRIANGLE_STRIP, paths[i].stroke_offset, paths[i].stroke_count);
+    if (path->stroke_count > 0) {
+      glDrawArrays(GL_TRIANGLE_STRIP, path->stroke_offset, path->stroke_count);
     }
   }
   glFrontFace(GL_CCW);
@@ -1534,45 +1537,55 @@ static nvgp_bool_t nvgp_gl_render_fast_fill_rect(nvgp_gl_context_t* gl, nvgp_pai
 }
 
 static nvgp_bool_t nvgp_gl_render_convex_fill_by_color(nvgp_gl_context_t* gl, nvgp_paint_t* paint, nvgp_scissor_t* scissor, float fringe, const float* bounds, const nvgp_darray_t* paths, int32_t is_gradient, nvgp_fill_mode_t fill_mode) {
+  int32_t i;
   nvgp_gl_shader_t* shader;
   int32_t max_verts, offset;
   nvgp_gl_frag_uniforms_t* frag = NULL;
-  nvgp_path_t* path = nvgp_darray_get_ptr(paths, 0, nvgp_path_t);
-  if (paint->image == 0 && ((paths->size == 1 && path->convex) || (paths->size > 1 && fill_mode == NVGP_FILLMODE_All))) {
+  nvgp_path_t* first_path = nvgp_darray_get_ptr(paths, 0, nvgp_path_t);
+  if (paint->image == 0 && ((paths->size == 1 && first_path->convex) || (paths->size > 1 && fill_mode == NVGP_FILLMODE_All))) {
     nvgp_gl_call_convex_fill_t* call = NVGP_ZALLOC(nvgp_gl_call_convex_fill_t);
-    nvgp_gl_path_t* gl_path = nvgp_darray_get_empty_data_by_tail(&gl->paths);
-    if (call == NULL || gl_path == NULL) {
+    if (call == NULL) {
       goto error;
     }
-    NVGP_MEMSET(gl_path, 0x0, sizeof(nvgp_gl_path_t));
     call->base.call_type = NVGP_GL_CALL_CONVEX_FILL;
     call->base.shader_type = is_gradient ? NVGP_GL_SHADER_FILLGRAD : NVGP_GL_SHADER_FILLCOLOR;
 
-    call->path_count = 1;
-    call->path_index = gl->paths.size - 1;
+    call->path_count = paths->size;
+    call->path_index = gl->paths.size;
     call->blend_func = nvgp_gl_composite_operation_state(NVGP_GL_SOURCE_OVER);
 
     shader = &(gl->shader_list[call->base.shader_type]);
     // Allocate vertices for all the paths.
-    max_verts = path->nfill + path->nstroke;
+    max_verts = nvgp_gl_max_vert_count(paths);
     offset = nvgp_gl_alloc_verts(shader, max_verts);
     if (offset == -1) {
       NVGP_FREE(call);
       goto error;
     }
-    gl_path->winding = path->path_winding;
-    if (path->nfill > 0) {
-      gl_path->fill_offset = offset;
-      gl_path->fill_count = path->nfill;
-      NVGP_MEMCPY(shader->verts + offset, path->fill, sizeof(nvgp_vertex_t) * path->nfill);
-      offset += path->nfill;
+
+    for (i = 0; i < paths->size; i++) {
+      nvgp_path_t* path = nvgp_darray_get_ptr(paths, i, nvgp_path_t);
+      nvgp_gl_path_t* gl_path = nvgp_darray_get_empty_data_by_tail(&gl->paths);
+      if (gl_path == NULL) {
+        NVGP_FREE(call);
+        goto error;
+      }
+      NVGP_MEMSET(gl_path, 0x0, sizeof(nvgp_gl_path_t));
+      gl_path->winding = path->path_winding;
+      if (path->nfill > 0) {
+        gl_path->fill_offset = offset;
+        gl_path->fill_count = path->nfill;
+        NVGP_MEMCPY(shader->verts + offset, path->fill, sizeof(nvgp_vertex_t) * path->nfill);
+        offset += path->nfill;
+      }
+      if (path->nstroke > 0) {
+        gl_path->stroke_offset = offset;
+        gl_path->stroke_count = path->nstroke;
+        NVGP_MEMCPY(shader->verts + offset, path->stroke, sizeof(nvgp_vertex_t) * path->nstroke);
+        offset += path->nstroke;
+      }
     }
-    if (path->nstroke > 0) {
-      gl_path->stroke_offset = offset;
-      gl_path->stroke_count = path->nstroke;
-      NVGP_MEMCPY(shader->verts + offset, path->stroke, sizeof(nvgp_vertex_t) * path->nstroke);
-      offset += path->nstroke;
-    }
+
     call->uniform_offset = nvgp_gl_alloc_frag_uniforms(gl, 1);
     if (call->uniform_offset == -1) {
       NVGP_FREE(call);

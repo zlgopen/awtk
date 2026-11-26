@@ -511,6 +511,23 @@ static void draw_image(vgcanvas_t* vg, const char* name) {
   return;
 }
 
+static void draw_image_at(vgcanvas_t* vg, const char* name, float_t x, float_t y) {
+  bitmap_t img;
+
+  vgcanvas_save(vg);
+
+  image_manager_get_bitmap(image_manager(), name, &img);
+
+  vgcanvas_translate(vg, x, y);
+  vgcanvas_rotate(vg, 3.14 / 4);
+
+  vgcanvas_scale(vg, 1.5f, 1.5f);
+  vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, -img.w / 2, -img.h / 2, img.w, img.h);
+  vgcanvas_restore(vg);
+
+  return;
+}
+
 static void draw_matrix(vgcanvas_t* vg) {
   float_t w = 50;
   float_t h = 50;
@@ -607,16 +624,59 @@ static void draw_fill_mode_test(vgcanvas_t* vg, vgcanvas_fill_mode_t fill_mode) 
   vgcanvas_restore(vg);
 }
 
+static void draw_fill_mode_triangles(vgcanvas_t* vg, vgcanvas_fill_mode_t fill_mode) {
+  vgcanvas_save(vg);
+  vgcanvas_scale(vg, 0.8f, 0.8f);
+  vgcanvas_set_antialias(vg, TRUE);
+  vgcanvas_set_fill_mode(vg, fill_mode);
+  vgcanvas_set_fill_color(vg, color_init(0x30, 0x60, 0xff, 0xff));
+  vgcanvas_set_stroke_color(vg, color_init(0x20, 0x20, 0x20, 0xff));
+  vgcanvas_begin_path(vg);
+
+  // 外三角和右下三角同向，中间的反向三角用来制造洞，三种填充规则在洞和交叠处表现不同。
+  vgcanvas_move_to(vg, 0, 54);
+  vgcanvas_line_to(vg, 54, 54);
+  vgcanvas_line_to(vg, 27, 0);
+  vgcanvas_close_path(vg);
+
+  vgcanvas_move_to(vg, 27, 22.5f);
+  vgcanvas_line_to(vg, 40.5f, 49.5f);
+  vgcanvas_line_to(vg, 13.5f, 49.5f);
+  vgcanvas_close_path(vg);
+
+  vgcanvas_move_to(vg, 36, 54);
+  vgcanvas_line_to(vg, 90, 54);
+  vgcanvas_line_to(vg, 63, 13.5f);
+  vgcanvas_close_path(vg);
+
+  vgcanvas_fill(vg);
+
+  vgcanvas_set_line_width(vg, 1);
+  vgcanvas_set_line_cap(vg, "butt");
+  vgcanvas_set_line_join(vg, "miter");
+  vgcanvas_stroke(vg);
+  vgcanvas_restore(vg);
+}
+
+static void draw_fill_mode_sample(vgcanvas_t* vg, vgcanvas_fill_mode_t fill_mode) {
+  draw_fill_mode_test(vg, fill_mode);
+
+  vgcanvas_save(vg);
+  vgcanvas_translate(vg, 0, 88);
+  draw_fill_mode_triangles(vg, fill_mode);
+  vgcanvas_restore(vg);
+}
+
 static void draw_fill_mode(vgcanvas_t* vg) {
   vgcanvas_save(vg);
-  vgcanvas_translate(vg, 10, 0);
-  draw_fill_mode_test(vg, VGCANVAS_FILL_MODE_ALL_FILL);
+  vgcanvas_translate(vg, 15, 0);
+  draw_fill_mode_sample(vg, VGCANVAS_FILL_MODE_ALL_FILL);
 
-  vgcanvas_translate(vg, 50, 0);
-  draw_fill_mode_test(vg, VGCANVAS_FILL_MODE_NON_ZERO);
+  vgcanvas_translate(vg, 100, 0);
+  draw_fill_mode_sample(vg, VGCANVAS_FILL_MODE_NON_ZERO);
 
-  vgcanvas_translate(vg, 50, 0);
-  draw_fill_mode_test(vg, VGCANVAS_FILL_MODE_EVEN_ODD);
+  vgcanvas_translate(vg, 100, 0);
+  draw_fill_mode_sample(vg, VGCANVAS_FILL_MODE_EVEN_ODD);
   vgcanvas_restore(vg);
 }
 
@@ -656,22 +716,32 @@ static inline ret_t on_paint_vg(void* ctx, event_t* e) {
   vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));
 
   draw_basic_shapes(vg, FALSE);
-  vgcanvas_translate(vg, 0, 50);
+  vgcanvas_save(vg);
+  vgcanvas_translate(vg, 0, 44);
   draw_basic_shapes(vg, TRUE);
-  vgcanvas_translate(vg, 0, 50);
+  vgcanvas_restore(vg);
+
+  vgcanvas_save(vg);
+  vgcanvas_translate(vg, 0, 100);
   stroke_lines(vg);
-  vgcanvas_translate(vg, 0, 50);
-  draw_image(vg, "bricks");
-  draw_image(vg, "message");
+  vgcanvas_restore(vg);
 
-  vgcanvas_translate(vg, 50, 100);
+  draw_image_at(vg, "bricks", 70, 204);
+  draw_image_at(vg, "message", 180, 204);
+  vgcanvas_save(vg);
+  vgcanvas_translate(vg, 225, 179);
   draw_matrix(vg);
-  vgcanvas_translate(vg, -50, 50);
+  vgcanvas_restore(vg);
 
+  vgcanvas_save(vg);
+  vgcanvas_translate(vg, 10, 275);
   draw_text(vg);
+  vgcanvas_restore(vg);
 
-  vgcanvas_translate(vg, 0, 60);
+  vgcanvas_save(vg);
+  vgcanvas_translate(vg, 0, 338);
   draw_fill_mode(vg);
+  vgcanvas_restore(vg);
 
   vgcanvas_restore(vg);
 
