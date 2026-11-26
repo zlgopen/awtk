@@ -114,8 +114,10 @@ if OS_NAME == 'Darwin':
 
     TOOLS_NAME = ''
     OS_FLAGS = '-Wall -Wno-unused-function -fPIC -DWITHOUT_GLAD=1 '
-    OS_LIBS = ['stdc++', 'iconv', 'pthread', 'm', 'dl']
-    OS_LINKFLAGS = '-framework IOKit -framework Cocoa -framework QuartzCore -framework OpenGL -Wl,-rpath,@loader_path/'
+    # demo 等用 gcc 链接，不会自动带 libc++，而 libgpinyin 是 C++。
+    # clang++ 自己也会加 -lc++，-no_warn_duplicate_libraries 避免重复库警告。
+    OS_LIBS = ['iconv', 'pthread', 'm', 'dl', 'c++']
+    OS_LINKFLAGS = '-framework IOKit -framework Cocoa -framework QuartzCore -framework OpenGL -Wl,-rpath,@loader_path/ -Wl,-no_warn_duplicate_libraries'
     OS_FLAGS = OS_FLAGS + ' -DHAS_SEM_OPEN '
     OS_FLAGS = OS_FLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS '
     OS_FLAGS = OS_FLAGS + ' -D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS '

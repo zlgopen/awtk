@@ -26,6 +26,7 @@
 #include "base/pixel_pack_unpack.h"
 
 /**
+ * @enum pixel_alpha_t
  * @prefix PIXEL_ALPHA_
  * alpha 快速通道阈值
  */
