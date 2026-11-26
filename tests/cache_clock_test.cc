@@ -16,10 +16,10 @@ static size_t s_destroy_count = 0;
 #define TK_CACHE_CLOCK_KEY_COMPARE(entry_key, key) tk_strcmp(entry_key, key)
 #define TK_CACHE_CLOCK_DATA_T cache_clock_test_info_t
 /**
- * 结构体不支持>和<，要自己定义"相等"。
- * 故意只比a：b可以变而不触发销毁，用来验证"比较相等也要把新数据写进去"。
+ * 结构体不支持==，要自己定义"是不是同一个对象"。
+ * 故意只比a：b可以变而不触发销毁，用来验证"判成同一个对象也要把新数据写进去"。
  */
-#define TK_CACHE_CLOCK_DATA_COMPARE(entry_data, data) (((entry_data).a == (data).a) ? 0 : 1)
+#define TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT(entry_data, data) (((entry_data).a == (data).a) ? 1 : 0)
 
 #include "tkc/cache_clock.h"
 #include "gtest/gtest.h"

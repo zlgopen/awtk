@@ -61,14 +61,15 @@ typedef struct _tk_raw_hash_table_entry_t {
   TK_RAW_HASH_TABLE_ENTRY_VALUE_T value;
 } tk_raw_hash_table_entry_t;
 
-/**
- * 值的比较函数，返回0表示相等(实现里只判断是否为0)。
- * 默认按大小比较，值不支持>和<时(比如结构体)在这里定义，比如用memcmp。
- */
-#ifndef TK_RAW_HASH_TABLE_VALUE_COMPARE
-#define TK_RAW_HASH_TABLE_VALUE_COMPARE(entry_value, value) \
-  ((entry_value) > (value) ? 1 : ((entry_value) < (value) ? -1 : 0))
-#endif /*TK_RAW_HASH_TABLE_VALUE_COMPARE*/
+/* 值是不是表里存的同一个对象，默认用==；不支持==的值(比如结构体)在这里定义。 */
+#ifndef TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT
+#define TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(entry_value, value) ((entry_value) == (value))
+#endif /*TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT*/
+
+/* 键是不是表里存的同一个对象。默认==，只对指针键有意义(比地址，不比内容)；标量键用不上，结构体键在这里定义。 */
+#ifndef TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT
+#define TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT(entry_key, key) ((entry_key) == (key))
+#endif /*TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT*/
 
 /**
  * 键的比较函数，返回0表示相等(实现里只判断是否为0)。
@@ -92,7 +93,8 @@ typedef struct _tk_raw_hash_table_entry_t {
 
 /**
  * 键的销毁函数，默认什么也不做。
- * 元素被删除(remove/clear/deinit/foreach返回RET_REMOVE)时调用。
+ * 元素被删除(remove/clear/deinit/foreach返回RET_REMOVE)时调用，
+ * modify/set把键换成新键时，被顶替的旧键也在这里销毁。
  */
 #ifndef TK_RAW_HASH_TABLE_KEY_DESTROY
 #define TK_RAW_HASH_TABLE_KEY_DESTROY(key) \
@@ -382,26 +384,6 @@ inline static ret_t tk_raw_hash_table_check_capacity(tk_raw_hash_table_t* table,
 /* 给用户使用的函数 */
 
 /**
- * @method tk_raw_hash_table_entry_set_value
- * @export none
- * 替换元素的值：新值和旧值不同时才用value_destroy销毁旧值。
- *
- * 是否相同见TK_RAW_HASH_TABLE_VALUE_COMPARE：传回表里的同一个值不会销毁它，
- * 所以调用方把取出来的值再写回去是安全的。
- * @param {tk_raw_hash_table_t*} table 哈希表。
- * @param {tk_raw_hash_table_entry_t*} entry 元素。
- * @param {TK_RAW_HASH_TABLE_ENTRY_VALUE_T} value 新值。
- */
-inline static void tk_raw_hash_table_entry_set_value(tk_raw_hash_table_t* table,
-                                                     tk_raw_hash_table_entry_t* entry,
-                                                     TK_RAW_HASH_TABLE_ENTRY_VALUE_T value) {
-  if (0 != TK_RAW_HASH_TABLE_VALUE_COMPARE(entry->value, value)) {
-    tk_raw_hash_table_destroy_value(table, entry->value);
-  }
-  entry->value = value;
-}
-
-/**
  * @method tk_raw_hash_table_bucket_index
  * @export none
  * 计算键所在的桶下标：先用tk_raw_hash_table_mix把用户的hash混合成64位，取低32位，
@@ -441,7 +423,7 @@ inline static tk_raw_hash_table_entry_t* tk_raw_hash_table_bucket_find(
 
   for (i = 0, n = TK_RAW_DARRAY_SIZE(bucket); i < n; i++) {
     if (0 == TK_RAW_HASH_TABLE_KEY_COMPARE(bucket[i].key, key)) {
-      return bucket + i;
+      return &bucket[i];
     }
   }
 
@@ -478,6 +460,36 @@ inline static ret_t tk_raw_hash_table_bucket_add(tk_raw_hash_table_t* table, siz
 
   return_value_if_fail(TK_RAW_DARRAY_PUSH(*p_bucket, entry) == RET_OK, RET_OOM);
   table->size++;
+
+  return RET_OK;
+}
+
+/**
+ * @method tk_raw_hash_table_bucket_modify
+ * @export none
+ * 修改一个元素：键和值都换成传进来的，被换下来的旧键、旧值交给销毁函数。
+ * @param {tk_raw_hash_table_t*} table 哈希表。
+ * @param {tk_raw_hash_table_entry_t*} entry 元素。
+ * @param {TK_RAW_HASH_TABLE_ENTRY_KEY_T} key 新键。
+ * @param {TK_RAW_HASH_TABLE_ENTRY_VALUE_T} value 新值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+inline static ret_t tk_raw_hash_table_bucket_modify(tk_raw_hash_table_t* table,
+                                                    tk_raw_hash_table_entry_t* entry,
+                                                    TK_RAW_HASH_TABLE_ENTRY_KEY_T key,
+                                                    TK_RAW_HASH_TABLE_ENTRY_VALUE_T value) {
+  return_value_if_fail(table != NULL && table->buckets != NULL && entry != NULL, RET_BAD_PARAMS);
+
+  tk_swap(entry->key, key, TK_RAW_HASH_TABLE_ENTRY_KEY_T);
+  if (!TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT(entry->key, key)) {
+    TK_RAW_HASH_TABLE_KEY_DESTROY(key);
+  }
+
+  tk_swap(entry->value, value, TK_RAW_HASH_TABLE_ENTRY_VALUE_T);
+  if (!TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(entry->value, value)) {
+    tk_raw_hash_table_destroy_value(table, value);
+  }
 
   return RET_OK;
 }
@@ -715,7 +727,7 @@ inline static tk_raw_hash_table_entry_t* tk_raw_hash_table_find(tk_raw_hash_tabl
 /**
  * @method tk_raw_hash_table_modify
  * @export none
- * 修改键对应的值(旧值和新值不同时由value_destroy销毁)，键不存在时返回失败(用add加入)。
+ * 修改键对应的元素：键和值都换成传进来的，键不存在时返回失败(用add加入)。
  * @param {tk_raw_hash_table_t*} table 哈希表。
  * @param {TK_RAW_HASH_TABLE_ENTRY_KEY_T} key 键。
  * @param {TK_RAW_HASH_TABLE_ENTRY_VALUE_T} value 值。
@@ -733,24 +745,22 @@ inline static ret_t tk_raw_hash_table_modify(tk_raw_hash_table_t* table,
     return RET_NOT_FOUND;
   }
 
-  tk_raw_hash_table_entry_set_value(table, entry, value);
-
-  return RET_OK;
+  return tk_raw_hash_table_bucket_modify(table, entry, key, value);
 }
 
 /**
- * @method tk_raw_hash_table_replace
+ * @method tk_raw_hash_table_set
  * @export none
- * 键存在时替换值(旧值和新值不同时由value_destroy销毁)，不存在时加入。
+ * 写入元素：键不存在就加入元素，已存在就改键和值。
  * @param {tk_raw_hash_table_t*} table 哈希表。
  * @param {TK_RAW_HASH_TABLE_ENTRY_KEY_T} key 键。
  * @param {TK_RAW_HASH_TABLE_ENTRY_VALUE_T} value 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-inline static ret_t tk_raw_hash_table_replace(tk_raw_hash_table_t* table,
-                                              TK_RAW_HASH_TABLE_ENTRY_KEY_T key,
-                                              TK_RAW_HASH_TABLE_ENTRY_VALUE_T value) {
+inline static ret_t tk_raw_hash_table_set(tk_raw_hash_table_t* table,
+                                          TK_RAW_HASH_TABLE_ENTRY_KEY_T key,
+                                          TK_RAW_HASH_TABLE_ENTRY_VALUE_T value) {
   ret_t ret = RET_OK;
   return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
 
@@ -811,8 +821,7 @@ inline static ret_t tk_raw_hash_table_foreach(tk_raw_hash_table_t* table, tk_vis
   for (index = 0, n = TK_RAW_HASH_TABLE_BUCKET_COUNT(table); index < n && ret == RET_OK; index++) {
     size_t i = 0;
     while (i < TK_RAW_DARRAY_SIZE(table->buckets[index])) {
-      tk_raw_hash_table_bucket_t bucket = table->buckets[index];
-      ret = visit(ctx, bucket + i);
+      ret = visit(ctx, &table->buckets[index][i]);
 
       /* 遍历函数可能加了元素，桶内数组可能被realloc，移除时按桶下标重新取。 */
       TK_FOREACH_VISIT_RESULT_PROCESSING(

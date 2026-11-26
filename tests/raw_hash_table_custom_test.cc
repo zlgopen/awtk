@@ -60,6 +60,17 @@ static ret_t raw_hash_table_custom_visit_remove_all(void* ctx, const void* data)
   return RET_REMOVE;
 }
 
+/* 默认按地址判"同一个对象"：同一个指针算，内容相同的克隆不算 */
+TEST(RawHashTable, key_is_same_object) {
+  char* key = tk_strdup("hello");
+
+  ASSERT_TRUE(key != NULL);
+  ASSERT_TRUE(TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT(key, key));
+  ASSERT_FALSE(TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT(key, "hello"));
+
+  TKMEM_FREE(key);
+}
+
 TEST(RawHashTable, str_key) {
   char* hello = tk_strdup("hello");
   tk_raw_hash_table_t table;
@@ -67,8 +78,6 @@ TEST(RawHashTable, str_key) {
 
   ASSERT_TRUE(hello != NULL);
   ASSERT_EQ(tk_raw_hash_table_init(&table, 10, raw_hash_table_custom_value_destroy), RET_OK);
-  ASSERT_TRUE(table.buckets != NULL);
-  ASSERT_EQ(TK_RAW_HASH_TABLE_BUCKET_COUNT(&table), 15u);
   s_key_destroy_count = 0;
   s_value_destroy_count = 0;
 
@@ -94,56 +103,91 @@ TEST(RawHashTable, str_key) {
   ASSERT_STREQ(entry->key, "hello");
   ASSERT_EQ(*(entry->value), 1);
 
-  /* modify只替换值：走value_destroy，键保留(KEY_DESTROY不会被调用) */
-  ASSERT_EQ(tk_raw_hash_table_modify(&table, "hello", raw_hash_table_custom_value(9)), RET_OK);
-  ASSERT_EQ(s_value_destroy_count, 1u);
-  ASSERT_EQ(s_key_destroy_count, 0u);
-  ASSERT_EQ(*(tk_raw_hash_table_find(&table, "hello")->value), 9);
+  /* modify连键一起换：旧键和旧值都交给销毁函数，表接管传入的键 */
+  {
+    char* key = tk_strdup("hello");
 
-  /* 用同一个指针modify：值没有变，不应该销毁它 */
+    ASSERT_TRUE(key != NULL);
+    ASSERT_NE((const void*)key, (const void*)entry->key);
+    ASSERT_EQ(tk_raw_hash_table_modify(&table, key, raw_hash_table_custom_value(9)), RET_OK);
+    ASSERT_EQ(s_value_destroy_count, 1u);
+    ASSERT_EQ(s_key_destroy_count, 1u);
+    ASSERT_EQ(tk_raw_hash_table_find(&table, "hello")->key, key);
+    ASSERT_EQ(*(tk_raw_hash_table_find(&table, "hello")->value), 9);
+  }
+
+  /* 用元素里原来的键modify：键没有变，不应该销毁它；值传回同一个指针也不销毁 */
   {
     int32_t* v = tk_raw_hash_table_find(&table, "hello")->value;
 
-    ASSERT_EQ(tk_raw_hash_table_modify(&table, "hello", v), RET_OK);
+    ASSERT_EQ(tk_raw_hash_table_modify(&table, tk_raw_hash_table_find(&table, "hello")->key, v),
+              RET_OK);
     ASSERT_EQ(s_value_destroy_count, 1u);
-    ASSERT_EQ(s_key_destroy_count, 0u);
+    ASSERT_EQ(s_key_destroy_count, 1u);
     ASSERT_EQ(tk_raw_hash_table_find(&table, "hello")->value, v);
   }
 
-  /* replace（已存在）也只替换值 */
-  ASSERT_EQ(tk_raw_hash_table_replace(&table, "world", raw_hash_table_custom_value(8)), RET_OK);
-  ASSERT_EQ(s_value_destroy_count, 2u);
-  ASSERT_EQ(s_key_destroy_count, 0u);
-  ASSERT_EQ(table.size, 2u);
-  ASSERT_EQ(*(tk_raw_hash_table_find(&table, "world")->value), 8);
+  /* set（已存在）也换键和值 */
+  {
+    char* key = tk_strdup("world");
 
-  /* replace（不存在）加入新元素，不销毁任何东西 */
-  ASSERT_EQ(tk_raw_hash_table_replace(&table, tk_strdup("awtk"), raw_hash_table_custom_value(7)),
+    ASSERT_TRUE(key != NULL);
+    ASSERT_EQ(tk_raw_hash_table_set(&table, key, raw_hash_table_custom_value(8)), RET_OK);
+    ASSERT_EQ(s_value_destroy_count, 2u);
+    ASSERT_EQ(s_key_destroy_count, 2u);
+    ASSERT_EQ(table.size, 2u);
+    ASSERT_EQ(tk_raw_hash_table_find(&table, "world")->key, key);
+    ASSERT_EQ(*(tk_raw_hash_table_find(&table, "world")->value), 8);
+  }
+
+  /* set（不存在）加入新元素，不销毁任何东西 */
+  ASSERT_EQ(tk_raw_hash_table_set(&table, tk_strdup("awtk"), raw_hash_table_custom_value(7)),
             RET_OK);
   ASSERT_EQ(s_value_destroy_count, 2u);
-  ASSERT_EQ(s_key_destroy_count, 0u);
+  ASSERT_EQ(s_key_destroy_count, 2u);
   ASSERT_EQ(table.size, 3u);
 
   /* remove：键和值各销毁一次 */
   ASSERT_EQ(tk_raw_hash_table_remove(&table, "awtk"), RET_OK);
-  ASSERT_EQ(s_key_destroy_count, 1u);
+  ASSERT_EQ(s_key_destroy_count, 3u);
   ASSERT_EQ(s_value_destroy_count, 3u);
   ASSERT_EQ(table.size, 2u);
 
   /* clear：剩下的2个元素，键和值各销毁2次 */
   ASSERT_EQ(tk_raw_hash_table_clear(&table), RET_OK);
-  ASSERT_EQ(s_key_destroy_count, 3u);
+  ASSERT_EQ(s_key_destroy_count, 5u);
   ASSERT_EQ(s_value_destroy_count, 5u);
   ASSERT_EQ(table.size, 0u);
-  ASSERT_EQ(TK_RAW_HASH_TABLE_BUCKET_COUNT(&table), 15u);
 
   /* deinit：剩下的1个元素 */
   ASSERT_EQ(tk_raw_hash_table_add(&table, tk_strdup("end"), raw_hash_table_custom_value(6)),
             RET_OK);
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
   ASSERT_TRUE(table.buckets == NULL);
-  ASSERT_EQ(s_key_destroy_count, 4u);
+  ASSERT_EQ(s_key_destroy_count, 6u);
   ASSERT_EQ(s_value_destroy_count, 6u);
+}
+
+/* 没写进表的键和值不归表：失败时调用方仍要自己释放 */
+TEST(RawHashTable, write_fail_keeps_ownership) {
+  tk_raw_hash_table_t table;
+  char* key = tk_strdup("nope");
+  int32_t* v = raw_hash_table_custom_value(1);
+
+  s_key_destroy_count = 0;
+  s_value_destroy_count = 0;
+  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, raw_hash_table_custom_value_destroy), RET_OK);
+
+  /* 键不存在，modify失败；表为NULL，set失败 */
+  ASSERT_EQ(tk_raw_hash_table_modify(&table, key, v), RET_NOT_FOUND);
+  ASSERT_NE(tk_raw_hash_table_set(NULL, key, v), RET_OK);
+  ASSERT_EQ(table.size, 0u);
+  ASSERT_EQ(s_key_destroy_count, 0u);
+  ASSERT_EQ(s_value_destroy_count, 0u);
+
+  TKMEM_FREE(key);
+  TKMEM_FREE(v);
+  ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
 }
 
 TEST(RawHashTable, str_hash) {

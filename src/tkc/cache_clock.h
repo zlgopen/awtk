@@ -35,56 +35,49 @@ BEGIN_C_DECLS
 /********************************************************************************************/
 /* 可配置的宏和类型：在包含本头文件之前定义，不定义时继承raw_hash_table的配置 */
 
-/* 定义了才覆盖raw_hash_table的配置。 */
 #ifdef TK_CACHE_CLOCK_DATA_T
 #undef TK_RAW_HASH_TABLE_ENTRY_VALUE_T
 #define TK_RAW_HASH_TABLE_ENTRY_VALUE_T TK_CACHE_CLOCK_DATA_T
+#else
+#define TK_CACHE_CLOCK_DATA_T TK_RAW_HASH_TABLE_ENTRY_VALUE_T
 #endif /*TK_CACHE_CLOCK_DATA_T*/
 
-#ifdef TK_CACHE_CLOCK_DATA_COMPARE
-#undef TK_RAW_HASH_TABLE_VALUE_COMPARE
-#define TK_RAW_HASH_TABLE_VALUE_COMPARE(entry_value, value) \
-  TK_CACHE_CLOCK_DATA_COMPARE(entry_value, value)
-#endif /*TK_CACHE_CLOCK_DATA_COMPARE*/
+#ifdef TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT
+#undef TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT
+#define TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT
+#else
+#define TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT
+#endif /*TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT*/
 
 #ifdef TK_CACHE_CLOCK_KEY_T
 #undef TK_RAW_HASH_TABLE_ENTRY_KEY_T
 #define TK_RAW_HASH_TABLE_ENTRY_KEY_T TK_CACHE_CLOCK_KEY_T
+#else
+#define TK_CACHE_CLOCK_KEY_T TK_RAW_HASH_TABLE_ENTRY_KEY_T
 #endif /*TK_CACHE_CLOCK_KEY_T*/
 
 #ifdef TK_CACHE_CLOCK_KEY_HASH
 #undef TK_RAW_HASH_TABLE_KEY_HASH
-#define TK_RAW_HASH_TABLE_KEY_HASH(key) TK_CACHE_CLOCK_KEY_HASH(key)
+#define TK_RAW_HASH_TABLE_KEY_HASH TK_CACHE_CLOCK_KEY_HASH
+#else
+#define TK_CACHE_CLOCK_KEY_HASH TK_RAW_HASH_TABLE_KEY_HASH
 #endif /*TK_CACHE_CLOCK_KEY_HASH*/
 
 #ifdef TK_CACHE_CLOCK_KEY_COMPARE
 #undef TK_RAW_HASH_TABLE_KEY_COMPARE
-#define TK_RAW_HASH_TABLE_KEY_COMPARE(entry_key, key) TK_CACHE_CLOCK_KEY_COMPARE(entry_key, key)
+#define TK_RAW_HASH_TABLE_KEY_COMPARE TK_CACHE_CLOCK_KEY_COMPARE
+#else
+#define TK_CACHE_CLOCK_KEY_COMPARE TK_RAW_HASH_TABLE_KEY_COMPARE
 #endif /*TK_CACHE_CLOCK_KEY_COMPARE*/
+
+#ifdef TK_CACHE_CLOCK_KEY_IS_SAME_OBJECT
+#undef TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT
+#define TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT TK_CACHE_CLOCK_KEY_IS_SAME_OBJECT
+#else
+#define TK_CACHE_CLOCK_KEY_IS_SAME_OBJECT TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT
+#endif /*TK_CACHE_CLOCK_KEY_IS_SAME_OBJECT*/
 
 #include "tkc/raw_hash_table.h"
-
-/* 没定义的，这里从raw_hash_table继承。 */
-#ifndef TK_CACHE_CLOCK_DATA_T
-#define TK_CACHE_CLOCK_DATA_T TK_RAW_HASH_TABLE_ENTRY_VALUE_T
-#endif /*TK_CACHE_CLOCK_DATA_T*/
-
-#ifndef TK_CACHE_CLOCK_DATA_COMPARE
-#define TK_CACHE_CLOCK_DATA_COMPARE(entry_value, value) \
-  TK_RAW_HASH_TABLE_VALUE_COMPARE(entry_value, value)
-#endif /*TK_CACHE_CLOCK_DATA_COMPARE*/
-
-#ifndef TK_CACHE_CLOCK_KEY_T
-#define TK_CACHE_CLOCK_KEY_T TK_RAW_HASH_TABLE_ENTRY_KEY_T
-#endif /*TK_CACHE_CLOCK_KEY_T*/
-
-#ifndef TK_CACHE_CLOCK_KEY_HASH
-#define TK_CACHE_CLOCK_KEY_HASH(key) TK_RAW_HASH_TABLE_KEY_HASH(key)
-#endif /*TK_CACHE_CLOCK_KEY_HASH*/
-
-#ifndef TK_CACHE_CLOCK_KEY_COMPARE
-#define TK_CACHE_CLOCK_KEY_COMPARE(entry_key, key) TK_RAW_HASH_TABLE_KEY_COMPARE(entry_key, key)
-#endif /*TK_CACHE_CLOCK_KEY_COMPARE*/
 
 /**
  * @enum tk_cache_clock_bit_t
@@ -382,8 +375,8 @@ inline static ret_t tk_cache_clock_put(tk_cache_clock_t* cache, TK_CACHE_CLOCK_K
   index = tk_raw_hash_table_bucket_index(&(cache->table), key);
   entry = tk_raw_hash_table_bucket_find(&(cache->table), index, key);
   if (entry != NULL) {
-    /* 键已存在：只换数据(传回同一个值不会销毁它)，再标记为访问过 */
-    tk_raw_hash_table_entry_set_value(&(cache->table), entry, data);
+    /* 键已存在：换键和值(传回同一个不会销毁它)，再标记为访问过 */
+    tk_raw_hash_table_bucket_modify(&(cache->table), entry, key, data);
     tk_cache_clock_touch_index(cache, index);
     return RET_OK;
   }

@@ -8,6 +8,7 @@
   * 修复在非整数屏幕缩放比时，图片绘制时的大小计算不正确的问题(感谢泽武提供补丁)
   * 修复 nanovg 下字形显示可能出现异常的问题(感谢泽武提供补丁)
   * 修复 nanovg_plus NVGP_FILLMODE_All 没有正常运作的问题并增加测试(感谢泽武提供补丁)
+  * improve cache_clock and raw_hash_table(感谢兆坤提供补丁)
 
 2026/11/25
   * add raw_hash_table (感谢兆坤提供补丁)

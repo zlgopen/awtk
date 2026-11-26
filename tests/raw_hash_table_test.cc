@@ -101,7 +101,7 @@ TEST(RawHashTable, basic) {
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
 }
 
-/* 单键上的各种操作：重复add失败、modify改值/键不存在失败、replace替换/键不存在时加入。 */
+/* 单键上的各种操作：重复add失败、modify改值/键不存在失败、set写入值/键不存在时加入。 */
 TEST(RawHashTable, one_key_ops) {
   tk_raw_hash_table_t table;
   ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
@@ -115,7 +115,7 @@ TEST(RawHashTable, one_key_ops) {
   ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[tk_raw_hash_table_bucket_index(&table, 5)]), 1u);
   ASSERT_EQ(tk_raw_hash_table_find(&table, 5)->value, raw_hash_table_test_value(1));
 
-  /* 修改已有的值：元素个数和桶里元素个数都不变。 */
+  /* 修改已有的元素(size_t键，看不出换键)：元素个数和桶里元素个数都不变。 */
   ASSERT_EQ(tk_raw_hash_table_modify(&table, 5, raw_hash_table_test_value(2)), RET_OK);
   ASSERT_EQ(table.size, 1u);
   ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[tk_raw_hash_table_bucket_index(&table, 5)]), 1u);
@@ -126,8 +126,8 @@ TEST(RawHashTable, one_key_ops) {
   ASSERT_EQ(table.size, 1u);
   ASSERT_TRUE(tk_raw_hash_table_find(&table, 6) == NULL);
 
-  /* 键存在时替换，元素个数不变，桶里仍然只有一个元素。 */
-  ASSERT_EQ(tk_raw_hash_table_replace(&table, 5, raw_hash_table_test_value(3)), RET_OK);
+  /* 键存在时set只改值，元素个数不变，桶里仍然只有一个元素。 */
+  ASSERT_EQ(tk_raw_hash_table_set(&table, 5, raw_hash_table_test_value(3)), RET_OK);
   ASSERT_EQ(table.size, 1u);
   ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[tk_raw_hash_table_bucket_index(&table, 5)]), 1u);
   ASSERT_EQ(tk_raw_hash_table_find(&table, 5)->value, raw_hash_table_test_value(3));
@@ -137,8 +137,8 @@ TEST(RawHashTable, one_key_ops) {
   ASSERT_EQ(TK_RAW_DARRAY_SIZE(table.buckets[tk_raw_hash_table_bucket_index(&table, 5)]), 0u);
   ASSERT_EQ(tk_raw_hash_table_remove(&table, 5), RET_NOT_FOUND);
 
-  /* 键不存在时replace加入。 */
-  ASSERT_EQ(tk_raw_hash_table_replace(&table, 7, raw_hash_table_test_value(4)), RET_OK);
+  /* 键不存在时set加入。 */
+  ASSERT_EQ(tk_raw_hash_table_set(&table, 7, raw_hash_table_test_value(4)), RET_OK);
   ASSERT_EQ(table.size, 1u);
   ASSERT_EQ(tk_raw_hash_table_find(&table, 7)->value, raw_hash_table_test_value(4));
 
@@ -268,12 +268,12 @@ TEST(RawHashTable, capacity_policy) {
   ASSERT_EQ(table.size, 3u);
   ASSERT_EQ(table.capacity, 2u);
 
-  /* 返回失败：设置策略本身总是成功，之后add/replace才被拒 */
+  /* 返回失败：设置策略本身总是成功，之后add/set才被拒 */
   ASSERT_EQ(tk_raw_hash_table_set_capacity_policy(&table, TK_RAW_HASH_TABLE_CAPACITY_POLICY_FAIL),
             RET_OK);
   ASSERT_EQ(table.capacity_policy, TK_RAW_HASH_TABLE_CAPACITY_POLICY_FAIL);
   ASSERT_EQ(tk_raw_hash_table_add(&table, 3, raw_hash_table_test_value(3)), RET_EXCEED_RANGE);
-  ASSERT_EQ(tk_raw_hash_table_replace(&table, 3, raw_hash_table_test_value(3)), RET_EXCEED_RANGE);
+  ASSERT_EQ(tk_raw_hash_table_set(&table, 3, raw_hash_table_test_value(3)), RET_EXCEED_RANGE);
   ASSERT_TRUE(tk_raw_hash_table_find(&table, 3) == NULL);
   /* 键已存在的add不增长，不归策略管：只返回RET_FAIL */
   ASSERT_EQ(tk_raw_hash_table_add(&table, 2, raw_hash_table_test_value(2)), RET_FAIL);
@@ -612,7 +612,7 @@ TEST(RawHashTable, invalid_usage) {
   memset(&table, 0x00, sizeof(table));
   ASSERT_NE(tk_raw_hash_table_add(&table, 1, NULL), RET_OK);
   ASSERT_NE(tk_raw_hash_table_modify(&table, 1, NULL), RET_OK);
-  ASSERT_NE(tk_raw_hash_table_replace(&table, 1, NULL), RET_OK);
+  ASSERT_NE(tk_raw_hash_table_set(&table, 1, NULL), RET_OK);
   ASSERT_NE(tk_raw_hash_table_remove(&table, 1), RET_OK);
   ASSERT_NE(tk_raw_hash_table_clear(&table), RET_OK);
   ASSERT_NE(tk_raw_hash_table_deinit(&table), RET_OK);
@@ -626,13 +626,14 @@ TEST(RawHashTable, invalid_usage) {
   ASSERT_NE(tk_raw_hash_table_add(NULL, 1, NULL), RET_OK);
   ASSERT_TRUE(tk_raw_hash_table_find(NULL, 1) == NULL);
   ASSERT_NE(tk_raw_hash_table_modify(NULL, 1, NULL), RET_OK);
-  ASSERT_NE(tk_raw_hash_table_replace(NULL, 1, NULL), RET_OK);
+  ASSERT_NE(tk_raw_hash_table_set(NULL, 1, NULL), RET_OK);
   ASSERT_NE(tk_raw_hash_table_remove(NULL, 1), RET_OK);
   ASSERT_NE(tk_raw_hash_table_clear(NULL), RET_OK);
   ASSERT_NE(tk_raw_hash_table_foreach(NULL, raw_hash_table_test_sum_key, NULL), RET_OK);
 
   /* 内部函数：NULL表、NULL桶地址 */
   ASSERT_NE(tk_raw_hash_table_bucket_add(NULL, 0, 1, NULL), RET_OK);
+  ASSERT_NE(tk_raw_hash_table_bucket_modify(NULL, NULL, 1, NULL), RET_OK);
   ASSERT_NE(tk_raw_hash_table_shrink(NULL), RET_OK);
   ASSERT_NE(tk_raw_hash_table_bucket_shrink(NULL, 0), RET_OK);
 
@@ -698,7 +699,7 @@ TEST(RawHashTable, stress) {
           expect[k] = 0;
         } else {
           ASSERT_EQ(tk_raw_hash_table_remove(&table, k), RET_NOT_FOUND);
-          ASSERT_EQ(tk_raw_hash_table_replace(&table, k, raw_hash_table_test_value(op)), RET_OK);
+          ASSERT_EQ(tk_raw_hash_table_set(&table, k, raw_hash_table_test_value(op)), RET_OK);
           expect[k] = 1;
           expect_val[k] = op;
         }
@@ -776,14 +777,14 @@ TEST(RawHashTable, hash) {
   ASSERT_EQ(tk_raw_hash_table_deinit(&table), RET_OK);
 }
 
-TEST(RawHashTable, value_compare) {
+TEST(RawHashTable, value_is_same_object) {
   void* a = (void*)(uintptr_t)0x1000;
   void* b = (void*)(uintptr_t)0x2000;
 
-  /* 默认按值(指针)比较：相等返回0，否则返回非0。 */
-  ASSERT_EQ(TK_RAW_HASH_TABLE_VALUE_COMPARE(a, a), 0);
-  /* NULL在C++里是0，要和指针做有序比较得先转成void*，否则g++报ordered comparison of pointer with integer zero */
-  ASSERT_EQ(TK_RAW_HASH_TABLE_VALUE_COMPARE((void*)NULL, (void*)NULL), 0);
-  ASSERT_NE(TK_RAW_HASH_TABLE_VALUE_COMPARE(a, b), 0);
-  ASSERT_NE(TK_RAW_HASH_TABLE_VALUE_COMPARE(a, (void*)NULL), 0);
+  /* 默认按值(指针)比较：相同返回真，否则返回假。 */
+  ASSERT_TRUE(TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(a, a));
+  /* NULL在C++里是0，要和指针比较得先转成void*，否则g++报comparison between pointer and integer */
+  ASSERT_TRUE(TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT((void*)NULL, (void*)NULL));
+  ASSERT_FALSE(TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(a, b));
+  ASSERT_FALSE(TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(a, (void*)NULL));
 }

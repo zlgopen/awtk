@@ -45,6 +45,7 @@ inline static int32_t glyph_cache_key_compare(const glyph_cache_key_t a,
   return a.size > b.size ? 1 : (a.size < b.size ? -1 : 0);
 }
 #define TK_CACHE_CLOCK_KEY_COMPARE(a, b) glyph_cache_key_compare(a, b)
+#define TK_CACHE_CLOCK_KEY_IS_SAME_OBJECT(a, b) (FALSE)
 
 #include "tkc/cache_clock.h"
 
@@ -59,8 +60,9 @@ glyph_cache_t* glyph_cache_create(uint32_t capacity, tk_destroy_t destroy_glyph)
   cache = TKMEM_ZALLOC(glyph_cache_t);
   return_value_if_fail(cache != NULL, NULL);
 
-  goto_error_if_fail(RET_OK == tk_cache_clock_init(&(cache->cache), capacity,
-                                                (tk_raw_hash_table_value_destroy_t)destroy_glyph));
+  goto_error_if_fail(RET_OK ==
+                     tk_cache_clock_init(&(cache->cache), capacity,
+                                         (tk_raw_hash_table_value_destroy_t)destroy_glyph));
 
   return cache;
 error:
