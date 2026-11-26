@@ -94,14 +94,13 @@ int SDL_main(int argc, char* argv[]) {
 #endif
 
 static void command_line_to_argv(char* lpcmdline, char* argv[MAX_ARGV], int32_t* argc) {
-  int32_t i = 1;
+  int32_t i = 0;
   char* p = lpcmdline;
 
   argv[0] = "awtk.exe";
 
   if (p == NULL || *p == '\0') {
-    argv[1] = NULL;
-    return;
+    goto done;
   }
 
   for (i = 1; i < MAX_ARGV; i++) {
@@ -123,8 +122,12 @@ static void command_line_to_argv(char* lpcmdline, char* argv[MAX_ARGV], int32_t*
       *p++ = '\0';
     }
   }
-  *argc = i + 1;
 
+done:
+  *argc = (i < MAX_ARGV) ? (i + 1) : MAX_ARGV;
+  if (*argc < MAX_ARGV) {
+    argv[*argc] = NULL;
+  }
   return;
 }
 
