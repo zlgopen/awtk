@@ -998,6 +998,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_IS_KEYBOARD "is_keyboard"
 
 /**
+ * @const WIDGET_PROP_IS_NOACTIVATE
+ * 是否不获得焦点。
+ */
+#define WIDGET_PROP_IS_NOACTIVATE "is_noactivate"
+
+/**
  * @const WIDGET_PROP_FOCUSED
  * 是否为焦点控件。
  */

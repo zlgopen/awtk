@@ -97,7 +97,6 @@ static char* ubjson_writer_backup_str(const char* value) {
   if (value == NULL) {
     return "";
   } else {
-    ret_t ret = RET_OK;
     char* temp_data = NULL;
     do {
       temp_data = tk_str_copy(temp_data, value);
@@ -154,7 +153,6 @@ static wchar_t* ubjson_writer_backup_wstr(const wchar_t* value) {
     return L"";
   } else {
     uint32_t size = 0;
-    ret_t ret = RET_OK;
     wchar_t* temp_data = NULL;
     do {
       if (temp_data != NULL) {

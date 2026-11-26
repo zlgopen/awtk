@@ -377,7 +377,6 @@ static void object_fifo_quick_sort_impl(object_t* obj, size_t left, size_t right
 }
 
 ret_t object_fifo_sort(object_t* obj, tk_compare_t cmp) {
-  ret_t ret = RET_OK;
   uint32_t size = 0;
   uint32_t unit_size = 0;
   uint8_t* pivot = NULL;

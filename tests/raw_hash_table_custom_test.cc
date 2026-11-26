@@ -10,7 +10,7 @@ static size_t s_value_destroy_count = 0;
 /* 销毁键时用来检查"元素已经从桶里移除了"，实现在include之后 */
 static void raw_hash_table_custom_note_destroy(void);
 
-#define TK_RAW_HASH_TABLE_ENTRY_KEY_T char*
+#define TK_RAW_HASH_TABLE_ENTRY_KEY_T const char*
 #define TK_RAW_HASH_TABLE_ENTRY_VALUE_T int32_t*
 #define TK_RAW_HASH_TABLE_KEY_HASH(key) named_value_hash_get_hash_from_str(key)
 #define TK_RAW_HASH_TABLE_KEY_COMPARE(entry_key, key) tk_strcmp(entry_key, key)

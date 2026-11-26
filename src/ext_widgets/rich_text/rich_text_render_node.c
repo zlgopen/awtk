@@ -174,7 +174,6 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
   int32_t line_base = 0;
   int32_t x = margin;
   int32_t y = margin;
-  uint32_t glyph_count = 0;
   int32_t right = w - margin;
   int32_t client_w = w - 2 * margin;
   int32_t client_h = h - 2 * margin;

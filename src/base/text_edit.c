@@ -4079,7 +4079,7 @@ ret_t text_edit_show_context_menu(text_edit_t* text_edit, int32_t x, int32_t y) 
     }
 
     widget_move(win, x, y);
-    widget_set_prop_bool(win, WIDGET_PROP_IS_KEYBOARD, TRUE);
+    widget_set_prop_bool(win, WIDGET_PROP_IS_NOACTIVATE, TRUE);
   }
 
   return RET_OK;

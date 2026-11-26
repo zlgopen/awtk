@@ -298,8 +298,12 @@ TK_MAYBE_UNUSED static ret_t tk_raw_hash_table_rehash(tk_raw_hash_table_t* table
 
   tmp_buckets = TK_RAW_DARRAY_CREATE(tk_raw_hash_table_bucket_t, count);
   return_value_if_fail(tmp_buckets != NULL, RET_OOM);
-  return_value_if_fail(RET_OK == TK_RAW_DARRAY_RESIZE(tmp_buckets, count),
-                       (TK_RAW_DARRAY_DESTROY(tmp_buckets), RET_OOM));
+  if (RET_OK != TK_RAW_DARRAY_RESIZE(tmp_buckets, count)) {
+    log_warn("%s:%d condition(RET_OK == TK_RAW_DARRAY_RESIZE(tmp_buckets, count)) failed!\n",
+             __FUNCTION__, __LINE__);
+    TK_RAW_DARRAY_DESTROY(tmp_buckets);
+    return RET_OOM;
+  }
 
   for (i = 0; i < TK_RAW_DARRAY_SIZE(tmp_buckets); i++) {
     tmp_buckets[i] = NULL;

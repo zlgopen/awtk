@@ -783,7 +783,7 @@ ret_t window_manager_dispatch_window_foreground_events(widget_t* trigger_win,
                                                        widget_t* to_foreground) {
   return_value_if_fail(trigger_win != NULL, RET_BAD_PARAMS);
 
-  if (widget_is_keyboard(trigger_win)) {
+  if (widget_is_keyboard(trigger_win) || widget_is_noactivate(trigger_win)) {
     return RET_OK;
   }
 

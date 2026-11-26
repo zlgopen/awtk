@@ -3366,7 +3366,7 @@ ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
   widget_t* target = widget_find_target(widget, e->x, e->y);
 
   if (target != NULL && target->enable && target->sensitive) {
-    if (!(widget_is_keyboard(target))) {
+    if (!(widget_is_keyboard(target)) && !(widget_is_noactivate(target))) {
       if (widget_is_focusable(target) || !widget_is_strongly_focus(widget)) {
         if (!target->focused) {
           widget_handle_window_foreground_switch(target);
@@ -4555,7 +4555,7 @@ ret_t widget_ensure_visible_in_viewport(widget_t* widget) {
 }
 
 ret_t widget_set_as_key_target(widget_t* widget) {
-  if (widget_is_keyboard(widget)) {
+  if (widget_is_keyboard(widget) || widget_is_noactivate(widget)) {
     return RET_OK;
   }
 
@@ -4596,6 +4596,17 @@ bool_t widget_is_keyboard(widget_t* widget) {
   }
 
   if (widget_get_prop(widget, WIDGET_PROP_IS_KEYBOARD, &v) == RET_OK) {
+    return value_bool(&v);
+  }
+
+  return FALSE;
+}
+
+bool_t widget_is_noactivate(widget_t* widget) {
+  value_t v;
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  if (widget_get_prop(widget, WIDGET_PROP_IS_NOACTIVATE, &v) == RET_OK) {
     return value_bool(&v);
   }
 

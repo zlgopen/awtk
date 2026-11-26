@@ -696,6 +696,17 @@ TEST(Widget, is_keyboard) {
   widget_destroy(w);
 }
 
+TEST(Widget, is_noactivate) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* group = group_box_create(w, 1, 0, 10, 20);
+
+  ASSERT_EQ(widget_is_noactivate(group), FALSE);
+  ASSERT_EQ(widget_set_prop_bool(group, WIDGET_PROP_IS_NOACTIVATE, TRUE), RET_OK);
+  ASSERT_EQ(widget_is_noactivate(group), TRUE);
+
+  widget_destroy(w);
+}
+
 TEST(Widget, is_window) {
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
   widget_t* group = group_box_create(w, 1, 0, 10, 20);

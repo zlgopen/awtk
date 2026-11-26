@@ -2459,6 +2459,22 @@ bool_t widget_is_opened_popup(widget_t* widget);
 bool_t widget_is_keyboard(widget_t* widget);
 
 /**
+ * @method widget_is_noactivate
+ * 判断当前控件是否不获得焦点。
+ *
+ * 如果不想让某控件获得焦点，可以设置这个属性
+ * ```c
+ * widget_set_prop_bool(group, WIDGET_PROP_IS_NOACTIVATE, TRUE);
+ * ```
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回FALSE表示不是，否则表示是。
+  */
+bool_t widget_is_noactivate(widget_t* widget);
+
+/**
  * @method widget_is_designing_window
  * 判断当前控件是否是设计窗口。
  * @annotation ["scriptable"]

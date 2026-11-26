@@ -109,7 +109,7 @@ static ret_t window_manager_simple_open_window(widget_t* widget, widget_t* windo
   window->dirty = FALSE;
   widget->target = window;
 
-  if (!widget_is_keyboard(window)) {
+  if (!widget_is_keyboard(window) && !widget_is_noactivate(window)) {
     widget->key_target = window;
   }
   widget_invalidate(window, NULL);
@@ -169,7 +169,7 @@ static ret_t window_manager_simple_close_window(widget_t* widget, widget_t* wind
   {
     widget_t* prev_win = window_manager_find_prev_window(WIDGET(wm));
     if (prev_win != NULL) {
-      if (!widget_is_keyboard(window)) {
+      if (!widget_is_keyboard(window) && !widget_is_noactivate(window)) {
         window_manager_dispatch_window_foreground_events(window, NULL, prev_win);
       }
     }

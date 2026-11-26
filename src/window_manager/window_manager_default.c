@@ -1215,10 +1215,12 @@ static ret_t window_manager_animate_done(widget_t* widget) {
     widget_t* top_dialog_highlight = NULL;
     widget_t* prev_win = wm->animator->prev_win;
     widget_t* curr_win = wm->animator->curr_win;
-    bool_t curr_win_is_keyboard, curr_win_is_normal_window, close_window_when_open_animate;
+    bool_t curr_win_is_keyboard, curr_win_is_normal_window, close_window_when_open_animate,
+           curr_win_is_noactivate;
 
     window_animator_destroy(wm->animator);
     curr_win_is_keyboard = widget_is_keyboard(curr_win);
+    curr_win_is_noactivate = widget_is_noactivate(curr_win);
     curr_win_is_normal_window = widget_is_normal_window(curr_win);
     close_window_when_open_animate =
         widget_get_prop_int(curr_win, WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID,
@@ -1262,7 +1264,7 @@ static ret_t window_manager_animate_done(widget_t* widget) {
       }
     } else {
       /* 结束关闭窗口动画后 */
-      if (!curr_win_is_keyboard) {
+      if (!curr_win_is_keyboard && !curr_win_is_noactivate) {
         window_manager_animate_done_set_window_foreground(widget, prev_win, curr_win);
       }
       top_dialog_highlight =

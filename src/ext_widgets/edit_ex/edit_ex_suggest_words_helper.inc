@@ -227,7 +227,7 @@ static widget_t* edit_ex_create_suggest_words_popup(widget_t* widget) {
   popup_set_parent_widget_by_create(win, widget);
 
   // FIXME: 弹出popup时后台edit不丢失焦点。
-  widget_set_prop_bool(win, WIDGET_PROP_IS_KEYBOARD, TRUE);
+  widget_set_prop_bool(win, WIDGET_PROP_IS_NOACTIVATE, TRUE);
 
   /* 不让滚动条拿走选中项的焦点导致按下 down/up 无法切换选中项 */
   widget_set_prop_bool(win, WIDGET_PROP_STRONGLY_FOCUS, TRUE);
