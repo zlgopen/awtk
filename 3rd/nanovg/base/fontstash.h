@@ -1557,6 +1557,8 @@ int fonFONSquadFromGlyph(FONScontext* stash, FONSquad* quad, unsigned int codepo
 	// If the iterator was initialized with FONS_GLYPH_BITMAP_OPTIONAL, then the UV coordinates of the quad will be invalid.
 	if (glyph != NULL)
 		fons__getQuad(stash, font, -1, glyph, 0.0f, state->spacing, &x, &y, quad);
+	else
+		return 0;
 
 	return 1;
 }

@@ -3139,7 +3139,15 @@ void nvgGlyph(NVGcontext* ctx, unsigned int codepoint, float fontSize, float x, 
 	fonsSetBlur(ctx->fs, state->fontBlur*_scale);
 	fonsSetFont(ctx->fs, state->fontId);
 
-	fonFONSquadFromGlyph(ctx->fs, &q, codepoint, (short)fontSize, x, y, (int)w, (int)h, data);
+	// atlas 满时先扩容再重试，避免新字形直接丢失。
+	if (!fonFONSquadFromGlyph(ctx->fs, &q, codepoint, (short)fontSize, x, y, (int)w, (int)h, data)) {
+		if (!nvg__allocTextAtlas(ctx)) {
+			return;
+		}
+		if (!fonFONSquadFromGlyph(ctx->fs, &q, codepoint, (short)fontSize, x, y, (int)w, (int)h, data)) {
+			return;
+		}
+	}
 	// Transform corners.
 	nvgTransformPoint(&c[0],&c[1], state->xform, q.x0*invscale, q.y0*invscale);
 	nvgTransformPoint(&c[2],&c[3], state->xform, q.x1*invscale, q.y0*invscale);
