@@ -1118,6 +1118,7 @@ EXPORTS
     widget_is_opened_dialog
     widget_is_opened_popup
     widget_is_keyboard
+    widget_is_noactivate
     widget_is_designing_window
     widget_is_window_manager
     widget_grab
@@ -1759,6 +1760,8 @@ EXPORTS
     asset_info_set_is_in_rom
     asset_info_is_full_name_in_rom
     asset_info_set_full_name_in_rom
+    asset_info_get_image_ratio
+    asset_info_set_image_ratio
     async_call
     async_call_init_ex
     async_call_init_ex2

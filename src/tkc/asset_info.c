@@ -167,6 +167,48 @@ ret_t asset_info_set_full_name_in_rom(asset_info_t* info, bool_t is_full_name_in
   return RET_OK;
 }
 
+uint16_t asset_info_get_image_ratio(const asset_info_t* info) {
+  return_value_if_fail(info != NULL, 1);
+
+  if (info->flags & ASSET_INFO_FLAG_IMAGE_RATIO_2X) {
+    return 2;
+  }
+
+  if (info->flags & ASSET_INFO_FLAG_IMAGE_RATIO_3X) {
+    return 3;
+  }
+
+  if (info->flags & ASSET_INFO_FLAG_IMAGE_RATIO_4X) {
+    return 4;
+  }
+
+  return 1;
+}
+
+ret_t asset_info_set_image_ratio(asset_info_t* info, uint16_t ratio) {
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ratio >= 1 && ratio <= 4, RET_BAD_PARAMS);
+
+  info->flags &= ~ASSET_INFO_FLAG_IMAGE_RATIO_MASK;
+
+  switch (ratio) {
+    case 2:
+      info->flags |= ASSET_INFO_FLAG_IMAGE_RATIO_2X;
+      break;
+    case 3:
+      info->flags |= ASSET_INFO_FLAG_IMAGE_RATIO_3X;
+      break;
+    case 4:
+      info->flags |= ASSET_INFO_FLAG_IMAGE_RATIO_4X;
+      break;
+    default:
+      info->flags |= ASSET_INFO_FLAG_IMAGE_RATIO_1X;
+      break;
+  }
+
+  return RET_OK;
+}
+
 static ret_t asset_info_set_full_name_flag(asset_info_t* info) {
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
   info->flags |= ASSET_INFO_FLAG_FULL_NAME;

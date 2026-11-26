@@ -292,7 +292,34 @@ typedef enum _asset_info_flag_t {
    * ROM 资源在数据区末尾追加了完整名字(用于兼容旧运行时使用新资源)。
    */
   ASSET_INFO_FLAG_FULL_NAME_IN_ROM = 1 << 2,
+  /**
+   * @const ASSET_INFO_FLAG_IMAGE_RATIO_1X
+   * 1 倍图标记，xx 目录也按 1 倍图处理。
+   */
+  ASSET_INFO_FLAG_IMAGE_RATIO_1X = 1 << 3,
+  /**
+   * @const ASSET_INFO_FLAG_IMAGE_RATIO_2X
+   * 2 倍图标记。
+   */
+  ASSET_INFO_FLAG_IMAGE_RATIO_2X = 1 << 4,
+  /**
+   * @const ASSET_INFO_FLAG_IMAGE_RATIO_3X
+   * 3 倍图标记。
+   */
+  ASSET_INFO_FLAG_IMAGE_RATIO_3X = 1 << 5,
+  /**
+   * @const ASSET_INFO_FLAG_IMAGE_RATIO_4X
+   * 4 倍图标记。
+   */
+  ASSET_INFO_FLAG_IMAGE_RATIO_4X = 1 << 6,
 } asset_info_flag_t;
+
+/**
+ * 图片倍率标记掩码。
+ */
+#define ASSET_INFO_FLAG_IMAGE_RATIO_MASK \
+  (ASSET_INFO_FLAG_IMAGE_RATIO_1X | ASSET_INFO_FLAG_IMAGE_RATIO_2X | \
+   ASSET_INFO_FLAG_IMAGE_RATIO_3X | ASSET_INFO_FLAG_IMAGE_RATIO_4X)
 
 /**
  * @class asset_info_t
@@ -481,6 +508,29 @@ bool_t asset_info_is_full_name_in_rom(const asset_info_t* info);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t asset_info_set_full_name_in_rom(asset_info_t* info, bool_t is_full_name_in_rom);
+
+/**
+ * @method asset_info_get_image_ratio
+ *
+ * 获取图片倍率。
+ *
+ * @param {const asset_info_t*} info asset_info对象。
+ *
+ * @return {uint16_t} 返回图片倍率。
+ */
+uint16_t asset_info_get_image_ratio(const asset_info_t* info);
+
+/**
+ * @method asset_info_set_image_ratio
+ *
+ * 设置图片倍率。
+ *
+ * @param {asset_info_t*} info asset_info对象。
+ * @param {uint16_t} ratio 图片倍率。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t asset_info_set_image_ratio(asset_info_t* info, uint16_t ratio);
 
 /* internal */
 ret_t asset_info_set_name(asset_info_t* info, const char* name, bool_t is_alloc);

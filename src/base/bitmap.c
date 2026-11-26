@@ -632,6 +632,7 @@ ret_t bitmap_init_ex2(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_le
   bitmap->h = h;
   bitmap->format = format;
   bitmap->line_length = line_length;
+  bitmap->image_ratio = 1;
   if (bpp < 4) {
     bitmap->flags = BITMAP_FLAG_OPAQUE;
   }

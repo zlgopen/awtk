@@ -223,7 +223,12 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
   res = assets_manager_ref(imm->assets_manager, ASSET_TYPE_IMAGE, name);
   if (res == NULL) {
     if (imm->fallback_get_bitmap != NULL) {
-      return imm->fallback_get_bitmap(imm->fallback_get_bitmap_ctx, name, image);
+      ret_t ret = imm->fallback_get_bitmap(imm->fallback_get_bitmap_ctx, name, image);
+      if (ret == RET_OK && image->image_ratio == 0) {
+        image->image_ratio = 1;
+      }
+
+      return ret;
     }
     return RET_NOT_FOUND;
   }
@@ -236,6 +241,7 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
     image->h = header->h;
     image->flags = header->flags;
     image->format = header->format;
+    image->image_ratio = asset_info_get_image_ratio(res);
     image->name = asset_info_get_name((asset_info_t*)res);
     image->image_manager = imm;
     image->orientation =
@@ -261,6 +267,7 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
   } else if (res->subtype != ASSET_TYPE_IMAGE_BSVG) {
     ret_t ret = image_loader_load_image(res, image);
     if (ret == RET_OK) {
+      image->image_ratio = asset_info_get_image_ratio(res);
       image_manager_add(imm, name, image);
     }
     assets_manager_unref(imm->assets_manager, res);

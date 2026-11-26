@@ -68,6 +68,12 @@ struct _bitmap_t {
    */
   uint16_t format;
   /**
+   * @property {uint16_t} image_ratio
+   * @annotation ["readable", "scriptable"]
+   * 图片在程序中的缩放比。
+   */
+  uint16_t image_ratio;
+  /**
    * @property {const char*} name
    * @annotation ["readable", "scriptable"]
    * 名称。

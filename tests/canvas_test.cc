@@ -302,6 +302,7 @@ TEST(Canvas, draw_image) {
 
   img.w = 32;
   img.h = 32;
+  img.image_ratio = 1;
   r = rect_init(100, 100, 200, 200);
   dirty_rects_t dr;
   dirty_rects_init(&dr);
@@ -1292,11 +1293,16 @@ TEST(Canvas, draw_image_icon_ex2) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(10,10,16,16,8,8,16,16);");
 
   lcd->ratio = 2;
+  img.image_ratio = 2;
   lcd_log_reset(lcd);
   s = rect_init(10, 10, 16, 16);
   d = rect_init(0, 0, img.w, img.h);
   ASSERT_EQ(canvas_draw_image_ex2(&c, &img, IMAGE_DRAW_ICON, &s, &d), RET_OK);
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(10,10,16,16,12,12,8,8);");
+
+  lcd_log_reset(lcd);
+  ASSERT_EQ(canvas_draw_image_at(&c, &img, 0, 0), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,32,0,0,16,16);");
 
   canvas_end_frame(&c);
   canvas_reset(&c);

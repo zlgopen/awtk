@@ -1600,10 +1600,10 @@ ret_t widget_off_by_func(widget_t* widget, uint32_t type, event_func_t on_event,
   return emitter_off_by_func(widget->emitter, type, on_event, ctx);
 }
 
-ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t text_size,
-                                 int32_t icon_at, uint32_t img_w, uint32_t img_h, int32_t spacer,
-                                 rect_t* r_text, rect_t* r_icon) {
-  float_t ratio = system_info()->device_pixel_ratio;
+static ret_t widget_calc_icon_text_rect_impl(const rect_t* ir, int32_t font_size,
+                                             float_t text_size, int32_t icon_at, uint32_t img_w,
+                                             uint32_t img_h, int32_t spacer, float_t ratio,
+                                             rect_t* r_text, rect_t* r_icon) {
   uint32_t img_w_r = 0;
   uint32_t img_h_r = 0;
   return_value_if_fail(ir != NULL && (r_text != NULL || r_icon != NULL), RET_BAD_PARAMS);
@@ -1683,6 +1683,13 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t te
   return RET_OK;
 }
 
+ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t text_size,
+                                 int32_t icon_at, uint32_t img_w, uint32_t img_h, int32_t spacer,
+                                 rect_t* r_text, rect_t* r_icon) {
+  return widget_calc_icon_text_rect_impl(ir, font_size, text_size, icon_at, img_w, img_h, spacer,
+                                         system_info()->device_pixel_ratio, r_text, r_icon);
+}
+
 const char* widget_get_bidi(widget_t* widget) {
   value_t v;
   if (widget_get_prop(widget, WIDGET_PROP_BIDI, &v) == RET_OK) {
@@ -1751,26 +1758,26 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   canvas_set_text_align(c, (align_h_t)align_h, (align_v_t)align_v);
 
   if (icon != NULL && widget_load_image(widget, icon, &img) == RET_OK) {
-    float_t dpr = system_info()->device_pixel_ratio;
+    float_t image_ratio = img.image_ratio > 0 ? img.image_ratio : 1;
 
     if (text->size > 0) {
-      if ((h > (img.h / dpr + font_size) && icon_at == ICON_AT_AUTO)) {
+      if ((h > (img.h / image_ratio + font_size) && icon_at == ICON_AT_AUTO)) {
         icon_at = ICON_AT_TOP;
       }
 
-      widget_calc_icon_text_rect(&ir, font_size, text_size, icon_at, img.w, img.h, spacer, &r_text,
-                                 &r_icon);
+      widget_calc_icon_text_rect_impl(&ir, font_size, text_size, icon_at, img.w, img.h, spacer,
+                                     image_ratio, &r_text, &r_icon);
 
       canvas_draw_icon_in_rect(c, &img, &r_icon);
       canvas_draw_text_bidi_in_rect_by_glyphs(c, &glyphs, 0, glyphs_get_length(&glyphs), &r_text,
                                               ellipses);
     } else {
       if (icon_at == ICON_AT_AUTO) {
-        widget_calc_icon_text_rect(&ir, font_size, text_size, icon_at, img.w, img.h, spacer, NULL,
-                                   &r_icon);
+        widget_calc_icon_text_rect_impl(&ir, font_size, text_size, icon_at, img.w, img.h, spacer,
+                                       image_ratio, NULL, &r_icon);
       } else {
-        widget_calc_icon_text_rect(&ir, font_size, text_size, icon_at, img.w, img.h, spacer,
-                                   &r_text, &r_icon);
+        widget_calc_icon_text_rect_impl(&ir, font_size, text_size, icon_at, img.w, img.h, spacer,
+                                       image_ratio, &r_text, &r_icon);
       }
       canvas_draw_icon_in_rect(c, &img, &r_icon);
     }

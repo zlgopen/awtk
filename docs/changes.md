@@ -5,6 +5,7 @@
   * improve cache_clock and raw_hash_table(感谢兆坤提供补丁)
   * 添加 WIDGET_PROP_IS_NOACTIVATE 属性(感谢泽武提供补丁)
   * 完善静态整形打包的规则，同步动态整形(感谢泽武提供补丁)
+  * 修复 nanovg 下字形显示可能出现异常的问题(感谢泽武提供补丁)
 
 2026/11/25
   * add raw_hash_table (感谢兆坤提供补丁)

@@ -190,6 +190,21 @@ static const char* device_pixel_ratio_to_str(float_t dpr) {
   return ratio;
 }
 
+static uint16_t device_pixel_ratio_to_image_ratio(float_t dpr) {
+  uint16_t ratio = 1;
+  int32_t idpr = tk_roundi(dpr);
+
+  if (idpr >= 4) {
+    ratio = 4;
+  } else if (idpr >= 3) {
+    ratio = 3;
+  } else if (idpr >= 2) {
+    ratio = 2;
+  }
+
+  return ratio;
+}
+
 ret_t assets_manager_build_asset_filename(assets_manager_t* am, char* path, uint32_t size,
                                           const char* theme, bool_t ratio_sensitive,
                                           const char* subpath, const char* name,
@@ -222,6 +237,7 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* theme, con
   char path[MAX_PATH + 1];
   const char* extname = NULL;
   const char* subpath = ratio ? "images" : "images/xx";
+  asset_info_t* info = NULL;
 
   switch (subtype) {
     case ASSET_TYPE_IMAGE_JPG: {
@@ -265,7 +281,18 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* theme, con
     path[len + 1] = '\0';
   }
 
-  return asset_loader_load(am->loader, ASSET_TYPE_IMAGE, subtype, path, name);
+  info = asset_loader_load(am->loader, ASSET_TYPE_IMAGE, subtype, path, name);
+  if (info != NULL) {
+    uint16_t image_ratio = 1;
+    if (ratio) {
+      system_info_t* sysinfo = assets_manager_get_system_info(am);
+      return_value_if_fail(sysinfo != NULL, NULL);
+      image_ratio = device_pixel_ratio_to_image_ratio(sysinfo->device_pixel_ratio);
+    }
+    asset_info_set_image_ratio(info, image_ratio);
+  }
+
+  return info;
 }
 
 static asset_info_t* try_load_assets(assets_manager_t* am, const char* theme, const char* name,

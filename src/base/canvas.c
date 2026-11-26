@@ -1866,7 +1866,7 @@ static ret_t canvas_draw_icon_ex(canvas_t* c, bitmap_t* img, const rect_t* src_r
   return_value_if_fail(c != NULL && c->lcd != NULL && img != NULL && src_r != NULL, RET_BAD_PARAMS);
 
   src = *src_r;
-  ratio = c->lcd->ratio;
+  ratio = img->image_ratio > 0 ? img->image_ratio : 1;
   if (ratio > 1) {
     float_t w = (src.w / ratio);
     float_t h = (src.h / ratio);
@@ -1956,7 +1956,7 @@ ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y) {
 
   x += c->ox;
   y += c->oy;
-  ratio = c->lcd->ratio;
+  ratio = img->image_ratio > 0 ? img->image_ratio : 1;
   src = rect_init(0, 0, img->w, img->h);
 
   if (ratio > 1) {

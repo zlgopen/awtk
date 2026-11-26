@@ -175,6 +175,7 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   canvas->base.bitmap = bitmap_create();
   canvas->base.bitmap->w = w * c->lcd->ratio;
   canvas->base.bitmap->h = h * c->lcd->ratio;
+  canvas->base.bitmap->image_ratio = c->lcd->ratio > 0 ? (uint16_t)c->lcd->ratio : 1;
   canvas->base.bitmap->should_free_handle = TRUE;
   canvas->base.bitmap->format = BITMAP_FMT_RGBA8888;
   bitmap_set_line_length(canvas->base.bitmap, 0);
