@@ -12,20 +12,20 @@ typedef struct _cache_clock_test_info_t {
 static size_t s_destroy_count = 0;
 
 /* 数据被淘汰/删除/替换时计数，实现在include之后 */
-static ret_t cache_clock_test_data_destroy(cache_clock_test_info_t data);
+static ret_t cache_clock_test_value_destroy(cache_clock_test_info_t value);
 
 #define TK_CACHE_CLOCK_KEY_T const char*
 #define TK_CACHE_CLOCK_KEY_HASH(key, ctx) named_value_hash_get_hash_from_str(key)
 #define TK_CACHE_CLOCK_KEY_COMPARE(entry_key, key, ctx) tk_strcmp(entry_key, key)
-#define TK_CACHE_CLOCK_DATA_T cache_clock_test_info_t
+#define TK_CACHE_CLOCK_VALUE_T cache_clock_test_info_t
 /**
  * 结构体不支持==，要自己定义"是不是同一个对象"。
  * 故意只比a：b可以变而不触发销毁，用来验证"判成同一个对象也要把新数据写进去"。
  */
-#define TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT(entry_data, data, ctx) \
-  (((entry_data).a == (data).a) ? 1 : 0)
-#define TK_CACHE_CLOCK_DATA_DESTROY(entry_data, ctx) \
-  ((void)(ctx), cache_clock_test_data_destroy(entry_data))
+#define TK_CACHE_CLOCK_VALUE_IS_SAME_OBJECT(entry_value, value, ctx) \
+  (((entry_value).a == (value).a) ? 1 : 0)
+#define TK_CACHE_CLOCK_VALUE_DESTROY(entry_value, ctx) \
+  ((void)(ctx), cache_clock_test_value_destroy(entry_value))
 
 #include "tkc/cache_clock.h"
 #include "gtest/gtest.h"
@@ -35,9 +35,9 @@ static ret_t cache_clock_test_data_destroy(cache_clock_test_info_t data);
 static char s_keys[CACHE_CLOCK_TEST_KEY_MAX][16];
 
 /* 数据被淘汰/删除/替换时计数 */
-static ret_t cache_clock_test_data_destroy(cache_clock_test_info_t data) {
+static ret_t cache_clock_test_value_destroy(cache_clock_test_info_t value) {
   s_destroy_count++;
-  (void)(data);
+  (void)(value);
 
   return RET_OK;
 }

@@ -29,7 +29,7 @@ typedef struct _glyph_cache_key_t {
 } glyph_cache_key_t;
 
 #define TK_CACHE_CLOCK_KEY_T glyph_cache_key_t
-#define TK_CACHE_CLOCK_DATA_T glyph_t*
+#define TK_CACHE_CLOCK_VALUE_T glyph_t*
 
 inline static uint64_t glyph_cache_key_hash(const glyph_cache_key_t key) {
   uint64_t ret = ((uint64_t)(key.size) << 32) | key.code;
@@ -48,7 +48,7 @@ inline static int32_t glyph_cache_key_compare(const glyph_cache_key_t a,
 #define TK_CACHE_CLOCK_KEY_IS_SAME_OBJECT(a, b, ctx) (FALSE)
 
 #define TK_CACHE_CLOCK_CTX_T tk_destroy_t
-#define TK_CACHE_CLOCK_DATA_DESTROY(g, destroy_glyph) \
+#define TK_CACHE_CLOCK_VALUE_DESTROY(g, destroy_glyph) \
   ((destroy_glyph) != NULL ? (destroy_glyph)(g) : RET_OK)
 
 #include "tkc/cache_clock.h"

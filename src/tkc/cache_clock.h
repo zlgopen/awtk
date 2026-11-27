@@ -42,26 +42,26 @@ BEGIN_C_DECLS
 #define TK_CACHE_CLOCK_CTX_T TK_RAW_HASH_TABLE_CTX_T
 #endif /*TK_CACHE_CLOCK_CTX_T*/
 
-#ifdef TK_CACHE_CLOCK_DATA_T
+#ifdef TK_CACHE_CLOCK_VALUE_T
 #undef TK_RAW_HASH_TABLE_ENTRY_VALUE_T
-#define TK_RAW_HASH_TABLE_ENTRY_VALUE_T TK_CACHE_CLOCK_DATA_T
+#define TK_RAW_HASH_TABLE_ENTRY_VALUE_T TK_CACHE_CLOCK_VALUE_T
 #else
-#define TK_CACHE_CLOCK_DATA_T TK_RAW_HASH_TABLE_ENTRY_VALUE_T
-#endif /*TK_CACHE_CLOCK_DATA_T*/
+#define TK_CACHE_CLOCK_VALUE_T TK_RAW_HASH_TABLE_ENTRY_VALUE_T
+#endif /*TK_CACHE_CLOCK_VALUE_T*/
 
-#ifdef TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT
+#ifdef TK_CACHE_CLOCK_VALUE_IS_SAME_OBJECT
 #undef TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT
-#define TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT
+#define TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT TK_CACHE_CLOCK_VALUE_IS_SAME_OBJECT
 #else
-#define TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT
-#endif /*TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT*/
+#define TK_CACHE_CLOCK_VALUE_IS_SAME_OBJECT TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT
+#endif /*TK_CACHE_CLOCK_VALUE_IS_SAME_OBJECT*/
 
-#ifdef TK_CACHE_CLOCK_DATA_DESTROY
+#ifdef TK_CACHE_CLOCK_VALUE_DESTROY
 #undef TK_RAW_HASH_TABLE_VALUE_DESTROY
-#define TK_RAW_HASH_TABLE_VALUE_DESTROY TK_CACHE_CLOCK_DATA_DESTROY
+#define TK_RAW_HASH_TABLE_VALUE_DESTROY TK_CACHE_CLOCK_VALUE_DESTROY
 #else
-#define TK_CACHE_CLOCK_DATA_DESTROY TK_RAW_HASH_TABLE_VALUE_DESTROY
-#endif /*TK_CACHE_CLOCK_DATA_DESTROY*/
+#define TK_CACHE_CLOCK_VALUE_DESTROY TK_RAW_HASH_TABLE_VALUE_DESTROY
+#endif /*TK_CACHE_CLOCK_VALUE_DESTROY*/
 
 #ifdef TK_CACHE_CLOCK_KEY_T
 #undef TK_RAW_HASH_TABLE_ENTRY_KEY_T
@@ -122,11 +122,11 @@ typedef enum _tk_cache_clock_bit_t {
  *
  * ```c
  * tk_cache_clock_t cache;
- * void* data = NULL;
+ * void* value = NULL;
  *
  * tk_cache_clock_init(&cache, 100, NULL);
- * tk_cache_clock_put(&cache, 1, data);
- * tk_cache_clock_get(&cache, 1, &data);
+ * tk_cache_clock_put(&cache, 1, value);
+ * tk_cache_clock_get(&cache, 1, &value);
  * tk_cache_clock_deinit(&cache);
  * ```
  */
@@ -341,15 +341,15 @@ error:
  * 获取键对应的数据，命中时把它的桶标记为访问过(给二次机会)。
  * @param {tk_cache_clock_t*} cache 缓存对象。
  * @param {TK_CACHE_CLOCK_KEY_T} key 键。
- * @param {TK_CACHE_CLOCK_DATA_T*} data 返回的数据。
+ * @param {TK_CACHE_CLOCK_VALUE_T*} value 返回的值。
  *
  * @return {ret_t} 返回RET_OK表示命中，RET_NOT_FOUND表示没有。
  */
 inline static ret_t tk_cache_clock_get(tk_cache_clock_t* cache, TK_CACHE_CLOCK_KEY_T key,
-                                       TK_CACHE_CLOCK_DATA_T* data) {
+                                       TK_CACHE_CLOCK_VALUE_T* value) {
   size_t index = 0;
   tk_raw_hash_table_entry_t* entry = NULL;
-  return_value_if_fail(cache != NULL && cache->table.buckets != NULL && data != NULL,
+  return_value_if_fail(cache != NULL && cache->table.buckets != NULL && value != NULL,
                        RET_BAD_PARAMS);
 
   index = tk_raw_hash_table_bucket_index(&(cache->table), key);
@@ -359,7 +359,7 @@ inline static ret_t tk_cache_clock_get(tk_cache_clock_t* cache, TK_CACHE_CLOCK_K
   }
 
   tk_cache_clock_touch_index(cache, index);
-  *data = entry->value;
+  *value = entry->value;
 
   return RET_OK;
 }
@@ -371,12 +371,12 @@ inline static ret_t tk_cache_clock_get(tk_cache_clock_t* cache, TK_CACHE_CLOCK_K
  *
  * @param {tk_cache_clock_t*} cache 缓存对象。
  * @param {TK_CACHE_CLOCK_KEY_T} key 键。
- * @param {TK_CACHE_CLOCK_DATA_T} data 数据。
+ * @param {TK_CACHE_CLOCK_VALUE_T} value 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 inline static ret_t tk_cache_clock_put(tk_cache_clock_t* cache, TK_CACHE_CLOCK_KEY_T key,
-                                       TK_CACHE_CLOCK_DATA_T data) {
+                                       TK_CACHE_CLOCK_VALUE_T value) {
   size_t index = 0;
   ret_t ret = RET_OK;
   tk_raw_hash_table_entry_t* entry = NULL;
@@ -387,7 +387,7 @@ inline static ret_t tk_cache_clock_put(tk_cache_clock_t* cache, TK_CACHE_CLOCK_K
   entry = tk_raw_hash_table_bucket_find(&(cache->table), index, key);
   if (entry != NULL) {
     /* 键已存在：换键和值(传回同一个不会销毁它)，再标记为访问过 */
-    tk_raw_hash_table_bucket_modify(&(cache->table), entry, key, data);
+    tk_raw_hash_table_bucket_modify(&(cache->table), entry, key, value);
     tk_cache_clock_touch_index(cache, index);
     return RET_OK;
   }
@@ -399,7 +399,7 @@ inline static ret_t tk_cache_clock_put(tk_cache_clock_t* cache, TK_CACHE_CLOCK_K
   }
 
   /* 桶下标在淘汰前后都不变，而且上面刚确认键不在桶里，直接加入，省掉add里的重复查找 */
-  ret = tk_raw_hash_table_bucket_add(&(cache->table), index, key, data);
+  ret = tk_raw_hash_table_bucket_add(&(cache->table), index, key, value);
   return_value_if_fail(ret == RET_OK, ret);
 
   tk_cache_clock_touch_index(cache, index);
