@@ -11,15 +11,21 @@ typedef struct _cache_clock_test_info_t {
 
 static size_t s_destroy_count = 0;
 
+/* 数据被淘汰/删除/替换时计数，实现在include之后 */
+static ret_t cache_clock_test_data_destroy(cache_clock_test_info_t data);
+
 #define TK_CACHE_CLOCK_KEY_T const char*
-#define TK_CACHE_CLOCK_KEY_HASH(key) named_value_hash_get_hash_from_str(key)
-#define TK_CACHE_CLOCK_KEY_COMPARE(entry_key, key) tk_strcmp(entry_key, key)
+#define TK_CACHE_CLOCK_KEY_HASH(key, ctx) named_value_hash_get_hash_from_str(key)
+#define TK_CACHE_CLOCK_KEY_COMPARE(entry_key, key, ctx) tk_strcmp(entry_key, key)
 #define TK_CACHE_CLOCK_DATA_T cache_clock_test_info_t
 /**
  * 结构体不支持==，要自己定义"是不是同一个对象"。
  * 故意只比a：b可以变而不触发销毁，用来验证"判成同一个对象也要把新数据写进去"。
  */
-#define TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT(entry_data, data) (((entry_data).a == (data).a) ? 1 : 0)
+#define TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT(entry_data, data, ctx) \
+  (((entry_data).a == (data).a) ? 1 : 0)
+#define TK_CACHE_CLOCK_DATA_DESTROY(entry_data, ctx) \
+  ((void)(ctx), cache_clock_test_data_destroy(entry_data))
 
 #include "tkc/cache_clock.h"
 #include "gtest/gtest.h"
@@ -114,7 +120,7 @@ TEST(CacheClock, basic) {
   tk_cache_clock_t cache;
 
   s_destroy_count = 0;
-  ASSERT_EQ(tk_cache_clock_init(&cache, 3, cache_clock_test_data_destroy), RET_OK);
+  ASSERT_EQ(tk_cache_clock_init(&cache, 3, NULL), RET_OK);
   ASSERT_EQ(cache.table.size, 0u);
   ASSERT_EQ(cache.table.capacity, 3u);
   ASSERT_TRUE(cache.flags != NULL);
@@ -143,7 +149,7 @@ TEST(CacheClock, evict) {
   tk_cache_clock_t cache;
 
   s_destroy_count = 0;
-  ASSERT_EQ(tk_cache_clock_init(&cache, 1, cache_clock_test_data_destroy), RET_OK);
+  ASSERT_EQ(tk_cache_clock_init(&cache, 1, NULL), RET_OK);
 
   /* 容量1：每次put都淘汰上一个 */
   ASSERT_EQ(tk_cache_clock_put(&cache, "a", cache_clock_test_info(10, 0)), RET_OK);
@@ -159,7 +165,7 @@ TEST(CacheClock, evict) {
 
   /* 长时间反复淘汰：淘汰把桶清空时立即整块回收，churn之后不会留下空桶 */
   s_destroy_count = 0;
-  ASSERT_EQ(tk_cache_clock_init(&cache, 4, cache_clock_test_data_destroy), RET_OK);
+  ASSERT_EQ(tk_cache_clock_init(&cache, 4, NULL), RET_OK);
   buckets = TK_RAW_HASH_TABLE_BUCKET_COUNT(&(cache.table));
 
   for (i = 0; i < CACHE_CLOCK_TEST_KEY_MAX; i++) {
@@ -191,7 +197,7 @@ TEST(CacheClock, update) {
   tk_cache_clock_t cache;
 
   s_destroy_count = 0;
-  ASSERT_EQ(tk_cache_clock_init(&cache, 3, cache_clock_test_data_destroy), RET_OK);
+  ASSERT_EQ(tk_cache_clock_init(&cache, 3, NULL), RET_OK);
 
   info = cache_clock_test_info(1, 2);
   ASSERT_EQ(tk_cache_clock_put(&cache, "a", info), RET_OK);
@@ -235,7 +241,7 @@ TEST(CacheClock, remove_clear) {
   tk_cache_clock_t cache;
 
   s_destroy_count = 0;
-  ASSERT_EQ(tk_cache_clock_init(&cache, 10, cache_clock_test_data_destroy), RET_OK);
+  ASSERT_EQ(tk_cache_clock_init(&cache, 10, NULL), RET_OK);
 
   ASSERT_EQ(tk_cache_clock_put(&cache, "a", cache_clock_test_info(1, 0)), RET_OK);
   ASSERT_EQ(tk_cache_clock_put(&cache, "b", cache_clock_test_info(2, 0)), RET_OK);
@@ -269,7 +275,7 @@ TEST(CacheClock, collide_bucket) {
   tk_cache_clock_t cache;
 
   s_destroy_count = 0;
-  ASSERT_EQ(tk_cache_clock_init(&cache, 2, cache_clock_test_data_destroy), RET_OK);
+  ASSERT_EQ(tk_cache_clock_init(&cache, 2, NULL), RET_OK);
 
   /* 找两个落在同一个桶(桶0)的键，再找一个落在别的桶(桶1)的键 */
   first = cache_clock_test_key_in_bucket(&cache, 0, NULL, NULL);
@@ -301,7 +307,7 @@ TEST(CacheClock, evict_many) {
   tk_cache_clock_t cache;
 
   s_destroy_count = 0;
-  ASSERT_EQ(tk_cache_clock_init(&cache, 100, cache_clock_test_data_destroy), RET_OK);
+  ASSERT_EQ(tk_cache_clock_init(&cache, 100, NULL), RET_OK);
 
   /* 放1000个：size不超过容量，淘汰次数=1000-100 */
   for (i = 0; i < CACHE_CLOCK_TEST_KEY_MAX; i++) {
@@ -328,7 +334,7 @@ TEST(CacheClock, shrink) {
   tk_cache_clock_t cache;
 
   s_destroy_count = 0;
-  ASSERT_EQ(tk_cache_clock_init(&cache, 10, cache_clock_test_data_destroy), RET_OK);
+  ASSERT_EQ(tk_cache_clock_init(&cache, 10, NULL), RET_OK);
 
   for (i = 0; i < 10; i++) {
     const char* key = cache_clock_test_key(i);
@@ -363,7 +369,7 @@ TEST(CacheClock, shrink_reclaim_buckets) {
   size_t buckets = 0;
   tk_cache_clock_t cache;
 
-  ASSERT_EQ(tk_cache_clock_init(&cache, 20, cache_clock_test_data_destroy), RET_OK);
+  ASSERT_EQ(tk_cache_clock_init(&cache, 20, NULL), RET_OK);
   buckets = TK_RAW_HASH_TABLE_BUCKET_COUNT(&(cache.table));
 
   /* 反复插入/淘汰：桶内会留下闲置槽位，空桶也不会被回收 */
@@ -430,7 +436,7 @@ TEST(CacheClock, invalid_usage) {
   ASSERT_NE(tk_cache_clock_deinit(NULL), RET_OK);
 
   /* init之后是空缓存：clear/remove/get/shrink 都安全 */
-  ASSERT_EQ(tk_cache_clock_init(&cache, 2, cache_clock_test_data_destroy), RET_OK);
+  ASSERT_EQ(tk_cache_clock_init(&cache, 2, NULL), RET_OK);
   ASSERT_EQ(tk_cache_clock_clear(&cache), RET_OK);
   ASSERT_EQ(tk_cache_clock_remove(&cache, "a"), RET_NOT_FOUND);
   ASSERT_EQ(tk_cache_clock_get(&cache, "a", &out), RET_NOT_FOUND);

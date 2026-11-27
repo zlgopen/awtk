@@ -782,9 +782,9 @@ TEST(RawHashTable, value_is_same_object) {
   void* b = (void*)(uintptr_t)0x2000;
 
   /* 默认按值(指针)比较：相同返回真，否则返回假。 */
-  ASSERT_TRUE(TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(a, a));
+  ASSERT_TRUE(TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(a, a, NULL));
   /* NULL在C++里是0，要和指针比较得先转成void*，否则g++报comparison between pointer and integer */
-  ASSERT_TRUE(TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT((void*)NULL, (void*)NULL));
-  ASSERT_FALSE(TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(a, b));
-  ASSERT_FALSE(TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(a, (void*)NULL));
+  ASSERT_TRUE(TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT((void*)NULL, (void*)NULL, NULL));
+  ASSERT_FALSE(TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(a, b, NULL));
+  ASSERT_FALSE(TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(a, (void*)NULL, NULL));
 }

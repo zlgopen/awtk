@@ -39,6 +39,11 @@ BEGIN_C_DECLS
 #define TK_RAW_HASH_TABLE_ENTRY_VALUE_T void*
 #endif /*TK_RAW_HASH_TABLE_ENTRY_VALUE_T*/
 
+/* 上下文的类型。 */
+#ifndef TK_RAW_HASH_TABLE_CTX_T
+#define TK_RAW_HASH_TABLE_CTX_T void*
+#endif /*TK_RAW_HASH_TABLE_CTX_T*/
+
 /**
  * @class tk_raw_hash_table_entry_t
  * @annotation ["private"]
@@ -63,12 +68,12 @@ typedef struct _tk_raw_hash_table_entry_t {
 
 /* 值是不是表里存的同一个对象，默认用==；不支持==的值(比如结构体)在这里定义。 */
 #ifndef TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT
-#define TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(entry_value, value) ((entry_value) == (value))
+#define TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(entry_value, value, ctx) ((entry_value) == (value))
 #endif /*TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT*/
 
 /* 键是不是表里存的同一个对象。默认==，只对指针键有意义(比地址，不比内容)；标量键用不上，结构体键在这里定义。 */
 #ifndef TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT
-#define TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT(entry_key, key) ((entry_key) == (key))
+#define TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT(entry_key, key, ctx) ((entry_key) == (key))
 #endif /*TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT*/
 
 /**
@@ -76,7 +81,7 @@ typedef struct _tk_raw_hash_table_entry_t {
  * 默认按大小比较，键不支持>和<时在这里定义，比如用strcmp。
  */
 #ifndef TK_RAW_HASH_TABLE_KEY_COMPARE
-#define TK_RAW_HASH_TABLE_KEY_COMPARE(entry_key, key) \
+#define TK_RAW_HASH_TABLE_KEY_COMPARE(entry_key, key, ctx) \
   ((entry_key) > (key) ? 1 : ((entry_key) < (key) ? -1 : 0))
 #endif /*TK_RAW_HASH_TABLE_KEY_COMPARE*/
 
@@ -88,7 +93,7 @@ typedef struct _tk_raw_hash_table_entry_t {
  * 字符串键可以用named_value_hash_get_hash_from_str。
  */
 #ifndef TK_RAW_HASH_TABLE_KEY_HASH
-#define TK_RAW_HASH_TABLE_KEY_HASH(key) ((uint64_t)(size_t)(key))
+#define TK_RAW_HASH_TABLE_KEY_HASH(key, ctx) ((uint64_t)(size_t)(key))
 #endif /*TK_RAW_HASH_TABLE_KEY_HASH*/
 
 /**
@@ -97,13 +102,21 @@ typedef struct _tk_raw_hash_table_entry_t {
  * modify/set把键换成新键时，被顶替的旧键也在这里销毁。
  */
 #ifndef TK_RAW_HASH_TABLE_KEY_DESTROY
-#define TK_RAW_HASH_TABLE_KEY_DESTROY(key) \
-  do {                                     \
-    (void)(key);                           \
+#define TK_RAW_HASH_TABLE_KEY_DESTROY(key, ctx) \
+  do {                                          \
   } while (0)
 #endif /*TK_RAW_HASH_TABLE_KEY_DESTROY*/
 
-typedef ret_t (*tk_raw_hash_table_value_destroy_t)(TK_RAW_HASH_TABLE_ENTRY_VALUE_T value);
+/**
+ * 值的销毁函数，默认什么也不做。
+ * 元素被删除(remove/clear/deinit/foreach返回RET_REMOVE)时调用，
+ * modify/set把值换成新值时，被顶替的旧值也在这里销毁。
+ */
+#ifndef TK_RAW_HASH_TABLE_VALUE_DESTROY
+#define TK_RAW_HASH_TABLE_VALUE_DESTROY(value, ctx) \
+  do {                                              \
+  } while (0)
+#endif /*TK_RAW_HASH_TABLE_VALUE_DESTROY*/
 
 /**
  * 桶：存放元素的raw_darray。
@@ -176,18 +189,18 @@ typedef struct _tk_raw_hash_table_t {
   size_t capacity;
 
   /**
-   * @property {tk_raw_hash_table_value_destroy_t} value_destroy
-   * @annotation ["readable"]
-   * 值的销毁函数，可以为NULL。
-   */
-  tk_raw_hash_table_value_destroy_t value_destroy;
-
-  /**
    * @property {tk_raw_hash_table_capacity_policy_t} capacity_policy
    * @annotation ["readable"]
    * 元素个数将要超过capacity时的处理策略。
    */
   tk_raw_hash_table_capacity_policy_t capacity_policy;
+
+  /**
+   * @property {TK_RAW_HASH_TABLE_CTX_T} ctx
+   * @annotation ["readable"]
+   * 表的上下文，传给TK_RAW_HASH_TABLE_*系列宏(比较/hash/销毁)。
+   */
+  TK_RAW_HASH_TABLE_CTX_T ctx;
 } tk_raw_hash_table_t;
 
 /**
@@ -204,6 +217,13 @@ typedef struct _tk_raw_hash_table_t {
 
 /********************************************************************************************/
 /* 文件内部使用 */
+
+inline static size_t tk_raw_hash_table_bucket_index(tk_raw_hash_table_t* table,
+                                                    TK_RAW_HASH_TABLE_ENTRY_KEY_T key);
+inline static ret_t tk_raw_hash_table_bucket_add(tk_raw_hash_table_t* table, size_t index,
+                                                 TK_RAW_HASH_TABLE_ENTRY_KEY_T key,
+                                                 TK_RAW_HASH_TABLE_ENTRY_VALUE_T value);
+inline static ret_t tk_raw_hash_table_reserve(tk_raw_hash_table_t* table, size_t capacity);
 
 /**
  * @method tk_raw_hash_table_mix
@@ -252,31 +272,6 @@ inline static size_t tk_raw_hash_table_bucket_count_for(size_t capacity) {
 
   return capacity + half_cap;
 }
-
-/**
- * @method tk_raw_hash_table_destroy_value
- * @annotation ["private"]
- * @export none
- * 按table的配置销毁一个值，没有配置销毁函数时什么也不做。
- * @param {tk_raw_hash_table_t*} table 哈希表。
- * @param {TK_RAW_HASH_TABLE_ENTRY_VALUE_T} value 值。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则返回销毁函数的结果。
- */
-inline static ret_t tk_raw_hash_table_destroy_value(tk_raw_hash_table_t* table,
-                                                    TK_RAW_HASH_TABLE_ENTRY_VALUE_T value) {
-  if (table->value_destroy != NULL) {
-    return table->value_destroy(value);
-  }
-  return RET_OK;
-}
-
-inline static size_t tk_raw_hash_table_bucket_index(tk_raw_hash_table_t* table,
-                                                    TK_RAW_HASH_TABLE_ENTRY_KEY_T key);
-inline static ret_t tk_raw_hash_table_bucket_add(tk_raw_hash_table_t* table, size_t index,
-                                                 TK_RAW_HASH_TABLE_ENTRY_KEY_T key,
-                                                 TK_RAW_HASH_TABLE_ENTRY_VALUE_T value);
-inline static ret_t tk_raw_hash_table_reserve(tk_raw_hash_table_t* table, size_t capacity);
 
 /**
  * @method tk_raw_hash_table_rehash
@@ -396,7 +391,7 @@ inline static ret_t tk_raw_hash_table_check_capacity(tk_raw_hash_table_t* table,
  */
 inline static size_t tk_raw_hash_table_bucket_index(tk_raw_hash_table_t* table,
                                                     TK_RAW_HASH_TABLE_ENTRY_KEY_T key) {
-  uint32_t h = (uint32_t)tk_raw_hash_table_mix(TK_RAW_HASH_TABLE_KEY_HASH(key));
+  uint32_t h = (uint32_t)tk_raw_hash_table_mix(TK_RAW_HASH_TABLE_KEY_HASH(key, table->ctx));
   uint32_t n = (uint32_t)TK_RAW_HASH_TABLE_BUCKET_COUNT(table);
 
   return (size_t)(((uint64_t)h * n) >> 32);
@@ -422,7 +417,7 @@ inline static tk_raw_hash_table_entry_t* tk_raw_hash_table_bucket_find(
   bucket = table->buckets[index];
 
   for (i = 0, n = TK_RAW_DARRAY_SIZE(bucket); i < n; i++) {
-    if (0 == TK_RAW_HASH_TABLE_KEY_COMPARE(bucket[i].key, key)) {
+    if (0 == TK_RAW_HASH_TABLE_KEY_COMPARE(bucket[i].key, key, table->ctx)) {
       return &bucket[i];
     }
   }
@@ -482,13 +477,13 @@ inline static ret_t tk_raw_hash_table_bucket_modify(tk_raw_hash_table_t* table,
   return_value_if_fail(table != NULL && table->buckets != NULL && entry != NULL, RET_BAD_PARAMS);
 
   tk_swap(entry->key, key, TK_RAW_HASH_TABLE_ENTRY_KEY_T);
-  if (!TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT(entry->key, key)) {
-    TK_RAW_HASH_TABLE_KEY_DESTROY(key);
+  if (!TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT(entry->key, key, table->ctx)) {
+    TK_RAW_HASH_TABLE_KEY_DESTROY(key, table->ctx);
   }
 
   tk_swap(entry->value, value, TK_RAW_HASH_TABLE_ENTRY_VALUE_T);
-  if (!TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(entry->value, value)) {
-    tk_raw_hash_table_destroy_value(table, value);
+  if (!TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT(entry->value, value, table->ctx)) {
+    TK_RAW_HASH_TABLE_VALUE_DESTROY(value, table->ctx);
   }
 
   return RET_OK;
@@ -517,8 +512,8 @@ inline static ret_t tk_raw_hash_table_bucket_remove(tk_raw_hash_table_t* table, 
   return_value_if_fail(RET_OK == TK_RAW_DARRAY_REMOVE(table->buckets[index], pos), RET_FAIL);
 
   table->size--;
-  TK_RAW_HASH_TABLE_KEY_DESTROY(entry.key);
-  tk_raw_hash_table_destroy_value(table, entry.value);
+  TK_RAW_HASH_TABLE_KEY_DESTROY(entry.key, table->ctx);
+  TK_RAW_HASH_TABLE_VALUE_DESTROY(entry.value, table->ctx);
 
   return RET_OK;
 }
@@ -542,8 +537,8 @@ inline static void tk_raw_hash_table_bucket_clear(tk_raw_hash_table_t* table, si
 
   for (i = 0, n = TK_RAW_DARRAY_SIZE(table->buckets[index]); i < n; i++) {
     table->size--;
-    TK_RAW_HASH_TABLE_KEY_DESTROY(table->buckets[index][i].key);
-    tk_raw_hash_table_destroy_value(table, table->buckets[index][i].value);
+    TK_RAW_HASH_TABLE_KEY_DESTROY(table->buckets[index][i].key, table->ctx);
+    TK_RAW_HASH_TABLE_VALUE_DESTROY(table->buckets[index][i].value, table->ctx);
   }
 
   TK_RAW_DARRAY_DESTROY(table->buckets[index]);
@@ -581,12 +576,12 @@ inline static ret_t tk_raw_hash_table_bucket_shrink(tk_raw_hash_table_t* table, 
  *
  * @param {tk_raw_hash_table_t*} table 哈希表。
  * @param {size_t} capacity 期望容量(元素个数)，必须大于0。
- * @param {tk_raw_hash_table_value_destroy_t} value_destroy 值的销毁函数，可以为NULL。
+ * @param {TK_RAW_HASH_TABLE_CTX_T} ctx 表的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 inline static ret_t tk_raw_hash_table_init(tk_raw_hash_table_t* table, size_t capacity,
-                                           tk_raw_hash_table_value_destroy_t value_destroy) {
+                                           TK_RAW_HASH_TABLE_CTX_T ctx) {
   size_t i = 0, count = 0;
   return_value_if_fail(table != NULL, RET_BAD_PARAMS);
 
@@ -604,7 +599,7 @@ inline static ret_t tk_raw_hash_table_init(tk_raw_hash_table_t* table, size_t ca
     table->buckets[i] = NULL;
   }
   table->capacity = capacity;
-  table->value_destroy = value_destroy;
+  table->ctx = ctx;
 
   return RET_OK;
 error:

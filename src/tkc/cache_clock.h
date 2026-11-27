@@ -35,6 +35,13 @@ BEGIN_C_DECLS
 /********************************************************************************************/
 /* 可配置的宏和类型：在包含本头文件之前定义，不定义时继承raw_hash_table的配置 */
 
+#ifdef TK_CACHE_CLOCK_CTX_T
+#undef TK_RAW_HASH_TABLE_CTX_T
+#define TK_RAW_HASH_TABLE_CTX_T TK_CACHE_CLOCK_CTX_T
+#else
+#define TK_CACHE_CLOCK_CTX_T TK_RAW_HASH_TABLE_CTX_T
+#endif /*TK_CACHE_CLOCK_CTX_T*/
+
 #ifdef TK_CACHE_CLOCK_DATA_T
 #undef TK_RAW_HASH_TABLE_ENTRY_VALUE_T
 #define TK_RAW_HASH_TABLE_ENTRY_VALUE_T TK_CACHE_CLOCK_DATA_T
@@ -48,6 +55,13 @@ BEGIN_C_DECLS
 #else
 #define TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT TK_RAW_HASH_TABLE_VALUE_IS_SAME_OBJECT
 #endif /*TK_CACHE_CLOCK_DATA_IS_SAME_OBJECT*/
+
+#ifdef TK_CACHE_CLOCK_DATA_DESTROY
+#undef TK_RAW_HASH_TABLE_VALUE_DESTROY
+#define TK_RAW_HASH_TABLE_VALUE_DESTROY TK_CACHE_CLOCK_DATA_DESTROY
+#else
+#define TK_CACHE_CLOCK_DATA_DESTROY TK_RAW_HASH_TABLE_VALUE_DESTROY
+#endif /*TK_CACHE_CLOCK_DATA_DESTROY*/
 
 #ifdef TK_CACHE_CLOCK_KEY_T
 #undef TK_RAW_HASH_TABLE_ENTRY_KEY_T
@@ -103,9 +117,6 @@ typedef enum _tk_cache_clock_bit_t {
  * 直接拿哈希表的桶当槽位(键和值都只在桶里存一份)，外加一个标志位图记录每个桶是否被访问过。
  * hand是时钟指针：淘汰时从hand扫桶，空桶跳过，"被访问过"的清0并跳过(给一次机会)，
  * 否则从那个桶里删掉最早插入的元素。
- *
- * 键只保存不拷贝，指针键的生命周期由调用方保证；数据在淘汰/删除/替换时由传入的
- * value_destroy销毁，销毁回调里不要再操作这个缓存。
  *
  * 示例：
  *
@@ -299,19 +310,19 @@ inline static ret_t tk_cache_clock_deinit(tk_cache_clock_t* cache) {
  * 初始化缓存。
  * @param {tk_cache_clock_t*} cache 缓存对象。
  * @param {size_t} capacity 最多缓存多少个元素，必须大于0。
- * @param {tk_raw_hash_table_value_destroy_t} data_destroy 数据的销毁函数，可以为NULL。
+ * @param {TK_CACHE_CLOCK_CTX_T} ctx 传给表里可配置宏的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 inline static ret_t tk_cache_clock_init(tk_cache_clock_t* cache, size_t capacity,
-                                        tk_raw_hash_table_value_destroy_t data_destroy) {
+                                        TK_CACHE_CLOCK_CTX_T ctx) {
   ret_t ret = RET_OK;
   size_t n = 0;
   return_value_if_fail(cache != NULL && capacity > 0, RET_BAD_PARAMS);
 
   memset(cache, 0x00, sizeof(tk_cache_clock_t));
 
-  ret = tk_raw_hash_table_init(&(cache->table), capacity, data_destroy);
+  ret = tk_raw_hash_table_init(&(cache->table), capacity, ctx);
   return_value_if_fail(RET_OK == ret, ret);
 
   n = TK_RAW_HASH_TABLE_BUCKET_COUNT(&(cache->table));

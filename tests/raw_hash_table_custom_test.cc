@@ -12,15 +12,22 @@ static void raw_hash_table_custom_note_destroy(void);
 
 #define TK_RAW_HASH_TABLE_ENTRY_KEY_T const char*
 #define TK_RAW_HASH_TABLE_ENTRY_VALUE_T int32_t*
-#define TK_RAW_HASH_TABLE_KEY_HASH(key) named_value_hash_get_hash_from_str(key)
-#define TK_RAW_HASH_TABLE_KEY_COMPARE(entry_key, key) tk_strcmp(entry_key, key)
+#define TK_RAW_HASH_TABLE_KEY_HASH(key, ctx) named_value_hash_get_hash_from_str(key)
+#define TK_RAW_HASH_TABLE_KEY_COMPARE(entry_key, key, ctx) tk_strcmp(entry_key, key)
 
 /* 键是tk_strdup加进来的，元素被删除时在这里释放 */
-#define TK_RAW_HASH_TABLE_KEY_DESTROY(key) \
-  do {                                     \
-    s_key_destroy_count++;                 \
-    raw_hash_table_custom_note_destroy();  \
-    TKMEM_FREE(key);                       \
+#define TK_RAW_HASH_TABLE_KEY_DESTROY(key, ctx) \
+  do {                                          \
+    s_key_destroy_count++;                      \
+    raw_hash_table_custom_note_destroy();       \
+    TKMEM_FREE(key);                            \
+  } while (0)
+
+/* 值是TKMEM_ALLOC加进来的，元素被删除或者值被替换时在这里释放 */
+#define TK_RAW_HASH_TABLE_VALUE_DESTROY(value, ctx) \
+  do {                                              \
+    s_value_destroy_count++;                        \
+    TKMEM_FREE(value);                              \
   } while (0)
 
 #include "tkc/raw_hash_table.h"
@@ -28,14 +35,6 @@ static void raw_hash_table_custom_note_destroy(void);
 
 static size_t s_size_in_destroy = 0;
 static tk_raw_hash_table_t* s_destroy_table = NULL;
-
-/* 元素被删除或者值被替换时释放值 */
-static ret_t raw_hash_table_custom_value_destroy(int32_t* value) {
-  s_value_destroy_count++;
-  TKMEM_FREE(value);
-
-  return RET_OK;
-}
 
 static void raw_hash_table_custom_note_destroy(void) {
   if (s_destroy_table != NULL) {
@@ -60,13 +59,14 @@ static ret_t raw_hash_table_custom_visit_remove_all(void* ctx, const void* data)
   return RET_REMOVE;
 }
 
-/* 默认按地址判"同一个对象"：同一个指针算，内容相同的克隆不算 */
+/* 默认按地址判"同一个对象"：同一个指针算，内容相同的另一份指针不算 */
 TEST(RawHashTable, key_is_same_object) {
   char* key = tk_strdup("hello");
+  const char* same_text = "hello";
 
   ASSERT_TRUE(key != NULL);
-  ASSERT_TRUE(TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT(key, key));
-  ASSERT_FALSE(TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT(key, "hello"));
+  ASSERT_TRUE(TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT(key, key, NULL));
+  ASSERT_FALSE(TK_RAW_HASH_TABLE_KEY_IS_SAME_OBJECT(key, same_text, NULL));
 
   TKMEM_FREE(key);
 }
@@ -77,7 +77,7 @@ TEST(RawHashTable, str_key) {
   tk_raw_hash_table_entry_t* entry = NULL;
 
   ASSERT_TRUE(hello != NULL);
-  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, raw_hash_table_custom_value_destroy), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
   s_key_destroy_count = 0;
   s_value_destroy_count = 0;
 
@@ -176,7 +176,7 @@ TEST(RawHashTable, write_fail_keeps_ownership) {
 
   s_key_destroy_count = 0;
   s_value_destroy_count = 0;
-  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, raw_hash_table_custom_value_destroy), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
 
   /* 键不存在，modify失败；表为NULL，set失败 */
   ASSERT_EQ(tk_raw_hash_table_modify(&table, key, v), RET_NOT_FOUND);
@@ -234,7 +234,7 @@ TEST(RawHashTable, str_hash) {
             named_value_hash_get_hash_from_str("xxx"));
 
   /* 用表自己的桶下标看分布：100个键要铺开，不能挤在少数几个桶里 */
-  ASSERT_EQ(tk_raw_hash_table_init(&table, 100, raw_hash_table_custom_value_destroy), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_init(&table, 100, NULL), RET_OK);
   for (i = 0; i < 100; i++) {
     char key[16];
 
@@ -265,7 +265,7 @@ TEST(RawHashTable, str_foreach_remove) {
   static const char* keys[] = {"k0", "k1", "k2", "k3", "k4", "k5"};
   tk_raw_hash_table_t table;
 
-  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, raw_hash_table_custom_value_destroy), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
   s_key_destroy_count = 0;
   s_value_destroy_count = 0;
 
@@ -293,7 +293,7 @@ TEST(RawHashTable, str_foreach_remove) {
 /* rehash只搬家：不会调用自定义的键/值销毁函数，搬完还能按内容查到。 */
 TEST(RawHashTable, reserve_rehash) {
   tk_raw_hash_table_t table;
-  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, raw_hash_table_custom_value_destroy), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
   s_key_destroy_count = 0;
   s_value_destroy_count = 0;
 
@@ -315,7 +315,7 @@ TEST(RawHashTable, reserve_rehash) {
 TEST(RawHashTable, remove_order) {
   tk_raw_hash_table_t table;
 
-  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, raw_hash_table_custom_value_destroy), RET_OK);
+  ASSERT_EQ(tk_raw_hash_table_init(&table, 10, NULL), RET_OK);
   ASSERT_EQ(tk_raw_hash_table_add(&table, tk_strdup("a"), raw_hash_table_custom_value(1)), RET_OK);
   ASSERT_EQ(tk_raw_hash_table_add(&table, tk_strdup("b"), raw_hash_table_custom_value(2)), RET_OK);
 
