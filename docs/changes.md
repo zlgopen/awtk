@@ -4,6 +4,7 @@
   * fix raw_hash_table key same-object test string compare warning
   * raw_hash_table value_destroy to ctx(感谢兆坤提供补丁)
   * 修复 nanovg 和 nanovg_plus 在 line_join 为 round 和 bevel 时部分绘制异常的问题(感谢泽武提供补丁)
+  * 修复 nanovg fill_text 对齐没生效的问题(感谢泽武提供补丁)
 
 2026/11/26
   * 修复 MSVC wWinMain 在参数个数达到 MAX_ARGV-1 时会崩溃的问题(感谢兆坤提供补丁)
