@@ -64,7 +64,7 @@ typedef enum _nvgp_line_cap_t {
 
 typedef enum _nvgp_line_join_t {
   NVGP_MITER = 0,
-  NVGP_BEVEL,
+  NVGP_BEVEL = 2,
 } nvgp_line_join_t;
 
 typedef enum _nvgp_texture_t {

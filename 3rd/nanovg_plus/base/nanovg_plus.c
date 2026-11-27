@@ -1971,7 +1971,7 @@ static void nvgp_flatten_paths(nvgp_context_t* ctx, nvgp_fill_mode_t fill_mode) 
   }
 }
 
-static void nvgp_calculate_joins(nvgp_context_t* ctx, float w, nvgp_line_join_t lineJoin, float miterLimit) {
+static void nvgp_calculate_joins(nvgp_context_t* ctx, float w, nvgp_line_join_t lineJoin, float miterLimit, int is_fill) {
   int32_t i, j;
   float iw = 0.0f;
   nvgp_path_cache_t* cache = &ctx->cache;
@@ -2018,7 +2018,7 @@ static void nvgp_calculate_joins(nvgp_context_t* ctx, float w, nvgp_line_join_t 
       if (cross > 0.0f) {
         nleft++;
         p1->flags |= NVGP_PT_LEFT;
-      } else if (cross < 0.0f) {
+      } else if (is_fill && cross < 0.0f) {
         nright++;
         p1->flags |= NVGP_PT_RIGHT;
       }
@@ -2364,7 +2364,7 @@ static nvgp_error_t nvgp_expand_fill(nvgp_context_t* ctx, float w, nvgp_line_joi
   nvgp_fill_mode_t fill_mode = nvgp_get_state(ctx)->fill_mode;
   int32_t nspans = 0, span_cursor = 0;
 
-  nvgp_calculate_joins(ctx, w, lineJoin, miterLimit);
+  nvgp_calculate_joins(ctx, w, lineJoin, miterLimit, 1);
   if (fringe && cache->paths.size > 1) {
     nspans = nvgp_collect_fringe_spans(ctx);
   }
@@ -2633,7 +2633,7 @@ static nvgp_error_t nvgp_expand_stroke(nvgp_context_t* ctx, float w, float fring
     u1 = 0.5f;
   }
 
-  nvgp_calculate_joins(ctx, w, line_join, miter_limit);
+  nvgp_calculate_joins(ctx, w, line_join, miter_limit, 0);
 
   // Calculate max vertex usage.
   cverts = 0;

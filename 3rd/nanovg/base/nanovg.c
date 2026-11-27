@@ -1927,7 +1927,7 @@ static NVGvertex* nvg__roundCapEnd(NVGvertex* dst, NVGpoint* p,
 }
 
 
-static void nvg__calculateJoins(NVGcontext* ctx, float w, int lineJoin, float miterLimit)
+static void nvg__calculateJoins(NVGcontext* ctx, float w, int lineJoin, float miterLimit, int is_fill)
 {
 	NVGpathCache* cache = ctx->cache;
 	int i, j;
@@ -1973,7 +1973,7 @@ static void nvg__calculateJoins(NVGcontext* ctx, float w, int lineJoin, float mi
 			if (cross > 0.0f) {
 				nleft++;
 				p1->flags |= NVG_PT_LEFT;
-			} else if (cross < 0.0f) {
+			} else if (is_fill && cross < 0.0f) {
 				nright++;
 				p1->flags |= NVG_PT_RIGHT;
 			}
@@ -2019,7 +2019,7 @@ static int nvg__expandStroke(NVGcontext* ctx, float w, float fringe, int lineCap
 		u1 = 0.5f;
 	}
 
-	nvg__calculateJoins(ctx, w, lineJoin, miterLimit);
+	nvg__calculateJoins(ctx, w, lineJoin, miterLimit, 0);
 
 	// Calculate max vertex usage.
 	cverts = 0;
@@ -2316,7 +2316,7 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 	enum NVGFillMode fillMode = nvg__getState(ctx)->fillMode;
 	int nspans = 0, spanCursor = 0;
 
-	nvg__calculateJoins(ctx, w, lineJoin, miterLimit);
+	nvg__calculateJoins(ctx, w, lineJoin, miterLimit, 1);
 
 	if (fringe && cache->npaths > 1)
 		nspans = nvg__collectFringeSpans(ctx);
