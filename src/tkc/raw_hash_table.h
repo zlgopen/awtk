@@ -261,7 +261,7 @@ inline static uint64_t tk_raw_hash_table_mix(uint64_t hash) {
 inline static size_t tk_raw_hash_table_bucket_count_for(size_t capacity) {
   size_t half_cap = 0;
 
-  if (capacity == 0) {
+  if (0 == capacity) {
     return 0;
   }
 
@@ -391,8 +391,11 @@ inline static ret_t tk_raw_hash_table_check_capacity(tk_raw_hash_table_t* table,
  */
 inline static size_t tk_raw_hash_table_bucket_index(tk_raw_hash_table_t* table,
                                                     TK_RAW_HASH_TABLE_ENTRY_KEY_T key) {
-  uint32_t h = (uint32_t)tk_raw_hash_table_mix(TK_RAW_HASH_TABLE_KEY_HASH(key, table->ctx));
-  uint32_t n = (uint32_t)TK_RAW_HASH_TABLE_BUCKET_COUNT(table);
+  uint32_t h = 0, n = 0;
+  return_value_if_fail(table != NULL, 0);
+
+  h = (uint32_t)tk_raw_hash_table_mix(TK_RAW_HASH_TABLE_KEY_HASH(key, table->ctx));
+  n = (uint32_t)TK_RAW_HASH_TABLE_BUCKET_COUNT(table);
 
   return (size_t)(((uint64_t)h * n) >> 32);
 }
@@ -440,20 +443,18 @@ inline static ret_t tk_raw_hash_table_bucket_add(tk_raw_hash_table_t* table, siz
                                                  TK_RAW_HASH_TABLE_ENTRY_KEY_T key,
                                                  TK_RAW_HASH_TABLE_ENTRY_VALUE_T value) {
   tk_raw_hash_table_entry_t entry;
-  tk_raw_hash_table_bucket_t* p_bucket = NULL;
   return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
   return_value_if_fail(index < TK_RAW_HASH_TABLE_BUCKET_COUNT(table), RET_BAD_PARAMS);
 
   entry.key = key;
   entry.value = value;
-  p_bucket = table->buckets + index;
 
-  if (*p_bucket == NULL) {
-    *p_bucket = TK_RAW_DARRAY_CREATE(tk_raw_hash_table_entry_t, 1);
-    return_value_if_fail(*p_bucket != NULL, RET_OOM);
+  if (NULL == table->buckets[index]) {
+    table->buckets[index] = TK_RAW_DARRAY_CREATE(tk_raw_hash_table_entry_t, 1);
+    return_value_if_fail(table->buckets[index] != NULL, RET_OOM);
   }
 
-  return_value_if_fail(TK_RAW_DARRAY_PUSH(*p_bucket, entry) == RET_OK, RET_OOM);
+  return_value_if_fail(RET_OK == TK_RAW_DARRAY_PUSH(table->buckets[index], entry), RET_OOM);
   table->size++;
 
   return RET_OK;
@@ -524,15 +525,17 @@ inline static ret_t tk_raw_hash_table_bucket_remove(tk_raw_hash_table_t* table, 
  * 销毁第index个桶里的全部元素，并回收桶。
  * @param {tk_raw_hash_table_t*} table 哈希表。
  * @param {size_t} index 桶下标。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-inline static void tk_raw_hash_table_bucket_clear(tk_raw_hash_table_t* table, size_t index) {
+inline static ret_t tk_raw_hash_table_bucket_clear(tk_raw_hash_table_t* table, size_t index) {
   size_t i = 0, n = 0;
-  return_if_fail(table != NULL && table->buckets != NULL);
-  return_if_fail(index < TK_RAW_HASH_TABLE_BUCKET_COUNT(table));
+  return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(index < TK_RAW_HASH_TABLE_BUCKET_COUNT(table), RET_BAD_PARAMS);
 
   /* 空桶是正常情况。 */
-  if (table->buckets[index] == NULL) {
-    return;
+  if (NULL == table->buckets[index]) {
+    return RET_OK;
   }
 
   for (i = 0, n = TK_RAW_DARRAY_SIZE(table->buckets[index]); i < n; i++) {
@@ -542,6 +545,8 @@ inline static void tk_raw_hash_table_bucket_clear(tk_raw_hash_table_t* table, si
   }
 
   TK_RAW_DARRAY_DESTROY(table->buckets[index]);
+
+  return RET_OK;
 }
 
 /**
@@ -557,7 +562,7 @@ inline static ret_t tk_raw_hash_table_bucket_shrink(tk_raw_hash_table_t* table, 
   return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
   return_value_if_fail(index < TK_RAW_HASH_TABLE_BUCKET_COUNT(table), RET_BAD_PARAMS);
 
-  if (table->buckets[index] == NULL) {
+  if (NULL == table->buckets[index]) {
     return RET_OK;
   }
 
@@ -736,7 +741,7 @@ inline static ret_t tk_raw_hash_table_modify(tk_raw_hash_table_t* table,
   return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
 
   entry = tk_raw_hash_table_find(table, key);
-  if (entry == NULL) {
+  if (NULL == entry) {
     return RET_NOT_FOUND;
   }
 
@@ -760,7 +765,7 @@ inline static ret_t tk_raw_hash_table_set(tk_raw_hash_table_t* table,
   return_value_if_fail(table != NULL && table->buckets != NULL, RET_BAD_PARAMS);
 
   ret = tk_raw_hash_table_modify(table, key, value);
-  if (ret == RET_NOT_FOUND) {
+  if (RET_NOT_FOUND == ret) {
     ret = tk_raw_hash_table_add(table, key, value);
   }
 
@@ -784,7 +789,7 @@ inline static ret_t tk_raw_hash_table_remove(tk_raw_hash_table_t* table,
 
   index = tk_raw_hash_table_bucket_index(table, key);
   entry = tk_raw_hash_table_bucket_find(table, index, key);
-  if (entry == NULL) {
+  if (NULL == entry) {
     return RET_NOT_FOUND;
   }
 
@@ -813,7 +818,7 @@ inline static ret_t tk_raw_hash_table_foreach(tk_raw_hash_table_t* table, tk_vis
   size_t index = 0, n = 0;
   return_value_if_fail(table != NULL && table->buckets != NULL && visit != NULL, RET_BAD_PARAMS);
 
-  for (index = 0, n = TK_RAW_HASH_TABLE_BUCKET_COUNT(table); index < n && ret == RET_OK; index++) {
+  for (index = 0, n = TK_RAW_HASH_TABLE_BUCKET_COUNT(table); index < n && RET_OK == ret; index++) {
     size_t i = 0;
     while (i < TK_RAW_DARRAY_SIZE(table->buckets[index])) {
       ret = visit(ctx, &table->buckets[index][i]);

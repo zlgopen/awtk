@@ -177,10 +177,14 @@ inline static size_t tk_cache_clock_bit_pos(size_t index, tk_cache_clock_bit_t b
  * 把第index个桶标记为访问过(给二次机会)。
  * @param {tk_cache_clock_t*} cache 缓存对象。
  * @param {size_t} index 桶下标。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-inline static void tk_cache_clock_touch_index(tk_cache_clock_t* cache, size_t index) {
+inline static ret_t tk_cache_clock_touch_index(tk_cache_clock_t* cache, size_t index) {
+  return_value_if_fail(cache != NULL && cache->flags != NULL, RET_BAD_PARAMS);
   TK_BITSET_OP(TK_SET_BIT, cache->flags,
                tk_cache_clock_bit_pos(index, TK_CACHE_CLOCK_BIT_ACCESSED));
+  return RET_OK;
 }
 
 /**
@@ -210,16 +214,16 @@ inline static size_t tk_cache_clock_next_index(size_t index, size_t n) {
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 inline static ret_t tk_cache_clock_evict_bucket(tk_cache_clock_t* cache, size_t index) {
-  size_t n = TK_RAW_HASH_TABLE_BUCKET_COUNT(&(cache->table));
   ret_t ret = RET_OK;
+  return_value_if_fail(cache != NULL && cache->table.buckets != NULL, RET_BAD_PARAMS);
 
   /* 桶里是追加的，第0个才是最早插入的(更接近"最久未使用")。 */
   ret = tk_raw_hash_table_bucket_remove(&(cache->table), index, 0);
-  return_value_if_fail(ret == RET_OK, ret);
+  return_value_if_fail(RET_OK == ret, ret);
 
-  cache->hand = tk_cache_clock_next_index(index, n);
+  cache->hand = tk_cache_clock_next_index(index, TK_RAW_HASH_TABLE_BUCKET_COUNT(&(cache->table)));
 
-  if (TK_RAW_DARRAY_SIZE(cache->table.buckets[index]) == 0) {
+  if (0 == TK_RAW_DARRAY_SIZE(cache->table.buckets[index])) {
     tk_raw_hash_table_bucket_shrink(&(cache->table), index);
   }
 
@@ -237,15 +241,17 @@ inline static ret_t tk_cache_clock_evict_bucket(tk_cache_clock_t* cache, size_t 
  * @return {ret_t} 返回RET_OK表示成功，RET_NOT_FOUND表示没有可淘汰的元素。
  */
 inline static ret_t tk_cache_clock_evict(tk_cache_clock_t* cache) {
-  size_t i = 0, n = TK_RAW_HASH_TABLE_BUCKET_COUNT(&(cache->table));
-  size_t index = cache->hand;
+  size_t i = 0, index = 0, n = 0;
+  return_value_if_fail(cache != NULL && cache->table.buckets != NULL && cache->flags != NULL,
+                       RET_BAD_PARAMS);
 
   /* 最多扫两圈：第一圈清掉"访问过"位(给第二次机会)，第二圈必然能选中一个。 */
-  for (i = 0; i < n * 2; i++, index = tk_cache_clock_next_index(index, n)) {
+  for (i = 0, index = cache->hand, n = TK_RAW_HASH_TABLE_BUCKET_COUNT(&(cache->table)); i < n * 2;
+       i++, index = tk_cache_clock_next_index(index, n)) {
     size_t pos = 0;
 
     /* 空桶跳过 */
-    if (TK_RAW_DARRAY_SIZE(cache->table.buckets[index]) == 0) {
+    if (0 == TK_RAW_DARRAY_SIZE(cache->table.buckets[index])) {
       continue;
     }
     /* 访问过的桶给一次机会 */
@@ -272,13 +278,12 @@ inline static ret_t tk_cache_clock_evict(tk_cache_clock_t* cache) {
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 inline static ret_t tk_cache_clock_clear(tk_cache_clock_t* cache) {
-  return_value_if_fail(cache != NULL && cache->table.buckets != NULL, RET_BAD_PARAMS);
+  size_t bits_size = 0;
+  return_value_if_fail(cache != NULL && cache->flags != NULL, RET_BAD_PARAMS);
 
-  if (cache->flags != NULL) {
-    size_t bits_size = TK_BITSET_BYTES_FOR_BITS(TK_RAW_HASH_TABLE_BUCKET_COUNT(&(cache->table)) *
-                                                TK_CACHE_CLOCK_BIT_NR);
-    memset(cache->flags, 0, bits_size);
-  }
+  bits_size = TK_BITSET_BYTES_FOR_BITS(TK_RAW_HASH_TABLE_BUCKET_COUNT(&(cache->table)) *
+                                       TK_CACHE_CLOCK_BIT_NR);
+  memset(cache->flags, 0, bits_size);
   cache->hand = 0;
 
   return tk_raw_hash_table_clear(&(cache->table));
@@ -295,9 +300,8 @@ inline static ret_t tk_cache_clock_clear(tk_cache_clock_t* cache) {
 inline static ret_t tk_cache_clock_deinit(tk_cache_clock_t* cache) {
   return_value_if_fail(cache != NULL, RET_BAD_PARAMS);
 
-  tk_cache_clock_clear(cache);
   if (cache->table.buckets != NULL) {
-    tk_raw_hash_table_deinit(&cache->table);
+    tk_raw_hash_table_deinit(&(cache->table));
   }
   TKMEM_FREE(cache->flags);
 
@@ -354,11 +358,11 @@ inline static ret_t tk_cache_clock_get(tk_cache_clock_t* cache, TK_CACHE_CLOCK_K
 
   index = tk_raw_hash_table_bucket_index(&(cache->table), key);
   entry = tk_raw_hash_table_bucket_find(&(cache->table), index, key);
-  if (entry == NULL) {
+  if (NULL == entry) {
     return RET_NOT_FOUND;
   }
 
-  tk_cache_clock_touch_index(cache, index);
+  return_value_if_fail(RET_OK == tk_cache_clock_touch_index(cache, index), RET_FAIL);
   *value = entry->value;
 
   return RET_OK;
@@ -380,7 +384,7 @@ inline static ret_t tk_cache_clock_put(tk_cache_clock_t* cache, TK_CACHE_CLOCK_K
   size_t index = 0;
   ret_t ret = RET_OK;
   tk_raw_hash_table_entry_t* entry = NULL;
-  return_value_if_fail(cache != NULL && cache->flags != NULL && cache->table.buckets != NULL,
+  return_value_if_fail(cache != NULL && cache->table.buckets != NULL && cache->flags != NULL,
                        RET_BAD_PARAMS);
 
   index = tk_raw_hash_table_bucket_index(&(cache->table), key);
@@ -395,12 +399,12 @@ inline static ret_t tk_cache_clock_put(tk_cache_clock_t* cache, TK_CACHE_CLOCK_K
   if (cache->table.size >= cache->table.capacity) {
     /* 满了：先淘汰一个，腾出位置 */
     ret = tk_cache_clock_evict(cache);
-    return_value_if_fail(ret == RET_OK, ret);
+    return_value_if_fail(RET_OK == ret, ret);
   }
 
   /* 桶下标在淘汰前后都不变，而且上面刚确认键不在桶里，直接加入，省掉add里的重复查找 */
   ret = tk_raw_hash_table_bucket_add(&(cache->table), index, key, value);
-  return_value_if_fail(ret == RET_OK, ret);
+  return_value_if_fail(RET_OK == ret, ret);
 
   tk_cache_clock_touch_index(cache, index);
 
@@ -418,14 +422,14 @@ inline static ret_t tk_cache_clock_put(tk_cache_clock_t* cache, TK_CACHE_CLOCK_K
  */
 inline static ret_t tk_cache_clock_remove(tk_cache_clock_t* cache, TK_CACHE_CLOCK_KEY_T key) {
   ret_t ret = RET_OK;
-  return_value_if_fail(cache != NULL && cache->flags != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(cache != NULL, RET_BAD_PARAMS);
 
   ret = tk_raw_hash_table_remove(&(cache->table), key);
 
   if (RET_NOT_FOUND == ret) {
     return RET_NOT_FOUND;
   }
-  return_value_if_fail(ret == RET_OK, ret);
+  return_value_if_fail(RET_OK == ret, ret);
 
   return RET_OK;
 }
@@ -433,18 +437,18 @@ inline static ret_t tk_cache_clock_remove(tk_cache_clock_t* cache, TK_CACHE_CLOC
 /**
  * @method tk_cache_clock_shrink
  * @export none
- * 按二次机会逐个淘汰，把元素个数缩到cache_size个；最后回收桶里闲置的槽位和空桶。
+ * 按二次机会逐个淘汰，把元素个数缩到size个；最后回收桶里闲置的槽位和空桶。
  * @param {tk_cache_clock_t*} cache 缓存对象。
- * @param {size_t} cache_size 保留的个数。
+ * @param {size_t} size 保留的个数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-inline static ret_t tk_cache_clock_shrink(tk_cache_clock_t* cache, size_t cache_size) {
-  return_value_if_fail(cache != NULL && cache->flags != NULL, RET_BAD_PARAMS);
+inline static ret_t tk_cache_clock_shrink(tk_cache_clock_t* cache, size_t size) {
+  return_value_if_fail(cache != NULL, RET_BAD_PARAMS);
 
-  while (cache->table.size > cache_size) {
+  while (cache->table.size > size) {
     ret_t ret = tk_cache_clock_evict(cache);
-    return_value_if_fail(ret == RET_OK, ret);
+    return_value_if_fail(RET_OK == ret, ret);
   }
 
   return tk_raw_hash_table_shrink(&(cache->table));
