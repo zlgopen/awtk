@@ -2,6 +2,7 @@
 
 2026/11/28
   * improve raw_hash_table and cache_clock(感谢兆坤提供补丁)
+  * improve glyph_cache(感谢兆坤提供补丁)
 
 2026/11/27
   * fix raw_hash_table key same-object test string compare warning

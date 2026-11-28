@@ -31,18 +31,16 @@ typedef struct _glyph_cache_key_t {
 #define TK_CACHE_CLOCK_KEY_T glyph_cache_key_t
 #define TK_CACHE_CLOCK_VALUE_T glyph_t*
 
-inline static uint64_t glyph_cache_key_hash(const glyph_cache_key_t key) {
-  uint64_t ret = ((uint64_t)(key.size) << 32) | key.code;
-  return ret;
-}
-#define TK_CACHE_CLOCK_KEY_HASH(key, ctx) glyph_cache_key_hash(key)
+#define TK_CACHE_CLOCK_KEY_HASH(key, ctx) (((uint64_t)((key).size) << 32) | (key).code)
 
-inline static int32_t glyph_cache_key_compare(const glyph_cache_key_t a,
-                                              const glyph_cache_key_t b) {
+inline static int glyph_cache_key_compare(const glyph_cache_key_t a, const glyph_cache_key_t b) {
   if (a.code != b.code) {
     return a.code > b.code ? 1 : -1;
   }
-  return a.size > b.size ? 1 : (a.size < b.size ? -1 : 0);
+  if (a.size != b.size) {
+    return a.size > b.size ? 1 : -1;
+  }
+  return 0;
 }
 #define TK_CACHE_CLOCK_KEY_COMPARE(a, b, ctx) glyph_cache_key_compare(a, b)
 #define TK_CACHE_CLOCK_KEY_IS_SAME_OBJECT(a, b, ctx) (FALSE)
